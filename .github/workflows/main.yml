@@ -22,10 +22,10 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # Install node module dependencies
-      - name: Install modules
-        run: yarn
-
-      # Run ESLint against JavaScript source code.
-      - name: Run ESLint
-        run: eslint . --ext .js,.jsx,.ts,.tsx
+      # Run ESLint
+      - uses: hallee/eslint-action@1.0.3
+        # GITHUB_TOKEN in forked repositories is read-only
+        # https://help.github.com/en/actions/reference/events-that-trigger-workflows#pull-request-event-pull_request
+        if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }} 
+        with:
+          repo-token: ${{secrets.GITHUB_TOKEN}}
