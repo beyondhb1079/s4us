@@ -1,4 +1,4 @@
-# This is a basic workflow to help you get started with Actions
+# Basic CI workflow. Just lints the code for now
 
 name: CI
 
