@@ -17,16 +17,19 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint . --ext .js,.jsx"
   },
   "eslintConfig": {
     "extends": [
       "airbnb"
     ],
-    "plugins": ["jest"],
+    "plugins": [
+      "jest"
+    ],
     "env": {
-        "browser": true,
-        "jest/globals": true
+      "browser": true,
+      "jest/globals": true
     },
     "rules": {
       "valid-jsdoc": "warn"
