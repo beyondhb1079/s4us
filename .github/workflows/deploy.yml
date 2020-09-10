@@ -2,7 +2,7 @@
 name: CI
 
 on:
-  push:
+  pull_request:
     branches:
     - main
     - release/*
@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@master
     - uses: actions/setup-node@master
       with:
-      node-version: '10.x'
+        node-version: '10.x'
     - run: yarn install
     - run: yarn build --frozen-lockfile
     - uses: w9jds/firebase-action@master
