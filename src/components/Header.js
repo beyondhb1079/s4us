@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import LoginOption from '../services/loginMenu';
+import LoginMenu from '../components/LoginMenu';
 
 class Header extends Component {
    render() {
       return (
-         <div class="topPage">
-            <LoginOption />
+         <div class="header">
+            <LoginMenu />
          </div>
       )
    }

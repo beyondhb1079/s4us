@@ -1,5 +1,7 @@
 import React, { Component } from "react"
 import "./App.css"
+import Header from './components/Header';
+import Footer from './components/Footer';
 
 import {
   BrowserRouter as Router,
@@ -12,11 +14,11 @@ class App extends Component {
   render() {
     return (
       < Router >
-        <Route exact path="/">
-          <div className="App">
-            <Home />
-          </div>
+        <Header />
+        <Route>
+          <Home />
         </Route>
+        <Footer />
       </Router>
     );
   }

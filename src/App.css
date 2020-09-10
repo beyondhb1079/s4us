@@ -47,7 +47,7 @@
   align-items: right;
 }
 
-.topPage {
+.header {
   text-align: right;
   color: white;
   margin-top:0px;
@@ -57,7 +57,7 @@
   border-bottom: 7px solid #500966;
 }
 
-.bottomPage {
+.footer {
   margin-top:100px;
   text-align: center;
   color: purple;

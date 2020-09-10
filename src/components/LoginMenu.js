@@ -5,7 +5,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-import LoginAuth from '../services/firebase';
+import FirebaseLogin from './FirebaseAuth';
 
 export default function ResponsiveDialog() {
    const [open, setOpen] = React.useState(false);
@@ -34,7 +34,7 @@ export default function ResponsiveDialog() {
                   You can login using your existing account to authenticate and log in to our web-app. You can
                   create an account if you do not want to use your existing account to interact with our app.
           </DialogContentText>
-               <LoginAuth />
+               <FirebaseLogin />
             </DialogContent>
          </Dialog>
       </div>
