@@ -18,7 +18,7 @@ class FirebaseAuth extends Component {
          firebase.auth.FacebookAuthProvider.PROVIDER_ID
       ],
       callbacks: {
-         signInSuccess: () => false
+         signInSuccessWithAuthResult: () => false
       }
    }
 
@@ -45,4 +45,5 @@ class FirebaseAuth extends Component {
       )
    }
 }
+
 export default FirebaseAuth
