@@ -17,6 +17,7 @@ class FirebaseAuth extends Component {
          firebase.auth.EmailAuthProvider.PROVIDER_ID,
          firebase.auth.FacebookAuthProvider.PROVIDER_ID
       ],
+      credentialHelper: 'none',  // hacky way to disable redirect on email login
       callbacks: {
          signInSuccessWithAuthResult: () => false
       }
