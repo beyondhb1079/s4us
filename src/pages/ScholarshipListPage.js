@@ -1,5 +1,5 @@
 import React from 'react';
-import scholarships from '../test/scholarshipsTest';
+import scholarships from '../testdata/scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 
 

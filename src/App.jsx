@@ -1,10 +1,10 @@
 import React from 'react';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
-import Home from './pages/HomePage.js';
+import Home from './pages/HomePage';
 import ScholarshipListPage from './pages/ScholarshipListPage';
 import ScholarshipDetailsPage from './pages/ScholarshipDetailsPage';
-import { BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 
 function App() {
   return (

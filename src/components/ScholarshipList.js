@@ -7,19 +7,19 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-      width: "100%",
-      maxWidth: "100%",
-      backgroundColor: theme.palette.background.paper,
+        width: '100%',
+        maxWidth: '100%',
+        backgroundColor: theme.palette.background.paper,
     },
-    link:{
-        textDecoration: "none"
+    link: {
+        textDecoration: 'none',
     },
-    item:{
-        color: "#000"
+    item: {
+        color: '#000',
     }
 }));
 
-function ScholarshipList(props){
+function ScholarshipList(props) {
     const classes = useStyles();
     const list = props.scholarships;
     const scholarshipList = list.map(item =>{
