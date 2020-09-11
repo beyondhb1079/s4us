@@ -1,0 +1,27 @@
+# Workflow for deploying app to Firebase
+# Based on: https://fireship.io/snippets/github-actions-deploy-angular-to-firebase-hosting/
+name: CI
+
+# Triggers the workflow when main branch is updated or on a release tag
+on:
+  push:
+    branches:
+    - main
+    - release/*
+
+# This workflow just consists of deploying the application
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@v2-beta
+      with:
+        node-version: '12'
+    - run: yarn install --frozen-lockfile
+    - run: yarn build --frozen-lockfile
+    - uses: w9jds/firebase-action@master
+      with:
+        args: deploy --only hosting --project dreamerscholars
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
