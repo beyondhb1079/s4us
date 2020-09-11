@@ -1,21 +1,23 @@
 import React from 'react';
-import scholarships from '../test/scholarshipsTest';
+import scholarships from '../testdata/scholarships';
+import {useParams} from 'react-router-dom';
 
-
-function ScholarshipDetailsPage({match}){
+function ScholarshipDetailsPage(){
+    const {id} = useParams();
     //will get replaced once we make actual api calls
-    const scholarshipInfo = scholarships.filter(item => item.id === match.params.id);
+    const scholarship= scholarships.filter(item => item.id === id)[0];
 
     return(
+        scholarship ? 
         <div>
-            <h1>{scholarshipInfo[0].name}</h1>
-            <h2>${scholarshipInfo[0].amount}</h2>
-            <h3>{scholarshipInfo[0].deadline}</h3>
-            <h3>{scholarshipInfo[0].website}</h3>
-            <h3>{scholarshipInfo[0].school}</h3>
-            <h3>{scholarshipInfo[0].year}</h3>
-            <p>{scholarshipInfo[0].description}</p>
-        </div>
+            <h1>{scholarship.name}</h1>
+            <h2>{scholarship.amount}</h2>
+            <h3>{scholarship.deadline}</h3>
+            <h3>{scholarship.website}</h3>
+            <h3>{scholarship.school}</h3>
+            <h3>{scholarship.year}</h3>
+            <p>{scholarship.description}</p>
+        </div> : <h1>Scholarship Not Found</h1>
     );
 }
 

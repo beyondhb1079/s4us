@@ -27,7 +27,7 @@ function ScholarshipList(props){
             <Link to={`/scholarships/${item.id}`} key={item.id} className={classes.link}>
                 <ListItem divider alignItems="flex-start" className={classes.item}>
                     <ListItemText primary={item.name} secondary={item.school} />
-                    <ListItemText primary={'$'+item.amount} />
+                    <ListItemText primary={item.amount} />
                     <ListItemText primary={item.deadline} />
                 </ListItem>
             </Link>
