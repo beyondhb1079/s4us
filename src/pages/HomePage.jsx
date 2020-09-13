@@ -1,8 +1,8 @@
 import React from 'react';
 
 // made for testing with Router, can be deleted by whoever is doing the HomePage
-function Home() {
+function HomePage() {
   return <h1>Home Page</h1>;
 }
 
-export default Home;
+export default HomePage;
