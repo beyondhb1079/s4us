@@ -8,7 +8,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
-<<<<<<< HEAD
+
     "firebase": "^7.19.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -16,17 +16,12 @@
     "react-modal": "^3.11.2",
     "react-paginate": "^6.4.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.3",
-    "react-typing-effect": "^2.0.3",
-    "reactstrap": "^8.5.1"
-=======
-    "eslint-config-airbnb": "^18.2.0",
-    "eslint-plugin-jest": "^24.0.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
     "react-scripts": "^3.4.3",
-    "typescript": "^4.0.2"
->>>>>>> fe33c54c1523facb5e93b47519851af90f423fde
+    "react-typing-effect": "^2.0.3",
+    "reactstrap": "^8.5.1",
+    "typescript": "^4.0.2",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-plugin-jest": "^24.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -37,11 +32,6 @@
   },
   "eslintConfig": {
     "extends": [
-<<<<<<< HEAD
-      "react-app",
-      "google"
-    ]
-=======
       "airbnb"
     ],
     "plugins": [
@@ -51,7 +41,6 @@
       "browser": true,
       "jest/globals": true
     }
->>>>>>> fe33c54c1523facb5e93b47519851af90f423fde
   },
   "browserslist": {
     "production": [
