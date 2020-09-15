@@ -5,18 +5,13 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-import FirebaseLogin from './FirebaseAuth';
+import FirebaseLoginSceen from './FirebaseLoginScreen';
 
-export default function ResponsiveDialog() {
+export default function LoginDialog() {
   const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const handleClickOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   return (
     <div>
@@ -35,7 +30,7 @@ export default function ResponsiveDialog() {
             our web-app. You can create an account if you do not want to use your
             existing account to interact with our app.
           </DialogContentText>
-          <FirebaseLogin />
+          <FirebaseLoginSceen />
         </DialogContent>
       </Dialog>
     </div>

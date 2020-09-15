@@ -3,11 +3,6 @@ import React, { Component } from 'react';
 import firebase from 'firebase';
 import StyleFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 
-firebase.initializeApp({
-  apiKey: 'AIzaSyAXDqsWK4quNVaf9-YV2e28NsxkfA9rzJA',
-  authDomain: 'dreamerscholars.firebaseapp.com',
-});
-
 class FirebaseAuth extends Component {
   uiConfig = {
     signInFlow: 'popup',
@@ -46,10 +41,7 @@ class FirebaseAuth extends Component {
             <button type="button" className="button" onClick={() => firebase.auth().signOut()}>Sign out!</button>
           </span>
         ) : (
-          <StyleFirebaseAuth
-            uiConfig={this.uiConfig}
-            firebaseAuth={firebase.auth()}
-          />
+          <StyleFirebaseAuth uiConfig={this.uiConfig} firebaseAuth={firebase.auth()} />
         )}
       </div>
     );

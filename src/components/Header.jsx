@@ -1,5 +1,5 @@
 import React, { } from 'react';
-import LoginMenu from './LoginMenu';
+import LoginMenu from './FirebaseLoginScreen';
 
 function Header() {
   return (
