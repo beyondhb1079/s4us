@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import firebase from 'firebase';
 import StyleFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 
-class FirebaseAuth extends Component {
+class FirebaseLoginScreen extends Component {
   uiConfig = {
     signInFlow: 'popup',
     signInOptions: [
@@ -48,4 +48,4 @@ class FirebaseAuth extends Component {
   }
 }
 
-export default FirebaseAuth;
+export default FirebaseLoginScreen;

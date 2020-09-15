@@ -8,7 +8,7 @@ import {
 import firebase from 'firebase';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import FirebaseConfig from './config/firebase';
+import FirebaseConfig from './config/FirebaseConfig';
 
 import Home from './pages/Home';
 

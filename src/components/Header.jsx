@@ -1,10 +1,10 @@
 import React, { } from 'react';
-import LoginMenu from './FirebaseLoginScreen';
+import FirebaseLoginScreen from './FirebaseLoginScreen';
 
 function Header() {
   return (
     <div className="header">
-      <LoginMenu />
+      <FirebaseLoginScreen />
     </div>
   );
 }
