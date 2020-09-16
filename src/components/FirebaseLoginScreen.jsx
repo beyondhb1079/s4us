@@ -34,9 +34,10 @@ class FirebaseLoginScreen extends Component {
   }
 
   render() {
+    const { isSignedIn } = this.state;
     return (
       <div>
-        {this.state.isSignedIn ? (
+        {isSignedIn ? (
           <span>
             <button type="button" className="button" onClick={() => firebase.auth().signOut()}>Sign out!</button>
           </span>
