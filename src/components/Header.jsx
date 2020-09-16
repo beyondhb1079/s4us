@@ -1,10 +1,10 @@
 import React, { } from 'react';
-import FirebaseLoginScreen from './FirebaseLoginScreen';
+import LoginDialog from './LoginDialog';
 
 function Header() {
   return (
     <div className="header">
-      <FirebaseLoginScreen />
+      <LoginDialog />
     </div>
   );
 }

@@ -11,6 +11,7 @@ import ScholarshipListPage from './pages/ScholarshipListPage';
 
 function App() {
   firebase.initializeApp(FirebaseConfig);
+
   return (
     <Router>
       <Header />
