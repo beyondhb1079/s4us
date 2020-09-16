@@ -1,25 +1,25 @@
-import React, {} from 'react';
+
 import './App.css';
-import {
-  BrowserRouter as Router,
-  Route,
-} from 'react-router-dom';
-
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import firebase from 'firebase';
-import Header from './components/Header';
-import Footer from './components/Footer';
 import FirebaseConfig from './config/FirebaseConfig';
-
+import Footer from './components/Footer';
+import Header from './components/Header';
 import Home from './pages/Home';
+import React from 'react';
+import ScholarshipDetailsPage from './pages/ScholarshipDetailsPage';
+import ScholarshipListPage from './pages/ScholarshipListPage';
 
 function App() {
   firebase.initializeApp(FirebaseConfig);
   return (
     <Router>
       <Header />
-      <Route>
-        <Home />
-      </Route>
+      <Switch>
+        <Route path="/scholarships/:id" component={ScholarshipDetailsPage} />
+        <Route path="/scholarships" component={ScholarshipListPage} />
+        <Route path="/" component={Home} />
+      </Switch>
       <Footer />
     </Router>
   );
