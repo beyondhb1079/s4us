@@ -4,6 +4,6 @@ import App from './App';
 
 test('renders home page by default', () => {
   const { getByText } = render(<App />);
-  const linkElement = getByText(/Home Page/i);
+  const linkElement = getByText(/Find Scholarships Today/i);
   expect(linkElement).toBeInTheDocument();
 });
