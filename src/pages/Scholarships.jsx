@@ -3,7 +3,7 @@ import scholarships from '../testdata/scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import Filter from '../components/Filter';
 
-function ScholarshipListPage() {
+function Scholarships() {
   return (
     <div>
       <h1 style={{ textAlign: 'center' }}>SCHOLARSHIPS</h1>
@@ -13,4 +13,4 @@ function ScholarshipListPage() {
   );
 }
 
-export default ScholarshipListPage;
+export default Scholarships;
