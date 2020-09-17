@@ -6,8 +6,8 @@ import FirebaseConfig from './config/FirebaseConfig';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import Home from './pages/Home';
-import ScholarshipDetailsPage from './pages/ScholarshipDetailsPage';
-import ScholarshipListPage from './pages/ScholarshipListPage';
+import ScholarshipDetails from './pages/ScholarshipDetails';
+import ScholarshipList from './pages/ScholarshipList';
 
 function App() {
   firebase.initializeApp(FirebaseConfig);
@@ -16,8 +16,8 @@ function App() {
     <Router>
       <Header />
       <Switch>
-        <Route path="/scholarships/:id" component={ScholarshipDetailsPage} />
-        <Route path="/scholarships" component={ScholarshipListPage} />
+        <Route path="/scholarships/:id" component={ScholarshipDetails} />
+        <Route path="/scholarships" component={ScholarshipList} />
         <Route path="/" component={Home} />
       </Switch>
       <Footer />
