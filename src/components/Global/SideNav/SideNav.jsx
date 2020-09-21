@@ -13,18 +13,18 @@ export default class SideNav extends Component {
            </div>
             <ul className="navList">
               <li className="item">
-                  <Link className="menuitem sidenav-close" to="/">
-                    <i className="material-icons white-text">home</i>home
+                  <Link className="menuitem" to="/">
+                    <i className="material-icons">home</i>home
                   </Link>
               </li>
               <li className="item">
-                  <Link className="menuitem sidenav-close" to="/profile">
-                    <i className="material-icons white-text">face</i>profile
+                  <Link className="menuitem" to="/profile">
+                    <i className="material-icons">face</i>profile
                   </Link>
               </li>
               <li className="item">
-                  <Link className="menuitem sidenav-close" to="/scholarships">
-                    <i className="material-icons white-text">school</i>scholaships
+                  <Link className="menuitem" to="/scholarships">
+                    <i className="material-icons">school</i>scholaships
                   </Link>
             </li>
             </ul>
