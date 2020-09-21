@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
-import Home from './pages/HomePage';
-import ScholarshipListPage from './pages/ScholarshipListPage';
-import ScholarshipDetailsPage from './pages/ScholarshipDetailsPage';
+import Home from './pages/Home';
+import ScholarshipListPage from './pages/ScholarshipList';
+import ScholarshipDetailsPage from './pages/ScholarshipDetails';
 import Profile from './pages/Profile';
 
 import Header from './components/Global/Header/Header';
