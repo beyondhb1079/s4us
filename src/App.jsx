@@ -4,15 +4,26 @@ import './App.css';
 import Home from './pages/HomePage';
 import ScholarshipListPage from './pages/ScholarshipListPage';
 import ScholarshipDetailsPage from './pages/ScholarshipDetailsPage';
+import Profile from './pages/Profile';
+
+import Header from './components/Global/Header/Header';
+import Footer from './components/Global/Footer/Footer';
+import SideNav from './components/Global/SideNav/SideNav';
 
 function App() {
   return (
     <Router>
+      <Header />
+      <SideNav />
+      <main>
       <Switch>
+        <Route exact path="/profile" component={Profile} />
         <Route path="/scholarships/:id" component={ScholarshipDetailsPage} />
         <Route path="/scholarships" component={ScholarshipListPage} />
         <Route path="/" component={Home} />
       </Switch>
+      </main>
+     <Footer />
     </Router>
   );
 }
