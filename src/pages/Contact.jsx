@@ -1,6 +1,5 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import { Link } from 'react-router-dom';
@@ -14,7 +13,6 @@ function Contact() {
       <p>
         You can check our
         {' '}
-        {' '}
         <Link to="/">FAQ</Link>
         {' '}
         to see if others have the same question as you.
@@ -24,7 +22,6 @@ function Contact() {
       <p>
         If you found a bug you can file it
         {' '}
-        {' '}
         <a href="https://github.com/beyondhb1079/s4us/issues">here</a>
         .
       </p>
@@ -32,7 +29,6 @@ function Contact() {
       <h3>Learn About Us</h3>
       <p>
         You can learn more about UndocuScholar and the developers
-        {' '}
         {' '}
         <Link to="/about">here</Link>
         .
@@ -44,11 +40,15 @@ function Contact() {
         touch as soon as possible.
       </p>
       <form>
-        <div><TextField id="standard-basic" label="full name" /></div>
-        <div><TextField id="standard-basic" label="email" /></div>
-        <div><TextField id="standard-basic" label="subject" /></div>
-        <div><TextareaAutosize rowsMin={10} placeholder="Message" /></div>
-        <Button variant="contained" color="primary">Submit</Button>
+        <TextField
+          id="outlined-textarea"
+          label="Your Message"
+          placeholder="Placeholder"
+          multiline
+          variant="outlined"
+          rows={8}
+        />
+        <div><Button variant="contained" color="primary">Submit</Button></div>
       </form>
     </Container>
   );
