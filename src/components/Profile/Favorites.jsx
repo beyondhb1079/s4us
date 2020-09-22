@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-//import Loading from "../favorites/Loading";
 
+//CSS
 import "./styles/favorites.css"
 
+//API ENDPOINT
 const Endpoint = 'https://next.json-generator.com/api/json/get/NkrAZ7frY';
 
 export default class favorite extends Component {
@@ -51,7 +52,6 @@ export default class favorite extends Component {
             .then(response => response.json())
             .then(function (data){
                 try{
-                    console.log(data)
                     data.forEach( item => {
                         let scholarship = { title: "", url: "", author:"", image:"", views:"" };
                         if(!item.favorite){ return }
