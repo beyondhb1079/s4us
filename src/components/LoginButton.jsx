@@ -5,7 +5,7 @@ import LoginDialog from './LoginDialog';
 
 export default function LoginButton() {
   const [isSignedIn, setLoggedIn] = React.useState(null);
-  const [loginDialogOpen, setDialogOpen] = React.useState(false); // always initialized to false
+  const [loginDialogOpen, setDialogOpen] = React.useState(false);
 
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
