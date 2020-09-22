@@ -1,11 +1,12 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
+import React, { useState } from 'react';
 import firebase from 'firebase';
+import Button from '@material-ui/core/Button';
 import LoginDialog from './LoginDialog';
 
 export default function LoginButton() {
-  const [isSignedIn, setLoggedIn] = React.useState(null);
-  const [loginDialogOpen, setDialogOpen] = React.useState(false);
+  var user = firebase.auth().currentUser; // determines how to initialize isSignedIn
+  const [isSignedIn, setLoggedIn] = useState(!!user);
+  const [loginDialogOpen, setDialogOpen] = useState(false); // initialized to false
 
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
@@ -26,11 +27,9 @@ export default function LoginButton() {
 
   return (
     <div>
-      <Button
-        variant="outlined"
-        color="secondary"
-        onClick={() => { isSignedIn ? signUserOut() : showLoginDialog(); }}
-      >
+      <Button variant="outlined" color="secondary" onClick={() => {
+        isSignedIn ? signUserOut() : showLoginDialog();
+      }}>
         {isSignedIn ? 'Sign out' : 'Login'}
       </Button>
       <LoginDialog open={loginDialogOpen} />
