@@ -1,11 +1,12 @@
 import React from 'react';
-import LoginDialog from './LoginDialog';
+import LoginButton from './LoginButton';
 
 function Header() {
   return (
     <div className="header">
-      <LoginDialog />
+      <LoginButton />
     </div>
   );
 }
+
 export default Header;
