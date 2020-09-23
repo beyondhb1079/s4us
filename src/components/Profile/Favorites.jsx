@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 
-//CSS
 import "./styles/favorites.css"
 
-//API ENDPOINT
 const Endpoint = 'https://next.json-generator.com/api/json/get/NkrAZ7frY';
 
 export default class favorite extends Component {
