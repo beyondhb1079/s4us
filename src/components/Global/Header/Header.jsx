@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 
-//CSS
 import "./style/header.css";
 
-//Logo
 const logo = process.env.PUBLIC_URL + '/assets/logo/school';
 
 export default class Header extends Component {
