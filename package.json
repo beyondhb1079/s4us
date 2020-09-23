@@ -16,7 +16,7 @@
     "react-dom": "^16.13.1",
     "react-firebaseui": "^4.1.0",
     "react-modal": "^3.11.2",
-    "react-paginate": "^6.4.0",
+    "react-paginate": "^6.5.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.3",
     "react-typing-effect": "^2.0.3",
