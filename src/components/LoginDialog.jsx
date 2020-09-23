@@ -6,6 +6,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import firebase from 'firebase';
 import StyleFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+import PropTypes from 'prop-types';
 
 class LoginDialog extends React.Component {
   uiConfig = {
@@ -22,8 +23,9 @@ class LoginDialog extends React.Component {
   }
 
   render() {
+    const { open, onClose } = this.props;
     return (
-      <Dialog open={this.props.open} onClose={this.props.onClose} aria-labelledby="responsive-dialog-title">
+      <Dialog open={open} onClose={onClose} aria-labelledby="responsive-dialog-title">
         <DialogTitle id="responsive-dialog-title">Login using your account or email.</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -37,5 +39,10 @@ class LoginDialog extends React.Component {
     );
   }
 }
+
+LoginDialog.propTypes = {
+  open: PropTypes.element.isRequired,
+  onClose: PropTypes.element.isRequired,
+};
 
 export default LoginDialog;

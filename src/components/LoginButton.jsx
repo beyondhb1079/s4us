@@ -4,8 +4,8 @@ import Button from '@material-ui/core/Button';
 import LoginDialog from './LoginDialog';
 
 export default function LoginButton() {
-  var user = firebase.auth().currentUser; // determines how to initialize isSignedIn
-  const [isSignedIn, setLoggedIn] = useState(!!user);
+  const { currentUser } = firebase.auth(); // determines how to initialize isSignedIn
+  const [isSignedIn, setLoggedIn] = useState(!!currentUser);
   const [loginDialogOpen, setDialogOpen] = useState(false); // initialized to false
 
   firebase.auth().onAuthStateChanged((user) => {
@@ -17,22 +17,19 @@ export default function LoginButton() {
     }
   });
 
-  function signUserOut() {
-    firebase.auth().signOut();
-  }
-
-  function showLoginDialog() {
-    setDialogOpen(true);
-  }
+  const signUserOut = () => firebase.auth().signOut();
+  const showLoginDialog = () => setDialogOpen(true);
 
   return (
     <div>
-      <Button variant="outlined" color="secondary" onClick={() => {
-        isSignedIn ? signUserOut() : showLoginDialog();
-      }}>
+      <Button
+        variant="outlined"
+        color="secondary"
+        onClick={isSignedIn ? signUserOut : showLoginDialog}
+      >
         {isSignedIn ? 'Sign out' : 'Login'}
       </Button>
-      <LoginDialog open={loginDialogOpen} />
+      <LoginDialog open={loginDialogOpen} onClose={false} />
     </div>
   );
 }
