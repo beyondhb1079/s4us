@@ -19,16 +19,16 @@ function App() {
       <Header />
       <SideNav />
       <main>
-      <Switch>
-        <Route exact path="/profile" component={Profile} />
-        <Route path="/scholarships/:id" component={ScholarshipDetails} />
-        <Route path="/scholarships" component={Scholarships} />
-        <Route path="/about" component={About} />
-        <Route path="/contact" component={Contact} />
-        <Route path="/" component={Home} />
-      </Switch>
+        <Switch>
+          <Route exact path="/profile" component={Profile} />
+          <Route path="/scholarships/:id" component={ScholarshipDetails} />
+          <Route path="/scholarships" component={Scholarships} />
+          <Route path="/about" component={About} />
+          <Route path="/contact" component={Contact} />
+          <Route path="/" component={Home} />
+        </Switch>
       </main>
-     <Footer />
+      <Footer />
     </Router>
   );
 }
