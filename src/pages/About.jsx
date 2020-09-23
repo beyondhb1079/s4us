@@ -34,6 +34,7 @@ const developers = [
     description: 'Todo: about Alejandro Loaiza',
   },
 ];
+/* eslint-enable max-len */
 
 function About() {
   return (
@@ -84,7 +85,6 @@ function About() {
       </Link>
     </Container>
   );
-];
-/* eslint-enable max-len */
+}
 
 export default About;
