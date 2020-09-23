@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 
-//CSS
+
 import "./styles/users.css"
 
-//API ENDPOINT: for user info
+
 const Endpoint = 'https://next.json-generator.com/api/json/get/NkrAZ7frY';
 
 export default class UserModule extends Component {
