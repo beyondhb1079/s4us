@@ -9,19 +9,21 @@ function ScholarshipDetailsPage() {
   if (!scholarship) {
     return (<h1>Scholarship Not Found</h1>);
   }
-  
-  const {name, amount, deadline, website, school, year, description} = scholarship;
+
+  const {
+    name, amount, deadline, website, school, year, description,
+  } = scholarship;
 
   return (
-        <div>
-          <h1>{name}</h1>
-          <h2>{amount}</h2>
-          <h3>{deadline}</h3>
-          <h3>{website}</h3>
-          <h3>{school}</h3>
-          <h3>{year}</h3>
-          <p>{description}</p>
-        </div>
+    <div>
+      <h1>{name}</h1>
+      <h2>{amount}</h2>
+      <h3>{deadline}</h3>
+      <h3>{website}</h3>
+      <h3>{school}</h3>
+      <h3>{year}</h3>
+      <p>{description}</p>
+    </div>
   );
 }
 
