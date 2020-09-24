@@ -41,8 +41,8 @@ class LoginDialog extends React.Component {
 }
 
 LoginDialog.propTypes = {
-  open: PropTypes.element.isRequired,
-  onClose: PropTypes.element.isRequired,
+  open: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default LoginDialog;

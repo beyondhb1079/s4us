@@ -6,6 +6,7 @@ import Container from '@material-ui/core/Container';
 import AboutCard from '../components/AboutCard';
 import testPic from '../logo.svg';
 
+/* eslint-disable max-len */
 const developers = [
   {
     name: 'Josue Rios',
@@ -20,11 +21,7 @@ const developers = [
   {
     name: 'Gonzalo Lara',
     img: testPic,
-    description: 'My passion for computers has lead me to pursue a career in Software '
-      + 'Engineering. I am currently a UWB CSS student completing my final year in the '
-      + 'Computer Science and Software Engineering program. I am 24 years old, bilingual '
-      + 'and currently a part of the DACA program.  I intend to contribute as much as '
-      + 'possible to building a better tomorrow.',
+    description: 'My passion for computers has lead me to pursue a career in Software Engineering. I am currently a UWB CSS student completing my final year in the Computer Science and Software Engineering program. I am 24 years old, bilingual and currently a part of the DACA program.  I intend to contribute as much as possible to building a better tomorrow.',
   },
   {
     name: 'Sergio Mejia',
@@ -37,6 +34,7 @@ const developers = [
     description: 'Todo: about Alejandro Loaiza',
   },
 ];
+/* eslint-enable max-len */
 
 function About() {
   return (
