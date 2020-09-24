@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-import LoginDialog from './LoginDialog';
+import LoginButton from './LoginButton';
 
 const buttonStyles = {
   margin: '5px',
@@ -21,8 +21,9 @@ function Header() {
       <Link to="/contact">
         <Button variant="contained" color="primary" style={buttonStyles}>Contact</Button>
       </Link>
-      <LoginDialog />
+      <LoginButton />
     </div>
   );
 }
+
 export default Header;
