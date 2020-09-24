@@ -7,7 +7,7 @@
     "@material-ui/icons": "^4.9.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
+    "@testing-library/user-event": "^12.1.6",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-plugin-jest": "^24.0.2",
     "firebase": "^7.19.1",
