@@ -19,6 +19,7 @@ export default function ProfileInput() {
   const classes = useStyles();
   const [type, setType] = React.useState('');
   const [cover, setCover] = React.useState('');
+  const [amount, setAmount] = React.useState('');
 
   const handleTypeChange = (event) => {
     setType(event.target.value);
@@ -26,21 +27,22 @@ export default function ProfileInput() {
   const handleCoverChange = (event) => {
     setCover(event.target.value);
   };
+  const handleAmountChange = (event) => {
+    setAmount(event.target.value);
+  };
 
   return (
     <div>
       <FormControl className={classes.formControl}>
-        <InputLabel id="demo-simple-select-label">Scholarship Type</InputLabel>
+        <InputLabel>Scholarship Type</InputLabel>
         <Select labelId="demo-simple-select-label" id="demo-simple-select" value={type} onChange={handleTypeChange}>
           <MenuItem value={20}>Grants</MenuItem>
           <MenuItem value={30}>Loans</MenuItem>
-          <MenuItem value={40}>Option 1</MenuItem>
-          <MenuItem value={50}>Option 2</MenuItem>
         </Select>
       </FormControl>
       <br />
       <FormControl className={classes.formControl}>
-        <InputLabel id="demo-simple-select-label">Require Cover Letter</InputLabel>
+        <InputLabel>Require Cover Letter</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
@@ -49,6 +51,20 @@ export default function ProfileInput() {
         >
           <MenuItem value={10}>Yes</MenuItem>
           <MenuItem value={20}>No</MenuItem>
+        </Select>
+      </FormControl>
+      <br />
+      <FormControl className={classes.formControl}>
+        <InputLabel>Amount</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={amount}
+          onChange={handleAmountChange}
+        >
+          <MenuItem value={10}>&gt; 500</MenuItem>
+          <MenuItem value={20}>&gt; 1000</MenuItem>
+          <MenuItem value={30}>&gt; 5000</MenuItem>
         </Select>
       </FormControl>
     </div>

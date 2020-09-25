@@ -46,7 +46,7 @@ export default function ProfileInput() {
   return (
     <div>
       <FormControl className={classes.formControl}>
-        <InputLabel id="demo-simple-select-label">Grade</InputLabel>
+        <InputLabel>Grade</InputLabel>
         <Select labelId="demo-simple-select-label" id="demo-simple-select" value={grade} onChange={handleGradeChange}>
           <MenuItem value={20}>Highschool Senior</MenuItem>
           <MenuItem value={30}>College Freshman</MenuItem>
@@ -57,7 +57,7 @@ export default function ProfileInput() {
       </FormControl>
       <br />
       <FormControl className={classes.formControl}>
-        <InputLabel id="demo-simple-select-label">Graduation Year</InputLabel>
+        <InputLabel>Graduation Year</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
@@ -71,7 +71,7 @@ export default function ProfileInput() {
       </FormControl>
       <br />
       <FormControl className={classes.formControl}>
-        <InputLabel id="demo-simple-select-label">Major</InputLabel>
+        <InputLabel>Major</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
@@ -85,7 +85,7 @@ export default function ProfileInput() {
       </FormControl>
       <br />
       <FormControl className={classes.formControl}>
-        <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+        <InputLabel>Gender</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
