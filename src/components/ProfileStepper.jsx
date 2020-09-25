@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import firebase from 'firebase';
+import { Redirect } from 'react-router-dom'
 
 import { makeStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
@@ -7,9 +8,9 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import StepContent from '@material-ui/core/StepContent';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import UserDataInput from './UserDataInput';
+import ProfileInput from './ProfileInput';
+import ScholarshipInput from './ScholarshipInput';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,9 +22,6 @@ const useStyles = makeStyles((theme) => ({
   },
   actionsContainer: {
     marginBottom: theme.spacing(2),
-  },
-  resetContainer: {
-    padding: theme.spacing(3),
   },
 }));
 
@@ -38,7 +36,7 @@ function getStepContent(step) {
     case 1:
       return null;
     case 2:
-      return '**Pending implementation to gather Scholarship details';
+      return null;
     default:
       return 'Unknown step';
   }
@@ -49,8 +47,10 @@ function getStepTask(step) {
     case 0:
       return null;
     case 1:
-      return <UserDataInput />;
+      return <ProfileInput />;
     case 2:
+      return <ScholarshipInput />;;
+    case 3:
       return null;
     default:
       return 'Unknown step';
@@ -107,11 +107,11 @@ export default function ProfileStepper() {
           </Step>
         ))}
       </Stepper>
-      {activeStep === steps.length && (
-        <Paper square elevation={0} className={classes.resetContainer}>
-          <Typography>All steps completed - redirecting you to profile page</Typography>
-        </Paper>
-      )}
-    </div>
+      {
+        activeStep === 2 && (
+          <Redirect to='/scholarships' />
+        )
+      }
+    </div >
   );
 }

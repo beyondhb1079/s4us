@@ -19,28 +19,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ProfileStepper() {
+export default function ProfileInput() {
   const classes = useStyles();
   const [grade, setGrade] = React.useState('');
   const [gradYear, setGradeYear] = React.useState('');
-  const [gender, setGender] = React.useState('');
   const [major, setMajor] = React.useState('');
-  const [value, setValue] = React.useState('');
+  const [gender, setGender] = React.useState('');
+  const [daca, setDaca] = React.useState('');
 
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
-  const handleMajorChange = (event) => {
-    setMajor(event.target.value);
-  };
   const handleGradeChange = (event) => {
     setGrade(event.target.value);
   };
   const handleGradChange = (event) => {
     setGradeYear(event.target.value);
   };
+  const handleMajorChange = (event) => {
+    setMajor(event.target.value);
+  };
   const handleGenderChange = (event) => {
     setGender(event.target.value);
+  };
+  const handleDacaChange = (event) => {
+    setDaca(event.target.value);
   };
 
   return (
@@ -99,7 +99,7 @@ export default function ProfileStepper() {
       <br />
       <FormControl component="fieldset">
         <FormLabel component="legend">Status</FormLabel>
-        <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}>
+        <RadioGroup aria-label="gender" name="gender1" value={daca} onChange={handleDacaChange}>
           <FormControlLabel value="daca" control={<Radio />} label="Have DACA" />
           <FormControlLabel value="noDaca" control={<Radio />} label="No DACA" />
         </RadioGroup>
