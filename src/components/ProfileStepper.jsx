@@ -9,6 +9,7 @@ import StepContent from '@material-ui/core/StepContent';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import UserDataInput from './UserDataInput';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,9 +36,22 @@ function getStepContent(step) {
     case 0:
       return 'Please login to continue to the next step';
     case 1:
-      return '**Gather user data here**';
+      return null;
     case 2:
-      return '**Gather Scholarship details';
+      return '**Pending implementation to gather Scholarship details';
+    default:
+      return 'Unknown step';
+  }
+}
+
+function getStepTask(step) {
+  switch (step) {
+    case 0:
+      return null;
+    case 1:
+      return <UserDataInput />;
+    case 2:
+      return null;
     default:
       return 'Unknown step';
   }
@@ -74,6 +88,7 @@ export default function ProfileStepper() {
             <StepLabel>{label}</StepLabel>
             <StepContent>
               <Typography>{getStepContent(index)}</Typography>
+              <div>{getStepTask(index)}</div>
               <div className={classes.actionsContainer}>
                 <div>
                   <Button
