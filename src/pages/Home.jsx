@@ -1,5 +1,4 @@
 import React from 'react';
-import DummyData from '../components/DummyData';
 import ProfileStepper from '../components/ProfileStepper';
 
 function Home() {

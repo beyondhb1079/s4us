@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import firebase from 'firebase';
-import { Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
@@ -49,7 +49,7 @@ function getStepTask(step) {
     case 1:
       return <ProfileInput />;
     case 2:
-      return <ScholarshipInput />;;
+      return <ScholarshipInput />;
     case 3:
       return null;
     default:
@@ -109,9 +109,9 @@ export default function ProfileStepper() {
       </Stepper>
       {
         activeStep === 2 && (
-          <Redirect to='/scholarships' />
+          <Redirect to="/scholarships" />
         )
       }
-    </div >
+    </div>
   );
 }
