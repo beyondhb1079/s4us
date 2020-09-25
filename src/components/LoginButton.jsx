@@ -22,7 +22,7 @@ export default function LoginButton() {
 
   return (
     <div>
-      <Button variant="outlined" color="secondary" onClick={isSignedIn ? signUserOut : showLoginDialog}>
+      <Button variant="outlined" color="primary" onClick={isSignedIn ? signUserOut : showLoginDialog}>
         {isSignedIn ? 'Sign out' : 'Login'}
       </Button>
       <LoginDialog open={loginDialogOpen} onClose={handleClose} />

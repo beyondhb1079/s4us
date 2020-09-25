@@ -1,7 +1,8 @@
 .App {
   text-align: center;
   width: 100vw;
-  min-height: 100vh;
+  min-height: 90vh;
+  background-color: rgb(243, 246, 250);
 }
 
 .App-logo {
@@ -51,18 +52,23 @@
   text-align: right;
   color: white;
   margin-top:0px;
-  padding:30px 35px 20px 25px;
+  padding:10px 35px 15px 25px;
   background: rgb(58, 56, 56);
   font-size: 15px;
   border-bottom: 7px solid #b5e77d;
 }
 
 .footer {
-  margin-top:100px;
   text-align: center;
   color: purple;
-  padding:1px 35px 50px 25px;
+  padding:0px 35px 50px 25px;
   background: rgb(58, 56, 56);
   font-size: 15px;
   border-top: 7px solid #b5e77d;
+}
+
+h1 {
+  margin-top: 0;
+  background: white;
+  margin-bottom: 0;
 }
