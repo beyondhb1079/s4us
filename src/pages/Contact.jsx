@@ -3,6 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import { Link } from 'react-router-dom';
+import constants from '../config/constants';
 
 function Contact() {
   return (
@@ -28,7 +29,11 @@ function Contact() {
 
       <h3>Learn About Us</h3>
       <p>
-        You can learn more about UndocuScholar and the developers
+        You can learn more about
+        {' '}
+        {constants.brandName}
+        {' '}
+        and the developers
         {' '}
         <Link to="/about">here</Link>
         .
