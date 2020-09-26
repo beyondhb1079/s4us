@@ -16,27 +16,27 @@ export default class favorite extends Component {
   }
 
   componentDidMount = async () => {
-      this.setState({ isLoading: true });
-      const self = this;
-      const dataParsed = [];
-      fetch(Endpoint)
-        .then((response) => response.json())
-        .then((data) => {
-          try {
-            data.forEach((item) => {
-              const scholarship = {
-                title: '', url: '', author: '', image: '', views: '',
-              };
-              if (!item.favorite) { return; }
-              scholarship.title = item.company;
-              scholarship.amount = item.amount;
-              scholarship.image = item.picture;
-              dataParsed.push(scholarship);
-            });
-          } catch (error) { console.log(`Error inside the parsing function: ${error}`); }
-          self.setState({ favoriteData: dataParsed, isLoading: false });
-        }).catch((error) => this.setState({ error, isLoading: false }));
-    }
+    this.setState({ isLoading: true });
+    const self = this;
+    const dataParsed = [];
+    fetch(Endpoint)
+      .then((response) => response.json())
+      .then((data) => {
+        try {
+          data.forEach((item) => {
+            const scholarship = {
+              title: '', url: '', author: '', image: '', views: '',
+            };
+            if (!item.favorite) { return; }
+            scholarship.title = item.company;
+            scholarship.amount = item.amount;
+            scholarship.image = item.picture;
+            dataParsed.push(scholarship);
+          });
+        } catch (error) { console.log(`Error inside the parsing function: ${error}`); }
+        self.setState({ favoriteData: dataParsed, isLoading: false });
+      }).catch((error) => this.setState({ error, isLoading: false }));
+  }
 
   render() {
     const { favoriteData, isLoading, error } = this.state;
@@ -76,5 +76,4 @@ export default class favorite extends Component {
       </div>
     );
   }
-
 }
