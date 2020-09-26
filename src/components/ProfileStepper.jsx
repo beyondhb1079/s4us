@@ -17,11 +17,11 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   button: {
-    marginTop: theme.spacing(1),
     marginRight: theme.spacing(1),
   },
-  actionsContainer: {
-    marginBottom: theme.spacing(2),
+  instructions: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
   },
 }));
 
@@ -81,6 +81,7 @@ export default function ProfileStepper() {
   };
 
   return (
+
     <div className={classes.root}>
       <Stepper activeStep={isSignedIn ? activeStep + 1 : activeStep} orientation="vertical">
         {steps.map((label, index) => (

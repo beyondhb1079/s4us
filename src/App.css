@@ -2,7 +2,7 @@
   text-align: center;
   width: 100vw;
   min-height: 90vh;
-  background-color: rgb(243, 246, 250);
+  background-color: white;
 }
 
 .App-logo {
@@ -86,4 +86,11 @@ h2 {
   min-height: 35vh;
   background-color: rgb(243, 246, 250);
   text-align: center;
+}
+
+.stepperStyle {
+  text-align: left;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 20px;
 }
