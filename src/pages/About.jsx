@@ -16,7 +16,7 @@ const developers = [
   {
     name: 'Edwin Lopez',
     img: testPic,
-    description: 'Todo: about Edwin Lopez',
+    description: 'I am a software engineer from the University of California Irvine. I enjoy learning and using my skills to make software that makes an impact in communites. Being a DACA recipient has led me to have an emotional connection with {site name}.',
   },
   {
     name: 'Gonzalo Lara',
