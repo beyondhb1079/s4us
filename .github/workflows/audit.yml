@@ -1,0 +1,26 @@
+# Workflow for validating package dependencies
+name: Validation
+
+# Only run on merges to main and on pull requests that touch yarn.lock
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+    paths: ['yarn.lock']
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+      - name: Setup node.js
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: '12'
+          check-latest: true
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Audit for vulnerabilities
+        run: yarn audit

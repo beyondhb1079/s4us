@@ -8,23 +8,8 @@ on:
   pull_request:
     branches: [ main ]
 
-# This workflow is made up of four jobs: audit, build, lint, and test
+# This workflow is made up of three jobs: build, lint, and test
 jobs:
-  audit:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout the repo
-        uses: actions/checkout@v2
-      - name: Setup node.js
-        uses: actions/setup-node@v2-beta
-        with:
-          node-version: '12'
-          check-latest: true
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-      - name: Audit for vulnerabilities
-        run: yarn audit
-
   build:
     runs-on: ubuntu-latest
     steps:
