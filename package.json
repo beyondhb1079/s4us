@@ -43,7 +43,7 @@
       "jest/globals": true
     },
     "rules":{
-      "quotes": ["error", "single", { "allowTemplateLiterals": true }]
+      "react/jsx-one-expression-per-line": "off"
     }
   },
   "browserslist": {
