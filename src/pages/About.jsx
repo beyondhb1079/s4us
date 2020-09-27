@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import AboutCard from '../components/AboutCard';
 import testPic from '../logo.svg';
-import constants from '../config/constants';
+import { BRAND_NAME } from '../config/constants';
 
 /* eslint-disable max-len */
 const developers = [
@@ -41,14 +41,10 @@ function About() {
   return (
     <Container>
       <h1 style={{ textAlign: 'center' }}>
-        About
-        {' '}
-        {constants.brandName}
+        {`About ${BRAND_NAME}`}
       </h1>
       <h2>
-        Scholarship Search With
-        {' '}
-        {constants.brandName}
+        {`Scholarship Search With ${BRAND_NAME}`}
       </h2>
       <p>
         Est elit eu mollit reprehenderit enim nisi ea velit mollit dolore.
@@ -68,11 +64,7 @@ function About() {
       </p>
 
       <h2>
-        How
-        {' '}
-        {constants.brandName}
-        {' '}
-        Works
+        {`How ${BRAND_NAME} Works`}
       </h2>
       <p>
         Laboris amet nostrud amet anim fugiat deserunt ad laboris dolore sint eiusmod.

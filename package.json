@@ -41,6 +41,9 @@
     "env": {
       "browser": true,
       "jest/globals": true
+    },
+    "rules":{
+      "quotes": ["error", "single", { "allowTemplateLiterals": true }]
     }
   },
   "browserslist": {
