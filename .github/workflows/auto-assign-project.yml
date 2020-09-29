@@ -1,0 +1,28 @@
+# Workflow for auto-assign issues/PRs to Projects
+name: Auto Assign to One Project
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the main branch
+on:
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  assign_to_project:
+    runs-on: ubuntu-latest
+    name: Assign to One Project
+    steps:
+    - name: Assign new issues to main project
+      uses: srggrs/assign-one-project-github-action@1.2.0
+      if: ${{ github.event == 'issue' }}
+      with:
+        project: 'https://github.com/srggrs/assign-one-project-github-action/projects/1'
+    - name: Assign new dependabot PRs to main project
+      uses: srggrs/assign-one-project-github-action@1.2.0
+      if: ${{ github.event == 'pull_request' && github.event.pull_request.user.login == 'josueetcom' }}
+      with:
+        project: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/projects/1
+        column_name: Dependabot Updates
