@@ -2,6 +2,7 @@
 name: Auto Assign to One Project
 
 on:
+  pull_request:
   issues:
     types: [opened]
 
@@ -12,6 +13,6 @@ jobs:
     steps:
     - name: Assign new issues to main project
       uses: srggrs/assign-one-project-github-action@1.2.0
-      if: ${{ github.event == 'issue' }}
+      if: ${{ github.event == 'pull_request' }}
       with:
         project: 'https://github.com/srggrs/assign-one-project-github-action/projects/1'
