@@ -1,5 +1,5 @@
 # Workflow for validating package dependencies
-name: Validation
+name: Audit
 
 # Only run on merges to main and on pull requests that touch yarn.lock
 on:
