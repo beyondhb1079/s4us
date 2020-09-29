@@ -17,4 +17,4 @@ jobs:
     - name: Assign new issues to main project
       uses: srggrs/assign-one-project-github-action@1.2.0
       env:
-        PROJECT_URL: ${{GITHUB_SERVER_URL}}/${{GITHUB_REPOSITORY}}/projects/1
+        PROJECT_URL: ${{ env.GITHUB_SERVER_URL }}/${{ env.GITHUB_REPOSITORY }}/projects/1
