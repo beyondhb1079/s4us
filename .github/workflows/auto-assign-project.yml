@@ -4,7 +4,6 @@ name: Auto Assign to Project
 on:
   pull_request:
     branches: [main]
-    types: [opened]
   issues:
     types: [opened]
 
