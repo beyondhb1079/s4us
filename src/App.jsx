@@ -19,11 +19,11 @@ function App() {
     <Router>
       <Header />
       <Switch>
-        <Route path="/newuser" component={NewUsers} />
         <Route path="/scholarships/:id" component={ScholarshipDetails} />
         <Route path="/scholarships" component={Scholarships} />
         <Route path="/about" component={About} />
         <Route path="/contact" component={Contact} />
+        <Route path="/newuser" component={NewUsers} />
         <Route path="/" component={Home} />
       </Switch>
       <Footer />

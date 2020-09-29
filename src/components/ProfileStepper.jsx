@@ -82,7 +82,7 @@ export default function ProfileStepper() {
         );
       case 1:
         if (daca === 'Contributor') {
-          return null;
+          return <h2>Please continue on to the next step</h2>;
         }
         return <ProfileInput />;
 
@@ -96,7 +96,6 @@ export default function ProfileStepper() {
   }
 
   return (
-
     <div className={classes.root}>
       <Stepper activeStep={activeStep} orientation="vertical">
         {steps.map((label, index) => (
