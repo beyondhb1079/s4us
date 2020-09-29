@@ -22,12 +22,19 @@ jobs:
       with:
         project: https://github.com/${{ github.repository }}/projects/1
 
-  assign_projects:
-    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login == 'josueetcom'}}
+  assign_prs:
+    if: ${{ github.event_name == 'pull_request'}}
     runs-on: ubuntu-latest
     name: Assign pull requests to project
     steps:
-    - name: Assign new pull requests
+    - name: Assign dependabot pull requests
+      if: ${{ github.event.pull_request.user.login == 'dependabot[bot]' }}
+      uses: srggrs/assign-one-project-github-action@1.2.0
+      with:
+        project: https://github.com/${{ github.repository }}/projects/1
+        column_name: Dependabot Updates
+    - name: Assign other pull requests
+      if: ${{ github.event.pull_request.user.login != 'dependabot[bot]' }}
       uses: srggrs/assign-one-project-github-action@1.2.0
       with:
         project: https://github.com/${{ github.repository }}/projects/1
