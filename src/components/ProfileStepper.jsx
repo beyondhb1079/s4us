@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import firebase from 'firebase';
+import React from 'react';
 import { Redirect } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -10,6 +9,7 @@ import StepContent from '@material-ui/core/StepContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import ProfileInput from './ProfileForm';
+import ProfileSelection from './ProfileSelection';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,13 +25,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-  return ['Login', 'Profile Information', 'Scholarship Details'];
+  return ['Profile Selection', 'Profile Information', 'Scholarship Details'];
 }
 
 function getStepContent(step) {
   switch (step) {
     case 0:
-      return 'Please login to continue to the next step';
+      return 'Please Select Profile Type';
     case 1:
       return null;
     case 2:
@@ -44,7 +44,7 @@ function getStepContent(step) {
 function getStepTask(step) {
   switch (step) {
     case 0:
-      return null;
+      return <ProfileSelection />;
     case 1:
       return <ProfileInput />;
     case 2:
@@ -59,15 +59,6 @@ function getStepTask(step) {
 export default function ProfileStepper() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
-  const [isSignedIn, setIsSignedIn] = useState(!!firebase.auth().currentUser);
-  firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-      setIsSignedIn(true);
-    } else {
-      setIsSignedIn(false);
-      setActiveStep(0);
-    }
-  });
 
   const steps = getSteps();
 
@@ -83,7 +74,7 @@ export default function ProfileStepper() {
   return (
 
     <div className={classes.root}>
-      <Stepper activeStep={isSignedIn ? activeStep + 1 : activeStep} orientation="vertical">
+      <Stepper activeStep={activeStep} orientation="vertical">
         {steps.map((label, index) => (
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
@@ -99,8 +90,8 @@ export default function ProfileStepper() {
                   >
                     Back
                   </Button>
-                  <Button disabled={index === 0} variant="contained" color="primary" onClick={handleNext} className={classes.button}>
-                    {activeStep === 1 ? 'Complete' : 'Next'}
+                  <Button variant="contained" color="primary" onClick={handleNext} className={classes.button}>
+                    {activeStep === 2 ? 'Complete' : 'Next'}
                   </Button>
                 </div>
               </div>
@@ -109,7 +100,7 @@ export default function ProfileStepper() {
         ))}
       </Stepper>
       {
-        activeStep === 2 && (
+        activeStep === 3 && (
           <Redirect to="/scholarships" />
         )
       }

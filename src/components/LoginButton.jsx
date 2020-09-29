@@ -18,7 +18,7 @@ export default function LoginButton() {
     }
   });
 
-  function reDirect() {
+  function newUser() {
     if (isSignedIn === true) {
       return <Redirect to="/newuser" />
     }
@@ -32,7 +32,7 @@ export default function LoginButton() {
       <Button variant="outlined" color="primary" onClick={isSignedIn ? signUserOut : showLoginDialog}>
         {isSignedIn ? 'Sign out' : 'Login'}
       </Button>
-      {reDirect()}
+      {newUser()}
       <LoginDialog open={loginDialogOpen} onClose={handleClose} />
     </div>
   );
