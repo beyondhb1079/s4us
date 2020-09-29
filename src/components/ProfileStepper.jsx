@@ -8,8 +8,13 @@ import StepLabel from '@material-ui/core/StepLabel';
 import StepContent from '@material-ui/core/StepContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+
+import FormControl from '@material-ui/core/FormControl';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormLabel from '@material-ui/core/FormLabel';
 import ProfileInput from './ProfileForm';
-import ProfileSelection from './ProfileSelection';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-  return ['Profile Selection', 'Profile Information', 'Scholarship Details'];
+  return ['Profile Selection', 'Profile Information', 'Completed'];
 }
 
 function getStepContent(step) {
@@ -41,24 +46,14 @@ function getStepContent(step) {
   }
 }
 
-function getStepTask(step) {
-  switch (step) {
-    case 0:
-      return <ProfileSelection />;
-    case 1:
-      return <ProfileInput />;
-    case 2:
-      return null;
-    case 3:
-      return null;
-    default:
-      return 'Unknown step';
-  }
-}
-
 export default function ProfileStepper() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
+
+  const [daca, setDaca] = React.useState('');
+  const handleDacaChange = (event) => {
+    setDaca(event.target.value);
+  };
 
   const steps = getSteps();
 
@@ -70,6 +65,35 @@ export default function ProfileStepper() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+  function getStepTask(step) {
+    switch (step) {
+      case 0:
+        return (
+          <div>
+            <FormControl component="fieldset">
+              <FormLabel component="legend">Type</FormLabel>
+              <RadioGroup aria-label="gender" name="gender1" value={daca} onChange={handleDacaChange}>
+                <FormControlLabel value="Student" control={<Radio />} label="Student" />
+                <FormControlLabel value="Contributor" control={<Radio />} label="Community Contributor" />
+                <FormControlLabel value="Parent" control={<Radio />} label="Parent" />
+              </RadioGroup>
+            </FormControl>
+          </div>
+        );
+      case 1:
+        if (daca === 'Contributor') {
+          return null;
+        }
+        return <ProfileInput />;
+
+      case 2:
+        return null;
+      case 3:
+        return null;
+      default:
+        return 'Unknown step';
+    }
+  }
 
   return (
 
@@ -80,30 +104,20 @@ export default function ProfileStepper() {
             <StepLabel>{label}</StepLabel>
             <StepContent>
               <Typography>{getStepContent(index)}</Typography>
-              <div>{getStepTask(index)}</div>
+              {getStepTask(index)}
               <div className={classes.actionsContainer}>
-                <div>
-                  <Button
-                    disabled={activeStep === 0}
-                    onClick={handleBack}
-                    className={classes.button}
-                  >
-                    Back
-                  </Button>
-                  <Button variant="contained" color="primary" onClick={handleNext} className={classes.button}>
-                    {activeStep === 2 ? 'Complete' : 'Next'}
-                  </Button>
-                </div>
+                <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
+                  Back
+                </Button>
+                <Button variant="contained" color="primary" onClick={handleNext} className={classes.button}>
+                  {activeStep === 2 ? 'Complete' : 'Next'}
+                </Button>
               </div>
             </StepContent>
           </Step>
         ))}
       </Stepper>
-      {
-        activeStep === 3 && (
-          <Redirect to="/scholarships" />
-        )
-      }
+      {activeStep === 3 && (<Redirect to="/scholarships" />)}
     </div>
   );
 }
