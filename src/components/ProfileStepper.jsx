@@ -79,6 +79,7 @@ export default function ProfileStepper() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+
   return (
 
     <div className={classes.root}>

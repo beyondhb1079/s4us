@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import firebase from 'firebase';
 import Button from '@material-ui/core/Button';
 import LoginDialog from './LoginDialog';
+import { Redirect } from 'react-router-dom';
 
 export default function LoginButton() {
   const [isSignedIn, setIsSignedIn] = useState(!!firebase.auth().currentUser);
@@ -17,6 +18,12 @@ export default function LoginButton() {
     }
   });
 
+  function reDirect() {
+    if (isSignedIn === true) {
+      return <Redirect to="/newuser" />
+    }
+  }
+
   const signUserOut = () => firebase.auth().signOut();
   const showLoginDialog = () => setLoginDialogOpen(true);
 
@@ -25,6 +32,7 @@ export default function LoginButton() {
       <Button variant="outlined" color="primary" onClick={isSignedIn ? signUserOut : showLoginDialog}>
         {isSignedIn ? 'Sign out' : 'Login'}
       </Button>
+      {reDirect()}
       <LoginDialog open={loginDialogOpen} onClose={handleClose} />
     </div>
   );
