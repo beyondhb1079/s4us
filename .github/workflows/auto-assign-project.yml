@@ -1,8 +1,10 @@
 # Workflow for auto-assigning issues/PRs to Projects
-name: Auto Assign to One Project
+name: Auto Assign to Project
 
 on:
   pull_request:
+#     branches: [main]
+    types: [opened, edited]
   issues:
     types: [opened]
 
@@ -10,11 +12,22 @@ env:
   GITHUB_TOKEN: ${{ github.token }}
 
 jobs:
-  assign_to_project:
+  assign_issues:
+    if: ${{ github.event == 'issues' }}
     runs-on: ubuntu-latest
-    name: Assign to One Project
+    name: Assign issues to project
     steps:
-    - name: Assign new issues to main project
+    - name: Assign new issues
+      uses: srggrs/assign-one-project-github-action@1.2.0
+      with:
+        project: https://github.com/${{ github.repository }}/projects/1
+
+  assign_projects:
+    if: ${{ github.event == 'pull_request' && github.event.pull_request.user.login == 'josueetcom'}}
+    runs-on: ubuntu-latest
+    name: Assign pull requests to project
+    steps:
+    - name: Assign new pull requests
       uses: srggrs/assign-one-project-github-action@1.2.0
       with:
         project: https://github.com/${{ github.repository }}/projects/1
