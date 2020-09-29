@@ -5,8 +5,6 @@ on:
   pull_request:
   issues:
     types: [opened]
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   assign_to_project:
@@ -15,6 +13,5 @@ jobs:
     steps:
     - name: Assign new issues to main project
       uses: srggrs/assign-one-project-github-action@1.2.0
-      if: ${{ github.event == 'pull_request' }}
       with:
         project: 'https://github.com/srggrs/assign-one-project-github-action/projects/1'
