@@ -9,8 +9,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import StepContent from '@material-ui/core/StepContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import ProfileInput from './ProfileInput';
-import ScholarshipInput from './ScholarshipInput';
+import ProfileInput from './ProfileForm';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,7 +48,7 @@ function getStepTask(step) {
     case 1:
       return <ProfileInput />;
     case 2:
-      return <ScholarshipInput />;
+      return null;
     case 3:
       return null;
     default:

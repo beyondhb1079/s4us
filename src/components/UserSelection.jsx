@@ -2,8 +2,6 @@ import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import ProfileStepper from './ProfileStepper';
-import OrganizationStepper from './OrganizationStepper';
 
 export default function UserSelection() {
   const [value, setValue] = React.useState(0);
@@ -14,9 +12,9 @@ export default function UserSelection() {
 
   function displaySelection(select) {
     if (select === 0) {
-      return <ProfileStepper />;
+      return <h3>Students</h3>;
     }
-    return <OrganizationStepper />;
+    return <h3>Organization</h3>;
   }
 
   return (
