@@ -7,7 +7,7 @@ on:
     types: [opened]
 
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GITHUB_TOKEN: ${{ github.token }}
 
 jobs:
   assign_to_project:
@@ -17,4 +17,4 @@ jobs:
     - name: Assign new issues to main project
       uses: srggrs/assign-one-project-github-action@1.2.0
       env:
-        PROJECT_URL: ${{ env.GITHUB_SERVER_URL }}/${{ env.GITHUB_REPOSITORY }}/projects/1
+        PROJECT_URL: https://github.com/${{ github.repository }}/projects/1
