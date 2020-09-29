@@ -13,7 +13,7 @@ env:
 
 jobs:
   assign_issues:
-    if: ${{ github.event == 'issues' }}
+    if: ${{ github.event_name == 'issues' }}
     runs-on: ubuntu-latest
     name: Assign issues to project
     steps:
@@ -23,7 +23,7 @@ jobs:
         project: https://github.com/${{ github.repository }}/projects/1
 
   assign_projects:
-    if: ${{ github.event == 'pull_request' && github.event.pull_request.user.login == 'josueetcom'}}
+    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login == 'josueetcom'}}
     runs-on: ubuntu-latest
     name: Assign pull requests to project
     steps:
