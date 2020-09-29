@@ -23,7 +23,7 @@ jobs:
         project: https://github.com/${{ github.repository }}/projects/1
 
   assign_prs:
-    if: ${{ github.event_name == 'pull_request'}}
+    if: ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     name: Assign pull requests to project
     steps:
