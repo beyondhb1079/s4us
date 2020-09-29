@@ -1,13 +1,10 @@
-# Workflow for auto-assign issues/PRs to Projects
+# Workflow for auto-assigning issues/PRs to Projects
 name: Auto Assign to One Project
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the main branch
 on:
   issues:
     types: [opened]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   assign_to_project:
     runs-on: ubuntu-latest
