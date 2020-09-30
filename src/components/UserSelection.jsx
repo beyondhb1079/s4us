@@ -14,18 +14,20 @@ export default function UserSelection() {
     if (select === 0) {
       return <h3>Students</h3>;
     }
-    return <h3>Organization</h3>;
+    return <h3>Community Contributor</h3>;
   }
 
   return (
     <div className="stepperStyle">
       <Paper square>
-        <Tabs value={value} indicatorColor="primary" textColor="primary" onChange={handleChange} aria-label="disabled tabs example">
+        <Tabs value={value} indicatorColor="primary" textColor="primary" onChange={handleChange}>
           <Tab label="Student" />
           <Tab label="Community Contributor" />
         </Tabs>
-        <h4>Welcome to DreamerScholar, we are dedicated to providing undocumented students
-            access to scholarships to have the opportunity to succeed in their educational path.</h4>
+        <h4>
+          Welcome to DreamerScholar, we are dedicated to providing undocumented students
+          access to scholarships to have the opportunity to succeed in their educational path.
+        </h4>
         {displaySelection(value)}
       </Paper>
     </div>
