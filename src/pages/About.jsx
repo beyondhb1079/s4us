@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import AboutCard from '../components/AboutCard';
 import testPic from '../logo.svg';
+import { BRAND_NAME } from '../config/constants';
 
 /* eslint-disable max-len */
 const developers = [
@@ -16,7 +17,7 @@ const developers = [
   {
     name: 'Edwin Lopez',
     img: testPic,
-    description: 'Todo: about Edwin Lopez',
+    description: `I am a software engineer from the University of California Irvine. I enjoy learning and using my skills to make software that makes an impact in communites. Being a DACA recipient has led me to have an emotional connection with ${BRAND_NAME}.`,
   },
   {
     name: 'Gonzalo Lara',
@@ -39,8 +40,8 @@ const developers = [
 function About() {
   return (
     <Container>
-      <h1 style={{ textAlign: 'center' }}>About UndocuScholar</h1>
-      <h2>Scholarship Search With UndocuScholar</h2>
+      <h1 style={{ textAlign: 'center' }}>About {BRAND_NAME}</h1>
+      <h2>Scholarship Search With {BRAND_NAME}</h2>
       <p>
         Est elit eu mollit reprehenderit enim nisi ea velit mollit dolore.
         Tempor exercitation ullamco tempor occaecat ad ex velit labore excepteur eiusmod minim.
@@ -58,7 +59,7 @@ function About() {
         Reprehenderit enim aute commodo cupidatat ut ipsum ea minim magna velit.
       </p>
 
-      <h2>How UndocuScholar Works</h2>
+      <h2>How {BRAND_NAME} Works</h2>
       <p>
         Laboris amet nostrud amet anim fugiat deserunt ad laboris dolore sint eiusmod.
         In cupidatat amet eu excepteur reprehenderit quis enim id velit labore
