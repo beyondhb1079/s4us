@@ -1,6 +1,4 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import { Link } from 'react-router-dom';
 import { BRAND_NAME } from '../config/constants';
@@ -27,20 +25,8 @@ function Contact() {
 
       <h3>Reach Out</h3>
       <p>
-        We are happy to answer any of your questions. Fill out the form and we&apos;ll be in
-        touch as soon as possible.
+        We are happy to answer any of your questions. You can email us <a href="mailto:undocuscholar@googlegroups.com">here</a> and we&apos;ll be in touch as soon as possible.
       </p>
-      <form>
-        <TextField
-          id="outlined-textarea"
-          label="Your Message"
-          placeholder="Placeholder"
-          multiline
-          variant="outlined"
-          rows={8}
-        />
-        <div><Button variant="contained" color="primary">Submit</Button></div>
-      </form>
     </Container>
   );
 }
