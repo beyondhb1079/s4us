@@ -13,7 +13,7 @@ function ScholarshipDetailsPage() {
 
   const {
     name, amount, deadline, website, school, year, description,
-  } = scholarship;
+  } = scholarship.data;
 
   return (
     <Container>
