@@ -1,7 +1,8 @@
+import scholarships from '../testdata/scholarships';
+
 interface ScholarshipProps {
   // TODO(https://github.com/beyondhb1079/s4us/issues/56):
   // Update this to reflect the schema
-  id?: string;
   name: string;
   description: string;
   deadline: string;
@@ -16,6 +17,13 @@ export default class Scholarship {
 
   constructor(data: ScholarshipProps) {
     this.data = { ...data };
-    this.id = this.data.id;
+  }
+
+  static get(id: string): Scholarship | undefined {
+    const scholarshipList = scholarships as { [id: string]: ScholarshipProps };
+    if (id in scholarshipList) {
+      return new Scholarship(scholarshipList[id]);
+    }
+    return undefined;
   }
 }

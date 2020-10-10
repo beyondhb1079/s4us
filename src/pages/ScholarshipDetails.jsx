@@ -1,12 +1,11 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import Container from '@material-ui/core/Container';
-import scholarships from '../testdata/scholarships';
+import Scholarship from '../models/Scholarship';
 
 function ScholarshipDetailsPage() {
   const { id } = useParams();
-  // will get replaced once we make actual api calls
-  const scholarship = scholarships.filter((item) => item.id === id)[0];
+  const scholarship = Scholarship.get(id);
   if (!scholarship) {
     return (<h1>Scholarship Not Found</h1>);
   }
