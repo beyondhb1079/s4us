@@ -39,6 +39,6 @@ export default function LoginDialog(props) {
 }
 
 LoginDialog.propTypes = {
-  open: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };
