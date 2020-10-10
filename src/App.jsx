@@ -10,6 +10,7 @@ import ScholarshipDetails from './pages/ScholarshipDetails';
 import Scholarships from './pages/Scholarships';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import ScholarshipForm from './pages/ScholarshipForm';
 
 function App() {
   firebase.initializeApp(FirebaseConfig);
@@ -18,6 +19,7 @@ function App() {
     <Router>
       <Header />
       <Switch>
+        <Route path="/scholarships/new" component={ScholarshipForm} />
         <Route path="/scholarships/:id" component={ScholarshipDetails} />
         <Route path="/scholarships" component={Scholarships} />
         <Route path="/about" component={About} />
