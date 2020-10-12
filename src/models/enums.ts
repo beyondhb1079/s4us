@@ -1,4 +1,5 @@
 export enum Grade{
+  Unknown,
   HighschoolJunior,
   HighschoolSenior,
   CollegeFreshman,
@@ -6,20 +7,23 @@ export enum Grade{
   CollegeJunior,
   CollegeSenior
 }
-export enum Role{
-  Reader,
-  Contributor,
-  Moderator,
-  Admin
-}
 export enum Gender{
+  Unknown,
   Male,
   Female,
   Other
 }
 export enum ScholarshipType{
+  Unknown,
   Academic,
   Sports,
   Community,
   Organization
+}
+
+export enum ScholarshipAmount{
+  Unknow,
+  Range,
+  FullRide,
+  Fixed
 }
