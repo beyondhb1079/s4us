@@ -39,7 +39,7 @@ function ScholarshipList(props) {
 }
 
 ScholarshipList.propTypes = {
-  scholarships: PropTypes.object,
+  scholarships: PropTypes.objectOf(PropTypes.object),
 };
 ScholarshipList.defaultProps = {
   scholarships: [],
