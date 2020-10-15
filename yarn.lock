@@ -1368,6 +1368,16 @@
     "@firebase/util" "0.3.2"
     tslib "^1.11.1"
 
+"@firebase/rules-unit-testing@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@firebase/rules-unit-testing/-/rules-unit-testing-1.0.7.tgz#60df05416f70222bd768306fda655f1f7afc7821"
+  integrity sha512-qFS8NKHdwebQXFl4zyN3/gZHD4ZHk/9zVuCbX5nJ6Wtfa4fXmVpuTQwGVjmxpkLJuv6rQ1KlpMOaUaIsrMot4Q==
+  dependencies:
+    "@firebase/logger" "0.2.6"
+    "@firebase/util" "0.3.2"
+    firebase "7.23.0"
+    request "2.88.2"
+
 "@firebase/storage-types@0.3.13":
   version "0.3.13"
   resolved "https://registry.yarnpkg.com/@firebase/storage-types/-/storage-types-0.3.13.tgz#cd43e939a2ab5742e109eb639a313673a48b5458"
@@ -5463,7 +5473,7 @@ find-up@^3.0.0:
   dependencies:
     locate-path "^3.0.0"
 
-firebase@^7.19.1:
+firebase@7.23.0, firebase@^7.19.1:
   version "7.23.0"
   resolved "https://registry.yarnpkg.com/firebase/-/firebase-7.23.0.tgz#d58bf936bd9f3a00717d81854280747222d2803b"
   integrity sha512-0b1zi0H8jT4KqyPabldzPhyKTeptw5E5a7KkjWW3MBMVV/LjbC6/NKhRR8sGQNbsbS2LnTvyEENWbqkZP2ZXtw==
@@ -10231,7 +10241,7 @@ request-promise-native@^1.0.5:
     stealthy-require "^1.1.1"
     tough-cookie "^2.3.3"
 
-request@^2.87.0, request@^2.88.0:
+request@2.88.2, request@^2.87.0, request@^2.88.0:
   version "2.88.2"
   resolved "https://registry.yarnpkg.com/request/-/request-2.88.2.tgz#d73c918731cb5a87da047e207234146f664d12b3"
   integrity sha512-MsvtOrfG9ZcrOwAW+Qi+F6HbD0CWXEh9ou77uOb7FM2WPhwT7smM833PzanhJLsgXjN89Ir6V2PczXNnMpwKhw==
