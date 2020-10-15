@@ -12,7 +12,9 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 
 function App() {
-  firebase.initializeApp(FirebaseConfig);
+  if (firebase.apps.length === 0) {
+    firebase.initializeApp(FirebaseConfig);
+  }
 
   return (
     <Router>

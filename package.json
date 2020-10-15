@@ -25,6 +25,7 @@
     "react-modal": "^3.11.2",
     "react-paginate": "^6.5.0",
     "react-router-dom": "^5.2.0",
+    "react-router-prop-types": "^1.0.5",
     "react-scripts": "^3.4.3",
     "react-typing-effect": "^2.0.3",
     "reactstrap": "^8.6.0",
@@ -33,7 +34,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "firebase emulators:exec --only firestore \"react-scripts test\"",
+    "test": "firebase emulators:exec --only firestore \"react-scripts test --verbose\"",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "eject": "react-scripts eject"
   },
@@ -124,6 +125,7 @@
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.21.1",
-    "eslint-plugin-react-hooks": "^2.5.1"
+    "eslint-plugin-react-hooks": "^2.5.1",
+    "mutation-observer": "^1.0.3"
   }
 }
