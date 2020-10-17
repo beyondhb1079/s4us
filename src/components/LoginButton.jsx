@@ -16,7 +16,7 @@ export default function LoginButton() {
       }
     });
     return unregisterAuthObserver;
-  }, []);  // [] skips cleanup of this effect until the component is unmounted
+  }, []); // [] skips cleanup of this effect until the component is unmounted
 
   const signUserOut = () => firebase.auth().signOut();
   const showLoginDialog = () => setLoginDialogOpen(true);
