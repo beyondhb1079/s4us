@@ -1,11 +1,11 @@
 import React from 'react';
 import ProfileStepper from '../components/ProfileStepper';
 
-function NewUsers() {
+function GetStarted() {
   return (
     <div className="stepperStyle">
       <ProfileStepper />
     </div>
   );
 }
-export default NewUsers;
+export default GetStarted;

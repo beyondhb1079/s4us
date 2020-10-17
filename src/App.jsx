@@ -10,7 +10,7 @@ import ScholarshipDetails from './pages/ScholarshipDetails';
 import Scholarships from './pages/Scholarships';
 import About from './pages/About';
 import Contact from './pages/Contact';
-import NewUsers from './pages/NewUsers';
+import GetStarted from './pages/GetStarted';
 
 function App() {
   firebase.initializeApp(FirebaseConfig);
@@ -23,7 +23,7 @@ function App() {
         <Route path="/scholarships" component={Scholarships} />
         <Route path="/about" component={About} />
         <Route path="/contact" component={Contact} />
-        <Route path="/newuser" component={NewUsers} />
+        <Route path="/get-started" component={GetStarted} />
         <Route path="/" component={Home} />
       </Switch>
       <Footer />

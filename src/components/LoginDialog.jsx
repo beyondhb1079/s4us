@@ -13,7 +13,7 @@ const uiConfig = {
   signInSuccessWithAuthResult() {
     return true;
   },
-  signInSuccessUrl: '/newuser',
+  signInSuccessUrl: '/get-started',
   signInOptions: [
     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
     firebase.auth.EmailAuthProvider.PROVIDER_ID,
