@@ -33,7 +33,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "firebase emulators:exec --only firestore \"react-scripts test\"",
+    "test": "firebase emulators:exec --only firestore \"react-scripts test --detectOpenHandles\"",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "eject": "react-scripts eject"
   },
