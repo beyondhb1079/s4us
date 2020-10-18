@@ -91,7 +91,4 @@ test('delete existing doc', async () => {
   expect(got.exists).toBeFalsy();
 });
 
-// TODO: Add tests for:
-// - subscribe invokes listener
-// - subscribe invokes error handler
-// - subscribe's unsubscribe function
+// TODO(issues/92): Add tests for subscribe().
