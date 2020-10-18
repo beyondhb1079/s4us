@@ -55,6 +55,6 @@ jobs:
       - name: Run tests
         uses: w9jds/firebase-action@master
         with:
-          args: emulators:exec --only firestore "react-scripts test --verbose"
+          args: emulators:exec --only firestore "react-scripts test"
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
