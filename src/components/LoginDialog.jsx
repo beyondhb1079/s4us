@@ -24,13 +24,18 @@ const uiConfig = {
 export default function LoginDialog(props) {
   const { open, onClose } = props;
   return (
-    <Dialog open={open} onClose={onClose} aria-labelledby="responsive-dialog-title">
-      <DialogTitle id="responsive-dialog-title">Login using your account or email.</DialogTitle>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      aria-labelledby="responsive-dialog-title">
+      <DialogTitle id="responsive-dialog-title">
+        Login using your account or email.
+      </DialogTitle>
       <DialogContent>
         <DialogContentText>
-          You can login using your existing account to authenticate and log in to
-          our web-app. You can create an account if you do not want to use your
-          existing account to interact with our app.
+          You can login using your existing account to authenticate and log in
+          to our web-app. You can create an account if you do not want to use
+          your existing account to interact with our app.
         </DialogContentText>
         <StyleFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
       </DialogContent>

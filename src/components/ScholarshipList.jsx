@@ -33,9 +33,7 @@ function ScholarshipList(props) {
     </Link>
   ));
 
-  return (
-    <List className={classes.root}>{scholarshipList}</List>
-  );
+  return <List className={classes.root}>{scholarshipList}</List>;
 }
 
 ScholarshipList.propTypes = {

@@ -4,9 +4,9 @@ name: Validation
 # Triggers the workflow on push or pull request for the main branch
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 # This workflow is made up of three jobs: build, lint, and test
 jobs:
@@ -24,7 +24,7 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Build app
         run: yarn build --frozen-lockfile
-  
+
   lint:
     runs-on: ubuntu-latest
     steps:

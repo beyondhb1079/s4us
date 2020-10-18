@@ -1,7 +1,14 @@
-import { initializeTestApp, firestore, clearFirestoreData } from '@firebase/rules-unit-testing';
+import {
+  initializeTestApp,
+  firestore,
+  clearFirestoreData,
+} from '@firebase/rules-unit-testing';
 import FirestoreModel from './FirestoreModel';
 
-const testApp = initializeTestApp({ projectId: 'fs-model-test', auth: { uid: 'admin' } });
+const testApp = initializeTestApp({
+  projectId: 'fs-model-test',
+  auth: { uid: 'admin' },
+});
 
 interface NameData {
   first: string;
@@ -10,14 +17,20 @@ interface NameData {
 
 const converter: firestore.FirestoreDataConverter<NameData> = {
   toFirestore: (name: NameData) => ({ ...name }),
-  fromFirestore: (snapshot, options) => ({ ...snapshot.data(options) } as NameData),
+  fromFirestore: (snapshot, options) =>
+    ({ ...snapshot.data(options) } as NameData),
 };
 
 class Name extends FirestoreModel<NameData> {
-  static readonly collection = testApp.firestore().collection('scholarships').withConverter(converter);
+  static readonly collection = testApp
+    .firestore()
+    .collection('scholarships')
+    .withConverter(converter);
 }
 
-beforeEach(async () => clearFirestoreData(testApp.options as {projectId: string}));
+beforeEach(async () =>
+  clearFirestoreData(testApp.options as { projectId: string })
+);
 afterAll(async () => testApp.delete());
 
 test('constructor', () => {
@@ -30,7 +43,10 @@ test('constructor', () => {
 });
 
 test('get unknown doc', async () => {
-  const name = new Name(Name.collection.doc('123'), { first: 'Bob', last: 'Smith' });
+  const name = new Name(Name.collection.doc('123'), {
+    first: 'Bob',
+    last: 'Smith',
+  });
 
   await expect(name.get()).rejects.toThrowError('names/123 not found');
 });

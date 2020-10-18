@@ -8,7 +8,7 @@ function renderAtRoute(route) {
   return render(
     <MemoryRouter initialEntries={[route]}>
       <Route path="/scholarships/:id" component={ScholarshipDetails} />
-    </MemoryRouter>,
+    </MemoryRouter>
   );
 }
 
@@ -18,7 +18,9 @@ test('renders scholarship details', () => {
 
   const { queryByText } = renderAtRoute(path);
 
-  Object.keys(want).forEach((k) => expect(queryByText(String(want[k]))).toBeInTheDocument());
+  Object.keys(want).forEach((k) =>
+    expect(queryByText(String(want[k]))).toBeInTheDocument()
+  );
   expect(queryByText(/Scholarship Not Found/i)).toBeNull();
 });
 

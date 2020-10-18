@@ -23,14 +23,14 @@ function AboutCard(props) {
   return (
     <StylesProvider injectFirst>
       <Card className={classes.card}>
-        <CardMedia image={img} title={`picture of ${name}`} className={classes.media} />
+        <CardMedia
+          image={img}
+          title={`picture of ${name}`}
+          className={classes.media}
+        />
         <CardContent>
-          <Typography variant="h6">
-            {name}
-          </Typography>
-          <Typography variant="body">
-            {description}
-          </Typography>
+          <Typography variant="h6">{name}</Typography>
+          <Typography variant="body">{description}</Typography>
         </CardContent>
       </Card>
     </StylesProvider>
