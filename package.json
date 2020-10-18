@@ -137,14 +137,10 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push": "firebase emulators:exec --only firestore \"react-scripts test --watchAll=false\""
+      "pre-push": "eslint && firebase emulators:exec --only firestore \"react-scripts test --watchAll=false\""
     }
   },
   "lint-staged": {
-    "*.[jt]s?(x)": [
-      "prettier --write",
-      "eslint"
-    ],
     "**/*": "prettier --write --ignore-unknown"
   }
 }
