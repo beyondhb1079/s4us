@@ -21,7 +21,7 @@ jobs:
           node-version: '12'
           check-latest: true
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --frozen-lockfile --production
       - name: Build app
         run: yarn build --frozen-lockfile
 
@@ -39,6 +39,21 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Lint
         run: yarn lint
+
+  style:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+      - name: Setup node.js
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: '12'
+          check-latest: true
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Lint
+        run: yarn prettier --check .
 
   test:
     runs-on: ubuntu-latest
