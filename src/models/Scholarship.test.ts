@@ -1,6 +1,6 @@
-import { initializeTestApp, clearFirestoreData } from '@firebase/rules-unit-testing';
+import { initializeTestApp, clearFirestoreData, firestore } from '@firebase/rules-unit-testing';
 import { setDb } from './db';
-import Scholarship from './Scholarship';
+import Scholarship, { converter } from './Scholarship';
 
 const testApp = initializeTestApp({ projectId: 'scholarship-test', auth: { uid: 'admin' } });
 
@@ -9,6 +9,41 @@ beforeAll(() => {
 });
 
 beforeEach(async () => clearFirestoreData(testApp.options as {projectId: string}));
+
+test('converter.toFirestore', () => {
+  const data = {
+    name: 'scholarship',
+    amount: 2500,
+    description: 'description',
+    deadline: new Date('2019-02-20'),
+    website: 'mit.com',
+    school: 'MIT',
+    year: 'college freshman',
+  };
+
+  const got = converter.toFirestore(data);
+
+  expect(got).toEqual({ ...data, deadline: firestore.Timestamp.fromDate(data.deadline) });
+});
+
+test('converter.fromFirestore', () => {
+  const snapdata: firestore.DocumentData = {
+    name: 'scholarship',
+    amount: 2500,
+    description: 'description',
+    deadline: firestore.Timestamp.fromDate(new Date('2019-02-20')),
+    website: 'mit.com',
+    school: 'MIT',
+    year: 'college freshman',
+  };
+  const snapshot = {
+    data: () => snapdata,
+  };
+
+  const got = converter.fromFirestore(snapshot as firestore.QueryDocumentSnapshot, {});
+
+  expect(got).toEqual({ ...snapdata, deadline: new Date('2019-02-20') });
+});
 
 test('constructor generates id', () => {
   const got = new Scholarship();
@@ -47,7 +82,7 @@ test('list scholarships', async () => {
     name: 'Foo scholarship',
     amount: 1000,
     description: 'description',
-    deadline: new Date('2020-12-17'),
+    deadline: new Date('2019-12-17'),
     website: 'foo.com',
   };
   const data2 = {
@@ -57,12 +92,12 @@ test('list scholarships', async () => {
     deadline: new Date('2020-12-27'),
     website: 'bar.org',
   };
-  const scholarship1 = new Scholarship('s1', data1);
-  const scholarship2 = new Scholarship('s2', data2);
+  const scholarship1 = new Scholarship('earlier', data1);
+  const scholarship2 = new Scholarship('later', data2);
   await scholarship1.save();
   await scholarship2.save();
 
   const got = await Scholarship.list();
 
-  expect(got.map((s) => s.id).sort()).toEqual(['s1', 's2']);
+  expect(got.map((s) => s.id)).toEqual(['earlier', 'later']);
 });

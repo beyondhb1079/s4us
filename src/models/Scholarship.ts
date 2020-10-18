@@ -14,11 +14,10 @@ interface ScholarshipData {
   year?: string;
 }
 
-const converter: firestore.FirestoreDataConverter<ScholarshipData> = {
-  toFirestore: (scholarship: ScholarshipData) => {
-    const deadline = firestore.Timestamp.fromDate(scholarship.deadline);
-    return { ...scholarship, deadline };
-  },
+export const converter: firestore.FirestoreDataConverter<ScholarshipData> = {
+  toFirestore: (data: ScholarshipData) => (
+    { ...data, deadline: firestore.Timestamp.fromDate(data.deadline) }
+  ),
   fromFirestore: (snapshot, options) => {
     const data = snapshot.data(options);
     const deadline = (data.deadline as firestore.Timestamp).toDate();
@@ -26,11 +25,6 @@ const converter: firestore.FirestoreDataConverter<ScholarshipData> = {
   },
 };
 
-/*
-const unsubscribe = Scholarships.subscribe(id, (s) => {
-  setScholarship(s);
-})
-*/
 export default class Scholarship extends FirestoreModel<ScholarshipData> {
   static get collection(): firestore.CollectionReference<ScholarshipData> {
     return getDb().collection('scholarships').withConverter(converter);
@@ -46,10 +40,10 @@ export default class Scholarship extends FirestoreModel<ScholarshipData> {
     super(ref, data ?? {} as ScholarshipData);
   }
 
-  // TODO: Support for filters, sorting, and pagination
+  // TODO(issues/93): Support filters, sorting, and pagination
   static list(): Promise<Scholarship[]> {
     return new Promise((resolve, reject) => {
-      Scholarship.collection.get()
+      Scholarship.collection.orderBy('deadline').get()
         .then((querySnapshot: firestore.QuerySnapshot<ScholarshipData>) => {
           resolve(querySnapshot.docs.map(
             (doc) => new FirestoreModel<ScholarshipData>(doc.ref, doc.data()),
