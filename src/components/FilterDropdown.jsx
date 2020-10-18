@@ -28,7 +28,7 @@ function FilterDropdown(props) {
       <Select value={choice} onChange={selectChoice} label={label}>
         <MenuItem value=""><em>None</em></MenuItem>
         {Object.keys(items).map((key) => (
-          <MenuItem value={key}>{items[key]}</MenuItem>
+          <MenuItem key={key} value={key}>{items[key]}</MenuItem>
         ))}
       </Select>
     </FormControl>
