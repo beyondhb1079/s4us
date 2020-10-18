@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import Container from '@material-ui/core/Container';
-// import { getDb } from '../models/db';
 import Scholarship from '../models/Scholarship';
 
 export default function ScholarshipDetailsPage({ match }) {
   const { id } = match.params;
-  const [scholarship, setScholarship] = useState(new Scholarship(id));
+  const [scholarship, setScholarship] = useState();
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState();
 
-  useEffect(() => scholarship.subscribe((s) => {
+  useEffect(() => new Scholarship(id).subscribe((s) => {
     setScholarship(s);
     setLoading(false);
   }, (err) => {
