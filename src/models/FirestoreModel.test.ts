@@ -18,6 +18,7 @@ class Name extends FirestoreModel<NameData> {
 }
 
 beforeEach(async () => clearFirestoreData(testApp.options as {projectId: string}));
+afterAll(async () => testApp.delete());
 
 test('constructor', () => {
   const data = { first: 'Bob', last: 'Smith' };
