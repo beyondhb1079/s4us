@@ -24,7 +24,7 @@ const converter: firestore.FirestoreDataConverter<NameData> = {
 class Name extends FirestoreModel<NameData> {
   static readonly collection = testApp
     .firestore()
-    .collection('scholarships')
+    .collection('names')
     .withConverter(converter);
 }
 
