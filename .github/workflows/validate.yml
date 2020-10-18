@@ -53,4 +53,8 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Run tests
-        run: yarn test
+        uses: w9jds/firebase-action@master
+        with:
+          args: emulators:exec --only firestore "react-scripts test --verbose"
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
