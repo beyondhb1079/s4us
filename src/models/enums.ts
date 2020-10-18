@@ -1,29 +1,83 @@
 export enum Grade{
-  Unknown,
-  HighschoolJunior,
-  HighschoolSenior,
-  CollegeFreshman,
-  CollegeSophmore,
-  CollegeJunior,
-  CollegeSenior
+  UNKNOWN,
+  HIGHSCHOOL_JUNIOR,
+  HIGHSCHOOL_SENIOR,
+  COLLEGE_FRESHMAN,
+  COLLEGE_SOPHOMORE,
+  COLLEGE_JUNIOR,
+  COLLEGE_SENIOR
 }
 export enum Gender{
-  Unknown,
-  Male,
-  Female,
-  Other
+  UNKNOWN, 
+  MALE,
+  FEMALE,
+  OTHER
 }
 export enum ScholarshipType{
-  Unknown,
-  Academic,
-  Sports,
-  Community,
-  Organization
+  UNKNOWN, 
+  ACADEMIC,
+  SPORTS,
+  COMMUNITY,
+  ORGANIZATION
 }
 
 export enum ScholarshipAmount{
-  Unknow,
-  Range,
-  FullRide,
-  Fixed
+  UNKNOWN,
+  RANGE,
+  FULLRIDE,
+  FIXED
+}
+
+export enum States{
+  UNKNOWN, 
+  AL,
+  AK,
+  AZ,
+  AR,
+  CA,
+  CO,
+  CT,
+  DE,
+  FL,
+  GA,
+  HI,
+  ID,
+  IL,
+  IN,
+  IA,
+  KS,
+  KY,
+  LA,
+  ME,
+  MD,
+  MA,
+  MI,
+  MN,
+  MS,
+  MO,
+  MT,
+  NE,
+  NV,
+  NH,
+  NJ,
+  NM,
+  NY,
+  NC,
+  ND,
+  OH,
+  OK,
+  OR,
+  PA,
+  RI,
+  SC,
+  SD,
+  TN,
+  TX,
+  UT,
+  VT,
+  VA,
+  WA,
+  WV,
+  WI,
+  WY
 }

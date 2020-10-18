@@ -1,47 +1,42 @@
 import firebase from 'firebase';
 import {
-  Grade, ScholarshipType, Gender, ScholarshipAmount,
+  Grade, ScholarshipType, Gender, ScholarshipAmount, States,
 } from './enums';
 
 export enum Role{
-  Reader,
-  Contributor,
-  Moderator,
-  Admin
+  READER,
+  CONTRIBUTOR,
+  MODERATOR,
+  ADMIN
 }
 export enum NotificationType{
-  None,
-  email,
-  mobile
+  NONE,
+  EMAIL,
+  MOBILE
 }
 
 interface UserProps {
-  DOB: Date | undefined;
+  DOB?: Date;
   schoolYear: Grade;
   role: Role;
   gender: Gender;
+  school?: string;
+  state?: string;
+  majors?: string[]
   scholarshipPrefs: ScholarshipPreferences;
-  otherSettings: NotificationSettings;
+  notificationSettings: NotificationSettings;
 }
-interface AuthProps {
-  displayName: string | null,
-  email: string | null,
-  emailVerified: boolean | null,
-  phoneNumber: string | null,
-  photoURL: string | null,
-  uid: string | null,
-}
+
 interface ScholarshipPreferences{
-  type: ScholarshipType;
-  major: string[] | undefined;
+  type: ScholarshipType[];
+  major?: string[];
   amount: {
-    type: ScholarshipAmount | undefined;
-    min: number | undefined;
-    max: number | undefined;
+    type: ScholarshipAmount;
+    min?: number;
+    max?: number;
   }
-  school: string[];
-  schoolYear: Grade;
-  location: string[];
+  schools?: string[];
+  state?: States[];
 }
 interface NotificationSettings{
   notifications: NotificationType;
@@ -51,23 +46,22 @@ interface NotificationSettings{
 
 export default class User {
   id?: string;
-  data!: UserProps;
+  data: UserProps;
 
-  static getCurrentUser(): AuthProps | null{
-    const user = firebase.auth().currentUser;
-    if (user != null) {
-      return {
-        displayName: user.displayName,
-        email: user.email,
-        emailVerified: user.emailVerified,
-        phoneNumber: user.phoneNumber,
-        photoURL: user.photoURL,
-        uid: user.uid,
-      };
-    }
-    return null;
+  private constructor(data: UserProps){
+    this.data = { ...data } ;
   }
 
-  // Todo: fetch data for different user
-  // get(id: string){}
+  
+  static getCurrentUser(): User | undefined{
+    //const user = firebase.auth().currentUser;
+    let user: UserProps;
+    //make call to firestore
+    
+ 
+    return undefined;
+  }
+
+
 }
+
