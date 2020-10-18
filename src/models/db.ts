@@ -12,6 +12,6 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 const getDb = (): testing.firestore.Firestore => db;
-const setDb = (database: testing.firestore.Firestore) => { db = database; };
+const setDb = (database: testing.firestore.Firestore): void => { db = database; };
 
 export { getDb, setDb };
