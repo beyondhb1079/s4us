@@ -70,13 +70,6 @@
       }
     },
     "rules": {
-      "quotes": [
-        "error",
-        "single",
-        {
-          "allowTemplateLiterals": true
-        }
-      ],
       "@typescript-eslint/explicit-module-boundary-types": "off",
       "@typescript-eslint/lines-between-class-members": [
         "error",
