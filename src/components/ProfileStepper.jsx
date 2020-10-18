@@ -116,7 +116,7 @@ export default function ProfileStepper() {
           </Step>
         ))}
       </Stepper>
-      {activeStep === 3 && (<Redirect to="/scholarships" />)}
+      {activeStep === 3 && (<Redirect to="/home" />)}
     </div>
   );
 }
