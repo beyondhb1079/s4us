@@ -1,5 +1,4 @@
 import { firestore } from 'firebase';
-import { getDb } from './db';
 import FirestoreModel from './FirestoreModel';
 
 interface ScholarshipData {
@@ -15,9 +14,10 @@ interface ScholarshipData {
 }
 
 export const converter: firestore.FirestoreDataConverter<ScholarshipData> = {
-  toFirestore: (data: ScholarshipData) => (
-    { ...data, deadline: firestore.Timestamp.fromDate(data.deadline) }
-  ),
+  toFirestore: (data: ScholarshipData) => ({
+    ...data,
+    deadline: firestore.Timestamp.fromDate(data.deadline),
+  }),
   fromFirestore: (snapshot, options) => {
     const data = snapshot.data(options);
     const deadline = (data.deadline as firestore.Timestamp).toDate();
@@ -27,7 +27,7 @@ export const converter: firestore.FirestoreDataConverter<ScholarshipData> = {
 
 export default class Scholarship extends FirestoreModel<ScholarshipData> {
   static get collection(): firestore.CollectionReference<ScholarshipData> {
-    return getDb().collection('scholarships').withConverter(converter);
+    return firestore().collection('scholarships').withConverter(converter);
   }
 
   /**
@@ -36,18 +36,24 @@ export default class Scholarship extends FirestoreModel<ScholarshipData> {
    * @param {ScholarshipData} data - The scholarship data.
    */
   constructor(id?: string, data?: ScholarshipData) {
-    const ref = id ? Scholarship.collection.doc(id) : Scholarship.collection.doc();
-    super(ref, data ?? {} as ScholarshipData);
+    const ref = id
+      ? Scholarship.collection.doc(id)
+      : Scholarship.collection.doc();
+    super(ref, data ?? ({} as ScholarshipData));
   }
 
   // TODO(issues/93): Support filters, sorting, and pagination
   static list(): Promise<Scholarship[]> {
     return new Promise((resolve, reject) => {
-      Scholarship.collection.orderBy('deadline').get()
+      Scholarship.collection
+        .orderBy('deadline')
+        .get()
         .then((querySnapshot: firestore.QuerySnapshot<ScholarshipData>) => {
-          resolve(querySnapshot.docs.map(
-            (doc) => new FirestoreModel<ScholarshipData>(doc.ref, doc.data()),
-          ));
+          resolve(
+            querySnapshot.docs.map(
+              (doc) => new FirestoreModel<ScholarshipData>(doc.ref, doc.data()),
+            ),
+          );
         })
         .catch((error) => reject(error));
     });

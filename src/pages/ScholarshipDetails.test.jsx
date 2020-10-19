@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, waitFor } from '@testing-library/react';
-import { initializeTestApp, clearFirestoreData } from '@firebase/rules-unit-testing';
+import firebase from 'firebase';
+import { clearFirestoreData } from '@firebase/rules-unit-testing';
 import { MemoryRouter, Route } from 'react-router-dom';
 import ScholarshipDetails from './ScholarshipDetails';
-import { setDb } from '../models/db';
 import Scholarship from '../models/Scholarship';
 
 // hacky workaround to allow waitFor to work
@@ -18,11 +18,14 @@ function renderAtRoute(route) {
   );
 }
 
-beforeAll(async () => {
-  const testApp = initializeTestApp({ projectId: 'scholarship-details-test', auth: { uid: 'admin' } });
-  setDb(testApp.firestore());
-  await clearFirestoreData(testApp.options);
+const app = firebase.initializeApp({ projectId: 'scholarship-details-test' });
+app.firestore().settings({
+  host: 'localhost:8080',
+  ssl: false,
 });
+
+beforeAll(async () => clearFirestoreData(app.options));
+afterAll(async () => app.delete());
 
 test('renders loading initially', () => {
   const { queryByText } = renderAtRoute('/scholarships/abc');

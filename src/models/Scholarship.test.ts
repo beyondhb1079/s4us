@@ -1,14 +1,15 @@
-import { initializeTestApp, clearFirestoreData, firestore } from '@firebase/rules-unit-testing';
-import { setDb } from './db';
+import { clearFirestoreData } from '@firebase/rules-unit-testing';
+import firebase, { firestore } from 'firebase';
 import Scholarship, { converter } from './Scholarship';
 
-const testApp = initializeTestApp({ projectId: 'scholarship-test', auth: { uid: 'admin' } });
-
-beforeAll(() => {
-  setDb(testApp.firestore());
+const app = firebase.initializeApp({ projectId: 'scholarship-test' });
+app.firestore().settings({
+  host: 'localhost:8080',
+  ssl: false,
 });
 
-beforeEach(async () => clearFirestoreData(testApp.options as {projectId: string}));
+beforeEach(async () => clearFirestoreData(app.options as { projectId: string }));
+afterAll(async () => app.delete());
 
 test('converter.toFirestore', () => {
   const data = {
@@ -23,7 +24,10 @@ test('converter.toFirestore', () => {
 
   const got = converter.toFirestore(data);
 
-  expect(got).toEqual({ ...data, deadline: firestore.Timestamp.fromDate(data.deadline) });
+  expect(got).toEqual({
+    ...data,
+    deadline: firestore.Timestamp.fromDate(data.deadline),
+  });
 });
 
 test('converter.fromFirestore', () => {
@@ -40,7 +44,10 @@ test('converter.fromFirestore', () => {
     data: () => snapdata,
   };
 
-  const got = converter.fromFirestore(snapshot as firestore.QueryDocumentSnapshot, {});
+  const got = converter.fromFirestore(
+    snapshot as firestore.QueryDocumentSnapshot,
+    {},
+  );
 
   expect(got).toEqual({ ...snapdata, deadline: new Date('2019-02-20') });
 });
