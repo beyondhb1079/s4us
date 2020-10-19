@@ -2,7 +2,10 @@ import { firestore } from 'firebase';
 import Model from './Model';
 
 export default class FirestoreModel<T> implements Model<T> {
-  constructor(private readonly ref: firestore.DocumentReference<T>, public readonly data: T) {}
+  constructor(
+    private readonly ref: firestore.DocumentReference<T>,
+    public readonly data: T
+  ) {}
 
   public get id(): string {
     return this.ref.id;
@@ -10,7 +13,8 @@ export default class FirestoreModel<T> implements Model<T> {
 
   get(): Promise<FirestoreModel<T>> {
     return new Promise((resolve, reject) => {
-      this.ref.get()
+      this.ref
+        .get()
         .then((doc: firestore.DocumentSnapshot<T>) => {
           if (!doc.exists) {
             reject(new Error(`${this.ref.path} not found`));
@@ -24,7 +28,8 @@ export default class FirestoreModel<T> implements Model<T> {
 
   save(): Promise<FirestoreModel<T>> {
     return new Promise((resolve, reject) => {
-      this.ref.set(this.data)
+      this.ref
+        .set(this.data)
         .then(() => resolve(this))
         .catch((error) => reject(error));
     });
@@ -32,13 +37,17 @@ export default class FirestoreModel<T> implements Model<T> {
 
   delete(): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.ref.delete()
+      this.ref
+        .delete()
         .then(() => resolve())
         .catch((error) => reject(error));
     });
   }
 
-  subscribe(onChange: (model: Model<T>) => void, onError = console.error): () => void {
+  subscribe(
+    onChange: (model: Model<T>) => void,
+    onError = console.error // eslint-disable-line no-console
+  ): () => void {
     return this.ref.onSnapshot((doc: firestore.DocumentSnapshot<T>) => {
       if (!doc.exists) {
         onError(new Error(`${this.ref.path} not found`));

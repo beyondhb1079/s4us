@@ -8,11 +8,17 @@ function ScholarshipDetailsPage() {
   // TODO: Add callbacks once Firestore calls are made
   const scholarship = Scholarship.get(id);
   if (!scholarship) {
-    return (<h1>Scholarship Not Found</h1>);
+    return <h1>Scholarship Not Found</h1>;
   }
 
   const {
-    name, amount, deadline, website, school, year, description,
+    name,
+    amount,
+    deadline,
+    website,
+    school,
+    year,
+    description,
   } = scholarship.data;
 
   return (

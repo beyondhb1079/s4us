@@ -9,8 +9,10 @@ test('renders a list of scholarships', () => {
 
   const { queryByText } = render(
     <ScholarshipList scholarships={scholarships} />,
-    { wrapper: MemoryRouter },
+    { wrapper: MemoryRouter }
   );
 
-  Object.entries(want).forEach(([, v]) => expect(queryByText(v.name)).toBeInTheDocument());
+  Object.entries(want).forEach(([, v]) =>
+    expect(queryByText(v.name)).toBeInTheDocument()
+  );
 });

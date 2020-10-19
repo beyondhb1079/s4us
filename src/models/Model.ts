@@ -11,5 +11,8 @@ export default interface Model<T> {
    *
    * @returns an unsubscribe function to unregister the observer.
    */
-  subscribe(onChange: (model: Model<T>) => void, onError?: (err:Error) => void): () => void;
+  subscribe(
+    onChange: (model: Model<T>) => void,
+    onError?: (err: Error) => void
+  ): () => void;
 }
