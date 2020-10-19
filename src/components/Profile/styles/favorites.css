@@ -1,0 +1,27 @@
+.favorite {
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+.favorite .card-panel {
+    width: 130px;
+    min-width: 120px;
+    height: 160px;
+    background-color: #fafafa;
+    margin: 10px 4px;
+}
+
+.favorite .card-panel .post {
+    height: 100px;
+    color: black;
+}
+
+.favorite .card-panel .social {
+    display: block;
+    text-align: end;
+    color: #30393d;
+}
