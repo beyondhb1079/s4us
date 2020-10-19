@@ -9,17 +9,24 @@ export default function ScholarshipDetailsPage({ match }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
 
-  useEffect(() => new Scholarship(id).subscribe((s) => {
-    setScholarship(s);
-    setLoading(false);
-  }, (err) => {
-    setError(err);
-  }), [id]);
+  useEffect(
+    () =>
+      new Scholarship(id).subscribe(
+        (s) => {
+          setScholarship(s);
+          setLoading(false);
+        },
+        (err) => {
+          setError(err);
+        }
+      ),
+    [id]
+  );
 
   if (error || loading) {
     return (
       <Container>
-        <h1>{error?.toString() || 'Loading...' }</h1>
+        <h1>{error?.toString() || 'Loading...'}</h1>
       </Container>
     );
   }

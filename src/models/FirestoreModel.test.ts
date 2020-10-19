@@ -25,7 +25,9 @@ app.firestore().settings({
   ssl: false,
 });
 
-beforeEach(async () => clearFirestoreData(app.options as { projectId: string }));
+beforeEach(async () =>
+  clearFirestoreData(app.options as { projectId: string })
+);
 afterAll(async () => app.delete());
 
 test('constructor', () => {

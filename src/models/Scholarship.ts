@@ -51,8 +51,8 @@ export default class Scholarship extends FirestoreModel<ScholarshipData> {
         .then((querySnapshot: firestore.QuerySnapshot<ScholarshipData>) => {
           resolve(
             querySnapshot.docs.map(
-              (doc) => new FirestoreModel<ScholarshipData>(doc.ref, doc.data()),
-            ),
+              (doc) => new FirestoreModel<ScholarshipData>(doc.ref, doc.data())
+            )
           );
         })
         .catch((error) => reject(error));

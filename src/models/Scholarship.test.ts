@@ -8,7 +8,9 @@ app.firestore().settings({
   ssl: false,
 });
 
-beforeEach(async () => clearFirestoreData(app.options as { projectId: string }));
+beforeEach(async () =>
+  clearFirestoreData(app.options as { projectId: string })
+);
 afterAll(async () => app.delete());
 
 test('converter.toFirestore', () => {
@@ -46,7 +48,7 @@ test('converter.fromFirestore', () => {
 
   const got = converter.fromFirestore(
     snapshot as firestore.QueryDocumentSnapshot,
-    {},
+    {}
   );
 
   expect(got).toEqual({ ...snapdata, deadline: new Date('2019-02-20') });
