@@ -52,7 +52,7 @@ jobs:
           check-latest: true
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-      - name: Lint
+      - name: Style
         run: yarn prettier --check .
 
   test:
