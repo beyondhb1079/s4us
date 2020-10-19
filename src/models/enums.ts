@@ -28,7 +28,7 @@ export enum ScholarshipAmount {
   FIXED,
 }
 
-export enum States {
+export enum State {
   UNKNOWN,
   AL,
   AK,

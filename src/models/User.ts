@@ -1,10 +1,11 @@
-import firebase from 'firebase';
+import firebase, { firestore } from 'firebase';
+import FirestoreModel from './FirestoreModel';
 import {
   Grade,
   ScholarshipType,
   Gender,
   ScholarshipAmount,
-  States,
+  State,
 } from './enums';
 
 export enum Role {
@@ -19,7 +20,7 @@ export enum NotificationType {
   MOBILE,
 }
 
-interface UserProps {
+interface UserData {
   DOB?: Date;
   schoolYear: Grade;
   role: Role;
@@ -40,7 +41,7 @@ interface ScholarshipPreferences {
     max?: number;
   };
   schools?: string[];
-  state?: States[];
+  state?: State[];
 }
 interface NotificationSettings {
   notifications: NotificationType;
@@ -48,19 +49,33 @@ interface NotificationSettings {
   relatedNotifications: NotificationType;
 }
 
-export default class User {
-  id?: string;
-  data: UserProps;
+export const converter: firestore.FirestoreDataConverter<UserData> = {
+  toFirestore: (data: UserData) => ({
+    ...data,
+  }),
+  fromFirestore: (snapshot, options) => {
+    const data = snapshot.data(options);
+    const scholarshipPrefs = data.scholarshipPrefs as ScholarshipPreferences;
+    const notificationSettings = data.notificationSettings as NotificationSettings;
+    return { ...data, scholarshipPrefs, notificationSettings } as UserData;
+  },
+};
 
-  private constructor(data: UserProps) {
-    this.data = { ...data };
+export default class User extends FirestoreModel<UserData> {
+  static get collection(): firestore.CollectionReference<UserData> {
+    return firestore().collection('users').withConverter(converter);
   }
 
-  static getCurrentUser(): User | undefined {
-    //const user = firebase.auth().currentUser;
-    let user: UserProps;
-    //make call to firestore
+  private constructor(id?: string, data?: UserData) {
+    const ref = id ? User.collection.doc(id) : User.collection.doc();
+    super(ref, data ?? ({} as UserData));
+  }
 
+  static getCurrentUser(): firebase.User | undefined {
+    const user = firebase.auth().currentUser;
+    if (user) {
+      return user;
+    }
     return undefined;
   }
 }
