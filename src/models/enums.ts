@@ -1,35 +1,35 @@
-export enum Grade{
+export enum Grade {
   UNKNOWN,
   HIGHSCHOOL_JUNIOR,
   HIGHSCHOOL_SENIOR,
   COLLEGE_FRESHMAN,
   COLLEGE_SOPHOMORE,
   COLLEGE_JUNIOR,
-  COLLEGE_SENIOR
+  COLLEGE_SENIOR,
 }
-export enum Gender{
-  UNKNOWN, 
+export enum Gender {
+  UNKNOWN,
   MALE,
   FEMALE,
-  OTHER
+  OTHER,
 }
-export enum ScholarshipType{
-  UNKNOWN, 
+export enum ScholarshipType {
+  UNKNOWN,
   ACADEMIC,
   SPORTS,
   COMMUNITY,
-  ORGANIZATION
+  ORGANIZATION,
 }
 
-export enum ScholarshipAmount{
+export enum ScholarshipAmount {
   UNKNOWN,
   RANGE,
   FULLRIDE,
-  FIXED
+  FIXED,
 }
 
-export enum States{
-  UNKNOWN, 
+export enum States {
+  UNKNOWN,
   AL,
   AK,
   AZ,
@@ -79,5 +79,5 @@ export enum States{
   WA,
   WV,
   WI,
-  WY
+  WY,
 }

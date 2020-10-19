@@ -9,12 +9,14 @@ export default function LoginButton() {
   const handleClose = () => setLoginDialogOpen(false);
 
   useEffect(() => {
-    const unregisterAuthObserver = firebase.auth().onAuthStateChanged((user) => {
-      setIsSignedIn(!!user);
-      if (user) {
-        setLoginDialogOpen(false);
-      }
-    });
+    const unregisterAuthObserver = firebase
+      .auth()
+      .onAuthStateChanged((user) => {
+        setIsSignedIn(!!user);
+        if (user) {
+          setLoginDialogOpen(false);
+        }
+      });
     return unregisterAuthObserver;
   }, []); // [] skips cleanup of this effect until the component is unmounted
 
@@ -23,7 +25,10 @@ export default function LoginButton() {
 
   return (
     <div>
-      <Button variant="outlined" color="secondary" onClick={isSignedIn ? signUserOut : showLoginDialog}>
+      <Button
+        variant="outlined"
+        color="secondary"
+        onClick={isSignedIn ? signUserOut : showLoginDialog}>
         {isSignedIn ? 'Sign out' : 'Login'}
       </Button>
       <LoginDialog open={loginDialogOpen} onClose={handleClose} />

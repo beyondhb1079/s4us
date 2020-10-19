@@ -7,7 +7,7 @@ function renderAtRoute(route) {
   return render(
     <MemoryRouter initialEntries={[route]}>
       <Route path="/scholarships" component={Scholarships} />
-    </MemoryRouter>,
+    </MemoryRouter>
   );
 }
 

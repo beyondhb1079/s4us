@@ -11,15 +11,21 @@ function Header() {
   return (
     <div className="header">
       <Link to="/scholarships">
-        <Button variant="contained" color="primary" style={buttonStyles}>Start Your Search</Button>
+        <Button variant="contained" color="primary" style={buttonStyles}>
+          Start Your Search
+        </Button>
       </Link>
 
       <Link to="/about">
-        <Button variant="contained" color="primary" style={buttonStyles}>About</Button>
+        <Button variant="contained" color="primary" style={buttonStyles}>
+          About
+        </Button>
       </Link>
 
       <Link to="/contact">
-        <Button variant="contained" color="primary" style={buttonStyles}>Contact</Button>
+        <Button variant="contained" color="primary" style={buttonStyles}>
+          Contact
+        </Button>
       </Link>
       <LoginButton />
     </div>

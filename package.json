@@ -16,6 +16,7 @@
     "eslint-config-airbnb-typescript": "^11.0.0",
     "eslint-plugin-jest": "^24.0.2",
     "firebase": "^7.19.1",
+    "prettier": "^2.1.2",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -60,17 +61,42 @@
       "jest": true
     },
     "rules": {
-      "quotes": ["error", "single", { "avoidEscape": true }],
+      "quotes": [
+        "error",
+        "single",
+        {
+          "avoidEscape": true
+        }
+      ],
       "@typescript-eslint/explicit-module-boundary-types": "off",
-      "@typescript-eslint/lines-between-class-members": ["error", "always", {"exceptAfterSingleLine": "true"}],
+      "@typescript-eslint/lines-between-class-members": [
+        "error",
+        "always",
+        {
+          "exceptAfterSingleLine": "true"
+        }
+      ],
       "react/jsx-one-expression-per-line": "off",
-      "react/jsx-filename-extension": ["error", {"extensions": [".jsx", ".tsx"]}]
+      "react/jsx-filename-extension": [
+        "error",
+        {
+          "extensions": [
+            ".jsx",
+            ".tsx"
+          ]
+        }
+      ]
     },
     "overrides": [
       {
-        "files": ["*.ts", "*.tsx"],
+        "files": [
+          "*.ts",
+          "*.tsx"
+        ],
         "rules": {
-          "@typescript-eslint/explicit-module-boundary-types": ["error"]
+          "@typescript-eslint/explicit-module-boundary-types": [
+            "error"
+          ]
         }
       }
     ]
