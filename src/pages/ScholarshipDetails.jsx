@@ -25,7 +25,13 @@ export default function ScholarshipDetailsPage({ match }) {
   }
 
   const {
-    name, amount, deadline, website, school, year, description,
+    name,
+    amount,
+    deadline,
+    website,
+    school,
+    year,
+    description,
   } = scholarship.data;
 
   return (

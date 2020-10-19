@@ -9,7 +9,8 @@ interface NameData {
 
 const converter: firestore.FirestoreDataConverter<NameData> = {
   toFirestore: (name: NameData) => ({ ...name }),
-  fromFirestore: (snapshot, options) => ({ ...snapshot.data(options) } as NameData),
+  fromFirestore: (snapshot, options) =>
+    ({ ...snapshot.data(options) } as NameData),
 };
 
 class Name extends FirestoreModel<NameData> {

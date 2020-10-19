@@ -14,7 +14,7 @@ function renderAtRoute(route) {
   return render(
     <MemoryRouter initialEntries={[route]}>
       <Route path="/scholarships/:id" component={ScholarshipDetails} />
-    </MemoryRouter>,
+    </MemoryRouter>
   );
 }
 
