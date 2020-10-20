@@ -24,14 +24,12 @@ export default function LoginButton() {
   const showLoginDialog = () => setLoginDialogOpen(true);
 
   return (
-    <div>
-      <Button
-        variant="outlined"
-        color="secondary"
-        onClick={isSignedIn ? signUserOut : showLoginDialog}>
-        {isSignedIn ? 'Sign out' : 'Login'}
-      </Button>
+    <Button
+      variant="contained"
+      color="primary"
+      onClick={isSignedIn ? signUserOut : showLoginDialog}>
       <LoginDialog open={loginDialogOpen} onClose={handleClose} />
-    </div>
+      {isSignedIn ? 'Sign out' : 'Login'}
+    </Button>
   );
 }
