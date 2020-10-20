@@ -54,9 +54,7 @@ export default function CommunityGrid() {
             </Grid>
           </Grid>
           <Grid item>
-            <ButtonBase className={classes.image}>
-              <img width="500" src={logopic} className="profilePic"></img>
-            </ButtonBase>
+            <img width="500" src={logopic} className="profilePic"></img>
           </Grid>
         </Grid>
       </Paper>
