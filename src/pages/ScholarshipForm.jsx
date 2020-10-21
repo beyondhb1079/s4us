@@ -1,146 +1,192 @@
-import React from 'react';
-import Container from '@material-ui/core/Container';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
-
-const ScholarshipFields = {
-  1: {
-    //text field
-    idName: 'name',
-    label: 'Scholarship Name *',
-    type: 'text',
-  },
-  2: {
-    //date picker
-    idName: 'deadline',
-    label: 'Deadline *',
-    type: 'date',
-  },
-  3: {
-    //text field
-    idName: 'description',
-    label: 'Description',
-    type: 'text',
-  },
-  4: {
-    //select (unknown, fixed, range, full ride)
-    idName: 'amount-type',
-    label: 'Type of Reward?',
-    type: 'select',
-  },
-  5: {
-    //text field
-    idName: 'amount',
-    label: 'Amount *',
-    type: 'number',
-  },
-  6: {
-    //text field
-    idName: 'min-amount',
-    label: 'Minimum *',
-    type: 'number',
-  },
-  7: {
-    //text field
-    idNAme: 'max-amount',
-    label: 'Maximum *',
-    type: 'number',
-  },
-  8: {
-    //text field
-    idName: 'website',
-    label: 'Website *',
-    type: 'text',
-  },
-  9: {
-    //select (unknown, academic, sports, community, organization)
-    idName: 'scholarship-type',
-    label: 'Type of Scholarship?',
-    type: 'select',
-  },
-  10: {
-    //checkbox
-    idName: 'active',
-    label: 'Scholarship Active?',
-    type: 'checkbox',
-  },
-};
-
-const EligibilityFields = {
-  1: {
-    //text field
-    idName: 'gpa',
-    label: 'GPA',
-    type: 'number',
-  },
-  2: {
-    //multiple value autocomplete
-    idName: 'majors',
-    label: 'Major/Majors',
-    type: 'multi-autocomplete',
-  },
-  3: {
-    //multiple value autocomplete
-    idName: 'grade',
-    label: 'Grade/Grades',
-    type: 'multi-autocomplete',
-  },
-  4: {
-    //multiple value autocomplete
-    idName: 'schools',
-    label: 'School/Schools',
-    type: 'multi-autocomplete',
-  },
-  5: {
-    //multiple value autocomplete
-    idName: 'state',
-    label: 'State/States',
-    type: 'multi-autocomplete',
-  },
-  6: {
-    //checkbox
-    idName: 'first-gen',
-    label: 'First Generation?',
-    type: 'checkbox',
-  },
-  7: {
-    //select (unknown, male, female, other)
-    idName: 'gender',
-    label: 'Gender',
-    type: 'select',
-  },
-  8: {
-    //select (unknown, required, not required)
-    idName: 'daca',
-    label: 'Daca required?',
-    type: 'select',
-  },
-};
+import React, { useState } from 'react';
+import {
+  Container,
+  TextField,
+  Button,
+  makeStyles,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Checkbox,
+  FormControlLabel,
+} from '@material-ui/core';
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+import { ScholarshipFields } from './formFields';
 
 const useStyles = makeStyles({
   fieldStyle: {
     margin: '10px 0;',
+  },
+  formControlStyle: {
+    width: '40%',
   },
 });
 
 function ScholarshipForm() {
   const classes = useStyles();
 
-  function displayForms(formProps) {
-    switch (formProps.type) {
+  const [formFieldStates, setFormFieldStates] = useState({
+    name: '',
+    deadline: null,
+    description: '',
+    amountType: '',
+    amount: 0,
+    minAmount: 0,
+    maxAmount: 0,
+    website: '',
+    scholarshipType: '',
+    active: false,
+  });
+
+  function handleFieldChange(index, value) {
+    setFormFieldStates((prev) => ({ ...prev, [index]: value }));
+  }
+  function submitScholarship() {
+    console.log(formFieldStates); // eslint-disable-line no-console
+  }
+
+  // displays the fields for amount depending on the type of amount
+  function displayAmountFields(index) {
+    const amountTypeState = formFieldStates.amountType;
+    if (
+      !amountTypeState ||
+      amountTypeState === 'unknown' ||
+      amountTypeState === 'fullride'
+    )
+      return <div />;
+    if (amountTypeState === 'fixed' || amountTypeState === 'unknown') {
+      const rewardAmountRef = ScholarshipFields.rewardAmount.amount;
+      return (
+        <TextField
+          key={rewardAmountRef.key}
+          id="amount"
+          label={rewardAmountRef.label}
+          className={classes.fieldStyle}
+          type="number"
+          InputLabelProps={{ shrink: true }}
+          fullWidth
+          InputProps={{ inputProps: { min: 0, step: 50 } }}
+          value={amountTypeState}
+          onChange={(e) =>
+            handleFieldChange(index, parseInt(e.target.value, 10) || '')
+          }
+        />
+      );
+    }
+    return ['minAmount', 'maxAmount'].map((field) => (
+      <TextField
+        key={ScholarshipFields.rewardAmount[field].key}
+        id={field}
+        label={ScholarshipFields.rewardAmount[field].label}
+        className={classes.fieldStyle}
+        type="number"
+        InputLabelProps={{ shrink: true }}
+        fullWidth
+        InputProps={{ inputProps: { min: 0, step: 50 } }}
+        value={formFieldStates[field]}
+        onChange={(e) =>
+          handleFieldChange(field, parseInt(e.target.value, 10) || '')
+        }
+      />
+    ));
+  }
+
+  function displayField(fieldKey) {
+    const { key } = ScholarshipFields[fieldKey];
+    const { label } = ScholarshipFields[fieldKey];
+    const { type } = ScholarshipFields[fieldKey];
+
+    switch (type) {
       case 'text':
+      case 'number':
         return (
-          <TextField className={classes.fieldStyle} id={formProps.idName} />
+          <TextField
+            key={key}
+            id={fieldKey}
+            label={label}
+            className={classes.fieldStyle}
+            type={type === 'text' ? 'text' : 'number'}
+            InputLabelProps={{ shrink: true }}
+            fullWidth
+            InputProps={{ inputProps: { min: 0, step: 50 } }}
+            value={formFieldStates[fieldKey]}
+            onChange={(e) =>
+              handleFieldChange(
+                fieldKey,
+                type === 'number'
+                  ? parseInt(e.target.value, 10)
+                  : e.target.value
+              )
+            }
+          />
         );
+
+      case 'date':
+        return (
+          <MuiPickersUtilsProvider utils={DateFnsUtils} key={key}>
+            <KeyboardDatePicker
+              id={fieldKey}
+              label={label}
+              value={formFieldStates[fieldKey]}
+              onChange={(date) => handleFieldChange(fieldKey, date)}
+              format="MM/dd/yyyy"
+            />
+          </MuiPickersUtilsProvider>
+        );
+
+      case 'select':
+        return (
+          <FormControl key={key} className={classes.formControlStyle}>
+            <InputLabel shrink>{label}</InputLabel>
+            <Select
+              label={label}
+              id={fieldKey}
+              value={formFieldStates[fieldKey]}
+              onChange={(e) => handleFieldChange(fieldKey, e.target.value)}>
+              {ScholarshipFields[fieldKey].options.map((option) => {
+                return (
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+        );
+
+      case 'checkbox':
+        return (
+          <FormControl key={key}>
+            <FormControlLabel
+              value={ScholarshipFields[fieldKey]}
+              onChange={(e) => handleFieldChange(fieldKey, e.target.checked)}
+              control={<Checkbox color="primary" />}
+              label={label}
+              labelPlacement="start"
+            />
+          </FormControl>
+        );
+
+      case 'amountSub':
+        return displayAmountFields();
+
+      default:
+        return <div />;
     }
   }
 
   return (
     <Container style={{ width: '40%' }}>
       <h1>Submit a Scholarship</h1>
-      <form>
-        <Button variant="contained" color="primary">
+      <form noValidate autoComplete="off">
+        {Object.keys(ScholarshipFields).map((field) => displayField(field))}
+        <Button variant="contained" color="primary" onClick={submitScholarship}>
           Submit
         </Button>
       </form>
@@ -150,7 +196,7 @@ function ScholarshipForm() {
 export default ScholarshipForm;
 
 /*
-        {Object.keys(FieldData).map(field => (
-          <TextField className={classes.fieldStyle} id={FieldData[field]["idName"]} label={FieldData[field]["label"]} type={FieldData[field]["type"]} InputLabelProps={{ shrink: true }} fullWidth />
-        ))}
+{Object.keys(FieldData).map(field => (
+  <TextField className={classes.fieldStyle} id={FieldData[field]["idName"]} label={FieldData[field]["label"]} type={FieldData[field]["type"]} InputLabelProps={{ shrink: true }} fullWidth />
+))}
 */
