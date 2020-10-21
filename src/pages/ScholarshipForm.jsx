@@ -33,7 +33,7 @@ function ScholarshipForm() {
 
   const [formFieldStates, setFormFieldStates] = useState({
     name: '',
-    deadline: null,
+    deadline: new Date(),
     description: '',
     amountType: '',
     amount: 0,
@@ -59,8 +59,8 @@ function ScholarshipForm() {
       amountTypeState === 'unknown' ||
       amountTypeState === 'fullride'
     )
-      return <div />;
-    if (amountTypeState === 'fixed' || amountTypeState === 'unknown') {
+      return <div key="none" />;
+    if (amountTypeState === 'fixed') {
       const rewardAmountRef = ScholarshipFields.rewardAmount.amount;
       return (
         <TextField
