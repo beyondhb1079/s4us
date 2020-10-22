@@ -1,10 +1,10 @@
 # s4us
+
 S4US (Scholarships For Undocumented Students) aims to provide scholarships information for undocumented students
 
 You can open this project in Cloud Shell:
 
 [![Open in Cloud Shell](https://gstatic.com/cloudssh/images/open-btn.svg)](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/beyondhb1079/s4us.git)
-
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -26,6 +26,7 @@ Launches the test runner in the interactive watch mode.<br />
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### `yarn lint`
+
 Runs ES Lint on the app. You can fix some issues with `yarn lint --fix`
 
 ### `yarn build`
