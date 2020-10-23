@@ -4,7 +4,7 @@ import firebase from 'firebase';
 import { clearFirestoreData } from '@firebase/rules-unit-testing';
 import { MemoryRouter, Route } from 'react-router-dom';
 import ScholarshipDetails from './ScholarshipDetails';
-import Scholarship from '../models/Scholarship';
+import Scholarships from '../models/Scholarships';
 
 // hacky workaround to allow waitFor to work
 // TODO: Figure out a cleaner solution.
@@ -49,7 +49,7 @@ test('renders scholarship details', async () => {
     deadline: new Date('2020-12-17'),
     website: 'foo.com',
   };
-  const ref = Scholarship.collection.doc('abc');
+  const ref = Scholarships.collection.doc('abc');
   await ref.set(data);
 
   const { queryByText } = renderAtRoute('/scholarships/abc');
