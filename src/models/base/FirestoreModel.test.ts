@@ -2,6 +2,12 @@ import { clearFirestoreData } from '@firebase/rules-unit-testing';
 import firebase, { firestore } from 'firebase';
 import FirestoreModel from './FirestoreModel';
 
+const app = firebase.initializeApp({ projectId: 'fs-model-test' });
+app.firestore().settings({
+  host: 'localhost:8080',
+  ssl: false,
+});
+
 interface NameData {
   first: string;
   last: string;
@@ -13,12 +19,6 @@ const converter: firestore.FirestoreDataConverter<NameData> = {
 };
 
 const names = firestore().collection('names').withConverter(converter);
-
-const app = firebase.initializeApp({ projectId: 'fs-model-test' });
-app.firestore().settings({
-  host: 'localhost:8080',
-  ssl: false,
-});
 
 beforeEach(async () =>
   clearFirestoreData(app.options as { projectId: string })
