@@ -1,4 +1,4 @@
-name: "Dependabot Automerge - Action"
+name: 'Dependabot Automerge - Action'
 
 on:
   pull_request:
@@ -18,7 +18,6 @@ jobs:
           if git diff-tree --name-only --exit-code -r ${{ github.sha }} package.json; then
             echo "::set-env name=lock_only_change::true"
           fi
-        value: 
       - name: Automerge
         if: ${{ env.lock_only_change == 'true' }}
         uses: actions/github-script@0.2.0
