@@ -6,6 +6,7 @@ import {
   Link as MuiLink,
   Grid,
 } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
 import LoginButton from './LoginButton';
 
 const useStyles = makeStyles((theme) => ({
@@ -35,6 +36,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Header() {
+  const match = window.location.hostname.match(/s4us-pr-(\d+).onrender.com/);
+  let alert = '';
+  if (match !== null) {
+    const link = `https://github.com/beyondhb1079/s4us/pulls/${match[1]}`;
+    alert = (
+      <Alert severity="info">
+        This is a preview of <a href={link}>Pull Request #{match[1]}</a>
+      </Alert>
+    );
+  }
+
   const classes = useStyles();
   const links = {
     Scholarships: '/scholarships',
@@ -43,6 +55,7 @@ function Header() {
   };
   return (
     <Container>
+      {alert}
       <Grid container className={classes.root} spacing={3} alignItems="center">
         <Grid item xs={12} sm={6} className={classes.logo}>
           <MuiLink component={Link} to="/" variant="h4" underline="none">

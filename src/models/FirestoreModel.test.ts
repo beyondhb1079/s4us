@@ -1,14 +1,6 @@
-import {
-  initializeTestApp,
-  firestore,
-  clearFirestoreData,
-} from '@firebase/rules-unit-testing';
+import { clearFirestoreData } from '@firebase/rules-unit-testing';
+import firebase, { firestore } from 'firebase';
 import FirestoreModel from './FirestoreModel';
-
-const testApp = initializeTestApp({
-  projectId: 'fs-model-test',
-  auth: { uid: 'admin' },
-});
 
 interface NameData {
   first: string;
@@ -22,16 +14,21 @@ const converter: firestore.FirestoreDataConverter<NameData> = {
 };
 
 class Name extends FirestoreModel<NameData> {
-  static readonly collection = testApp
-    .firestore()
-    .collection('names')
-    .withConverter(converter);
+  static get collection(): firestore.CollectionReference<NameData> {
+    return firestore().collection('names').withConverter(converter);
+  }
 }
 
+const app = firebase.initializeApp({ projectId: 'fs-model-test' });
+app.firestore().settings({
+  host: 'localhost:8080',
+  ssl: false,
+});
+
 beforeEach(async () =>
-  clearFirestoreData(testApp.options as { projectId: string })
+  clearFirestoreData(app.options as { projectId: string })
 );
-afterAll(async () => testApp.delete());
+afterAll(async () => app.delete());
 
 test('constructor', () => {
   const data = { first: 'Bob', last: 'Smith' };
