@@ -12,7 +12,7 @@ function Header() {
   const match = window.location.hostname.match(/s4us-pr-(\d+).onrender.com/);
   let alert = '';
   if (match !== null) {
-    const link = `https://github.com/beyondhb1079/s4us/pulls/${match[1]}`;
+    const link = `https://github.com/beyondhb1079/s4us/pull/${match[1]}`;
     alert = (
       <Alert severity="info">
         This is a preview of <a href={link}>Pull Request #{match[1]}</a>
