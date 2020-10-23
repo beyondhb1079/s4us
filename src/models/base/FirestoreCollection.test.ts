@@ -43,13 +43,13 @@ test('id() returns model with id', () => {
   expect(got.id).toEqual('my-id');
 });
 
-test('list() - empty', async () => {
+test('list() returns empty list', async () => {
   const got = await names.list();
 
   expect(got).toHaveLength(0);
 });
 
-test('list names', async () => {
+test('list() returns items', async () => {
   const bob = names.new({ first: 'Bob', last: 'Smith' });
   const jane = names.new({ first: 'Jane', last: 'Smith' });
   await bob.save();
@@ -60,7 +60,7 @@ test('list names', async () => {
   expect(got.map((s) => s.id).sort()).toEqual([bob.id, jane.id].sort());
 });
 
-test('list names sort by field', async () => {
+test('list() sorts by field', async () => {
   const bob = names.new({ first: 'Bob', last: 'Smith' });
   const jane = names.new({ first: 'Jane', last: 'Smith' });
   await bob.save();
@@ -71,7 +71,7 @@ test('list names sort by field', async () => {
   expect(got.map((s) => s.id)).toEqual([bob.id, jane.id]);
 });
 
-test('list names sort by field and direction', async () => {
+test('list() sorts by field in direction', async () => {
   const bob = names.new({ first: 'Bob', last: 'Smith' });
   const jane = names.new({ first: 'Jane', last: 'Smith' });
   await bob.save();
