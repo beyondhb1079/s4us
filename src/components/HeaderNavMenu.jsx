@@ -17,6 +17,7 @@ function HeaderNavMenu() {
   const classes = useStyles();
   const links = {
     Scholarships: '/scholarships',
+    Add: '/scholarships/new',
     About: '/about',
     Contact: '/contact',
   };
