@@ -20,16 +20,20 @@ export default abstract class FirestoreCollection<T> {
     return new FirestoreModel<T>(this.collection.doc(id), {} as T);
   }
 
-  // TODO(issues/93): Support filters and pagination
+  // TODO(issues/93, issues/94): Support filters and pagination
   /**
-   * opts.sortDir is 'asc' by default
+   * Lists all items in this collection.
+   *
+   * @param opts list options.
    */
-  list(opts?: {
-    sortField?: string;
-    sortDir?: SortDirection;
-  }): Promise<FirestoreModel<T>[]> {
+  list(
+    opts: {
+      sortDir?: SortDirection;
+      sortField?: string;
+    } = { sortDir: 'asc' }
+  ): Promise<FirestoreModel<T>[]> {
     return new Promise((resolve, reject) => {
-      const query = opts?.sortField
+      const query = opts.sortField
         ? this.collection.orderBy(opts.sortField, opts.sortDir)
         : this.collection;
       query
