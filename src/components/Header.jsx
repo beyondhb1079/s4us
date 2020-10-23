@@ -10,7 +10,7 @@ import {
 import Alert from '@material-ui/lab/Alert';
 
 import { BRAND_NAME } from '../config/constants';
-import HeaderMenu from './HeaderMenu';
+import HeaderNavMenu from './HeaderNavMenu';
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -50,7 +50,7 @@ function Header() {
           </MuiLink>
         </Grid>
         <Grid item>
-          <HeaderMenu />
+          <HeaderNavMenu />
         </Grid>
       </Grid>
     </Container>

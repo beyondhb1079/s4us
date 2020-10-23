@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function HeaderMenu() {
+function HeaderNavMenu() {
   const classes = useStyles();
   const links = {
     Scholarships: '/scholarships',
@@ -36,4 +36,4 @@ function HeaderMenu() {
   );
 }
 
-export default HeaderMenu;
+export default HeaderNavMenu;
