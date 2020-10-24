@@ -1,0 +1,38 @@
+name: 'Dependabot Automerge - Action'
+
+on:
+  pull_request:
+    branches: [main]
+    paths: ['yarn.lock']
+
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+    name: Automerge changes if yarn.lock
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+      - name: Check for package.json changes
+        run: |
+          if git diff-tree --name-only --exit-code -r ${{ github.sha }} package.json; then
+            echo "::set-env name=lock_only_change::true"
+          fi
+      - name: Automerge
+        if: ${{ env.lock_only_change == 'true' }}
+        uses: actions/github-script@0.2.0
+        with:
+          script: |
+            github.pullRequests.createReview({
+              owner: context.payload.repository.owner.login,
+              repo: context.payload.repository.name,
+              pull_number: context.payload.pull_request.number,
+              event: 'APPROVE'
+            })
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '@dependabot squash and merge'
+            })
+          github-token: ${{github.token}}
