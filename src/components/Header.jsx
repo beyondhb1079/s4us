@@ -39,6 +39,11 @@ function Header() {
           Contact
         </Button>
       </Link>
+      <Link to="/scholarships/new">
+        <Button variant="contained" color="primary" style={buttonStyles}>
+          Add Scholarship
+        </Button>
+      </Link>
       <LoginButton />
     </div>
   );
