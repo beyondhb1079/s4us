@@ -19,30 +19,29 @@ function ScholarshipForm() {
     return (e) =>
       setFormFieldStates({ ...formFieldStates, [id]: e.target.value });
   }
+  function requiredTextField(id, label) {
+    return (
+      <TextField
+        id={id}
+        label={label}
+        required
+        value={formFieldStates[id]}
+        onChange={updateFn(id)}
+      />
+    );
+  }
 
   return (
     <Container maxWidth="md">
       <form>
         <h1>Submit a Scholarship</h1>
-        <TextField
-          id="name"
-          label="Scholarship Name *"
-          value={formFieldStates.name}
-          onChange={updateFn('name')}
-        />
-        <TextField
-          id="description"
-          label="Description *"
-          value={formFieldStates.description}
-          onChange={updateFn('description')}
-        />
-        <TextField
-          id="website"
-          label="Website *"
-          value={formFieldStates.website}
-          onChange={updateFn('website')}
-        />
-        <Button variant="contained" color="primary">
+        {requiredTextField('name', 'Scholarship Name')}
+        {requiredTextField('description', 'Description')}
+        {requiredTextField('website', 'Website')}
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => console.log(formFieldStates)}>
           Submit
         </Button>
       </form>
