@@ -38,10 +38,7 @@ function ScholarshipForm() {
         {requiredTextField('name', 'Scholarship Name')}
         {requiredTextField('description', 'Description')}
         {requiredTextField('website', 'Website')}
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => console.log(formFieldStates)}>
+        <Button variant="contained" color="primary">
           Submit
         </Button>
       </form>
