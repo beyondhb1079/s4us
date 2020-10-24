@@ -1,43 +1,66 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
+import {
+  Button,
+  Grid,
+  Typography,
+  Paper,
+  Link as MuiLink,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
+// TODO(issues/31): styling according to design
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
-    maxWidth: '100%',
-    backgroundColor: theme.palette.background.paper,
+    flexGrow: 1,
+    justifyContent: 'space-around',
+    alignItems: 'stretch',
   },
   link: {
     textDecoration: 'none',
   },
-  item: {
-    color: '#000',
+  paper: {
+    padding: theme.spacing(3),
   },
+  item: {},
 }));
 
-function ScholarshipList(props) {
+function ScholarshipList({ scholarships }) {
   const classes = useStyles();
-  const { scholarships } = props;
-  const scholarshipList = Object.entries(scholarships).map(([id, item]) => (
-    <Link to={`/scholarships/${id}`} key={id} className={classes.link}>
-      <ListItem divider alignItems="flex-start" className={classes.item}>
-        <ListItemText primary={item.name} secondary={item.school} />
-        <ListItemText primary={item.amount} />
-        <ListItemText primary={item.deadline} />
-      </ListItem>
-    </Link>
+  const scholarshipItems = scholarships.map(({ id, data }) => (
+    <Grid item xs={12} md={6} className={classes.item}>
+      <Link to={`/scholarships/${id}`} key={id} className={classes.link}>
+        <Paper className={classes.paper} elevation={0}>
+          <Typography variant="h5">{data.name}</Typography>
+          <Typography variant="h6">{data.amount}</Typography>
+          <Typography variant="subtitle1">
+            {data.deadline.toDateString()}
+          </Typography>
+          <Typography variant="body" display="block">
+            {data.description}
+          </Typography>
+          <Button
+            component={MuiLink}
+            href={data.website}
+            variant="contained"
+            color="primary">
+            Apply
+          </Button>
+        </Paper>
+      </Link>
+    </Grid>
   ));
 
-  return <List className={classes.root}>{scholarshipList}</List>;
+  return (
+    <Grid container spacing={3} className={classes.root}>
+      {scholarshipItems}
+    </Grid>
+  );
 }
 
 ScholarshipList.propTypes = {
-  scholarships: PropTypes.objectOf(PropTypes.object),
+  scholarships: PropTypes.arrayOf(PropTypes.object),
 };
 ScholarshipList.defaultProps = {
   scholarships: [],
