@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Button } from '@material-ui/core';
-import TextFieldComp from '../components/TextFieldComp';
+import { Container, Button, TextField } from '@material-ui/core';
 
 function ScholarshipForm() {
   const [formFieldStates, setFormFieldStates] = useState({
@@ -16,31 +15,32 @@ function ScholarshipForm() {
     active: false,
   });
 
-  function handleFieldChange(name, value) {
-    setFormFieldStates((prev) => ({ ...prev, [name]: value }));
+  function updateFn(id) {
+    return (e) =>
+      setFormFieldStates({ ...formFieldStates, [id]: e.target.value });
   }
 
   return (
     <Container maxWidth="md">
       <form>
         <h1>Submit a Scholarship</h1>
-        <TextFieldComp
+        <TextField
           id="name"
           label="Scholarship Name *"
           value={formFieldStates.name}
-          onChange={handleFieldChange}
+          onChange={updateFn('name')}
         />
-        <TextFieldComp
+        <TextField
           id="description"
           label="Description *"
           value={formFieldStates.description}
-          onChange={handleFieldChange}
+          onChange={updateFn('description')}
         />
-        <TextFieldComp
+        <TextField
           id="website"
           label="Website *"
           value={formFieldStates.website}
-          onChange={handleFieldChange}
+          onChange={updateFn('website')}
         />
         <Button variant="contained" color="primary">
           Submit
