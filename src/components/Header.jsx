@@ -29,7 +29,7 @@ function Header() {
   let alert = '';
   const [open, setOpen] = React.useState(match !== null);
   if (match !== null) {
-    const link = `https://github.com/beyondhb1079/s4us/pulls/${match[1]}`;
+    const link = `https://github.com/beyondhb1079/s4us/pull/${match[1]}`;
     alert = (
       <Snackbar open={open}>
         <Alert onClose={() => setOpen(false)} severity="info">
