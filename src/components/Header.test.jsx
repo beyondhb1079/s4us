@@ -27,6 +27,6 @@ test('renders alert on PR preview URL', () => {
   expect(alertElement).toBeInTheDocument();
   const linkElement = getByText(/Pull Request #49/i);
   expect(linkElement.href).toEqual(
-    'https://github.com/beyondhb1079/s4us/pulls/49'
+    'https://github.com/beyondhb1079/s4us/pull/49'
   );
 });
