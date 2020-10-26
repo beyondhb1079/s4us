@@ -1,8 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { CircularProgress, Container, Typography } from '@material-ui/core';
+import {
+  CircularProgress,
+  Container,
+  makeStyles,
+  Typography,
+} from '@material-ui/core';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
+
+const useStyles = makeStyles((theme) => ({
+  progress: {
+    display: 'block',
+    margin: 'auto',
+  },
+}));
 
 function ScholarshipsPage() {
   const [scholarships, setScholarships] = useState([]);
@@ -23,13 +35,7 @@ function ScholarshipsPage() {
       });
   }, []);
 
-  if (error || loading) {
-    return (
-      <Container>
-        <h1>{error?.toString() || 'Loading...'}</h1>
-      </Container>
-    );
-  }
+  const classes = useStyles();
 
   return (
     <Container>
@@ -37,8 +43,10 @@ function ScholarshipsPage() {
         Scholarships
       </Typography>
       <FilterBar />
-      {error || (loading && error?.toString()) || <CircularProgress />}
-      {!error && !loading && <ScholarshipList scholarships={scholarships} />}
+      {error?.toString() ||
+        (loading && <CircularProgress className={classes.progress} />) || (
+          <ScholarshipList scholarships={scholarships} />
+        )}
     </Container>
   );
 }
