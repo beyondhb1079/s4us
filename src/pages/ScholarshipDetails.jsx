@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import Container from '@material-ui/core/Container';
-import Scholarship from '../models/Scholarship';
+import Scholarships from '../models/Scholarships';
 
 export default function ScholarshipDetailsPage({ match }) {
   const { id } = match.params;
@@ -11,7 +11,7 @@ export default function ScholarshipDetailsPage({ match }) {
 
   useEffect(
     () =>
-      new Scholarship(id).subscribe(
+      Scholarships.id(id).subscribe(
         (s) => {
           setScholarship(s);
           setLoading(false);
