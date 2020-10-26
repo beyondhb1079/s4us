@@ -44,7 +44,10 @@ function ScholarshipList({ scholarships }) {
         .share({
           title: `${data.amount} - ${data.name}`,
           url: `${window.location.hostname}/scholarships/${id}`,
-          text: `Deadline: ${data.deadline.toLocaleDateString()}\n\nShared via ${BRAND_NAME} (under construction)`,
+          text:
+            `${data.amount} - ${data.name}\n` +
+            `${data.deadline.toLocaleDateString()}\n` +
+            `Shared via ${BRAND_NAME} (under construction)`,
         })
         .then(() => console.log('Thanks for sharing!'))
         .catch(console.error);
