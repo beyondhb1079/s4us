@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Typography } from '@material-ui/core';
+import { CircularProgress, Container, Typography } from '@material-ui/core';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
@@ -37,7 +37,8 @@ function ScholarshipsPage() {
         Scholarships
       </Typography>
       <FilterBar />
-      <ScholarshipList scholarships={scholarships} />
+      {error || (loading && error?.toString()) || <CircularProgress />}
+      {!error && !loading && <ScholarshipList scholarships={scholarships} />}
     </Container>
   );
 }
