@@ -1,5 +1,5 @@
 export default interface Model<T> {
-  id?: string;
+  id: string;
   data: T;
 
   get(): Promise<Model<T>>;
