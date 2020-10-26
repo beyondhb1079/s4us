@@ -33,7 +33,7 @@ function ScholarshipsPage() {
 
   return (
     <Container>
-      <Typography variant="h2" style={{ textAlign: 'center' }}>
+      <Typography variant="h3" component="h1" style={{ textAlign: 'center' }}>
         Scholarships
       </Typography>
       <FilterBar />
