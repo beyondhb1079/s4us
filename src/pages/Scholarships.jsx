@@ -21,7 +21,7 @@ function ScholarshipsPage() {
       .finally(() => {
         setLoading(false);
       });
-  });
+  }, []);
 
   if (error || loading) {
     return (
