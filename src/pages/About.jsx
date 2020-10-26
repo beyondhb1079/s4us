@@ -91,7 +91,7 @@ function About() {
         excepteur proident laborum ea laborum consectetur aliqua pariatur.
       </p>
 
-      <h2>Meet the Developers</h2>
+      <h2>Meet the Team</h2>
       <Grid container justify="flex-start" alignItems="stretch" spacing={3}>
         {team.map(({ name, img, description }) => (
           <Grid item key={name} xs={12} sm={6} md={4}>
