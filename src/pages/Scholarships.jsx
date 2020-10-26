@@ -10,7 +10,7 @@ function ScholarshipsPage() {
   const [error, setError] = useState();
 
   useEffect(() => {
-    // TODO: Cancellable promises
+    // TODO: Create cancellable promises
     Scholarships.list({ sortField: 'deadline' })
       .then((results) => {
         setScholarships(results);

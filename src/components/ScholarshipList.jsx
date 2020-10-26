@@ -56,7 +56,7 @@ function ScholarshipList({ scholarships }) {
   return (
     <Grid container spacing={3}>
       {scholarships.map(({ id, data }) => (
-        <Grid item xs={12}>
+        <Grid item xs={12} key={id}>
           <Card variant="outlined">
             <CardActionArea component={Link} to={`/scholarships/${id}`}>
               <CardHeader title={data.name} subheader={data.amount} />
