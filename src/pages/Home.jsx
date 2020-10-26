@@ -1,10 +1,11 @@
 import React from 'react';
+import { Container } from '@material-ui/core';
 
 function Home() {
   return (
-    <div className="App">
+    <Container style={{ textAlign: 'center' }}>
       <h1>Find Scholarships Today</h1>
-    </div>
+    </Container>
   );
 }
 

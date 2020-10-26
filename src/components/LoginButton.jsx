@@ -22,16 +22,14 @@ export default function LoginButton() {
 
   const signUserOut = () => firebase.auth().signOut();
   const showLoginDialog = () => setLoginDialogOpen(true);
+  const onClick = isSignedIn ? signUserOut : showLoginDialog;
 
   return (
-    <div>
-      <Button
-        variant="outlined"
-        color="secondary"
-        onClick={isSignedIn ? signUserOut : showLoginDialog}>
+    <>
+      <Button variant="contained" color="primary" onClick={onClick}>
         {isSignedIn ? 'Sign out' : 'Login'}
       </Button>
       <LoginDialog open={loginDialogOpen} onClose={handleClose} />
-    </div>
+    </>
   );
 }
