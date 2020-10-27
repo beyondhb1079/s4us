@@ -38,25 +38,31 @@ function ScholarshipForm() {
     );
   }
 
+  function requiredDeadlineField(id, label) {
+    return (
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <KeyboardDatePicker
+          id={id}
+          label={label}
+          format="MM/dd/yyyy"
+          fullWidth
+          value={formFieldStates[id]}
+          onChange={(date) =>
+            setFormFieldStates({ ...formFieldStates, [id]: date })
+          }
+        />
+      </MuiPickersUtilsProvider>
+    );
+  }
+
   return (
     <Container maxWidth="md">
       <form>
         <h1>Submit a Scholarship</h1>
-        <MuiPickersUtilsProvider utils={DateFnsUtils} key="date">
-          {requiredTextField('name', 'Scholarship Name')}
-          <KeyboardDatePicker
-            id="date"
-            label="Deadline *"
-            format="MM/dd/yyyy"
-            fullWidth
-            value={formFieldStates.deadline}
-            onChange={(date) =>
-              setFormFieldStates({ ...formFieldStates, deadline: date })
-            }
-          />
-          {requiredTextField('description', 'Description')}
-          {requiredTextField('website', 'Website')}
-        </MuiPickersUtilsProvider>
+        {requiredTextField('name', 'Scholarship Name')}
+        {requiredDeadlineField('deadline', 'Deadline')}
+        {requiredTextField('description', 'Description')}
+        {requiredTextField('website', 'Website')}
         <Button variant="contained" color="primary">
           Submit
         </Button>
