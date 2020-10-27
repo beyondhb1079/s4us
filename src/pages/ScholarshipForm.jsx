@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Button, TextField } from '@material-ui/core';
-import 'date-fns';
-import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
+import DateField from '../components/DateField';
 
 function ScholarshipForm() {
   const [formFieldStates, setFormFieldStates] = useState({
@@ -38,29 +33,19 @@ function ScholarshipForm() {
     );
   }
 
-  function requiredDeadlineField(id, label) {
-    return (
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <KeyboardDatePicker
-          id={id}
-          label={label}
-          format="MM/dd/yyyy"
-          fullWidth
-          value={formFieldStates[id]}
-          onChange={(date) =>
-            setFormFieldStates({ ...formFieldStates, [id]: date })
-          }
-        />
-      </MuiPickersUtilsProvider>
-    );
-  }
-
   return (
     <Container maxWidth="md">
       <form>
         <h1>Submit a Scholarship</h1>
         {requiredTextField('name', 'Scholarship Name')}
-        {requiredDeadlineField('deadline', 'Deadline')}
+        <DateField
+          id="deadline"
+          label="Deadline"
+          value={formFieldStates.deadline}
+          handler={(id, date) =>
+            setFormFieldStates({ ...formFieldStates, [id]: date })
+          }
+        />
         {requiredTextField('description', 'Description')}
         {requiredTextField('website', 'Website')}
         <Button variant="contained" color="primary">
