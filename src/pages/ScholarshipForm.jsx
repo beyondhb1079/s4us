@@ -39,10 +39,10 @@ function ScholarshipForm() {
       />
     );
   }
-  function scholarshipTypeField(id, enums) {
+  function scholarshipTypeField(id, label, enums) {
     return (
       <FormControl>
-        <InputLabel shrink>Scholarship Type</InputLabel>
+        <InputLabel shrink>{label}</InputLabel>
         <Select value={formFieldStates[id]} onChange={updateFn(id)}>
           {enums.map((option) => {
             return (
@@ -63,7 +63,7 @@ function ScholarshipForm() {
         {requiredTextField('name', 'Scholarship Name')}
         {requiredTextField('description', 'Description')}
         {requiredTextField('website', 'Website')}
-        {scholarshipTypeField('scholarshipType', [
+        {scholarshipTypeField('scholarshipType', 'Scholarship Type', [
           'unknown',
           'academic',
           'sports',
@@ -71,12 +71,7 @@ function ScholarshipForm() {
           'organization',
         ])}
         <div>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              console.log(formFieldStates);
-            }}>
+          <Button variant="contained" color="primary">
             Submit
           </Button>
         </div>
