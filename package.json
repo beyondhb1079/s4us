@@ -20,6 +20,7 @@
     "eslint-plugin-jest": "^24.0.2",
     "firebase": "^7.19.1",
     "prop-types": "^15.7.2",
+    "prop-types-exact": "^1.2.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-firebaseui": "^4.1.0",
@@ -83,7 +84,12 @@
         }
       ],
       "react/jsx-one-expression-per-line": "off",
-      "react/jsx-props-no-spreading": "off",
+      "react/jsx-props-no-spreading": [
+        2,
+        {
+          "explicitSpread": "ignore"
+        }
+      ],
       "react/jsx-filename-extension": [
         "error",
         {

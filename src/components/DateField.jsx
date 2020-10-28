@@ -5,13 +5,26 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+import PropTypes from 'prop-types';
+import exact from 'prop-types-exact';
 
 function DateField(props) {
+  const { id, label, value, onChange } = props;
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <KeyboardDatePicker format="MM/dd/yyyy" fullWidth required {...props} />
+      <KeyboardDatePicker
+        format="MM/dd/yyyy"
+        fullWidth
+        required
+        {...{ id, label, value, onChange }}
+      />
     </MuiPickersUtilsProvider>
   );
 }
-
+DateField.propTypes = exact({
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  value: PropTypes.instanceOf(Date).isRequired,
+  onChange: PropTypes.func.isRequired,
+});
 export default DateField;
