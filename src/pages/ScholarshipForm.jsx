@@ -42,8 +42,8 @@ function ScholarshipForm() {
           id="deadline"
           label="Deadline"
           value={formFieldStates.deadline}
-          handler={(id, date) =>
-            setFormFieldStates({ ...formFieldStates, [id]: date })
+          onChange={(date) =>
+            setFormFieldStates({ ...formFieldStates, deadline: date })
           }
         />
         {requiredTextField('description', 'Description')}
