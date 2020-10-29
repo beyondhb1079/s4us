@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Button, TextField } from '@material-ui/core';
+import { Container, Button, TextField, Snackbar } from '@material-ui/core';
 import EnumSelectField from '../components/EnumSelectField';
 import ScholarshipType from '../types/ScholarshipType';
 
@@ -49,14 +49,19 @@ function ScholarshipForm() {
           enums={ScholarshipType}
         />
         <div>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => console.log(formFieldStates)}>
+          <Button variant="contained" color="primary">
             Submit
           </Button>
         </div>
       </form>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        open
+        message="TODO: write form submission logic."
+      />
     </Container>
   );
 }
