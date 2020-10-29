@@ -85,7 +85,7 @@
       ],
       "react/jsx-one-expression-per-line": "off",
       "react/jsx-props-no-spreading": [
-        2,
+        "error",
         {
           "explicitSpread": "ignore"
         }

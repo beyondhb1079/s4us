@@ -8,7 +8,7 @@ import {
 import PropTypes from 'prop-types';
 import exact from 'prop-types-exact';
 
-function DateField(props) {
+function DatePicker(props) {
   const { id, label, value, onChange } = props;
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -21,10 +21,10 @@ function DateField(props) {
     </MuiPickersUtilsProvider>
   );
 }
-DateField.propTypes = exact({
+DatePicker.propTypes = exact({
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   value: PropTypes.instanceOf(Date).isRequired,
   onChange: PropTypes.func.isRequired,
 });
-export default DateField;
+export default DatePicker;
