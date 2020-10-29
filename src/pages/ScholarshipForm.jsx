@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
-import {
-  Container,
-  Button,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-} from '@material-ui/core';
+import { Container, Button, TextField } from '@material-ui/core';
+import EnumSelectField from '../components/EnumSelectField';
+import ScholarshipType from '../types/ScholarshipType';
 
 function ScholarshipForm() {
   const [formFieldStates, setFormFieldStates] = useState({
@@ -39,22 +33,6 @@ function ScholarshipForm() {
       />
     );
   }
-  function scholarshipTypeField(id, label, enums) {
-    return (
-      <FormControl>
-        <InputLabel shrink>{label}</InputLabel>
-        <Select value={formFieldStates[id]} onChange={updateFn(id)}>
-          {enums.map((option) => {
-            return (
-              <MenuItem key={option} value={option}>
-                {option}
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </FormControl>
-    );
-  }
 
   return (
     <Container maxWidth="md">
@@ -63,15 +41,18 @@ function ScholarshipForm() {
         {requiredTextField('name', 'Scholarship Name')}
         {requiredTextField('description', 'Description')}
         {requiredTextField('website', 'Website')}
-        {scholarshipTypeField('scholarshipType', 'Scholarship Type', [
-          'unknown',
-          'academic',
-          'sports',
-          'community',
-          'organization',
-        ])}
+        <EnumSelectField
+          id="scholarshipType"
+          label="Scholarship Type"
+          value={formFieldStates.scholarshipType}
+          onChange={updateFn('scholarshipType')}
+          enums={ScholarshipType}
+        />
         <div>
-          <Button variant="contained" color="primary">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => console.log(formFieldStates)}>
             Submit
           </Button>
         </div>
