@@ -1,0 +1,117 @@
+name: 'Auto Approval'
+
+on:
+  pull_request:
+    branches: [main]
+    paths: ['yarn.lock']
+
+jobs:
+  auto-approve-small-changes-after-approval:
+    runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]'
+    name: Auto approve minor changes after approval
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+      - name: Auto approve
+        uses: actions/github-script@0.2.0
+        with:
+          script: |
+            // Get all human approvals
+            cosnt approvals = await github.pullRequests.getReviews({
+              owner: context.payload.repository.owner.login,
+              repo: context.payload.repository.name,
+              pull_number: context.payload.pull_request.number
+            }).filter(r => r.state == "APPROVED" && r.user.type == "User")
+
+            if (approvals.length == 0) {
+              return // no existing approvals
+            }
+
+            const last_approval = approvals.pop();
+            const last_approver = last_approval.user.login;
+            const last_approved_commit = last_approval.commit_id;
+            const current_commit = context.payload.pull_request.sha;
+            var exec = require('child_process').exec, child;
+
+            // Are there any non-modified file changes since last approval?
+            let has_other_changes = false;
+            child = exec(`git diff --stat --diff-filter=m --exit-code ${last_approved_commit} ${current_commit}`,
+                function (error, stdout, stderr) {
+                    console.log('stdout: ' + stdout);
+                    console.log('stderr: ' + stderr);
+                    if (error !== null) {
+                        console.log('It looks like more than just file modifications: ' + error);
+                        has_other_changes = true;
+                    }
+                });
+            child();
+            if (has_other_changes) {
+              return
+            }
+            
+            // What's changed since the approval? 
+            let insertions, deletions = 0, 0;
+            child = exec(`git diff --histogram -U0 ${last_approved_commit} ${current_commit}`,
+                function (error, stdout, stderr) {
+                    console.log('stdout: ' + stdout);
+                    console.log('stderr: ' + stderr);
+                    if (error === null) {
+                        const lines = stdout.split('\n')
+                        insertions = lines.filter(l => l.startsWith('+')).length;
+                        deletions = lines.filter(l => l.startsWith('-')).length;
+                    }
+                });
+            child();
+
+            const max_lines_changed = insertions + deletions;
+            if (max_lines_changed === 0) {
+              return // there should be nothing to review
+            }
+
+            if (max_lines_changed > 10 || insertions > 5 || deletions > 5) {
+              return // should probably get someone to review the changes
+            }
+
+            // The changes were likely due to addressing feedback.
+            github.pullRequests.createReview({
+              owner: context.payload.repository.owner.login,
+              repo: context.payload.repository.name,
+              pull_number: context.payload.pull_request.number,
+              event: 'APPROVE',
+              body: `@${context.actor}, I'm approving your PR because it looks like you were ` +
+                    'addressing comments from the previous approval. You may choose to wait for ' + 
+                    'a human reviewer if you prefer.\n\n' +
+                    `@${last_approver}, if you believe my approval was a mistake please revise ` +
+                    '[autoapprove.yaml](../blob/main/.github/workflows/autoapprove.yaml)'
+            })
+          github-token: ${{github.token}}
+
+
+  auto-approve-dependabot:
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+    name: Auto approve changes if yarn.lock
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+      - name: Check for package.json changes
+        run: |
+          if git diff-tree --name-only --exit-code -r ${{ github.sha }} package.json; then
+            echo "::set-env name=lock_only_change::true"
+          fi
+      - name: Auto approve changes
+        if: ${{ env.lock_only_change == 'true' }}
+        uses: actions/github-script@0.2.0
+        with:
+          script: |
+            github.pullRequests.createReview({
+              owner: context.payload.repository.owner.login,
+              repo: context.payload.repository.name,
+              pull_number: context.payload.pull_request.number,
+              event: 'APPROVE',
+              body: 'Dear reviewer, copy and paste the following comment and ' +
+                    'I will work with @dependabot to get this merged.\n\n' +
+                    '@dependabot squash and merge'
+            })
+          github-token: ${{github.token}}
