@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Button, TextField } from '@material-ui/core';
-import DateField from '../components/DateField';
+import DatePicker from '../components/DatePicker';
 
 function ScholarshipForm() {
   const [formFieldStates, setFormFieldStates] = useState({
@@ -38,7 +38,7 @@ function ScholarshipForm() {
       <form>
         <h1>Submit a Scholarship</h1>
         {requiredTextField('name', 'Scholarship Name')}
-        <DateField
+        <DatePicker
           id="deadline"
           label="Deadline"
           value={formFieldStates.deadline}
