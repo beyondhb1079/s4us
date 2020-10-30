@@ -17,18 +17,20 @@ jobs:
         with:
           script: |
             // Get all human approvals
-            const approvals = await github.paginate(
-              github.pullRequests.listReviewComments.endpoint.merge({
+            const approvals = await github.pullRequests.listReviewComments({
               owner: context.payload.repository.owner.login,
               repo: context.payload.repository.name,
-              pull_number: context.payload.pull_request.number
-            })).filter(r => r.state == "APPROVED" && r.user.type == "User")
+              pull_number: context.payload.pull_request.number,
+              order_by: 'created',
+              direction: 'desc'
+            }).filter(r => r.state == "APPROVED" && r.user.type == "User")
+            console.log(approvals);
 
             if (approvals.length == 0) {
               return // no existing approvals
             }
 
-            const last_approval = approvals.pop();
+            const last_approval = approvals[0];
             const last_approver = last_approval.user.login;
             const last_approved_commit = last_approval.commit_id;
             const current_commit = context.payload.pull_request.sha;
