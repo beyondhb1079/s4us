@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Container, Button, TextField, Snackbar } from '@material-ui/core';
 import EnumSelectField from '../components/EnumSelectField';
 import ScholarshipType from '../types/ScholarshipType';
+import DatePicker from '../components/DatePicker';
 
 function ScholarshipForm() {
   const [formFieldStates, setFormFieldStates] = useState({
@@ -39,6 +40,14 @@ function ScholarshipForm() {
       <form>
         <h1>Submit a Scholarship</h1>
         {requiredTextField('name', 'Scholarship Name')}
+        <DatePicker
+          id="deadline"
+          label="Deadline"
+          value={formFieldStates.deadline}
+          onChange={(date) =>
+            setFormFieldStates({ ...formFieldStates, deadline: date })
+          }
+        />
         {requiredTextField('description', 'Description')}
         {requiredTextField('website', 'Website')}
         <EnumSelectField
