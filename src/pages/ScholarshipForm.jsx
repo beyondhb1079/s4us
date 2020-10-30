@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Button, TextField } from '@material-ui/core';
+import ScholarshipAmountField from '../components/ScholarshipAmountField';
+import AmountType from '../types/AmountType';
 
 function ScholarshipForm() {
   const [formFieldStates, setFormFieldStates] = useState({
@@ -38,6 +40,7 @@ function ScholarshipForm() {
         {requiredTextField('name', 'Scholarship Name')}
         {requiredTextField('description', 'Description')}
         {requiredTextField('website', 'Website')}
+        <ScholarshipAmountField label="Award Type" amountTypes={AmountType} />
         <Button variant="contained" color="primary">
           Submit
         </Button>
