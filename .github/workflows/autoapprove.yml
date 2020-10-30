@@ -50,7 +50,7 @@ jobs:
             }
             
             // What's changed since the approval? 
-            let insertions, deletions = 0, 0;
+            let insertions = 0, deletions = 0;
             child = exec(`git diff --histogram -U0 ${last_approved_commit} ${current_commit}`,
                 function (error, stdout, stderr) {
                     console.log('stdout: ' + stdout);
