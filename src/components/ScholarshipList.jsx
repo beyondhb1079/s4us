@@ -23,8 +23,8 @@ const useStyles = makeStyles((theme) => ({
 function ScholarshipList(props) {
   const classes = useStyles();
   const { scholarships } = props;
-  const scholarshipList = scholarships.map((item) => (
-    <Link to={`/scholarships/${item.id}`} key={item.id} className={classes.link}>
+  const scholarshipList = Object.entries(scholarships).map(([id, item]) => (
+    <Link to={`/scholarships/${id}`} key={id} className={classes.link}>
       <ListItem divider alignItems="flex-start" className={classes.item}>
         <ListItemText primary={item.name} secondary={item.school} />
         <ListItemText primary={item.amount} />
@@ -33,13 +33,11 @@ function ScholarshipList(props) {
     </Link>
   ));
 
-  return (
-    <List className={classes.root}>{scholarshipList}</List>
-  );
+  return <List className={classes.root}>{scholarshipList}</List>;
 }
 
 ScholarshipList.propTypes = {
-  scholarships: PropTypes.arrayOf(PropTypes.object),
+  scholarships: PropTypes.objectOf(PropTypes.object),
 };
 ScholarshipList.defaultProps = {
   scholarships: [],

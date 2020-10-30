@@ -1,25 +1,51 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import ReactRouterPropTypes from 'react-router-prop-types';
 import Container from '@material-ui/core/Container';
-import scholarships from '../testdata/scholarships';
+import Scholarships from '../models/Scholarships';
 
-function ScholarshipDetailsPage() {
-  const { id } = useParams();
-  // will get replaced once we make actual api calls
-  const scholarship = scholarships.filter((item) => item.id === id)[0];
-  if (!scholarship) {
-    return (<h1>Scholarship Not Found</h1>);
+export default function ScholarshipDetailsPage({ match }) {
+  const { id } = match.params;
+  const [scholarship, setScholarship] = useState();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState();
+
+  useEffect(
+    () =>
+      Scholarships.id(id).subscribe(
+        (s) => {
+          setScholarship(s);
+          setLoading(false);
+        },
+        (err) => {
+          setError(err);
+        }
+      ),
+    [id]
+  );
+
+  if (error || loading) {
+    return (
+      <Container>
+        <h1>{error?.toString() || 'Loading...'}</h1>
+      </Container>
+    );
   }
 
   const {
-    name, amount, deadline, website, school, year, description,
-  } = scholarship;
+    name,
+    amount,
+    deadline,
+    website,
+    school,
+    year,
+    description,
+  } = scholarship.data;
 
   return (
     <Container>
       <h1>{name}</h1>
       <h2>{amount}</h2>
-      <h3>{deadline}</h3>
+      <h3>{deadline.toString()}</h3>
       <h3>{website}</h3>
       <h3>{school}</h3>
       <h3>{year}</h3>
@@ -28,4 +54,6 @@ function ScholarshipDetailsPage() {
   );
 }
 
-export default ScholarshipDetailsPage;
+ScholarshipDetailsPage.propTypes = {
+  match: ReactRouterPropTypes.match.isRequired,
+};

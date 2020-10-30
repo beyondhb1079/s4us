@@ -1,13 +1,13 @@
 import React from 'react';
+import { Container } from '@material-ui/core';
 import ProfileDisplay from '../components/ProfileDisplay';
 
 function Home() {
   return (
-    <div className="App">
-      <h2>Scholarships made simple</h2>
+    <Container style={{ textAlign: 'center' }}>
+      <h1>Find Scholarships Today</h1>
       <ProfileDisplay />
-      <h1 className="gHome">This section has yet to be configured</h1>
-    </div>
+    </Container>
   );
 }
 
