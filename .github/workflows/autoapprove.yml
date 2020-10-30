@@ -17,11 +17,12 @@ jobs:
         with:
           script: |
             // Get all human approvals
-            const approvals = await github.pullRequests.getReviews({
+            const approvals = await github.paginate(
+              github.pullRequests.listReviewComments.endpoint.merge({
               owner: context.payload.repository.owner.login,
               repo: context.payload.repository.name,
               pull_number: context.payload.pull_request.number
-            }).filter(r => r.state == "APPROVED" && r.user.type == "User")
+            })).filter(r => r.state == "APPROVED" && r.user.type == "User")
 
             if (approvals.length == 0) {
               return // no existing approvals
