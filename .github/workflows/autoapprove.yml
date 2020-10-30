@@ -3,7 +3,6 @@ name: 'Auto Approval'
 on:
   pull_request:
     branches: [main]
-    paths: ['yarn.lock']
 
 jobs:
   auto-approve-small-changes-after-approval:
