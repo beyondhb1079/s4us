@@ -24,7 +24,7 @@ jobs:
               order_by: 'created',
               direction: 'desc'
             }))
-            const approvals = reviews.filter(r => r.state == "APPROVED" && r.user.type == "User")
+            const approvals = reviews.data.filter(r => r.state == "APPROVED" && r.user.type == "User")
 
             if (approvals.length == 0) {
               return // no existing approvals
