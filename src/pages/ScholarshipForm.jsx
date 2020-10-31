@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Button, TextField } from '@material-ui/core';
 import ScholarshipAmountField from '../components/ScholarshipAmountField';
-import AmountType from '../types/AmountType';
 import DatePicker from '../components/DatePicker';
 
 function ScholarshipForm() {
@@ -10,7 +9,6 @@ function ScholarshipForm() {
     deadline: new Date(),
     description: '',
     amountType: '',
-    amount: 0,
     minAmount: 0,
     maxAmount: 0,
     website: '',
@@ -21,6 +19,20 @@ function ScholarshipForm() {
   function updateFn(id) {
     return (e) =>
       setFormFieldStates({ ...formFieldStates, [id]: e.target.value });
+  }
+  function updateMinMax(value) {
+    setFormFieldStates({
+      ...formFieldStates,
+      minAmount: value,
+      maxAmount: value,
+    });
+  }
+  function updateAmount(id) {
+    return (e) =>
+      setFormFieldStates({
+        ...formFieldStates,
+        [id]: parseInt(e.target.value, 10) || '',
+      });
   }
   function requiredTextField(id, label) {
     return (
@@ -50,10 +62,20 @@ function ScholarshipForm() {
         />
         {requiredTextField('description', 'Description')}
         {requiredTextField('website', 'Website')}
-        <ScholarshipAmountField label="Award Type" amountTypes={AmountType} />
-        <Button variant="contained" color="primary">
-          Submit
-        </Button>
+        <ScholarshipAmountField
+          amountType={formFieldStates.amountType}
+          minAmount={formFieldStates.minAmount}
+          maxAmount={formFieldStates.maxAmount}
+          onTypeChange={updateFn('amountType')}
+          onMinChange={updateAmount('minAmount')}
+          onMaxChange={updateAmount('maxAmount')}
+          updateMinMax={updateMinMax}
+        />
+        <div>
+          <Button variant="contained" color="primary">
+            Submit
+          </Button>
+        </div>
       </form>
     </Container>
   );
