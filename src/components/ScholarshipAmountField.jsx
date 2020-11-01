@@ -1,20 +1,21 @@
 import React from 'react';
 import {
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   TextField,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  Grid,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import AmountType from '../types/AmountType';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   formControl: {
-    minWidth: 200,
+    margin: theme.spacing(1),
   },
-});
+}));
 
 function ScholarshipAmountField(props) {
   const classes = useStyles();
@@ -23,65 +24,80 @@ function ScholarshipAmountField(props) {
     minAmount,
     maxAmount,
     onTypeChange,
-    onMinChange,
-    onMaxChange,
-    updateMinMax,
+    updateAmount,
   } = props;
 
+  function amountTextField(label, value, onChange) {
+    return (
+      <TextField
+        className={classes.formControl}
+        label={label}
+        type="number"
+        InputLabelProps={{ shrink: true }}
+        InputProps={{ inputProps: { min: 0, step: 50 } }}
+        disabled={
+          amountType !== AmountType.Range && amountType !== AmountType.Fixed
+        }
+        value={value}
+        onChange={onChange}
+      />
+    );
+  }
+
   function displayAmountFields() {
-    if (amountType === AmountType.Fixed) {
-      return (
-        <TextField
-          label="Amount"
-          type="number"
-          InputLabelProps={{ shrink: true }}
-          fullWidth
-          InputProps={{ inputProps: { min: 0, step: 50 } }}
-          value={minAmount}
-          onChange={(e) => updateMinMax(parseInt(e.target.value, 10) || '')}
-        />
-      );
+    switch (amountType) {
+      case AmountType.Range:
+        return (
+          <>
+            {amountTextField('Minimum Amount', minAmount, (e) =>
+              updateAmount('minAmount', parseInt(e.target.value, 10) || '')
+            )}
+            {amountTextField('Maximum Amount', maxAmount, (e) =>
+              updateAmount('maxAmount', parseInt(e.target.value, 10) || '')
+            )}
+          </>
+        );
+      default:
+        return amountTextField('Amount', minAmount, (e) =>
+          updateAmount(
+            'minAmount',
+            parseInt(e.target.value, 10) || '',
+            'maxAmount'
+          )
+        );
     }
-    if (amountType === AmountType.Range) {
-      return ['minAmount', 'maxAmount'].map((field) => (
-        <TextField
-          key={field}
-          label={field}
-          type="number"
-          InputLabelProps={{ shrink: true }}
-          fullWidth
-          InputProps={{ inputProps: { min: 0, step: 50 } }}
-          value={field === 'minAmount' ? minAmount : maxAmount}
-          onChange={field === 'minAmount' ? onMinChange : onMaxChange}
-        />
-      ));
-    }
-    return <div />;
   }
 
   return (
-    <FormControl className={classes.formControl}>
-      <InputLabel shrink>Amount Type</InputLabel>
-      <Select value={amountType} onChange={onTypeChange}>
-        {Object.keys(AmountType).map((option) => {
-          return (
-            <MenuItem key={option} value={AmountType[option]}>
-              {option}
-            </MenuItem>
-          );
-        })}
-      </Select>
-      {displayAmountFields()}
-    </FormControl>
+    <Grid container alignItems="center" className={classes.formControl}>
+      <Grid item xs={6} sm={4} md={3}>
+        <FormLabel>Amount Type</FormLabel>
+        <RadioGroup value={amountType} onChange={onTypeChange}>
+          {Object.keys(AmountType).map((option) => {
+            return (
+              <FormControlLabel
+                key={option}
+                value={AmountType[option]}
+                control={<Radio />}
+                label={option}
+              />
+            );
+          })}
+        </RadioGroup>
+      </Grid>
+
+      <Grid item xs={6}>
+        {displayAmountFields()}
+      </Grid>
+    </Grid>
   );
 }
+
 ScholarshipAmountField.propTypes = {
   amountType: PropTypes.oneOfType(PropTypes.string).isRequired,
   minAmount: PropTypes.number.isRequired,
   maxAmount: PropTypes.number.isRequired,
   onTypeChange: PropTypes.func.isRequired,
-  onMinChange: PropTypes.func.isRequired,
-  onMaxChange: PropTypes.func.isRequired,
-  updateMinMax: PropTypes.func.isRequired,
+  updateAmount: PropTypes.func.isRequired,
 };
 export default ScholarshipAmountField;

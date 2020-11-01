@@ -20,20 +20,15 @@ function ScholarshipForm() {
     return (e) =>
       setFormFieldStates({ ...formFieldStates, [id]: e.target.value });
   }
-  function updateMinMax(value) {
-    setFormFieldStates({
-      ...formFieldStates,
-      minAmount: value,
-      maxAmount: value,
-    });
+
+  function updateAmount(id, value, id2 = '') {
+    if (id2) {
+      setFormFieldStates({ ...formFieldStates, [id]: value, [id2]: value });
+    } else {
+      setFormFieldStates({ ...formFieldStates, [id]: value });
+    }
   }
-  function updateAmount(id) {
-    return (e) =>
-      setFormFieldStates({
-        ...formFieldStates,
-        [id]: parseInt(e.target.value, 10) || '',
-      });
-  }
+
   function requiredTextField(id, label) {
     return (
       <TextField
@@ -67,9 +62,7 @@ function ScholarshipForm() {
           minAmount={formFieldStates.minAmount}
           maxAmount={formFieldStates.maxAmount}
           onTypeChange={updateFn('amountType')}
-          onMinChange={updateAmount('minAmount')}
-          onMaxChange={updateAmount('maxAmount')}
-          updateMinMax={updateMinMax}
+          updateAmount={updateAmount}
         />
         <div>
           <Button variant="contained" color="primary">

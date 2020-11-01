@@ -2,7 +2,7 @@ enum AmountType {
   Unknown = 'UNKNOWN',
   Fixed = 'FIXED',
   Range = 'RANGE',
-  Fullride = 'FULLRIDE',
+  FullRide = 'FULL_RIDE',
 }
 
 export default AmountType;
