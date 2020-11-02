@@ -21,12 +21,8 @@ function ScholarshipForm() {
       setFormFieldStates({ ...formFieldStates, [id]: e.target.value });
   }
 
-  function updateAmount(id, value, id2 = '') {
-    if (id2) {
-      setFormFieldStates({ ...formFieldStates, [id]: value, [id2]: value });
-    } else {
-      setFormFieldStates({ ...formFieldStates, [id]: value });
-    }
+  function updateAmount(minAmount, maxAmount) {
+    setFormFieldStates({ ...formFieldStates, minAmount, maxAmount });
   }
 
   function requiredTextField(id, label) {
