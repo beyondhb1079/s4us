@@ -12,12 +12,11 @@ const useStyles = makeStyles((theme) => ({
 
 function AmountTextField(props) {
   const classes = useStyles();
-  const { label, value, onChange, disabled } = props;
+  const { value, onChange, disabled } = props;
 
   return (
     <TextField
       className={classes.amountField}
-      helperText={label}
       placeholder="Unknown"
       type="number"
       InputProps={{
@@ -29,7 +28,6 @@ function AmountTextField(props) {
   );
 }
 AmountTextField.propTypes = {
-  label: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   onChange: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
