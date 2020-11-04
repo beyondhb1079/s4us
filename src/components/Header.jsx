@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Header() {
-  const match = window.location.hostname.match(/s4us-pr-(\d+).onrender.com/);
+  const match = window.location.hostname.match(/s4us-pr-(\d+)\.onrender\.com/);
   let alert = '';
   const [open, setOpen] = React.useState(match !== null);
   if (match !== null) {
