@@ -95,7 +95,7 @@ function ScholarshipAmountField(props) {
 }
 
 ScholarshipAmountField.propTypes = {
-  amountType: PropTypes.oneOf([Object.keys(AmountType), '']).isRequired, // supports default value of empty string
+  amountType: PropTypes.oneOf(Object.keys(AmountType)).isRequired, // supports default value of empty string
   minAmount: PropTypes.number.isRequired,
   maxAmount: PropTypes.number.isRequired,
   onTypeChange: PropTypes.func.isRequired,
