@@ -12,7 +12,7 @@ test('renders a list of scholarships', () => {
     { wrapper: MemoryRouter }
   );
 
-  Object.entries(want).forEach(([, v]) =>
-    expect(queryByText(v.name)).toBeInTheDocument()
+  want.forEach(({ data }) =>
+    expect(queryByText(data.name)).toBeInTheDocument()
   );
 });
