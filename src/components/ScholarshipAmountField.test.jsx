@@ -19,8 +19,8 @@ test('renders unknown field', () => {
   expect(unknownField).toBeInTheDocument();
 });
 
-test('renders Range field', () => {
-  const { getByLabelText } = render(
+test('renders all amount input fields', () => {
+  const { getAllByPlaceholderText } = render(
     <ScholarshipAmountField
       amountType="Fixed"
       minAmount={0}
@@ -31,10 +31,6 @@ test('renders Range field', () => {
     { wrapper: MemoryRouter }
   );
 
-  const fixedLabel = getByLabelText('Fixed Amount:$');
-  expect(fixedLabel).toBeInTheDocument();
-
-  // TODO: find way to test if input field is rendered
-  // const amountField = getByLabelText("amount");
-  // expect(amountField).toBeInTheDocument();
+  const amountFields = getAllByPlaceholderText('Unknown');
+  expect(amountFields.length).toBe(3);
 });
