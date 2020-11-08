@@ -41,10 +41,10 @@ export default function ScholarshipsMadeSimpleSection() {
         <Tab label="Community Contributor" />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <ScholarshipsMadeSimpleGrid />
+        <ScholarshipsMadeSimpleGrid user={value} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <ScholarshipsMadeSimpleGrid />
+        <ScholarshipsMadeSimpleGrid user={value} />
       </TabPanel>
     </div>
   );
