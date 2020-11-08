@@ -37,7 +37,7 @@ export default function ScholarshipsMadeSimpleGrid() {
           </Grid>
         </Grid>
         <Grid item>
-          <img width="500" src={logopic} className="profilePic" />
+          <img width="500" src={logopic} className="profilePic" alt="" />
         </Grid>
       </Grid>
     </Container>
