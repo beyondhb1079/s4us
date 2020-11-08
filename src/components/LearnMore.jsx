@@ -8,7 +8,7 @@ import logopic from '../img/blank.png';
 
 export default function LearnMore() {
   return (
-    <Container style={{ textAlign: 'left' }}>
+    <Container style={{ textAlign: 'left', paddingTop: '50px' }}>
       <Grid container spacing={2}>
         <Grid item>
           <img width="500" src={logopic} className="profilePic" alt="" />
