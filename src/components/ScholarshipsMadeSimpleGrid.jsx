@@ -5,7 +5,7 @@ import { Container } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
-import logopic from '../img/logo.png';
+import logopic from '../img/blank.png';
 import LoginButton from './LoginButton';
 
 function ContentDiplay(user) {
