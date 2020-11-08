@@ -11,7 +11,6 @@ import ScholarshipDetails from './pages/ScholarshipDetails';
 import Scholarships from './pages/Scholarships';
 import About from './pages/About';
 import Contact from './pages/Contact';
-import GetStarted from './pages/GetStarted';
 import ScholarshipForm from './pages/ScholarshipForm';
 import theme from './theme';
 
@@ -29,7 +28,6 @@ function App() {
           <Route path="/scholarships" component={Scholarships} />
           <Route path="/about" component={About} />
           <Route path="/contact" component={Contact} />
-          <Route path="/get-started" component={GetStarted} />
           <Route path="/" component={Home} />
         </Switch>
         <Footer />
