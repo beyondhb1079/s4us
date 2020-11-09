@@ -1,4 +1,5 @@
 import React from 'react';
+import { Container } from '@material-ui/core';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
@@ -28,8 +29,8 @@ export default function ScholarshipsMadeSimpleSection() {
   };
 
   return (
-    <div className="stepperStyle">
-      <Typography variant="h4" component="h4">
+    <Container style={{ background: 'theme.palette.background.paper' }}>
+      <Typography variant="h4" component="h4" style={{ textAlign: 'center' }}>
         Scholarships Made Simple
       </Typography>
       <Tabs
@@ -41,12 +42,12 @@ export default function ScholarshipsMadeSimpleSection() {
         <Tab label="Community Contributor" />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <ScholarshipsMadeSimpleGrid user={value} />
+        <ScholarshipsMadeSimpleGrid user="students" />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <ScholarshipsMadeSimpleGrid user={value} />
+        <ScholarshipsMadeSimpleGrid user="contributors" />
       </TabPanel>
-    </div>
+    </Container>
   );
 }
 

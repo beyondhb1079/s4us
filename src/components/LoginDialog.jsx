@@ -10,9 +10,6 @@ import PropTypes from 'prop-types';
 
 const uiConfig = {
   signInFlow: 'popup',
-  signInSuccessWithAuthResult() {
-    return true;
-  },
   signInSuccessUrl: '/get-started',
   signInOptions: [
     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
