@@ -10,6 +10,10 @@ import PropTypes from 'prop-types';
 
 const uiConfig = {
   signInFlow: 'popup',
+  signInSuccessWithAuthResult() {
+    return true;
+  },
+  signInSuccessUrl: '/get-started',
   signInOptions: [
     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
     firebase.auth.EmailAuthProvider.PROVIDER_ID,
@@ -17,7 +21,7 @@ const uiConfig = {
   ],
   credentialHelper: 'none', // hacky way to disable redirect on email login
   callbacks: {
-    signInSuccessWithAuthResult: () => false,
+    signInSuccessWithAuthResult: () => true,
   },
 };
 

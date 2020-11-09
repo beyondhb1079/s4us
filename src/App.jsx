@@ -12,6 +12,7 @@ import Scholarships from './pages/Scholarships';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import ScholarshipForm from './pages/ScholarshipForm';
+import GetStarted from './pages/GetStarted';
 import theme from './theme';
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
           <Route path="/scholarships" component={Scholarships} />
           <Route path="/about" component={About} />
           <Route path="/contact" component={Contact} />
+          <Route path="/get-started" component={GetStarted} />
           <Route path="/" component={Home} />
         </Switch>
         <Footer />

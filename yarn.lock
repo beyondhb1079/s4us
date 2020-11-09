@@ -1194,7 +1194,7 @@
   resolved "https://registry.yarnpkg.com/@date-io/core/-/core-2.10.6.tgz#1a6e671b590a08af8bd0784f3a93670e5d2d5bd7"
   integrity sha512-MGYt4GEB/4ZMdSbj6FS7/gPBvuhHUwnn5O6t8PlkSqGF1310qxypVyK4CZg5RQgev25L3R5eLVdNTyYrJOL8Rw==
 
-"@date-io/date-fns@2.x":
+"@date-io/date-fns@^2.10.6":
   version "2.10.6"
   resolved "https://registry.yarnpkg.com/@date-io/date-fns/-/date-fns-2.10.6.tgz#d0afee6452d80112017f42af4912ba22d95b11b6"
   integrity sha512-jUiIbs4VCmACy2Ml2xu3tqf0AUSZu4qQ3cRz8SoG4YPzeg1fqII8y/gTa7GJkXiH0bUKUWaf/G2dfJa9tUnmJA==
