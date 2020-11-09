@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Button, TextField } from '@material-ui/core';
+import ScholarshipAmountField from '../components/ScholarshipAmountField';
 import DatePicker from '../components/DatePicker';
 
 function ScholarshipForm() {
@@ -8,7 +9,6 @@ function ScholarshipForm() {
     deadline: new Date(),
     description: '',
     amountType: '',
-    amount: 0,
     minAmount: 0,
     maxAmount: 0,
     website: '',
@@ -20,6 +20,11 @@ function ScholarshipForm() {
     return (e) =>
       setFormFieldStates({ ...formFieldStates, [id]: e.target.value });
   }
+
+  function updateAmount(minAmount, maxAmount) {
+    setFormFieldStates({ ...formFieldStates, minAmount, maxAmount });
+  }
+
   function requiredTextField(id, label) {
     return (
       <TextField
@@ -48,9 +53,18 @@ function ScholarshipForm() {
         />
         {requiredTextField('description', 'Description')}
         {requiredTextField('website', 'Website')}
-        <Button variant="contained" color="primary">
-          Submit
-        </Button>
+        <ScholarshipAmountField
+          amountType={formFieldStates.amountType}
+          minAmount={formFieldStates.minAmount}
+          maxAmount={formFieldStates.maxAmount}
+          onTypeChange={updateFn('amountType')}
+          updateAmount={updateAmount}
+        />
+        <div>
+          <Button variant="contained" color="primary">
+            Submit
+          </Button>
+        </div>
       </form>
     </Container>
   );
