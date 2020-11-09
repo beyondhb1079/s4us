@@ -2,6 +2,7 @@
 
 # Firebase
 .firebase/
+*-debug.log
 
 # because we use yarn
 package-lock.json
@@ -23,6 +24,7 @@ package-lock.json
 .env.development.local
 .env.test.local
 .env.production.local
+src/react-app-env.d.ts
 
 npm-debug.log*
 yarn-debug.log*

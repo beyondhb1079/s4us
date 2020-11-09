@@ -19,35 +19,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ProfileInput() {
+export default function ProfileForm() {
   const classes = useStyles();
   const [grade, setGrade] = React.useState('');
-  const [gradYear, setGradeYear] = React.useState('');
+  const [gradYear, setGradYear] = React.useState('');
   const [major, setMajor] = React.useState('');
   const [gender, setGender] = React.useState('');
   const [daca, setDaca] = React.useState('');
-
-  const handleGradeChange = (event) => {
-    setGrade(event.target.value);
-  };
-  const handleGradChange = (event) => {
-    setGradeYear(event.target.value);
-  };
-  const handleMajorChange = (event) => {
-    setMajor(event.target.value);
-  };
-  const handleGenderChange = (event) => {
-    setGender(event.target.value);
-  };
-  const handleDacaChange = (event) => {
-    setDaca(event.target.value);
-  };
 
   return (
     <div>
       <FormControl className={classes.formControl}>
         <InputLabel>Grade</InputLabel>
-        <Select labelId="demo-simple-select-label" id="demo-simple-select" value={grade} onChange={handleGradeChange}>
+        <Select value={grade} onChange={(e) => setGrade(e.target.value)}>
           <MenuItem value={20}>Highschool Senior</MenuItem>
           <MenuItem value={30}>College Freshman</MenuItem>
           <MenuItem value={40}>College Sophomore</MenuItem>
@@ -58,12 +42,7 @@ export default function ProfileInput() {
       <br />
       <FormControl className={classes.formControl}>
         <InputLabel>Graduation Year</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={gradYear}
-          onChange={handleGradChange}
-        >
+        <Select value={gradYear} onChange={(e) => setGradYear(e.target.value)}>
           <MenuItem value={10}>2020</MenuItem>
           <MenuItem value={20}>2021</MenuItem>
           <MenuItem value={30}>2022</MenuItem>
@@ -72,12 +51,7 @@ export default function ProfileInput() {
       <br />
       <FormControl className={classes.formControl}>
         <InputLabel>Major</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={major}
-          onChange={handleMajorChange}
-        >
+        <Select value={major} onChange={(e) => setMajor(e.target.value)}>
           <MenuItem value={10}>Computer Science</MenuItem>
           <MenuItem value={20}>Chemical Engineering</MenuItem>
           <MenuItem value={30}>Data Science</MenuItem>
@@ -86,12 +60,7 @@ export default function ProfileInput() {
       <br />
       <FormControl className={classes.formControl}>
         <InputLabel>Gender</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={gender}
-          onChange={handleGenderChange}
-        >
+        <Select value={gender} onChange={(e) => setGender(e.target.value)}>
           <MenuItem value={10}>Male</MenuItem>
           <MenuItem value={20}>Female</MenuItem>
         </Select>
@@ -99,9 +68,21 @@ export default function ProfileInput() {
       <br />
       <FormControl component="fieldset">
         <FormLabel component="legend">Status</FormLabel>
-        <RadioGroup aria-label="gender" name="gender1" value={daca} onChange={handleDacaChange}>
-          <FormControlLabel value="daca" control={<Radio />} label="Have DACA" />
-          <FormControlLabel value="noDaca" control={<Radio />} label="No DACA" />
+        <RadioGroup
+          aria-label="gender"
+          name="gender1"
+          value={daca}
+          onChange={(e) => setDaca(e.target.value)}>
+          <FormControlLabel
+            value="daca"
+            control={<Radio />}
+            label="Have DACA"
+          />
+          <FormControlLabel
+            value="noDaca"
+            control={<Radio />}
+            label="No DACA"
+          />
         </RadioGroup>
       </FormControl>
     </div>
