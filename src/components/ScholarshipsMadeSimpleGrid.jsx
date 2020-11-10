@@ -60,15 +60,11 @@ export default function ScholarshipsMadeSimpleGrid(props) {
     <>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6} container>
-          <Grid item xs container direction="column" spacing={2}>
-            <Grid item xs>
-              {ContentText(user)}
-              {ContentDiplay(user)}
-            </Grid>
-          </Grid>
+          {ContentText(user)}
+          {ContentDiplay(user)}
         </Grid>
         <Grid item>
-          <img width="500" src={logopic} className="profilePic" alt="" />
+          <img width="400" src={logopic} className="profilePic" alt="" />
         </Grid>
       </Grid>
     </>
