@@ -5,7 +5,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
-import ScholarshipsMadeSimpleGrid from './ScholarshipsMadeSimpleGrid';
+import ScholarshipsMadeSimpleGrid from './ScholarshipsMadeSimpleContent';
 
 function TabPanel(props) {
   const { children, value, index } = props;

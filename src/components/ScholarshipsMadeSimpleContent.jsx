@@ -54,12 +54,12 @@ function ContentDiplay(user) {
   );
 }
 
-export default function ScholarshipsMadeSimpleGrid(props) {
+export default function ScholarshipsMadeSimpleContent(props) {
   const { user } = props;
   return (
     <>
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={6} container>
+        <Grid item xs>
           {ContentText(user)}
           {ContentDiplay(user)}
         </Grid>
@@ -71,6 +71,6 @@ export default function ScholarshipsMadeSimpleGrid(props) {
   );
 }
 
-ScholarshipsMadeSimpleGrid.propTypes = {
+ScholarshipsMadeSimpleContent.propTypes = {
   user: PropTypes.number.isRequired,
 };
