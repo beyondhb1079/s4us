@@ -46,9 +46,9 @@ export default function TemporaryDrawer() {
       <Button
         style={{
           marginRight: '50px',
-          background: 'whitesmoke',
-          color: 'black',
-          border: '2px solid black',
+          background: 'transparent',
+          color: 'rgb(60, 100, 177)',
+          border: '1px solid black',
         }}
         onClick={toggleDrawer('left', true)}>
         Menu
