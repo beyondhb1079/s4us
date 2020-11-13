@@ -18,7 +18,6 @@ function AmountTextField(props) {
     <TextField
       className={classes.amountField}
       placeholder="Unknown"
-      type="number"
       InputProps={{
         inputProps: { min: 0, step: 50 },
         startAdornment: <InputAdornment position="start">$</InputAdornment>,

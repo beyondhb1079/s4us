@@ -21,8 +21,8 @@ function ScholarshipForm() {
     deadline: null,
     description: '',
     amountType: null,
-    minAmount: 0,
-    maxAmount: 0,
+    minAmount: '',
+    maxAmount: '',
     website: '',
     scholarshipType: '',
   });
@@ -63,33 +63,49 @@ function ScholarshipForm() {
     });
   }
 
+  //returns true if is invalid
   function invalidAmountFields() {
     const min = formFieldStates.minAmount;
     const max = formFieldStates.maxAmount;
-    //checks if amount negative or 0
-    let err1 = min <= 0 || '';
-    let err2 = max <= 0 || '';
 
-    if (
-      formFieldStates.amountType === 'FIXED' ||
-      formFieldStates.amountType === 'RANGE'
-    )
+    //error if amount less than 0 or a float
+    let err1 = min <= 0 || Number(min) % 1 !== 0;
+    let err2 = max <= 0 || Number(max) % 1 !== 0;
+
+    if (formFieldStates.amountType === 'FIXED') {
       amountHelperText = err1 && 'Please input a valid number';
-
-    if (formFieldStates.amountType === 'FIXED')
       return { minAmountError: err1, maxAmountError: false };
-    else if (formFieldStates.amountType === 'RANGE') {
+    }
+
+    if (formFieldStates.amountType === 'RANGE') {
+      //both field are filled
       if (min && max) {
-        err1 = min >= max;
-        amountHelperText =
-          err1 && 'Minimum amount must be less than the maximum amount';
+        //either is not an integer > 0
+        if (err1 || err2) {
+          amountHelperText =
+            'Please input a valid number in at least one of the fields';
+          return { minAmountError: err1, maxAmountError: err2 };
+        }
+        //both are valid numbers
+        if (!err1 && !err2) {
+          let minError = Number(min) >= Number(max);
+          //console.log(min >= max);
+          amountHelperText =
+            minError && 'Minimum amount must be less than the maximum amount';
+          return { minAmountError: minError, maxAmountError: err2 };
+        }
       }
-
-      //checks if at least one bounds is given
-      else if ((min && !max) || (!min && max)) err1 = err2 = false;
-
+      //either field is filled
+      if (min || max) {
+        amountHelperText = (min || max) && 'Please input a valid number';
+        if (min && !max) return { minAmountError: err1, maxAmountError: false };
+        else return { minAmountError: false, maxAmountError: err2 };
+      }
+      amountHelperText =
+        'Please input a valid number in at least one of the fields';
       return { minAmountError: err1, maxAmountError: err2 };
     }
+
     return { minAmountError: false, maxAmountError: false };
   }
 
