@@ -7,16 +7,25 @@ import {
 } from '@material-ui/pickers';
 import PropTypes from 'prop-types';
 import exact from 'prop-types-exact';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+  datePickerStyle: {
+    minWidth: 400,
+  },
+});
 
 function DatePicker(props) {
-  const { id, label, value, onChange } = props;
+  const classes = useStyles();
+  const { id, label, error, helperText, value, onChange } = props;
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <KeyboardDatePicker
+        className={classes.datePickerStyle}
         format="MM/dd/yyyy"
-        fullWidth
         required
-        {...{ id, label, value, onChange }}
+        helperText={error && helperText}
+        {...{ id, label, error, value, onChange }}
       />
     </MuiPickersUtilsProvider>
   );
@@ -24,7 +33,14 @@ function DatePicker(props) {
 DatePicker.propTypes = exact({
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  value: PropTypes.instanceOf(Date).isRequired,
+  error: PropTypes.bool,
+  helperText: PropTypes.string,
+  value: PropTypes.instanceOf(Date),
   onChange: PropTypes.func.isRequired,
 });
+DatePicker.defaultProps = {
+  value: null, // so console doesn't complain about deadline being null in the beginning
+  error: false,
+  helperText: '',
+};
 export default DatePicker;

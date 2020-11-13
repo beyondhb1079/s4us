@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
 
 function AmountTextField(props) {
   const classes = useStyles();
-  const { value, onChange, disabled } = props;
+  const { value, onChange, disabled, error } = props;
 
   return (
     <TextField
@@ -23,7 +23,7 @@ function AmountTextField(props) {
         inputProps: { min: 0, step: 50 },
         startAdornment: <InputAdornment position="start">$</InputAdornment>,
       }}
-      {...{ disabled, value, onChange }}
+      {...{ error, disabled, value, onChange }}
     />
   );
 }
