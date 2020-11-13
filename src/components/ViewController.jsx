@@ -1,16 +1,13 @@
 import React from 'react';
-import { Container } from '@material-ui/core';
+import { Container, Grid, Link as MuiLink } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Hidden from '@material-ui/core/Hidden';
 import withWidth from '@material-ui/core/withWidth';
-import DesktopHeader from '../components/Header';
-import Sidebar from '../components/Sidebar';
-import { BRAND_NAME } from '../config/constants';
 import { Link } from 'react-router-dom';
-import LoginButton from '../components/LoginButton';
-
-import { Grid, Link as MuiLink } from '@material-ui/core';
+import DesktopHeader from './Header';
+import Sidebar from './Sidebar';
+import { BRAND_NAME } from '../config/constants';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,19 +34,21 @@ function BreakpointOnly() {
       style={{
         background: 'theme.palette.background.paper',
         alignItems: 'center',
+        paddingTop: '15px',
       }}
       className={classes.root}>
       <div className={classes.container}>
         <Hidden only={['md', 'lg', 'xl']}>
           <Grid container className={classes.header} spacing={3}>
-            <Grid item>
+            <Grid item xs={12} style={{ textAlign: 'center' }}>
               <MuiLink component={Link} to="/" variant="h4" underline="none">
                 {BRAND_NAME.toUpperCase()}
               </MuiLink>
             </Grid>
+            <Grid item xs={12} style={{ textAlign: 'center' }}>
+              <Sidebar />
+            </Grid>
           </Grid>
-          <Sidebar />
-          <LoginButton />
         </Hidden>
 
         <Hidden only={['sm', 'xs']}>

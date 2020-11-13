@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
+import LoginButton from './LoginButton';
 
 const useStyles = makeStyles({
   list: {
@@ -41,16 +42,24 @@ export default function TemporaryDrawer() {
   );
 
   return (
-    <div>
-      <React.Fragment key={'left'}>
-        <Button onClick={toggleDrawer('left', true)}>{'Menu'}</Button>
-        <Drawer
-          anchor={'left'}
-          open={state['left']}
-          onClose={toggleDrawer('left', false)}>
-          {list('left')}
-        </Drawer>
-      </React.Fragment>
-    </div>
+    <React.Fragment key="left">
+      <Button
+        style={{
+          marginRight: '50px',
+          background: 'whitesmoke',
+          color: 'black',
+          border: '2px solid black',
+        }}
+        onClick={toggleDrawer('left', true)}>
+        Menu
+      </Button>
+      <Drawer
+        anchor="left"
+        open={state.left}
+        onClose={toggleDrawer('left', false)}>
+        {list('left')}
+      </Drawer>
+      <LoginButton />
+    </React.Fragment>
   );
 }
