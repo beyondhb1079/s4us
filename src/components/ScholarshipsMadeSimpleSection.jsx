@@ -42,14 +42,14 @@ export default function ScholarshipsMadeSimpleSection() {
             onChange={handleChange}
             centered
             style={{ color: 'black', background: 'whitesmoke' }}>
-            <Tab value={'student'} label="students" />
-            <Tab value={'contributor'} label="contributors" />
+            <Tab value="student" label="students" />
+            <Tab value="contributor" label="contributors" />
           </TabList>
         </AppBar>
-        <TabPanel value={'student'} index={0}>
+        <TabPanel value="student" index={0}>
           <ScholarshipsMadeSimpleGrid user="students" />
         </TabPanel>
-        <TabPanel value={'contributor'} index={1}>
+        <TabPanel value="contributor" index={1}>
           <ScholarshipsMadeSimpleGrid user="contributors" />
         </TabPanel>
       </TabContext>

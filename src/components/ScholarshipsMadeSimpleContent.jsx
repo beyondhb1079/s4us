@@ -4,9 +4,9 @@ import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
 import logopic from '../img/blank.png';
 import LoginButton from './LoginButton';
-import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   img: {
