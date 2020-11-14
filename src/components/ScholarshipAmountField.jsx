@@ -105,8 +105,16 @@ ScholarshipAmountField.propTypes = {
   maxAmount: PropTypes.string.isRequired,
   onTypeChange: PropTypes.func.isRequired,
   updateAmount: PropTypes.func.isRequired,
+  typeError: PropTypes.bool,
+  minAmountError: PropTypes.bool,
+  maxAmountError: PropTypes.bool,
+  helperText: PropTypes.string,
 };
 ScholarshipAmountField.defaultProps = {
   amountType: null,
+  typeError: false,
+  minAmountError: false,
+  maxAmountError: false,
+  helperText: '',
 };
 export default ScholarshipAmountField;

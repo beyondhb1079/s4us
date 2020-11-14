@@ -30,5 +30,9 @@ AmountTextField.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   onChange: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
+  error: PropTypes.bool,
+};
+AmountTextField.defaultProps = {
+  error: false,
 };
 export default AmountTextField;

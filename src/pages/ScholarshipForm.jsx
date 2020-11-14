@@ -37,8 +37,54 @@ function ScholarshipForm() {
     maxAmount: false,
   });
 
+  // returns true if amount is invalid
+  function invalidAmountFields() {
+    const min = formFieldStates.minAmount;
+    const max = formFieldStates.maxAmount;
+
+    // true if amount less than 0 or not an integer
+    const err1 = min <= 0 || Number(min) % 1 !== 0;
+    const err2 = max <= 0 || Number(max) % 1 !== 0;
+
+    if (formFieldStates.amountType === 'FIXED') {
+      amountHelperText = err1 && 'Please input a valid number';
+      return { minAmountError: err1, maxAmountError: false };
+    }
+
+    if (formFieldStates.amountType === 'RANGE') {
+      // both fields are filled
+      if (min && max) {
+        // either is not an integer > 0
+        if (err1 || err2) {
+          amountHelperText = 'Please input a valid number or leave blank';
+          return { minAmountError: err1, maxAmountError: err2 };
+        }
+        // both are valid numbers
+        if (!err1 && !err2) {
+          const minError = Number(min) >= Number(max);
+          amountHelperText =
+            minError && 'Minimum amount must be less than the maximum amount';
+          return { minAmountError: minError, maxAmountError: err2 };
+        }
+      }
+
+      // either field is filled
+      if (min || max) {
+        amountHelperText = (min || max) && 'Please input a valid number';
+        if (min && !max) return { minAmountError: err1, maxAmountError: false };
+        return { minAmountError: false, maxAmountError: err2 };
+      }
+      amountHelperText =
+        'Please input a valid number in at least one of the fields';
+      return { minAmountError: err1, maxAmountError: err2 };
+    }
+
+    return { minAmountError: false, maxAmountError: false };
+  }
+
   function validateFields() {
     const nameError = !formFieldStates.name;
+    /* eslint-disable no-restricted-globals */
     const deadlineError =
       !formFieldStates.deadline || isNaN(formFieldStates.deadline); // checks if deadline is invalid date
     const descriptionError = !formFieldStates.description;
@@ -47,9 +93,6 @@ function ScholarshipForm() {
     amountHelperText = amountTypeError && 'Please choose an option above';
 
     const { minAmountError, maxAmountError } = invalidAmountFields();
-
-    console.log(formFieldStates);
-    console.log(`${minAmountError} ${maxAmountError}`);
 
     setFormFieldErrors({
       ...formFieldErrors,
@@ -61,52 +104,6 @@ function ScholarshipForm() {
       minAmount: minAmountError,
       maxAmount: maxAmountError,
     });
-  }
-
-  //returns true if is invalid
-  function invalidAmountFields() {
-    const min = formFieldStates.minAmount;
-    const max = formFieldStates.maxAmount;
-
-    //error if amount less than 0 or a float
-    let err1 = min <= 0 || Number(min) % 1 !== 0;
-    let err2 = max <= 0 || Number(max) % 1 !== 0;
-
-    if (formFieldStates.amountType === 'FIXED') {
-      amountHelperText = err1 && 'Please input a valid number';
-      return { minAmountError: err1, maxAmountError: false };
-    }
-
-    if (formFieldStates.amountType === 'RANGE') {
-      //both field are filled
-      if (min && max) {
-        //either is not an integer > 0
-        if (err1 || err2) {
-          amountHelperText =
-            'Please input a valid number in at least one of the fields';
-          return { minAmountError: err1, maxAmountError: err2 };
-        }
-        //both are valid numbers
-        if (!err1 && !err2) {
-          let minError = Number(min) >= Number(max);
-          //console.log(min >= max);
-          amountHelperText =
-            minError && 'Minimum amount must be less than the maximum amount';
-          return { minAmountError: minError, maxAmountError: err2 };
-        }
-      }
-      //either field is filled
-      if (min || max) {
-        amountHelperText = (min || max) && 'Please input a valid number';
-        if (min && !max) return { minAmountError: err1, maxAmountError: false };
-        else return { minAmountError: false, maxAmountError: err2 };
-      }
-      amountHelperText =
-        'Please input a valid number in at least one of the fields';
-      return { minAmountError: err1, maxAmountError: err2 };
-    }
-
-    return { minAmountError: false, maxAmountError: false };
   }
 
   function updateFn(id) {
