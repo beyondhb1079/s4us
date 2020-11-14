@@ -3,6 +3,7 @@ import { Container, Button, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ScholarshipAmountField from '../components/ScholarshipAmountField';
 import DatePicker from '../components/DatePicker';
+import AmountType from '../types/AmountType';
 
 const useStyles = makeStyles({
   textFieldStyle: {
@@ -46,12 +47,12 @@ function ScholarshipForm() {
     const err1 = min <= 0 || Number(min) % 1 !== 0;
     const err2 = max <= 0 || Number(max) % 1 !== 0;
 
-    if (formFieldStates.amountType === 'FIXED') {
+    if (formFieldStates.amountType === AmountType.Fixed) {
       amountHelperText = err1 && 'Please input a valid number';
       return { minAmountError: err1, maxAmountError: false };
     }
 
-    if (formFieldStates.amountType === 'RANGE') {
+    if (formFieldStates.amountType === AmountType.Range) {
       // both fields are filled
       if (min && max) {
         // either is not an integer > 0
