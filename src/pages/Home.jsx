@@ -4,7 +4,7 @@ import ScholarshipsMadeSimpleSection from '../components/ScholarshipsMadeSimpleS
 
 function Home() {
   return (
-    <Container style={{ textAlign: 'left' }}>
+    <Container>
       <h1 style={{ textAlign: 'center' }}>Find Scholarships Today</h1>
       <ScholarshipsMadeSimpleSection />
     </Container>

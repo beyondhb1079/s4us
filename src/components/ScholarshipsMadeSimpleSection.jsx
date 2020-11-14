@@ -1,52 +1,58 @@
 import React from 'react';
 import { Container } from '@material-ui/core';
-import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import TabContext from '@material-ui/lab/TabContext';
+import TabList from '@material-ui/lab/TabList';
+import TabPanel from '@material-ui/lab/TabPanel';
 import ScholarshipsMadeSimpleGrid from './ScholarshipsMadeSimpleContent';
 
-function TabPanel(props) {
-  const { children, value, index } = props;
-
-  return (
-    <div role="tabpanel" hidden={value !== index}>
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
+const useStyles = makeStyles((theme) => ({
+  style: {
+    background: 'theme.palette.background.paper',
+    textAlign: 'left',
+    color: 'rgba(0, 0, 0, 0.54)',
+  },
+  img: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'contain',
+  },
+}));
 
 export default function ScholarshipsMadeSimpleSection() {
-  const [value, setValue] = React.useState(0);
+  const classes = useStyles();
+  const [user, setUser] = React.useState('student');
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const handleChange = (event, newUser) => {
+    setUser(newUser);
   };
 
   return (
-    <Container style={{ background: 'theme.palette.background.paper' }}>
+    <Container className={classes.style}>
       <Typography variant="h4" component="h4" style={{ textAlign: 'center' }}>
         Scholarships Made Simple
       </Typography>
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        indicatorColor="primary"
-        centered>
-        <Tab label="Student" />
-        <Tab label="Community Contributor" />
-      </Tabs>
-      <TabPanel value={value} index={0}>
-        <ScholarshipsMadeSimpleGrid user="students" />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <ScholarshipsMadeSimpleGrid user="contributors" />
-      </TabPanel>
+      <TabContext value={user}>
+        <AppBar position="static">
+          <TabList
+            onChange={handleChange}
+            centered
+            style={{ color: 'black', background: 'whitesmoke' }}>
+            <Tab value={'student'} label="students" />
+            <Tab value={'contributor'} label="contributors" />
+          </TabList>
+        </AppBar>
+        <TabPanel value={'student'} index={0}>
+          <ScholarshipsMadeSimpleGrid user="students" />
+        </TabPanel>
+        <TabPanel value={'contributor'} index={1}>
+          <ScholarshipsMadeSimpleGrid user="contributors" />
+        </TabPanel>
+      </TabContext>
     </Container>
   );
 }
