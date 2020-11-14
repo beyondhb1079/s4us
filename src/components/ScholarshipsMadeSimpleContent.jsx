@@ -25,7 +25,7 @@ function ButtonList(user) {
         color="primary"
         component={Link}
         style={{ marginLeft: '20px' }}
-        to={user === 'students' ? '/scholarships' : '/new'}
+        to={user === 'students' ? '/scholarships' : '/scholarships/new'}
         buttonProperties>
         {user === 'students' ? 'Find Scholarships' : 'Submit A Scholarship'}
       </Button>
