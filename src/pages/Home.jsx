@@ -4,8 +4,8 @@ import LearnMore from '../components/LearnMore';
 
 function Home() {
   return (
-    <Container style={{ textAlign: 'center' }}>
-      <h1>Find Scholarships Today</h1>
+    <Container>
+      <h1 style={{ textAlign: 'center' }}>Find Scholarships Today</h1>
       <LearnMore />
     </Container>
   );
