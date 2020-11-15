@@ -12,7 +12,7 @@ const developers = [
   {
     name: 'Josue Rios',
     img: testPic,
-    description: 'TODO: about Josue Rios',
+    description: `I am a DACA recipient currently working as a software engineer. I came up with this project idea after participating in the Beyond HB 1079 team and noticing how painful it is to find scholarships and compile a list for undocumented students. My hope is to make this the go-to resource for scholarships for undocumented students.`,
   },
   {
     name: 'Edwin Lopez',
