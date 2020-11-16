@@ -1278,10 +1278,10 @@
   dependencies:
     "@firebase/auth-types" "0.10.1"
 
-"@firebase/auth@0.15.1":
-  version "0.15.1"
-  resolved "https://registry.yarnpkg.com/@firebase/auth/-/auth-0.15.1.tgz#2e0e7397d6f754d81916babd9bce21a51f4b25a3"
-  integrity sha512-qVJTmq/6l3/o6V93nAD+n1ExTywbKEFYbuuI1TZIUryy5KSXOFnxilmZI4yJeQSZ3ee06YiJsIRYRaYUeg6JQQ==
+"@firebase/auth@0.15.2":
+  version "0.15.2"
+  resolved "https://registry.yarnpkg.com/@firebase/auth/-/auth-0.15.2.tgz#9ada3f37620d131a1c56994138a599b5c9f9ca2e"
+  integrity sha512-2n32PBi6x9jVhc0E/ewKLUCYYTzFEXL4PNkvrrlGKbzeTBEkkyzfgUX7OV9UF5wUOG+gurtUthuur1zspZ/9hg==
   dependencies:
     "@firebase/auth-types" "0.10.1"
 
@@ -1366,10 +1366,10 @@
     node-fetch "2.6.1"
     tslib "^1.11.1"
 
-"@firebase/firestore@2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@firebase/firestore/-/firestore-2.0.1.tgz#2d4734ecd5d165582eedea8487849c5535a55c0e"
-  integrity sha512-7WMv3b+2P/6SOE0RxPB+S6k75/vYTDhOpPBp6JH6nPQjS9mGtR9m0adKtXjOBBugcbK6sBgPMzxmQGwQl8lW4w==
+"@firebase/firestore@2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@firebase/firestore/-/firestore-2.0.2.tgz#300e7430a08d8c8779471e43c892a2cefe405b62"
+  integrity sha512-6kO/vWUmTOANA/ql+i16DFMc63gamU76Nycyt7k0r8QfcdXu93Cwizw4ff4DNMnpnkAJkTk36fPAxBxEvBXkzw==
   dependencies:
     "@firebase/component" "0.1.21"
     "@firebase/firestore-types" "2.0.0"
@@ -1542,13 +1542,13 @@
     tslib "^1.11.1"
 
 "@firebase/rules-unit-testing@^1.0.7":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@firebase/rules-unit-testing/-/rules-unit-testing-1.1.0.tgz#f2909fb2cd3b9841381f443bd440a329a165ebb4"
-  integrity sha512-93/ZyMnhk28CC3u1GU78YLV9XC4os023JXsmLoXDiweubZFu/jMc7CYCQNH7YPqWZ0/kIqi7/j4gFPY0v6Wg7A==
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@firebase/rules-unit-testing/-/rules-unit-testing-1.1.1.tgz#8dbb12c3d3a7eb13aea5b6b320ca5c399aaedee7"
+  integrity sha512-LFS4cngH3PJXKNuaaTDCRShioqjZXDynogeGe4/322eHHLbSNCiS5datkPVK3hPtMkV5dOJnJxWr4vSjPTKJyQ==
   dependencies:
     "@firebase/logger" "0.2.6"
     "@firebase/util" "0.3.4"
-    firebase "8.0.1"
+    firebase "8.0.2"
     request "2.88.2"
 
 "@firebase/storage-types@0.3.13":
@@ -1566,10 +1566,10 @@
     "@firebase/util" "0.3.2"
     tslib "^1.11.1"
 
-"@firebase/storage@0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@firebase/storage/-/storage-0.4.1.tgz#b86973a8ab3ef52f38d6463fcc7613f5801ff8e4"
-  integrity sha512-/l05Dn3UYynPELt0ZFJz24H49sQ8c8KnOEGR/Pk1AOjLmc71vjjobVEkgkHyy1eyfmYuAZtsc6ePOwc89YnBTg==
+"@firebase/storage@0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@firebase/storage/-/storage-0.4.2.tgz#bc5924b87bd2fdd4ab0de49851c0125ebc236b89"
+  integrity sha512-87CrvKrf8kijVekRBmUs8htsNz7N5X/pDhv3BvJBqw8K65GsUolpyjx0f4QJRkCRUYmh3MSkpa5P08lpVbC6nQ==
   dependencies:
     "@firebase/component" "0.1.21"
     "@firebase/storage-types" "0.3.13"
@@ -6558,24 +6558,24 @@ firebase-tools@^8.12.1:
     winston "^3.0.0"
     ws "^7.2.3"
 
-firebase@8.0.1:
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/firebase/-/firebase-8.0.1.tgz#24836c654c8577abd640439a5f1bc707bbd9f236"
-  integrity sha512-7QQKw+ycoR3LhMlxhPM+ND1F2Fx1eDlf3E55xYbmooxFW1t0p94HNENBc3JZytR1H0VoG9nSm2QEHsdr/Ca1Rg==
+firebase@8.0.2:
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/firebase/-/firebase-8.0.2.tgz#7bc8a220ce6b206121c4a9740eca1ad4be23ff86"
+  integrity sha512-tPtXQ8sifo82f7bOxYcR/yEdJ4IbL4/fpQrophRHFAaYCsYGp2Q/c1zz0voX9cLap8MH2uwh5LIVBqZ8nyT5ZQ==
   dependencies:
     "@firebase/analytics" "0.6.2"
     "@firebase/app" "0.6.13"
     "@firebase/app-types" "0.6.1"
-    "@firebase/auth" "0.15.1"
+    "@firebase/auth" "0.15.2"
     "@firebase/database" "0.7.1"
-    "@firebase/firestore" "2.0.1"
+    "@firebase/firestore" "2.0.2"
     "@firebase/functions" "0.6.1"
     "@firebase/installations" "0.4.19"
     "@firebase/messaging" "0.7.3"
     "@firebase/performance" "0.4.4"
     "@firebase/polyfill" "0.3.36"
     "@firebase/remote-config" "0.1.30"
-    "@firebase/storage" "0.4.1"
+    "@firebase/storage" "0.4.2"
     "@firebase/util" "0.3.4"
 
 firebase@^7.19.1:
