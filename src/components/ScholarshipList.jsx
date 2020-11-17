@@ -62,7 +62,10 @@ function ScholarshipList({ scholarships }) {
         <Grid item xs={12} key={id}>
           <Card variant="outlined">
             <CardActionArea component={Link} to={`/scholarships/${id}`}>
-              <CardHeader title={data.name} subheader={data.amount} />
+              <CardHeader
+                title={data.name}
+                subheader={data.amount.toString()}
+              />
               <CardContent className={classes.content}>
                 <Typography gutterBottom variant="body1">
                   Deadline:{' '}

@@ -1,5 +1,7 @@
 import { clearFirestoreData } from '@firebase/rules-unit-testing';
 import firebase, { firestore } from 'firebase';
+import AmountType from '../types/AmountType';
+import ScholarshipAmount from '../types/ScholarshipAmount';
 import { converter } from './Scholarships';
 
 const app = firebase.initializeApp({ projectId: 'scholarship-test' });
@@ -16,7 +18,11 @@ afterAll(async () => app.delete());
 test('converter.toFirestore', () => {
   const data = {
     name: 'scholarship',
-    amount: 2500,
+    amount: new ScholarshipAmount({
+      min: 2500,
+      max: 2500,
+      type: AmountType.Fixed,
+    }),
     description: 'description',
     deadline: new Date('2019-02-20'),
     website: 'mit.com',
@@ -35,7 +41,7 @@ test('converter.toFirestore', () => {
 test('converter.fromFirestore', () => {
   const snapdata: firestore.DocumentData = {
     name: 'scholarship',
-    amount: 2500,
+    amount: { min: 2500, max: 2500, type: AmountType.Fixed },
     description: 'description',
     deadline: firestore.Timestamp.fromDate(new Date('2019-02-20')),
     website: 'mit.com',
