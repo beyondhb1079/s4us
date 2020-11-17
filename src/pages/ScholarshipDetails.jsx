@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactRouterPropTypes from 'react-router-prop-types';
-import Container from '@material-ui/core/Container';
+import { Button, Container, Link, makeStyles, Typography } from '@material-ui/core';
 import Scholarships from '../models/Scholarships';
-import { Button, Link, makeStyles, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
   description: {
