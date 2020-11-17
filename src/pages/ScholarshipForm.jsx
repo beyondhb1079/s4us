@@ -3,7 +3,7 @@ import { Container, Button, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ScholarshipAmountField from '../components/ScholarshipAmountField';
 import DatePicker from '../components/DatePicker';
-import AmountType from '../types/AmountType';
+import { invalidAmountFields } from '../validation/amountValidation';
 
 const useStyles = makeStyles({
   textFieldStyle: {
@@ -12,8 +12,7 @@ const useStyles = makeStyles({
 });
 
 // regular expression used for valid website urls
-const websiteReg = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
-let amountHelperText = '';
+const websiteReg = /^(http(s)?:\/\/(www\.)?)?[\w-]+(\.[\w-]+)*\.[a-z]{2,}((\/|#|\?)(\S)*)?$/;
 
 function ScholarshipForm() {
   const classes = useStyles();
@@ -37,51 +36,9 @@ function ScholarshipForm() {
     minAmount: false,
     maxAmount: false,
   });
-
-  // returns true if amount is invalid
-  function invalidAmountFields() {
-    const min = formFieldStates.minAmount;
-    const max = formFieldStates.maxAmount;
-
-    // true if amount less than 0 or not an integer
-    const err1 = min <= 0 || Number(min) % 1 !== 0;
-    const err2 = max <= 0 || Number(max) % 1 !== 0;
-
-    if (formFieldStates.amountType === AmountType.Fixed) {
-      amountHelperText = err1 && 'Please input a valid number';
-      return { minAmountError: err1, maxAmountError: false };
-    }
-
-    if (formFieldStates.amountType === AmountType.Range) {
-      // both fields are filled
-      if (min && max) {
-        // either is not an integer > 0
-        if (err1 || err2) {
-          amountHelperText = 'Please input a valid number or leave blank';
-          return { minAmountError: err1, maxAmountError: err2 };
-        }
-        // both are valid numbers
-        if (!err1 && !err2) {
-          const minError = Number(min) >= Number(max);
-          amountHelperText =
-            minError && 'Minimum amount must be less than the maximum amount';
-          return { minAmountError: minError, maxAmountError: err2 };
-        }
-      }
-
-      // either field is filled
-      if (min || max) {
-        amountHelperText = (min || max) && 'Please input a valid number';
-        if (min && !max) return { minAmountError: err1, maxAmountError: false };
-        return { minAmountError: false, maxAmountError: err2 };
-      }
-      amountHelperText =
-        'Please input a valid number in at least one of the fields';
-      return { minAmountError: err1, maxAmountError: err2 };
-    }
-
-    return { minAmountError: false, maxAmountError: false };
-  }
+  const [amountHelperText, setAmountHelperText] = useState(
+    'Please choose an option above.'
+  );
 
   function validateFields() {
     const nameError = !formFieldStates.name;
@@ -91,9 +48,15 @@ function ScholarshipForm() {
     const descriptionError = !formFieldStates.description;
     const websiteError = !websiteReg.test(formFieldStates.website);
     const amountTypeError = !formFieldStates.amountType;
-    amountHelperText = amountTypeError && 'Please choose an option above';
 
-    const { minAmountError, maxAmountError } = invalidAmountFields();
+    const { minAmountError, maxAmountError } = invalidAmountFields(
+      formFieldStates.amountType,
+      formFieldStates.minAmount,
+      formFieldStates.maxAmount,
+      (message) => {
+        setAmountHelperText(message);
+      }
+    );
 
     setFormFieldErrors({
       ...formFieldErrors,
@@ -119,8 +82,8 @@ function ScholarshipForm() {
   function requiredTextField(id, label, error, helperText, multiline = false) {
     return (
       <TextField
-        className={classes.textFieldStyle}
         {...{ id, label, error, multiline }}
+        className={classes.textFieldStyle}
         helperText={error && helperText}
         required
         value={formFieldStates[id]}
