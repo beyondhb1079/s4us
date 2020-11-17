@@ -44,7 +44,7 @@ export default function ScholarshipDetailsPage({ match }) {
   return (
     <Container>
       <h1>{name}</h1>
-      <h2>{amount}</h2>
+      <h2>{amount.toString()}</h2>
       <h3>{deadline.toString()}</h3>
       <h3>{website}</h3>
       <h3>{school}</h3>

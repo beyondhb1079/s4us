@@ -5,6 +5,8 @@ import { clearFirestoreData } from '@firebase/rules-unit-testing';
 import { MemoryRouter, Route } from 'react-router-dom';
 import ScholarshipDetails from './ScholarshipDetails';
 import Scholarships from '../models/Scholarships';
+import ScholarshipAmount from '../types/ScholarshipAmount';
+import AmountType from '../types/AmountType';
 
 // hacky workaround to allow waitFor to work
 // TODO: Figure out a cleaner solution.
@@ -44,7 +46,11 @@ test('renders scholarship not found', async () => {
 test('renders scholarship details', async () => {
   const data = {
     name: 'Foo scholarship',
-    amount: 1000,
+    amount: new ScholarshipAmount({
+      type: AmountType.Fixed,
+      min: 1000,
+      max: 1000,
+    }),
     description: 'description',
     deadline: new Date('2020-12-17'),
     website: 'foo.com',
