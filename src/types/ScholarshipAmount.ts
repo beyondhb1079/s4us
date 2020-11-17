@@ -35,7 +35,7 @@ export default class ScholarshipAmount {
 
   toString(): string {
     switch (this.type) {
-      case AmountType.FullRide:
+      case AmountType.FullTuition:
         return 'Full Tuition';
       case AmountType.Fixed:
         return `$${this.min}`;
