@@ -5,6 +5,8 @@ import { clearFirestoreData } from '@firebase/rules-unit-testing';
 import { MemoryRouter, Route } from 'react-router-dom';
 import ScholarshipsPage from './Scholarships';
 import Scholarships from '../models/Scholarships';
+import ScholarshipAmount from '../types/ScholarshipAmount';
+import AmountType from '../types/AmountType';
 
 // hacky workaround to allow waitFor to work
 // TODO: Figure out a cleaner solution.
@@ -30,7 +32,11 @@ afterAll(async () => app.delete());
 test('renders a list of scholarships', async () => {
   const data = {
     name: 'Foo scholarship',
-    amount: 1000,
+    amount: new ScholarshipAmount({
+      min: 1000,
+      max: 1000,
+      type: AmountType.Fixed,
+    }),
     description: 'Foo description',
     deadline: new Date('2020-12-17'),
     website: 'foo.com',

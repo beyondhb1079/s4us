@@ -78,7 +78,7 @@ function ScholarshipAmountField(props) {
             />
           </div>
         );
-      case AmountType.FullRide:
+      case AmountType.FullTuition:
         return 'Full Tuition';
       default:
         return 'Unknown';
