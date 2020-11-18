@@ -102,7 +102,7 @@ function ScholarshipAmountField(props) {
         })}
       </RadioGroup>
       <FormHelperText error>
-        {(typeError || minAmountError || maxAmountError) && helperText}
+        {typeError || minAmountError || maxAmountError ? helperText : ' '}
       </FormHelperText>
     </FormControl>
   );

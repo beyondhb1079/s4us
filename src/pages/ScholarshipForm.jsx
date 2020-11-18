@@ -88,7 +88,7 @@ function ScholarshipForm() {
             id="name"
             label="Scholarship Name"
             error={formFieldErrors.name}
-            helperText={formFieldErrors.name && 'Please enter a name'}
+            helperText={formFieldErrors.name ? 'Please enter a name' : ' '}
             className={classes.textFieldStyle}
             required
             value={formFieldStates.name}
@@ -111,7 +111,7 @@ function ScholarshipForm() {
             label="Description"
             error={formFieldErrors.description}
             helperText={
-              formFieldErrors.description && 'Please enter a description'
+              formFieldErrors.description ? 'Please enter a description' : ' '
             }
             className={classes.textFieldStyle}
             required
@@ -125,7 +125,7 @@ function ScholarshipForm() {
             label="Website"
             error={formFieldErrors.website}
             helperText={
-              formFieldErrors.website && 'Please enter a valid website'
+              formFieldErrors.website ? 'Please enter a valid website' : ' '
             }
             className={classes.textFieldStyle}
             required

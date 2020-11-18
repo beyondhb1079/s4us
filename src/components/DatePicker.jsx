@@ -24,7 +24,7 @@ function DatePicker(props) {
         className={classes.datePickerStyle}
         format="MM/dd/yyyy"
         required
-        helperText={error && helperText}
+        helperText={error ? helperText : ' '}
         {...{ id, label, error, value, onChange }}
       />
     </MuiPickersUtilsProvider>
