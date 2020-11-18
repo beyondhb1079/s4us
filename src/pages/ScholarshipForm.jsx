@@ -21,8 +21,8 @@ function ScholarshipForm() {
     deadline: null,
     description: '',
     amountType: null,
-    minAmount: '',
-    maxAmount: '',
+    minAmount: 0,
+    maxAmount: 0,
     website: '',
     scholarshipType: '',
   });
@@ -79,30 +79,21 @@ function ScholarshipForm() {
     setFormFieldStates({ ...formFieldStates, minAmount, maxAmount });
   }
 
-  function requiredTextField(id, label, error, helperText, multiline = false) {
-    return (
-      <TextField
-        {...{ id, label, error, multiline }}
-        className={classes.textFieldStyle}
-        helperText={error && helperText}
-        required
-        value={formFieldStates[id]}
-        onChange={updateFn(id)}
-      />
-    );
-  }
-
   return (
     <Container maxWidth="md">
       <form>
         <h1>Submit a Scholarship</h1>
         <div>
-          {requiredTextField(
-            'name',
-            'Scholarship Name',
-            formFieldErrors.name,
-            'Please enter a name'
-          )}
+          <TextField
+            id="name"
+            label="Scholarship Name"
+            error={formFieldErrors.name}
+            helperText={formFieldErrors.name && 'Please enter a name'}
+            className={classes.textFieldStyle}
+            required
+            value={formFieldStates.name}
+            onChange={updateFn('name')}
+          />
         </div>
         <DatePicker
           id="deadline"
@@ -115,21 +106,32 @@ function ScholarshipForm() {
           }
         />
         <div>
-          {requiredTextField(
-            'description',
-            'Description',
-            formFieldErrors.description,
-            'Please enter a description',
-            true
-          )}
+          <TextField
+            id="description"
+            label="Description"
+            error={formFieldErrors.description}
+            helperText={
+              formFieldErrors.description && 'Please enter a description'
+            }
+            className={classes.textFieldStyle}
+            required
+            value={formFieldStates.description}
+            onChange={updateFn('description')}
+          />
         </div>
         <div>
-          {requiredTextField(
-            'website',
-            'Website',
-            formFieldErrors.website,
-            'Please enter a valid website'
-          )}
+          <TextField
+            id="website"
+            label="Website"
+            error={formFieldErrors.website}
+            helperText={
+              formFieldErrors.website && 'Please enter a valid website'
+            }
+            className={classes.textFieldStyle}
+            required
+            value={formFieldStates.website}
+            onChange={updateFn('website')}
+          />
         </div>
         <ScholarshipAmountField
           typeError={formFieldErrors.amountType}

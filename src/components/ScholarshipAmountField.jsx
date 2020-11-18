@@ -44,15 +44,21 @@ function ScholarshipAmountField(props) {
             Range:
             <AmountTextField
               error={amountType === AmountType.Range && minAmountError}
-              value={minAmount}
-              onChange={(e) => updateAmount(e.target.value, maxAmount)}
+              value={minAmount || ''}
+              onChange={(e) => {
+                const val = parseInt(e.target.value, 10);
+                updateAmount(val % 1 === 0 ? val : 0, maxAmount);
+              }}
               disabled={amountType !== AmountType.Range}
             />
             to
             <AmountTextField
               error={amountType === AmountType.Range && maxAmountError}
-              value={maxAmount}
-              onChange={(e) => updateAmount(minAmount, e.target.value)}
+              value={maxAmount || ''}
+              onChange={(e) => {
+                const val = parseInt(e.target.value, 10);
+                updateAmount(minAmount, val % 1 === 0 ? val : 0);
+              }}
               disabled={amountType !== AmountType.Range}
             />
           </div>
@@ -63,8 +69,11 @@ function ScholarshipAmountField(props) {
             Fixed Amount:
             <AmountTextField
               error={amountType === AmountType.Fixed && minAmountError}
-              value={minAmount}
-              onChange={(e) => updateAmount(e.target.value, e.target.value)}
+              value={minAmount || ''}
+              onChange={(e) => {
+                const val = parseInt(e.target.value, 10);
+                updateAmount(val % 1 === 0 ? val : 0, val % 1 === 0 ? val : 0);
+              }}
               disabled={amountType !== AmountType.Fixed}
             />
           </div>
@@ -101,8 +110,8 @@ function ScholarshipAmountField(props) {
 
 ScholarshipAmountField.propTypes = {
   amountType: PropTypes.oneOf(Object.values(AmountType)),
-  minAmount: PropTypes.string.isRequired,
-  maxAmount: PropTypes.string.isRequired,
+  minAmount: PropTypes.number.isRequired,
+  maxAmount: PropTypes.number.isRequired,
   onTypeChange: PropTypes.func.isRequired,
   updateAmount: PropTypes.func.isRequired,
   typeError: PropTypes.bool,

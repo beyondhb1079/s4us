@@ -2,9 +2,9 @@ import AmountType from '../types/AmountType';
 /* eslint-disable import/prefer-default-export */
 // returns true if amount is invalid
 export function invalidAmountFields(amountType, min, max, setHelperText) {
-  // true if amount less than 0 or not an integer
-  const err1 = min <= 0 || Number(min) % 1 !== 0;
-  const err2 = max <= 0 || Number(max) % 1 !== 0;
+  // 0 is not a valid input
+  const err1 = min === 0;
+  const err2 = max === 0;
 
   if (amountType === AmountType.Fixed) {
     setHelperText(err1 ? 'Please input a valid number' : '');
@@ -14,7 +14,7 @@ export function invalidAmountFields(amountType, min, max, setHelperText) {
   if (amountType === AmountType.Range) {
     // both fields are filled
     if (min && max) {
-      // either is not an integer > 0
+      // either is not a valid input
       if (err1 || err2) {
         setHelperText('Please input a valid number or leave blank');
         return { minAmountError: err1, maxAmountError: err2 };
@@ -35,6 +35,7 @@ export function invalidAmountFields(amountType, min, max, setHelperText) {
       if (min && !max) return { minAmountError: err1, maxAmountError: false };
       return { minAmountError: false, maxAmountError: err2 };
     }
+
     setHelperText('Please input a valid number in at least one of the fields');
     return { minAmountError: err1, maxAmountError: err2 };
   }
