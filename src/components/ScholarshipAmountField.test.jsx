@@ -1,36 +1,26 @@
 import React from 'react';
-import { MemoryRouter } from 'react-router-dom';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import ScholarshipAmountField from './ScholarshipAmountField';
 
-test('renders unknown field', () => {
-  const { getByLabelText } = render(
-    <ScholarshipAmountField
-      amountType="Unknown"
-      minAmount={0}
-      maxAmount={0}
-      onTypeChange={() => {}}
-      updateAmount={() => {}}
-    />,
-    { wrapper: MemoryRouter }
+test('renders radio buttons', () => {
+  const labels = ['Full Tuition', /Fixed Amount:.*/, /Range:.*/, 'Unknown'];
+  render(
+    <ScholarshipAmountField onTypeChange={() => {}} updateAmount={() => {}} />
   );
 
-  const unknownField = getByLabelText('Unknown');
-  expect(unknownField).toBeInTheDocument();
+  // Check for all radio buttons
+  expect(screen.getAllByRole('radio')).toHaveLength(4);
+  labels.forEach((name) =>
+    expect(screen.getByRole('radio', { name })).toBeInTheDocument()
+  );
 });
 
 test('renders all amount input fields', () => {
-  const { getAllByPlaceholderText } = render(
-    <ScholarshipAmountField
-      amountType="Fixed"
-      minAmount={0}
-      maxAmount={0}
-      onTypeChange={() => {}}
-      updateAmount={() => {}}
-    />,
-    { wrapper: MemoryRouter }
+  render(
+    <ScholarshipAmountField onTypeChange={() => {}} updateAmount={() => {}} />
   );
 
-  const amountFields = getAllByPlaceholderText('Unknown');
-  expect(amountFields.length).toBe(3);
+  const amountFields = screen.getAllByRole('spinbutton');
+  expect(amountFields).toHaveLength(3);
+  amountFields.forEach((input) => expect(input).toBeDisabled());
 });

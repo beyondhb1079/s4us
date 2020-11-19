@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import firebase from 'firebase';
 import { clearFirestoreData } from '@firebase/rules-unit-testing';
 import { MemoryRouter, Route } from 'react-router-dom';
@@ -8,7 +8,7 @@ import Scholarships from '../models/Scholarships';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import AmountType from '../types/AmountType';
 
-// hacky workaround to allow waitFor to work
+// hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.
 window.MutationObserver = require('mutation-observer');
 
@@ -44,10 +44,11 @@ test('renders a list of scholarships', async () => {
   const ref = Scholarships.collection.doc('abc');
   await ref.set(data);
 
-  const { queryByText } = renderAtRoute('/scholarships');
-  await waitFor(() => expect(queryByText(data.name)).toBeTruthy());
+  renderAtRoute('/scholarships');
 
-  expect(queryByText(/Foo scholarship/i)).toBeInTheDocument();
-  expect(queryByText('Foo description')).toBeInTheDocument();
-  expect(queryByText(data.deadline.toLocaleDateString())).toBeInTheDocument();
+  await screen.findByText(data.name);
+  expect(screen.getByText(data.description)).toBeInTheDocument();
+  expect(
+    screen.getByText(data.deadline.toLocaleDateString())
+  ).toBeInTheDocument();
 });

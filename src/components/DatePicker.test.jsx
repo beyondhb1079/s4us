@@ -1,10 +1,10 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { render, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import DatePicker from './DatePicker';
 
 test('renders date picker field', () => {
-  const { getByLabelText } = render(
+  render(
     <DatePicker
       id="deadline"
       label="Deadline"
@@ -14,12 +14,12 @@ test('renders date picker field', () => {
     { wrapper: MemoryRouter }
   );
 
-  const deadlineField = getByLabelText('Deadline *');
+  const deadlineField = screen.getByLabelText('Deadline *');
   expect(deadlineField).toBeInTheDocument();
 });
 
 test('date change', () => {
-  const { getByLabelText } = render(
+  render(
     <DatePicker
       id="deadline"
       label="Deadline"
@@ -29,7 +29,7 @@ test('date change', () => {
     { wrapper: MemoryRouter }
   );
 
-  const deadline = getByLabelText('Deadline *');
+  const deadline = screen.getByLabelText('Deadline *');
   fireEvent.change(deadline, {
     target: { value: new Date('December 17, 2005') },
   });

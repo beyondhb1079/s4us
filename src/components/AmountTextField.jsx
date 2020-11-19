@@ -20,7 +20,7 @@ function AmountTextField(props) {
       placeholder="Unknown"
       type="number"
       InputProps={{
-        inputProps: { min: 0, step: 50 },
+        inputProps: { min: 0, max: 100000, step: 50 },
         startAdornment: <InputAdornment position="start">$</InputAdornment>,
       }}
       {...{ disabled, value, onChange }}
