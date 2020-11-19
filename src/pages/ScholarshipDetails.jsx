@@ -5,7 +5,7 @@ import {
   Container,
   Link,
   makeStyles,
-  Typography
+  Typography,
 } from '@material-ui/core';
 import Scholarships from '../models/Scholarships';
 

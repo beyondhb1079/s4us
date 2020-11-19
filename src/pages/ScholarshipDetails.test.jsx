@@ -53,12 +53,12 @@ test('renders scholarship details', async () => {
     }),
     description: 'description',
     deadline: new Date('2020-12-17'),
-    website: 'foo.com',
+    website: 'http://foo.com/',
   };
   const ref = Scholarships.collection.doc('abc');
   await ref.set(data);
 
-  const { queryByText } = renderAtRoute('/scholarships/abc');
+  const { queryByText, queryByRole } = renderAtRoute('/scholarships/abc');
   await waitFor(() => expect(queryByText(data.name)).toBeTruthy());
 
   expect(queryByText(/Scholarship/i)).toBeInTheDocument();
@@ -66,5 +66,5 @@ test('renders scholarship details', async () => {
   expect(queryByText(data.amount.toString())).toBeInTheDocument();
   expect(queryByText(data.description)).toBeInTheDocument();
   expect(queryByText(data.deadline.toLocaleDateString())).toBeInTheDocument();
-  expect(queryByText(/apply/i).href).toBe(data.website);
+  expect(queryByRole('button', { selector: 'a' }).href).toBe(data.website);
 });
