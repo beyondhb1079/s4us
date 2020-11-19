@@ -12,15 +12,15 @@ import PropTypes from 'prop-types';
 import AmountType from '../types/AmountType';
 import AmountTextField from './AmountTextField';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   formControlStyle: {
-    paddingTop: 20,
+    paddingTop: theme.spacing(2),
   },
   amountFieldStyle: {
     display: 'flex',
     alignItems: 'center',
   },
-});
+}));
 
 function ScholarshipAmountField(props) {
   const classes = useStyles();
@@ -47,7 +47,7 @@ function ScholarshipAmountField(props) {
               value={minAmount || ''}
               onChange={(e) => {
                 const val = parseInt(e.target.value, 10);
-                updateAmount(val % 1 === 0 ? val : 0, maxAmount);
+                updateAmount(val || 0, maxAmount);
               }}
               disabled={amountType !== AmountType.Range}
             />
@@ -57,7 +57,7 @@ function ScholarshipAmountField(props) {
               value={maxAmount || ''}
               onChange={(e) => {
                 const val = parseInt(e.target.value, 10);
-                updateAmount(minAmount, val % 1 === 0 ? val : 0);
+                updateAmount(minAmount, val || 0);
               }}
               disabled={amountType !== AmountType.Range}
             />
@@ -72,7 +72,7 @@ function ScholarshipAmountField(props) {
               value={minAmount || ''}
               onChange={(e) => {
                 const val = parseInt(e.target.value, 10);
-                updateAmount(val % 1 === 0 ? val : 0, val % 1 === 0 ? val : 0);
+                updateAmount(val || 0, val || 0);
               }}
               disabled={amountType !== AmountType.Fixed}
             />
