@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import firebase from 'firebase';
 import { clearFirestoreData } from '@firebase/rules-unit-testing';
 import { MemoryRouter, Route } from 'react-router-dom';
