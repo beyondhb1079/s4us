@@ -8,7 +8,6 @@ test('renders radio buttons', () => {
     <ScholarshipAmountField onTypeChange={() => {}} updateAmount={() => {}} />
   );
 
-  // Check for all radio buttons
   expect(screen.getAllByRole('radio')).toHaveLength(4);
   labels.forEach((name) =>
     expect(screen.getByRole('radio', { name })).toBeInTheDocument()
