@@ -31,14 +31,9 @@ function ScholarshipForm() {
     name: false,
     deadline: false,
     description: false,
-    amountType: false,
     website: false,
-    minAmount: false,
-    maxAmount: false,
   });
-  const [amountHelperText, setAmountHelperText] = useState(
-    'Please choose an option above.'
-  );
+  const [amountHelperText, setAmountHelperText] = useState('');
 
   function validateFields() {
     const nameError = !formFieldStates.name;
@@ -47,16 +42,13 @@ function ScholarshipForm() {
       !formFieldStates.deadline || isNaN(formFieldStates.deadline); // checks if deadline is invalid date
     const descriptionError = !formFieldStates.description;
     const websiteError = !websiteReg.test(formFieldStates.website);
-    const amountTypeError = !formFieldStates.amountType;
 
-    const { minAmountError, maxAmountError } = invalidAmountFields(
+    const amountHelper = invalidAmountFields(
       formFieldStates.amountType,
       formFieldStates.minAmount,
-      formFieldStates.maxAmount,
-      (message) => {
-        setAmountHelperText(message);
-      }
+      formFieldStates.maxAmount
     );
+    setAmountHelperText(amountHelper);
 
     setFormFieldErrors({
       ...formFieldErrors,
@@ -64,9 +56,6 @@ function ScholarshipForm() {
       deadline: deadlineError,
       description: descriptionError,
       website: websiteError,
-      amountType: amountTypeError,
-      minAmount: minAmountError,
-      maxAmount: maxAmountError,
     });
   }
 
@@ -134,9 +123,6 @@ function ScholarshipForm() {
           />
         </div>
         <ScholarshipAmountField
-          typeError={formFieldErrors.amountType}
-          minAmountError={formFieldErrors.minAmount}
-          maxAmountError={formFieldErrors.maxAmount}
           helperText={amountHelperText}
           amountType={formFieldStates.amountType}
           minAmount={formFieldStates.minAmount}

@@ -1,44 +1,24 @@
 import AmountType from '../types/AmountType';
 /* eslint-disable import/prefer-default-export */
-// returns true if amount is invalid
-export function invalidAmountFields(amountType, min, max, setHelperText) {
+// returns string for helper text if amount is invalid
+export function invalidAmountFields(amountType, min, max) {
   // 0 is not a valid input
   const err1 = min === 0;
   const err2 = max === 0;
 
+  if (
+    amountType === AmountType.Unknown ||
+    amountType === AmountType.FullTuition
+  )
+    return '';
   if (amountType === AmountType.Fixed) {
-    setHelperText(err1 ? 'Please input a valid number' : '');
-    return { minAmountError: err1, maxAmountError: false };
+    return err1 ? 'Please input a valid amount' : '';
   }
-
   if (amountType === AmountType.Range) {
-    // both fields are filled
-    if (min && max) {
-      // either is not a valid input
-      if (err1 || err2) {
-        setHelperText('Please input a valid number or leave blank');
-        return { minAmountError: err1, maxAmountError: err2 };
-      }
-      // both are valid numbers
-      if (!err1 && !err2) {
-        const minError = Number(min) >= Number(max);
-        setHelperText(
-          minError ? 'Minimum amount must be less than the maximum amount' : ''
-        );
-        return { minAmountError: minError, maxAmountError: err2 };
-      }
-    }
-
-    // either field is filled
-    if (min || max) {
-      setHelperText(min || max ? 'Please input a valid number' : '');
-      if (min && !max) return { minAmountError: err1, maxAmountError: false };
-      return { minAmountError: false, maxAmountError: err2 };
-    }
-
-    setHelperText('Please input a valid number in at least one of the fields');
-    return { minAmountError: err1, maxAmountError: err2 };
+    if (err1 && err2) return 'Please input a valid amount or leave blank';
+    if (!err1 && !err2)
+      return min >= max ? 'Minimum must be less than the maximum' : ' ';
+    return '';
   }
-
-  return { minAmountError: false, maxAmountError: false };
+  return 'Please choose an option above';
 }

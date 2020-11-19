@@ -25,9 +25,6 @@ const useStyles = makeStyles((theme) => ({
 function ScholarshipAmountField(props) {
   const classes = useStyles();
   const {
-    typeError,
-    minAmountError,
-    maxAmountError,
     helperText,
     amountType,
     minAmount,
@@ -36,6 +33,10 @@ function ScholarshipAmountField(props) {
     updateAmount,
   } = props;
 
+  const isRange = amountType === AmountType.Range;
+  const isFixed = amountType === AmountType.Fixed;
+  const error = !!helperText; // no error if helperText empty
+
   function displayAmountFields(option) {
     switch (option) {
       case AmountType.Range:
@@ -43,23 +44,23 @@ function ScholarshipAmountField(props) {
           <div className={classes.amountFieldStyle}>
             Range:
             <AmountTextField
-              error={amountType === AmountType.Range && minAmountError}
+              error={isRange && error && minAmount >= maxAmount}
               value={minAmount || ''}
               onChange={(e) => {
                 const val = parseInt(e.target.value, 10);
                 updateAmount(val || 0, maxAmount);
               }}
-              disabled={amountType !== AmountType.Range}
+              disabled={!isRange}
             />
             to
             <AmountTextField
-              error={amountType === AmountType.Range && maxAmountError}
+              error={isRange && error && !minAmount && !maxAmount}
               value={maxAmount || ''}
               onChange={(e) => {
                 const val = parseInt(e.target.value, 10);
                 updateAmount(minAmount, val || 0);
               }}
-              disabled={amountType !== AmountType.Range}
+              disabled={!isRange}
             />
           </div>
         );
@@ -68,13 +69,13 @@ function ScholarshipAmountField(props) {
           <div className={classes.amountFieldStyle}>
             Fixed Amount:
             <AmountTextField
-              error={amountType === AmountType.Fixed && minAmountError}
+              error={isFixed && error}
               value={minAmount || ''}
               onChange={(e) => {
                 const val = parseInt(e.target.value, 10);
                 updateAmount(val || 0, val || 0);
               }}
-              disabled={amountType !== AmountType.Fixed}
+              disabled={!isFixed}
             />
           </div>
         );
@@ -86,7 +87,7 @@ function ScholarshipAmountField(props) {
   }
 
   return (
-    <FormControl error={typeError} className={classes.formControlStyle}>
+    <FormControl error={error} className={classes.formControlStyle}>
       <FormLabel>Amount Type</FormLabel>
       <RadioGroup value={amountType} onChange={onTypeChange}>
         {Object.keys(AmountType).map((option) => {
@@ -101,9 +102,7 @@ function ScholarshipAmountField(props) {
           );
         })}
       </RadioGroup>
-      <FormHelperText error>
-        {typeError || minAmountError || maxAmountError ? helperText : ' '}
-      </FormHelperText>
+      <FormHelperText error>{error ? helperText : ' '}</FormHelperText>
     </FormControl>
   );
 }
@@ -114,16 +113,10 @@ ScholarshipAmountField.propTypes = {
   maxAmount: PropTypes.number.isRequired,
   onTypeChange: PropTypes.func.isRequired,
   updateAmount: PropTypes.func.isRequired,
-  typeError: PropTypes.bool,
-  minAmountError: PropTypes.bool,
-  maxAmountError: PropTypes.bool,
   helperText: PropTypes.string,
 };
 ScholarshipAmountField.defaultProps = {
   amountType: null,
-  typeError: false,
-  minAmountError: false,
-  maxAmountError: false,
   helperText: '',
 };
 export default ScholarshipAmountField;
