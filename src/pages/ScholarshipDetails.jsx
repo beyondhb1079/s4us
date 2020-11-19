@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import ReactRouterPropTypes from 'react-router-prop-types';
-import { Button, Container, Link, makeStyles, Typography } from '@material-ui/core';
+import {
+  Button,
+  Container,
+  Link,
+  makeStyles,
+  Typography
+} from '@material-ui/core';
 import Scholarships from '../models/Scholarships';
 
 const useStyles = makeStyles(() => ({
