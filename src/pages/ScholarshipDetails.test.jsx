@@ -66,5 +66,5 @@ test('renders scholarship details', async () => {
   expect(queryByText(data.amount.toString())).toBeInTheDocument();
   expect(queryByText(data.description)).toBeInTheDocument();
   expect(queryByText(data.deadline.toLocaleDateString())).toBeInTheDocument();
-  expect(queryByText(data.website)).toBeInTheDocument();
+  expect(queryByText(/apply/i).href)).toBe(data.website);
 });
