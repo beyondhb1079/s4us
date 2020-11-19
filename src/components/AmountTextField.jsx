@@ -12,18 +12,17 @@ const useStyles = makeStyles((theme) => ({
 
 function AmountTextField(props) {
   const classes = useStyles();
-  const { value, onChange, disabled } = props;
+  const { value, onChange, disabled, error } = props;
 
   return (
     <TextField
       className={classes.amountField}
       placeholder="Unknown"
-      type="number"
       InputProps={{
         inputProps: { min: 0, max: 100000, step: 50 },
         startAdornment: <InputAdornment position="start">$</InputAdornment>,
       }}
-      {...{ disabled, value, onChange }}
+      {...{ error, disabled, value, onChange }}
     />
   );
 }
@@ -31,5 +30,9 @@ AmountTextField.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   onChange: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
+  error: PropTypes.bool,
+};
+AmountTextField.defaultProps = {
+  error: false,
 };
 export default AmountTextField;

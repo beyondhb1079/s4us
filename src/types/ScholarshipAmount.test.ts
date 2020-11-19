@@ -79,8 +79,8 @@ test('toString - Unknown', () => {
   expect(res).toBe('(Unknown amount)');
 });
 
-test('toString - FullRide', () => {
-  const amount = new ScholarshipAmount({ type: AmountType.FullRide });
+test('toString - FullTuition', () => {
+  const amount = new ScholarshipAmount({ type: AmountType.FullTuition });
 
   const res = amount.toString();
 

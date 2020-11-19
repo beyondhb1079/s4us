@@ -5,22 +5,27 @@ import {
   RadioGroup,
   FormControl,
   FormControlLabel,
+  FormHelperText,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import AmountType from '../types/AmountType';
 import AmountTextField from './AmountTextField';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
+  formControlStyle: {
+    paddingTop: theme.spacing(2),
+  },
   amountFieldStyle: {
     display: 'flex',
     alignItems: 'center',
   },
-});
+}));
 
 function ScholarshipAmountField(props) {
   const classes = useStyles();
   const {
+    helperText,
     amountType,
     minAmount,
     maxAmount,
@@ -29,7 +34,6 @@ function ScholarshipAmountField(props) {
   } = props;
 
   const labels = {};
-  labels[AmountType.FullRide] = 'Full Tuition';
   labels[AmountType.Range] = (
     <div className={classes.amountFieldStyle}>
       Range:
@@ -65,9 +69,11 @@ function ScholarshipAmountField(props) {
       />
     </div>
   );
+  labels[AmountType.FullRide] = 'Full Tuition';
 
+  // /*error={error}*/?
   return (
-    <FormControl>
+    <FormControl className={classes.formControlStyle}>
       <FormLabel>Amount Type</FormLabel>
       <RadioGroup value={amountType} onChange={onTypeChange}>
         {Object.keys(AmountType).map((option) => (
@@ -80,16 +86,18 @@ function ScholarshipAmountField(props) {
           />
         ))}
       </RadioGroup>
+      <FormHelperText error>{helperText || ' '}</FormHelperText>
     </FormControl>
   );
 }
 
 ScholarshipAmountField.propTypes = {
-  amountType: PropTypes.oneOf(Object.keys(AmountType).concat([''])),
-  minAmount: PropTypes.number,
-  maxAmount: PropTypes.number,
+  amountType: PropTypes.oneOf(Object.values(AmountType.concat([' ']))),
+  minAmount: PropTypes.number.isRequired,
+  maxAmount: PropTypes.number.isRequired,
   onTypeChange: PropTypes.func.isRequired,
   updateAmount: PropTypes.func.isRequired,
+  helperText: PropTypes.string,
 };
 ScholarshipAmountField.defaultProps = {
   amountType: '',
