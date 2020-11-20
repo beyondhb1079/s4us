@@ -32,8 +32,8 @@ function ScholarshipForm() {
     deadline: false,
     description: false,
     website: false,
+    amountHelperText: '',
   });
-  const [amountHelperText, setAmountHelperText] = useState('');
 
   function validateFields() {
     const nameError = !formFieldStates.name;
@@ -48,7 +48,6 @@ function ScholarshipForm() {
       formFieldStates.minAmount,
       formFieldStates.maxAmount
     );
-    setAmountHelperText(amountHelper);
 
     setFormFieldErrors({
       ...formFieldErrors,
@@ -56,6 +55,7 @@ function ScholarshipForm() {
       deadline: deadlineError,
       description: descriptionError,
       website: websiteError,
+      amountHelperText: amountHelper,
     });
   }
 
@@ -123,7 +123,7 @@ function ScholarshipForm() {
           />
         </div>
         <ScholarshipAmountField
-          helperText={amountHelperText}
+          helperText={formFieldErrors.amountHelperText}
           amountType={formFieldStates.amountType}
           minAmount={formFieldStates.minAmount}
           maxAmount={formFieldStates.maxAmount}
