@@ -44,7 +44,9 @@ function ScholarshipAmountField(props) {
           <div className={classes.amountFieldStyle}>
             Range:
             <AmountTextField
-              error={isRange && error && maxAmount && minAmount >= maxAmount}
+              error={
+                isRange && error && (!!maxAmount || minAmount >= maxAmount)
+              }
               value={minAmount || ''}
               onChange={(e) => {
                 const val = parseInt(e.target.value, 10);

@@ -12,12 +12,13 @@ export function invalidAmountFields(amountType, min, max) {
   )
     return '';
   if (amountType === AmountType.Fixed) {
-    return err1 ? 'Please input a valid amount' : '';
+    return err1 ? 'Amount field must contain a valid amount' : '';
   }
   if (amountType === AmountType.Range) {
-    if (err1 && err2) return 'Please input a valid amount or leave blank';
+    if (err1 && err2)
+      return 'Amount range must have a minimum and/or a maximum';
     if (!err1 && !err2)
-      return min >= max ? 'Minimum must be less than the maximum' : ' ';
+      return min >= max ? 'Minimum must be less than the maximum' : '';
     return '';
   }
   return 'Please choose an option above';
