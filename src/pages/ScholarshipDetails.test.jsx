@@ -57,8 +57,8 @@ test('renders scholarship details', async () => {
   await ref.set(data);
 
   renderAtRoute('/scholarships/abc');
-
   await screen.findByText(/Scholarship/i);
+
   expect(screen.getByText(data.name)).toBeInTheDocument();
   expect(screen.getByText(data.amount.toString())).toBeInTheDocument();
   expect(screen.getByText(data.description)).toBeInTheDocument();
