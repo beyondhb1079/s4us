@@ -6,8 +6,8 @@ import DatePicker from '../components/DatePicker';
 import { invalidAmountFields } from '../validation/amountValidation';
 
 const useStyles = makeStyles({
-  textFieldStyle: {
-    minWidth: 400,
+  containerStyle: {
+    maxWidth: 400,
   },
 });
 
@@ -16,7 +16,7 @@ const websiteReg = /^(http(s)?:\/\/(www\.)?)?[\w-]+(\.[\w-]+)*\.[a-z]{2,}((\/|#|
 
 function ScholarshipForm() {
   const classes = useStyles();
-  const [formFieldStates, setFormFieldStates] = useState({
+  const [values, setValues] = useState({
     name: '',
     deadline: null,
     description: '',
@@ -27,111 +27,89 @@ function ScholarshipForm() {
     scholarshipType: '',
   });
 
-  const [formFieldErrors, setFormFieldErrors] = useState({
-    name: false,
-    deadline: false,
-    description: false,
-    website: false,
-    amountHelperText: '',
-  });
+  const [errors, setErrors] = useState({});
 
-  function validateFields() {
-    const nameError = !formFieldStates.name;
+  function validateForm() {
     /* eslint-disable no-restricted-globals */
-    const deadlineError =
-      !formFieldStates.deadline || isNaN(formFieldStates.deadline); // checks if deadline is invalid date
-    const descriptionError = !formFieldStates.description;
-    const websiteError = !websiteReg.test(formFieldStates.website);
-
-    const amountHelper = invalidAmountFields(
-      formFieldStates.amountType,
-      formFieldStates.minAmount,
-      formFieldStates.maxAmount
-    );
-
-    setFormFieldErrors({
-      ...formFieldErrors,
-      name: nameError,
-      deadline: deadlineError,
-      description: descriptionError,
-      website: websiteError,
-      amountHelperText: amountHelper,
+    setErrors({
+      name: !values.name,
+      deadline: !values.deadline || isNaN(values.deadline),
+      description: !values.description,
+      website: !websiteReg.test(values.website),
+      amountHelperText: invalidAmountFields(
+        values.amountType,
+        values.minAmount,
+        values.maxAmount
+      ),
     });
   }
 
-  function updateFn(id) {
-    return (e) =>
-      setFormFieldStates({ ...formFieldStates, [id]: e.target.value });
-  }
-
   function updateAmount(minAmount, maxAmount) {
-    setFormFieldStates({ ...formFieldStates, minAmount, maxAmount });
+    setValues({ ...values, minAmount, maxAmount });
   }
 
   return (
     <Container maxWidth="md">
-      <form>
+      <form className={classes.containerStyle}>
         <h1>Submit a Scholarship</h1>
         <div>
           <TextField
             id="name"
             label="Scholarship Name"
-            error={formFieldErrors.name}
-            helperText={formFieldErrors.name ? 'Please enter a name' : ' '}
-            className={classes.textFieldStyle}
+            error={errors.name}
+            helperText={errors.name ? 'Please enter a name' : ' '}
             required
-            value={formFieldStates.name}
-            onChange={updateFn('name')}
+            value={values.name}
+            onChange={(e) => setValues({ ...values, name: e.target.value })}
+            fullWidth
           />
         </div>
         <DatePicker
           id="deadline"
           label="Deadline"
-          error={formFieldErrors.deadline}
-          helperText="Please enter a valid date"
-          value={formFieldStates.deadline}
-          onChange={(date) =>
-            setFormFieldStates({ ...formFieldStates, deadline: date })
-          }
+          error={errors.deadline}
+          helperText={(errors.deadline && 'Please enter a valid date') || ' '}
+          value={values.deadline}
+          onChange={(date) => setValues({ ...values, deadline: date })}
         />
         <div>
           <TextField
             id="description"
             label="Description"
-            error={formFieldErrors.description}
-            helperText={
-              formFieldErrors.description ? 'Please enter a description' : ' '
-            }
-            className={classes.textFieldStyle}
+            error={errors.description}
+            helperText={errors.description ? 'Please enter a description' : ' '}
             required
-            value={formFieldStates.description}
-            onChange={updateFn('description')}
+            value={values.description}
+            onChange={(e) =>
+              setValues({ ...values, description: e.target.value })
+            }
+            fullWidth
           />
         </div>
         <div>
           <TextField
             id="website"
             label="Website"
-            error={formFieldErrors.website}
-            helperText={
-              formFieldErrors.website ? 'Please enter a valid website' : ' '
-            }
-            className={classes.textFieldStyle}
+            error={errors.website}
+            helperText={errors.website ? 'Please enter a valid website' : ' '}
             required
-            value={formFieldStates.website}
-            onChange={updateFn('website')}
+            value={values.website}
+            onChange={(e) => setValues({ ...values, website: e.target.value })}
+            fullWidth
           />
         </div>
         <ScholarshipAmountField
-          helperText={formFieldErrors.amountHelperText}
-          amountType={formFieldStates.amountType}
-          minAmount={formFieldStates.minAmount}
-          maxAmount={formFieldStates.maxAmount}
-          onTypeChange={updateFn('amountType')}
+          helperText={errors.amountHelperText}
+          amountType={values.amountType}
+          minAmount={values.minAmount}
+          maxAmount={values.maxAmount}
+          onTypeChange={(e) =>
+            setValues({ ...values, amountType: e.target.value })
+          }
           updateAmount={updateAmount}
         />
         <div>
-          <Button variant="contained" color="primary" onClick={validateFields}>
+          <Button variant="contained" color="primary" onClick={validateForm}>
             Submit
           </Button>
         </div>

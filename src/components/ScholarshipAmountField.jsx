@@ -104,7 +104,7 @@ function ScholarshipAmountField(props) {
           );
         })}
       </RadioGroup>
-      <FormHelperText error>{error ? helperText : ' '}</FormHelperText>
+      <FormHelperText error>{helperText || ' '}</FormHelperText>
     </FormControl>
   );
 }
