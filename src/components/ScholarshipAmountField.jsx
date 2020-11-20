@@ -5,28 +5,37 @@ import {
   RadioGroup,
   FormControl,
   FormControlLabel,
+  FormHelperText,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import AmountType from '../types/AmountType';
 import AmountTextField from './AmountTextField';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
+  formControlStyle: {
+    paddingTop: theme.spacing(2),
+  },
   amountFieldStyle: {
     display: 'flex',
     alignItems: 'center',
   },
-});
+}));
 
 function ScholarshipAmountField(props) {
   const classes = useStyles();
   const {
+    helperText,
     amountType,
     minAmount,
     maxAmount,
     onTypeChange,
     updateAmount,
   } = props;
+
+  const isRange = amountType === AmountType.Range;
+  const isFixed = amountType === AmountType.Fixed;
+  const error = !!helperText; // no error if helperText empty
 
   function displayAmountFields(option) {
     switch (option) {
@@ -35,19 +44,25 @@ function ScholarshipAmountField(props) {
           <div className={classes.amountFieldStyle}>
             Range:
             <AmountTextField
-              value={minAmount || ''} // hack so that the placeholer 'Unknown' shows up instead of the default value of 0
-              onChange={(e) =>
-                updateAmount(parseInt(e.target.value, 10) || '', maxAmount)
+              error={
+                isRange && error && (!!maxAmount || minAmount >= maxAmount)
               }
-              disabled={amountType !== AmountType.Range}
+              value={minAmount || ''}
+              onChange={(e) => {
+                const val = parseInt(e.target.value, 10);
+                updateAmount(val || 0, maxAmount);
+              }}
+              disabled={!isRange}
             />
             to
             <AmountTextField
+              error={isRange && error && !minAmount && !maxAmount}
               value={maxAmount || ''}
-              onChange={(e) =>
-                updateAmount(minAmount, parseInt(e.target.value, 10) || '')
-              }
-              disabled={amountType !== AmountType.Range}
+              onChange={(e) => {
+                const val = parseInt(e.target.value, 10);
+                updateAmount(minAmount, val || 0);
+              }}
+              disabled={!isRange}
             />
           </div>
         );
@@ -56,14 +71,13 @@ function ScholarshipAmountField(props) {
           <div className={classes.amountFieldStyle}>
             Fixed Amount:
             <AmountTextField
-              value={minAmount}
-              onChange={(e) =>
-                updateAmount(
-                  parseInt(e.target.value, 10) || '',
-                  parseInt(e.target.value, 10) || ''
-                )
-              }
-              disabled={amountType !== AmountType.Fixed}
+              error={isFixed && error}
+              value={minAmount || ''}
+              onChange={(e) => {
+                const val = parseInt(e.target.value, 10);
+                updateAmount(val || 0, val || 0);
+              }}
+              disabled={!isFixed}
             />
           </div>
         );
@@ -75,7 +89,7 @@ function ScholarshipAmountField(props) {
   }
 
   return (
-    <FormControl>
+    <FormControl error={error} className={classes.formControlStyle}>
       <FormLabel>Amount Type</FormLabel>
       <RadioGroup value={amountType} onChange={onTypeChange}>
         {Object.keys(AmountType).map((option) => {
@@ -90,15 +104,21 @@ function ScholarshipAmountField(props) {
           );
         })}
       </RadioGroup>
+      <FormHelperText error>{helperText || ' '}</FormHelperText>
     </FormControl>
   );
 }
 
 ScholarshipAmountField.propTypes = {
-  amountType: PropTypes.oneOf(Object.keys(AmountType)).isRequired, // supports default value of empty string
+  amountType: PropTypes.oneOf(Object.values(AmountType)),
   minAmount: PropTypes.number.isRequired,
   maxAmount: PropTypes.number.isRequired,
   onTypeChange: PropTypes.func.isRequired,
   updateAmount: PropTypes.func.isRequired,
+  helperText: PropTypes.string,
+};
+ScholarshipAmountField.defaultProps = {
+  amountType: null,
+  helperText: '',
 };
 export default ScholarshipAmountField;
