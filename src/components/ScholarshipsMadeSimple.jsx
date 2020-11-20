@@ -12,10 +12,9 @@ import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import LoginButton from './LoginButton';
 import HomeSection from './HomeSection';
-import studentPic from '../img/blank.png';
-import communityPic from '../img/blank.png';
+import pic from '../img/blank.png';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   container: {
     background: 'theme.palette.background.paper',
     textAlign: 'left',
@@ -26,27 +25,6 @@ const useStyles = makeStyles((theme) => ({
     objectFit: 'contain',
   },
 }));
-
-const content = {
-  0: {
-    direction: 'row',
-    tab: 'students',
-    title: 'Stress-free scholarships',
-    description:
-      'Et has minim eltir intellegat. Mea aeterno elefiend antiopam ad, nam no suscipit quaerendum. At name mininum ponderum. Est audiam animal molestiate te.',
-    button: ButtonList('students'),
-    picture: studentPic,
-  },
-  1: {
-    direction: 'row',
-    tab: 'community contributor',
-    title: 'Join and Support the Community',
-    description:
-      'Et has minim eltir intellegat. Mea aeterno elefiend antiopam ad, nam no suscipit quaerendum. At name mininum ponderum. Est audiam animal molestiate te.',
-    button: ButtonList('community contributor'),
-    picture: communityPic,
-  },
-};
 
 function ButtonList(user) {
   return (
@@ -64,6 +42,27 @@ function ButtonList(user) {
     </>
   );
 }
+
+const content = {
+  0: {
+    direction: 'row',
+    tab: 'students',
+    title: 'Stress-free scholarships',
+    description:
+      'Et has minim eltir intellegat. Mea aeterno elefiend antiopam ad, nam no suscipit quaerendum. At name mininum ponderum. Est audiam animal molestiate te.',
+    button: ButtonList('students'),
+    picture: pic,
+  },
+  1: {
+    direction: 'row',
+    tab: 'community contributor',
+    title: 'Join and Support the Community',
+    description:
+      'Et has minim eltir intellegat. Mea aeterno elefiend antiopam ad, nam no suscipit quaerendum. At name mininum ponderum. Est audiam animal molestiate te.',
+    button: ButtonList('community contributor'),
+    picture: pic,
+  },
+};
 
 export default function ScholarshipsMadeSimpleSection() {
   const classes = useStyles();

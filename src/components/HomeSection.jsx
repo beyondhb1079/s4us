@@ -37,5 +37,10 @@ export default function ScholarshipsMadeSimpleContent(props) {
 }
 
 ScholarshipsMadeSimpleContent.propTypes = {
-  user: PropTypes.number.isRequired,
+  direction: PropTypes.string.isRequired,
+  tab: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  button: PropTypes.string.isRequired,
+  pic: PropTypes.string.isRequired,
 };
