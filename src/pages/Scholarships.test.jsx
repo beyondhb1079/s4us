@@ -1,21 +1,53 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
+import firebase from 'firebase';
+import { clearFirestoreData } from '@firebase/rules-unit-testing';
 import { MemoryRouter, Route } from 'react-router-dom';
-import Scholarships from './Scholarships';
+import ScholarshipsPage from './Scholarships';
+import Scholarships from '../models/Scholarships';
+import ScholarshipAmount from '../types/ScholarshipAmount';
+import AmountType from '../types/AmountType';
+
+// hacky workaround to allow waitFor to work
+// TODO: Figure out a cleaner solution.
+window.MutationObserver = require('mutation-observer');
 
 function renderAtRoute(route) {
   return render(
     <MemoryRouter initialEntries={[route]}>
-      <Route path="/scholarships" component={Scholarships} />
+      <Route path="/scholarships" component={ScholarshipsPage} />
     </MemoryRouter>
   );
 }
 
-test('renders a list of scholarships', () => {
-  const path = '/scholarships';
+const app = firebase.initializeApp({ projectId: 'scholarships-test' });
+app.firestore().settings({
+  host: 'localhost:8080',
+  ssl: false,
+});
 
-  const { queryByText } = renderAtRoute(path);
+beforeAll(async () => clearFirestoreData(app.options));
+afterAll(async () => app.delete());
 
-  expect(queryByText(/scholarship 1/i)).toBeInTheDocument();
-  expect(queryByText(/scholarship 2/i)).toBeInTheDocument();
+test('renders a list of scholarships', async () => {
+  const data = {
+    name: 'Foo scholarship',
+    amount: new ScholarshipAmount({
+      min: 1000,
+      max: 1000,
+      type: AmountType.Fixed,
+    }),
+    description: 'Foo description',
+    deadline: new Date('2020-12-17'),
+    website: 'foo.com',
+  };
+  const ref = Scholarships.collection.doc('abc');
+  await ref.set(data);
+
+  const { queryByText } = renderAtRoute('/scholarships');
+  await waitFor(() => expect(queryByText(data.name)).toBeTruthy());
+
+  expect(queryByText(/Foo scholarship/i)).toBeInTheDocument();
+  expect(queryByText('Foo description')).toBeInTheDocument();
+  expect(queryByText(data.deadline.toLocaleDateString())).toBeInTheDocument();
 });
