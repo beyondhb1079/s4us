@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import firebase from 'firebase';
 import { clearFirestoreData } from '@firebase/rules-unit-testing';
 import { MemoryRouter, Route } from 'react-router-dom';
@@ -53,18 +53,19 @@ test('renders scholarship details', async () => {
     }),
     description: 'description',
     deadline: new Date('2020-12-17'),
-    website: 'foo.com',
+    website: 'http://foo.com/',
   };
   const ref = Scholarships.collection.doc('abc');
   await ref.set(data);
 
-  const { queryByText } = renderAtRoute('/scholarships/abc');
-  await waitFor(() => expect(queryByText(data.name)).toBeTruthy());
+  renderAtRoute('/scholarships/abc');
+  await screen.findByText(/Scholarship/i);
 
-  expect(queryByText(/Scholarship/i)).toBeInTheDocument();
-  expect(queryByText(data.name)).toBeInTheDocument();
-  expect(queryByText(data.amount.toString())).toBeInTheDocument();
-  expect(queryByText(data.description)).toBeInTheDocument();
-  expect(queryByText(data.deadline.toString())).toBeInTheDocument();
-  expect(queryByText(data.website)).toBeInTheDocument();
+  expect(screen.getByText(data.name)).toBeInTheDocument();
+  expect(screen.getByText(data.amount.toString())).toBeInTheDocument();
+  expect(screen.getByText(data.description)).toBeInTheDocument();
+  expect(
+    screen.getByText(data.deadline.toLocaleDateString())
+  ).toBeInTheDocument();
+  expect(screen.getByRole('button').href).toBe(data.website);
 });
