@@ -82,13 +82,13 @@ function ScholarshipAmountField(props) {
     <FormControl error={error} className={classes.formControlStyle}>
       <FormLabel>Amount Type</FormLabel>
       <RadioGroup value={amountType} onChange={onTypeChange}>
-        {Object.keys(AmountType).map((option) => (
+        {Object.values(AmountType).map((type) => (
           <FormControlLabel
             className={classes.formControlLabelStyle}
-            key={option}
-            value={AmountType[option]}
+            key={type}
+            value={type}
             control={<Radio />}
-            label={labels[AmountType[option]] || 'Unknown'}
+            label={labels[type] || 'Unknown'}
           />
         ))}
       </RadioGroup>

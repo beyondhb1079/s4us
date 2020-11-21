@@ -19,7 +19,7 @@ test('renders all amount input fields', () => {
     <ScholarshipAmountField onTypeChange={() => {}} updateAmount={() => {}} />
   );
 
-  const amountFields = screen.getAllByRole('spinbutton');
+  const amountFields = screen.getAllByRole('textbox');
   expect(amountFields).toHaveLength(3);
   amountFields.forEach((input) => expect(input).toBeDisabled());
 });
