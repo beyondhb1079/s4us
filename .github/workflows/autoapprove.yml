@@ -12,6 +12,21 @@ jobs:
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
+      - name: Check for non-modifications
+        run: |
+          if git diff-tree --name-only --exit-code -r ${{ github.sha }} package.json; then
+            echo "::set-env name=lock_only_change::true"
+          fi
+      - name: Check for package.json changes
+        run: |
+          if git diff-tree --name-only --exit-code -r ${{ github.sha }} package.json; then
+            echo "::set-env name=lock_only_change::true"
+          fi
+      - name: Check for package.json changes
+        run: |
+          if git diff-tree --name-only --exit-code -r ${{ github.sha }} package.json; then
+            echo "::set-env name=lock_only_change::true"
+          fi
       - name: Auto approve
         uses: actions/github-script@0.2.0
         with:
