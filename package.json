@@ -34,7 +34,7 @@
     "typescript": "^4.0.3"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "firebase emulators:exec --only firestore \"react-scripts start\"",
     "build": "react-scripts build",
     "test": "firebase emulators:exec --only firestore \"react-scripts test --verbose\"",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
