@@ -1,7 +1,7 @@
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import firebase from 'firebase';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CssBaseline, ThemeProvider } from '@material-ui/core';
 import { BRAND_NAME } from './config/constants';
 import FirebaseConfig from './config/FirebaseConfig';
