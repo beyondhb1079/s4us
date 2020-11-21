@@ -3,10 +3,10 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import firebase from 'firebase';
 import React, { useEffect } from 'react';
 import { CssBaseline, ThemeProvider } from '@material-ui/core';
-import { BRAND_NAME } from './config/constants';
 import FirebaseConfig from './config/FirebaseConfig';
 import Footer from './components/Footer';
 import Header from './components/Header';
+import setTitle from './lib/setTitle';
 import Home from './pages/Home';
 import ScholarshipDetails from './pages/ScholarshipDetails';
 import Scholarships from './pages/Scholarships';
@@ -16,11 +16,9 @@ import ScholarshipForm from './pages/ScholarshipForm';
 import theme from './theme';
 
 function App() {
-  firebase.initializeApp(FirebaseConfig);
+  useEffect(() => firebase.initializeApp(FirebaseConfig), []);
 
-  useEffect(() => {
-    document.title = `${BRAND_NAME} | Scholarships for Undocumented Students`;
-  }, []);
+  useEffect(() => setTitle('Scholarships for Undocumented Students'), []);
 
   return (
     <ThemeProvider theme={theme}>
