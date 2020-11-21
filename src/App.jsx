@@ -17,9 +17,9 @@ import theme from './theme';
 
 function App() {
   firebase.initializeApp(FirebaseConfig);
-  
+
   useEffect(() => {
-   document.title = `${BRAND_NAME} | Scholarships for Undocumented Students`;
+    document.title = `${BRAND_NAME} | Scholarships for Undocumented Students`;
   }, []);
 
   return (
