@@ -1,13 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import ReactRouterPropTypes from 'react-router-prop-types';
-import Container from '@material-ui/core/Container';
+import {
+  Button,
+  Container,
+  Link,
+  makeStyles,
+  Typography,
+} from '@material-ui/core';
 import Scholarships from '../models/Scholarships';
+
+const useStyles = makeStyles(() => ({
+  description: {
+    whiteSpace: 'pre-line',
+  },
+}));
 
 export default function ScholarshipDetailsPage({ match }) {
   const { id } = match.params;
   const [scholarship, setScholarship] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
+  const classes = useStyles();
 
   useEffect(
     () =>
@@ -31,25 +44,34 @@ export default function ScholarshipDetailsPage({ match }) {
     );
   }
 
-  const {
-    name,
-    amount,
-    deadline,
-    website,
-    school,
-    year,
-    description,
-  } = scholarship.data;
+  const { name, amount, deadline, website, description } = scholarship.data;
 
   return (
     <Container>
-      <h1>{name}</h1>
-      <h2>{amount.toString()}</h2>
-      <h3>{deadline.toString()}</h3>
-      <h3>{website}</h3>
-      <h3>{school}</h3>
-      <h3>{year}</h3>
-      <p>{description}</p>
+      <Typography gutterBottom variant="h3" component="h1">
+        {name}
+      </Typography>
+      <Typography gutterBottom variant="h4" component="h2">
+        {amount.toString()}
+      </Typography>
+      <Typography gutterBottom variant="h5" component="h3">
+        {deadline.toLocaleDateString()}
+      </Typography>
+      <Typography
+        gutterBottom
+        variant="body1"
+        component="p"
+        className={classes.description}>
+        {description}
+      </Typography>
+
+      <Button
+        component={Link}
+        href={website}
+        color="primary"
+        variant="contained">
+        Apply
+      </Button>
     </Container>
   );
 }

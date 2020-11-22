@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
     lineClamp: 5,
     '-webkit-box-orient': 'vertical',
     overflow: 'hidden',
+    whiteSpace: 'pre-line',
   },
 }));
 
