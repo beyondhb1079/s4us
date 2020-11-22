@@ -1,10 +1,8 @@
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import firebase from 'firebase';
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { CssBaseline, ThemeProvider } from '@material-ui/core';
-import FirebaseConfig from './config/FirebaseConfig';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import Home from './pages/Home';
@@ -15,6 +13,7 @@ import Contact from './pages/Contact';
 import ScholarshipForm from './pages/ScholarshipForm';
 import theme from './theme';
 import { BRAND_NAME } from './config/constants';
+import FirebaseProvider from './lib/FirebaseProvider';
 
 function RouteWithTitle({ path, component, title }) {
   useEffect(() => {
@@ -71,18 +70,20 @@ function App() {
   }, []);
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Router>
-        <Header />
-        <Switch>
-          {routes.map(({ path, component, title }) => (
-            <RouteWithTitle {...{ path, component, title }} />
-          ))}
-        </Switch>
-        <Footer />
-      </Router>
-    </ThemeProvider>
+    <FirebaseProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Router>
+          <Header />
+          <Switch>
+            {routes.map(({ path, component, title }) => (
+              <RouteWithTitle {...{ path, component, title }} />
+            ))}
+          </Switch>
+          <Footer />
+        </Router>
+      </ThemeProvider>
+    </FirebaseProvider>
   );
 }
 
