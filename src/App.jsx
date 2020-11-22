@@ -1,9 +1,7 @@
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import firebase from 'firebase';
-import React, { createContext } from 'react';
+import React from 'react';
 import { CssBaseline, ThemeProvider } from '@material-ui/core';
-import FirebaseConfig from './config/FirebaseConfig';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import Home from './pages/Home';
@@ -13,32 +11,9 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import ScholarshipForm from './pages/ScholarshipForm';
 import theme from './theme';
-
-const FirebaseContext = createContext(null);
-
-function FirebaseProvider({ children }) {
-  if (firebase.apps.length === 0) {
-    switch (process.env.NODE_ENV) {
-      case 'production':
-        firebase.initializeApp(FirebaseConfig);
-        break;
-      // TODO: consider staging environment
-      case 'development':
-      case 'test':
-      default:
-        firebase.initializeApp(FirebaseConfig);
-        firebase.firestore().settings({ host: 'localhost:8080', ssl: false });
-      // TODO: do we want test environment too?
-    }
-  }
-  return (
-    <FirebaseContext.Provider value={true}>{children}</FirebaseContext.Provider>
-  );
-}
+import FirebaseProvider from './lib/FirebaseProvider';
 
 function App() {
-  console.log(JSON.stringify(process.env));
-
   return (
     <FirebaseProvider>
       <ThemeProvider theme={theme}>
