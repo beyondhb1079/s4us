@@ -1,9 +1,9 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import App from './App';
 
 test('renders home page by default', () => {
-  const { getByText } = render(<App />);
-  const linkElement = getByText(/Scholarships made simple/i);
+  render(<App />);
+  const linkElement = screen.getByText(/Scholarships made simple/i);
   expect(linkElement).toBeInTheDocument();
 });
