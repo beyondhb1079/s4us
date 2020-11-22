@@ -31,18 +31,34 @@ RouteWithTitle.propTypes = {
 const routes = [
   {
     path: '/scholarships/new',
-    component: ScholarshipForm,
     title: 'Add a scholarship',
+    component: ScholarshipForm,
   },
   {
     path: '/scholarships/:id',
-    component: ScholarshipDetails,
     title: 'Details',
+    component: ScholarshipDetails,
   },
-  { path: '/scholarships', component: Scholarships, title: 'Scholarships' },
-  { path: '/about', component: About, title: 'About' },
-  { path: '/contact', component: Contact, title: 'Contact' },
-  { path: '/', component: Home, title: 'Home' },
+  {
+    path: '/scholarships',
+    title: 'Scholarships',
+    component: Scholarships,
+  },
+  {
+    path: '/about',
+    title: 'About',
+    component: About,
+  },
+  {
+    path: '/contact',
+    title: 'Contact',
+    component: Contact,
+  },
+  {
+    path: '/',
+    title: 'Home',
+    component: Home,
+  },
 ];
 
 function App() {
