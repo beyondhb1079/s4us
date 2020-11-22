@@ -37,13 +37,9 @@ const routes = [
   {
     path: '/scholarships/:id',
     component: ScholarshipDetails,
-    title: 'Loading...',
+    title: 'Details',
   },
-  {
-    path: '/scholarships',
-    component: Scholarships,
-    title: 'Scholarship results',
-  },
+  { path: '/scholarships', component: Scholarships, title: 'Scholarships' },
   { path: '/about', component: About, title: 'About' },
   { path: '/contact', component: Contact, title: 'Contact' },
   { path: '/', component: Home, title: 'Home' },
