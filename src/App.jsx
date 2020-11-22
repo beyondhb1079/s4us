@@ -61,10 +61,6 @@ const routes = [
 ];
 
 function App() {
-  if (firebase.apps.length === 0) {
-    firebase.initializeApp(FirebaseConfig);
-  }
-
   useEffect(() => {
     document.title = `${BRAND_NAME} | Scholarships for Undocumented Students`;
   }, []);
