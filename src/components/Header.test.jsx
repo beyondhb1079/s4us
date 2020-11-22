@@ -3,9 +3,8 @@ import { MemoryRouter } from 'react-router-dom';
 import firebase from 'firebase';
 import { render, screen } from '@testing-library/react';
 import Header from './Header';
-import FirebaseConfig from '../config/FirebaseConfig';
 
-firebase.initializeApp(FirebaseConfig);
+firebase.initializeApp({ apiKey: 'fake-api-key' });
 
 test('does not render alert by default', () => {
   delete window.location;
