@@ -48,6 +48,7 @@ export default function HomeSection(props) {
           </Typography>
           <Grid container spacing={2}>
             {buttons.map((button, i) => (
+              // eslint-disable-next-line react/no-array-index-key
               <Grid item key={i}>
                 {button}
               </Grid>

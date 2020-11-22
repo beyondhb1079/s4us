@@ -10,7 +10,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import LoginButton from './LoginButton';
 import HomeSection from './HomeSection';
-import pic from '../img/blank.png';
+import blank from '../img/blank.png';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     background: theme.palette.background.paper,
     color: theme.palette.text.primary,
-    //backgroundColor: 'black',
   },
   description: {
     textAlign: 'center',
@@ -52,7 +51,7 @@ const tabs = [
     description:
       'Et has minim eltir intellegat. Mea aeterno elefiend antiopam ad, nam no suscipit quaerendum. At name mininum ponderum. Est audiam animal molestiate te.',
     buttons: [<LoginButton />, OutlineButton('students')],
-    pic: pic,
+    pic: blank,
   },
   {
     tab: 'community contributor',
@@ -60,7 +59,7 @@ const tabs = [
     description:
       'Et has minim eltir intellegat. Mea aeterno elefiend antiopam ad, nam no suscipit quaerendum. At name mininum ponderum. Est audiam animal molestiate te.',
     buttons: [OutlineButton('community contributor')],
-    pic: pic,
+    pic: blank,
   },
 ];
 
