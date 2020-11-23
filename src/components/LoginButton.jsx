@@ -2,11 +2,23 @@ import React, { useEffect, useState } from 'react';
 import firebase from 'firebase';
 import Button from '@material-ui/core/Button';
 import LoginDialog from './LoginDialog';
+import ProfileMenu from './ProfileDropdown';
 
 export default function LoginButton() {
   const [isSignedIn, setIsSignedIn] = useState(!!firebase.auth().currentUser);
   const [loginDialogOpen, setLoginDialogOpen] = useState(false); // initialized to false
   const handleClose = () => setLoginDialogOpen(false);
+
+  const user = firebase.auth().currentUser;
+  let userName;
+  let userEmail;
+  let photoUrl;
+
+  if (user != null) {
+    userName = user.displayName;
+    userEmail = user.email;
+    photoUrl = user.photoURL;
+  }
 
   useEffect(() => {
     const unregisterAuthObserver = firebase
@@ -22,14 +34,27 @@ export default function LoginButton() {
 
   const signUserOut = () => firebase.auth().signOut();
   const showLoginDialog = () => setLoginDialogOpen(true);
-  const onClick = isSignedIn ? signUserOut : showLoginDialog;
 
-  return (
-    <>
-      <Button variant="contained" color="primary" onClick={onClick}>
-        {isSignedIn ? 'Sign out' : 'Login'}
-      </Button>
-      <LoginDialog open={loginDialogOpen} onClose={handleClose} />
-    </>
-  );
+  function ProfileDropdown(loginStatus) {
+    if (loginStatus === true) {
+      return (
+        <ProfileMenu
+          signOut={signUserOut}
+          name={userName}
+          email={userEmail}
+          photo={photoUrl}
+        />
+      );
+    }
+    return (
+      <>
+        <LoginDialog open={loginDialogOpen} onClose={handleClose} />
+        <Button variant="contained" color="primary" onClick={showLoginDialog}>
+          Login
+        </Button>
+      </>
+    );
+  }
+
+  return <>{ProfileDropdown(isSignedIn)}</>;
 }
