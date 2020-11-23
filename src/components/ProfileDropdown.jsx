@@ -74,8 +74,8 @@ export default function ProfileDropdown(props) {
             <Avatar src={photo} className={classes.medium} />
           </Grid>
           <Grid item xs={9} sm={9}>
-            <Typography variant="h6" component="h4" gutterBottom>
-              {name}
+            <Typography variant="h6" component="h4">
+              <b>{name}</b>
             </Typography>
             <Typography component="h6" gutterBottom>
               {email}
@@ -86,26 +86,26 @@ export default function ProfileDropdown(props) {
         <Divider />
         <MenuItem className={classes.menuList}>
           <ListItemIcon>
-            <NewIcon fontSize="small" />
+            <NewIcon fontSize="medium" />
           </ListItemIcon>
           <ListItemText primary="New" />
         </MenuItem>
         <MenuItem className={classes.menuList}>
           <ListItemIcon>
-            <BookmarkIcon fontSize="small" />
+            <BookmarkIcon fontSize="medium" />
           </ListItemIcon>
           <ListItemText primary="Saved" />
         </MenuItem>
         <MenuItem className={classes.menuList}>
           <ListItemIcon>
-            <DoneIcon fontSize="small" />
+            <DoneIcon fontSize="medium" />
           </ListItemIcon>
           <ListItemText primary="Applied" />
         </MenuItem>
         <Divider />
         <MenuItem onClick={signOut} className={classes.menuList}>
           <ListItemIcon>
-            <ExitToAppIcon fontSize="small" />
+            <ExitToAppIcon fontSize="medium" />
           </ListItemIcon>
           <ListItemText primary="Logout" />
         </MenuItem>
