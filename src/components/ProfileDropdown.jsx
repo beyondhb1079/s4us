@@ -16,6 +16,7 @@ import NewIcon from '@material-ui/icons/NewReleases';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import DoneIcon from '@material-ui/icons/Done';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { makeStyles } from '@material-ui/core/styles';
 
 // hacky way to override Menu style
 const StyledMenu = withStyles({
@@ -26,7 +27,22 @@ const StyledMenu = withStyles({
   },
 })(Menu);
 
+const useStyles = makeStyles((theme) => ({
+  profilePic: {
+    alignSelf: 'center',
+  },
+  medium: {
+    width: theme.spacing(6),
+    height: theme.spacing(6),
+  },
+  large: {
+    width: theme.spacing(8),
+    height: theme.spacing(8),
+  },
+}));
+
 export default function ProfileDropdown(props) {
+  const classes = useStyles();
   const { signOut, name, email, photo } = props;
   const [dropMenu, setDropMenu] = React.useState(null);
 
@@ -40,17 +56,22 @@ export default function ProfileDropdown(props) {
 
   return (
     <Container>
-      <Avatar alt="Remy Sharp" src={photo} onClick={handleClick} />
+      <Avatar
+        alt="Remy Sharp"
+        src={photo}
+        onClick={handleClick}
+        className={classes.large}
+      />
       <StyledMenu
         keepMounted
         anchorEl={dropMenu}
         open={Boolean(dropMenu)}
         onClose={handleClose}>
         <Grid container spacing={2}>
-          <Grid item xs={3} sm={2}>
-            <Avatar alt="Remy Sharp" src={photo} />
+          <Grid item xs={3} sm={3} className={classes.profilePic}>
+            <Avatar alt="Remy Sharp" src={photo} className={classes.medium} />
           </Grid>
-          <Grid item xs={9} sm={10}>
+          <Grid item xs={9} sm={9}>
             <Typography variant="h6" component="h4" gutterBottom>
               {name}
             </Typography>
