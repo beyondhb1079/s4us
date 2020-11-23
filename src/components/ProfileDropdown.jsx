@@ -47,10 +47,10 @@ export default function ProfileDropdown(props) {
         open={Boolean(dropMenu)}
         onClose={handleClose}>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={2}>
+          <Grid item xs={3} sm={2}>
             <Avatar alt="Remy Sharp" src={photo} />
           </Grid>
-          <Grid item xs={12} sm={10}>
+          <Grid item xs={9} sm={10}>
             <Typography variant="h6" component="h4" gutterBottom>
               {name}
             </Typography>
