@@ -20,7 +20,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 // hacky way to override Menu style
 const StyledMenu = withStyles({
   paper: {
-    border: '2px solid #d3d4d5',
+    border: '1px solid black',
     width: '300px',
     background: '#f2f5fa',
   },
