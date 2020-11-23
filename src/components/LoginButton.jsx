@@ -9,15 +9,15 @@ export default function LoginButton() {
   const [loginDialogOpen, setLoginDialogOpen] = useState(false); // initialized to false
   const handleClose = () => setLoginDialogOpen(false);
 
-  const user = firebase.auth().currentUser;
+  const { currentUser } = firebase.auth();
   let userName;
   let userEmail;
   let photoUrl;
 
-  if (user != null) {
-    userName = user.displayName;
-    userEmail = user.email;
-    photoUrl = user.photoURL;
+  if (currentUser != null) {
+    userName = currentUser.displayName;
+    userEmail = currentUser.email;
+    photoUrl = currentUser.photoURL;
   }
 
   useEffect(() => {
