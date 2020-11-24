@@ -41,19 +41,19 @@ jobs:
         run: yarn lint
 
   style:
-    runs-on: ubuntu-latest
+    runs-on:  ubuntu-latest
     steps:
-    - name: Checkout the repo
-      uses: actions/checkout@v2
-    - name: Setup node.js
-      uses: actions/setup-node@v2-beta
-      with:
-        node-version: '12'
-        check-latest: true
-    - name: Install dependencies
-      run: yarn install --frozen-lockfile
-    - name: Style
-      run: yarn prettier --check . || yarn prettier --write . && git diff --exit-code
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+      - name: Setup node.js
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: '12'
+          check-latest: true
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Style
+        run: yarn prettier --check . || yarn prettier --write . && git diff --exit-code
 
   test:
     runs-on: ubuntu-latest
