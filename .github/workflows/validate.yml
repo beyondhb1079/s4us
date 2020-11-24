@@ -53,7 +53,7 @@ jobs:
     - name: Install dependencies
       run: yarn install --frozen-lockfile
     - name: Style
-      run: yarn prettier --check . || yarn prettier --write . && git diff 
+      run: yarn prettier --check . || yarn prettier --write . && git diff --exit-code
 
   test:
     runs-on: ubuntu-latest
