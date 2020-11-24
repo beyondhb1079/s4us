@@ -65,7 +65,7 @@ jobs:
           node-version: '12'
           check-latest: true
       - name: Install dependencies
-        run: yarn add prettier
+        run: yarn install --frozen-lockfile
       - name: Style
         run: yarn prettier --check .
 
