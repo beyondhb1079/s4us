@@ -41,7 +41,7 @@ jobs:
         run: yarn lint
 
   style:
-    runs-on:  ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
