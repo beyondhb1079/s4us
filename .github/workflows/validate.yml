@@ -15,14 +15,21 @@ jobs:
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
+      - name: Check if this job should continue
+        id: continue
+        run: |
+          git diff --exit-code -- build/ src/ *.json yarn.lock || echo ::set-output name=CONTINUE::true
       - name: Setup node.js
+        if: steps.continue.outputs.CONTINUE
         uses: actions/setup-node@v2-beta
         with:
           node-version: '12'
           check-latest: true
       - name: Install dependencies
+        if: steps.continue.outputs.CONTINUE
         run: yarn install --frozen-lockfile --production
       - name: Build app
+        if: steps.continue.outputs.CONTINUE
         run: yarn build --frozen-lockfile
 
   lint:
@@ -30,14 +37,21 @@ jobs:
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
+      - name: Check if this job should continue
+        id: continue
+        run: |
+          git diff --exit-code -- '***js' '***jsx' '***ts' '***tsx' package.json yarn.lock || echo ::set-output name=CONTINUE::true
       - name: Setup node.js
+        if: steps.continue.outputs.CONTINUE
         uses: actions/setup-node@v2-beta
         with:
           node-version: '12'
           check-latest: true
       - name: Install dependencies
+        if: steps.continue.outputs.CONTINUE
         run: yarn install --frozen-lockfile
       - name: Lint
+        if: steps.continue.outputs.CONTINUE
         run: yarn lint
 
   style:
@@ -51,7 +65,7 @@ jobs:
           node-version: '12'
           check-latest: true
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --frozen-lockfile prettier
       - name: Style
         run: yarn prettier --check .
 
@@ -60,12 +74,19 @@ jobs:
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
+      - name: Check if this job should continue
+        id: continue
+        run: |
+          git diff --exit-code -- src/ *.json yarn.lock || echo ::set-output name=CONTINUE::true
       - name: Setup node.js
+        if: steps.continue.outputs.CONTINUE
         uses: actions/setup-node@v2-beta
         with:
           node-version: '12'
           check-latest: true
       - name: Install dependencies
+        if: steps.continue.outputs.CONTINUE
         run: yarn install --frozen-lockfile
       - name: Run tests
+        if: steps.continue.outputs.CONTINUE
         run: yarn test
