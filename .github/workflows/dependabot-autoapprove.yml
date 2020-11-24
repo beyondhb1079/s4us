@@ -1,4 +1,4 @@
-name: 'Dependabot Automerge - Action'
+name: 'Dependabot Autoapprove - Action'
 
 on:
   pull_request:
@@ -9,17 +9,11 @@ jobs:
   automerge:
     runs-on: ubuntu-latest
     if: github.actor == 'dependabot[bot]'
-    name: Automerge changes if yarn.lock
+    name: Autoapprove changes
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
-      - name: Check for package.json changes
-        run: |
-          if git diff-tree --name-only --exit-code -r ${{ github.sha }} package.json; then
-            echo "::set-env name=lock_only_change::true"
-          fi
       - name: Automerge
-        if: ${{ env.lock_only_change == 'true' }}
         uses: actions/github-script@0.2.0
         with:
           script: |

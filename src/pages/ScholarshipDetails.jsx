@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import Scholarships from '../models/Scholarships';
+import { BRAND_NAME } from '../config/constants';
 
 const useStyles = makeStyles(() => ({
   description: {
@@ -26,6 +27,7 @@ export default function ScholarshipDetailsPage({ match }) {
     () =>
       Scholarships.id(id).subscribe(
         (s) => {
+          document.title = `${BRAND_NAME} | ${s.data.name}`;
           setScholarship(s);
           setLoading(false);
         },
