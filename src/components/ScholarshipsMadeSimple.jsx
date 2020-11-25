@@ -50,7 +50,7 @@ const tabs = [
     tab: 'students',
     title: 'Stress-free scholarships',
     description:
-      'We intend to provide tools and resources for all students in High School, Community College and University. Our goal is to provide you with access to scholarships to allow you to pursue your career path. We understand that finding scholarships that match your attributes is the most difficult and time consuming task to do as a college student, and using our database we will ensure to minimize the time you spend finding scholarships and effectively provide you with scholarships that are right for you.',
+      'We intend to provide tools and resources for all students in High School, Community College and University. Our goal is to provide you with access to scholarships to allow you to pursue your career path. We understand that finding scholarships that match your attributes is the most difficult and time consuming task to do as a college student. Our purpose is to connect you with our database to ensure the time you spend finding scholarships is minimize and effectively provide you with scholarships that are right for you.',
     buttons: [<LoginButton />, OutlineButton('students')],
     pic: student,
   },
@@ -58,7 +58,7 @@ const tabs = [
     tab: 'community contributor',
     title: 'Join and Support the Community',
     description:
-      'As members of the community we are passionate about contributing to opening opportunites for as many people possible. Our college experience has lead us to initialize a web platform for connecting students with scholarships. We would be beyond thrilled if we recieved support from the community to keep the scholarships up to date and fully functioning by becoming part of the team.',
+      'As members of the community we are passionate about contributing to opening opportunites too as many people possible. Our college experience has lead us to initialize a web platform for connecting students with scholarships. We would be beyond thrilled if we recieved support from the community to keep the scholarships up to date and fully functioning by becoming part of the team.',
     buttons: [OutlineButton('community contributor')],
     pic: contributor,
   },
