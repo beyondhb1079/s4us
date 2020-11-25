@@ -14,7 +14,6 @@ function DatePicker(props) {
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <KeyboardDatePicker
         format="MM/dd/yyyy"
-        required
         {...{ id, label, error, value, onChange, helperText }}
         fullWidth
       />
