@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 400,
   },
   fieldStye: {
-    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
   },
 }));
 
