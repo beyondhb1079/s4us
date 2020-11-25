@@ -21,10 +21,25 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 const StyledMenu = withStyles((theme) => ({
   paper: {
     border: '1px solid black',
-    width: '400px',
-    background: theme.palette.background.default,
+    width: '350px',
+    //background: theme.palette.background.default,
   },
-}))(Menu);
+  // placing dropdown menu below the avatar
+}))((props) => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'center',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'center',
+    }}
+    {...props}
+  />
+));
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,8 +80,8 @@ export default function ProfileDropdown(props) {
     <Container>
       <Avatar src={photo} onClick={handleClick} className={classes.large} />
       <StyledMenu
-        keepMounted
         anchorEl={dropMenu}
+        keepMounted
         open={Boolean(dropMenu)}
         onClose={handleClose}>
         <Grid container spacing={2} className={classes.root}>
