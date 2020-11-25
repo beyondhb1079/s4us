@@ -9,16 +9,9 @@ export default function LoginButton() {
   const [loginDialogOpen, setLoginDialogOpen] = useState(false); // initialized to false
   const handleClose = () => setLoginDialogOpen(false);
 
-  const { currentUser } = firebase.auth();
-  let userName;
-  let userEmail;
-  let photoUrl;
-
-  if (currentUser != null) {
-    userName = currentUser.displayName;
-    userEmail = currentUser.email;
-    photoUrl = currentUser.photoURL;
-  }
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [photoURL, setPhotoURL] = useState('');
 
   useEffect(() => {
     const unregisterAuthObserver = firebase
@@ -27,6 +20,9 @@ export default function LoginButton() {
         setIsSignedIn(!!user);
         if (user) {
           setLoginDialogOpen(false);
+          setName(user.displayName);
+          setEmail(user.email);
+          setPhotoURL(user.photoURL);
         }
       });
     return unregisterAuthObserver;
@@ -40,9 +36,9 @@ export default function LoginButton() {
       return (
         <ProfileMenu
           signOut={signUserOut}
-          name={userName}
-          email={userEmail}
-          photo={photoUrl}
+          name={name}
+          email={email}
+          photo={photoURL}
         />
       );
     }

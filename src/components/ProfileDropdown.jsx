@@ -18,33 +18,33 @@ import DoneIcon from '@material-ui/icons/Done';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 // hacky way to override Menu style
-const StyledMenu = withStyles({
+const StyledMenu = withStyles((theme) => ({
   paper: {
     border: '1px solid black',
-    width: '300px',
-    background: '#f2f5fa',
+    width: '400px',
+    background: theme.palette.background.default,
   },
-})(Menu);
+}))(Menu);
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    marginTop: '10px',
-    marginBottom: '15px',
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(2),
   },
   menuList: {
-    marginTop: '10px',
-    marginBottom: '10px',
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
   },
   profilePic: {
     alignSelf: 'center',
   },
   medium: {
-    width: theme.spacing(6),
-    height: theme.spacing(6),
+    width: '48px',
+    height: '48px',
   },
   large: {
-    width: theme.spacing(8),
-    height: theme.spacing(8),
+    width: '60px',
+    height: '60px',
   },
 }));
 
@@ -75,7 +75,7 @@ export default function ProfileDropdown(props) {
           </Grid>
           <Grid item xs={9} sm={9}>
             <Typography variant="h6" component="h4">
-              <b>{name}</b>
+              {name}
             </Typography>
             <Typography component="h6" gutterBottom>
               {email}
