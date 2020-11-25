@@ -31,26 +31,23 @@ export default function LoginButton() {
   const signUserOut = () => firebase.auth().signOut();
   const showLoginDialog = () => setLoginDialogOpen(true);
 
-  function ProfileDropdown(loginStatus) {
-    if (loginStatus === true) {
-      return (
+  return (
+    <>
+      {isSignedIn ? (
         <ProfileMenu
           signOut={signUserOut}
           name={name}
           email={email}
           photo={photoURL}
         />
-      );
-    }
-    return (
-      <>
-        <LoginDialog open={loginDialogOpen} onClose={handleClose} />
-        <Button variant="contained" color="primary" onClick={showLoginDialog}>
-          Login
-        </Button>
-      </>
-    );
-  }
-
-  return <>{ProfileDropdown(isSignedIn)}</>;
+      ) : (
+        <>
+          <LoginDialog open={loginDialogOpen} onClose={handleClose} />
+          <Button variant="contained" color="primary" onClick={showLoginDialog}>
+            Login
+          </Button>
+        </>
+      )}
+    </>
+  );
 }
