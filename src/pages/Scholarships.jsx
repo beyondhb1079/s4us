@@ -9,7 +9,7 @@ import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   progress: {
     display: 'block',
     margin: 'auto',

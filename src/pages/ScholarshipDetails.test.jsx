@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import firebase from 'firebase';
 import { clearFirestoreData } from '@firebase/rules-unit-testing';
 import { MemoryRouter, Route } from 'react-router-dom';
@@ -8,7 +8,7 @@ import Scholarships from '../models/Scholarships';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import AmountType from '../types/AmountType';
 
-// hacky workaround to allow waitFor to work
+// hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.
 window.MutationObserver = require('mutation-observer');
 
@@ -30,17 +30,15 @@ beforeAll(async () => clearFirestoreData(app.options));
 afterAll(async () => app.delete());
 
 test('renders loading initially', () => {
-  const { queryByText } = renderAtRoute('/scholarships/abc');
+  renderAtRoute('/scholarships/abc');
 
-  expect(queryByText(/loading/i)).toBeTruthy();
+  expect(screen.getByText(/loading/i)).toBeInTheDocument();
 });
 
 test('renders scholarship not found', async () => {
-  const { getByText } = renderAtRoute('/scholarships/bad-id');
+  renderAtRoute('/scholarships/bad-id');
 
-  await waitFor(() => expect(getByText(/not found/i)));
-
-  expect(getByText(/Scholarships\/bad-id Not Found/i)).toBeInTheDocument();
+  await screen.findByText(/Scholarships\/bad-id Not Found/i);
 });
 
 test('renders scholarship details', async () => {
