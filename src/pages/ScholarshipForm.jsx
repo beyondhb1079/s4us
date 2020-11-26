@@ -52,7 +52,7 @@ function ScholarshipForm() {
           <TextField
             className={classes.fieldStye}
             id="name"
-            label="Scholarship Name"
+            label="Scholarship Name *"
             error={formik.touched.name && Boolean(formik.errors.name)}
             helperText={(formik.touched.name && formik.errors.name) || ' '}
             value={formik.values.name}
@@ -64,7 +64,7 @@ function ScholarshipForm() {
         <DatePicker
           className={classes.fieldStye}
           id="deadline"
-          label="Deadline"
+          label="Deadline *"
           error={formik.touched.deadline && Boolean(formik.errors.deadline)}
           helperText={
             (formik.touched.deadline && formik.errors.deadline) || ' '
@@ -77,7 +77,7 @@ function ScholarshipForm() {
           <TextField
             className={classes.fieldStye}
             id="description"
-            label="Description"
+            label="Description *"
             error={
               formik.touched.description && Boolean(formik.errors.description)
             }
@@ -95,7 +95,7 @@ function ScholarshipForm() {
           <TextField
             className={classes.fieldStye}
             id="website"
-            label="Website"
+            label="Website *"
             error={formik.touched.website && Boolean(formik.errors.website)}
             helperText={
               (formik.touched.website && formik.errors.website) || ' '
