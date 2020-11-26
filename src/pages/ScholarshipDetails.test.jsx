@@ -66,6 +66,7 @@ test('renders passed in scholarship details', () => {
     screen.getByText(data.deadline.toLocaleDateString())
   ).toBeInTheDocument();
   expect(screen.getByRole('button').href).toBe(data.website);
+  expect(document.title).toContain(data.name);
 });
 
 test('renders scholarship details', async () => {
@@ -93,4 +94,5 @@ test('renders scholarship details', async () => {
     screen.getByText(data.deadline.toLocaleDateString())
   ).toBeInTheDocument();
   expect(screen.getByRole('button').href).toBe(data.website);
+  expect(document.title).toContain(data.name);
 });

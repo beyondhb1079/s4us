@@ -23,7 +23,7 @@ export default function ScholarshipDetails({ location, match }) {
   const [error, setError] = useState();
   const loading = !error && !scholarship;
 
-  if (location?.state?.scholarship) {
+  if (scholarship) {
     document.title = `${BRAND_NAME} | ${scholarship.data.name}`;
   }
 
