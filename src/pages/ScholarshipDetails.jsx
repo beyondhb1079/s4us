@@ -16,23 +16,22 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function ScholarshipDetailsPage({ location, match }) {
+export default function ScholarshipDetails({ location, match }) {
   const classes = useStyles();
   const { id } = match.params;
-  const [scholarship, setScholarship] = useState({location.state.scholarship});
+  const [scholarship, setScholarship] = useState(location?.state?.scholarship);
   const [error, setError] = useState();
   const loading = !error && !scholarship;
-  
-  if (loading) {
-    useEffect(() => {
-      Scholarships.id(id)
-        .get()
-        .then(setScholarship)
-        .catch(setError);
-    }, []);
-  } else if (!!scholarship) {
-    document.title = `${BRAND_NAME} | ${s.data.name}`;
+
+  if (location?.state?.scholarship) {
+    document.title = `${BRAND_NAME} | ${scholarship.data.name}`;
   }
+
+  useEffect(() => {
+    if (!scholarship) {
+      Scholarships.id(id).get().then(setScholarship).catch(setError);
+    }
+  }, [id, scholarship]);
 
   if (error || loading) {
     return (
@@ -74,7 +73,7 @@ export default function ScholarshipDetailsPage({ location, match }) {
   );
 }
 
-ScholarshipDetailsPage.propTypes = {
+ScholarshipDetails.propTypes = {
   location: ReactRouterPropTypes.location.isRequired,
   match: ReactRouterPropTypes.match.isRequired,
 };

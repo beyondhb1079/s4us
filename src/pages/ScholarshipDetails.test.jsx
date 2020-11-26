@@ -1,7 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter, Route } from 'react-router-dom';
+import { Router, Route } from 'react-router-dom';
 import { clearFirestoreData, initializeTestApp } from '../lib/testing';
+import firebase from 'firebase';
+import { createMemoryHistory } from 'history';
 import ScholarshipDetails from './ScholarshipDetails';
 import Scholarships from '../models/Scholarships';
 import ScholarshipAmount from '../types/ScholarshipAmount';
@@ -11,11 +13,13 @@ import AmountType from '../types/AmountType';
 // TODO: Figure out a cleaner solution.
 window.MutationObserver = require('mutation-observer');
 
-function renderAtRoute(route) {
+function renderAtRoute(route, state = {}) {
+  const history = createMemoryHistory();
+  history.replace(route, state);
   return render(
-    <MemoryRouter initialEntries={[route]}>
+    <Router history={history}>
       <Route path="/scholarships/:id" component={ScholarshipDetails} />
-    </MemoryRouter>
+    </Router>
   );
 }
 
@@ -24,16 +28,44 @@ const app = initializeTestApp({ projectId: 'scholarship-details-test' });
 beforeAll(async () => clearFirestoreData(app.options));
 afterAll(async () => app.delete());
 
-test('renders loading initially', () => {
+test('renders loading initially', async () => {
   renderAtRoute('/scholarships/abc');
 
   expect(screen.getByText(/loading/i)).toBeInTheDocument();
+  await screen.findByText(/not found/i);
 });
 
 test('renders scholarship not found', async () => {
   renderAtRoute('/scholarships/bad-id');
 
   await screen.findByText(/Scholarships\/bad-id Not Found/i);
+});
+
+test('renders passed in scholarship details', () => {
+  const data = {
+    name: 'Foo scholarship',
+    amount: new ScholarshipAmount({
+      type: AmountType.Fixed,
+      min: 1000,
+      max: 1000,
+    }),
+    description: 'description',
+    deadline: new Date('2020-12-17'),
+    website: 'http://foo.com/',
+  };
+  const scholarship = Scholarships.id('abc');
+  scholarship.data = data;
+
+  renderAtRoute('/scholarships/abc', { scholarship });
+
+  expect(screen.getByText(/Scholarship/i)).toBeInTheDocument();
+  expect(screen.getByText(data.name)).toBeInTheDocument();
+  expect(screen.getByText(data.amount.toString())).toBeInTheDocument();
+  expect(screen.getByText(data.description)).toBeInTheDocument();
+  expect(
+    screen.getByText(data.deadline.toLocaleDateString())
+  ).toBeInTheDocument();
+  expect(screen.getByRole('button').href).toBe(data.website);
 });
 
 test('renders scholarship details', async () => {
