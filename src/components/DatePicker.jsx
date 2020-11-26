@@ -27,14 +27,12 @@ DatePicker.propTypes = exact({
   helperText: PropTypes.string,
   value: PropTypes.instanceOf(Date),
   onChange: PropTypes.func.isRequired,
-  className: PropTypes.shape({
-    paddingBottom: PropTypes.number,
-  }),
+  className: PropTypes.string,
 });
 DatePicker.defaultProps = {
   value: null, // so console doesn't complain about deadline being null in the beginning
   error: false,
   helperText: '',
-  className: {},
+  className: null,
 };
 export default DatePicker;
