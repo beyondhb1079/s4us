@@ -16,27 +16,23 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function ScholarshipDetailsPage({ match }) {
-  const { id } = match.params;
-  const [scholarship, setScholarship] = useState();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState();
+export default function ScholarshipDetailsPage({ location, match }) {
   const classes = useStyles();
-
-  useEffect(
-    () =>
-      Scholarships.id(id).subscribe(
-        (s) => {
-          document.title = `${BRAND_NAME} | ${s.data.name}`;
-          setScholarship(s);
-          setLoading(false);
-        },
-        (err) => {
-          setError(err);
-        }
-      ),
-    [id]
-  );
+  const { id } = match.params;
+  const [scholarship, setScholarship] = useState({location.state.scholarship});
+  const [error, setError] = useState();
+  const loading = !error && !scholarship;
+  
+  if (loading) {
+    useEffect(() => {
+      Scholarships.id(id)
+        .get()
+        .then(setScholarship)
+        .catch(setError);
+    }, []);
+  } else if (!!scholarship) {
+    document.title = `${BRAND_NAME} | ${s.data.name}`;
+  }
 
   if (error || loading) {
     return (
@@ -79,5 +75,6 @@ export default function ScholarshipDetailsPage({ match }) {
 }
 
 ScholarshipDetailsPage.propTypes = {
+  location: ReactRouterPropTypes.location.isRequired,
   match: ReactRouterPropTypes.match.isRequired,
 };
