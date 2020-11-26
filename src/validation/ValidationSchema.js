@@ -1,8 +1,7 @@
 import * as yup from 'yup';
 import AmountType from '../types/AmountType';
 
-/* eslint-disable import/prefer-default-export */
-export const validationSchema = yup.object({
+const validationSchema = yup.object({
   name: yup.string().required('Please enter the scholarship name'),
   deadline: yup
     .date()
@@ -16,9 +15,7 @@ export const validationSchema = yup.object({
     .url('Website must be a valid URL')
     .required('Please enter the scholarship website'),
   amount: yup.object().shape({
-    type: yup
-      .mixed()
-      .oneOf(Object.values(AmountType), 'Please choose an option above'),
+    type: yup.mixed().required('Please choose an option above'),
     minAmount: yup
       .number()
       .when('type', {
@@ -42,7 +39,7 @@ export const validationSchema = yup.object({
       })
       .test(
         'test',
-        'Amount range must have a minimum and/or a maximum',
+        'Range amount must have a minimum and/or a maximum',
         function (value) {
           const { type, maxAmount } = this.parent;
           if (type === AmountType.Range && value === 0 && maxAmount === 0)
@@ -53,3 +50,5 @@ export const validationSchema = yup.object({
     maxAmount: yup.number().notRequired(),
   }),
 });
+
+export default validationSchema;

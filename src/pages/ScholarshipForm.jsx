@@ -4,13 +4,13 @@ import { Container, Button, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ScholarshipAmountField from '../components/ScholarshipAmountField';
 import DatePicker from '../components/DatePicker';
-import { validationSchema } from '../validation/ValidationSchema';
+import validationSchema from '../validation/ValidationSchema';
 
 const useStyles = makeStyles((theme) => ({
   containerStyle: {
     maxWidth: 400,
   },
-  fieldStye: {
+  fieldStyle: {
     paddingBottom: theme.spacing(1),
   },
 }));
@@ -40,8 +40,8 @@ function ScholarshipForm() {
   });
 
   function updateAmount(minAmount, maxAmount) {
-    formik.setFieldValue('amount.minAmount', minAmount, false);
-    formik.setFieldValue('amount.maxAmount', maxAmount, false);
+    formik.setFieldValue('amount.minAmount', minAmount, true);
+    formik.setFieldValue('amount.maxAmount', maxAmount, true);
   }
 
   return (
@@ -50,7 +50,7 @@ function ScholarshipForm() {
         <h1>Submit a Scholarship</h1>
         <div>
           <TextField
-            className={classes.fieldStye}
+            className={classes.fieldStyle}
             id="name"
             label="Scholarship Name *"
             error={formik.touched.name && Boolean(formik.errors.name)}
@@ -62,7 +62,7 @@ function ScholarshipForm() {
         </div>
 
         <DatePicker
-          className={classes.fieldStye}
+          className={classes.fieldStyle}
           id="deadline"
           label="Deadline *"
           error={formik.touched.deadline && Boolean(formik.errors.deadline)}
@@ -70,12 +70,12 @@ function ScholarshipForm() {
             (formik.touched.deadline && formik.errors.deadline) || ' '
           }
           value={formik.values.deadline}
-          onChange={(date) => formik.setFieldValue('deadline', date, false)}
+          onChange={(date) => formik.setFieldValue('deadline', date, true)}
         />
 
         <div>
           <TextField
-            className={classes.fieldStye}
+            className={classes.fieldStyle}
             id="description"
             label="Description *"
             error={
@@ -93,7 +93,7 @@ function ScholarshipForm() {
 
         <div>
           <TextField
-            className={classes.fieldStye}
+            className={classes.fieldStyle}
             id="website"
             label="Website *"
             error={formik.touched.website && Boolean(formik.errors.website)}
@@ -107,6 +107,7 @@ function ScholarshipForm() {
         </div>
 
         <ScholarshipAmountField
+          className={classes.fieldStyle}
           helperText={
             (getIn(formik.touched, 'amount.type') &&
               getIn(formik.errors, 'amount.type')) ||
@@ -118,7 +119,7 @@ function ScholarshipForm() {
           minAmount={formik.values.amount.minAmount}
           maxAmount={formik.values.amount.maxAmount}
           onTypeChange={(e) =>
-            formik.setFieldValue('amount.type', e.target.value, false)
+            formik.setFieldValue('amount.type', e.target.value, true)
           }
           updateAmount={updateAmount}
         />

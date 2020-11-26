@@ -12,19 +12,17 @@ import PropTypes from 'prop-types';
 import AmountType from '../types/AmountType';
 import AmountTextField from './AmountTextField';
 
-const useStyles = makeStyles((theme) => ({
-  formControlStyle: {
-    paddingBottom: theme.spacing(1),
-  },
+const useStyles = makeStyles({
   amountFieldStyle: {
     display: 'flex',
     alignItems: 'center',
   },
-}));
+});
 
 function ScholarshipAmountField(props) {
   const classes = useStyles();
   const {
+    className,
     helperText,
     amountType,
     minAmount,
@@ -79,12 +77,11 @@ function ScholarshipAmountField(props) {
   labels[AmountType.FullTuition] = 'Full Tuition';
 
   return (
-    <FormControl error={error} className={classes.formControlStyle}>
+    <FormControl error={error} className={className}>
       <FormLabel>Amount Type *</FormLabel>
       <RadioGroup value={amountType} onChange={onTypeChange}>
         {Object.values(AmountType).map((type) => (
           <FormControlLabel
-            className={classes.formControlLabelStyle}
             key={type}
             value={type}
             control={<Radio />}
@@ -98,6 +95,7 @@ function ScholarshipAmountField(props) {
 }
 
 ScholarshipAmountField.propTypes = {
+  className: PropTypes.string,
   amountType: PropTypes.oneOf(Object.values(AmountType)),
   minAmount: PropTypes.number,
   maxAmount: PropTypes.number,
@@ -106,6 +104,7 @@ ScholarshipAmountField.propTypes = {
   helperText: PropTypes.string,
 };
 ScholarshipAmountField.defaultProps = {
+  className: null,
   amountType: null,
   helperText: '',
   minAmount: 0,
