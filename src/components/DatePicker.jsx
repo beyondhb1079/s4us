@@ -9,12 +9,12 @@ import PropTypes from 'prop-types';
 import exact from 'prop-types-exact';
 
 function DatePicker(props) {
-  const { id, label, error, helperText, value, onChange } = props;
+  const { id, label, error, helperText, value, onChange, className } = props;
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <KeyboardDatePicker
         format="MM/dd/yyyy"
-        {...{ id, label, error, value, onChange, helperText }}
+        {...{ id, label, error, value, onChange, helperText, className }}
         fullWidth
       />
     </MuiPickersUtilsProvider>
@@ -27,10 +27,14 @@ DatePicker.propTypes = exact({
   helperText: PropTypes.string,
   value: PropTypes.instanceOf(Date),
   onChange: PropTypes.func.isRequired,
+  className: PropTypes.shape({
+    paddingBottom: PropTypes.number,
+  }),
 });
 DatePicker.defaultProps = {
   value: null, // so console doesn't complain about deadline being null in the beginning
   error: false,
   helperText: '',
+  className: {},
 };
 export default DatePicker;

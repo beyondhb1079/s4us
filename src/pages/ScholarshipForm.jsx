@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 400,
   },
   fieldStye: {
-    paddingBottom: theme.spacing(2),
+    paddingBottom: theme.spacing(1),
   },
 }));
 
@@ -24,7 +24,7 @@ function ScholarshipForm() {
       deadline: null,
       description: '',
       amount: {
-        amountType: null,
+        type: null,
         minAmount: 0,
         maxAmount: 0,
       },
@@ -54,7 +54,7 @@ function ScholarshipForm() {
             id="name"
             label="Scholarship Name"
             error={formik.touched.name && Boolean(formik.errors.name)}
-            helperText={formik.touched.name ? formik.errors.name : ' '}
+            helperText={(formik.touched.name && formik.errors.name) || ' '}
             value={formik.values.name}
             onChange={formik.handleChange}
             fullWidth
@@ -62,10 +62,13 @@ function ScholarshipForm() {
         </div>
 
         <DatePicker
+          className={classes.fieldStye}
           id="deadline"
           label="Deadline"
           error={formik.touched.deadline && Boolean(formik.errors.deadline)}
-          helperText={formik.touched.deadline ? formik.errors.deadline : ' '}
+          helperText={
+            (formik.touched.deadline && formik.errors.deadline) || ' '
+          }
           value={formik.values.deadline}
           onChange={(date) => formik.setFieldValue('deadline', date, false)}
         />
@@ -79,7 +82,7 @@ function ScholarshipForm() {
               formik.touched.description && Boolean(formik.errors.description)
             }
             helperText={
-              formik.touched.description ? formik.errors.description : ' '
+              (formik.touched.description && formik.errors.description) || ' '
             }
             value={formik.values.description}
             onChange={formik.handleChange}
@@ -94,7 +97,9 @@ function ScholarshipForm() {
             id="website"
             label="Website"
             error={formik.touched.website && Boolean(formik.errors.website)}
-            helperText={formik.touched.website ? formik.errors.website : ' '}
+            helperText={
+              (formik.touched.website && formik.errors.website) || ' '
+            }
             value={formik.values.website}
             onChange={formik.handleChange}
             fullWidth
@@ -103,17 +108,17 @@ function ScholarshipForm() {
 
         <ScholarshipAmountField
           helperText={
-            (getIn(formik.touched, 'amount.amountType') &&
-              getIn(formik.errors, 'amount.amountType')) ||
+            (getIn(formik.touched, 'amount.type') &&
+              getIn(formik.errors, 'amount.type')) ||
             getIn(formik.errors, 'amount.minAmount') ||
             getIn(formik.errors, 'amount.maxAmount') ||
             ''
           }
-          amountType={formik.values.amount.amountType}
+          amountType={formik.values.amount.type}
           minAmount={formik.values.amount.minAmount}
           maxAmount={formik.values.amount.maxAmount}
           onTypeChange={(e) =>
-            formik.setFieldValue('amount.amountType', e.target.value, false)
+            formik.setFieldValue('amount.type', e.target.value, false)
           }
           updateAmount={updateAmount}
         />

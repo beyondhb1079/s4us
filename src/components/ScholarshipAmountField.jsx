@@ -14,7 +14,7 @@ import AmountTextField from './AmountTextField';
 
 const useStyles = makeStyles((theme) => ({
   formControlStyle: {
-    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(1),
   },
   amountFieldStyle: {
     display: 'flex',
