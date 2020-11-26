@@ -65,53 +65,61 @@ function ScholarshipList({ scholarships }) {
   };
   return (
     <Grid container spacing={3}>
-      {scholarships.map(({ id, data }) => (
-        <Grid item xs={12} key={id}>
-          <Card variant="outlined">
-            <CardActionArea component={Link} to={`/scholarships/${id}`}>
-              <CardHeader
-                title={data.name}
-                subheader={data.amount.toString()}
-              />
-              <CardContent className={classes.content}>
-                <Typography gutterBottom variant="body1">
-                  Deadline:{' '}
-                  <Typography component="span" color="primary">
-                    {data.deadline.toLocaleDateString()}
+      {scholarships.map((scholarship) => {
+        const { id, data } = scholarship;
+        return (
+          <Grid item xs={12} key={id}>
+            <Card variant="outlined">
+              <CardActionArea
+                component={Link}
+                to={{
+                  pathname: `/scholarships/${id}`,
+                  state: { scholarship },
+                }}>
+                <CardHeader
+                  title={data.name}
+                  subheader={data.amount.toString()}
+                />
+                <CardContent className={classes.content}>
+                  <Typography gutterBottom variant="body1">
+                    Deadline:{' '}
+                    <Typography component="span" color="primary">
+                      {data.deadline.toLocaleDateString()}
+                    </Typography>
                   </Typography>
-                </Typography>
-                <Typography
-                  variant="body1"
-                  color="textSecondary"
-                  className={classes.description}>
-                  {data.description}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-            <CardActions className={classes.actions}>
-              <Button
-                component={MuiLink}
-                href={data.website}
-                color="primary"
-                variant="contained">
-                Apply
-              </Button>
-              <IconButton
-                aria-label="add to bookmarks"
-                color="primary"
-                onClick={() => alert('This feature is under construction')}>
-                <BookmarkBorderIcon />
-              </IconButton>
-              <IconButton
-                aria-label="share"
-                color="primary"
-                onClick={shareFn(id, data)}>
-                <ShareIcon />
-              </IconButton>
-            </CardActions>
-          </Card>
-        </Grid>
-      ))}
+                  <Typography
+                    variant="body1"
+                    color="textSecondary"
+                    className={classes.description}>
+                    {data.description}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+              <CardActions className={classes.actions}>
+                <Button
+                  component={MuiLink}
+                  href={data.website}
+                  color="primary"
+                  variant="contained">
+                  Apply
+                </Button>
+                <IconButton
+                  aria-label="add to bookmarks"
+                  color="primary"
+                  onClick={() => alert('This feature is under construction')}>
+                  <BookmarkBorderIcon />
+                </IconButton>
+                <IconButton
+                  aria-label="share"
+                  color="primary"
+                  onClick={shareFn(id, data)}>
+                  <ShareIcon />
+                </IconButton>
+              </CardActions>
+            </Card>
+          </Grid>
+        );
+      })}
       <ShareDialog
         open={shareDialogOpen}
         onClose={closeShareDialog}
