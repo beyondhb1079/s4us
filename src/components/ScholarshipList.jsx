@@ -55,7 +55,9 @@ function ScholarshipList({ scholarships }) {
     if (navigator.share) {
       navigator
         .share({ title, url, text })
+        // eslint-disable-next-line no-console
         .then(() => console.log('Thanks for sharing!'))
+        // eslint-disable-next-line no-console
         .catch(console.error);
     } else {
       setShareSiteLink(url);
@@ -106,6 +108,7 @@ function ScholarshipList({ scholarships }) {
                 <IconButton
                   aria-label="add to bookmarks"
                   color="primary"
+                  // eslint-disable-next-line no-alert
                   onClick={() => alert('This feature is under construction')}>
                   <BookmarkBorderIcon />
                 </IconButton>
