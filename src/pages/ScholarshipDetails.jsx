@@ -16,10 +16,10 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function ScholarshipDetails({ location, match }) {
+export default function ScholarshipDetails({ history, location, match }) {
   const classes = useStyles();
   const { id } = match.params;
-  const [scholarship, setScholarship] = useState(location?.state?.scholarship);
+  const [scholarship, setScholarship] = useState(location.state?.scholarship);
   const [error, setError] = useState();
   const loading = !error && !scholarship;
 
@@ -27,6 +27,14 @@ export default function ScholarshipDetails({ location, match }) {
     document.title = `${BRAND_NAME} | ${scholarship.data.name}`;
   }
 
+  // clear location scholarship state in case of page refresh
+  useEffect(() => {
+    if (location.state.scholarship) {
+      history.replace(location.pathname, {});
+    }
+  }, [history, location]);
+
+  // fetch the scholarship if it wasn't already passed
   useEffect(() => {
     if (!scholarship) {
       Scholarships.id(id).get().then(setScholarship).catch(setError);
@@ -74,6 +82,7 @@ export default function ScholarshipDetails({ location, match }) {
 }
 
 ScholarshipDetails.propTypes = {
+  history: ReactRouterPropTypes.history.isRequired,
   location: ReactRouterPropTypes.location.isRequired,
   match: ReactRouterPropTypes.match.isRequired,
 };
