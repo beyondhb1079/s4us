@@ -22,12 +22,8 @@ export default function FirebaseProvider(props: {
     if (process.env.NODE_ENV === 'production') {
       firebase.initializeApp(config);
     } else {
-      firebase.initializeApp({
-        // TODO (issues/214): Setup auth emulator once supported
-        apiKey: 'AIzaSyAXDqsWK4quNVaf9-YV2e28NsxkfA9rzJA',
-        authDomain: 'dreamerscholars.firebaseapp.com',
-        projectId: 'dreamerscholars-dev',
-      });
+      // TODO (issues/214): Setup auth emulator once supported
+      firebase.initializeApp(config);
       firebase.firestore().settings({ host: 'localhost:8080', ssl: false });
     }
   }
