@@ -67,8 +67,7 @@ function ScholarshipList({ scholarships }) {
   };
   return (
     <Grid container spacing={3}>
-      {scholarships.map((scholarship) => {
-        const { id, data } = scholarship;
+      {scholarships.map(({ id, data }) => {
         return (
           <Grid item xs={12} key={id}>
             <Card variant="outlined">
@@ -76,7 +75,7 @@ function ScholarshipList({ scholarships }) {
                 component={Link}
                 to={{
                   pathname: `/scholarships/${id}`,
-                  state: { scholarship },
+                  state: { scholarship: { id, data } },
                 }}>
                 <CardHeader
                   title={data.name}
