@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useFormik, getIn } from 'formik';
-import { Container, Button, TextField } from '@material-ui/core';
+import { Container, Button, TextField, Snackbar } from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
 import ScholarshipAmountField from '../components/ScholarshipAmountField';
 import DatePicker from '../components/DatePicker';
 import validationSchema from '../validation/ValidationSchema';
+import Scholarships from '../models/Scholarships';
 
 const useStyles = makeStyles((theme) => ({
   containerStyle: {
@@ -17,6 +19,8 @@ const useStyles = makeStyles((theme) => ({
 
 function ScholarshipForm() {
   const classes = useStyles();
+  const [submissionAlert, setSubmissionAlert] = useState(false);
+  const [error, setError] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -25,27 +29,51 @@ function ScholarshipForm() {
       description: '',
       amount: {
         type: null,
-        minAmount: 0,
-        maxAmount: 0,
+        min: 0,
+        max: 0,
       },
       website: '',
     },
     validationSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
       setSubmitting(true);
-      alert(JSON.stringify(values, null, 2));
-      setSubmitting(false);
-      resetForm();
+      Scholarships.new(values)
+        .save()
+        .then(() => {
+          setError(false);
+          setSubmissionAlert(true);
+          resetForm();
+        })
+        .catch(() => {
+          setError(true);
+          setSubmissionAlert(true);
+        })
+        .finally(() => setSubmitting(false));
     },
   });
 
-  function updateAmount(minAmount, maxAmount) {
-    formik.setFieldValue('amount.minAmount', minAmount, true);
-    formik.setFieldValue('amount.maxAmount', maxAmount, true);
+  function updateAmount(min, max) {
+    formik.setFieldValue('amount.min', min, true);
+    formik.setFieldValue('amount.max', max, true);
   }
 
   return (
     <Container maxWidth="md">
+      <Snackbar
+        open={submissionAlert}
+        autoHideDuration={5000}
+        onClose={() => setSubmissionAlert(false)}>
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          onClose={() => setSubmissionAlert(false)}
+          severity={error ? 'error' : 'success'}>
+          {error
+            ? 'Something went wrong. Please try again later.'
+            : 'Submission successful!'}
+        </MuiAlert>
+      </Snackbar>
+
       <form className={classes.containerStyle} onSubmit={formik.handleSubmit}>
         <h1>Submit a Scholarship</h1>
         <div>
@@ -111,13 +139,13 @@ function ScholarshipForm() {
           helperText={
             (getIn(formik.touched, 'amount.type') &&
               getIn(formik.errors, 'amount.type')) ||
-            getIn(formik.errors, 'amount.minAmount') ||
-            getIn(formik.errors, 'amount.maxAmount') ||
+            getIn(formik.errors, 'amount.min') ||
+            getIn(formik.errors, 'amount.max') ||
             ''
           }
           amountType={formik.values.amount.type}
-          minAmount={formik.values.amount.minAmount}
-          maxAmount={formik.values.amount.maxAmount}
+          minAmount={formik.values.amount.min}
+          maxAmount={formik.values.amount.max}
           onTypeChange={(e) =>
             formik.setFieldValue('amount.type', e.target.value, true)
           }

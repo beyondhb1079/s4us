@@ -16,7 +16,7 @@ const validationSchema = yup.object({
     .required('Please enter the scholarship website'),
   amount: yup.object().shape({
     type: yup.mixed().required('Please choose an option above'),
-    minAmount: yup
+    min: yup
       .number()
       .when('type', {
         is: AmountType.Fixed,
@@ -27,13 +27,8 @@ const validationSchema = yup.object({
       })
       /* eslint-disable func-names */
       .test('test', 'Minimum must be less than the maximum', function (value) {
-        const { type, maxAmount } = this.parent;
-        if (
-          type === AmountType.Range &&
-          value > 0 &&
-          maxAmount > 0 &&
-          value >= maxAmount
-        )
+        const { type, max } = this.parent;
+        if (type === AmountType.Range && value > 0 && max > 0 && value >= max)
           return false;
         return true;
       })
@@ -41,13 +36,13 @@ const validationSchema = yup.object({
         'test',
         'Range amount must have a minimum and/or a maximum',
         function (value) {
-          const { type, maxAmount } = this.parent;
-          if (type === AmountType.Range && value === 0 && maxAmount === 0)
+          const { type, max } = this.parent;
+          if (type === AmountType.Range && value === 0 && max === 0)
             return false;
           return true;
         }
       ),
-    maxAmount: yup.number().notRequired(),
+    max: yup.number().notRequired(),
   }),
 });
 
