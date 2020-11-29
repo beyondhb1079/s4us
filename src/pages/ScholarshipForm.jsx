@@ -41,14 +41,15 @@ function ScholarshipForm() {
         .save()
         .then(() => {
           setError(false);
-          setSubmissionAlert(true);
           resetForm();
         })
         .catch(() => {
           setError(true);
-          setSubmissionAlert(true);
         })
-        .finally(() => setSubmitting(false));
+        .finally(() => {
+          setSubmissionAlert(true);
+          setSubmitting(false);
+        });
     },
   });
 
