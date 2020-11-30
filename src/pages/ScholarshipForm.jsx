@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useFormik, getIn } from 'formik';
 import { Container, Button, TextField, Snackbar } from '@material-ui/core';
-import MuiAlert from '@material-ui/lab/Alert';
+import Alert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
 import ScholarshipAmountField from '../components/ScholarshipAmountField';
 import DatePicker from '../components/DatePicker';
@@ -43,9 +43,7 @@ function ScholarshipForm() {
           setError(false);
           resetForm();
         })
-        .catch(() => {
-          setError(true);
-        })
+        .catch(setError)
         .finally(() => {
           setSubmissionAlert(true);
           setSubmitting(false);
@@ -64,7 +62,7 @@ function ScholarshipForm() {
         open={submissionAlert}
         autoHideDuration={5000}
         onClose={() => setSubmissionAlert(false)}>
-        <MuiAlert
+        <Alert
           elevation={6}
           variant="filled"
           onClose={() => setSubmissionAlert(false)}
@@ -72,7 +70,7 @@ function ScholarshipForm() {
           {error
             ? 'Something went wrong. Please try again later.'
             : 'Submission successful!'}
-        </MuiAlert>
+        </Alert>
       </Snackbar>
 
       <form className={classes.containerStyle} onSubmit={formik.handleSubmit}>
