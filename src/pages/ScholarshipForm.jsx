@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useFormik, getIn } from 'formik';
-import { Container, Button, TextField, Snackbar } from '@material-ui/core';
+import { Container, Button, TextField } from '@material-ui/core';
+import Fade from '@material-ui/core/Fade';
 import Alert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
 import ScholarshipAmountField from '../components/ScholarshipAmountField';
@@ -19,8 +20,19 @@ const useStyles = makeStyles((theme) => ({
 
 function ScholarshipForm() {
   const classes = useStyles();
-  const [submissionAlert, setSubmissionAlert] = useState(false);
-  const [error, setError] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [submissionAlert, setSubmissionAlert] = useState(null);
+
+  function showSubmissionAlert(severity, message) {
+    return (
+      <Alert
+        variant="filled"
+        onClose={() => setShowAlert(false)}
+        severity={severity}>
+        {message}
+      </Alert>
+    );
+  }
 
   const formik = useFormik({
     initialValues: {
@@ -39,13 +51,25 @@ function ScholarshipForm() {
       setSubmitting(true);
       Scholarships.new(values)
         .save()
-        .then(() => {
-          setError(false);
+        .then((scholarship) => {
+          setSubmissionAlert(
+            showSubmissionAlert(
+              'success',
+              `${scholarship.data.name} submitted successfully.`
+            )
+          );
           resetForm();
         })
-        .catch(setError)
+        .catch(() =>
+          setSubmissionAlert(
+            showSubmissionAlert(
+              'error',
+              'Something went wrong. Please try again later.'
+            )
+          )
+        )
         .finally(() => {
-          setSubmissionAlert(true);
+          setShowAlert(true);
           setSubmitting(false);
         });
     },
@@ -58,21 +82,7 @@ function ScholarshipForm() {
 
   return (
     <Container maxWidth="md">
-      <Snackbar
-        open={submissionAlert}
-        autoHideDuration={5000}
-        onClose={() => setSubmissionAlert(false)}>
-        <Alert
-          elevation={6}
-          variant="filled"
-          onClose={() => setSubmissionAlert(false)}
-          severity={error ? 'error' : 'success'}>
-          {error
-            ? 'Something went wrong. Please try again later.'
-            : 'Submission successful!'}
-        </Alert>
-      </Snackbar>
-
+      <Fade in={showAlert}>{submissionAlert || <Alert>NA</Alert>}</Fade>
       <form className={classes.containerStyle} onSubmit={formik.handleSubmit}>
         <h1>Submit a Scholarship</h1>
         <div>

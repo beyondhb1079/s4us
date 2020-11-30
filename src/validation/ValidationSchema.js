@@ -33,9 +33,7 @@ const validationSchema = yup.object({
             'min < max test',
             'Minimum must be less than the maximum',
             (min, { parent }) =>
-              min === 0 ||
-              parent.max === 0 ||
-              (parent.max >= 0 && min < parent.max)
+              min === 0 || parent.max === 0 || min < parent.max
           )
           .test(
             'min max both empty test',
