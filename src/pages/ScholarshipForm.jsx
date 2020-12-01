@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useFormik, getIn } from 'formik';
-import { Container, Button, TextField } from '@material-ui/core';
+import { Container, Button, TextField, IconButton } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
+import { Alert, AlertTitle } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 import ScholarshipAmountField from '../components/ScholarshipAmountField';
 import DatePicker from '../components/DatePicker';
 import validationSchema from '../validation/ValidationSchema';
+import Scholarships from '../models/Scholarships';
 
 const useStyles = makeStyles((theme) => ({
   containerStyle: {
@@ -13,10 +17,14 @@ const useStyles = makeStyles((theme) => ({
   fieldStyle: {
     paddingBottom: theme.spacing(1),
   },
+  submitStyle: {
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 function ScholarshipForm() {
   const classes = useStyles();
+  const [submissionAlert, setSubmissionAlert] = useState(null);
 
   const formik = useFormik({
     initialValues: {
@@ -25,23 +33,58 @@ function ScholarshipForm() {
       description: '',
       amount: {
         type: null,
-        minAmount: 0,
-        maxAmount: 0,
+        min: 0,
+        max: 0,
       },
       website: '',
     },
     validationSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
       setSubmitting(true);
-      alert(JSON.stringify(values, null, 2));
-      setSubmitting(false);
-      resetForm();
+      Scholarships.new(values)
+        .save()
+        .then((scholarship) => {
+          setSubmissionAlert(
+            <Alert
+              severity="success"
+              action={
+                <>
+                  <Button
+                    color="inherit"
+                    size="medium"
+                    component={Link}
+                    to={`/scholarships/${scholarship.id}`}>
+                    VIEW
+                  </Button>
+                  <IconButton
+                    size="medium"
+                    color="inhert"
+                    onClick={() => setSubmissionAlert(null)}>
+                    <CloseIcon fontSize="small" />
+                  </IconButton>
+                </>
+              }>
+              <AlertTitle>Success</AlertTitle>
+              {`${scholarship.data.name} submitted successfully.`}
+            </Alert>
+          );
+          resetForm();
+        })
+        .catch((error) =>
+          setSubmissionAlert(
+            <Alert severity="error" onClose={() => setSubmissionAlert(null)}>
+              <AlertTitle>Error</AlertTitle>
+              {error.toString()}
+            </Alert>
+          )
+        )
+        .finally(() => setSubmitting(false));
     },
   });
 
-  function updateAmount(minAmount, maxAmount) {
-    formik.setFieldValue('amount.minAmount', minAmount, true);
-    formik.setFieldValue('amount.maxAmount', maxAmount, true);
+  function updateAmount(min, max) {
+    formik.setFieldValue('amount.min', min, true);
+    formik.setFieldValue('amount.max', max, true);
   }
 
   return (
@@ -111,13 +154,13 @@ function ScholarshipForm() {
           helperText={
             (getIn(formik.touched, 'amount.type') &&
               getIn(formik.errors, 'amount.type')) ||
-            getIn(formik.errors, 'amount.minAmount') ||
-            getIn(formik.errors, 'amount.maxAmount') ||
+            getIn(formik.errors, 'amount.min') ||
+            getIn(formik.errors, 'amount.max') ||
             ''
           }
           amountType={formik.values.amount.type}
-          minAmount={formik.values.amount.minAmount}
-          maxAmount={formik.values.amount.maxAmount}
+          minAmount={formik.values.amount.min}
+          maxAmount={formik.values.amount.max}
           onTypeChange={(e) =>
             formik.setFieldValue('amount.type', e.target.value, true)
           }
@@ -126,6 +169,7 @@ function ScholarshipForm() {
 
         <div>
           <Button
+            className={classes.submitStyle}
             variant="contained"
             color="primary"
             type="submit"
@@ -134,6 +178,7 @@ function ScholarshipForm() {
           </Button>
         </div>
       </form>
+      {submissionAlert}
     </Container>
   );
 }
