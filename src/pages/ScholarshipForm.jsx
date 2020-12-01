@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useFormik, getIn } from 'formik';
-import { Container, Button, TextField } from '@material-ui/core';
-import Fade from '@material-ui/core/Fade';
+import { Container, Button, TextField, IconButton } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 import ScholarshipAmountField from '../components/ScholarshipAmountField';
@@ -15,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
   },
   fieldStyle: {
     paddingBottom: theme.spacing(1),
+  },
+  submitStyle: {
+    marginBottom: theme.spacing(2),
   },
 }));
 
@@ -41,7 +45,25 @@ function ScholarshipForm() {
         .save()
         .then((scholarship) => {
           setSubmissionAlert(
-            <Alert onClose={() => setSubmissionAlert(null)} severity="success">
+            <Alert
+              severity="success"
+              action={
+                <>
+                  <Button
+                    color="inherit"
+                    size="medium"
+                    component={Link}
+                    to={`/scholarships/${scholarship.id}`}>
+                    VIEW
+                  </Button>
+                  <IconButton
+                    size="medium"
+                    color="inhert"
+                    onClick={() => setSubmissionAlert(null)}>
+                    <CloseIcon fontSize="small" />
+                  </IconButton>
+                </>
+              }>
               <AlertTitle>Success</AlertTitle>
               {`${scholarship.data.name} submitted successfully.`}
             </Alert>
@@ -50,9 +72,9 @@ function ScholarshipForm() {
         })
         .catch((error) =>
           setSubmissionAlert(
-            <Alert onClose={() => setSubmissionAlert(null)} severity="error">
+            <Alert severity="error" onClose={() => setSubmissionAlert(null)}>
               <AlertTitle>Error</AlertTitle>
-              {error}
+              {error.toString()}
             </Alert>
           )
         )
@@ -69,7 +91,6 @@ function ScholarshipForm() {
 
   return (
     <Container maxWidth="md">
-      <Fade in={!!submissionAlert}>{submissionAlert || <Alert>NA</Alert>}</Fade>
       <form className={classes.containerStyle} onSubmit={formik.handleSubmit}>
         <h1>Submit a Scholarship</h1>
         <div>
@@ -150,6 +171,7 @@ function ScholarshipForm() {
 
         <div>
           <Button
+            className={classes.submitStyle}
             variant="contained"
             color="primary"
             type="submit"
@@ -158,6 +180,7 @@ function ScholarshipForm() {
           </Button>
         </div>
       </form>
+      {submissionAlert}
     </Container>
   );
 }
