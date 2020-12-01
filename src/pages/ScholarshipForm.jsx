@@ -78,9 +78,7 @@ function ScholarshipForm() {
             </Alert>
           )
         )
-        .finally(() => {
-          setSubmitting(false);
-        });
+        .finally(() => setSubmitting(false));
     },
   });
 
