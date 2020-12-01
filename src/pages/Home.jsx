@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import { makeStyles, Typography } from '@material-ui/core';
 import ScholarshipsMadeSimple from '../components/ScholarshipsMadeSimple';
 import HomeSection from '../components/HomeSection';
-import pic from '../img/blank.png';
+import community from '../img/community.png';
 
 const useStyles = makeStyles(() => ({
   description: {
@@ -34,7 +34,7 @@ function Home() {
             Learn More
           </Button>,
         ]}
-        pic={pic}
+        pic={community}
       />
     </>
   );
