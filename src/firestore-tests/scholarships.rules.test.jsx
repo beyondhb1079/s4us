@@ -18,6 +18,10 @@ function getFireStore(auth = null) {
     .initializeTestApp({ projectId: MY_PROJECT_ID, auth })
     .firestore();
 }
+beforeAll(async () =>
+  firebase.clearFirestoreData({ projectId: MY_PROJECT_ID })
+);
+afterAll(async () => firebase.clearFirestoreData({ projectId: MY_PROJECT_ID }));
 
 test('Can read whether you are signed in or not', async () => {
   const db = getFireStore();
