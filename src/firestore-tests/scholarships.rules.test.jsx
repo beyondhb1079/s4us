@@ -1,6 +1,13 @@
-import * as firebase from '@firebase/testing';
+import {
+  clearFirestoreData,
+  initializeTestApp,
+  assertFails,
+  assertSucceeds,
+  loadFirestoreRules,
+} from '@firebase/rules-unit-testing';
+import fs from 'fs';
 
-const MY_PROJECT_ID = 'dreamerscholars';
+const MY_PROJECT_ID = 'scholarships-rules-test';
 const MY_AUTH = { uid: 'alice', email: 'alice@test.com' };
 const newScholarship = {
   name: 'test-scholarship',
@@ -14,29 +21,35 @@ const newScholarship = {
 };
 
 function getFireStore(auth = null) {
-  return firebase
-    .initializeTestApp({ projectId: MY_PROJECT_ID, auth })
-    .firestore();
+  return initializeTestApp({ projectId: MY_PROJECT_ID, auth }).firestore();
 }
-beforeAll(async () =>
-  firebase.clearFirestoreData({ projectId: MY_PROJECT_ID })
-);
-afterAll(async () => firebase.clearFirestoreData({ projectId: MY_PROJECT_ID }));
+loadFirestoreRules({
+  projectId: MY_PROJECT_ID,
+  rules: fs.readFileSync('./firestore.rules', 'utf8'),
+});
+beforeEach(async () => clearFirestoreData({ projectId: MY_PROJECT_ID }));
+afterAll(async () => initializeTestApp({ projectId: MY_PROJECT_ID }).delete());
 
 test('Can read whether you are signed in or not', async () => {
-  const db = getFireStore();
-  const testDoc = db.collection('scholarships').doc('ASDK91023JUS');
-  await firebase.assertSucceeds(testDoc.get());
+  const testDoc = getFireStore()
+    .collection('scholarships')
+    .doc('ASDK91023JUS')
+    .get();
+  await assertSucceeds(testDoc);
 });
 
 test('does not write to scholarships doc when signed out', async () => {
-  const db = getFireStore();
-  const testDoc = db.collection('scholarships').doc('test');
-  await firebase.assertFails(testDoc.set(newScholarship));
+  const testDoc = getFireStore()
+    .collection('scholarships')
+    .doc('H12HASJD9')
+    .set(newScholarship);
+  await assertFails(testDoc);
 });
 
 test('allows write to scholarships doc when signed in', async () => {
-  const db = getFireStore(MY_AUTH);
-  const testDoc = db.collection('scholarships').doc('test');
-  await firebase.assertSucceeds(testDoc.set(newScholarship));
+  const testDoc = getFireStore(MY_AUTH)
+    .collection('scholarships')
+    .doc('KJ019JSD')
+    .set(newScholarship);
+  await assertSucceeds(testDoc);
 });
