@@ -1,11 +1,19 @@
-import { clearFirestoreData } from '@firebase/rules-unit-testing';
+import {
+  clearFirestoreData,
+  loadFirestoreRules,
+} from '@firebase/rules-unit-testing';
 import firebase, { firestore } from 'firebase';
+import fs from 'fs';
 import FirestoreCollection from './FirestoreCollection';
 
 const app = firebase.initializeApp({ projectId: 'fs-collection-test' });
 app.firestore().settings({
   host: 'localhost:8080',
   ssl: false,
+});
+loadFirestoreRules({
+  projectId: 'fs-collection-test',
+  rules: fs.readFileSync('./firestore-open.rules', 'utf8'),
 });
 
 interface NameData {

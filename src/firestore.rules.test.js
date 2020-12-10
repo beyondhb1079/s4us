@@ -3,9 +3,7 @@ import {
   initializeTestApp,
   assertFails,
   assertSucceeds,
-  loadFirestoreRules,
 } from '@firebase/rules-unit-testing';
-import fs from 'fs';
 
 const MY_PROJECT_ID = 'scholarships-rules-test';
 const MY_AUTH = { uid: 'alice', email: 'alice@test.com' };
@@ -23,10 +21,6 @@ const newScholarship = {
 function getFireStore(auth = null) {
   return initializeTestApp({ projectId: MY_PROJECT_ID, auth }).firestore();
 }
-loadFirestoreRules({
-  projectId: MY_PROJECT_ID,
-  rules: fs.readFileSync('./firestore.rules', 'utf8'),
-});
 beforeEach(async () => clearFirestoreData({ projectId: MY_PROJECT_ID }));
 afterAll(async () => initializeTestApp({ projectId: MY_PROJECT_ID }).delete());
 

@@ -1,8 +1,12 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import firebase from 'firebase';
-import { clearFirestoreData } from '@firebase/rules-unit-testing';
+import {
+  clearFirestoreData,
+  loadFirestoreRules,
+} from '@firebase/rules-unit-testing';
 import { MemoryRouter, Route } from 'react-router-dom';
+import fs from 'fs';
 import ScholarshipsPage from './Scholarships';
 import Scholarships from '../models/Scholarships';
 import ScholarshipAmount from '../types/ScholarshipAmount';
@@ -24,6 +28,10 @@ const app = firebase.initializeApp({ projectId: 'scholarships-test' });
 app.firestore().settings({
   host: 'localhost:8080',
   ssl: false,
+});
+loadFirestoreRules({
+  projectId: 'scholarships-test',
+  rules: fs.readFileSync('./firestore-open.rules', 'utf8'),
 });
 
 beforeAll(async () => clearFirestoreData(app.options));
