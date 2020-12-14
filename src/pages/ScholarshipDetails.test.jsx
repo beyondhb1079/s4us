@@ -41,7 +41,7 @@ test('renders scholarship not found', async () => {
   await screen.findByText(/Scholarships\/bad-id Not Found/i);
 });
 
-test('renders passed in scholarship details', () => {
+test('renders passed in scholarship details', async () => {
   const data = {
     name: 'Foo scholarship',
     amount: new ScholarshipAmount({
@@ -53,13 +53,12 @@ test('renders passed in scholarship details', () => {
     deadline: new Date('2020-12-17'),
     website: 'http://foo.com/',
   };
-  const scholarship = Scholarships.id('abc');
-  scholarship.data = data;
 
-  renderAtRoute('/scholarships/abc', { scholarship });
+  renderAtRoute('/scholarships/passed-in', {
+    scholarship: { id: 'abc', data },
+  });
 
-  expect(screen.getByText(/Scholarship/i)).toBeInTheDocument();
-  expect(screen.getByText(data.name)).toBeInTheDocument();
+  await screen.findByText(data.name); //).toBeInTheDocument();
   expect(screen.getByText(data.amount.toString())).toBeInTheDocument();
   expect(screen.getByText(data.description)).toBeInTheDocument();
   expect(

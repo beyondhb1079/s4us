@@ -17,6 +17,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function ScholarshipDetails({ history, location, match }) {
+  console.log('history.location', history.location);
   const classes = useStyles();
   const { id } = match.params;
   const [scholarship, setScholarship] = useState(location.state?.scholarship);
@@ -27,16 +28,23 @@ export default function ScholarshipDetails({ history, location, match }) {
     document.title = `${BRAND_NAME} | ${scholarship.data.name}`;
   }
 
+  const passedIn = !!location.state.scholarship;
+  if (passedIn) {
+    console.log('passed in!');
+  }
+
   // clear location scholarship state in case of page refresh
   useEffect(() => {
     if (location.state.scholarship) {
+      console.log('replacing location state for', location);
       history.replace(location.pathname, {});
     }
-  }, [history, location]);
+  });
 
   // fetch the scholarship if it wasn't already passed
   useEffect(() => {
     if (!scholarship) {
+      console.log('fetching...');
       Scholarships.id(id).get().then(setScholarship).catch(setError);
     }
   }, [id, scholarship]);
@@ -51,6 +59,9 @@ export default function ScholarshipDetails({ history, location, match }) {
 
   const { name, amount, deadline, website, description } = scholarship.data;
 
+  if (passedIn) {
+    console.log('rendering passed in scholarship', scholarship.data);
+  }
   return (
     <Container>
       <Typography gutterBottom variant="h3" component="h1">
