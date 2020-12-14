@@ -1,10 +1,13 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import firebase from 'firebase';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { clearFirestoreData, loadFirestoreRules } from '@firebase/rules-unit-testing';
+import {
+  clearFirestoreData,
+  loadFirestoreRules,
+} from '@firebase/rules-unit-testing';
 
-// if (process.env.NODE_ENV !== 'test') {
-//   throw Error('this file should only be imported in tests');
-// }
+if (process.env.NODE_ENV !== 'test') {
+  throw Error('this file should only be imported in tests');
+}
 
 const openRules = `rules_version = '2';
 service cloud.firestore {
@@ -16,7 +19,10 @@ service cloud.firestore {
 }
 `;
 
-function initializeTestApp(options: { projectId: string }, rules: string = openRules): firebase.App {
+function initializeTestApp(
+  options: { projectId: string },
+  rules: string = openRules
+): firebase.app.App {
   const app = firebase.initializeApp(options);
   app.firestore().settings({
     host: 'localhost:8080',
@@ -29,4 +35,4 @@ function initializeTestApp(options: { projectId: string }, rules: string = openR
   return app;
 }
 
-export default { clearFirestoreData, initializeTestApp };
+module.exports = { clearFirestoreData, initializeTestApp };
