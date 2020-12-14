@@ -1,12 +1,8 @@
-import { clearFirestoreData } from '@firebase/rules-unit-testing';
-import firebase, { firestore } from 'firebase';
+import { firestore } from 'firebase';
+import { clearFirestoreData, initializeTestApp } from '../../lib/testing';
 import FirestoreModel from './FirestoreModel';
 
-const app = firebase.initializeApp({ projectId: 'fs-model-test' });
-app.firestore().settings({
-  host: 'localhost:8080',
-  ssl: false,
-});
+const app = initializeTestApp({ projectId: 'fs-model-test' });
 
 interface NameData {
   first: string;
