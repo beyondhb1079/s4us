@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@date-io/date-fns": "1.x",
+    "@firebase/rules-unit-testing": "^1.0.7",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
@@ -129,7 +130,6 @@
     ]
   },
   "devDependencies": {
-    "@firebase/rules-unit-testing": "^1.0.7",
     "@types/jest": "^26.0.14",
     "@typescript-eslint/eslint-plugin": "^4.4.0",
     "@typescript-eslint/parser": "^4.4.0",
