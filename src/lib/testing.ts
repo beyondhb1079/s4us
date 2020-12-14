@@ -1,9 +1,5 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import firebase from 'firebase';
-import {
-  clearFirestoreData,
-  loadFirestoreRules,
-} from '@firebase/rules-unit-testing';
+import { loadFirestoreRules } from '@firebase/rules-unit-testing';
 
 if (process.env.NODE_ENV !== 'test') {
   throw Error('this file should only be imported in tests');
@@ -19,7 +15,7 @@ service cloud.firestore {
 }
 `;
 
-function initializeTestApp(
+export function initializeTestApp(
   options: { projectId: string },
   rules: string = openRules
 ): firebase.app.App {
@@ -35,4 +31,4 @@ function initializeTestApp(
   return app;
 }
 
-module.exports = { clearFirestoreData, initializeTestApp };
+export { clearFirestoreData } from '@firebase/rules-unit-testing';
