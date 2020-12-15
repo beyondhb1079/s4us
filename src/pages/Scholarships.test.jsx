@@ -1,8 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import firebase from 'firebase';
-import { clearFirestoreData } from '@firebase/rules-unit-testing';
 import { MemoryRouter, Route } from 'react-router-dom';
+import { clearFirestoreData, initializeTestApp } from '../lib/testing';
 import ScholarshipsPage from './Scholarships';
 import Scholarships from '../models/Scholarships';
 import ScholarshipAmount from '../types/ScholarshipAmount';
@@ -20,7 +19,7 @@ function renderAtRoute(route) {
   );
 }
 
-const app = firebase.initializeApp({ projectId: 'scholarships-test' });
+const app = initializeTestApp({ projectId: 'scholarships-test' });
 app.firestore().settings({
   host: 'localhost:8080',
   ssl: false,

@@ -24,7 +24,7 @@ function RouteWithTitle({ path, component, title, guard }) {
   return <Route {...{ path, component }} />;
 }
 RouteWithTitle.propTypes = {
-  component: PropTypes.node.isRequired,
+  component: PropTypes.elementType.isRequired,
   path: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
 };
@@ -76,7 +76,10 @@ function App() {
           <Header />
           <Switch>
             {routes.map(({ path, component, title, guard }) => (
-              <RouteWithTitle {...{ path, component, title, guard }} />
+              <RouteWithTitle
+                key={path}
+                {...{ path, component, title, guard }}
+              />
             ))}
           </Switch>
           <Footer />
