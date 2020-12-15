@@ -14,11 +14,13 @@ import ScholarshipForm from './pages/ScholarshipForm';
 import theme from './theme';
 import { BRAND_NAME } from './config/constants';
 import FirebaseProvider from './lib/FirebaseProvider';
+import ProtectedRoute from './components/ProtectedRoute';
 
-function RouteWithTitle({ path, component, title }) {
+function RouteWithTitle({ path, component, title, guard }) {
   useEffect(() => {
     document.title = `${BRAND_NAME} | ${title}`;
   }, [title]);
+  if (guard) return <ProtectedRoute {...{ path, component }} />;
   return <Route {...{ path, component }} />;
 }
 RouteWithTitle.propTypes = {
@@ -32,6 +34,7 @@ const routes = [
     path: '/scholarships/new',
     title: 'Add a scholarship',
     component: ScholarshipForm,
+    guard: true,
   },
   {
     path: '/scholarships/:id',
@@ -72,8 +75,8 @@ function App() {
         <Router>
           <Header />
           <Switch>
-            {routes.map(({ path, component, title }) => (
-              <RouteWithTitle {...{ path, component, title }} />
+            {routes.map(({ path, component, title, guard }) => (
+              <RouteWithTitle {...{ path, component, title, guard }} />
             ))}
           </Switch>
           <Footer />
