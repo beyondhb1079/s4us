@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import firebase from 'firebase';
-import LoginDialog from './LoginDialog';
+import PropTypes from 'prop-types';
 
-function ProtectedRoute({ component: Component, ...rest }) {
+function ProtectedRoute({ component: Component, path }) {
   const [isSignedIn, setIsSignedIn] = useState(!!firebase.auth().currentUser);
-  const [loginDialogOpen, setLoginDialogOpen] = useState(true); // initialized to false
-  const handleClose = () => setLoginDialogOpen(false);
 
   useEffect(() => {
     const unregisterAuthObserver = firebase
@@ -19,15 +17,25 @@ function ProtectedRoute({ component: Component, ...rest }) {
 
   return (
     <Route
-      {...rest}
+      path
       render={() => {
         return isSignedIn ? (
           <Component />
         ) : (
-          <LoginDialog open={loginDialogOpen} onClose={handleClose} />
+          <Redirect
+            to={{
+              pathname: `/`,
+              search: '?login=true',
+              state: { from: path },
+            }}
+          />
         );
       }}
     />
   );
 }
+ProtectedRoute.propTypes = {
+  component: PropTypes.elementType.isRequired,
+  path: PropTypes.string.isRequired,
+};
 export default ProtectedRoute;

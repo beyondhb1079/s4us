@@ -1,35 +1,41 @@
 import React, { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import firebase from 'firebase';
 import Button from '@material-ui/core/Button';
-import LoginDialog from './LoginDialog';
 
 export default function LoginButton() {
   const [isSignedIn, setIsSignedIn] = useState(!!firebase.auth().currentUser);
-  const [loginDialogOpen, setLoginDialogOpen] = useState(false); // initialized to false
-  const handleClose = () => setLoginDialogOpen(false);
+  const location = useLocation();
 
   useEffect(() => {
     const unregisterAuthObserver = firebase
       .auth()
       .onAuthStateChanged((user) => {
         setIsSignedIn(!!user);
-        if (user) {
-          setLoginDialogOpen(false);
-        }
       });
     return unregisterAuthObserver;
-  }, []); // [] skips cleanup of this effect until the component is unmounted
+  }, []);
 
   const signUserOut = () => firebase.auth().signOut();
-  const showLoginDialog = () => setLoginDialogOpen(true);
-  const onClick = isSignedIn ? signUserOut : showLoginDialog;
+
+  if (isSignedIn)
+    return (
+      <Button variant="contained" color="primary" onClick={signUserOut}>
+        Sign out
+      </Button>
+    );
 
   return (
-    <>
-      <Button variant="contained" color="primary" onClick={onClick}>
-        {isSignedIn ? 'Sign out' : 'Login'}
-      </Button>
-      <LoginDialog open={loginDialogOpen} onClose={handleClose} />
-    </>
+    <Button
+      variant="contained"
+      color="primary"
+      component={Link}
+      to={{
+        pathname: `${location.pathname}`,
+        search: '?login=true',
+        state: { from: location.pathname },
+      }}>
+      Login
+    </Button>
   );
 }

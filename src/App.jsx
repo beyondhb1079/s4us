@@ -15,6 +15,7 @@ import theme from './theme';
 import { BRAND_NAME } from './config/constants';
 import FirebaseProvider from './lib/FirebaseProvider';
 import ProtectedRoute from './components/ProtectedRoute';
+import LoginDialog from './components/LoginDialog';
 
 function RouteWithTitle({ path, component, title, guard }) {
   useEffect(() => {
@@ -82,6 +83,7 @@ function App() {
               />
             ))}
           </Switch>
+          <Route path="/" component={LoginDialog} />
           <Footer />
         </Router>
       </ThemeProvider>
