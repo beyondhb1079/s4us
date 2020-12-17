@@ -28,6 +28,10 @@ RouteWithTitle.propTypes = {
   component: PropTypes.elementType.isRequired,
   path: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  guard: PropTypes.bool,
+};
+RouteWithTitle.defaultProps = {
+  guard: false,
 };
 
 const routes = [

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -30,7 +30,7 @@ export default function LoginDialog() {
 
   return (
     <Dialog
-      open={params.get('login')}
+      open={params.get('login') === 'true' || false}
       onClose={() => history.push(location.pathname)}
       aria-labelledby="responsive-dialog-title">
       <DialogTitle id="responsive-dialog-title">
