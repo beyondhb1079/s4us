@@ -38,8 +38,7 @@ function OutlineButton(user) {
       variant="outlined"
       color="primary"
       component={Link}
-      to={user === 'students' ? '/scholarships' : '/scholarships/new'}
-      buttonProperties>
+      to={user === 'students' ? '/scholarships' : '/scholarships/new'}>
       {user === 'students' ? 'Find Scholarships' : 'Submit A Scholarship'}
     </Button>
   );
@@ -87,7 +86,7 @@ export default function ScholarshipsMadeSimpleSection() {
           </TabList>
         </AppBar>
         {tabs.map(({ tab, title, description, buttons, pic }) => (
-          <TabPanel value={tab}>
+          <TabPanel key={tab} value={tab}>
             <HomeSection
               direction="row"
               {...{ tab, title, description, buttons, pic }}
