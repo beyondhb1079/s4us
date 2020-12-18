@@ -9,36 +9,27 @@ export default function LoginButton() {
   const [loginDialogOpen, setLoginDialogOpen] = useState(false); // initialized to false
   const handleClose = () => setLoginDialogOpen(false);
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [photoURL, setPhotoURL] = useState('');
-
   useEffect(() => {
     const unregisterAuthObserver = firebase
       .auth()
       .onAuthStateChanged((user) => {
         setIsSignedIn(!!user);
-        if (user) {
-          setLoginDialogOpen(false);
-          setName(user.displayName);
-          setEmail(user.email);
-          setPhotoURL(user.photoURL);
-        }
       });
     return unregisterAuthObserver;
   }, []); // [] skips cleanup of this effect until the component is unmounted
 
   const signUserOut = () => firebase.auth().signOut();
   const showLoginDialog = () => setLoginDialogOpen(true);
+  const user = firebase.auth().currentUser;
 
   return (
     <>
       {isSignedIn ? (
         <ProfileMenu
           signOut={signUserOut}
-          name={name}
-          email={email}
-          photo={photoURL}
+          name={user.displayName}
+          email={user.email}
+          photo={user.photoURL}
         />
       ) : (
         <>

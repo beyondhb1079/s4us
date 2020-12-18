@@ -1,13 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
-import {
-  Avatar,
-  Container,
-  Divider,
-  Grid,
-  Typography,
-} from '@material-ui/core';
+import { Avatar, Divider, Grid, Typography } from '@material-ui/core';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -16,16 +10,17 @@ import NewIcon from '@material-ui/icons/NewReleases';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import DoneIcon from '@material-ui/icons/Done';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { EXPERIMENTAL_VERSION } from '../config/constants';
 
 // hacky way to override Menu style
-const StyledMenu = withStyles((theme) => ({
+const StyledMenu = withStyles({
   paper: {
     border: '1px solid black',
     width: '350px',
-    //background: theme.palette.background.default,
+    background: '#F3F6FA',
   },
   // placing dropdown menu below the avatar
-}))((props) => (
+})((props) => (
   <Menu
     elevation={0}
     getContentAnchorEl={null}
@@ -42,11 +37,14 @@ const StyledMenu = withStyles((theme) => ({
 ));
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(2),
+  gridRoot: {
+    padding: theme.spacing(1),
   },
-  menuList: {
+  menuListItem: {
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+  },
+  dividerSpacing: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
   },
@@ -68,64 +66,81 @@ export default function ProfileDropdown(props) {
   const { signOut, name, email, photo } = props;
   const [dropMenu, setDropMenu] = React.useState(null);
 
-  const handleClick = (event) => {
-    setDropMenu(event.currentTarget);
-  };
+  const handleClick = (event) => setDropMenu(event.currentTarget);
 
-  const handleClose = () => {
-    setDropMenu(null);
+  const handleClose = () => setDropMenu(null);
+
+  const display = {
+    0: {
+      manageProfile: (
+        <>
+          {EXPERIMENTAL_VERSION ? null : (
+            <a href="/home">Manage Your Profile</a>
+          )}
+        </>
+      ),
+      navigation: (
+        <>
+          {EXPERIMENTAL_VERSION ? null : (
+            <>
+              <MenuItem className={classes.menuListItem}>
+                <ListItemIcon>
+                  <NewIcon fontSize="medium" />
+                </ListItemIcon>
+                <ListItemText primary="New" />
+              </MenuItem>
+              <MenuItem className={classes.menuListItem}>
+                <ListItemIcon>
+                  <BookmarkIcon fontSize="medium" />
+                </ListItemIcon>
+                <ListItemText primary="Saved" />
+              </MenuItem>
+              <MenuItem className={classes.menuListItem}>
+                <ListItemIcon>
+                  <DoneIcon fontSize="medium" />
+                </ListItemIcon>
+                <ListItemText primary="Applied" />
+              </MenuItem>
+            </>
+          )}
+        </>
+      ),
+    },
   };
 
   return (
-    <Container>
-      <Avatar src={photo} onClick={handleClick} className={classes.large} />
+    <>
+      <Avatar src={photo} onClick={handleClick} />
       <StyledMenu
         anchorEl={dropMenu}
         keepMounted
         open={Boolean(dropMenu)}
         onClose={handleClose}>
-        <Grid container spacing={2} className={classes.root}>
-          <Grid item xs={3} sm={3} className={classes.profilePic}>
+        <Grid container spacing={2} className={classes.gridRoot}>
+          <Grid item className={classes.profilePic}>
             <Avatar src={photo} className={classes.medium} />
           </Grid>
-          <Grid item xs={9} sm={9}>
+          <Grid>
             <Typography variant="h6" component="h4">
               {name}
             </Typography>
             <Typography component="h6" gutterBottom>
               {email}
             </Typography>
-            <a href="/home">Manage Your Profile</a>
+            {display[0].manageProfile}
           </Grid>
         </Grid>
-        <Divider />
-        <MenuItem className={classes.menuList}>
-          <ListItemIcon>
-            <NewIcon fontSize="medium" />
-          </ListItemIcon>
-          <ListItemText primary="New" />
-        </MenuItem>
-        <MenuItem className={classes.menuList}>
-          <ListItemIcon>
-            <BookmarkIcon fontSize="medium" />
-          </ListItemIcon>
-          <ListItemText primary="Saved" />
-        </MenuItem>
-        <MenuItem className={classes.menuList}>
-          <ListItemIcon>
-            <DoneIcon fontSize="medium" />
-          </ListItemIcon>
-          <ListItemText primary="Applied" />
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={signOut} className={classes.menuList}>
+        <Divider className={classes.dividerSpacing} />
+        {display[0].navigation}
+        <Divider className={classes.dividerSpacing} />
+        <MenuItem onClick={signOut} className={classes.menuListItem}>
           <ListItemIcon>
             <ExitToAppIcon fontSize="medium" />
           </ListItemIcon>
           <ListItemText primary="Logout" />
         </MenuItem>
       </StyledMenu>
-    </Container>
+    </>
   );
 }
 
