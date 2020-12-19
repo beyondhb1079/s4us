@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
@@ -64,18 +65,31 @@ const useStyles = makeStyles((theme) => ({
 export default function ProfileDropdown(props) {
   const classes = useStyles();
   const { signOut, name, email, photo } = props;
+
   const [dropMenu, setDropMenu] = React.useState(null);
-
   const handleClick = (event) => setDropMenu(event.currentTarget);
-
   const handleClose = () => setDropMenu(null);
+
+  // needs to be updated once there is a working manage profile page
+  const manageProfileLink = '/home';
+
+  function createMenuItem(text, icon, task) {
+    return (
+      <>
+        <MenuItem onClick={task} className={classes.menuListItem}>
+          <ListItemIcon>{icon}</ListItemIcon>
+          <ListItemText primary={text} />
+        </MenuItem>
+      </>
+    );
+  }
 
   const display = {
     0: {
       manageProfile: (
         <>
           {EXPERIMENTAL_VERSION ? null : (
-            <a href="/home">Manage Your Profile</a>
+            <a href={manageProfileLink}>Manage Your Profile</a>
           )}
         </>
       ),
@@ -83,24 +97,9 @@ export default function ProfileDropdown(props) {
         <>
           {EXPERIMENTAL_VERSION ? null : (
             <>
-              <MenuItem className={classes.menuListItem}>
-                <ListItemIcon>
-                  <NewIcon fontSize="medium" />
-                </ListItemIcon>
-                <ListItemText primary="New" />
-              </MenuItem>
-              <MenuItem className={classes.menuListItem}>
-                <ListItemIcon>
-                  <BookmarkIcon fontSize="medium" />
-                </ListItemIcon>
-                <ListItemText primary="Saved" />
-              </MenuItem>
-              <MenuItem className={classes.menuListItem}>
-                <ListItemIcon>
-                  <DoneIcon fontSize="medium" />
-                </ListItemIcon>
-                <ListItemText primary="Applied" />
-              </MenuItem>
+              {createMenuItem('New', <NewIcon fontSize="medium" />)}
+              {createMenuItem('Saved', <BookmarkIcon fontSize="medium" />)}
+              {createMenuItem('Applied', <DoneIcon fontSize="medium" />)}
             </>
           )}
         </>
@@ -132,13 +131,11 @@ export default function ProfileDropdown(props) {
         </Grid>
         <Divider className={classes.dividerSpacing} />
         {display[0].navigation}
-        <Divider className={classes.dividerSpacing} />
-        <MenuItem onClick={signOut} className={classes.menuListItem}>
-          <ListItemIcon>
-            <ExitToAppIcon fontSize="medium" />
-          </ListItemIcon>
-          <ListItemText primary="Logout" />
-        </MenuItem>
+
+        {EXPERIMENTAL_VERSION ? null : (
+          <Divider className={classes.dividerSpacing} />
+        )}
+        {createMenuItem('Logout', <ExitToAppIcon fontSize="medium" />, signOut)}
       </StyledMenu>
     </>
   );
