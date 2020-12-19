@@ -1,14 +1,10 @@
-import { clearFirestoreData } from '@firebase/rules-unit-testing';
-import firebase, { firestore } from 'firebase';
+import { firestore } from 'firebase';
+import { clearFirestoreData, initializeTestApp } from '../lib/testing';
 import AmountType from '../types/AmountType';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import { converter } from './Scholarships';
 
-const app = firebase.initializeApp({ projectId: 'scholarship-test' });
-app.firestore().settings({
-  host: 'localhost:8080',
-  ssl: false,
-});
+const app = initializeTestApp({ projectId: 'scholarship-test' });
 
 beforeEach(async () =>
   clearFirestoreData(app.options as { projectId: string })

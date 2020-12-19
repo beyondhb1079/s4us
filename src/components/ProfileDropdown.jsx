@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
@@ -33,6 +32,7 @@ const StyledMenu = withStyles({
       vertical: 'top',
       horizontal: 'center',
     }}
+    // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}
   />
 ));
