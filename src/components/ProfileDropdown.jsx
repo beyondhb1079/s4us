@@ -10,17 +10,17 @@ import NewIcon from '@material-ui/icons/NewReleases';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import DoneIcon from '@material-ui/icons/Done';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { EXPERIMENTAL_VERSION } from '../config/constants';
+import { EXPERIMENT_SHOW_FULL_PROFILE_MENU } from '../config/constants';
 
 // hacky way to override Menu style
-const StyledMenu = withStyles({
+const StyledMenu = withStyles((theme) => ({
   paper: {
     border: '1px solid black',
     width: '350px',
-    background: '#F3F6FA',
+    background: theme.palette.background.default,
   },
   // placing dropdown menu below the avatar
-})((props) => (
+}))((props) => (
   <Menu
     elevation={0}
     getContentAnchorEl={null}
@@ -75,37 +75,12 @@ export default function ProfileDropdown(props) {
 
   function createMenuItem(text, icon, task) {
     return (
-      <>
-        <MenuItem onClick={task} className={classes.menuListItem}>
-          <ListItemIcon>{icon}</ListItemIcon>
-          <ListItemText primary={text} />
-        </MenuItem>
-      </>
+      <MenuItem onClick={task} className={classes.menuListItem}>
+        <ListItemIcon>{icon}</ListItemIcon>
+        <ListItemText primary={text} />
+      </MenuItem>
     );
   }
-
-  const display = {
-    0: {
-      manageProfile: (
-        <>
-          {EXPERIMENTAL_VERSION ? null : (
-            <a href={manageProfileLink}>Manage Your Profile</a>
-          )}
-        </>
-      ),
-      navigation: (
-        <>
-          {EXPERIMENTAL_VERSION ? null : (
-            <>
-              {createMenuItem('New', <NewIcon fontSize="medium" />)}
-              {createMenuItem('Saved', <BookmarkIcon fontSize="medium" />)}
-              {createMenuItem('Applied', <DoneIcon fontSize="medium" />)}
-            </>
-          )}
-        </>
-      ),
-    },
-  };
 
   return (
     <>
@@ -126,14 +101,21 @@ export default function ProfileDropdown(props) {
             <Typography component="h6" gutterBottom>
               {email}
             </Typography>
-            {display[0].manageProfile}
+            {EXPERIMENT_SHOW_FULL_PROFILE_MENU && (
+              <>
+                <a href={manageProfileLink}>Manage Your Profile</a>
+              </>
+            )}
           </Grid>
         </Grid>
         <Divider className={classes.dividerSpacing} />
-        {display[0].navigation}
-
-        {EXPERIMENTAL_VERSION ? null : (
-          <Divider className={classes.dividerSpacing} />
+        {EXPERIMENT_SHOW_FULL_PROFILE_MENU && (
+          <>
+            {createMenuItem('New', <NewIcon fontSize="medium" />)}
+            {createMenuItem('Saved', <BookmarkIcon fontSize="medium" />)}
+            {createMenuItem('Applied', <DoneIcon fontSize="medium" />)}
+            <Divider className={classes.dividerSpacing} />
+          </>
         )}
         {createMenuItem('Logout', <ExitToAppIcon fontSize="medium" />, signOut)}
       </StyledMenu>
