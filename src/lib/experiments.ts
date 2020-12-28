@@ -1,5 +1,5 @@
 // Add your experiment below
-const experiments = {
+const experiments: { [k: string]: boolean } = {
   enableDummyDisabledByDefault: false,
   enableDummyEnabledByDefault: true,
 };
@@ -20,7 +20,7 @@ export function loadExperiments(query = window.location.search): void {
       }
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    experiments[k as any] = state;
+    experiments[k] = state;
   });
 }
 
