@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import firebase from 'firebase';
 import Button from '@material-ui/core/Button';
 import LoginDialog from './LoginDialog';
+import ProfileMenu from './ProfileDropdown';
 
 export default function LoginButton() {
   const [isSignedIn, setIsSignedIn] = useState(!!firebase.auth().currentUser);
@@ -13,23 +14,27 @@ export default function LoginButton() {
       .auth()
       .onAuthStateChanged((user) => {
         setIsSignedIn(!!user);
-        if (user) {
-          setLoginDialogOpen(false);
-        }
       });
     return unregisterAuthObserver;
   }, []); // [] skips cleanup of this effect until the component is unmounted
 
-  const signUserOut = () => firebase.auth().signOut();
+  const signUserOut = () => firebase.auth().signOut() && handleClose(); // sign out + closes dialog
   const showLoginDialog = () => setLoginDialogOpen(true);
-  const onClick = isSignedIn ? signUserOut : showLoginDialog;
+  const user = firebase.auth().currentUser;
 
-  return (
+  return isSignedIn ? (
+    <ProfileMenu
+      signOut={signUserOut}
+      name={user.displayName}
+      email={user.email}
+      photo={user.photoURL}
+    />
+  ) : (
     <>
-      <Button variant="contained" color="primary" onClick={onClick}>
-        {isSignedIn ? 'Sign out' : 'Login'}
-      </Button>
       <LoginDialog open={loginDialogOpen} onClose={handleClose} />
+      <Button variant="contained" color="primary" onClick={showLoginDialog}>
+        Login
+      </Button>
     </>
   );
 }
