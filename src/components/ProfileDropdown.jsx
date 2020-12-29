@@ -102,9 +102,7 @@ export default function ProfileDropdown(props) {
               {email}
             </Typography>
             {EXPERIMENT_SHOW_FULL_PROFILE_MENU && (
-              <>
-                <a href={manageProfileLink}>Manage Your Profile</a>
-              </>
+              <a href={manageProfileLink}>Manage Your Profile</a>
             )}
           </Grid>
         </Grid>
