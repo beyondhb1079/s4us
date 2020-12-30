@@ -3,7 +3,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
 import firebase from 'firebase';
 import StyleFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import PropTypes from 'prop-types';
