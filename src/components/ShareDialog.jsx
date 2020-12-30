@@ -31,6 +31,12 @@ export default function ShareDialog(props) {
 
   return (
     <Dialog
+      PaperProps={{
+        style: {
+          backgroundColor: 'transparent',
+          boxShadow: 'none',
+        },
+      }}
       open={open}
       onClose={onClose}
       aria-labelledby="responsive-dialog-title">
