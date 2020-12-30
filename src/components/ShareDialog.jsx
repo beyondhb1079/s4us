@@ -34,8 +34,8 @@ export default function ShareDialog(props) {
       open={open}
       onClose={onClose}
       aria-labelledby="responsive-dialog-title">
-      <DialogTitle className={classes.dialogRoot}>Share</DialogTitle>
-      <DialogContent className={classes.dialogRoot}>
+      <DialogTitle>Share</DialogTitle>
+      <DialogContent>
         <EmailShareButton url={urlLink} className={classes.socialMediaButton}>
           <EmailIcon size={55} round />
         </EmailShareButton>
@@ -49,9 +49,7 @@ export default function ShareDialog(props) {
           className={classes.socialMediaButton}>
           <LinkedinIcon size={55} round />
         </LinkedinShareButton>
-        <DialogContentText className={classes.dialogRoot}>
-          Copy of link pending here
-        </DialogContentText>
+        <DialogContentText>Copy of link pending here</DialogContentText>
       </DialogContent>
     </Dialog>
   );
