@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Button,
@@ -17,6 +17,7 @@ import ShareIcon from '@material-ui/icons/Share';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { BRAND_NAME } from '../config/constants';
+import ShareDialog from './ShareDialog';
 
 const useStyles = makeStyles((theme) => ({
   actions: {
@@ -39,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
 
 function ScholarshipList({ scholarships }) {
   const classes = useStyles();
+  const [shareDialogOpen, setShareDialogOpen] = useState(false);
+  const showShareDialog = () => setShareDialogOpen(true);
+  const handleClose = () => setShareDialogOpen(false);
   const shareFn = (id, data) => () => {
     if (navigator.share) {
       navigator
@@ -96,10 +100,16 @@ function ScholarshipList({ scholarships }) {
                 onClick={() => alert('This feature is under construction')}>
                 <BookmarkBorderIcon />
               </IconButton>
+              <ShareDialog
+                open={shareDialogOpen}
+                onClose={handleClose}
+                urlLink={`https://dreamerscholars.web.app/scholarships/${id}`}
+                scholarshipName={data.name}
+              />
               <IconButton
                 aria-label="share"
                 color="primary"
-                onClick={shareFn(id, data)}>
+                onClick={shareFn(id, data) && showShareDialog}>
                 <ShareIcon />
               </IconButton>
             </CardActions>
