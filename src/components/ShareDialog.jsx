@@ -50,7 +50,7 @@ export default function ShareDialog(props) {
           <LinkedinIcon size={55} round />
         </LinkedinShareButton>
         <DialogContentText className={classes.dialogRoot}>
-          Copy of link pending
+          Copy of link pending here
         </DialogContentText>
       </DialogContent>
     </Dialog>
