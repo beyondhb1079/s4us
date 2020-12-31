@@ -53,7 +53,7 @@ function ScholarshipList({ scholarships }) {
     } else {
       // TODO(https://github.com/beyondhb1079/s4us/issues/154): Share dialog for Web
       // Use the title/url/text above to construct the Share dialog.
-      alert('This feature is under construction. TODO: Share ${url}.');
+      alert(`This feature is under construction. TODO: Share ${url}.`);
     }
   };
   return (
