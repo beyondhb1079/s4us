@@ -42,7 +42,7 @@ function ScholarshipList({ scholarships }) {
   const shareFn = (id, data) => () => {
     const title = `${data.amount} - ${data.name} | ${BRAND_NAME}`;
     const url = `${window.location.hostname}/scholarships/${id}`;
-    const text = 
+    const text =
       `${data.amount} - ${data.name} | ${BRAND_NAME}\n` +
       `${data.deadline.toLocaleDateString()}\n`;
     if (navigator.share) {
