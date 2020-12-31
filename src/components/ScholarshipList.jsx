@@ -42,17 +42,18 @@ function ScholarshipList({ scholarships }) {
   const shareFn = (id, data) => () => {
     const title = `${data.amount} - ${data.name} | ${BRAND_NAME}`;
     const url = `${window.location.hostname}/scholarships/${id}`;
-    const text = `${data.amount} - ${data.name} | ${BRAND_NAME}\n` +
-            `${data.deadline.toLocaleDateString()}\n`;
+    const text = 
+             `${data.amount} - ${data.name} | ${BRAND_NAME}\n` +
+             `${data.deadline.toLocaleDateString()}\n`;
     if (navigator.share) {
       navigator
-        .share({title, url, text})
+        .share({ title, url, text })
         .then(() => console.log('Thanks for sharing!'))
         .catch(console.error);
     } else {
       // TODO(https://github.com/beyondhb1079/s4us/issues/154): Share dialog for Web
       // Use the title/url/text above to construct the Share dialog.
-      alert('This feature is under construction');
+      alert('This feature is under construction. TODO: Share ${url}.');
     }
   };
   return (
