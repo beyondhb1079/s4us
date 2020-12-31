@@ -43,23 +43,27 @@ function ScholarshipList({ scholarships }) {
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const showShareDialog = () => setShareDialogOpen(true);
   const handleClose = () => setShareDialogOpen(false);
+
+  const [siteLink, setsiteLink] = React.useState('');
+  const handleURLClick = (event) => setsiteLink(event);
+  const [siteTitle, setSiteTitle] = React.useState('');
+  const handleTitleClick = (event) => setSiteTitle(event);
+
   const shareFn = (id, data) => () => {
+    const title = `${data.amount} - ${data.name} | ${BRAND_NAME}`;
+    const url = `${window.location.hostname}/scholarships/${id}`;
+    const text =
+      `${data.amount} - ${data.name} | ${BRAND_NAME}\n` +
+      `${data.deadline.toLocaleDateString()}\n`;
     if (navigator.share) {
       navigator
-        .share({
-          title: `${data.amount} - ${data.name}`,
-          url: `${window.location.hostname}/scholarships/${id}`,
-          text:
-            `${data.amount} - ${data.name}\n` +
-            `${data.deadline.toLocaleDateString()}\n` +
-            `Shared via ${BRAND_NAME} (under construction)`,
-        })
+        .share({ title, url, text })
         .then(() => console.log('Thanks for sharing!'))
         .catch(console.error);
     } else {
-      // TODO(https://github.com/beyondhb1079/s4us/issues/154): Share dialog for Web
-      // extract the URL, title and text
-      alert('This feature is under construction');
+      handleURLClick(`${url}`); // site state changed
+      handleTitleClick(`${title}`); // title state changed
+      showShareDialog();
     }
   };
   return (
@@ -107,23 +111,16 @@ function ScholarshipList({ scholarships }) {
                 onClick={shareFn(id, data)}>
                 <ShareIcon />
               </IconButton>
-              <Button
-                color="primary"
-                variant="contained"
-                onClick={showShareDialog}>
-                Share
-              </Button>
             </CardActions>
           </Card>
         </Grid>
       ))}
-      {/*       <ShareDialog
+      <ShareDialog
         open={shareDialogOpen}
         onClose={handleClose}
-        origin={id}
-        title={data.name}
-        // use state and set the state in the shareFn function
-      /> */}
+        link={siteLink}
+        title={siteTitle}
+      />
     </Grid>
   );
 }
