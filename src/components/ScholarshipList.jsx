@@ -43,8 +43,8 @@ function ScholarshipList({ scholarships }) {
     const title = `${data.amount} - ${data.name} | ${BRAND_NAME}`;
     const url = `${window.location.hostname}/scholarships/${id}`;
     const text = 
-             `${data.amount} - ${data.name} | ${BRAND_NAME}\n` +
-             `${data.deadline.toLocaleDateString()}\n`;
+      `${data.amount} - ${data.name} | ${BRAND_NAME}\n` +
+      `${data.deadline.toLocaleDateString()}\n`;
     if (navigator.share) {
       navigator
         .share({ title, url, text })
