@@ -33,7 +33,7 @@ export default function ShareDialog(props) {
   const classes = useStyles();
   const { open, onClose, origin, title } = props;
 
-  let link = `https://dreamerscholars.web.app/scholarships/${origin}`;
+  const link = `https://dreamerscholars.web.app/scholarships/${origin}`;
 
   return (
     <Dialog open={open} onClose={onClose}>
