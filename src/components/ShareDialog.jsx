@@ -31,32 +31,30 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ShareDialog(props) {
   const classes = useStyles();
-  const { open, onClose, urlLink, scholarshipName } = props;
+  const { open, onClose, origin, title } = props;
+
+  let link = `https://dreamerscholars.web.app/scholarships/${origin}`;
 
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Share</DialogTitle>
       <DialogContent>
         <DialogContentText style={{ color: 'black' }}>
-          Currently Sharing: {scholarshipName}
+          Currently Sharing: {title}
         </DialogContentText>
-        <EmailShareButton url={urlLink} className={classes.socialMediaButton}>
+        <EmailShareButton url={link} className={classes.socialMediaButton}>
           <EmailIcon size={55} round />
         </EmailShareButton>
-        <FacebookShareButton
-          url={urlLink}
-          className={classes.socialMediaButton}>
+        <FacebookShareButton url={link} className={classes.socialMediaButton}>
           <FacebookIcon size={55} round />
         </FacebookShareButton>
-        <TwitterShareButton url={urlLink} className={classes.socialMediaButton}>
+        <TwitterShareButton url={link} className={classes.socialMediaButton}>
           <TwitterIcon size={55} round />
         </TwitterShareButton>
-        <LinkedinShareButton
-          url={urlLink}
-          className={classes.socialMediaButton}>
+        <LinkedinShareButton url={link} className={classes.socialMediaButton}>
           <LinkedinIcon size={55} round />
         </LinkedinShareButton>
-        <RedditShareButton url={urlLink} className={classes.socialMediaButton}>
+        <RedditShareButton url={link} className={classes.socialMediaButton}>
           <RedditIcon size={55} round />
         </RedditShareButton>
       </DialogContent>
@@ -67,6 +65,6 @@ export default function ShareDialog(props) {
 ShareDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  urlLink: PropTypes.string.isRequired,
-  scholarshipName: PropTypes.string.isRequired,
+  origin: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
 };

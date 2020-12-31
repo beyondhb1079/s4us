@@ -58,6 +58,7 @@ function ScholarshipList({ scholarships }) {
         .catch(console.error);
     } else {
       // TODO(https://github.com/beyondhb1079/s4us/issues/154): Share dialog for Web
+      // extract the URL, title and text
       alert('This feature is under construction');
     }
   };
@@ -100,22 +101,29 @@ function ScholarshipList({ scholarships }) {
                 onClick={() => alert('This feature is under construction')}>
                 <BookmarkBorderIcon />
               </IconButton>
-              <ShareDialog
-                open={shareDialogOpen}
-                onClose={handleClose}
-                urlLink={`https://dreamerscholars.web.app/scholarships/${id}`}
-                scholarshipName={data.name}
-              />
               <IconButton
                 aria-label="share"
                 color="primary"
-                onClick={shareFn(id, data) && showShareDialog}>
+                onClick={shareFn(id, data)}>
                 <ShareIcon />
               </IconButton>
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={showShareDialog}>
+                Share
+              </Button>
             </CardActions>
           </Card>
         </Grid>
       ))}
+      {/*       <ShareDialog
+        open={shareDialogOpen}
+        onClose={handleClose}
+        origin={id}
+        title={data.name}
+        // use state and set the state in the shareFn function
+      /> */}
     </Grid>
   );
 }
