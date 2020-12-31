@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import firebase from 'firebase';
 import Button from '@material-ui/core/Button';
+import ProfileMenu from './ProfileDropdown';
 
 export default function LoginButton() {
   const [isSignedIn, setIsSignedIn] = useState(!!firebase.auth().currentUser);
@@ -16,26 +17,29 @@ export default function LoginButton() {
     return unregisterAuthObserver;
   }, []);
 
-  const signUserOut = () => firebase.auth().signOut();
+  const signUserOut = () => firebase.auth().signOut(); // sign out + closes dialog
+  const user = firebase.auth().currentUser;
 
-  if (isSignedIn)
-    return (
-      <Button variant="contained" color="primary" onClick={signUserOut}>
-        Sign out
+  return isSignedIn ? (
+    <ProfileMenu
+      signOut={signUserOut}
+      name={user.displayName}
+      email={user.email}
+      photo={user.photoURL}
+    />
+  ) : (
+    <>
+      <Button
+        variant="contained"
+        color="primary"
+        component={Link}
+        to={{
+          pathname: `${location.pathname}`,
+          search: '?login=true',
+          state: { from: location.pathname },
+        }}>
+        Login
       </Button>
-    );
-
-  return (
-    <Button
-      variant="contained"
-      color="primary"
-      component={Link}
-      to={{
-        pathname: `${location.pathname}`,
-        search: '?login=true',
-        state: { from: location.pathname },
-      }}>
-      Login
-    </Button>
+    </>
   );
 }
