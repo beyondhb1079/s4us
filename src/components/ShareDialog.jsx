@@ -2,10 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {
+  Button,
   Dialog,
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Typography,
 } from '@material-ui/core';
 import {
   FacebookShareButton,
@@ -24,11 +26,13 @@ const useStyles = makeStyles((theme) => ({
   root: {
     background: theme.palette.background.secondary,
     color: 'white',
-    fontSize: '15px',
     textAlign: 'center',
   },
   shareIcon: {
-    maringRight: '15px',
+    marginRight: theme.spacing(1),
+  },
+  copyText: {
+    color: '#808080',
   },
 }));
 
@@ -38,26 +42,39 @@ export default function ShareDialog(props) {
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle className={classes.root}>Share</DialogTitle>
+      <DialogTitle className={classes.root}>SHARE</DialogTitle>
       <DialogContent className={classes.root}>
         <DialogContentText className={classes.root}>
           Currently Sharing: {title}
         </DialogContentText>
-        <EmailShareButton url={link}>
-          <EmailIcon size={55} round />
+        <EmailShareButton url={link} className={classes.shareIcon}>
+          <EmailIcon round />
         </EmailShareButton>
-        <FacebookShareButton url={link}>
-          <FacebookIcon size={55} round />
+        <FacebookShareButton url={link} className={classes.shareIcon}>
+          <FacebookIcon round />
         </FacebookShareButton>
-        <TwitterShareButton url={link}>
-          <TwitterIcon size={55} round />
+        <TwitterShareButton url={link} className={classes.shareIcon}>
+          <TwitterIcon round />
         </TwitterShareButton>
-        <LinkedinShareButton url={link}>
-          <LinkedinIcon size={55} round />
+        <LinkedinShareButton url={link} className={classes.shareIcon}>
+          <LinkedinIcon round />
         </LinkedinShareButton>
-        <RedditShareButton url={link}>
-          <RedditIcon size={55} round />
+        <RedditShareButton url={link} className={classes.shareIcon}>
+          <RedditIcon round />
         </RedditShareButton>
+        <Typography
+          variant="overline"
+          component="h1"
+          className={classes.copyText}>
+          {link}
+        </Typography>
+        <Button
+          color="primary"
+          onClick={() => {
+            navigator.clipboard.writeText(`${link}`);
+          }}>
+          Copy
+        </Button>
       </DialogContent>
     </Dialog>
   );

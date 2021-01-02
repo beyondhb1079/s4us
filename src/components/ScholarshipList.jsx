@@ -42,12 +42,12 @@ function ScholarshipList({ scholarships }) {
   const classes = useStyles();
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const showShareDialog = () => setShareDialogOpen(true);
-  const handleClose = () => setShareDialogOpen(false);
+  const closeShareDialog = () => setShareDialogOpen(false);
 
-  const [siteLink, setsiteLink] = React.useState('');
-  const handleURLClick = (event) => setsiteLink(event);
-  const [siteTitle, setSiteTitle] = React.useState('');
-  const handleTitleClick = (event) => setSiteTitle(event);
+  const [shareSiteLink, setShareSiteLink] = React.useState('');
+  const handleURLClick = (event) => setShareSiteLink(event);
+  const [shareSiteTitle, setShareSiteTitle] = React.useState('');
+  const handleTitleClick = (event) => setShareSiteTitle(event);
 
   const shareFn = (id, data) => () => {
     const title = `${data.amount} - ${data.name} | ${BRAND_NAME}`;
@@ -117,9 +117,9 @@ function ScholarshipList({ scholarships }) {
       ))}
       <ShareDialog
         open={shareDialogOpen}
-        onClose={handleClose}
-        link={siteLink}
-        title={siteTitle}
+        onClose={closeShareDialog}
+        link={shareSiteLink}
+        title={shareSiteTitle}
       />
     </Grid>
   );
