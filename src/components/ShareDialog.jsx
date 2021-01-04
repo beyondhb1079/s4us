@@ -64,15 +64,13 @@ export default function ShareDialog(props) {
         </RedditShareButton>
         <Typography
           variant="overline"
-          component="h1"
+          component="p"
           className={classes.copyText}>
           {link}
         </Typography>
         <Button
           color="primary"
-          onClick={() => {
-            navigator.clipboard.writeText(`${link}`);
-          }}>
+          onClick={() => navigator.clipboard.writeText(`${link}`)}>
           Copy
         </Button>
       </DialogContent>

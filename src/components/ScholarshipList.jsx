@@ -41,16 +41,13 @@ const useStyles = makeStyles((theme) => ({
 function ScholarshipList({ scholarships }) {
   const classes = useStyles();
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
-  const showShareDialog = () => setShareDialogOpen(true);
   const closeShareDialog = () => setShareDialogOpen(false);
 
   const [shareSiteLink, setShareSiteLink] = React.useState('');
-  const handleURLClick = (event) => setShareSiteLink(event);
   const [shareSiteTitle, setShareSiteTitle] = React.useState('');
-  const handleTitleClick = (event) => setShareSiteTitle(event);
 
   const shareFn = (id, data) => () => {
-    const title = `${data.amount} - ${data.name} | ${BRAND_NAME}`;
+    const title = `https://${data.amount} - ${data.name} | ${BRAND_NAME}`;
     const url = `${window.location.hostname}/scholarships/${id}`;
     const text =
       `${data.amount} - ${data.name} | ${BRAND_NAME}\n` +
@@ -61,9 +58,9 @@ function ScholarshipList({ scholarships }) {
         .then(() => console.log('Thanks for sharing!'))
         .catch(console.error);
     } else {
-      handleURLClick(`${url}`); // site state changed
-      handleTitleClick(`${title}`); // title state changed
-      showShareDialog();
+      setShareSiteLink(`${url}`); // site state changed
+      setShareSiteTitle(`${title}`); // title state changed
+      setShareDialogOpen(true);
     }
   };
   return (
