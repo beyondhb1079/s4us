@@ -58,8 +58,8 @@ function ScholarshipList({ scholarships }) {
         .then(() => console.log('Thanks for sharing!'))
         .catch(console.error);
     } else {
-      setShareSiteLink(`${url}`); // site state changed
-      setShareSiteTitle(`${title}`); // title state changed
+      setShareSiteLink(url);
+      setShareSiteTitle(title);
       setShareDialogOpen(true);
     }
   };
