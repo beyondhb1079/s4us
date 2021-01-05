@@ -40,21 +40,20 @@ const useStyles = makeStyles((theme) => ({
 function ScholarshipList({ scholarships }) {
   const classes = useStyles();
   const shareFn = (id, data) => () => {
+    const title = `${data.amount} - ${data.name} | ${BRAND_NAME}`;
+    const url = `${window.location.hostname}/scholarships/${id}`;
+    const text =
+      `${data.amount} - ${data.name} | ${BRAND_NAME}\n` +
+      `${data.deadline.toLocaleDateString()}\n`;
     if (navigator.share) {
       navigator
-        .share({
-          title: `${data.amount} - ${data.name}`,
-          url: `${window.location.hostname}/scholarships/${id}`,
-          text:
-            `${data.amount} - ${data.name}\n` +
-            `${data.deadline.toLocaleDateString()}\n` +
-            `Shared via ${BRAND_NAME} (under construction)`,
-        })
+        .share({ title, url, text })
         .then(() => console.log('Thanks for sharing!'))
         .catch(console.error);
     } else {
       // TODO(https://github.com/beyondhb1079/s4us/issues/154): Share dialog for Web
-      alert('This feature is under construction');
+      // Use the title/url/text above to construct the Share dialog.
+      alert(`This feature is under construction. TODO: Share ${url}.`);
     }
   };
   return (
