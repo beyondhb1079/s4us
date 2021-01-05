@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { CssBaseline, ThemeProvider } from '@material-ui/core';
+import { LastLocationProvider } from 'react-router-last-location';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import Home from './pages/Home';
@@ -78,17 +79,19 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Router>
-          <Header />
-          <Switch>
-            {routes.map(({ path, component, title, guard }) => (
-              <RouteWithTitle
-                key={path}
-                {...{ path, component, title, guard }}
-              />
-            ))}
-          </Switch>
-          <Route path="/" component={LoginDialog} />
-          <Footer />
+          <LastLocationProvider>
+            <Header />
+            <Switch>
+              {routes.map(({ path, component, title, guard }) => (
+                <RouteWithTitle
+                  key={path}
+                  {...{ path, component, title, guard }}
+                />
+              ))}
+            </Switch>
+            <Route path="/" component={LoginDialog} />
+            <Footer />
+          </LastLocationProvider>
         </Router>
       </ThemeProvider>
     </FirebaseProvider>

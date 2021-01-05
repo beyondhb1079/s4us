@@ -1,5 +1,5 @@
-import React from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useLocation, useHistory, Redirect } from 'react-router-dom';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -11,6 +11,16 @@ export default function LoginDialog() {
   const location = useLocation();
   const history = useHistory();
   const params = new URLSearchParams(location.search);
+  const [isSignedIn, setIsSignedIn] = useState(!!firebase.auth().currentUser);
+
+  useEffect(() => {
+    const unregisterAuthObserver = firebase
+      .auth()
+      .onAuthStateChanged((user) => {
+        setIsSignedIn(!!user);
+      });
+    return unregisterAuthObserver;
+  }, []);
 
   const uiConfig = {
     signInFlow: 'popup',
@@ -30,7 +40,7 @@ export default function LoginDialog() {
 
   return (
     <Dialog
-      open={params.get('login') === 'true' || false}
+      open={(params.get('login') === 'true' && !isSignedIn) || false}
       onClose={() => history.push(location.pathname)}
       aria-labelledby="responsive-dialog-title">
       <DialogTitle id="responsive-dialog-title">

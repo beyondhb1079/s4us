@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Redirect } from 'react-router-dom';
+import { useLastLocation } from 'react-router-last-location';
 import firebase from 'firebase';
 import PropTypes from 'prop-types';
 
 function ProtectedRoute({ component: Component, path }) {
   const [isSignedIn, setIsSignedIn] = useState(!!firebase.auth().currentUser);
+  const lastLocation = useLastLocation();
 
   useEffect(() => {
     const unregisterAuthObserver = firebase
@@ -26,7 +28,7 @@ function ProtectedRoute({ component: Component, path }) {
         ) : (
           <Redirect
             to={{
-              pathname: `/`,
+              pathname: lastLocation.pathname,
               search: '?login=true',
               state: { from: path },
             }}
