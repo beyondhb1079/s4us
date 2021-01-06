@@ -28,18 +28,16 @@ export default function LoginButton() {
       photo={user.photoURL}
     />
   ) : (
-    <>
-      <Button
-        variant="contained"
-        color="primary"
-        component={Link}
-        to={{
-          pathname: `${location.pathname}`,
-          search: '?login=true',
-          state: { from: location.pathname },
-        }}>
-        Login
-      </Button>
-    </>
+    <Button
+      variant="contained"
+      color="primary"
+      component={Link}
+      to={{
+        pathname: `${location.pathname}`,
+        search: '?login=true',
+        state: { from: location.pathname },
+      }}>
+      Login
+    </Button>
   );
 }

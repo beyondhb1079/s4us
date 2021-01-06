@@ -21,14 +21,13 @@ function ProtectedRoute({ component: Component, path }) {
   find way to redirect user to home when they are signed in and navigate to login via path */
   return (
     <Route
-      path
       render={() => {
         return isSignedIn ? (
           <Component />
         ) : (
           <Redirect
             to={{
-              pathname: lastLocation.pathname,
+              pathname: lastLocation?.pathname || '/',
               search: '?login=true',
               state: { from: path },
             }}

@@ -122,7 +122,7 @@ export default function ProfileDropdown(props) {
 }
 
 ProfileDropdown.propTypes = {
-  signOut: PropTypes.element.isRequired,
+  signOut: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   photo: PropTypes.string.isRequired,
