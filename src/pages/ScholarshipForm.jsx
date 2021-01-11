@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useFormik, getIn } from 'formik';
+import firebase from 'firebase';
 import { Container, Button, TextField, IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { Alert, AlertTitle } from '@material-ui/lab';
@@ -25,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 function ScholarshipForm() {
   const classes = useStyles();
   const [submissionAlert, setSubmissionAlert] = useState(null);
+  const user = firebase.auth().currentUser;
 
   const formik = useFormik({
     initialValues: {
@@ -37,6 +39,8 @@ function ScholarshipForm() {
         max: 0,
       },
       website: '',
+      authId: user?.uid || null,
+      authEmail: user?.email || null,
     },
     validationSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
