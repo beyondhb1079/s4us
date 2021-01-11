@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Button,
@@ -17,6 +17,7 @@ import ShareIcon from '@material-ui/icons/Share';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { BRAND_NAME } from '../config/constants';
+import ShareDialog from './ShareDialog';
 
 const useStyles = makeStyles((theme) => ({
   actions: {
@@ -39,9 +40,15 @@ const useStyles = makeStyles((theme) => ({
 
 function ScholarshipList({ scholarships }) {
   const classes = useStyles();
+  const [shareDialogOpen, setShareDialogOpen] = useState(false);
+  const closeShareDialog = () => setShareDialogOpen(false);
+
+  const [shareSiteLink, setShareSiteLink] = React.useState('');
+  const [shareSiteTitle, setShareSiteTitle] = React.useState('');
+
   const shareFn = (id, data) => () => {
     const title = `${data.amount} - ${data.name} | ${BRAND_NAME}`;
-    const url = `${window.location.hostname}/scholarships/${id}`;
+    const url = `https://${window.location.hostname}/scholarships/${id}`;
     const text =
       `${data.amount} - ${data.name} | ${BRAND_NAME}\n` +
       `${data.deadline.toLocaleDateString()}\n`;
@@ -51,9 +58,9 @@ function ScholarshipList({ scholarships }) {
         .then(() => console.log('Thanks for sharing!'))
         .catch(console.error);
     } else {
-      // TODO(https://github.com/beyondhb1079/s4us/issues/154): Share dialog for Web
-      // Use the title/url/text above to construct the Share dialog.
-      alert(`This feature is under construction. TODO: Share ${url}.`);
+      setShareSiteLink(url);
+      setShareSiteTitle(title);
+      setShareDialogOpen(true);
     }
   };
   return (
@@ -105,6 +112,12 @@ function ScholarshipList({ scholarships }) {
           </Card>
         </Grid>
       ))}
+      <ShareDialog
+        open={shareDialogOpen}
+        onClose={closeShareDialog}
+        link={shareSiteLink}
+        title={shareSiteTitle}
+      />
     </Grid>
   );
 }
