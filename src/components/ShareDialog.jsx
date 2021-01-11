@@ -71,7 +71,7 @@ export default function ShareDialog(props) {
         <Button
           color="primary"
           onClick={() => navigator.clipboard.writeText(link)}>
-          Copy
+          Copy Link
         </Button>
       </DialogContent>
     </Dialog>

@@ -47,8 +47,8 @@ function ScholarshipList({ scholarships }) {
   const [shareSiteTitle, setShareSiteTitle] = React.useState('');
 
   const shareFn = (id, data) => () => {
-    const title = `https://${data.amount} - ${data.name} | ${BRAND_NAME}`;
-    const url = `${window.location.hostname}/scholarships/${id}`;
+    const title = `${data.amount} - ${data.name} | ${BRAND_NAME}`;
+    const url = `https://${window.location.hostname}/scholarships/${id}`;
     const text =
       `${data.amount} - ${data.name} | ${BRAND_NAME}\n` +
       `${data.deadline.toLocaleDateString()}\n`;
