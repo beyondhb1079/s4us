@@ -45,10 +45,10 @@ function ScholarshipsPage() {
         Scholarships
       </Typography>
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={10}>
+        <Grid item sm={10}>
           <FilterBar />
         </Grid>
-        <Grid item xs={12} sm={2}>
+        <Grid item sm={2}>
           <SortBar />
         </Grid>
       </Grid>
