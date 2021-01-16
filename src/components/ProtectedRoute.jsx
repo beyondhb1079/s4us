@@ -5,7 +5,9 @@ import firebase from 'firebase';
 import PropTypes from 'prop-types';
 
 function ProtectedRoute({ component: Component, path }) {
-  const [isSignedIn, setIsSignedIn] = useState(!!firebase.auth().currentUser);
+  const [isSignedIn, setIsSignedIn] = useState(
+    !!firebase.auth().currentUser || undefined
+  );
   const lastLocation = useLastLocation();
 
   useEffect(
@@ -18,9 +20,7 @@ function ProtectedRoute({ component: Component, path }) {
   return (
     <Route
       render={() => {
-        return isSignedIn ? (
-          <Component />
-        ) : (
+        return isSignedIn === false ? (
           <Redirect
             to={{
               pathname: lastLocation?.pathname || '/',
@@ -28,6 +28,8 @@ function ProtectedRoute({ component: Component, path }) {
               state: { from: path },
             }}
           />
+        ) : (
+          <Component />
         );
       }}
     />

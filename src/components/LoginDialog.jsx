@@ -12,12 +12,15 @@ export default function LoginDialog() {
   const { from } = location.state || { from: { pathname: '/' } };
   const history = useHistory();
   const params = new URLSearchParams(location.search);
-  const [isSignedIn, setIsSignedIn] = useState(!!firebase.auth().currentUser);
-
+  const [isSignedIn, setIsSignedIn] = useState(
+    !!firebase.auth().currentUser || undefined
+  );
+  console.log(isSignedIn);
   useEffect(() => {
     const unregisterAuthObserver = firebase
       .auth()
       .onAuthStateChanged((user) => {
+        console.log(user);
         setIsSignedIn(!!user);
       });
     return unregisterAuthObserver;
@@ -38,7 +41,7 @@ export default function LoginDialog() {
 
   return (
     <Dialog
-      open={(params.get('login') === 'true' && !isSignedIn) || false}
+      open={(params.get('login') === 'true' && isSignedIn === false) || false}
       onClose={() => history.push(location.pathname)}
       aria-labelledby="responsive-dialog-title">
       <DialogTitle id="responsive-dialog-title">

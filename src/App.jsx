@@ -89,7 +89,7 @@ function App() {
                 />
               ))}
             </Switch>
-            <Route path="/" component={LoginDialog} />
+            <LoginDialog />
             <Footer />
           </LastLocationProvider>
         </Router>
