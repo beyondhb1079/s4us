@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 import Button from '@material-ui/core/Button';
 import ProfileMenu from './ProfileDropdown';
 
 export default function LoginButton() {
   const [isSignedIn, setIsSignedIn] = useState(!!firebase.auth().currentUser);
-  const location = useLocation();
 
   useEffect(() => {
     const unregisterAuthObserver = firebase

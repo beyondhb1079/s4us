@@ -2,15 +2,32 @@ import React, { useState, useEffect } from 'react';
 import { Route, Redirect, useLocation } from 'react-router-dom';
 import firebase from 'firebase';
 import PropTypes from 'prop-types';
-import { Container, Typography, CircularProgress } from '@material-ui/core';
+import {
+  Container,
+  Typography,
+  CircularProgress,
+  makeStyles,
+} from '@material-ui/core';
+
+const useStyles = makeStyles(() => ({
+  progress: {
+    display: 'flex',
+    flexGrow: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+}));
 
 function ProtectedRoute({ component: Component, path }) {
   const location = useLocation();
-  const { showLoginDialog } = location.state || { showLoginDialog: false };
+  const classes = useStyles();
+  const { showLoginDialog } = location.state || {
+    showLoginDialog: undefined,
+  };
   const [isSignedIn, setIsSignedIn] = useState(
     !!firebase.auth().currentUser || undefined
   );
-  console.log(isSignedIn);
+
   useEffect(
     () => firebase.auth().onAuthStateChanged((user) => setIsSignedIn(!!user)),
     []
@@ -23,18 +40,30 @@ function ProtectedRoute({ component: Component, path }) {
       path={path}
       render={() => {
         if (isSignedIn === undefined) {
-          return <CircularProgress />;
+          return (
+            <Container className={classes.progress}>
+              <CircularProgress />
+            </Container>
+          );
         }
         if (isSignedIn === true) {
           return <Component />;
         }
         return (
           <Container>
-            <Typography variant="h3">
+            <Typography variant="h5">
               You must log in first to access this page
             </Typography>
-            {showLoginDialog || (
-              <Redirect replace to={{ state: { showLoginDialog: true } }} />
+            {showLoginDialog === undefined && (
+              <Redirect
+                push={false}
+                to={{
+                  state: {
+                    showLoginDialog: true,
+                  },
+                  pathname: location.pathname,
+                }}
+              />
             )}
           </Container>
         );
