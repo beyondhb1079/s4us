@@ -37,6 +37,4 @@ function HeaderNavMenu() {
   );
 }
 
-// TODO: Add the showLoginDialog p
-
 export default HeaderNavMenu;

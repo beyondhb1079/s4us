@@ -29,7 +29,6 @@
     "react-modal": "^3.11.2",
     "react-paginate": "^6.5.0",
     "react-router-dom": "^5.2.0",
-    "react-router-last-location": "^2.0.1",
     "react-router-prop-types": "^1.0.5",
     "react-scripts": "^3.4.3",
     "react-share": "^4.3.1",

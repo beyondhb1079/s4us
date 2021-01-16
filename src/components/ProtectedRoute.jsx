@@ -33,8 +33,6 @@ function ProtectedRoute({ component: Component, path }) {
     []
   );
 
-  /* TODO: keep user on same page when trying to log in 
-  find way to redirect user to home when they are signed in and navigate to login via path */
   return (
     <Route
       path={path}
