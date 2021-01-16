@@ -9,6 +9,7 @@ import StyleFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 
 export default function LoginDialog() {
   const location = useLocation();
+  const { from } = location.state || { from: { pathname: '/' } };
   const history = useHistory();
   const params = new URLSearchParams(location.search);
   const [isSignedIn, setIsSignedIn] = useState(!!firebase.auth().currentUser);
@@ -31,10 +32,7 @@ export default function LoginDialog() {
     ],
     credentialHelper: 'none', // hacky way to disable redirect on email login
     callbacks: {
-      signInSuccessWithAuthResult: () => {
-        if (location.state) history.push(location.state.from);
-        else history.push('/');
-      },
+      signInSuccessWithAuthResult: () => history.replace(from),
     },
   };
 

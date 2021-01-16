@@ -8,14 +8,10 @@ function ProtectedRoute({ component: Component, path }) {
   const [isSignedIn, setIsSignedIn] = useState(!!firebase.auth().currentUser);
   const lastLocation = useLastLocation();
 
-  useEffect(() => {
-    const unregisterAuthObserver = firebase
-      .auth()
-      .onAuthStateChanged((user) => {
-        setIsSignedIn(!!user);
-      });
-    return unregisterAuthObserver;
-  }, []);
+  useEffect(
+    () => firebase.auth().onAuthStateChanged((user) => setIsSignedIn(!!user)),
+    []
+  );
 
   /* TODO: keep user on same page when trying to log in 
   find way to redirect user to home when they are signed in and navigate to login via path */
