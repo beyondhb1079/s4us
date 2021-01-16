@@ -33,10 +33,9 @@ export default function LoginButton() {
       color="primary"
       component={Link}
       to={{
-        pathname: `${location.pathname}`,
-        search: '?login=true',
-        state: { from: location.pathname },
-      }}>
+        state: { showLoginDialog: true },
+      }}
+      replace>
       Login
     </Button>
   );

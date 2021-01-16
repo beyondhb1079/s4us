@@ -9,23 +9,11 @@ import StyleFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 
 export default function LoginDialog() {
   const location = useLocation();
-  const { from } = location.state || { from: { pathname: '/' } };
+  const { showLoginDialog } = location.state || { showLoginDialog: false };
   const history = useHistory();
-  const params = new URLSearchParams(location.search);
-  const [isSignedIn, setIsSignedIn] = useState(
-    !!firebase.auth().currentUser || undefined
-  );
-  console.log(isSignedIn);
-  useEffect(() => {
-    const unregisterAuthObserver = firebase
-      .auth()
-      .onAuthStateChanged((user) => {
-        console.log(user);
-        setIsSignedIn(!!user);
-      });
-    return unregisterAuthObserver;
-  }, []);
 
+  const closeDialog = () =>
+    history.replace({ state: { showLoginDialog: false } });
   const uiConfig = {
     signInFlow: 'popup',
     signInOptions: [
@@ -35,14 +23,14 @@ export default function LoginDialog() {
     ],
     credentialHelper: 'none', // hacky way to disable redirect on email login
     callbacks: {
-      signInSuccessWithAuthResult: () => history.replace(from),
+      signInSuccessWithAuthResult: closeDialog,
     },
   };
 
   return (
     <Dialog
-      open={(params.get('login') === 'true' && isSignedIn === false) || false}
-      onClose={() => history.push(location.pathname)}
+      open={showLoginDialog}
+      onClose={closeDialog}
       aria-labelledby="responsive-dialog-title">
       <DialogTitle id="responsive-dialog-title">
         Login using your account or email.
