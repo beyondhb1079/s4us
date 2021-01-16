@@ -7,14 +7,10 @@ import ProfileMenu from './ProfileDropdown';
 export default function LoginButton() {
   const [isSignedIn, setIsSignedIn] = useState(!!firebase.auth().currentUser);
 
-  useEffect(() => {
-    const unregisterAuthObserver = firebase
-      .auth()
-      .onAuthStateChanged((user) => {
-        setIsSignedIn(!!user);
-      });
-    return unregisterAuthObserver;
-  }, []);
+  useEffect(
+    () => firebase.auth().onAuthStateChanged((user) => setIsSignedIn(!!user)),
+    []
+  );
 
   const signUserOut = () => firebase.auth().signOut(); // sign out + closes dialog
   const user = firebase.auth().currentUser;
