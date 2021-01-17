@@ -70,6 +70,7 @@ export default function ScholarshipDetails({ history, location, match }) {
         className={classes.description}>
         {description}
       </Typography>
+
       <Button
         component={Link}
         href={website}
