@@ -1,25 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 import Button from '@material-ui/core/Button';
-import LoginDialog from './LoginDialog';
 import ProfileMenu from './ProfileDropdown';
 
 export default function LoginButton() {
   const [isSignedIn, setIsSignedIn] = useState(!!firebase.auth().currentUser);
-  const [loginDialogOpen, setLoginDialogOpen] = useState(false); // initialized to false
-  const handleClose = () => setLoginDialogOpen(false);
 
-  useEffect(() => {
-    const unregisterAuthObserver = firebase
-      .auth()
-      .onAuthStateChanged((user) => {
-        setIsSignedIn(!!user);
-      });
-    return unregisterAuthObserver;
-  }, []); // [] skips cleanup of this effect until the component is unmounted
+  useEffect(
+    () => firebase.auth().onAuthStateChanged((user) => setIsSignedIn(!!user)),
+    []
+  );
 
-  const signUserOut = () => firebase.auth().signOut() && handleClose(); // sign out + closes dialog
-  const showLoginDialog = () => setLoginDialogOpen(true);
+  const signUserOut = () => firebase.auth().signOut();
   const user = firebase.auth().currentUser;
 
   return isSignedIn ? (
@@ -30,11 +23,15 @@ export default function LoginButton() {
       photo={user.photoURL}
     />
   ) : (
-    <>
-      <LoginDialog open={loginDialogOpen} onClose={handleClose} />
-      <Button variant="contained" color="primary" onClick={showLoginDialog}>
-        Login
-      </Button>
-    </>
+    <Button
+      variant="contained"
+      color="primary"
+      component={Link}
+      to={{
+        state: { showLoginDialog: true },
+      }}
+      replace>
+      Login
+    </Button>
   );
 }
