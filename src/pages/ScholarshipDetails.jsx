@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core';
 import Scholarships from '../models/Scholarships';
 import { BRAND_NAME } from '../config/constants';
+import ScholarshipAmount from '../types/ScholarshipAmount';
 
 const useStyles = makeStyles(() => ({
   description: {
@@ -17,7 +18,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function ScholarshipDetails({ history, location, match }) {
-  console.log('history.location', history.location);
+  console.log('location.state', location.state);
   const classes = useStyles();
   const { id } = match.params;
   const [scholarship, setScholarship] = useState(location.state?.scholarship);
@@ -28,26 +29,17 @@ export default function ScholarshipDetails({ history, location, match }) {
     document.title = `${BRAND_NAME} | ${scholarship.data.name}`;
   }
 
-  const passedIn = !!location.state.scholarship;
-  if (passedIn) {
-    console.log('passed in!');
-  }
-
-  // clear location scholarship state in case of page refresh
   useEffect(() => {
-    if (location.state.scholarship) {
-      console.log('replacing location state for', location);
-      history.replace(location.pathname, {});
+    // Clear state in case of refresh/navigation to other pages.
+    if (history.location.state?.scholarship) {
+      history.replace({ state: {} });
     }
-  });
-
-  // fetch the scholarship if it wasn't already passed
-  useEffect(() => {
+    // Fetch the scholarship if it wasn't passed
     if (!scholarship) {
-      console.log('fetching...');
+      // Should we maybe set the scholarhip instead of loading every time?
       Scholarships.id(id).get().then(setScholarship).catch(setError);
     }
-  }, [id, scholarship]);
+  }, [history, id, scholarship]);
 
   if (error || loading) {
     return (
@@ -59,16 +51,13 @@ export default function ScholarshipDetails({ history, location, match }) {
 
   const { name, amount, deadline, website, description } = scholarship.data;
 
-  if (passedIn) {
-    console.log('rendering passed in scholarship', scholarship.data);
-  }
   return (
     <Container>
       <Typography gutterBottom variant="h3" component="h1">
         {name}
       </Typography>
       <Typography gutterBottom variant="h4" component="h2">
-        {amount.toString()}
+        {ScholarshipAmount.toString(amount)}
       </Typography>
       <Typography gutterBottom variant="h5" component="h3">
         {deadline.toLocaleDateString()}

@@ -1,9 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Router, Route } from 'react-router-dom';
-import { clearFirestoreData, initializeTestApp } from '../lib/testing';
-import firebase from 'firebase';
 import { createMemoryHistory } from 'history';
+import { clearFirestoreData, initializeTestApp } from '../lib/testing';
 import ScholarshipDetails from './ScholarshipDetails';
 import Scholarships from '../models/Scholarships';
 import ScholarshipAmount from '../types/ScholarshipAmount';
@@ -38,7 +37,7 @@ test('renders loading initially', async () => {
 test('renders scholarship not found', async () => {
   renderAtRoute('/scholarships/bad-id');
 
-  await screen.findByText(/Scholarships\/bad-id Not Found/i);
+  await screen.findByText(/scholarships\/bad-id Not Found/i);
 });
 
 test('renders passed in scholarship details', async () => {

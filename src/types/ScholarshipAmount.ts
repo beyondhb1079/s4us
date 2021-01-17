@@ -34,16 +34,25 @@ export default class ScholarshipAmount {
   }
 
   toString(): string {
-    switch (this.type) {
+    return ScholarshipAmount.toString(this);
+  }
+
+  static toString(data: {
+    type?: AmountType;
+    min?: number;
+    max?: number;
+  }): string {
+    const { type, min, max } = data;
+    switch (type) {
       case AmountType.FullTuition:
         return 'Full Tuition';
       case AmountType.Fixed:
-        return `$${this.min}`;
+        return `$${min}`;
       case AmountType.Range:
-        if (this.min && this.max) {
-          return `$${this.min}-$${this.max}`;
+        if (min && max) {
+          return `$${min}-$${max}`;
         }
-        return this.min ? `$${this.min}+` : `Up to $${this.max}`;
+        return min ? `$${min}+` : `Up to $${max}`;
       default:
         return '(Unknown amount)';
     }
