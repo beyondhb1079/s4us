@@ -18,7 +18,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function ScholarshipDetails({ history, location, match }) {
-  console.log('location.state', location.state);
   const classes = useStyles();
   const { id } = match.params;
   const [scholarship, setScholarship] = useState(location.state?.scholarship);
@@ -35,11 +34,11 @@ export default function ScholarshipDetails({ history, location, match }) {
       history.replace({ state: {} });
     }
     // Fetch the scholarship if it wasn't passed
-    if (!scholarship) {
+    if (loading) {
       // Should we maybe set the scholarhip instead of loading every time?
       Scholarships.id(id).get().then(setScholarship).catch(setError);
     }
-  }, [history, id, scholarship]);
+  }, [history, id, loading]);
 
   if (error || loading) {
     return (
