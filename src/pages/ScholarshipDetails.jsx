@@ -34,10 +34,9 @@ export default function ScholarshipDetails({ history, location, match }) {
     }
   }, [history, location]);
 
+  // Fetch the scholarship if we need to load it
   useEffect(() => {
-    // Fetch the scholarship if it wasn't passed
     if (loading) {
-      // Should we maybe set the scholarhip instead of loading every time?
       Scholarships.id(id).get().then(setScholarship).catch(setError);
     }
   }, [id, loading]);
