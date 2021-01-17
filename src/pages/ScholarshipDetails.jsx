@@ -28,17 +28,20 @@ export default function ScholarshipDetails({ history, location, match }) {
     document.title = `${BRAND_NAME} | ${scholarship.data.name}`;
   }
 
+  // Clear location state in case of refresh/navigation to other pages.
   useEffect(() => {
-    // Clear state in case of refresh/navigation to other pages.
-    if (history.location.state?.scholarship) {
+    if (location.state.scholarship) {
       history.replace({ state: {} });
     }
+  }, [history, location]);
+
+  useEffect(() => {
     // Fetch the scholarship if it wasn't passed
     if (loading) {
       // Should we maybe set the scholarhip instead of loading every time?
       Scholarships.id(id).get().then(setScholarship).catch(setError);
     }
-  }, [history, id, loading]);
+  }, [id, loading]);
 
   if (error || loading) {
     return (
@@ -49,14 +52,14 @@ export default function ScholarshipDetails({ history, location, match }) {
   }
 
   const { name, amount, deadline, website, description } = scholarship.data;
-
+  console.log(location.state);
   return (
     <Container>
       <Typography gutterBottom variant="h3" component="h1">
         {name}
       </Typography>
       <Typography gutterBottom variant="h4" component="h2">
-        {ScholarshipAmount.toString(amount)}
+        {amount.toString()}
       </Typography>
       <Typography gutterBottom variant="h5" component="h3">
         {deadline.toLocaleDateString()}
@@ -68,7 +71,6 @@ export default function ScholarshipDetails({ history, location, match }) {
         className={classes.description}>
         {description}
       </Typography>
-
       <Button
         component={Link}
         href={website}

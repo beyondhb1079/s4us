@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { Router, Route } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
+import { MemoryRouter, Route } from 'react-router-dom';
 import { clearFirestoreData, initializeTestApp } from '../lib/testing';
 import ScholarshipDetails from './ScholarshipDetails';
 import Scholarships from '../models/Scholarships';
@@ -12,13 +11,11 @@ import AmountType from '../types/AmountType';
 // TODO: Figure out a cleaner solution.
 window.MutationObserver = require('mutation-observer');
 
-function renderAtRoute(route, state = {}) {
-  const history = createMemoryHistory();
-  history.replace(route, state);
+function renderAtRoute(pathname, state = {}) {
   return render(
-    <Router history={history}>
+    <MemoryRouter initialEntries={[{ pathname, state }]}>
       <Route path="/scholarships/:id" component={ScholarshipDetails} />
-    </Router>
+    </MemoryRouter>
   );
 }
 
@@ -57,7 +54,7 @@ test('renders passed in scholarship details', async () => {
     scholarship: { id: 'abc', data },
   });
 
-  await screen.findByText(data.name); //).toBeInTheDocument();
+  expect(screen.getByText(data.name)).toBeInTheDocument();
   expect(screen.getByText(data.amount.toString())).toBeInTheDocument();
   expect(screen.getByText(data.description)).toBeInTheDocument();
   expect(
