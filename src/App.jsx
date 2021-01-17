@@ -21,8 +21,11 @@ function RouteWithTitle({ path, component, title, guard }) {
   useEffect(() => {
     document.title = `${BRAND_NAME} | ${title}`;
   }, [title]);
-  if (guard) return <ProtectedRoute {...{ path, component }} />;
-  return <Route {...{ path, component }} />;
+  return guard ? (
+    <ProtectedRoute {...{ path, component }} />
+  ) : (
+    <Route {...{ path, component }} />
+  );
 }
 RouteWithTitle.propTypes = {
   component: PropTypes.elementType.isRequired,

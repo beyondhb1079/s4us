@@ -9,11 +9,12 @@ import StyleFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 
 export default function LoginDialog() {
   const location = useLocation();
-  const { showLoginDialog } = location.state || { showLoginDialog: false };
-  const history = useHistory();
+  const { showLoginDialog } = location.state || { showLoginDialog: undefined };
 
+  const history = useHistory();
   const closeDialog = () =>
     history.replace({ state: { showLoginDialog: false } });
+
   const uiConfig = {
     signInFlow: 'popup',
     signInOptions: [

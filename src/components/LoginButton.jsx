@@ -12,7 +12,7 @@ export default function LoginButton() {
     []
   );
 
-  const signUserOut = () => firebase.auth().signOut(); // sign out + closes dialog
+  const signUserOut = () => firebase.auth().signOut();
   const user = firebase.auth().currentUser;
 
   return isSignedIn ? (
