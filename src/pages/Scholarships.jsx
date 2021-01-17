@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
+  Box,
   CircularProgress,
   Container,
   makeStyles,
@@ -10,9 +11,13 @@ import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
 
 const useStyles = makeStyles(() => ({
-  progress: {
-    display: 'block',
-    margin: 'auto',
+  resultsArea: {
+    display: 'flex',
+    flexDirection: 'column',
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '20vh',
   },
 }));
 
@@ -24,15 +29,9 @@ function ScholarshipsPage() {
   useEffect(() => {
     // TODO: Create cancellable promises
     Scholarships.list({ sortField: 'deadline' })
-      .then((results) => {
-        setScholarships(results);
-      })
-      .catch((err) => {
-        setError(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      .then((results) => setScholarships(results))
+      .catch(setError)
+      .finally(() => setLoading(false));
   }, []);
 
   const classes = useStyles();
@@ -43,10 +42,11 @@ function ScholarshipsPage() {
         Scholarships
       </Typography>
       <FilterBar />
-      {error?.toString() ||
-        (loading && <CircularProgress className={classes.progress} />) || (
+      <Box className={classes.resultsArea}>
+        {error?.toString() || (loading && <CircularProgress />) || (
           <ScholarshipList scholarships={scholarships} />
         )}
+      </Box>
     </Container>
   );
 }

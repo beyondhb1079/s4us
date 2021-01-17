@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import {
   Button,
   Card,
@@ -11,11 +11,13 @@ import {
   IconButton,
   Link as MuiLink,
   Typography,
+  useMediaQuery,
 } from '@material-ui/core';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import ShareIcon from '@material-ui/icons/Share';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import queryString from 'query-string';
 import { BRAND_NAME } from '../config/constants';
 import ShareDialog from './ShareDialog';
 
@@ -30,11 +32,14 @@ const useStyles = makeStyles((theme) => ({
   },
   description: {
     display: '-webkit-box',
-    '-webkit-line-clamp': 5,
-    lineClamp: 5,
+    '-webkit-line-clamp': 3,
+    lineClamp: 3,
     '-webkit-box-orient': 'vertical',
     overflow: 'hidden',
     whiteSpace: 'pre-line',
+  },
+  noScholarships: {
+    margin: 'auto',
   },
 }));
 
@@ -43,8 +48,8 @@ function ScholarshipList({ scholarships }) {
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const closeShareDialog = () => setShareDialogOpen(false);
 
-  const [shareSiteLink, setShareSiteLink] = React.useState('');
-  const [shareSiteTitle, setShareSiteTitle] = React.useState('');
+  const [shareSiteLink, setShareSiteLink] = useState('');
+  const [shareSiteTitle, setShareSiteTitle] = useState('');
 
   const shareFn = (id, data) => () => {
     const title = `${data.amount} - ${data.name} | ${BRAND_NAME}`;
@@ -63,12 +68,32 @@ function ScholarshipList({ scholarships }) {
       setShareDialogOpen(true);
     }
   };
+
+  const history = useHistory();
+  const location = useLocation();
+  const selectIndex = (index) => {
+    history.push({
+      search: queryString.stringify({
+        ...queryString.parse(location.search),
+        selectedIndex: index,
+      }),
+    });
+  };
+
+  const largeScreen = useMediaQuery((theme) => theme.breakpoints.up('sm'));
+
   return (
     <Grid container spacing={3}>
-      {scholarships.map(({ id, data }) => (
+      {scholarships.length === 0 && (
+        <Typography variant="h5" className={classes.noScholarships}>
+          No scholarships found
+        </Typography>
+      )}
+      {/* List view */}
+      {scholarships.map(({ id, data }, index) => (
         <Grid item xs={12} key={id}>
           <Card variant="outlined">
-            <CardActionArea component={Link} to={`/scholarships/${id}`}>
+            <CardActionArea onClick={() => selectIndex(index)}>
               <CardHeader
                 title={data.name}
                 subheader={data.amount.toString()}
@@ -112,6 +137,7 @@ function ScholarshipList({ scholarships }) {
           </Card>
         </Grid>
       ))}
+      {/* Results view */}
       <ShareDialog
         open={shareDialogOpen}
         onClose={closeShareDialog}
