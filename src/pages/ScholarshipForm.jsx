@@ -39,13 +39,15 @@ function ScholarshipForm() {
         max: 0,
       },
       website: '',
-      authId: user?.uid || null,
-      authEmail: user?.email || null,
     },
     validationSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
       setSubmitting(true);
-      Scholarships.new(values)
+      Scholarships.new({
+        ...values,
+        authorId: user?.uid,
+        authorEmail: user?.email,
+      })
         .save()
         .then((scholarship) => {
           setSubmissionAlert(
