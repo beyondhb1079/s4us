@@ -9,7 +9,6 @@ import {
 } from '@material-ui/core';
 import Scholarships from '../models/Scholarships';
 import { BRAND_NAME } from '../config/constants';
-import ScholarshipAmount from '../types/ScholarshipAmount';
 
 const useStyles = makeStyles(() => ({
   description: {
@@ -52,7 +51,7 @@ export default function ScholarshipDetails({ history, location, match }) {
   }
 
   const { name, amount, deadline, website, description } = scholarship.data;
-  console.log(location.state);
+
   return (
     <Container>
       <Typography gutterBottom variant="h3" component="h1">
