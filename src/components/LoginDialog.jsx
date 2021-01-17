@@ -1,32 +1,37 @@
 import React from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
 import firebase from 'firebase';
 import StyleFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
-import PropTypes from 'prop-types';
 
-const uiConfig = {
-  signInFlow: 'popup',
-  signInOptions: [
-    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-    firebase.auth.EmailAuthProvider.PROVIDER_ID,
-    firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-  ],
-  credentialHelper: 'none', // hacky way to disable redirect on email login
-  callbacks: {
-    signInSuccessWithAuthResult: () => false,
-  },
-};
+export default function LoginDialog() {
+  const location = useLocation();
+  const { showLoginDialog } = location.state || { showLoginDialog: undefined };
 
-export default function LoginDialog(props) {
-  const { open, onClose } = props;
+  const history = useHistory();
+  const closeDialog = () =>
+    history.replace({ state: { showLoginDialog: false } });
+
+  const uiConfig = {
+    signInFlow: 'popup',
+    signInOptions: [
+      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+      firebase.auth.EmailAuthProvider.PROVIDER_ID,
+      firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+    ],
+    credentialHelper: 'none', // hacky way to disable redirect on email login
+    callbacks: {
+      signInSuccessWithAuthResult: closeDialog,
+    },
+  };
+
   return (
     <Dialog
-      open={open}
-      onClose={onClose}
+      open={showLoginDialog}
+      onClose={closeDialog}
       aria-labelledby="responsive-dialog-title">
       <DialogTitle id="responsive-dialog-title">
         Login using your account or email.
@@ -42,8 +47,3 @@ export default function LoginDialog(props) {
     </Dialog>
   );
 }
-
-LoginDialog.propTypes = {
-  open: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-};
