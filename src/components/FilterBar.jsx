@@ -38,14 +38,14 @@ const sortingOptions = {
 };
 
 export default function FilterBar(props) {
-  const { passedFunction } = props;
+  const { passedFunction, reverse } = props;
 
   function modifySorting(sortOption) {
     switch (sortOption) {
       case 'one':
-        return passedFunction('deadline');
+        return reverse();
       case 'two':
-        return passedFunction('deadlineReverse');
+        return reverse();
       case 'three':
         return passedFunction('amount.min');
       case 'four':
@@ -78,4 +78,5 @@ export default function FilterBar(props) {
 
 FilterBar.propTypes = {
   passedFunction: PropTypes.func.isRequired,
+  reverse: PropTypes.func.isRequired,
 };

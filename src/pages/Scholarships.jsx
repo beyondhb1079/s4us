@@ -21,6 +21,12 @@ function ScholarshipsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
   const [sortList, setSortList] = useState('deadline');
+  const [reverse, setReverse] = useState(false);
+
+  function reverseDateArray() {
+    setReverse(!reverse);
+    setScholarships(scholarships.reverse());
+  }
 
   useEffect(() => {
     // TODO: Create cancellable promises
@@ -40,10 +46,11 @@ function ScholarshipsPage() {
 
   return (
     <Container>
+      <h1>{sortList}</h1>
       <Typography variant="h3" component="h1" style={{ textAlign: 'center' }}>
         Scholarships
       </Typography>
-      <FilterBar passedFunction={setSortList} />
+      <FilterBar passedFunction={setSortList} reverse={reverseDateArray} />
       {error?.toString() ||
         (loading && <CircularProgress className={classes.progress} />) || (
           <ScholarshipList scholarships={scholarships} />
