@@ -38,7 +38,7 @@
     "yup": "^0.31.1"
   },
   "scripts": {
-    "start": "firebase emulators:exec --ui 'react-scripts start'",
+    "start": "firebase emulators:exec --import=tmp/ --export-on-exit --ui 'react-scripts start'",
     "build": "react-scripts build",
     "test": "firebase emulators:exec --only firestore 'react-scripts test --verbose'",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
@@ -143,6 +143,7 @@
     "eslint-plugin-react": "^7.21.1",
     "eslint-plugin-react-hooks": "^4.1.2",
     "firebase-tools": "^8.12.1",
+    "history": "^5.0.0",
     "husky": "^4.3.0",
     "lint-staged": "^10.4.2",
     "mutation-observer": "^1.0.3",

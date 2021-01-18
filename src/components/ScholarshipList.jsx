@@ -55,7 +55,9 @@ function ScholarshipList({ scholarships }) {
     if (navigator.share) {
       navigator
         .share({ title, url, text })
+        // eslint-disable-next-line no-console
         .then(() => console.log('Thanks for sharing!'))
+        // eslint-disable-next-line no-console
         .catch(console.error);
     } else {
       setShareSiteLink(url);
@@ -68,7 +70,12 @@ function ScholarshipList({ scholarships }) {
       {scholarships.map(({ id, data }) => (
         <Grid item xs={12} key={id}>
           <Card variant="outlined">
-            <CardActionArea component={Link} to={`/scholarships/${id}`}>
+            <CardActionArea
+              component={Link}
+              to={{
+                pathname: `/scholarships/${id}`,
+                state: { scholarship: { id, data } },
+              }}>
               <CardHeader
                 title={data.name}
                 subheader={data.amount.toString()}
@@ -99,6 +106,7 @@ function ScholarshipList({ scholarships }) {
               <IconButton
                 aria-label="add to bookmarks"
                 color="primary"
+                // eslint-disable-next-line no-alert
                 onClick={() => alert('This feature is under construction')}>
                 <BookmarkBorderIcon />
               </IconButton>
