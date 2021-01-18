@@ -14,8 +14,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function FilterDropdown(props) {
-  const { label, items } = props;
-  const [choice, setChoice] = useState('');
+  const { label, items, defaultSelect, removeNone } = props;
+  const [choice, setChoice] = useState(`${defaultSelect}`);
   const classes = useStyles();
 
   function selectChoice(event) {
@@ -26,9 +26,11 @@ function FilterDropdown(props) {
     <FormControl variant="outlined" className={classes.formControl}>
       <InputLabel>{label}</InputLabel>
       <Select value={choice} onChange={selectChoice} label={label}>
-        <MenuItem value="">
-          <em>None</em>
-        </MenuItem>
+        {removeNone ? null : (
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+        )}
         {Object.keys(items).map((key) => (
           <MenuItem key={key} value={key}>
             {items[key]}
@@ -41,6 +43,8 @@ function FilterDropdown(props) {
 
 FilterDropdown.propTypes = {
   label: PropTypes.string.isRequired,
+  defaultSelect: PropTypes.string.isRequired,
   items: PropTypes.objectOf(PropTypes.string).isRequired,
+  removeNone: PropTypes.bool.isRequired,
 };
 export default FilterDropdown;
