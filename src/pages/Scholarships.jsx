@@ -20,10 +20,11 @@ function ScholarshipsPage() {
   const [scholarships, setScholarships] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
+  const [sortList, setSortList] = useState('deadline');
 
   useEffect(() => {
     // TODO: Create cancellable promises
-    Scholarships.list({ sortField: 'deadline' })
+    Scholarships.list({ sortField: `${sortList}` })
       .then((results) => {
         setScholarships(results);
       })
@@ -33,7 +34,7 @@ function ScholarshipsPage() {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [sortList]);
 
   const classes = useStyles();
 
@@ -42,7 +43,7 @@ function ScholarshipsPage() {
       <Typography variant="h3" component="h1" style={{ textAlign: 'center' }}>
         Scholarships
       </Typography>
-      <FilterBar />
+      <FilterBar passedFunction={setSortList} />
       {error?.toString() ||
         (loading && <CircularProgress className={classes.progress} />) || (
           <ScholarshipList scholarships={scholarships} />
