@@ -1184,17 +1184,22 @@
     enabled "2.0.x"
     kuler "^2.0.0"
 
-"@date-io/core@1.x", "@date-io/core@^1.3.13":
+"@date-io/core@1.x":
   version "1.3.13"
   resolved "https://registry.yarnpkg.com/@date-io/core/-/core-1.3.13.tgz#90c71da493f20204b7a972929cc5c482d078b3fa"
   integrity sha512-AlEKV7TxjeK+jxWVKcCFrfYAk8spX9aCyiToFIiLPtfQbsjmRGLIhb5VZgptQcJdHtLXo7+m0DuurwFgUToQuA==
 
-"@date-io/date-fns@1.x":
-  version "1.3.13"
-  resolved "https://registry.yarnpkg.com/@date-io/date-fns/-/date-fns-1.3.13.tgz#7798844041640ab393f7e21a7769a65d672f4735"
-  integrity sha512-yXxGzcRUPcogiMj58wVgFjc9qUYrCnnU9eLcyNbsQCmae4jPuZCDoIBR21j8ZURsM7GRtU62VOw5yNd4dDHunA==
+"@date-io/core@^2.9.2":
+  version "2.10.6"
+  resolved "https://registry.yarnpkg.com/@date-io/core/-/core-2.10.6.tgz#1a6e671b590a08af8bd0784f3a93670e5d2d5bd7"
+  integrity sha512-MGYt4GEB/4ZMdSbj6FS7/gPBvuhHUwnn5O6t8PlkSqGF1310qxypVyK4CZg5RQgev25L3R5eLVdNTyYrJOL8Rw==
+
+"@date-io/date-fns@2.x":
+  version "2.9.2"
+  resolved "https://registry.yarnpkg.com/@date-io/date-fns/-/date-fns-2.9.2.tgz#4d712527a13a66e7ac539dffb1c6a44860a5ad31"
+  integrity sha512-j9c9vjfH8u0lQR9uBq+gz/ZaDyBzteh25ZAA8Fd6FpvJjVK+q//cS77jfA1USnFz3kNXmKGfovqtNJNrFLiOpg==
   dependencies:
-    "@date-io/core" "^1.3.13"
+    "@date-io/core" "^2.9.2"
 
 "@emotion/hash@^0.8.0":
   version "0.8.0"
