@@ -6,7 +6,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     justifyContent: 'space-between',
-    margin: theme.spacing(1),
   },
 }));
 
