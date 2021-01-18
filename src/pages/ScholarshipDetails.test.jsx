@@ -11,9 +11,9 @@ import AmountType from '../types/AmountType';
 // TODO: Figure out a cleaner solution.
 window.MutationObserver = require('mutation-observer');
 
-function renderAtRoute(route) {
+function renderAtRoute(pathname, state = {}) {
   return render(
-    <MemoryRouter initialEntries={[route]}>
+    <MemoryRouter initialEntries={[{ pathname, state }]}>
       <Route path="/scholarships/:id" component={ScholarshipDetails} />
     </MemoryRouter>
   );
@@ -24,16 +24,44 @@ const app = initializeTestApp({ projectId: 'scholarship-details-test' });
 beforeAll(async () => clearFirestoreData(app.options));
 afterAll(async () => app.delete());
 
-test('renders loading initially', () => {
+test('renders loading initially', async () => {
   renderAtRoute('/scholarships/abc');
 
   expect(screen.getByText(/loading/i)).toBeInTheDocument();
+  await screen.findByText(/not found/i);
 });
 
 test('renders scholarship not found', async () => {
   renderAtRoute('/scholarships/bad-id');
 
-  await screen.findByText(/Scholarships\/bad-id Not Found/i);
+  await screen.findByText(/scholarships\/bad-id Not Found/i);
+});
+
+test('renders passed in scholarship details', async () => {
+  const data = {
+    name: 'Foo scholarship',
+    amount: new ScholarshipAmount({
+      type: AmountType.Fixed,
+      min: 1000,
+      max: 1000,
+    }),
+    description: 'description',
+    deadline: new Date('2020-12-17'),
+    website: 'http://foo.com/',
+  };
+
+  renderAtRoute('/scholarships/passed-in', {
+    scholarship: { id: 'abc', data },
+  });
+
+  expect(screen.getByText(data.name)).toBeInTheDocument();
+  expect(screen.getByText(data.amount.toString())).toBeInTheDocument();
+  expect(screen.getByText(data.description)).toBeInTheDocument();
+  expect(
+    screen.getByText(data.deadline.toLocaleDateString())
+  ).toBeInTheDocument();
+  expect(screen.getByRole('button').href).toBe(data.website);
+  expect(document.title).toContain(data.name);
 });
 
 test('renders scholarship details', async () => {
@@ -61,4 +89,5 @@ test('renders scholarship details', async () => {
     screen.getByText(data.deadline.toLocaleDateString())
   ).toBeInTheDocument();
   expect(screen.getByRole('button').href).toBe(data.website);
+  expect(document.title).toContain(data.name);
 });

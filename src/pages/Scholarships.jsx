@@ -24,15 +24,9 @@ function ScholarshipsPage() {
   useEffect(() => {
     // TODO: Create cancellable promises
     Scholarships.list({ sortField: 'deadline' })
-      .then((results) => {
-        setScholarships(results);
-      })
-      .catch((err) => {
-        setError(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      .then(setScholarships)
+      .catch(setError)
+      .finally(() => setLoading(false));
   }, []);
 
   const classes = useStyles();
