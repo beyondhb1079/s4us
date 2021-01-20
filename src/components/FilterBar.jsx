@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { makeStyles, Grid } from '@material-ui/core';
 import FilterDropDown from './FilterDropdown';
 
@@ -37,24 +36,7 @@ const sortingOptions = {
   amountHigh: 'Amount (High to Low)',
 };
 
-export default function FilterBar(props) {
-  const { passedFunction, reverse } = props;
-
-  function modifySorting(sortOption) {
-    switch (sortOption) {
-      case 'one':
-        return reverse();
-      case 'two':
-        return reverse();
-      case 'three':
-        return passedFunction('amount.min');
-      case 'four':
-        return passedFunction('amount.max');
-      default:
-        return null;
-    }
-  }
-
+function FilterBar() {
   const classes = useStyles();
   return (
     <Grid container spacing={2} className={classes.root}>
@@ -69,14 +51,10 @@ export default function FilterBar(props) {
           items={sortingOptions}
           defaultSelect="deadlineSoon"
           removeNone
-          givenFunction={modifySorting}
         />
       </Grid>
     </Grid>
   );
 }
 
-FilterBar.propTypes = {
-  passedFunction: PropTypes.func.isRequired,
-  reverse: PropTypes.func.isRequired,
-};
+export default FilterBar;
