@@ -12,11 +12,12 @@ const useStyles = makeStyles((theme) => ({
 
 function AmountTextField(props) {
   const classes = useStyles();
-  const { value, onChange, disabled, error } = props;
+  const { value, onChange, disabled, error, variation } = props;
 
   return (
     <TextField
       className={classes.amountField}
+      variant={variation}
       placeholder="Unknown"
       InputProps={{
         inputProps: { min: 0, max: 100000, step: 50 },
@@ -31,8 +32,10 @@ AmountTextField.propTypes = {
   onChange: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
   error: PropTypes.bool,
+  variation: PropTypes.string,
 };
 AmountTextField.defaultProps = {
   error: false,
+  variation: 'standard',
 };
 export default AmountTextField;

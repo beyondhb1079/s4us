@@ -1,5 +1,6 @@
 import React from 'react';
 import FilterDropDown from './FilterDropdown';
+import AmountFilter from './AmountFilter';
 
 const majors = {
   che: 'Chemical Eng.',
@@ -15,18 +16,12 @@ const grades = {
   16: 'College Senior',
 };
 
-const amounts = {
-  500: '> 500',
-  1000: '> 1000',
-  5000: '> 5000',
-};
-
 function FilterBar() {
   return (
     <div>
       <FilterDropDown label="Major" items={majors} />
       <FilterDropDown label="Grade" items={grades} />
-      <FilterDropDown label="Amount" items={amounts} />
+      <AmountFilter />
     </div>
   );
 }
