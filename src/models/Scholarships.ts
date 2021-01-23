@@ -2,7 +2,6 @@ import { firestore } from 'firebase';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import FirestoreCollection from './base/FirestoreCollection';
 import FirestoreModel from './base/FirestoreModel';
-import SortDirection from './base/SortDirection';
 import AmountType from '../types/AmountType';
 
 interface ScholarshipData {
@@ -37,6 +36,8 @@ export const converter: firestore.FirestoreDataConverter<ScholarshipData> = {
   },
 };
 
+type SortDirection = 'asc' | 'desc';
+
 class Scholarships extends FirestoreCollection<ScholarshipData> {
   name = 'scholarships';
   converter = converter;
@@ -58,29 +59,46 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
     }
 
     const baseQuery = this.collection
-      .orderBy(opts.sortDir === 'asc' ? 'amount.min' : 'amount.max', opts.sortDir)
+      .orderBy(
+        opts.sortDir === 'asc' ? 'amount.min' : 'amount.max',
+        opts.sortDir
+      )
       .orderBy('deadline', 'asc');
-    const orderedQuery = baseQuery
-      .where('amount.type', 'in', [AmountType.Fixed, AmountType.Range]);
-    const fullTuitionQuery = baseQuery.where('amount.type', '==', AmountType.FullTuition);
-    const unknownQuery = baseQuery.where('amount.type', '==', AmountType.Unknown);
+    const orderedQuery = baseQuery.where('amount.type', 'in', [
+      AmountType.Fixed,
+      AmountType.Range,
+    ]);
+    const fullTuitionQuery = baseQuery.where(
+      'amount.type',
+      '==',
+      AmountType.FullTuition
+    );
+    const unknownQuery = baseQuery.where(
+      'amount.type',
+      '==',
+      AmountType.Unknown
+    );
 
-    const queries = opts.sortDir === 'asc'
-      ? [orderedQuery.get(), fullTuitionQuery.get(), unknownQuery.get()]
-      : [fullTuitionQuery.get(), orderedQuery.get(), unknownQuery.get()];
+    const queries =
+      opts.sortDir === 'asc'
+        ? [orderedQuery.get(), fullTuitionQuery.get(), unknownQuery.get()]
+        : [fullTuitionQuery.get(), orderedQuery.get(), unknownQuery.get()];
 
     return new Promise((resolve, reject) =>
       Promise.all(queries)
-        .then((qSnapshots: firestore.QuerySnapshot<ScholarshipData>[]) => {
-          const results = [];
-          // Double check: for var of goes in order
-          for (var qSnapshot of qSnapshots) {
-            const transformed = qSnapshot.docs.map((doc) => new FirestoreModel<ScholarshipData>(doc.ref, doc.data()));
-            results.push(...transformed);
-          }
-
-          resolve(results);
-        })
+        .then((querySnaps: firestore.QuerySnapshot<ScholarshipData>[]) =>
+          // Transform results into lists of FirestoreModels and flatten it.
+          resolve(
+            querySnaps
+              .map((snap) =>
+                snap.docs.map(
+                  (doc) =>
+                    new FirestoreModel<ScholarshipData>(doc.ref, doc.data())
+                )
+              )
+              .flat()
+          )
+        )
         .catch(reject)
     );
   }

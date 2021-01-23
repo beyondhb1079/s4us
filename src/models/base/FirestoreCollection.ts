@@ -1,7 +1,8 @@
 import { firestore } from 'firebase';
 import FirestoreModel from './FirestoreModel';
 import Model from './Model';
-import SortDirection from './SortDirection';
+
+type SortDirection = 'asc' | 'desc';
 
 export default abstract class FirestoreCollection<T> {
   abstract readonly name: string;
