@@ -1,35 +1,61 @@
 import AmountType from './AmountType';
 
+export const FULL_TUITION_VALUE = 10000000001;
+
+// To make Unknown amounts appear last when sorting by amount we
+// purposefully make:
+// - min > FULL_TUITION (for low->high sorting)
+// - max < 0            (for high->low sorting)
+export const UNKNOWN_MIN = FULL_TUITION_VALUE + 1;
+export const UNKNOWN_MAX = -1;
+
 export default class ScholarshipAmount {
   readonly type: AmountType;
   readonly min: number;
   readonly max: number;
 
-  constructor(data?: { type?: AmountType; min?: number; max?: number }) {
-    this.type = data?.type ?? AmountType.Unknown;
-    this.min = data?.min ?? 0;
-    this.max = data?.max ?? 0;
+  constructor(
+    type: AmountType = AmountType.Unknown,
+    data?: { min?: number; max?: number }
+  ) {
+    this.type = type;
+    const [min, max] = [data?.min, data?.max];
 
-    if (this.type === AmountType.Fixed) {
-      if (this.min !== this.max) {
-        throw new Error(
-          `Fixed amount has min(${this.min}) != max(${this.max}).`
-        );
-      }
-      if (this.min <= 0) {
-        throw new Error(`Invalid fixed amount: ${this.min}.`);
-      }
-    }
-    if (this.type === AmountType.Range) {
-      if (this.min < 0) {
-        throw new Error(`Invalid min amount: ${this.min}.`);
-      }
-      if (this.max < 0) {
-        throw new Error(`Invalid max amount: ${this.max}.`);
-      }
-      if (this.max && this.min >= this.max) {
-        throw new Error(`Invalid range[${this.min},${this.max}]`);
-      }
+    switch (this.type) {
+      case AmountType.Fixed:
+        if (!min || min <= 0) {
+          throw new Error(`Fixed amount min(${min}) is not a positive number.`);
+        }
+        if (min !== max) {
+          throw new Error(`Fixed amount min(${min}) != max(${max}).`);
+        }
+        this.min = min;
+        this.max = max;
+        break;
+      case AmountType.Range:
+        if (min && min < 0) {
+          throw new Error(`Invalid min amount: ${min}.`);
+        }
+        if (max && max < 0) {
+          throw new Error(`Invalid max amount: ${max}.`);
+        }
+        if (!max && !min) {
+          throw new Error(`Range amount cannot be undefined.`);
+        }
+        if (max && min && min >= max) {
+          throw new Error(`Invalid range ${min}-${max}`);
+        }
+        this.min = min ?? 0;
+        this.max = max ?? FULL_TUITION_VALUE;
+        break;
+      case AmountType.FullTuition:
+        this.min = FULL_TUITION_VALUE;
+        this.max = FULL_TUITION_VALUE;
+        break;
+      default:
+        // amount unknown
+        this.min = UNKNOWN_MIN;
+        this.max = UNKNOWN_MAX;
     }
   }
 
@@ -40,7 +66,7 @@ export default class ScholarshipAmount {
       case AmountType.Fixed:
         return `$${this.min}`;
       case AmountType.Range:
-        if (this.min && this.max) {
+        if (this.min && this.max !== FULL_TUITION_VALUE) {
           return `$${this.min}-$${this.max}`;
         }
         return this.min ? `$${this.min}+` : `Up to $${this.max}`;
