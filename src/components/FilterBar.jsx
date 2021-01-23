@@ -7,6 +7,10 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     justifyContent: 'space-between',
   },
+  alignText: {
+    display: 'flex',
+    alignItems: 'center',
+  },
 }));
 
 const majors = {
@@ -45,7 +49,8 @@ function FilterBar() {
         <FilterDropDown label="Grade" items={grades} defaultSelect="" />
         <FilterDropDown label="Amount" items={amounts} defaultSelect="" />
       </Grid>
-      <Grid item>
+      <Grid item className={classes.alignText}>
+        Sort by
         <FilterDropDown
           label="Sorting"
           items={sortingOptions}

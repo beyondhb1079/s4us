@@ -26,7 +26,7 @@ function FilterDropdown(props) {
     <FormControl variant="outlined" className={classes.formControl}>
       <InputLabel>{label}</InputLabel>
       <Select value={choice} onChange={selectChoice} label={label}>
-        {removeNone ? null : (
+        {removeNone || (
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
