@@ -1,12 +1,17 @@
 import AmountType from './AmountType';
 
-export const FULL_TUITION_VALUE = 10000000001;
+// To make sorting by amount.max make sense for range amounts
+// with no upper bound.
+export const RANGE_MAX = 1000000001;
 
-// To make Unknown amounts appear last when sorting by amount we
-// purposefully make:
-// - min > FULL_TUITION (for low->high sorting)
-// - max < 0            (for high->low sorting)
-export const UNKNOWN_MIN = FULL_TUITION_VALUE + 1;
+// To make sorting by amount.min/max make sense for full tuition amounts.
+export const FULL_TUITION = RANGE_MAX + 1;
+
+// To make sorting by amount.min/max make sense for unknown amounts.
+// In order to make unknown amounts appear last we purposefully make:
+// - min > FULL_TUITION (for low->high amount.min sorting)
+// - max < 0            (for high->low amount.max sorting)
+export const UNKNOWN_MIN = FULL_TUITION + 1;
 export const UNKNOWN_MAX = -1;
 
 export default class ScholarshipAmount {
@@ -46,11 +51,11 @@ export default class ScholarshipAmount {
           throw new Error(`Invalid range ${min}-${max}`);
         }
         this.min = min ?? 0;
-        this.max = max ?? FULL_TUITION_VALUE;
+        this.max = max ?? RANGE_MAX;
         break;
       case AmountType.FullTuition:
-        this.min = FULL_TUITION_VALUE;
-        this.max = FULL_TUITION_VALUE;
+        this.min = FULL_TUITION;
+        this.max = FULL_TUITION;
         break;
       default:
         // amount unknown
@@ -66,7 +71,7 @@ export default class ScholarshipAmount {
       case AmountType.Fixed:
         return `$${this.min}`;
       case AmountType.Range:
-        if (this.min && this.max !== FULL_TUITION_VALUE) {
+        if (this.min && this.max !== RANGE_MAX) {
           return `$${this.min}-$${this.max}`;
         }
         return this.min ? `$${this.min}+` : `Up to $${this.max}`;

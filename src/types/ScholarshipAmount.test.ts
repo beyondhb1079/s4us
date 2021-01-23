@@ -1,6 +1,7 @@
 import AmountType from './AmountType';
 import ScholarshipAmount, {
-  FULL_TUITION_VALUE,
+  FULL_TUITION,
+  RANGE_MAX,
   UNKNOWN_MAX,
   UNKNOWN_MIN,
 } from './ScholarshipAmount';
@@ -35,12 +36,32 @@ test('constructor - range', () => {
   expect(amount.max).toBe(20);
 });
 
+test('constructor - range no min', () => {
+  const amount = new ScholarshipAmount(AmountType.Range, {
+    max: 20,
+  });
+
+  expect(amount.type).toBe(AmountType.Range);
+  expect(amount.min).toBe(0);
+  expect(amount.max).toBe(20);
+});
+
+test('constructor - range no max', () => {
+  const amount = new ScholarshipAmount(AmountType.Range, {
+    min: 2,
+  });
+
+  expect(amount.type).toBe(AmountType.Range);
+  expect(amount.min).toBe(2);
+  expect(amount.max).toBe(RANGE_MAX);
+});
+
 test('constructor - full tuition', () => {
   const amount = new ScholarshipAmount(AmountType.FullTuition);
 
   expect(amount.type).toBe(AmountType.FullTuition);
-  expect(amount.min).toBe(FULL_TUITION_VALUE);
-  expect(amount.max).toBe(FULL_TUITION_VALUE);
+  expect(amount.min).toBe(FULL_TUITION);
+  expect(amount.max).toBe(FULL_TUITION);
 });
 
 test('constructor - unknown', () => {
