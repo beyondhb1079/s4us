@@ -43,8 +43,12 @@ function FilterDropdown(props) {
 
 FilterDropdown.propTypes = {
   label: PropTypes.string.isRequired,
-  defaultSelect: PropTypes.string.isRequired,
+  defaultSelect: PropTypes.string,
   items: PropTypes.objectOf(PropTypes.string).isRequired,
   removeNone: PropTypes.bool.isRequired,
+};
+
+FilterDropdown.defaultProps = {
+  defaultSelect: '',
 };
 export default FilterDropdown;

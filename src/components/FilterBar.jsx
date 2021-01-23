@@ -45,9 +45,9 @@ function FilterBar() {
   return (
     <Grid container spacing={2} className={classes.root}>
       <Grid item>
-        <FilterDropDown label="Major" items={majors} defaultSelect="" />
-        <FilterDropDown label="Grade" items={grades} defaultSelect="" />
-        <FilterDropDown label="Amount" items={amounts} defaultSelect="" />
+        <FilterDropDown label="Major" items={majors} />
+        <FilterDropDown label="Grade" items={grades} />
+        <FilterDropDown label="Amount" items={amounts} />
       </Grid>
       <Grid item className={classes.alignText}>
         Sort by
