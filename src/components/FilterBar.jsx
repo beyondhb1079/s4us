@@ -1,6 +1,18 @@
 import React from 'react';
+import { makeStyles, Grid } from '@material-ui/core';
 import FilterDropDown from './FilterDropdown';
 import AmountFilter from './AmountFilter';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    justifyContent: 'space-between',
+  },
+  alignText: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+}));
 
 const majors = {
   che: 'Chemical Eng.',
@@ -16,13 +28,32 @@ const grades = {
   16: 'College Senior',
 };
 
+const sortingOptions = {
+  deadlineSoon: 'Deadline (Earliest to Latest)',
+  deadlineLatest: 'Deadline (Latest to Earliest)',
+  amountLow: 'Amount (Low to High)',
+  amountHigh: 'Amount (High to Low)',
+};
+
 function FilterBar() {
+  const classes = useStyles();
   return (
-    <div>
-      <FilterDropDown label="Major" items={majors} />
-      <FilterDropDown label="Grade" items={grades} />
-      <AmountFilter />
-    </div>
+    <Grid container spacing={2} className={classes.root}>
+      <Grid item>
+        <FilterDropDown label="Major" items={majors} />
+        <FilterDropDown label="Grade" items={grades} />
+        <AmountFilter />
+      </Grid>
+      <Grid item className={classes.alignText}>
+        Sort by
+        <FilterDropDown
+          label="Sorting"
+          items={sortingOptions}
+          defaultSelect="deadlineSoon"
+          removeNone
+        />
+      </Grid>
+    </Grid>
   );
 }
 

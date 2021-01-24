@@ -8,12 +8,11 @@ import AmountTextField from './AmountTextField';
 const useStyles = makeStyles((theme) => ({
   buttonStyle: {
     margin: theme.spacing(1),
-    maxWidth: 120,
     height: 57,
   },
   labelStyle: { paddingLeft: theme.spacing(1) },
   dashStyle: { margin: '45px auto auto' },
-  filterStyle: { margin: '10px 0' },
+  filterStyle: { margin: `${theme.spacing(1)}px 0` },
 }));
 
 export default function AmountFilter() {
@@ -22,7 +21,6 @@ export default function AmountFilter() {
   const [values, setValues] = useState({});
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
-
   const handleChange = (index, val) =>
     setValues({ ...values, [index]: parseInt(val, 10) || '' });
 
@@ -53,8 +51,8 @@ export default function AmountFilter() {
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
         onClose={() => setAnchorEl(null)}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: -5, horizontal: 'left' }}>
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
         <Grid container>
           {displayFilter('Min Amount', values.min, (e) =>
             handleChange('min', e.target.value)
