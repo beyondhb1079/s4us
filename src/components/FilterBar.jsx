@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { makeStyles, Grid } from '@material-ui/core';
 import FilterDropDown from './FilterDropdown';
 
@@ -7,6 +6,10 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     justifyContent: 'space-between',
+  },
+  alignText: {
+    display: 'flex',
+    alignItems: 'center',
   },
 }));
 
@@ -37,46 +40,24 @@ const sortingOptions = {
   amountHigh: 'Amount (High to Low)',
 };
 
-export default function FilterBar(props) {
-  const { passedFunction, reverse } = props;
-
-  function modifySorting(sortOption) {
-    switch (sortOption) {
-      case 'one':
-        return reverse();
-      case 'two':
-        return reverse();
-      case 'three':
-        return passedFunction('amount.min');
-      case 'four':
-        return passedFunction('amount.max');
-      default:
-        return null;
-    }
-  }
-
+export default function FilterBar() {
   const classes = useStyles();
   return (
     <Grid container spacing={2} className={classes.root}>
       <Grid item>
-        <FilterDropDown label="Major" items={majors} defaultSelect="" />
-        <FilterDropDown label="Grade" items={grades} defaultSelect="" />
-        <FilterDropDown label="Amount" items={amounts} defaultSelect="" />
+        <FilterDropDown label="Major" items={majors} />
+        <FilterDropDown label="Grade" items={grades} />
+        <FilterDropDown label="Amount" items={amounts} />
       </Grid>
-      <Grid item>
+      <Grid item className={classes.alignText}>
+        Sort by
         <FilterDropDown
           label="Sorting"
           items={sortingOptions}
           defaultSelect="deadlineSoon"
           removeNone
-          givenFunction={modifySorting}
         />
       </Grid>
     </Grid>
   );
 }
-
-FilterBar.propTypes = {
-  passedFunction: PropTypes.func.isRequired,
-  reverse: PropTypes.func.isRequired,
-};

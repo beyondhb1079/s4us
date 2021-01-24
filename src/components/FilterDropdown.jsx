@@ -14,56 +14,41 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function FilterDropdown(props) {
-  const { label, items, defaultSelect, removeNone, givenFunction } = props;
+  const { label, items, defaultSelect, removeNone } = props;
   const [choice, setChoice] = useState(`${defaultSelect}`);
   const classes = useStyles();
 
-  function updateSort(sortOption) {
-    switch (sortOption) {
-      case 'deadlineSoon':
-        return givenFunction('one');
-      case 'deadlineLatest':
-        return givenFunction('two');
-      case 'amountLow':
-        return givenFunction('three');
-      case 'amountHigh':
-        return givenFunction('four');
-      default:
-        return null;
-    }
-  }
-
   function selectChoice(event) {
     setChoice(event.target.value);
-    updateSort(event.target.value);
   }
 
   return (
-    <>
-      <FormControl variant="outlined" className={classes.formControl}>
-        <InputLabel>{label}</InputLabel>
-        <Select value={choice} onChange={selectChoice} label={label}>
-          {removeNone ? null : (
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-          )}
-          {Object.keys(items).map((key) => (
-            <MenuItem key={key} value={key}>
-              {items[key]}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </>
+    <FormControl variant="outlined" className={classes.formControl}>
+      <InputLabel>{label}</InputLabel>
+      <Select value={choice} onChange={selectChoice} label={label}>
+        {removeNone || (
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+        )}
+        {Object.keys(items).map((key) => (
+          <MenuItem key={key} value={key}>
+            {items[key]}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 }
 
 FilterDropdown.propTypes = {
   label: PropTypes.string.isRequired,
-  defaultSelect: PropTypes.string.isRequired,
+  defaultSelect: PropTypes.string,
   items: PropTypes.objectOf(PropTypes.string).isRequired,
   removeNone: PropTypes.bool.isRequired,
-  givenFunction: PropTypes.func.isRequired,
+};
+
+FilterDropdown.defaultProps = {
+  defaultSelect: '',
 };
 export default FilterDropdown;

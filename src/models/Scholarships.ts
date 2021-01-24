@@ -12,6 +12,8 @@ interface ScholarshipData {
   website: string;
   school?: string;
   year?: string;
+  authorId?: string;
+  authorEmail?: string;
 }
 
 export const converter: firestore.FirestoreDataConverter<ScholarshipData> = {
