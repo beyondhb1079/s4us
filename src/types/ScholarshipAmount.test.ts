@@ -110,13 +110,9 @@ test('constructor exceptions - range max negative', () => {
 });
 
 test('constructor exceptions - range no bounds', () => {
-  expect(
-    () =>
-      new ScholarshipAmount(AmountType.Range, {
-        min: 20,
-        max: 2,
-      })
-  ).toThrow(/.*invalid range*/i);
+  expect(() => new ScholarshipAmount(AmountType.Range, {})).toThrow(
+    /.*at least one bound is required*/i
+  );
 });
 
 test('constructor exceptions - range max <= min', () => {

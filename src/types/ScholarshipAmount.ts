@@ -45,7 +45,7 @@ export default class ScholarshipAmount {
           throw new Error(`Invalid max amount: ${max}.`);
         }
         if (!max && !min) {
-          throw new Error(`Range amount cannot be undefined.`);
+          throw new Error(`No bounds given. At least one bound is required.`);
         }
         if (max && min && min >= max) {
           throw new Error(`Invalid range ${min}-${max}`);
