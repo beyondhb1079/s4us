@@ -30,11 +30,12 @@ function AmountTextField(props) {
 AmountTextField.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   onChange: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool,
   error: PropTypes.bool,
   variation: PropTypes.string,
 };
 AmountTextField.defaultProps = {
+  disabled: false,
   error: false,
   variation: 'standard',
 };

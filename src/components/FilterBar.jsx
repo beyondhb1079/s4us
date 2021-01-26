@@ -39,7 +39,7 @@ function FilterBar() {
   const classes = useStyles();
   return (
     <Grid container spacing={2} className={classes.root}>
-      <Grid item>
+      <Grid item className={classes.alignText}>
         <FilterDropDown label="Major" items={majors} />
         <FilterDropDown label="Grade" items={grades} />
         <AmountFilter />
@@ -51,6 +51,7 @@ function FilterBar() {
           items={sortingOptions}
           defaultSelect="deadlineSoon"
           removeNone
+          variation="outlined"
         />
       </Grid>
     </Grid>
