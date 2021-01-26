@@ -14,10 +14,9 @@ afterAll(async () => app.delete());
 test('converter.toFirestore', () => {
   const data = {
     name: 'scholarship',
-    amount: new ScholarshipAmount({
+    amount: new ScholarshipAmount(AmountType.Fixed, {
       min: 2500,
       max: 2500,
-      type: AmountType.Fixed,
     }),
     description: 'description',
     deadline: new Date('2019-02-20'),
@@ -37,7 +36,10 @@ test('converter.toFirestore', () => {
 test('converter.fromFirestore', () => {
   const snapdata: firestore.DocumentData = {
     name: 'scholarship',
-    amount: { min: 2500, max: 2500, type: AmountType.Fixed },
+    amount: new ScholarshipAmount(AmountType.Fixed, {
+      min: 2500,
+      max: 2500,
+    }),
     description: 'description',
     deadline: firestore.Timestamp.fromDate(new Date('2019-02-20')),
     website: 'mit.com',

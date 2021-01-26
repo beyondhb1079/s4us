@@ -29,7 +29,7 @@ export const converter: firestore.FirestoreDataConverter<ScholarshipData> = {
   fromFirestore: (snapshot, options) => {
     const data = snapshot.data(options);
     const deadline = (data.deadline as firestore.Timestamp).toDate();
-    const amount = new ScholarshipAmount(data.amount);
+    const amount = new ScholarshipAmount(data.amount.type, data.amount);
     return { ...data, amount, deadline } as ScholarshipData;
   },
 };
