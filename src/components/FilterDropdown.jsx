@@ -26,7 +26,7 @@ function FilterDropdown(props) {
     <FormControl variant="outlined" className={classes.formControl}>
       <InputLabel>{label}</InputLabel>
       <Select value={choice} onChange={selectChoice} label={label}>
-        {removeNone || (
+        {!removeNone && (
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
@@ -45,10 +45,11 @@ FilterDropdown.propTypes = {
   label: PropTypes.string.isRequired,
   defaultSelect: PropTypes.string,
   items: PropTypes.objectOf(PropTypes.string).isRequired,
-  removeNone: PropTypes.bool.isRequired,
+  removeNone: PropTypes.bool,
 };
 
 FilterDropdown.defaultProps = {
   defaultSelect: '',
+  removeNone: false,
 };
 export default FilterDropdown;
