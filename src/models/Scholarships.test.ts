@@ -7,10 +7,10 @@ import Scholarships, { converter } from './Scholarships';
 const app = initializeTestApp({ projectId: 'scholarship-test' });
 
 // Creates a scholarship to be stored with the given amount.
-// The deadline is set to the time this function is called.
+// The deadline is set to the time this function is called + index ms.
 function create(amount: ScholarshipAmount, index: number) {
   return Scholarships.new({
-    name: `${amount.type}: ${amount.min}-${amount.max}`,
+    name: amount.toString(),
     amount,
     deadline: new Date(new Date().getTime() + index),
     website: 'foo.com',
@@ -18,15 +18,8 @@ function create(amount: ScholarshipAmount, index: number) {
   });
 }
 
-const [
-  fixed500,
-  fixed5000,
-  range250to1000,
-  rangeTo500,
-  rangeMin500,
-  fullTuition,
-  unknown,
-] = [
+// All scholarships, sorted by deadline
+const scholarships = [
   create(new ScholarshipAmount(AmountType.Fixed, { min: 500, max: 500 }), 1),
   create(new ScholarshipAmount(AmountType.Fixed, { min: 5000, max: 5000 }), 2),
   create(new ScholarshipAmount(AmountType.Range, { min: 250, max: 2000 }), 3),
@@ -36,8 +29,8 @@ const [
   create(new ScholarshipAmount(AmountType.Unknown), 7),
 ];
 
-// All scholarships to be added, sorted by deadline.
-const scholarships = [
+// Readable names for all the scholarships.
+const [
   fixed500,
   fixed5000,
   range250to1000,
@@ -45,12 +38,11 @@ const scholarships = [
   rangeMin500,
   fullTuition,
   unknown,
-];
+] = scholarships;
 
 beforeAll(async () => {
   clearFirestoreData(app.options as { projectId: string });
   scholarships.forEach(async (s) => s.save());
-  // await Promise.all(scholarships.map((s) => s.save()));
 });
 afterAll(async () => app.delete());
 

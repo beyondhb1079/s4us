@@ -2,7 +2,6 @@ import { firestore } from 'firebase';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import FirestoreCollection from './base/FirestoreCollection';
 import FirestoreModel from './base/FirestoreModel';
-import AmountType from '../types/AmountType';
 
 interface ScholarshipData {
   // TODO(https://github.com/beyondhb1079/s4us/issues/56):
