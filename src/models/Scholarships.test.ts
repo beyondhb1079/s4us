@@ -8,11 +8,11 @@ const app = initializeTestApp({ projectId: 'scholarship-test' });
 
 // Creates a scholarship to be stored with the given amount.
 // The deadline is set to the time this function is called.
-function create(amount: ScholarshipAmount) {
+function create(amount: ScholarshipAmount, index: number) {
   return Scholarships.new({
     name: `${amount.type}: ${amount.min}-${amount.max}`,
     amount,
-    deadline: new Date(),
+    deadline: new Date(new Date().getTime() + index),
     website: 'foo.com',
     description: 'some description',
   });
@@ -27,13 +27,13 @@ const [
   fullTuition,
   unknown,
 ] = [
-  create({ min: 500, max: 500, type: AmountType.Fixed }),
-  create({ min: 5000, max: 5000, type: AmountType.Fixed }),
-  create({ min: 250, max: 1000, type: AmountType.Range }),
-  create({ min: 0, max: 500, type: AmountType.Range }),
-  create({ min: 500, max: 0, type: AmountType.Range }),
-  create({ min: 0, max: 0, type: AmountType.FullTuition }),
-  create({ min: 0, max: 0, type: AmountType.Unknown }),
+  create(new ScholarshipAmount(AmountType.Fixed, { min: 500, max: 500 }), 1),
+  create(new ScholarshipAmount(AmountType.Fixed, { min: 5000, max: 5000 }), 2),
+  create(new ScholarshipAmount(AmountType.Range, { min: 250, max: 2000 }), 3),
+  create(new ScholarshipAmount(AmountType.Range, { max: 500 }), 4),
+  create(new ScholarshipAmount(AmountType.Range, { min: 500 }), 5),
+  create(new ScholarshipAmount(AmountType.FullTuition), 6),
+  create(new ScholarshipAmount(AmountType.Unknown), 7),
 ];
 
 // All scholarships to be added, sorted by deadline.
@@ -49,7 +49,8 @@ const scholarships = [
 
 beforeAll(async () => {
   clearFirestoreData(app.options as { projectId: string });
-  await Promise.all(scholarships.map((s) => s.save()));
+  scholarships.forEach(async (s) => s.save());
+  // await Promise.all(scholarships.map((s) => s.save()));
 });
 afterAll(async () => app.delete());
 
@@ -121,7 +122,7 @@ test('scholarships.list - sort by deadline asc', async () => {
   expect(got.map(extractName)).toEqual(want.map(extractName));
 });
 
-test('scholarships.list - sort by amount asc', async () => {
+test('scholarships.list - sort by amount.min asc', async () => {
   const want = [
     rangeTo500,
     range250to1000,
@@ -131,22 +132,28 @@ test('scholarships.list - sort by amount asc', async () => {
     fullTuition,
     unknown,
   ];
-  const got = await Scholarships.list({ sortField: 'deadline' });
+  const got = await Scholarships.list({
+    sortField: 'amount.min',
+    sortDir: 'asc',
+  });
 
   expect(got.map(extractName)).toEqual(want.map(extractName));
 });
 
-test('scholarships.list - sort by amount desc', async () => {
+test('scholarships.list - sort by amount.max desc', async () => {
   const want = [
     fullTuition,
+    rangeMin500,
     fixed5000,
     range250to1000,
-    rangeTo500,
-    rangeMin500,
     fixed500,
+    rangeTo500,
     unknown,
   ];
-  const got = await Scholarships.list({ sortField: 'deadline' });
+  const got = await Scholarships.list({
+    sortField: 'amount.max',
+    sortDir: 'desc',
+  });
 
   expect(got.map(extractName)).toEqual(want.map(extractName));
 });

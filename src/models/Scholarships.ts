@@ -42,65 +42,27 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
   name = 'scholarships';
   converter = converter;
 
-  // TODO(issues/93, issues/94): Support filters and pagination
   /**
    * Lists all items in this collection.
    *
    * @param opts list options.
    */
-  list(
-    opts: {
-      sortDir?: SortDirection;
-      sortField?: string;
-    } = { sortDir: 'asc' }
-  ): Promise<FirestoreModel<ScholarshipData>[]> {
-    if (opts.sortField !== 'amount') {
-      return super.list(opts);
+  list(opts: {
+    sortDir?: SortDirection;
+    sortField?: string;
+  }): Promise<FirestoreModel<ScholarshipData>[]> {
+    let query: firestore.Query<ScholarshipData> = this.collection;
+    // TODO(issues/93, issues/94): Support filters and pagination
+
+    // Sort by requested field + direction
+    if (opts.sortField) {
+      query = query.orderBy(opts.sortField, opts.sortDir ?? 'asc');
     }
-
-    const baseQuery = this.collection
-      .orderBy(
-        opts.sortDir === 'asc' ? 'amount.min' : 'amount.max',
-        opts.sortDir
-      )
-      .orderBy('deadline', 'asc');
-    const orderedQuery = baseQuery.where('amount.type', 'in', [
-      AmountType.Fixed,
-      AmountType.Range,
-    ]);
-    const fullTuitionQuery = baseQuery.where(
-      'amount.type',
-      '==',
-      AmountType.FullTuition
-    );
-    const unknownQuery = baseQuery.where(
-      'amount.type',
-      '==',
-      AmountType.Unknown
-    );
-
-    const queries =
-      opts.sortDir === 'asc'
-        ? [orderedQuery.get(), fullTuitionQuery.get(), unknownQuery.get()]
-        : [fullTuitionQuery.get(), orderedQuery.get(), unknownQuery.get()];
-
-    return new Promise((resolve, reject) =>
-      Promise.all(queries)
-        .then((querySnaps: firestore.QuerySnapshot<ScholarshipData>[]) =>
-          // Transform results into lists of FirestoreModels and flatten it.
-          resolve(
-            querySnaps
-              .map((snap) =>
-                snap.docs.map(
-                  (doc) =>
-                    new FirestoreModel<ScholarshipData>(doc.ref, doc.data())
-                )
-              )
-              .flat()
-          )
-        )
-        .catch(reject)
-    );
+    // Sort ties by deadline earliest to earliest
+    if (opts.sortField !== 'deadline') {
+      query = query.orderBy('deadline', 'asc');
+    }
+    return FirestoreCollection.list(query);
   }
 }
 
