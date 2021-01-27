@@ -6,10 +6,10 @@ import {
   makeStyles,
   Typography,
 } from '@material-ui/core';
+import Pagination from '@material-ui/lab/Pagination';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
-import Pagination from '@material-ui/lab/Pagination';
 
 const useStyles = makeStyles(() => ({
   progress: {
