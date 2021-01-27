@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Grid } from '@material-ui/core';
 import FilterDropDown from './FilterDropdown';
-import SortDropDown from './SortDropdown';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -77,7 +76,13 @@ export default function FilterBar(props) {
       </Grid>
       <Grid item className={classes.alignText}>
         Sort by
-        <SortDropDown items={sortingOptions} updateSorting={updateSorting} />
+        <FilterDropDown
+          label="Sorting"
+          items={sortingOptions}
+          defaultValue="deadlineSoon"
+          removeNone
+          onChange={updateSorting}
+        />
       </Grid>
     </Grid>
   );

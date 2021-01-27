@@ -14,12 +14,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function FilterDropdown(props) {
-  const { label, items, defaultSelect, removeNone } = props;
-  const [choice, setChoice] = useState(`${defaultSelect}`);
+  const { label, items, defaultValue, removeNone, onChange } = props;
+  const [choice, setChoice] = useState(`${defaultValue}`);
   const classes = useStyles();
 
   function selectChoice(event) {
     setChoice(event.target.value);
+    if (onChange !== null) onChange(event.target.value);
   }
 
   return (
@@ -43,12 +44,14 @@ function FilterDropdown(props) {
 
 FilterDropdown.propTypes = {
   label: PropTypes.string.isRequired,
-  defaultSelect: PropTypes.string,
+  defaultValue: PropTypes.string,
   items: PropTypes.objectOf(PropTypes.string).isRequired,
   removeNone: PropTypes.bool.isRequired,
+  onChange: PropTypes.func,
 };
 
 FilterDropdown.defaultProps = {
-  defaultSelect: '',
+  defaultValue: '',
+  onChange: null,
 };
 export default FilterDropdown;

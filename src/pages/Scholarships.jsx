@@ -20,26 +20,25 @@ function ScholarshipsPage() {
   const [scholarships, setScholarships] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
-  const [sortBy, setSortBy] = useState('deadline');
-  const [sortFormat, setSortFormat] = useState('asc');
+  const [sortField, setSortField] = useState('deadline');
+  const [sortDir, setSortDir] = useState('asc');
 
   useEffect(() => {
     // TODO: Create cancellable promises
-    Scholarships.list({ sortField: `${sortBy}`, sortDir: `${sortFormat}` })
+    Scholarships.list({ sortField, sortDir })
       .then(setScholarships)
       .catch(setError)
       .finally(() => setLoading(false));
-  }, [sortBy, sortFormat]);
+  }, [sortDir, sortField]);
 
   const classes = useStyles();
 
   return (
     <Container>
-      {console.log(`Currently sorting by: ${sortBy} + ${sortFormat}`)}
       <Typography variant="h3" component="h1" style={{ textAlign: 'center' }}>
         Scholarships
       </Typography>
-      <FilterBar changeSortBy={setSortBy} changeSortFormat={setSortFormat} />
+      <FilterBar changeSortBy={setSortField} changeSortFormat={setSortDir} />
       {error?.toString() ||
         (loading && <CircularProgress className={classes.progress} />) || (
           <ScholarshipList scholarships={scholarships} />
