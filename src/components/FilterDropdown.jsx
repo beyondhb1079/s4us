@@ -31,7 +31,7 @@ function FilterDropdown(props) {
         onChange={selectChoice}
         displayEmpty
         className={classes.selectStyle}>
-        {removeNone || (
+        {!removeNone && (
           <MenuItem value="">
             <em>{label}</em>
           </MenuItem>
