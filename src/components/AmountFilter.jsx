@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     height: theme.spacing(4),
   },
-  filterStyle: { margin: `${theme.spacing(1)}px 0` },
+  filterStyle: { margin: theme.spacing(1) },
   labelStyle: { paddingLeft: theme.spacing(1) },
   dashStyle: {
     paddingTop: theme.spacing(2),
