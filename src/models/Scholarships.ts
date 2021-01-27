@@ -1,6 +1,7 @@
 import { firestore } from 'firebase';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import FirestoreCollection from './base/FirestoreCollection';
+import FirestoreModel from './base/FirestoreModel';
 
 interface ScholarshipData {
   // TODO(https://github.com/beyondhb1079/s4us/issues/56):
@@ -29,14 +30,39 @@ export const converter: firestore.FirestoreDataConverter<ScholarshipData> = {
   fromFirestore: (snapshot, options) => {
     const data = snapshot.data(options);
     const deadline = (data.deadline as firestore.Timestamp).toDate();
-    const amount = new ScholarshipAmount(data.amount);
+    const amount = new ScholarshipAmount(data.amount.type, data.amount);
     return { ...data, amount, deadline } as ScholarshipData;
   },
 };
 
+type SortDirection = 'asc' | 'desc';
+
 class Scholarships extends FirestoreCollection<ScholarshipData> {
   name = 'scholarships';
   converter = converter;
+
+  /**
+   * Lists all items in this collection.
+   *
+   * @param opts list options.
+   */
+  list(opts: {
+    sortDir?: SortDirection;
+    sortField?: string;
+  }): Promise<FirestoreModel<ScholarshipData>[]> {
+    let query: firestore.Query<ScholarshipData> = this.collection;
+    // TODO(issues/93, issues/94): Support filters and pagination
+
+    // Sort by requested field + direction
+    if (opts.sortField) {
+      query = query.orderBy(opts.sortField, opts.sortDir ?? 'asc');
+    }
+    // Sort ties by deadline earliest to earliest
+    if (opts.sortField !== 'deadline') {
+      query = query.orderBy('deadline', 'asc');
+    }
+    return FirestoreCollection.list(query);
+  }
 }
 
 const scholarships = new Scholarships();
