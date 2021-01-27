@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
+  Divider,
   CircularProgress,
   Container,
   makeStyles,
@@ -8,6 +9,7 @@ import {
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
+import Pagination from '@material-ui/lab/Pagination';
 
 const useStyles = makeStyles(() => ({
   progress: {
@@ -41,6 +43,9 @@ function ScholarshipsPage() {
         (loading && <CircularProgress className={classes.progress} />) || (
           <ScholarshipList scholarships={scholarships} />
         )}
+      <Divider />
+
+      <Pagination count={10} />
     </Container>
   );
 }
