@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles, Grid } from '@material-ui/core';
 import FilterDropDown from './FilterDropdown';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
     justifyContent: 'space-between',
