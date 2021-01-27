@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Grid } from '@material-ui/core';
 import FilterDropDown from './FilterDropdown';
+import AmountFilter from './AmountFilter';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,12 +27,6 @@ const grades = {
   14: 'College Sophomore',
   15: 'College Junior',
   16: 'College Senior',
-};
-
-const amounts = {
-  500: '> 500',
-  1000: '> 1000',
-  5000: '> 5000',
 };
 
 const sortingOptions = {
@@ -59,7 +54,7 @@ export default function FilterBar(props) {
         changeSortBy('amount.min');
         changeSortFormat('asc');
         break;
-      case 'amountHigh': // note this might need mofication based on how we store amount.max
+      case 'amountHigh':
         changeSortBy('amount.max');
         changeSortFormat('desc');
         break;
@@ -69,10 +64,10 @@ export default function FilterBar(props) {
 
   return (
     <Grid container spacing={2} className={classes.root}>
-      <Grid item>
+      <Grid item className={classes.alignText}>
         <FilterDropDown label="Major" items={majors} />
         <FilterDropDown label="Grade" items={grades} />
-        <FilterDropDown label="Amount" items={amounts} />
+        <AmountFilter />
       </Grid>
       <Grid item className={classes.alignText}>
         Sort by
