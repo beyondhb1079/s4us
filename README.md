@@ -1,56 +1,83 @@
-# s4us
+# DreamScholars
 
-S4US (Scholarships For Undocumented Students) aims to provide scholarships information for undocumented students
-
-You can open this project in Cloud Shell:
-
-[![Open in Cloud Shell](https://gstatic.com/cloudssh/images/open-btn.svg)](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/beyondhb1079/s4us.git)
+DreamScholars aims to provide scholarship information for undocumented students
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Development Prerequisites
 
-In the project directory, you can run:
+The following are required:
 
-### `yarn start`
+- [Git](https://git-scm.com/)
+- [Node.js](https://nodejs.org/)
+- [Yarn](https://classic.yarnpkg.com/en/)
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The following are recommended but optional:
+
+- [VS Code](https://code.visualstudio.com/) - most of our team uses VS Code.
+  - [Extension - ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) - shows lint issues in your editor.
+  - [Extension - Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) - autoformats your files according to our config.
+
+Alternatively, [Cloud Shell](https://cloud.google.com/shell) can be used.
+
+## Development Setup
+
+1. Clone the repo or [open it](<(https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/beyondhb1079/s4us.git)>) in Cloud Shell:
+
+```sh
+git clone https://github.com/beyondhb1079/s4us.git
+```
+
+2. `cd` into the repo and install [`npm-merge-driver`](https://www.npmjs.com/package/npm-merge-driver) so that `yarn.lock` merge conflicts are autoresolved:
+
+```sh
+npx npm-merge-driver install \
+  --driver-name yarn-merge-driver \
+  --driver "npx npm-merge-driver merge %A %O %B %P -c yarn" \
+  --files yarn.lock
+```
+
+3. Install project dependencies by running:
+
+```sh
+yarn install
+```
+
+## Common development actions
+
+### Updating dependencies
+
+```sh
+yarn install
+```
+
+This is needed whenever the `yarn.lock` file has changed.
+
+### Previewing the app
+
+```sh
+yarn start
+```
+
+Open http://localhost:3000 to view it in the browser.
 
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
-### `yarn test`
+### Running tests
+
+```sh
+yarn test
+```
 
 Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+See this section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `yarn lint`
-
-Runs ES Lint on the app. You can fix some issues with `yarn lint --fix`
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+The tests also run when you run a `git push` command.<br />
+You can skip the tests by adding the `--no-verify` flag to the command.
 
 ## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+To learn about other languages, tools, and libraries we use, see the [Learning Resources](https://github.com/beyondhb1079/s4us/wiki/Learning-Resources) wiki entry.
