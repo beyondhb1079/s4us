@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles, Grid } from '@material-ui/core';
 import FilterDropDown from './FilterDropdown';
+import AmountFilter from './AmountFilter';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,12 +28,6 @@ const grades = {
   16: 'College Senior',
 };
 
-const amounts = {
-  500: '> 500',
-  1000: '> 1000',
-  5000: '> 5000',
-};
-
 const sortingOptions = {
   deadlineSoon: 'Deadline (Earliest to Latest)',
   deadlineLatest: 'Deadline (Latest to Earliest)',
@@ -44,10 +39,10 @@ function FilterBar() {
   const classes = useStyles();
   return (
     <Grid container spacing={2} className={classes.root}>
-      <Grid item>
+      <Grid item className={classes.alignText}>
         <FilterDropDown label="Major" items={majors} />
         <FilterDropDown label="Grade" items={grades} />
-        <FilterDropDown label="Amount" items={amounts} />
+        <AmountFilter />
       </Grid>
       <Grid item className={classes.alignText}>
         Sort by
