@@ -49,17 +49,6 @@ const team = [
     ),
   },
   {
-    name: 'Job Hernandez',
-    img: testPic,
-    description: (
-      <>
-        I am interested and driven to solve problems with software; software
-        has tremendous power to make an impact in the world and transform lives.
-      </>
-    ),
-  },
-        
-  {
     name: 'Sergio Mejia',
     img: testPic,
     description: <>Todo: about Sergio Mejia</>,
@@ -69,8 +58,18 @@ const team = [
     img: testPic,
     description: <>Todo: about Alejandro Loaiza</>,
   },
+  {
+    name: 'Job Hernandez',
+    img: testPic,
+    description: (
+      <>
+        I am driven to solve problems with software; software has tremendous
+        power to impact society and so I would like to contribute.
+      </>
+    ),
+  },
+  
 ];
-
 function About() {
   return (
     <Container>
@@ -83,7 +82,6 @@ function About() {
         Ullamco laboris ea ut cupidatat non velit mollit ea ullamco eiu. Enim
         amet officia fugiat dolore ullamco consequat laboris culpa.
       </p>
-
       <h2>Our History</h2>
       <p>
         Et dolor ex pariatur ex voluptate commodo voluptate culpa commodo
@@ -92,7 +90,6 @@ function About() {
         cillum tempor elit proident. Esse culpa eiusmod irure aute qui nulla.
         Reprehenderit enim aute commodo cupidatat ut ipsum ea minim magna velit.
       </p>
-
       <h2>How {BRAND_NAME} Works</h2>
       <p>
         Laboris amet nostrud amet anim fugiat deserunt ad laboris dolore sint
@@ -101,7 +98,6 @@ function About() {
         pariatur occaecat aliqua reprehenderit laboris. Officia qui ad do magna
         excepteur proident laborum ea laborum consectetur aliqua pariatur.
       </p>
-
       <h2>Meet the Team</h2>
       <Grid container justify="flex-start" alignItems="stretch" spacing={3}>
         {team.map(({ name, img, description }) => (
@@ -110,7 +106,6 @@ function About() {
           </Grid>
         ))}
       </Grid>
-
       <h2>Apply for Scholarships today</h2>
       <p>
         Laborum aliqua labore nulla non consequat mollit nostrud quis commodo
@@ -126,5 +121,4 @@ function About() {
     </Container>
   );
 }
-
 export default About;
