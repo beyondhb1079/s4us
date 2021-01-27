@@ -64,11 +64,10 @@ const team = [
     description: (
       <>
         I am driven to solve problems with software; software has tremendous
-        power to impact society and so I would like to contribute.
+        power to transform society. So, I would like to contribute.
       </>
     ),
   },
-  
 ];
 function About() {
   return (
