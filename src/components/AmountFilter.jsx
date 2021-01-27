@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 export default function AmountFilter() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [values, setValues] = useState({});
+  const [values, setValues] = useState({ min: 0, max: 0 });
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleChange = (index, val) =>
