@@ -7,7 +7,8 @@ import AmountTextField from './AmountTextField';
 
 const useStyles = makeStyles((theme) => ({
   buttonStyle: {
-    margin: `${theme.spacing(2)}px ${theme.spacing(1)}px 0`,
+    margin: theme.spacing(1),
+    height: theme.spacing(4),
   },
   filterStyle: { margin: `${theme.spacing(1)}px 0` },
   labelStyle: { paddingLeft: theme.spacing(1) },
@@ -30,10 +31,10 @@ export default function AmountFilter() {
   return (
     <>
       <Button
-        variant="contained"
+        variant="outlined"
         className={classes.buttonStyle}
         onClick={handleClick}
-        endIcon={<ArrowDropDownIcon />}>
+        endIcon={<ArrowDropDownIcon color="primary" />}>
         Amount
       </Button>
       <Popover
@@ -55,7 +56,7 @@ export default function AmountFilter() {
             <RemoveIcon />
           </Grid>
           <Grid item className={classes.filterStyle}>
-            <InputLabel className={classes.labelStyle}>Min Amount</InputLabel>
+            <InputLabel className={classes.labelStyle}>Max Amount</InputLabel>
             <AmountTextField
               value={values.max}
               onChange={(e) => handleChange('max', e.target.value)}

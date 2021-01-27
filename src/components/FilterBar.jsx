@@ -51,7 +51,6 @@ function FilterBar() {
           items={sortingOptions}
           defaultSelect="deadlineSoon"
           removeNone
-          variation="outlined"
         />
       </Grid>
     </Grid>
