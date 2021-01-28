@@ -1,8 +1,9 @@
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { CssBaseline, ThemeProvider } from '@material-ui/core';
+import firebase from 'firebase';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import Home from './pages/Home';
@@ -16,6 +17,7 @@ import { BRAND_NAME } from './config/constants';
 import FirebaseProvider from './lib/FirebaseProvider';
 import ProtectedRoute from './components/ProtectedRoute';
 import LoginDialog from './components/LoginDialog';
+import UserHome from './pages/UserHome';
 
 function RouteWithTitle({ path, component, title, guard }) {
   useEffect(() => {
@@ -37,41 +39,48 @@ RouteWithTitle.defaultProps = {
   guard: false,
 };
 
-const routes = [
-  {
-    path: '/scholarships/new',
-    title: 'Add a scholarship',
-    component: ScholarshipForm,
-    guard: true,
-  },
-  {
-    path: '/scholarships/:id',
-    title: 'Details',
-    component: ScholarshipDetails,
-  },
-  {
-    path: '/scholarships',
-    title: 'Scholarships',
-    component: Scholarships,
-  },
-  {
-    path: '/about',
-    title: 'About',
-    component: About,
-  },
-  {
-    path: '/contact',
-    title: 'Contact',
-    component: Contact,
-  },
-  {
-    path: '/',
-    title: 'Home',
-    component: Home,
-  },
-];
-
 function App() {
+  const [isSignedIn, setIsSignedIn] = useState(false);
+
+  useEffect(
+    () => firebase.auth().onAuthStateChanged((user) => setIsSignedIn(!!user)),
+    []
+  );
+
+  const routes = [
+    {
+      path: '/scholarships/new',
+      title: 'Add a scholarship',
+      component: ScholarshipForm,
+      guard: true,
+    },
+    {
+      path: '/scholarships/:id',
+      title: 'Details',
+      component: ScholarshipDetails,
+    },
+    {
+      path: '/scholarships',
+      title: 'Scholarships',
+      component: Scholarships,
+    },
+    {
+      path: '/about',
+      title: 'About',
+      component: About,
+    },
+    {
+      path: '/contact',
+      title: 'Contact',
+      component: Contact,
+    },
+    {
+      path: '/',
+      title: 'Home',
+      component: isSignedIn ? UserHome : Home,
+    },
+  ];
+
   useEffect(() => {
     document.title = `${BRAND_NAME} | Scholarships for Undocumented Students`;
   }, []);
