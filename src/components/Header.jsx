@@ -44,12 +44,12 @@ function Header() {
     <Container>
       {alert}
       <Grid container className={classes.header} spacing={3}>
-        <Grid item>
+        <Grid item sm={8}>
           <MuiLink component={Link} to="/" variant="h4" underline="none">
             {BRAND_NAME.toUpperCase()}
           </MuiLink>
         </Grid>
-        <Grid item>
+        <Grid item sm={4}>
           <HeaderNavMenu />
         </Grid>
       </Grid>

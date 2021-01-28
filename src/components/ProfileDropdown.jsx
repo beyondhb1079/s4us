@@ -56,10 +56,6 @@ const useStyles = makeStyles((theme) => ({
     width: '48px',
     height: '48px',
   },
-  large: {
-    width: '60px',
-    height: '60px',
-  },
 }));
 
 export default function ProfileDropdown(props) {
