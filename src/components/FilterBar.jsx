@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles, Grid } from '@material-ui/core';
 import FilterDropDown from './FilterDropdown';
 import AmountFilter from './AmountFilter';
@@ -35,8 +36,32 @@ const sortingOptions = {
   amountHigh: 'Amount (High to Low)',
 };
 
-function FilterBar() {
+export default function FilterBar(props) {
+  const { changeSortBy, changeSortFormat } = props;
   const classes = useStyles();
+
+  function updateSorting(sortingOption) {
+    switch (sortingOption) {
+      case 'deadlineSoon':
+        changeSortBy('deadline');
+        changeSortFormat('asc');
+        break;
+      case 'deadlineLatest':
+        changeSortBy('deadline');
+        changeSortFormat('desc');
+        break;
+      case 'amountLow':
+        changeSortBy('amount.min');
+        changeSortFormat('asc');
+        break;
+      case 'amountHigh':
+        changeSortBy('amount.max');
+        changeSortFormat('desc');
+        break;
+      default:
+    }
+  }
+
   return (
     <Grid container spacing={2} className={classes.root}>
       <Grid item className={classes.alignText}>
@@ -49,12 +74,16 @@ function FilterBar() {
         <FilterDropDown
           label="Sorting"
           items={sortingOptions}
-          defaultSelect="deadlineSoon"
+          defaultValue="deadlineSoon"
           removeNone
+          onChange={updateSorting}
         />
       </Grid>
     </Grid>
   );
 }
 
-export default FilterBar;
+FilterBar.propTypes = {
+  changeSortBy: PropTypes.func.isRequired,
+  changeSortFormat: PropTypes.func.isRequired,
+};
