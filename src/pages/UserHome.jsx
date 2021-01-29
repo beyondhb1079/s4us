@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 import {
   Button,
@@ -34,14 +35,6 @@ export default function UserHome() {
   const classes = useStyles();
   const user = firebase.auth().currentUser;
 
-  function scholarshipLink() {
-    window.location.href = '/scholarships';
-  }
-
-  function addScholarshipLink() {
-    window.location.href = '/scholarships/new';
-  }
-
   return (
     <Container className={classes.root}>
       <Typography variant="h4" gutterBottom className={classes.rootText}>
@@ -53,10 +46,10 @@ export default function UserHome() {
             Looking for scholarships?
           </Typography>
           <Button
-            style={{ margin: '25' }}
             variant="outlined"
             color="primary"
-            onClick={scholarshipLink}
+            component={Link}
+            to="/scholarships"
             className={classes.browseButton}>
             Browse Scholarships
           </Button>
@@ -74,10 +67,10 @@ export default function UserHome() {
         </Grid>
         <Grid item sm={3} className={classes.addButton}>
           <Button
-            style={{ margin: '25' }}
             variant="outlined"
             color="primary"
-            onClick={addScholarshipLink}>
+            component={Link}
+            to="/scholarships/new">
             Add Scholarship
           </Button>
         </Grid>

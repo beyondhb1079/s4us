@@ -1,43 +1,30 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import { makeStyles, Typography } from '@material-ui/core';
-import ScholarshipsMadeSimple from '../components/ScholarshipsMadeSimple';
-import HomeSection from '../components/HomeSection';
-import community from '../img/community.png';
+import React, { useEffect, useState } from 'react';
+import firebase from 'firebase';
+import { CircularProgress, makeStyles } from '@material-ui/core';
+import PublicHome from './PublicHome';
+import UserHome from './UserHome';
 
 const useStyles = makeStyles(() => ({
-  description: {
-    textAlign: 'center',
+  progress: {
+    display: 'block',
+    margin: 'auto',
   },
 }));
 
-function Home() {
+export default function HomeSelection() {
   const classes = useStyles();
+  const [isSignedIn, setIsSignedIn] = useState(undefined);
+  const loading = isSignedIn === undefined;
+
+  useEffect(
+    () => firebase.auth().onAuthStateChanged((user) => setIsSignedIn(!!user)),
+    []
+  );
+
   return (
     <>
-      <Typography variant="h2" className={classes.description} gutterBottom>
-        Find Scholarships Today
-      </Typography>
-      <ScholarshipsMadeSimple />
-      <HomeSection
-        alignItems="center"
-        direction="row-reverse"
-        title="For and by the Community"
-        description="Et has minim eltir intellegat. Mea aeterno elefiend antiopam ad, nam no suscipit quaerendum. At name mininum ponderum. Est audiam animal molestiate te."
-        buttons={[
-          <Button
-            component={Link}
-            to="/about"
-            variant="outlined"
-            color="primary">
-            Learn More
-          </Button>,
-        ]}
-        pic={community}
-      />
+      {(loading && <CircularProgress className={classes.progress} />) ||
+        (isSignedIn ? <UserHome /> : <PublicHome />)}
     </>
   );
 }
-
-export default Home;
