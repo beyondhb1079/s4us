@@ -53,8 +53,9 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: 'center',
   },
   medium: {
-    width: '48px',
-    height: '48px',
+    width: '50px',
+    height: '50px',
+    marginLeft: theme.spacing(2),
   },
 }));
 
@@ -80,7 +81,7 @@ export default function ProfileDropdown(props) {
 
   return (
     <>
-      <Avatar src={photo} onClick={handleClick} />
+      <Avatar src={photo} onClick={handleClick} className={classes.medium} />
       <StyledMenu
         anchorEl={dropMenu}
         keepMounted
