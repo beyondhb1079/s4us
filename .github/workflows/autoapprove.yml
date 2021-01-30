@@ -59,7 +59,7 @@ jobs:
             let stdout = child.stdout.toString();
             console.log('stdout: ' + stdout);
             console.log('stderr: ' + stderr);
-            if (error !== undefined) {
+            if (error) {
               console.log(`It looks like more than just file modifications: ${error}`);
               github.pulls.dismissReview({
                 owner: context.payload.repository.owner.login,
@@ -88,7 +88,7 @@ jobs:
             stdout = child.stdout.toString();
             console.log('diff since last approval: ' + stdout);
             console.log('diff since last approval stderr: ' + stderr);
-            if (error === undefined) {
+            if (!error) {
               const lines = stdout.split('\n')
                 .filter(l => l.startsWith('+') || l.startsWith('-'))
                 .filter(l => !l.startsWith('+++') && !l.startsWith('---'));
@@ -109,10 +109,11 @@ jobs:
                 pull_number: context.payload.pull_request.number,
                 review_id: lastApproval.id,
                 message: `@${context.actor}, I'm dismissing @${lastApprover}'s approval ` +
-                  `as it seems you've made significant changes since their approval. ` +
-                  'If you believe my dismissal was a mistake please ask about ' +
+                  `as it seems you've made significant changes (+{insertions} -${deletions}) ` + 
+                  `since their approval. If you believe my dismissal was a mistake please ask about ' +
                   '[autoapprove.yaml](../../blob/main/.github/workflows/autoapprove.yaml)'
               });
+            } else {
+              console.log('strange error: ${error}');
             }
-            console.log('strange error: ${error}');
           github-token: ${{github.token}}
