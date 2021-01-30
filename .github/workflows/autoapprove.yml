@@ -21,7 +21,7 @@ jobs:
           fi
       - name: Auto dismiss
         if: ${{ env.merge_commit != 'true' }}
-        uses: actions/github-script@0.2.0
+        uses: actions/github-script@0.3.0
         with:
           script: |
             // Get all reviews
@@ -51,7 +51,7 @@ jobs:
             console.log(lastApproval);
 
             // Check for additions/removals of files
-            import exec from 'child_process';
+            let exec = require('child_process').exec;
             console.log(`Checking for changes in new files in commit ${currentCommit}`);
 
             let addedOrRemovedFiles = false;
