@@ -15,9 +15,8 @@ jobs:
       - name: Skip if merge commit
         shell: bash
         run: |
-          if [ -z "$(git rev-list -1 --merges ${{ github.event.pull_request.head.sha }}~1..${{ github.event.pull_request.head.sha }})" ]; then
-            echo "merge_commit=true" >> $GITHUB_ENV
-          fi
+          (($(git show --no-patch --format="%P" ${{ github.event.pull_request.head.sha }} | wc -l) > 1)) \
+            && echo "merge_commit=true" >> $GITHUB_ENV
       - name: Auto dismiss
         if: ${{ env.merge_commit == 'false' }}
         uses: actions/github-script@0.2.0
