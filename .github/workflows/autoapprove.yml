@@ -84,8 +84,8 @@ jobs:
             error = child.error;
             stderr = child.stderr;
             stdout = child.stdout;
-            console.log('stdout: ' + stdout);
-            console.log('stderr: ' + stderr);
+            console.log('diff since last approval: ' + stdout);
+            console.log('diff since last approval stderr: ' + stderr);
             if (error === null) {
               const lines = stdout.split('\n')
                 .filter(l => l.startsWith('+') || l.startsWith('-'))
@@ -97,12 +97,8 @@ jobs:
               console.log(`Detected ${insertions} insertions and ${deletions} deletions`);
 
               if (maxLinesChanged <= 10 && insertions <= 5 && deletions <= 5) {
-                // Probably not worth dismissing.
+                console.log("Probably not worth another human review");
                 return
-              }
-
-              if (maxLinesChanged > 10 || insertions > 5 || deletions > 5) {
-                return // should probably get someone to review the changes
               }
 
               github.pulls.dismissReview({
