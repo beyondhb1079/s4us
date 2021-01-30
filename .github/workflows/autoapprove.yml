@@ -24,7 +24,6 @@ jobs:
         uses: actions/github-script@v3
         with:
           script: |
-            console.log(context.payload.pull_request);
             // Get all reviews
             const reviews = await github.pulls.listReviews({
               owner: context.payload.repository.owner.login,
@@ -47,7 +46,7 @@ jobs:
             const lastApproval = approvals[0];
             const lastApprover = lastApproval.user.login;
             const lastApprovedCommit = lastApproval.commit_id;
-            const currentCommit = context.payload.pull_request.sha;
+            const currentCommit = context.payload.pull_request.head.sha;
             console.log("Last approval:");
             console.log(lastApproval);
 
