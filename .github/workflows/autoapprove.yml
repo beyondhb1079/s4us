@@ -24,6 +24,7 @@ jobs:
         uses: actions/github-script@v3
         with:
           script: |
+            console.log(context.payload.pull_request);
             // Get all reviews
             const reviews = await github.pulls.listReviews({
               owner: context.payload.repository.owner.login,
@@ -102,6 +103,7 @@ jobs:
             child();
 
             const maxLinesChanged = insertions + deletions;
+            console.log(`Detected ${insertions} insertions and ${deletions} deletions`);
 
             if (maxLinesChanged <= 10 && insertions <= 5 && deletions <= 5) {
               // Probably not worth dismissing.
