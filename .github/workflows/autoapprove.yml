@@ -20,7 +20,7 @@ jobs:
             echo "merge_commit=true" >> $GITHUB_ENV;
           fi
       - name: Auto dismiss
-        if: ${{ env.merge_commit == 'false' }}
+        if: ${{ env.merge_commit != 'true' }}
         uses: actions/github-script@0.2.0
         with:
           script: |
