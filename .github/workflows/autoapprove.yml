@@ -52,11 +52,11 @@ jobs:
             console.log(lastApproval);
 
             // Check for additions/removals of files
-            var exec = require('child_process').exec, child;
+            let exec = require('child_process').exec, child;
             console.log(`Checking for changes in new files in commit ${currentCommit}`);
 
             let addedOrRemovedFiles = false;
-            let child = exec(`git diff --stat --diff-filter=m --exit-code ${lastApprovedCommit} ${currentCommit}`,
+            child = exec(`git diff --stat --diff-filter=m --exit-code ${lastApprovedCommit} ${currentCommit}`,
               function (error, stdout, stderr) {
                 console.log('stdout: ' + stdout);
                 console.log('stderr: ' + stderr);
