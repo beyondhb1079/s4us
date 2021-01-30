@@ -108,9 +108,9 @@ jobs:
                 repo: context.payload.repository.name,
                 pull_number: context.payload.pull_request.number,
                 review_id: lastApproval.id,
-                message: `@${context.actor}, I'm dismissing @${lastApprover}'s approval ` +
-                  `as it seems you've made significant changes (+{insertions} -${deletions}) ` + 
-                  `since their approval. If you believe my dismissal was a mistake please ask about ' +
+                message: `@${context.actor}, I'm dismissing @${lastApprover}'s approval as it ` +
+                  `seems you've made significant changes (+{insertions} -${deletions}) since ` + 
+                  'their approval. If you believe my dismissal was a mistake please ask about ' +
                   '[autoapprove.yaml](../../blob/main/.github/workflows/autoapprove.yaml)'
               });
             } else {
