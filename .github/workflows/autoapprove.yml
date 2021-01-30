@@ -1,4 +1,4 @@
-name: 'Auto Dismiss Approval on Major Changes'
+name: 'Auto Dismissal of approvals on Major Changes'
 
 on:
   pull_request:
