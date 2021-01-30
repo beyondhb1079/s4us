@@ -30,6 +30,7 @@ jobs:
               repo: context.payload.repository.name,
               pull_number: context.payload.pull_request.number
             });
+            console.log(reviews)
 
             const approvals = reviews.data
               .filter(r => r.user.type == 'User')
