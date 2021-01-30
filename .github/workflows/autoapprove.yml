@@ -13,6 +13,7 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@v2
       - name: Skip if merge commit
+        shell: bash
         run: |
           if [ -z "$(git rev-list -1 --merges ${{ github.event.pull_request.head.sha }}~1..${{ github.event.pull_request.head.sha }})" ]; then
             echo "merge_commit=true" >> $GITHUB_ENV
