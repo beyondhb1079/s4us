@@ -24,7 +24,7 @@ jobs:
         uses: actions/github-script@v3
         with:
           script: |
-            // Get all reviews
+            // Get all the approvals
             const reviews = await github.pulls.listReviews({
               owner: context.payload.repository.owner.login,
               repo: context.payload.repository.name,
@@ -37,87 +37,89 @@ jobs:
               .sort((a, b) => a.id - b.id);
 
             if (approvals.length == 0) {
-              // no approvals to dismiss
+              console.log('No approvals given.');
               return
             }
 
-            // Obtain info about the last approval
-            const lastApproval = approvals[0];
-            const lastApprover = lastApproval.user.login;
-            const lastApprovedCommit = lastApproval.commit_id;
+            // Get info about the last approval
+            const approval = approvals[0];
+            const approver = approval.user.login;
+            const approvedCommit = approval.commit_id;
             const currentCommit = context.payload.pull_request.head.sha;
-            console.log("Last approval:");
-            console.log(lastApproval);
+            console.log(`Last approved at commit ${approvedCommit} by ${approver}.`);
 
-            // Check for additions/removals of files
+            // Get the diff between the current commit and the last approved one.
+            //
+            // Note: this doesn't show which files are added/deleted. If we
+            // want to take that into consideration, we should look into: 
+            // git diff --name-status
             const { spawnSync } = require('child_process');
+            const args = ['diff', '--numstat', approvedCommit, currentCommit];
+            console.log('git ' + args.join(' '));
 
-            let args = ['diff', '--stat' , '--diff-filter=rm',  '--exit-code',lastApprovedCommit,  currentCommit];
-            console.log(`Checking for file additions/deletions by running:\n git ${args.join(' ')}`);
-            let child = spawnSync('git', args);
-            let error = child.error;
-            let stderr = child.stderr.toString();
-            let stdout = child.stdout.toString();
-            console.log(stdout);
-            console.log(stderr);
+            const child = spawnSync('git', args);
+            const { error, stderr, stdout } = child;
+
             if (error) {
-              console.log(`It looks like more than just file modifications: ${error}`);
-              github.pulls.dismissReview({
-                owner: context.payload.repository.owner.login,
-                repo: context.payload.repository.name,
-                pull_number: context.payload.pull_request.number,
-                review_id: lastApproval.id,
-                message: `@${context.actor}, I'm dismissing @${lastApprover}'s approval ` +
-                  `as it seems you added or removed a file since their approval. ` +
-                  'If you believe my dismissal was a mistake please ask about ' +
-                  '[autoapprove.yaml](../../blob/main/.github/workflows/autoapprove.yaml)'
-              })
+              console.log(stderr.toString());
+              console.error('Unable to verify approval is OK.');
+              throw error;
+            }
+
+            // Parse the diff output
+            console.log(stdout.toString());
+            const lines = stdout.toString().trim().split('\n', 3);
+            const filesChanged = lines.map(l => {
+              const [insertions, deletions, name] = l.split('\t', 3);
+              return {
+                deletions: Number.parseInt(deletions),
+                insertions: Number.parseInt(insertions),
+                name
+              };
+            });
+
+            const sum = (accumulator, value) => accumulator + value;
+            const insertions = filesChanged.map(f => f.insertions).reduce(sum) || 0;
+            const deletions = filesChanged.map(f => f.deletions).reduce(sum) || 0;
+            const total = insertions + deletions;
+            const summary = filesChanged.length + ' files changed, ' +
+              insertions + ' insertions(+), ' +
+              deletions + ' deletions(-)';
+            console.log(summary);
+
+            // Dismiss the approval if there are too many changes.
+            const insertionsLimit = 7;
+            const deletionsLimit = 10;
+            const totalLimit = 12;
+
+            if (total <= totalLimit
+              && insertions <= insertionsLimit
+              && deletions <= deletionsLimit) {
+              console.log("There doesn't seem to be enough changes to warrant dismissing approval.");
               return;
             }
 
-            // There are only modifications on existing files.
-            // Make sure there aren't any more than:
-            // - 7 insertions
-            // - 7 deletions
-            // - 12 lines changes overall
+            github.pulls.dismissReview({
+              owner: context.payload.repository.owner.login,
+              repo: context.payload.repository.name,
+              pull_number: context.payload.pull_request.number,
+              review_id: approval.id,
+              message: `Hi @${context.actor},
 
-            console.log('looking for the number of modifications');
-            let insertions = 0, deletions = 0;
-            args = ['diff', '--histogram', '-U0', lastApprovedCommit, currentCommit];
-            console.log(`Checking the diff by running:\n git ${args.join(' ')}`);
-            child = spawnSync('git', args);
-            error = child.error;
-            stderr = child.stderr.toString();
-            stdout = child.stdout.toString();
-            console.log('diff since last approval: ' + stdout);
-            console.log('diff since last approval stderr: ' + stderr);
-            if (!error) {
-              const lines = stdout.split('\n')
-                .filter(l => l.startsWith('+') || l.startsWith('-'))
-                .filter(l => !l.startsWith('+++') && !l.startsWith('---'));
-              insertions = lines.filter(l => l.startsWith('+')).length;
-              deletions = lines.filter(l => l.startsWith('-')).length;
+            I dismissed your review because it looks like you've introduced
+            a significant number of changes to this pull request since
+            it was last approved by @${approver}:
+            
+            \`\`\`
+            ${stdout.toString()}
+            \`\`\`
+            
+            If either of you believe my dismissal was premature or a mistake,
+            consider updating
+            [autoapprove.yaml](../blob/main/.github/workflows/autoapprove.yaml)
+            in a separate pull request.
 
-              const maxLinesChanged = insertions + deletions;
-              console.log(`Detected ${insertions} insertions and ${deletions} deletions`);
-
-              if (maxLinesChanged <= 12 && insertions <= 7 && deletions <= 7) {
-                console.log("Probably not worth another human review");
-                return
-              }
-              console.log("Dismissing due to significant changes.");
-
-              github.pulls.dismissReview({
-                owner: context.payload.repository.owner.login,
-                repo: context.payload.repository.name,
-                pull_number: context.payload.pull_request.number,
-                review_id: lastApproval.id,
-                message: `@${context.actor}, I'm dismissing @${lastApprover}'s approval as it ` +
-                  `seems you've made significant changes (${insertions} insertions(+), ${deletions} deletions(-)) since ` + 
-                  'their approval. If you believe my dismissal was a mistake please ask about ' +
-                  '[autoapprove.yaml](../../blob/main/.github/workflows/autoapprove.yaml)'
-              });
-            } else {
-              console.log('strange error: ${error}');
-            }
+            Thank you for your contributions!
+            `
+            });
           github-token: ${{github.token}}
