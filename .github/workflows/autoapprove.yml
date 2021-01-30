@@ -15,7 +15,7 @@ jobs:
       - name: Skip if merge commit
         run: |
           if [ -z "$(git rev-list -1 --merges ${{ github.sha }}~1..${{ github.sha }})" ]; then
-            echo "::set-env name=merge_commit::true"
+            echo "merge_commit=true" >> $GITHUB_ENV
           fi
           if []
       - name: Auto dismiss
