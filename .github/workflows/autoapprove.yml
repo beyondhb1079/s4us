@@ -102,6 +102,7 @@ jobs:
                 console.log("Probably not worth another human review");
                 return
               }
+              console.log("Dismissing due to significant changes.");
 
               github.pulls.dismissReview({
                 owner: context.payload.repository.owner.login,
@@ -109,7 +110,7 @@ jobs:
                 pull_number: context.payload.pull_request.number,
                 review_id: lastApproval.id,
                 message: `@${context.actor}, I'm dismissing @${lastApprover}'s approval as it ` +
-                  `seems you've made significant changes (+{insertions} -${deletions}) since ` + 
+                  `seems you've made significant changes (+${insertions} -${deletions}) since ` + 
                   'their approval. If you believe my dismissal was a mistake please ask about ' +
                   '[autoapprove.yaml](../../blob/main/.github/workflows/autoapprove.yaml)'
               });
