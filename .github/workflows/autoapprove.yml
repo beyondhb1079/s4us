@@ -35,7 +35,6 @@ jobs:
               .filter(r => r.user.type == 'User')
               .filter(r => r.state == 'APPROVED')
               .sort((a, b) => a.id - b.id);
-            console.log(approvals);
 
             if (approvals.length == 0) {
               // no approvals to dismiss
@@ -79,6 +78,7 @@ jobs:
             // - 5 deletions
             // - 10 lines changes overall
 
+            console.log('looking for the number of modifications');
             let insertions = 0, deletions = 0;
             child = spawnSync('git', ['diff', '--histogram', '-U0', lastApprovedCommit, currentCommit]);
             error = child.error;
@@ -86,7 +86,7 @@ jobs:
             stdout = child.stdout;
             console.log('diff since last approval: ' + stdout);
             console.log('diff since last approval stderr: ' + stderr);
-            if (error === null) {
+            if (error === undefined) {
               const lines = stdout.split('\n')
                 .filter(l => l.startsWith('+') || l.startsWith('-'))
                 .filter(l => !l.startsWith('+++') && !l.startsWith('---'));
@@ -112,4 +112,5 @@ jobs:
                   '[autoapprove.yaml](../../blob/main/.github/workflows/autoapprove.yaml)'
               });
             }
+            console.log('strange error: ${error}');
           github-token: ${{github.token}}
