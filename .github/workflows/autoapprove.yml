@@ -80,7 +80,7 @@ jobs:
             // - 10 lines changes overall
 
             let insertions = 0, deletions = 0;
-            child = spawnSync('git', ['diff', '--histogram', '-U0', lastApprovedCommit, currentCommit];
+            child = spawnSync('git', ['diff', '--histogram', '-U0', lastApprovedCommit, currentCommit]);
             let {error, stderr, stdout} = child;
             console.log('stdout: ' + stdout);
             console.log('stderr: ' + stderr);
