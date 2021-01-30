@@ -55,8 +55,8 @@ jobs:
             console.log(`Checking for changes in new files in commit ${currentCommit}`);
 
             let addedOrRemovedFiles = false;
-            let child = exec(`git diff --stat --diff-filter=m --exit-code ${lastApprovedCommit} ${currentCommit}`,
-              function (error, stdout, stderr) {
+            exec(`git diff --stat --diff-filter=m --exit-code ${lastApprovedCommit} ${currentCommit}`,
+              (error, stdout, stderr) => {
                 console.log('stdout: ' + stdout);
                 console.log('stderr: ' + stderr);
                 if (error !== null) {
@@ -64,7 +64,6 @@ jobs:
                   addedOrRemovedFiles = true;
                 }
               });
-            child();
 
             if (addedOrRemovedFiles) {
               github.pulls.dismissReview({
@@ -87,8 +86,8 @@ jobs:
             // - 10 lines changes overall
 
             let insertions = 0, deletions = 0;
-            child = exec(`git diff --histogram -U0 ${lastApprovedCommit} ${currentCommit}`,
-              function (error, stdout, stderr) {
+            exec(`git diff --histogram -U0 ${lastApprovedCommit} ${currentCommit}`,
+              (error, stdout, stderr) => {
                 console.log('stdout: ' + stdout);
                 console.log('stderr: ' + stderr);
                 if (error === null) {
@@ -99,7 +98,6 @@ jobs:
                   deletions = lines.filter(l => l.startsWith('-')).length;
                 }
               });
-            child();
 
             const maxLinesChanged = insertions + deletions;
             console.log(`Detected ${insertions} insertions and ${deletions} deletions`);
