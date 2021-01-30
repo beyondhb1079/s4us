@@ -15,7 +15,6 @@ jobs:
       - name: Skip if merge commit
         shell: bash
         run: |
-          git pull
           git status
           if (($(git show --no-patch --format="%P" ${{ github.event.pull_request.head.sha }} | wc -l) > 1)); then
             echo "merge_commit=true" >> $GITHUB_ENV;
