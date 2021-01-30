@@ -55,7 +55,9 @@ jobs:
             console.log(`Checking for changes in new files in commit ${currentCommit}`);
 
             let child = spawnSync('git', ['diff', '--stat' , '--diff-filter=m',  '--exit-code',lastApprovedCommit,  currentCommit]);
-            let {error, stderr, stdout} = child;
+            error = child.error;
+            stderr = child.stderr;
+            stdout = child.stdout;
             console.log('stdout: ' + stdout);
             console.log('stderr: ' + stderr);
             if (error !== null) {
