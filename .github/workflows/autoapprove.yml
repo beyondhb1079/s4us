@@ -58,7 +58,7 @@ jobs:
             let {error, stderr, stdout} = child;
             console.log('stdout: ' + stdout);
             console.log('stderr: ' + stderr);
-            if (error !== null) {
+            if (error !== undefined) {
               console.log(`It looks like more than just file modifications: ${error}`);
               github.pulls.dismissReview({
                 owner: context.payload.repository.owner.login,
