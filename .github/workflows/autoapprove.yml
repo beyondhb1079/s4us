@@ -51,8 +51,8 @@ jobs:
             console.log(lastApproval);
 
             // Check for additions/removals of files
-            const { spawnSync } = require('child_process');
             console.log(`Checking for changes in new files in commit ${currentCommit}`);
+            const { spawnSync } = require('child_process');
 
             let child = spawnSync('git', ['diff', '--stat' , '--diff-filter=m',  '--exit-code',lastApprovedCommit,  currentCommit]);
             let {error, stderr, stdout} = child;
