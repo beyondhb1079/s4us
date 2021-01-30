@@ -54,7 +54,9 @@ jobs:
             const { spawnSync } = require('child_process');
 
             let child = spawnSync('git', ['diff', '--stat' , '--diff-filter=m',  '--exit-code',lastApprovedCommit,  currentCommit]);
-            let {error, stderr, stdout} = child;
+            let error = child.error;
+            let stderr = child.stderr.read();
+            let stdout = child.stdout.read();
             console.log('stdout: ' + stdout);
             console.log('stderr: ' + stderr);
             if (error !== undefined) {
@@ -82,8 +84,8 @@ jobs:
             let insertions = 0, deletions = 0;
             child = spawnSync('git', ['diff', '--histogram', '-U0', lastApprovedCommit, currentCommit]);
             error = child.error;
-            stderr = child.stderr;
-            stdout = child.stdout;
+            stderr = child.stderr.read();
+            stdout = child.stdout.read();
             console.log('diff since last approval: ' + stdout);
             console.log('diff since last approval stderr: ' + stderr);
             if (error === undefined) {
