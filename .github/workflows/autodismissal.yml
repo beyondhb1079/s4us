@@ -99,27 +99,29 @@ jobs:
               return;
             }
 
+            const message = [
+              `Hi @${context.actor},`,
+              '',
+              'I dismissed your review because it looks like you\'ve introduced '
+              + 'a significant number of changes to this pull request since '
+              + `it was last approved by @${approver}:`,
+              '',
+              '```',
+              summary,
+              '```',
+              '',
+              'If either of you believe my dismissal was premature or a mistake, consider '
+              + 'updating [autoapprove.yaml](../blob/main/.github/workflows/autoapprove.yaml) '
+              + 'in a separate pull request.',
+              '',
+              'Thank you for your contributions!'
+            ].join('\n');
+
             github.pulls.dismissReview({
               owner: context.payload.repository.owner.login,
               repo: context.payload.repository.name,
               pull_number: context.payload.pull_request.number,
               review_id: approval.id,
-              message: `Hi @${context.actor},
-
-            I dismissed your review because it looks like you've introduced
-            a significant number of changes to this pull request since
-            it was last approved by @${approver}:
-            
-            \`\`\`
-            ${stdout.toString()}
-            \`\`\`
-            
-            If either of you believe my dismissal was premature or a mistake,
-            consider updating
-            [autoapprove.yaml](../blob/main/.github/workflows/autoapprove.yaml)
-            in a separate pull request.
-
-            Thank you for your contributions!
-            `
+              message
             });
           github-token: ${{github.token}}
