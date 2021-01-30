@@ -28,14 +28,13 @@ jobs:
             const reviews = await github.pulls.listReviews({
               owner: context.payload.repository.owner.login,
               repo: context.payload.repository.name,
-              pull_number: context.payload.pull_request.number,
-              order_by: 'created',
-              direction: 'desc'
-            })
+              pull_number: context.payload.pull_request.number
+            });
 
-            console.log("number of reviews: " + reviews.length);
-
-            const approvals = reviews.data.filter(r => r.user.type == "User");
+            const approvals = reviews.data
+              .filter(r => r.user.type == 'User')
+              .filter(r => r.user.state == 'DISMISSED')
+              .sort((a, b) => a.id - b.id);
             console.log(approvals);
 
             if (approvals.length == 0) {
@@ -52,11 +51,11 @@ jobs:
             console.log(lastApproval);
 
             // Check for additions/removals of files
-            let exec = require('child_process').exec, child;
+            import exec from 'child_process';
             console.log(`Checking for changes in new files in commit ${currentCommit}`);
 
             let addedOrRemovedFiles = false;
-            child = exec(`git diff --stat --diff-filter=m --exit-code ${lastApprovedCommit} ${currentCommit}`,
+            let child = exec(`git diff --stat --diff-filter=m --exit-code ${lastApprovedCommit} ${currentCommit}`,
               function (error, stdout, stderr) {
                 console.log('stdout: ' + stdout);
                 console.log('stderr: ' + stderr);
