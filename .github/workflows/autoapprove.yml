@@ -1,37 +1,29 @@
-name: 'Auto Approval'
+name: 'Auto Dismiss Approval on Major Changes'
 
 on:
   pull_request:
     branches: [main]
 
 jobs:
-  auto-approve-small-changes-after-approval:
+  dismiss-on-major-changes:
     runs-on: ubuntu-latest
     if: github.actor != 'dependabot[bot]'
-    name: Auto approve minor changes after approval
+    name: Auto dismiss approval after major changes
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
-      - name: Check for non-modifications
+      - name: Skip if merge commit
         run: |
-          if git diff-tree --name-only --exit-code -r ${{ github.sha }} package.json; then
-            echo "::set-env name=lock_only_change::true"
+          if [ -z "$(git rev-list -1 --merges ${{ github.sha }}~1..${{ github.sha }})" ]; then
+            echo "::set-env name=merge_commit::true"
           fi
-      - name: Check for package.json changes
-        run: |
-          if git diff-tree --name-only --exit-code -r ${{ github.sha }} package.json; then
-            echo "::set-env name=lock_only_change::true"
-          fi
-      - name: Check for package.json changes
-        run: |
-          if git diff-tree --name-only --exit-code -r ${{ github.sha }} package.json; then
-            echo "::set-env name=lock_only_change::true"
-          fi
-      - name: Auto approve
+          if []
+      - name: Auto dismiss
+        if: ${{ env.merge_commit == 'false' }}
         uses: actions/github-script@0.2.0
         with:
           script: |
-            // Get all human approvals
+            // Get all reviews
             const reviews = await github.pulls.listReviews({
               owner: context.payload.repository.owner.login,
               repo: context.payload.repository.name,
@@ -39,97 +31,95 @@ jobs:
               order_by: 'created',
               direction: 'desc'
             })
+
+            console.log("number of reviews: " + reviews.length);
+
             const approvals = reviews.data.filter(r => r.user.type == "User");
             console.log(approvals);
 
             if (approvals.length == 0) {
-              return // no existing approvals
-            }
-
-            const last_approval = approvals[0];
-            const last_approver = last_approval.user.login;
-            const last_approved_commit = last_approval.commit_id;
-            const current_commit = context.payload.pull_request.sha;
-            var exec = require('child_process').exec, child;
-
-            // Are there any non-modified file changes since last approval?
-            let has_other_changes = false;
-            child = exec(`git diff --stat --diff-filter=m --exit-code ${last_approved_commit} ${current_commit}`,
-                function (error, stdout, stderr) {
-                    console.log('stdout: ' + stdout);
-                    console.log('stderr: ' + stderr);
-                    if (error !== null) {
-                        console.log('It looks like more than just file modifications: ' + error);
-                        has_other_changes = true;
-                    }
-                });
-            child();
-            if (has_other_changes) {
+              // no approvals to dismiss
               return
             }
-            
-            // What's changed since the approval? 
-            let insertions = 0, deletions = 0;
-            child = exec(`git diff --histogram -U0 ${last_approved_commit} ${current_commit}`,
-                function (error, stdout, stderr) {
-                    console.log('stdout: ' + stdout);
-                    console.log('stderr: ' + stderr);
-                    if (error === null) {
-                        const lines = stdout.split('\n')
-                        insertions = lines.filter(l => l.startsWith('+')).length;
-                        deletions = lines.filter(l => l.startsWith('-')).length;
-                    }
-                });
+
+            // Obtain info about the last approval
+            const lastApproval = approvals[0];
+            const lastApprover = lastApproval.user.login;
+            const lastApprovedCommit = lastApproval.commit_id;
+            const currentCommit = context.payload.pull_request.sha;
+            console.log("Last approval:");
+            console.log(lastApproval);
+
+            // Check for additions/removals of files
+            var exec = require('child_process').exec, child;
+            console.log(`Checking for changes in new files in commit ${currentCommit}`);
+
+            let addedOrRemovedFiles = false;
+            let child = exec(`git diff --stat --diff-filter=m --exit-code ${lastApprovedCommit} ${currentCommit}`,
+              function (error, stdout, stderr) {
+                console.log('stdout: ' + stdout);
+                console.log('stderr: ' + stderr);
+                if (error !== null) {
+                  console.log('It looks like more than just file modifications: ' + error);
+                  addedOrRemovedFiles = true;
+                }
+              });
             child();
 
-            const max_lines_changed = insertions + deletions;
-            if (max_lines_changed === 0) {
-              return // there should be nothing to review
+            if (addedOrRemovedFiles) {
+              github.pulls.dismissReview({
+                owner: context.payload.repository.owner.login,
+                repo: context.payload.repository.name,
+                pull_number: context.payload.pull_request.number,
+                review_id: lastApproval.id,
+                message: `@${context.actor}, I'm dismissing @${lastApprover}'s approval ` +
+                  `as it seems you added or removed a file since their approval. ` +
+                  'If you believe my dismissal was a mistake please ask about ' +
+                  '[autoapprove.yaml](../../blob/main/.github/workflows/autoapprove.yaml)'
+              })
+              return;
             }
 
-            if (max_lines_changed > 10 || insertions > 5 || deletions > 5) {
+            // There are only modifications on existing files.
+            // Make sure there aren't any more than:
+            // - 5 insertions
+            // - 5 deletions
+            // - 10 lines changes overall
+
+            let insertions = 0, deletions = 0;
+            child = exec(`git diff --histogram -U0 ${lastApprovedCommit} ${currentCommit}`,
+              function (error, stdout, stderr) {
+                console.log('stdout: ' + stdout);
+                console.log('stderr: ' + stderr);
+                if (error === null) {
+                  const lines = stdout.split('\n')
+                    .filter(l => l.startsWith('+') || l.startsWith('-'))
+                    .filter(l => !l.startsWith('+++') && !l.startsWith('---'));
+                  insertions = lines.filter(l => l.startsWith('+')).length;
+                  deletions = lines.filter(l => l.startsWith('-')).length;
+                }
+              });
+            child();
+
+            const maxLinesChanged = insertions + deletions;
+
+            if (maxLinesChanged <= 10 && insertions <= 5 && deletions <= 5) {
+              // Probably not worth dismissing.
+              return
+            }
+
+            if (maxLinesChanged > 10 || insertions > 5 || deletions > 5) {
               return // should probably get someone to review the changes
             }
 
-            // The changes were likely due to addressing feedback.
-            github.pullRequests.createReview({
+            github.pulls.dismissReview({
               owner: context.payload.repository.owner.login,
               repo: context.payload.repository.name,
               pull_number: context.payload.pull_request.number,
-              event: 'APPROVE',
-              body: `@${context.actor}, I'm approving your PR because it looks like you were ` +
-                    'addressing comments from the previous approval. You may choose to wait for ' + 
-                    'a human reviewer if you prefer.\n\n' +
-                    `@${last_approver}, if you believe my approval was a mistake please revise ` +
-                    '[autoapprove.yaml](../blob/main/.github/workflows/autoapprove.yaml)'
-            })
-          github-token: ${{github.token}}
-
-
-  auto-approve-dependabot:
-    runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]'
-    name: Auto approve changes if yarn.lock
-    steps:
-      - name: Checkout the repo
-        uses: actions/checkout@v2
-      - name: Check for package.json changes
-        run: |
-          if git diff-tree --name-only --exit-code -r ${{ github.sha }} package.json; then
-            echo "::set-env name=lock_only_change::true"
-          fi
-      - name: Auto approve changes
-        if: ${{ env.lock_only_change == 'true' }}
-        uses: actions/github-script@0.2.0
-        with:
-          script: |
-            github.pullRequests.createReview({
-              owner: context.payload.repository.owner.login,
-              repo: context.payload.repository.name,
-              pull_number: context.payload.pull_request.number,
-              event: 'APPROVE',
-              body: 'Dear reviewer, copy and paste the following comment and ' +
-                    'I will work with @dependabot to get this merged.\n\n' +
-                    '@dependabot squash and merge'
-            })
+              review_id: lastApproval.id,
+              message: `@${context.actor}, I'm dismissing @${lastApprover}'s approval ` +
+                `as it seems you've made significant changes since their approval. ` +
+                'If you believe my dismissal was a mistake please ask about ' +
+                '[autoapprove.yaml](../../blob/main/.github/workflows/autoapprove.yaml)'
+            });
           github-token: ${{github.token}}
