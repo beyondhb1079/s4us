@@ -55,8 +55,8 @@ jobs:
 
             let child = spawnSync('git', ['diff', '--stat' , '--diff-filter=m',  '--exit-code',lastApprovedCommit,  currentCommit]);
             let error = child.error;
-            let stderr = child.stderr.read();
-            let stdout = child.stdout.read();
+            let stderr = child.stderr.toString();
+            let stdout = child.stdout.toString();
             console.log('stdout: ' + stdout);
             console.log('stderr: ' + stderr);
             if (error !== undefined) {
@@ -84,8 +84,8 @@ jobs:
             let insertions = 0, deletions = 0;
             child = spawnSync('git', ['diff', '--histogram', '-U0', lastApprovedCommit, currentCommit]);
             error = child.error;
-            stderr = child.stderr.read();
-            stdout = child.stdout.read();
+            stderr = child.stderr.toString();
+            stdout = child.stdout.toString();
             console.log('diff since last approval: ' + stdout);
             console.log('diff since last approval stderr: ' + stderr);
             if (error === undefined) {
