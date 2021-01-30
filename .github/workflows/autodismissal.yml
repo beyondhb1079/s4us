@@ -50,15 +50,16 @@ jobs:
             console.log(lastApproval);
 
             // Check for additions/removals of files
-            console.log(`Checking for changes in new files in commit ${currentCommit}`);
             const { spawnSync } = require('child_process');
 
-            let child = spawnSync('git', ['diff', '--stat' , '--diff-filter=m',  '--exit-code',lastApprovedCommit,  currentCommit]);
+            let args = ['diff', '--stat' , '--diff-filter=rm',  '--exit-code',lastApprovedCommit,  currentCommit];
+            console.log(`Checking for file additions/deletions by running:\n git ${args.join(' ')}`);
+            let child = spawnSync('git', args);
             let error = child.error;
             let stderr = child.stderr.toString();
             let stdout = child.stdout.toString();
-            console.log('stdout: ' + stdout);
-            console.log('stderr: ' + stderr);
+            console.log(stdout);
+            console.log(stderr);
             if (error) {
               console.log(`It looks like more than just file modifications: ${error}`);
               github.pulls.dismissReview({
@@ -76,13 +77,15 @@ jobs:
 
             // There are only modifications on existing files.
             // Make sure there aren't any more than:
-            // - 5 insertions
-            // - 5 deletions
-            // - 10 lines changes overall
+            // - 7 insertions
+            // - 7 deletions
+            // - 12 lines changes overall
 
             console.log('looking for the number of modifications');
             let insertions = 0, deletions = 0;
-            child = spawnSync('git', ['diff', '--histogram', '-U0', lastApprovedCommit, currentCommit]);
+            args = ['diff', '--histogram', '-U0', lastApprovedCommit, currentCommit];
+            console.log(`Checking the diff by running:\n git ${args.join(' ')}`);
+            child = spawnSync('git', args);
             error = child.error;
             stderr = child.stderr.toString();
             stdout = child.stdout.toString();
@@ -98,7 +101,7 @@ jobs:
               const maxLinesChanged = insertions + deletions;
               console.log(`Detected ${insertions} insertions and ${deletions} deletions`);
 
-              if (maxLinesChanged <= 10 && insertions <= 5 && deletions <= 5) {
+              if (maxLinesChanged <= 12 && insertions <= 7 && deletions <= 7) {
                 console.log("Probably not worth another human review");
                 return
               }
