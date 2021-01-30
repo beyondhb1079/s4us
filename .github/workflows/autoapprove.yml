@@ -17,7 +17,6 @@ jobs:
           if [ -z "$(git rev-list -1 --merges ${{ github.event.pull_request.head.sha }}~1..${{ github.event.pull_request.head.sha }})" ]; then
             echo "merge_commit=true" >> $GITHUB_ENV
           fi
-          if []
       - name: Auto dismiss
         if: ${{ env.merge_commit == 'false' }}
         uses: actions/github-script@0.2.0
