@@ -26,7 +26,7 @@ export default function AmountFilter() {
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleChange = (index, val) =>
-    setValues({ ...values, [index]: parseInt(val, 10) || '' });
+    setValues({ ...values, [index]: parseInt(val, 10) || 0 });
 
   return (
     <>
@@ -48,7 +48,7 @@ export default function AmountFilter() {
           <Grid item className={classes.filterStyle}>
             <InputLabel className={classes.labelStyle}>Min Amount</InputLabel>
             <AmountTextField
-              value={values.min}
+              value={values.min || ''}
               onChange={(e) => handleChange('min', e.target.value)}
             />
           </Grid>
@@ -58,7 +58,7 @@ export default function AmountFilter() {
           <Grid item className={classes.filterStyle}>
             <InputLabel className={classes.labelStyle}>Max Amount</InputLabel>
             <AmountTextField
-              value={values.max}
+              value={values.max || ''}
               onChange={(e) => handleChange('max', e.target.value)}
             />
           </Grid>
