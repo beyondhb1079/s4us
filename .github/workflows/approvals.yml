@@ -114,7 +114,7 @@ jobs:
             [autoapprove.yaml](../blob/main/.github/workflows/autoapprove.yaml)\
             in a separate pull request.
             
-            Thank you for your contributions!`;
+            Thank you for your contributions!`.replace(/ +/g, ' ');
             
             console.log(message);
 
