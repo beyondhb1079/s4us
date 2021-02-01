@@ -1,9 +1,17 @@
 import React, { useState } from 'react';
-import { Button, Popover, InputLabel, Grid } from '@material-ui/core';
+import { useFormik } from 'formik';
+import {
+  Button,
+  Popover,
+  InputLabel,
+  Grid,
+  FormHelperText,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import RemoveIcon from '@material-ui/icons/Remove';
 import AmountTextField from './AmountTextField';
+import AmountFilterValidation from '../validation/AmountFilterValidation';
 
 const useStyles = makeStyles((theme) => ({
   buttonStyle: {
@@ -17,16 +25,27 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
   },
+  helperStyle: {
+    padding: `0 0 ${theme.spacing(1)}px ${theme.spacing(2)}px`,
+  },
 }));
 
 export default function AmountFilter() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [values, setValues] = useState({ min: 0, max: 0 });
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
-  const handleChange = (index, val) =>
-    setValues({ ...values, [index]: parseInt(val, 10) || 0 });
+
+  const formik = useFormik({
+    initialValues: {
+      min: 0,
+      max: 0,
+    },
+    validationSchema: AmountFilterValidation,
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
 
   return (
     <>
@@ -48,8 +67,11 @@ export default function AmountFilter() {
           <Grid item className={classes.filterStyle}>
             <InputLabel className={classes.labelStyle}>Min Amount</InputLabel>
             <AmountTextField
-              value={values.min || ''}
-              onChange={(e) => handleChange('min', e.target.value)}
+              error={formik.errors.min}
+              value={formik.values.min || ''}
+              onChange={(e) =>
+                formik.setFieldValue('min', parseInt(e.target.value, 10) || 0)
+              }
             />
           </Grid>
           <Grid item className={classes.dashStyle}>
@@ -58,11 +80,16 @@ export default function AmountFilter() {
           <Grid item className={classes.filterStyle}>
             <InputLabel className={classes.labelStyle}>Max Amount</InputLabel>
             <AmountTextField
-              value={values.max || ''}
-              onChange={(e) => handleChange('max', e.target.value)}
+              value={formik.values.max || ''}
+              onChange={(e) =>
+                formik.setFieldValue('max', parseInt(e.target.value, 10) || 0)
+              }
             />
           </Grid>
         </Grid>
+        <FormHelperText error className={classes.helperStyle}>
+          {formik.errors.min}
+        </FormHelperText>
       </Popover>
     </>
   );
