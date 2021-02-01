@@ -8,7 +8,7 @@ jobs:
   dismiss-stale-approvals:
     runs-on: ubuntu-latest
     if: github.actor != 'dependabot[bot]'
-    name: Dismiss stale approvals on major changes
+    name: Dismiss on major changes
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
@@ -112,8 +112,6 @@ jobs:
             Thank you for your contributions!`;
             
             console.log(message);
-
-
 
             github.pulls.dismissReview({
               owner: context.payload.repository.owner.login,
