@@ -19,6 +19,8 @@ import PropTypes from 'prop-types';
 import { BRAND_NAME } from '../config/constants';
 import ShareDialog from './ShareDialog';
 
+import ScholarshipListCard from './ScholarshipListCard';
+
 const useStyles = makeStyles((theme) => ({
   actions: {
     padding: theme.spacing(2),
@@ -38,86 +40,46 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// move out from component
+// because it don't need to recreate every time component render
+const shareFn = (
+  id,
+  data,
+  setShareSiteLink,
+  setShareSiteTitle,
+  setShareDialogOpen
+) => () => {
+  const title = `${data.amount} - ${data.name} | ${BRAND_NAME}`;
+  const url = `https://${window.location.hostname}/scholarships/${id}`;
+  const text =
+    `${data.amount} - ${data.name} | ${BRAND_NAME}\n` +
+    `${data.deadline.toLocaleDateString()}\n`;
+  if (navigator.share) {
+    navigator
+      .share({ title, url, text })
+      // eslint-disable-next-line no-console
+      .then(() => console.log('Thanks for sharing!'))
+      // eslint-disable-next-line no-console
+      .catch(console.error);
+  } else {
+    setShareSiteLink(url);
+    setShareSiteTitle(title);
+    setShareDialogOpen(true);
+  }
+};
+
 function ScholarshipList({ scholarships }) {
-  const classes = useStyles();
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const closeShareDialog = () => setShareDialogOpen(false);
 
   const [shareSiteLink, setShareSiteLink] = React.useState('');
   const [shareSiteTitle, setShareSiteTitle] = React.useState('');
 
-  const shareFn = (id, data) => () => {
-    const title = `${data.amount} - ${data.name} | ${BRAND_NAME}`;
-    const url = `https://${window.location.hostname}/scholarships/${id}`;
-    const text =
-      `${data.amount} - ${data.name} | ${BRAND_NAME}\n` +
-      `${data.deadline.toLocaleDateString()}\n`;
-    if (navigator.share) {
-      navigator
-        .share({ title, url, text })
-        // eslint-disable-next-line no-console
-        .then(() => console.log('Thanks for sharing!'))
-        // eslint-disable-next-line no-console
-        .catch(console.error);
-    } else {
-      setShareSiteLink(url);
-      setShareSiteTitle(title);
-      setShareDialogOpen(true);
-    }
-  };
   return (
     <Grid container spacing={3}>
       {scholarships.map(({ id, data }) => (
         <Grid item xs={12} key={id}>
-          <Card variant="outlined">
-            <CardActionArea
-              component={Link}
-              to={{
-                pathname: `/scholarships/${id}`,
-                state: { scholarship: { id, data } },
-              }}>
-              <CardHeader
-                title={data.name}
-                subheader={data.amount.toString()}
-              />
-              <CardContent className={classes.content}>
-                <Typography gutterBottom variant="body1">
-                  Deadline:{' '}
-                  <Typography component="span" color="primary">
-                    {data.deadline.toLocaleDateString()}
-                  </Typography>
-                </Typography>
-                <Typography
-                  variant="body1"
-                  color="textSecondary"
-                  className={classes.description}>
-                  {data.description}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-            <CardActions className={classes.actions}>
-              <Button
-                component={MuiLink}
-                href={data.website}
-                color="primary"
-                variant="contained">
-                Apply
-              </Button>
-              <IconButton
-                aria-label="add to bookmarks"
-                color="primary"
-                // eslint-disable-next-line no-alert
-                onClick={() => alert('This feature is under construction')}>
-                <BookmarkBorderIcon />
-              </IconButton>
-              <IconButton
-                aria-label="share"
-                color="primary"
-                onClick={shareFn(id, data)}>
-                <ShareIcon />
-              </IconButton>
-            </CardActions>
-          </Card>
+          <ScholarshipListCard scholarship={data} id={id} />
         </Grid>
       ))}
       <ShareDialog
