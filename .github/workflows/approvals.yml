@@ -1,4 +1,4 @@
-name: 'Auto dismiss stale approvals'
+name: 'Approvals'
 
 on:
   pull_request:
@@ -8,7 +8,7 @@ jobs:
   dismiss-stale-approvals:
     runs-on: ubuntu-latest
     if: github.actor != 'dependabot[bot]'
-    name: Dismiss on major changes
+    name: Dismiss stale approvals on major changes
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
@@ -101,21 +101,20 @@ jobs:
             
             const message = `Hi @${context.actor},
             
-            I dismissed your review because it looks like you've introduced
-            a significant number of changes to this pull request since
+            I dismissed your review because it looks like you've introduced\
+            a significant number of changes to this pull request since\
             it was last approved by @${approver}:
             
             \`\`\`
             ${summary}
             \`\`\`
             
-            If either of you believe my dismissal was premature or a mistake,
-            consider updating
-            [autoapprove.yaml](../blob/main/.github/workflows/autoapprove.yaml)
+            If either of you believe my dismissal was premature or a mistake,\
+            consider updating\
+            [autoapprove.yaml](../blob/main/.github/workflows/autoapprove.yaml)\
             in a separate pull request.
             
-            Thank you for your contributions!
-            `.replace(/\n +/g, '\n');
+            Thank you for your contributions!`.replace(/\n +/g, '\n');
             
             console.log(message);
 
