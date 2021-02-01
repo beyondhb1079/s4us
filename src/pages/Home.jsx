@@ -11,7 +11,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function HomeSelection() {
+export default function Home() {
   const classes = useStyles();
   const [isSignedIn, setIsSignedIn] = useState(undefined);
   const loading = isSignedIn === undefined;
@@ -21,10 +21,9 @@ export default function HomeSelection() {
     []
   );
 
-  return (
-    <>
-      {(loading && <CircularProgress className={classes.progress} />) ||
-        (isSignedIn ? <UserHome /> : <PublicHome />)}
-    </>
-  );
+  if (loading) {
+    return <CircularProgress className={classes.progress} />;
+  }
+
+  return isSignedIn ? <UserHome /> : <PublicHome />;
 }
