@@ -1,14 +1,14 @@
-name: 'Auto Dismissal of approvals on Major Changes'
+name: 'Auto dismiss stale approvals'
 
 on:
   pull_request:
     branches: [main]
 
 jobs:
-  dismiss-on-major-changes:
+  dismiss-stale-approvals:
     runs-on: ubuntu-latest
     if: github.actor != 'dependabot[bot]'
-    name: Auto dismiss approval after major changes
+    name: Dismiss on major changes
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
