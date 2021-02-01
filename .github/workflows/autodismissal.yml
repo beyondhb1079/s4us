@@ -12,14 +12,14 @@ jobs:
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
-      - name: Skip if merge commit
+      - name: Skip checking merge commits
         shell: bash
         run: |
           git fetch --all
           if (($(git show --no-patch --format="%P" ${{ github.event.pull_request.head.sha }} | wc -l) > 1)); then
             echo "merge_commit=true" >> $GITHUB_ENV;
           fi
-      - name: Auto dismiss
+      - name: Auto dismiss on major changes
         if: ${{ env.merge_commit != 'true' }}
         uses: actions/github-script@v3
         with:
@@ -98,24 +98,26 @@ jobs:
               console.log("There doesn't seem to be enough changes to warrant dismissing approval.");
               return;
             }
-
-            const message = [
-              `Hi @${context.actor},`,
-              '',
-              'I dismissed your review because it looks like you\'ve introduced '
-              + 'a significant number of changes to this pull request since '
-              + `it was last approved by @${approver}:`,
-              '',
-              '```',
-              summary,
-              '```',
-              '',
-              'If either of you believe my dismissal was premature or a mistake, consider '
-              + 'updating [autoapprove.yaml](../blob/main/.github/workflows/autoapprove.yaml) '
-              + 'in a separate pull request.',
-              '',
-              'Thank you for your contributions!'
-            ].join('\n');
+            
+            const message = `Hi @${context.actor},
+            
+            I dismissed your review because it looks like you've introduced
+            a significant number of changes to this pull request since
+            it was last approved by @${approver}:
+            
+            \`\`\`
+            ${summary}
+            \`\`\`
+            
+            If either of you believe my dismissal was premature or a mistake,
+            consider updating
+            [autoapprove.yaml](../blob/main/.github/workflows/autoapprove.yaml)
+            in a separate pull request.
+            
+            Thank you for your contributions!
+            `.replaceAll(/\n +/g, '\n');
+            
+            console.log(message);
 
             github.pulls.dismissReview({
               owner: context.payload.repository.owner.login,
