@@ -98,19 +98,19 @@ jobs:
               console.log("There doesn't seem to be enough changes to warrant dismissing approval.");
               return;
             }
-            
+
             const message = `Hi @${context.actor},
-            
+
             I dismissed your review because it looks like you've introduced a significant number of changes to this pull request since it was last approved by @${approver}:
-            
+
             \`\`\`
             ${summary}
             \`\`\`
-            
+
             If either of you believe my dismissal was premature or a mistake, consider updating [autoapprove.yaml](../blob/main/.github/workflows/autoapprove.yaml) in a separate pull request.
-            
+
             Thank you for your contributions!`;
-            
+
             console.log(message);
 
             github.pulls.dismissReview({
