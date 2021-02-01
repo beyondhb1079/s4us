@@ -115,7 +115,7 @@ jobs:
             in a separate pull request.
             
             Thank you for your contributions!
-            `.replaceAll(/\n +/g, '\n');
+            `.replace(/\n +/g, '\n');
             
             console.log(message);
 
