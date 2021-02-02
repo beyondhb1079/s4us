@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Divider,
   CircularProgress,
   Container,
   makeStyles,
   Typography,
 } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles(() => ({
   progress: {
