@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import {
   Card,
@@ -51,18 +52,6 @@ function ScholarshipListCard({ scholarship, id }) {
   const classes = useStyles();
 
   // mock data
-  scholarship.description =
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
-  scholarship.city = 'City of Seattle';
-  scholarship.amount = '$1,000';
-  scholarship.tags = [
-    { id: '1', title: 'Css' },
-    { id: '3', title: 'GPA: 3.0' },
-    { id: '2', title: 'HS Senior' },
-    { id: '4', title: 'Css' },
-    { id: '5', title: 'GPA: 3.0' },
-    { id: '6', title: 'HS Senior' },
-  ];
 
   return (
     <Card variant="outlined">
@@ -96,16 +85,26 @@ function ScholarshipListCard({ scholarship, id }) {
           </Typography>
 
           <Box className={classes.tagWrapper}>
-            {scholarship.tags.map((tag) => (
-              <Box component="span" className={classes.tag}>
-                {tag.title}
-              </Box>
-            ))}
+            {scholarship.tags
+              ? scholarship.tags.map((tag) => (
+                  <Box component="span" className={classes.tag}>
+                    {tag.title}
+                  </Box>
+                ))
+              : null}
           </Box>
         </CardContent>
       </CardActionArea>
     </Card>
   );
 }
+
+ScholarshipListCard.propTypes = {
+  scholarship: PropTypes.arrayOf(PropTypes.object),
+  id: PropTypes.string.isRequired,
+};
+ScholarshipListCard.defaultProps = {
+  scholarship: {},
+};
 
 export default ScholarshipListCard;

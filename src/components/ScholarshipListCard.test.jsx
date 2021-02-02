@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import ScholarshipListCard from './ScholarshipListCard';
 
 test('renders ScholarshipListCard', () => {
-  let mockScholarship = {
+  const mockScholarship = {
     deadline: new Date(),
     name: 'test scholarship',
     description: 'desc',
@@ -18,10 +18,11 @@ test('renders ScholarshipListCard', () => {
     wrapper: MemoryRouter,
   });
 
-  for (let [_, value] of Object.entries(want)) {
-    if (typeof value == 'object') {
-      value = value.toLocaleDateString();
+  Object.entries(want).forEach(([_, v]) => {
+    let value;
+    if (typeof v === 'object') {
+      value = v.toLocaleDateString();
     }
     expect(screen.getByText(value)).toBeInTheDocument();
-  }
+  });
 });
