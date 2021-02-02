@@ -5,7 +5,7 @@ import {
   makeStyles,
   Typography,
 } from '@material-ui/core';
-import Box from '@material-ui/core/Box';
+import { createMuiTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
@@ -35,6 +35,10 @@ function ScholarshipsPage() {
 
   const classes = useStyles();
 
+  const theme = createMuiTheme({
+    spacing: 8,
+  });
+
   return (
     <Container>
       <Typography variant="h3" component="h1" style={{ textAlign: 'center' }}>
@@ -45,8 +49,9 @@ function ScholarshipsPage() {
         (loading && <CircularProgress className={classes.progress} />) || (
           <ScholarshipList scholarships={scholarships} />
         )}
-      <Box mt={24} mb={24} />
       <Button
+        mt={theme.spacing(3)}
+        mb={theme.spacing(3)}
         color="primary"
         onClick={() => {
           alert('clicked');
