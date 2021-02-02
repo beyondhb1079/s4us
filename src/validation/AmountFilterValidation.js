@@ -5,7 +5,11 @@ const AmountFilterValidation = yup.object({
     is: (max) => max > 0,
     then: yup
       .number()
-      .lessThan(yup.ref('max'), 'Minimum must be less than the maximum.'),
+      .test(
+        'min <= max',
+        'Minimum must be less than or equal to the Maximum.',
+        (min, { parent }) => min <= parent.max
+      ),
   }),
   max: yup.number().notRequired(),
 });

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import {
   Button,
@@ -34,18 +34,26 @@ export default function AmountFilter() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleClick = (event) => setAnchorEl(event.currentTarget);
-
   const formik = useFormik({
     initialValues: {
       min: 0,
       max: 0,
     },
     validationSchema: AmountFilterValidation,
-    onSubmit: (values) => {
-      console.log(values);
-    },
   });
+
+  useEffect(() => {
+    const timeoutId = setTimeout(
+      () => console.log(`${formik.values.min} ${formik.values.max}`),
+      5000
+    );
+    return () => clearTimeout(timeoutId);
+  }, [formik.values.min, formik.values.max]);
+
+  const handleClick = (event) => setAnchorEl(event.currentTarget);
+  function handleChange(index, val) {
+    formik.setFieldValue(index, parseInt(val, 10) || 0);
+  }
 
   return (
     <>
@@ -69,9 +77,7 @@ export default function AmountFilter() {
             <AmountTextField
               error={formik.errors.min}
               value={formik.values.min || ''}
-              onChange={(e) =>
-                formik.setFieldValue('min', parseInt(e.target.value, 10) || 0)
-              }
+              onChange={(e) => handleChange('min', e.target.value)}
             />
           </Grid>
           <Grid item className={classes.dashStyle}>
@@ -81,9 +87,7 @@ export default function AmountFilter() {
             <InputLabel className={classes.labelStyle}>Max Amount</InputLabel>
             <AmountTextField
               value={formik.values.max || ''}
-              onChange={(e) =>
-                formik.setFieldValue('max', parseInt(e.target.value, 10) || 0)
-              }
+              onChange={(e) => handleChange('max', e.target.value)}
             />
           </Grid>
         </Grid>
