@@ -6,10 +6,11 @@ import {
   makeStyles,
   Typography,
 } from '@material-ui/core';
-import Pagination from '@material-ui/lab/Pagination';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles(() => ({
   progress: {
@@ -45,9 +46,14 @@ function ScholarshipsPage() {
         (loading && <CircularProgress className={classes.progress} />) || (
           <ScholarshipList scholarships={scholarships} />
         )}
-      <Divider />
-
-      <Pagination count={10} />
+      <Box mt={24} mb={24} />
+      <Button
+        color="primary"
+        onClick={() => {
+          alert('clicked');
+        }}>
+        Load More
+      </Button>
     </Container>
   );
 }
