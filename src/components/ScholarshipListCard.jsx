@@ -51,8 +51,6 @@ const useStyles = makeStyles((theme) => ({
 function ScholarshipListCard({ scholarship, id }) {
   const classes = useStyles();
 
-  // mock data
-
   return (
     <Card variant="outlined">
       <CardActionArea
@@ -65,7 +63,6 @@ function ScholarshipListCard({ scholarship, id }) {
           <Typography variant="body1" className={classes.deadline}>
             {scholarship.deadline.toLocaleDateString()}
           </Typography>
-
           <Typography variant="h5">{scholarship.name}</Typography>
           <Typography variant="subtitle1" className={classes.subtitle}>
             {scholarship.city}
@@ -74,16 +71,16 @@ function ScholarshipListCard({ scholarship, id }) {
             variant="subtitle1"
             className={classes.subtitle}
             gutterBottom>
-            {scholarship.amount}
+            {/* scholarship.amount */}
+            {/* need to ask more about how to display amount value */}
+            {'$1,000'}
           </Typography>
-
           <Typography
             variant="body1"
             color="textSecondary"
             className={classes.description}>
             {scholarship.description}
           </Typography>
-
           <Box className={classes.tagWrapper}>
             {scholarship.tags
               ? scholarship.tags.map((tag) => (
@@ -100,8 +97,8 @@ function ScholarshipListCard({ scholarship, id }) {
 }
 
 ScholarshipListCard.propTypes = {
-  scholarship: PropTypes.arrayOf(PropTypes.object),
-  id: PropTypes.string.isRequired,
+  scholarship: PropTypes.object,
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 };
 ScholarshipListCard.defaultProps = {
   scholarship: {},

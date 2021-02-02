@@ -19,7 +19,7 @@ test('renders ScholarshipListCard', () => {
   });
 
   Object.entries(want).forEach(([_, v]) => {
-    let value;
+    let value = v;
     if (typeof v === 'object') {
       value = v.toLocaleDateString();
     }

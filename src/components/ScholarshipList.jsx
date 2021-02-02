@@ -43,11 +43,11 @@ function ScholarshipList({ scholarships }) {
 
   return (
     <Grid container spacing={3}>
-      {scholarships.map(({ id, data }) => (
-        <Grid item xs={6} key={id}>
-          <ScholarshipListCard scholarship={data} id={id} />
-        </Grid>
-      ))}
+      <Grid item xs={6}>
+        {scholarships.map(({ id, data }) => (
+          <ScholarshipListCard scholarship={data} id={id} key={id} />
+        ))}
+      </Grid>
       <ShareDialog
         open={shareDialogOpen}
         onClose={closeShareDialog}
