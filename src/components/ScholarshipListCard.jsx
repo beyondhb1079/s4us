@@ -71,9 +71,7 @@ function ScholarshipListCard({ scholarship, id }) {
             variant="subtitle1"
             className={classes.subtitle}
             gutterBottom>
-            {/* scholarship.amount */}
-            {/* need to ask more about how to display amount value */}
-            {'$1,000'}
+            $1,000
           </Typography>
           <Typography
             variant="body1"
@@ -97,7 +95,13 @@ function ScholarshipListCard({ scholarship, id }) {
 }
 
 ScholarshipListCard.propTypes = {
-  scholarship: PropTypes.object,
+  scholarship: PropTypes.shape({
+    name: PropTypes.string,
+    city: PropTypes.string,
+    description: PropTypes.string,
+    deadline: PropTypes.instanceOf(Date),
+    tags: PropTypes.arrayOf({ title: PropTypes.string }),
+  }),
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 };
 ScholarshipListCard.defaultProps = {
