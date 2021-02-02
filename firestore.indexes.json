@@ -1,4 +1,21 @@
 {
-  "indexes": [],
+  "indexes": [
+    {
+      "collectionGroup": "scholarships",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "amount.min", "order": "ASCENDING" },
+        { "fieldPath": "amount.deadline", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "scholarships",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "amount.max", "order": "DESCENDING" },
+        { "fieldPath": "amount.deadline", "order": "ASCENDING" }
+      ]
+    }
+  ],
   "fieldOverrides": []
 }
