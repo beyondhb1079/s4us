@@ -1,44 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import {
-  Button,
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Grid,
-  IconButton,
-  Link as MuiLink,
-  Typography,
-} from '@material-ui/core';
-import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
-import ShareIcon from '@material-ui/icons/Share';
-import { makeStyles } from '@material-ui/core/styles';
+import { Grid } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { BRAND_NAME } from '../config/constants';
 import ShareDialog from './ShareDialog';
 
 import ScholarshipListCard from './ScholarshipListCard';
-
-const useStyles = makeStyles((theme) => ({
-  actions: {
-    padding: theme.spacing(2),
-    paddingTop: theme.spacing(1),
-  },
-  content: {
-    paddingTop: theme.spacing(0),
-    paddingBottom: theme.spacing(1),
-  },
-  description: {
-    display: '-webkit-box',
-    '-webkit-line-clamp': 5,
-    lineClamp: 5,
-    '-webkit-box-orient': 'vertical',
-    overflow: 'hidden',
-    whiteSpace: 'pre-line',
-  },
-}));
 
 // move out from component
 // because it don't need to recreate every time component render
@@ -78,7 +44,7 @@ function ScholarshipList({ scholarships }) {
   return (
     <Grid container spacing={3}>
       {scholarships.map(({ id, data }) => (
-        <Grid item xs={12} key={id}>
+        <Grid item xs={6} key={id}>
           <ScholarshipListCard scholarship={data} id={id} />
         </Grid>
       ))}

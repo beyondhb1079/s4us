@@ -1,22 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Button,
   Card,
   CardActionArea,
-  CardActions,
   CardContent,
-  CardHeader,
-  Grid,
-  IconButton,
-  Link as MuiLink,
+  Box,
   Typography,
 } from '@material-ui/core';
-import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
-import ShareIcon from '@material-ui/icons/Share';
 import { makeStyles } from '@material-ui/core/styles';
-import { BRAND_NAME } from '../config/constants';
-import ShareDialog from './ShareDialog';
 
 const useStyles = makeStyles((theme) => ({
   actions: {
@@ -24,12 +15,14 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(1),
   },
   content: {
-    // paddingTop: theme.spacing(2),
-    // paddingBottom: theme.spacing(2),
     padding: theme.spacing(3),
+  },
+  subtitle: {
+    fontWeight: '500',
   },
   deadline: {
     fontWeight: 'bold',
+    marginBottom: theme.spacing(1),
   },
   description: {
     display: '-webkit-box',
@@ -38,13 +31,38 @@ const useStyles = makeStyles((theme) => ({
     '-webkit-box-orient': 'vertical',
     overflow: 'hidden',
     whiteSpace: 'pre-line',
+    marginBottom: theme.spacing(3),
+  },
+  tagWrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  tag: {
+    marginRight: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+    borderRadius: '50px',
+    border: '1px solid #3FB1B5',
+    padding: '12px 18px',
   },
 }));
 
 function ScholarshipListCard({ scholarship, id }) {
   const classes = useStyles();
 
-  console.log(scholarship);
+  // mock data
+  scholarship.description =
+    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
+  scholarship.city = 'City of Seattle';
+  scholarship.amount = '$1,000';
+  scholarship.tags = [
+    { id: '1', title: 'Css' },
+    { id: '3', title: 'GPA: 3.0' },
+    { id: '2', title: 'HS Senior' },
+    { id: '4', title: 'Css' },
+    { id: '5', title: 'GPA: 3.0' },
+    { id: '6', title: 'HS Senior' },
+  ];
 
   return (
     <Card variant="outlined">
@@ -54,59 +72,38 @@ function ScholarshipListCard({ scholarship, id }) {
           pathname: `/scholarships/${id}`,
           state: { scholarship: { id, scholarship } },
         }}>
-        {/* 
-        <CardHeader
-          title={scholarship.name}
-          subheader={scholarship.amount.toString()}
-        />
-        */}
-
         <CardContent className={classes.content}>
-          <Typography
-            component="span"
-            variant="body3"
-            className={classes.deadline}>
-            {scholarship.deadline.toString()}
+          <Typography variant="body1" className={classes.deadline}>
+            {scholarship.deadline.toLocaleDateString()}
           </Typography>
 
-          <Typography gutterBottom variant="body1">
-            Deadline:{' '}
-            <Typography component="span" color="primary">
-              {scholarship.deadline.toLocaleDateString()}
-            </Typography>
+          <Typography variant="h5">{scholarship.name}</Typography>
+          <Typography variant="subtitle1" className={classes.subtitle}>
+            {scholarship.city}
           </Typography>
+          <Typography
+            variant="subtitle1"
+            className={classes.subtitle}
+            gutterBottom>
+            {scholarship.amount}
+          </Typography>
+
           <Typography
             variant="body1"
             color="textSecondary"
             className={classes.description}>
             {scholarship.description}
           </Typography>
+
+          <Box className={classes.tagWrapper}>
+            {scholarship.tags.map((tag) => (
+              <Box component="span" className={classes.tag}>
+                {tag.title}
+              </Box>
+            ))}
+          </Box>
         </CardContent>
       </CardActionArea>
-      {/*
-      <CardActions className={classes.actions}>
-        <Button
-          component={MuiLink}
-          href={data.website}
-          color="primary"
-          variant="contained">
-          Apply
-        </Button>
-        <IconButton
-          aria-label="add to bookmarks"
-          color="primary"
-          // eslint-disable-next-line no-alert
-          onClick={() => alert('This feature is under construction')}>
-          <BookmarkBorderIcon />
-        </IconButton>
-        <IconButton
-          aria-label="share"
-          color="primary"
-          onClick={shareFn(id, data)}>
-          <ShareIcon />
-        </IconButton>
-      </CardActions>
-      */}
     </Card>
   );
 }
