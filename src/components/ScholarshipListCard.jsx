@@ -51,18 +51,6 @@ const useStyles = makeStyles((theme) => ({
 function ScholarshipListCard({ scholarship, id }) {
   const classes = useStyles();
 
-  scholarship.tags = [
-    { title: 'Css', id: '1' },
-    { title: 'GCP: 3.0', id: '2' },
-    { title: 'HS Senior', id: '3' },
-    { title: 'Css', id: '1' },
-    { title: 'GCP: 3.0', id: '2' },
-    { title: 'HS Senior', id: '3' },
-    { title: 'Css', id: '1' },
-    { title: 'GCP: 3.0', id: '2' },
-    { title: 'HS Senior', id: '3' },
-  ];
-
   return (
     <Card variant="outlined">
       <CardActionArea
