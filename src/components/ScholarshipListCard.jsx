@@ -7,6 +7,7 @@ import {
   CardContent,
   Box,
   Typography,
+  Chip,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -42,14 +43,25 @@ const useStyles = makeStyles((theme) => ({
   tag: {
     marginRight: theme.spacing(2),
     marginBottom: theme.spacing(2),
-    borderRadius: '50px',
-    border: '1px solid #3FB1B5',
-    padding: '12px 18px',
+    color: '#000',
+    borderColor: '#3FB1B5',
   },
 }));
 
 function ScholarshipListCard({ scholarship, id }) {
   const classes = useStyles();
+
+  scholarship.tags = [
+    { title: 'Css', id: '1' },
+    { title: 'GCP: 3.0', id: '2' },
+    { title: 'HS Senior', id: '3' },
+    { title: 'Css', id: '1' },
+    { title: 'GCP: 3.0', id: '2' },
+    { title: 'HS Senior', id: '3' },
+    { title: 'Css', id: '1' },
+    { title: 'GCP: 3.0', id: '2' },
+    { title: 'HS Senior', id: '3' },
+  ];
 
   return (
     <Card variant="outlined">
@@ -82,9 +94,11 @@ function ScholarshipListCard({ scholarship, id }) {
           <Box className={classes.tagWrapper}>
             {scholarship.tags
               ? scholarship.tags.map((tag) => (
-                  <Box component="span" className={classes.tag}>
-                    {tag.title}
-                  </Box>
+                  <Chip
+                    label={tag.title}
+                    variant="outlined"
+                    className={classes.tag}
+                  />
                 ))
               : null}
           </Box>
