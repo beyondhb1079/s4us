@@ -5,16 +5,18 @@ import {
   makeStyles,
   Typography,
 } from '@material-ui/core';
-import { createMuiTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   progress: {
     display: 'block',
     margin: 'auto',
+  },
+  marginTB: {
+    margin: theme.spacing(3, 0),
   },
 }));
 
@@ -35,10 +37,6 @@ function ScholarshipsPage() {
 
   const classes = useStyles();
 
-  const theme = createMuiTheme({
-    spacing: 8,
-  });
-
   return (
     <Container>
       <Typography variant="h3" component="h1" style={{ textAlign: 'center' }}>
@@ -50,8 +48,7 @@ function ScholarshipsPage() {
           <ScholarshipList scholarships={scholarships} />
         )}
       <Button
-        mt={theme.spacing(3)}
-        mb={theme.spacing(3)}
+        className={classes.marginTB}
         color="primary"
         onClick={() => {
           alert('clicked');
