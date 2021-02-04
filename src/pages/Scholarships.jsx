@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'block',
     margin: 'auto',
   },
-  marginTB: {
+  loadMoreButton: {
     margin: theme.spacing(3, 0),
   },
 }));
@@ -45,16 +45,18 @@ function ScholarshipsPage() {
       <FilterBar changeSortBy={setSortField} changeSortFormat={setSortDir} />
       {error?.toString() ||
         (loading && <CircularProgress className={classes.progress} />) || (
-          <ScholarshipList scholarships={scholarships} />
+          <React.Fragment>
+            <ScholarshipList scholarships={scholarships} />
+            <Button
+              className={classes.loadMoreButton}
+              color="primary"
+              onClick={() => {
+                alert('clicked');
+              }}>
+              Load More
+            </Button>
+          </React.Fragment>
         )}
-      <Button
-        className={classes.marginTB}
-        color="primary"
-        onClick={() => {
-          alert('clicked');
-        }}>
-        Load More
-      </Button>
     </Container>
   );
 }
