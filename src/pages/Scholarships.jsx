@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import {
   CircularProgress,
   Container,
@@ -45,7 +45,7 @@ function ScholarshipsPage() {
       <FilterBar changeSortBy={setSortField} changeSortFormat={setSortDir} />
       {error?.toString() ||
         (loading && <CircularProgress className={classes.progress} />) || (
-          <React.Fragment>
+          <Fragment>
             <ScholarshipList scholarships={scholarships} />
             <Button
               className={classes.loadMoreButton}
@@ -55,7 +55,7 @@ function ScholarshipsPage() {
               }}>
               Load More
             </Button>
-          </React.Fragment>
+          </Fragment>
         )}
     </Container>
   );
