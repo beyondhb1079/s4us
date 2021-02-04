@@ -5,14 +5,18 @@ import {
   makeStyles,
   Typography,
 } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   progress: {
     display: 'block',
     margin: 'auto',
+  },
+  loadMoreButton: {
+    margin: theme.spacing(3, 0),
   },
 }));
 
@@ -41,7 +45,17 @@ function ScholarshipsPage() {
       <FilterBar changeSortBy={setSortField} changeSortFormat={setSortDir} />
       {error?.toString() ||
         (loading && <CircularProgress className={classes.progress} />) || (
-          <ScholarshipList scholarships={scholarships} />
+          <>
+            <ScholarshipList scholarships={scholarships} />
+            <Button
+              className={classes.loadMoreButton}
+              color="primary"
+              onClick={() => {
+                alert('clicked');
+              }}>
+              Load More
+            </Button>
+          </>
         )}
     </Container>
   );
