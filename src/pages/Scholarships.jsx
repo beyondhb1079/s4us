@@ -45,7 +45,7 @@ function ScholarshipsPage() {
       <FilterBar changeSortBy={setSortField} changeSortFormat={setSortDir} />
       {error?.toString() ||
         (loading && <CircularProgress className={classes.progress} />) || (
-          <Fragment>
+          <>
             <ScholarshipList scholarships={scholarships} />
             <Button
               className={classes.loadMoreButton}
@@ -55,7 +55,7 @@ function ScholarshipsPage() {
               }}>
               Load More
             </Button>
-          </Fragment>
+          </>
         )}
     </Container>
   );
