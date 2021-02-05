@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import firebase from 'firebase';
 import { makeStyles, Link as MuiLink, Grid } from '@material-ui/core';
-import LoginButton from './LoginButton';
+import Button from '@material-ui/core/Button';
+import ProfileMenu from './ProfileDropdown';
 
 const useStyles = makeStyles((theme) => ({
   menu: {
@@ -24,6 +26,23 @@ function HeaderNavMenu() {
     About: '/about',
     Contact: '/contact',
   };
+
+  const [isSignedIn, setIsSignedIn] = useState(!!firebase.auth().currentUser);
+  const [loading, setLoading] = useState(true);
+
+  function updateUserStatus(user) {
+    setLoading(false);
+    setIsSignedIn(!!user);
+  }
+
+  useEffect(
+    () => firebase.auth().onAuthStateChanged((user) => updateUserStatus(user)),
+    []
+  );
+
+  const signUserOut = () => firebase.auth().signOut();
+  const user = firebase.auth().currentUser;
+
   return (
     <Grid container spacing={3} className={classes.menu}>
       {Object.entries(links).map(([title, link]) => (
@@ -34,7 +53,26 @@ function HeaderNavMenu() {
         </Grid>
       ))}
       <Grid item className={classes.avatarMenu}>
-        <LoginButton />
+        {(loading && <null />) ||
+          (isSignedIn ? (
+            <ProfileMenu
+              signOut={signUserOut}
+              name={user.displayName}
+              email={user.email}
+              photo={user.photoURL}
+            />
+          ) : (
+            <Button
+              variant="contained"
+              color="primary"
+              component={Link}
+              to={{
+                state: { showLoginDialog: true },
+              }}
+              replace>
+              Login
+            </Button>
+          ))}
       </Grid>
     </Grid>
   );
