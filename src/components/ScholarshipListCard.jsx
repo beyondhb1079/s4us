@@ -71,7 +71,7 @@ function ScholarshipListCard({ scholarship, id }) {
             variant="subtitle1"
             className={classes.subtitle}
             gutterBottom>
-            $1,000
+            {scholarship.amount.toString()}
           </Typography>
           <Typography
             variant="body1"
@@ -102,6 +102,11 @@ ScholarshipListCard.propTypes = {
     city: PropTypes.string,
     description: PropTypes.string,
     deadline: PropTypes.instanceOf(Date),
+    amount: PropTypes.shape({
+      max: PropTypes.number,
+      min: PropTypes.number,
+      type: PropTypes.oneOf([PropTypes.string, null]),
+    }),
     tags: PropTypes.arrayOf({ title: PropTypes.string }),
   }),
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
