@@ -1,22 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase';
-import { CircularProgress, makeStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import ProfileMenu from './ProfileDropdown';
-
-const useStyles = makeStyles(() => ({
-  progress: {
-    display: 'block',
-    margin: 'auto',
-  },
-}));
 
 export default function LoginButton() {
   const [isSignedIn, setIsSignedIn] = useState(!!firebase.auth().currentUser);
   const [loading, setLoading] = useState(true);
   const [error] = useState();
-  const classes = useStyles();
 
   function updateUserStatus(user) {
     setLoading(false);
@@ -34,7 +25,7 @@ export default function LoginButton() {
   return (
     <>
       {error?.toString() ||
-        (loading && <CircularProgress className={classes.progress} />) ||
+        (loading && <null />) ||
         (isSignedIn ? (
           <ProfileMenu
             signOut={signUserOut}

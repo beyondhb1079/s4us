@@ -5,11 +5,14 @@ import LoginButton from './LoginButton';
 
 const useStyles = makeStyles((theme) => ({
   menu: {
-    alignItems: 'center',
+    alignItems: 'right',
     justifyContent: 'center',
   },
   menuItem: {
     color: theme.palette.text.secondary,
+  },
+  avatarMenu: {
+    minWidth: '100px',
   },
 }));
 
@@ -30,8 +33,8 @@ function HeaderNavMenu() {
           </MuiLink>
         </Grid>
       ))}
-      <Grid item>
-        <LoginButton className={classes.menuItem} />
+      <Grid item className={classes.avatarMenu}>
+        <LoginButton />
       </Grid>
     </Grid>
   );
