@@ -8,8 +8,11 @@ test('renders ScholarshipListCard', () => {
     deadline: new Date(),
     name: 'test scholarship',
     description: 'desc',
-    city: 'City of Seattle',
-    amount: '$1,000',
+    organization: 'City of Seattle',
+    amount: {
+      // mock toString func for amount type
+      toString: () => 'unknow amount',
+    },
   };
 
   const want = mockScholarship;
@@ -20,9 +23,16 @@ test('renders ScholarshipListCard', () => {
 
   Object.entries(want).forEach(([_, v]) => {
     let value = v;
-    if (typeof v === 'object') {
+    // check for deadline type
+    if (v instanceof Date) {
       value = v.toLocaleDateString();
     }
+
+    // check for amount type
+    if (v.toString && !v.toLocaleDateString) {
+      value = v.toString();
+    }
+
     expect(screen.getByText(value)).toBeInTheDocument();
   });
 });
