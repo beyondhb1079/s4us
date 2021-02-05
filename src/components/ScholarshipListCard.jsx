@@ -65,7 +65,7 @@ function ScholarshipListCard({ scholarship, id }) {
           </Typography>
           <Typography variant="h5">{scholarship.name}</Typography>
           <Typography variant="subtitle1" className={classes.subtitle}>
-            {scholarship.city}
+            {scholarship.organization}
           </Typography>
           <Typography
             variant="subtitle1"
@@ -99,7 +99,7 @@ function ScholarshipListCard({ scholarship, id }) {
 ScholarshipListCard.propTypes = {
   scholarship: PropTypes.shape({
     name: PropTypes.string,
-    city: PropTypes.string,
+    organization: PropTypes.string,
     description: PropTypes.string,
     deadline: PropTypes.instanceOf(Date),
     amount: PropTypes.shape({
