@@ -34,8 +34,9 @@ Fixes #
 
 <!-- TODO: REPLACE "NUMBER" WITH THE PULL REQUEST NUMBER --->
 <!-- The URL should match the URL left by render[bot]'s comment. --->
+
 1. Go to https://s4us-pr-NUMBER.onrender.com.
-2. 
+2.
 
 ## Checklist:
 
