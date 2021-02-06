@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase';
-import { makeStyles, Link as MuiLink, Grid } from '@material-ui/core';
+import { makeStyles, Link as MuiLink, Grid, Zoom } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import ProfileMenu from './ProfileDropdown';
 
 const useStyles = makeStyles((theme) => ({
   menu: {
-    alignItems: 'right',
+    alignItems: 'center',
     justifyContent: 'center',
   },
   menuItem: {
     color: theme.palette.text.secondary,
   },
-  avatarMenu: {
+  authItem: {
     minWidth: '100px',
   },
 }));
@@ -27,21 +27,17 @@ function HeaderNavMenu() {
     Contact: '/contact',
   };
 
-  const [isSignedIn, setIsSignedIn] = useState(!!firebase.auth().currentUser);
-  const [loading, setLoading] = useState(true);
-
-  function updateUserStatus(user) {
-    setLoading(false);
-    setIsSignedIn(!!user);
-  }
+  const [isSignedIn, setIsSignedIn] = useState(
+    !!firebase.auth().currentUser || undefined
+  );
+  const loading = isSignedIn === undefined;
 
   useEffect(
-    () => firebase.auth().onAuthStateChanged((user) => updateUserStatus(user)),
+    () => firebase.auth().onAuthStateChanged((user) => setIsSignedIn(!!user)),
     []
   );
 
   const signUserOut = () => firebase.auth().signOut();
-  const user = firebase.auth().currentUser;
 
   return (
     <Grid container spacing={3} className={classes.menu}>
@@ -53,26 +49,22 @@ function HeaderNavMenu() {
         </Grid>
       ))}
       <Grid item className={classes.avatarMenu}>
-        {(loading && <null />) ||
-          (isSignedIn ? (
-            <ProfileMenu
-              signOut={signUserOut}
-              name={user.displayName}
-              email={user.email}
-              photo={user.photoURL}
-            />
-          ) : (
-            <Button
-              variant="contained"
-              color="primary"
-              component={Link}
-              to={{
-                state: { showLoginDialog: true },
-              }}
-              replace>
-              Login
-            </Button>
-          ))}
+        {!loading && (
+          <Zoom in>
+            {isSignedIn ? (
+              <ProfileMenu signOut={signUserOut} />
+            ) : (
+              <Button
+                variant="contained"
+                color="primary"
+                component={Link}
+                to={{ state: { showLoginDialog: true } }}
+                replace>
+                Login
+              </Button>
+            )}
+          </Zoom>
+        )}
       </Grid>
     </Grid>
   );

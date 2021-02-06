@@ -1,4 +1,5 @@
 import React from 'react';
+import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { Avatar, Divider, Grid, Typography } from '@material-ui/core';
@@ -53,14 +54,15 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: 'center',
   },
   medium: {
-    width: '50px',
-    height: '50px',
+    width: theme.spacing(6),
+    height: theme.spacing(6),
   },
 }));
 
 export default function ProfileDropdown(props) {
   const classes = useStyles();
-  const { signOut, name, email, photo } = props;
+  const { signOut } = props;
+  const user = firebase.auth().currentUser;
 
   const [dropMenu, setDropMenu] = React.useState(null);
   const handleClick = (event) => setDropMenu(event.currentTarget);
@@ -80,7 +82,7 @@ export default function ProfileDropdown(props) {
 
   return (
     <>
-      <Avatar src={photo} onClick={handleClick} />
+      <Avatar src={user.photoURL} onClick={handleClick} />
       <StyledMenu
         anchorEl={dropMenu}
         keepMounted
@@ -88,14 +90,14 @@ export default function ProfileDropdown(props) {
         onClose={handleClose}>
         <Grid container spacing={2} className={classes.gridRoot}>
           <Grid item className={classes.profilePic}>
-            <Avatar src={photo} className={classes.medium} />
+            <Avatar src={user.photoURL} className={classes.medium} />
           </Grid>
           <Grid>
             <Typography variant="h6" component="h4">
-              {name}
+              {user.displayName}
             </Typography>
             <Typography component="h6" gutterBottom>
-              {email}
+              {user.email}
             </Typography>
             {EXPERIMENT_SHOW_FULL_PROFILE_MENU && (
               <a href={manageProfileLink}>Manage Your Profile</a>
@@ -119,7 +121,4 @@ export default function ProfileDropdown(props) {
 
 ProfileDropdown.propTypes = {
   signOut: PropTypes.func.isRequired,
-  name: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
-  photo: PropTypes.string.isRequired,
 };
