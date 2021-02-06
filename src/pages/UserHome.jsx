@@ -92,7 +92,7 @@ export default function UserHome() {
       </center>
       <center>
         <Typography
-          variant="h9"
+          variant="h10"
           component="h2"
           gutterButton
           color="primary"
