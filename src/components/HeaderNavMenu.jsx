@@ -37,8 +37,6 @@ function HeaderNavMenu() {
     []
   );
 
-  const signUserOut = () => firebase.auth().signOut();
-
   return (
     <Grid container spacing={3} className={classes.menu}>
       {Object.entries(links).map(([title, link]) => (
@@ -52,7 +50,7 @@ function HeaderNavMenu() {
         {!loading && (
           <Zoom in>
             {isSignedIn ? (
-              <ProfileMenu signOut={signUserOut} />
+              <ProfileMenu />
             ) : (
               <Button
                 variant="contained"

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import firebase from 'firebase';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tab from '@material-ui/core/Tab';
@@ -8,9 +9,11 @@ import TabContext from '@material-ui/lab/TabContext';
 import TabList from '@material-ui/lab/TabList';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { Zoom } from '@material-ui/core';
 import HomeSection from './HomeSection';
 import student from '../img/student.png';
 import contributor from '../img/contributor.png';
+import ProfileMenu from './ProfileDropdown';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,41 +46,55 @@ function OutlineButton(user) {
   );
 }
 
-const tabs = [
-  {
-    tab: 'students',
-    title: 'Stress-free scholarships',
-    description:
-      'We intend to provide tools and resources for all students in High School, Community College and University. Our goal is to provide you with access to scholarships to allow you to pursue your career path. We understand that finding scholarships that match your attributes is the most difficult and time consuming task to do as a college student. Our purpose is to connect you with our database to ensure the time you spend finding scholarships is minimize and effectively provide you with scholarships that are right for you.',
-    buttons: [
-      <Button
-        variant="contained"
-        color="primary"
-        component={Link}
-        to={{
-          state: { showLoginDialog: true },
-        }}
-        replace>
-        Login
-      </Button>,
-      OutlineButton('students'),
-    ],
-    pic: student,
-  },
-  {
-    tab: 'community contributor',
-    title: 'Join and Support the Community',
-    description:
-      'As members of the community we are passionate about contributing to opening opportunites too as many people possible. Our college experience has lead us to initialize a web platform for connecting students with scholarships. We would be beyond thrilled if we recieved support from the community to keep the scholarships up to date and fully functioning by becoming part of the team.',
-    buttons: [OutlineButton('community contributor')],
-    pic: contributor,
-  },
-];
-
 export default function ScholarshipsMadeSimpleSection() {
   const classes = useStyles();
-  const [user, setUser] = React.useState(tabs[0].tab);
+  const [isSignedIn, setIsSignedIn] = useState(
+    !!firebase.auth().currentUser || undefined
+  );
+  const loading = isSignedIn === undefined;
 
+  useEffect(
+    () => firebase.auth().onAuthStateChanged((user) => setIsSignedIn(!!user)),
+    []
+  );
+
+  const tabs = [
+    {
+      tab: 'students',
+      title: 'Stress-free scholarships',
+      description:
+        'We intend to provide tools and resources for all students in High School, Community College and University. Our goal is to provide you with access to scholarships to allow you to pursue your career path. We understand that finding scholarships that match your attributes is the most difficult and time consuming task to do as a college student. Our purpose is to connect you with our database to ensure the time you spend finding scholarships is minimize and effectively provide you with scholarships that are right for you.',
+      buttons: [
+        !loading && (
+          <Zoom in>
+            {isSignedIn ? (
+              <ProfileMenu />
+            ) : (
+              <Button
+                variant="contained"
+                color="primary"
+                component={Link}
+                to={{ state: { showLoginDialog: true } }}
+                replace>
+                Login
+              </Button>
+            )}
+          </Zoom>
+        ),
+        OutlineButton('students'),
+      ],
+      pic: student,
+    },
+    {
+      tab: 'community contributor',
+      title: 'Join and Support the Community',
+      description:
+        'As members of the community we are passionate about contributing to opening opportunites too as many people possible. Our college experience has lead us to initialize a web platform for connecting students with scholarships. We would be beyond thrilled if we recieved support from the community to keep the scholarships up to date and fully functioning by becoming part of the team.',
+      buttons: [OutlineButton('community contributor')],
+      pic: contributor,
+    },
+  ];
+  const [user, setUser] = React.useState(tabs[0].tab);
   const handleChange = (event, newUser) => setUser(newUser);
 
   return (

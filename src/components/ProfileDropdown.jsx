@@ -1,6 +1,5 @@
 import React from 'react';
 import firebase from 'firebase';
-import PropTypes from 'prop-types';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { Avatar, Divider, Grid, Typography } from '@material-ui/core';
 import Menu from '@material-ui/core/Menu';
@@ -59,9 +58,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ProfileDropdown(props) {
+export default function ProfileDropdown() {
   const classes = useStyles();
-  const { signOut } = props;
   const user = firebase.auth().currentUser;
 
   const [dropMenu, setDropMenu] = React.useState(null);
@@ -79,6 +77,8 @@ export default function ProfileDropdown(props) {
       </MenuItem>
     );
   }
+
+  const signUserOut = () => firebase.auth().signOut();
 
   return (
     <>
@@ -113,12 +113,12 @@ export default function ProfileDropdown(props) {
             <Divider className={classes.dividerSpacing} />
           </>
         )}
-        {createMenuItem('Logout', <ExitToAppIcon fontSize="medium" />, signOut)}
+        {createMenuItem(
+          'Logout',
+          <ExitToAppIcon fontSize="medium" />,
+          signUserOut
+        )}
       </StyledMenu>
     </>
   );
 }
-
-ProfileDropdown.propTypes = {
-  signOut: PropTypes.func.isRequired,
-};
