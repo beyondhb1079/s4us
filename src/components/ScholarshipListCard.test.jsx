@@ -15,7 +15,7 @@ test('renders ScholarshipListCard', () => {
 
   const want = mockScholarship;
 
-  render(<ScholarshipListCard scholarship={mockScholarship} id={0} />, {
+  render(<ScholarshipListCard scholarship={mockScholarship} id="0" />, {
     wrapper: MemoryRouter,
   });
 

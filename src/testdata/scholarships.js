@@ -2,7 +2,7 @@ import ScholarshipAmount from '../types/ScholarshipAmount';
 
 const scholarships = [
   {
-    id: 1,
+    id: '1',
     data: {
       name: 'scholarship 1',
       amount: new ScholarshipAmount(),
@@ -15,7 +15,7 @@ const scholarships = [
     },
   },
   {
-    id: 2,
+    id: '2',
     data: {
       name: 'scholarship 2',
       amount: new ScholarshipAmount(),
@@ -28,7 +28,7 @@ const scholarships = [
     },
   },
   {
-    id: 3,
+    id: '3',
     data: {
       name: 'scholarship 3',
       amount: new ScholarshipAmount(),
@@ -41,7 +41,7 @@ const scholarships = [
     },
   },
   {
-    id: 4,
+    id: '4',
     data: {
       name: 'scholarship 4',
       amount: new ScholarshipAmount(),
@@ -54,7 +54,7 @@ const scholarships = [
     },
   },
   {
-    id: 5,
+    id: '5',
     data: {
       name: 'scholarship 5',
       amount: new ScholarshipAmount(),
