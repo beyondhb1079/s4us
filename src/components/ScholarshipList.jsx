@@ -13,7 +13,7 @@ function ScholarshipList({ scholarships }) {
   const [shareSiteLink, setShareSiteLink] = React.useState('');
   const [shareSiteTitle, setShareSiteTitle] = React.useState('');
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
   const shareFn = (id, data) => () => {
     const title = `${data.amount} - ${data.name} | ${BRAND_NAME}`;
     const url = `https://${window.location.hostname}/scholarships/${id}`;
