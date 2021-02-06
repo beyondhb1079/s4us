@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import ScholarshipListCard from './ScholarshipListCard';
+import ScholarshipAmount from '../types/ScholarshipAmount';
 
 test('renders ScholarshipListCard', () => {
   const mockScholarship = {
@@ -9,10 +10,7 @@ test('renders ScholarshipListCard', () => {
     name: 'test scholarship',
     description: 'desc',
     organization: 'City of Seattle',
-    amount: {
-      // mock toString func for amount type
-      toString: () => 'unknow amount',
-    },
+    amount: new ScholarshipAmount(),
   };
 
   const want = mockScholarship;
@@ -23,13 +21,11 @@ test('renders ScholarshipListCard', () => {
 
   Object.entries(want).forEach(([_, v]) => {
     let value = v;
-    // check for deadline type
     if (v instanceof Date) {
       value = v.toLocaleDateString();
     }
 
-    // check for amount type
-    if (v.toString && !v.toLocaleDateString) {
+    if (v instanceof ScholarshipAmount) {
       value = v.toString();
     }
 
