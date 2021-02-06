@@ -72,10 +72,9 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@v2
       - name: Install Prettier
-        # The `git checkout` command removes any side effects from the `yarn add` command.
-        run: yarn add prettier && git checkout package.json yarn.lock
+        run: yarn global add prettier
       - name: Style
-        run: yarn prettier --check . || yarn prettier --write . && git diff --exit-code
+        run: prettier --check . || prettier --write . && git diff --exit-code
 
   test:
     runs-on: ubuntu-latest
