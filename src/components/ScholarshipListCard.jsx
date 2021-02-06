@@ -106,7 +106,7 @@ ScholarshipListCard.propTypes = {
     amount: PropTypes.instanceOf(ScholarshipAmount),
     tags: PropTypes.arrayOf({ title: PropTypes.string }),
   }),
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  id: PropTypes.string.isRequired,
 };
 ScholarshipListCard.defaultProps = {
   scholarship: {},
