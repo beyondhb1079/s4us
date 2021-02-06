@@ -46,7 +46,7 @@ function HeaderNavMenu() {
           </MuiLink>
         </Grid>
       ))}
-      <Grid item className={classes.avatarMenu}>
+      <Grid item className={classes.authItem}>
         {!loading && (
           <Zoom in>
             {isSignedIn ? (

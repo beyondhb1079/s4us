@@ -54,9 +54,7 @@ const tabs = [
         variant="contained"
         color="primary"
         component={Link}
-        to={{
-          state: { showLoginDialog: true },
-        }}
+        to={{ state: { showLoginDialog: true } }}
         replace>
         Login
       </Button>,
