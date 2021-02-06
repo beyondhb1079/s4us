@@ -74,7 +74,7 @@ jobs:
       - name: Install Prettier
         run: yarn global add prettier
       - name: Style
-        run: prettier --check . || prettier --write . && git diff --exit-code
+        run: $(yarn global bin)/prettier --check . || $(yarn global bin)/prettier --write . && git diff --exit-code
 
   test:
     runs-on: ubuntu-latest
