@@ -14,17 +14,27 @@ import ScholarshipForm from './pages/ScholarshipForm';
 import theme from './theme';
 import { BRAND_NAME } from './config/constants';
 import FirebaseProvider from './lib/FirebaseProvider';
+import ProtectedRoute from './components/ProtectedRoute';
+import LoginDialog from './components/LoginDialog';
 
-function RouteWithTitle({ path, component, title }) {
+function RouteWithTitle({ path, component, title, guard }) {
   useEffect(() => {
     document.title = `${BRAND_NAME} | ${title}`;
   }, [title]);
-  return <Route {...{ path, component }} />;
+  return guard ? (
+    <ProtectedRoute {...{ path, component }} />
+  ) : (
+    <Route {...{ path, component }} />
+  );
 }
 RouteWithTitle.propTypes = {
-  component: PropTypes.node.isRequired,
+  component: PropTypes.elementType.isRequired,
   path: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  guard: PropTypes.bool,
+};
+RouteWithTitle.defaultProps = {
+  guard: false,
 };
 
 const routes = [
@@ -32,6 +42,7 @@ const routes = [
     path: '/scholarships/new',
     title: 'Add a scholarship',
     component: ScholarshipForm,
+    guard: true,
   },
   {
     path: '/scholarships/:id',
@@ -72,10 +83,14 @@ function App() {
         <Router>
           <Header />
           <Switch>
-            {routes.map(({ path, component, title }) => (
-              <RouteWithTitle {...{ path, component, title }} />
+            {routes.map(({ path, component, title, guard }) => (
+              <RouteWithTitle
+                key={path}
+                {...{ path, component, title, guard }}
+              />
             ))}
           </Switch>
+          <LoginDialog />
           <Footer />
         </Router>
       </ThemeProvider>

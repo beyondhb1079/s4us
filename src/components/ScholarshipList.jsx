@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Button,
@@ -17,6 +17,7 @@ import ShareIcon from '@material-ui/icons/Share';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { BRAND_NAME } from '../config/constants';
+import ShareDialog from './ShareDialog';
 
 const useStyles = makeStyles((theme) => ({
   actions: {
@@ -39,22 +40,29 @@ const useStyles = makeStyles((theme) => ({
 
 function ScholarshipList({ scholarships }) {
   const classes = useStyles();
+  const [shareDialogOpen, setShareDialogOpen] = useState(false);
+  const closeShareDialog = () => setShareDialogOpen(false);
+
+  const [shareSiteLink, setShareSiteLink] = React.useState('');
+  const [shareSiteTitle, setShareSiteTitle] = React.useState('');
+
   const shareFn = (id, data) => () => {
+    const title = `${data.amount} - ${data.name} | ${BRAND_NAME}`;
+    const url = `https://${window.location.hostname}/scholarships/${id}`;
+    const text =
+      `${data.amount} - ${data.name} | ${BRAND_NAME}\n` +
+      `${data.deadline.toLocaleDateString()}\n`;
     if (navigator.share) {
       navigator
-        .share({
-          title: `${data.amount} - ${data.name}`,
-          url: `${window.location.hostname}/scholarships/${id}`,
-          text:
-            `${data.amount} - ${data.name}\n` +
-            `${data.deadline.toLocaleDateString()}\n` +
-            `Shared via ${BRAND_NAME} (under construction)`,
-        })
+        .share({ title, url, text })
+        // eslint-disable-next-line no-console
         .then(() => console.log('Thanks for sharing!'))
+        // eslint-disable-next-line no-console
         .catch(console.error);
     } else {
-      // TODO(https://github.com/beyondhb1079/s4us/issues/154): Share dialog for Web
-      alert('This feature is under construction');
+      setShareSiteLink(url);
+      setShareSiteTitle(title);
+      setShareDialogOpen(true);
     }
   };
   return (
@@ -62,7 +70,12 @@ function ScholarshipList({ scholarships }) {
       {scholarships.map(({ id, data }) => (
         <Grid item xs={12} key={id}>
           <Card variant="outlined">
-            <CardActionArea component={Link} to={`/scholarships/${id}`}>
+            <CardActionArea
+              component={Link}
+              to={{
+                pathname: `/scholarships/${id}`,
+                state: { scholarship: { id, data } },
+              }}>
               <CardHeader
                 title={data.name}
                 subheader={data.amount.toString()}
@@ -93,6 +106,7 @@ function ScholarshipList({ scholarships }) {
               <IconButton
                 aria-label="add to bookmarks"
                 color="primary"
+                // eslint-disable-next-line no-alert
                 onClick={() => alert('This feature is under construction')}>
                 <BookmarkBorderIcon />
               </IconButton>
@@ -106,6 +120,12 @@ function ScholarshipList({ scholarships }) {
           </Card>
         </Grid>
       ))}
+      <ShareDialog
+        open={shareDialogOpen}
+        onClose={closeShareDialog}
+        link={shareSiteLink}
+        title={shareSiteTitle}
+      />
     </Grid>
   );
 }

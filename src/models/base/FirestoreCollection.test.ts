@@ -1,12 +1,8 @@
-import { clearFirestoreData } from '@firebase/rules-unit-testing';
-import firebase, { firestore } from 'firebase';
+import { firestore } from 'firebase';
+import { clearFirestoreData, initializeTestApp } from '../../lib/testing';
 import FirestoreCollection from './FirestoreCollection';
 
-const app = firebase.initializeApp({ projectId: 'fs-collection-test' });
-app.firestore().settings({
-  host: 'localhost:8080',
-  ssl: false,
-});
+const app = initializeTestApp({ projectId: 'fs-collection-test' });
 
 interface NameData {
   first: string;
@@ -41,43 +37,4 @@ test('id() returns model with id', () => {
   const got = names.id('my-id');
 
   expect(got.id).toEqual('my-id');
-});
-
-test('list() returns empty list', async () => {
-  const got = await names.list();
-
-  expect(got).toHaveLength(0);
-});
-
-test('list() returns items', async () => {
-  const bob = names.new({ first: 'Bob', last: 'Smith' });
-  const jane = names.new({ first: 'Jane', last: 'Smith' });
-  await bob.save();
-  await jane.save();
-
-  const got = await names.list();
-
-  expect(got.map((s) => s.id).sort()).toEqual([bob.id, jane.id].sort());
-});
-
-test('list() sorts by field', async () => {
-  const bob = names.new({ first: 'Bob', last: 'Smith' });
-  const jane = names.new({ first: 'Jane', last: 'Smith' });
-  await bob.save();
-  await jane.save();
-
-  const got = await names.list({ sortField: 'first' });
-
-  expect(got.map((s) => s.id)).toEqual([bob.id, jane.id]);
-});
-
-test('list() sorts by field in direction', async () => {
-  const bob = names.new({ first: 'Bob', last: 'Smith' });
-  const jane = names.new({ first: 'Jane', last: 'Smith' });
-  await bob.save();
-  await jane.save();
-
-  const got = await names.list({ sortField: 'first', sortDir: 'desc' });
-
-  expect(got.map((s) => s.id)).toEqual([jane.id, bob.id]);
 });

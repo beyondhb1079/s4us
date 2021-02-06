@@ -7,7 +7,7 @@ test('renders date picker field', () => {
   render(
     <DatePicker
       id="deadline"
-      label="Deadline"
+      label="Deadline *"
       value={new Date(12, 5, 2)}
       onChange={() => {}}
     />,
@@ -22,7 +22,7 @@ test('date change', () => {
   render(
     <DatePicker
       id="deadline"
-      label="Deadline"
+      label="Deadline *"
       value={new Date(12, 5, 2)}
       onChange={() => {}}
     />,

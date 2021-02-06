@@ -19,15 +19,21 @@ jobs:
         id: continue
         run: |
           git diff --exit-code -- build/ src/ *.json yarn.lock || echo ::set-output name=CONTINUE::true
-      - name: Setup node.js
+      - name: Get yarn cache directory path
         if: steps.continue.outputs.CONTINUE
-        uses: actions/setup-node@v2-beta
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v2
+        if: steps.continue.outputs.CONTINUE
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
-          node-version: '12'
-          check-latest: true
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
       - name: Install dependencies
         if: steps.continue.outputs.CONTINUE
-        run: yarn install --frozen-lockfile --production
+        run: yarn install --frozen-lockfile --production --prefer-offline
       - name: Build app
         if: steps.continue.outputs.CONTINUE
         run: yarn build --frozen-lockfile
@@ -41,15 +47,21 @@ jobs:
         id: continue
         run: |
           git diff --exit-code -- '***js' '***jsx' '***ts' '***tsx' package.json yarn.lock || echo ::set-output name=CONTINUE::true
-      - name: Setup node.js
+      - name: Get yarn cache directory path
         if: steps.continue.outputs.CONTINUE
-        uses: actions/setup-node@v2-beta
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v2
+        if: steps.continue.outputs.CONTINUE
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
-          node-version: '12'
-          check-latest: true
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
       - name: Install dependencies
         if: steps.continue.outputs.CONTINUE
-        run: yarn install --frozen-lockfile
+        run: yarn install --frozen-lockfile --prefer-offline
       - name: Lint
         if: steps.continue.outputs.CONTINUE
         run: yarn lint
@@ -59,15 +71,21 @@ jobs:
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
-      - name: Setup node.js
-        uses: actions/setup-node@v2-beta
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v2
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
-          node-version: '12'
-          check-latest: true
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install Prettier
+        # The `git checkout` command removes any side effects from the `yarn add` command.
+        run: yarn add prettier --prefer-offline && git checkout package.json yarn.lock
       - name: Style
-        run: yarn prettier --check .
+        run: yarn prettier --check . || yarn prettier --write . && git diff --exit-code
 
   test:
     runs-on: ubuntu-latest
@@ -78,15 +96,21 @@ jobs:
         id: continue
         run: |
           git diff --exit-code -- src/ *.json yarn.lock || echo ::set-output name=CONTINUE::true
-      - name: Setup node.js
+      - name: Get yarn cache directory path
         if: steps.continue.outputs.CONTINUE
-        uses: actions/setup-node@v2-beta
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v2
+        if: steps.continue.outputs.CONTINUE
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
-          node-version: '12'
-          check-latest: true
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
       - name: Install dependencies
         if: steps.continue.outputs.CONTINUE
-        run: yarn install --frozen-lockfile
+        run: yarn install --frozen-lockfile --prefer-offline
       - name: Run tests
         if: steps.continue.outputs.CONTINUE
         run: yarn test
