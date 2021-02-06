@@ -29,6 +29,12 @@ const useStyles = makeStyles((theme) => ({
   scholarshipsAdded: {
     marginTop: theme.spacing(6),
   },
+  noScholarshipsAdded: {
+    marginTop: theme.spacing(12),
+  },
+  addScholarship: {
+    marginTop: theme.spacing(6),
+  },
 }));
 
 export default function UserHome() {
@@ -46,7 +52,7 @@ export default function UserHome() {
             Looking for scholarships?
           </Typography>
           <Button
-            variant="outlined"
+            variant="contained"
             color="primary"
             component={Link}
             to="/scholarships"
@@ -67,7 +73,7 @@ export default function UserHome() {
         </Grid>
         <Grid item sm={3} className={classes.addButton}>
           <Button
-            variant="outlined"
+            variant="contained"
             color="primary"
             component={Link}
             to="/scholarships/new">
@@ -75,6 +81,27 @@ export default function UserHome() {
           </Button>
         </Grid>
       </Grid>
+      <center>
+        <Typography
+          variant="h5"
+          component="h2"
+          gutterBotton
+          className={classes.noScholarshipsAdded}>
+          No Scholarships Added Yet
+        </Typography>
+      </center>
+      <center>
+        <Typography
+          variant="h7"
+          component="h2"
+          gutterButton
+          color="primary"
+          className={classes.addScholarship}>
+          <p>
+            <a href="more-scholarships">Add A Scholarship</a>
+          </p>
+        </Typography>
+      </center>
     </Container>
   );
 }
