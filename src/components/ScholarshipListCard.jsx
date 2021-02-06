@@ -10,6 +10,7 @@ import {
   Chip,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import ScholarshipAmount from '../types/ScholarshipAmount';
 
 const useStyles = makeStyles((theme) => ({
   actions: {
@@ -102,11 +103,7 @@ ScholarshipListCard.propTypes = {
     organization: PropTypes.string,
     description: PropTypes.string,
     deadline: PropTypes.instanceOf(Date),
-    amount: PropTypes.shape({
-      max: PropTypes.number,
-      min: PropTypes.number,
-      type: PropTypes.oneOf([PropTypes.string, null]),
-    }),
+    amount: PropTypes.instanceOf(ScholarshipAmount),
     tags: PropTypes.arrayOf({ title: PropTypes.string }),
   }),
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
