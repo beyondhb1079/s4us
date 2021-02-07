@@ -27,6 +27,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - name: Cache node_modules
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
         uses: actions/cache@v2
         id: node-modules-cache
         with:
@@ -35,6 +36,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nodemodules-
       - name: Install dependencies
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile --prefer-offline
 
   build:
@@ -50,8 +52,6 @@ jobs:
           key: ${{ runner.os }}-nodemodules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-nodemodules-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile --prefer-offline --production
       - name: Build app
         run: yarn build --frozen-lockfile
 
@@ -68,8 +68,6 @@ jobs:
           key: ${{ runner.os }}-nodemodules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-nodemodules-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile --prefer-offline
       - name: Lint
         run: yarn lint
 
@@ -96,7 +94,5 @@ jobs:
           key: ${{ runner.os }}-nodemodules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-nodemodules-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile --prefer-offline
       - name: Run tests
         run: yarn test
