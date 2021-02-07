@@ -1,10 +1,10 @@
 import React from 'react';
-import { Link as MuiLink } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import InboxIcon from '@material-ui/icons/Inbox';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 import {
+  Link as MuiLink,
   Button,
   Container,
   Grid,
