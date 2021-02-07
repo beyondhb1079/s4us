@@ -1,4 +1,7 @@
 import React from 'react';
+import { Link as MuiLink } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import InboxIcon from '@material-ui/icons/Inbox';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 import {
@@ -35,6 +38,18 @@ const useStyles = makeStyles((theme) => ({
   addScholarship: {
     marginTop: theme.spacing(6),
   },
+  addTextAndLink: {
+    textAlign: 'center',
+  },
+  addIconSpacing: {
+    marginTop: theme.spacing(6),
+  },
+  centerTextAndLink: {
+    textAlign: 'center',
+  },
+  centerIcon: {
+    textAlign: 'center',
+  },
 }));
 
 export default function UserHome() {
@@ -64,7 +79,6 @@ export default function UserHome() {
           {/* Image here */}
         </Grid>
       </Grid>
-
       <Grid container className={classes.scholarshipsAdded} spacing={2}>
         <Grid item sm={9}>
           <Typography variant="h5" component="h2" gutterBottom>
@@ -81,27 +95,27 @@ export default function UserHome() {
           </Button>
         </Grid>
       </Grid>
-      <center>
+      <Box className={classes.centerIcon}>
+        <InboxIcon
+          style={{ fontSize: 200 }}
+          className={classes.addIconSpacing}
+        />
+      </Box>
+      <Box className={classes.centerTextAndLink}>
         <Typography
           variant="h5"
           component="h2"
-          gutterBotton
+          gutterBottom
           className={classes.noScholarshipsAdded}>
           No Scholarships Added Yet
         </Typography>
-      </center>
-      <center>
-        <Typography
-          variant="h10"
-          component="h2"
-          gutterButton
-          color="primary"
-          className={classes.addScholarship}>
-          <p>
-            <a href="more-scholarships">Add A Scholarship</a>
-          </p>
+
+        <Typography variant="h10" component="h2" gutterButton color="primary">
+          <MuiLink component={Link} to="/scholarship/new">
+            Add a Scholarship
+          </MuiLink>
         </Typography>
-      </center>
+      </Box>
     </Container>
   );
 }
