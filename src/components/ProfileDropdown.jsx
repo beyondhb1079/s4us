@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import firebase from 'firebase';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { Avatar, Divider, Grid, Typography } from '@material-ui/core';
 import Menu from '@material-ui/core/Menu';
@@ -53,18 +53,14 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: 'center',
   },
   medium: {
-    width: '48px',
-    height: '48px',
-  },
-  large: {
-    width: '60px',
-    height: '60px',
+    width: theme.spacing(6),
+    height: theme.spacing(6),
   },
 }));
 
-export default function ProfileDropdown(props) {
+export default function ProfileDropdown() {
   const classes = useStyles();
-  const { signOut, name, email, photo } = props;
+  const user = firebase.auth().currentUser;
 
   const [dropMenu, setDropMenu] = React.useState(null);
   const handleClick = (event) => setDropMenu(event.currentTarget);
@@ -82,9 +78,11 @@ export default function ProfileDropdown(props) {
     );
   }
 
+  const signUserOut = () => firebase.auth().signOut();
+
   return (
     <>
-      <Avatar src={photo} onClick={handleClick} />
+      <Avatar src={user.photoURL} onClick={handleClick} />
       <StyledMenu
         anchorEl={dropMenu}
         keepMounted
@@ -92,14 +90,14 @@ export default function ProfileDropdown(props) {
         onClose={handleClose}>
         <Grid container spacing={2} className={classes.gridRoot}>
           <Grid item className={classes.profilePic}>
-            <Avatar src={photo} className={classes.medium} />
+            <Avatar src={user.photoURL} className={classes.medium} />
           </Grid>
           <Grid>
             <Typography variant="h6" component="h4">
-              {name}
+              {user.displayName}
             </Typography>
             <Typography component="h6" gutterBottom>
-              {email}
+              {user.email}
             </Typography>
             {EXPERIMENT_SHOW_FULL_PROFILE_MENU && (
               <a href={manageProfileLink}>Manage Your Profile</a>
@@ -115,15 +113,12 @@ export default function ProfileDropdown(props) {
             <Divider className={classes.dividerSpacing} />
           </>
         )}
-        {createMenuItem('Logout', <ExitToAppIcon fontSize="medium" />, signOut)}
+        {createMenuItem(
+          'Logout',
+          <ExitToAppIcon fontSize="medium" />,
+          signUserOut
+        )}
       </StyledMenu>
     </>
   );
 }
-
-ProfileDropdown.propTypes = {
-  signOut: PropTypes.func.isRequired,
-  name: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
-  photo: PropTypes.string.isRequired,
-};
