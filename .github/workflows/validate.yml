@@ -50,6 +50,8 @@ jobs:
           key: ${{ runner.os }}-nodemodules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-nodemodules-
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --prefer-offline --production
       - name: Build app
         run: yarn build --frozen-lockfile
 
@@ -66,6 +68,8 @@ jobs:
           key: ${{ runner.os }}-nodemodules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-nodemodules-
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --prefer-offline
       - name: Lint
         run: yarn lint
 
@@ -92,5 +96,7 @@ jobs:
           key: ${{ runner.os }}-nodemodules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-nodemodules-
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --prefer-offline
       - name: Run tests
         run: yarn test
