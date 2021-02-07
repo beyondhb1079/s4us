@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import firebase from 'firebase';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
@@ -58,13 +59,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ProfileDropdown() {
+export default function ProfileDropdown(props) {
+  const { anchorEl, handleClose } = props;
   const classes = useStyles();
   const user = firebase.auth().currentUser;
 
-  const [dropMenu, setDropMenu] = React.useState(null);
-  const handleClick = (event) => setDropMenu(event.currentTarget);
-  const handleClose = () => setDropMenu(null);
+  const closeDropMenu = () => handleClose(null);
 
   // needs to be updated once there is a working manage profile page
   const manageProfileLink = '/home';
@@ -82,12 +82,11 @@ export default function ProfileDropdown() {
 
   return (
     <>
-      <Avatar src={user.photoURL} onClick={handleClick} />
       <StyledMenu
-        anchorEl={dropMenu}
+        anchorEl={anchorEl}
         keepMounted
-        open={Boolean(dropMenu)}
-        onClose={handleClose}>
+        open={Boolean(anchorEl)}
+        onClose={closeDropMenu}>
         <Grid container spacing={2} className={classes.gridRoot}>
           <Grid item className={classes.profilePic}>
             <Avatar src={user.photoURL} className={classes.medium} />

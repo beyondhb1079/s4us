@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase';
-import { makeStyles, Link as MuiLink, Grid, Zoom } from '@material-ui/core';
+import {
+  makeStyles,
+  Link as MuiLink,
+  Grid,
+  Zoom,
+  Avatar,
+} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import ProfileMenu from './ProfileDropdown';
 
@@ -27,6 +33,7 @@ function HeaderNavMenu() {
     Contact: '/contact',
   };
 
+  const user = firebase.auth().currentUser;
   const [isSignedIn, setIsSignedIn] = useState(
     !!firebase.auth().currentUser || undefined
   );
@@ -36,6 +43,10 @@ function HeaderNavMenu() {
     () => firebase.auth().onAuthStateChanged((user) => setIsSignedIn(!!user)),
     []
   );
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const showProfileMenu = (event) => setAnchorEl(event.currentTarget);
+  const closeProfileMenu = () => setAnchorEl(null);
 
   return (
     <Grid container spacing={3} className={classes.menu}>
@@ -50,7 +61,7 @@ function HeaderNavMenu() {
         {!loading && (
           <Zoom in>
             {isSignedIn ? (
-              <ProfileMenu />
+              <Avatar src={user.photoURL} onClick={showProfileMenu} />
             ) : (
               <Button
                 variant="contained"
@@ -62,6 +73,9 @@ function HeaderNavMenu() {
               </Button>
             )}
           </Zoom>
+        )}
+        {isSignedIn && (
+          <ProfileMenu anchorEl={anchorEl} handleClose={closeProfileMenu} />
         )}
       </Grid>
     </Grid>
