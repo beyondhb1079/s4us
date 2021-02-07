@@ -16,14 +16,26 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@v2
       - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Cache yarn cache
       - uses: actions/cache@v2
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Cache node_modules
+        uses: actions/cache@v2
+        id: node-modules-cache
         with:
           path: '**/node_modules'
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-node-modules-
+            ${{ runner.os }}-modules-
       - name: Install dependencies
+        if: steps.node-modules-cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile --prefer-offline
 
   build:
@@ -36,9 +48,9 @@ jobs:
         uses: actions/cache@v1
         with:
           path: '**/node_modules'
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-node-modules-
+            ${{ runner.os }}-modules-
       - name: Build app
         run: yarn build --frozen-lockfile
 
@@ -52,9 +64,9 @@ jobs:
         uses: actions/cache@v1
         with:
           path: '**/node_modules'
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-node-modules-
+            ${{ runner.os }}-modules-
       - name: Lint
         run: yarn lint
 
@@ -78,8 +90,8 @@ jobs:
         uses: actions/cache@v1
         with:
           path: '**/node_modules'
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-node-modules-
+            ${{ runner.os }}-modules-
       - name: Run tests
         run: yarn test
