@@ -1,5 +1,5 @@
-/* eslint-disable react/prop-types */
 import React from 'react';
+import PropTypes from 'prop-types';
 import firebase from 'firebase';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { Avatar, Divider, Grid, Typography } from '@material-ui/core';
@@ -121,3 +121,8 @@ export default function ProfileDropdown(props) {
     </>
   );
 }
+
+ProfileDropdown.propTypes = {
+  anchorEl: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
+};
