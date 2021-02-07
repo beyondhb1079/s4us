@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import firebase from 'firebase';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { Avatar, Divider, Grid, Typography } from '@material-ui/core';
@@ -58,13 +59,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ProfileDropdown() {
+export default function ProfileDropdown(props) {
+  const { anchorEl, handleClose } = props;
   const classes = useStyles();
   const user = firebase.auth().currentUser;
-
-  const [dropMenu, setDropMenu] = React.useState(null);
-  const handleClick = (event) => setDropMenu(event.currentTarget);
-  const handleClose = () => setDropMenu(null);
 
   // needs to be updated once there is a working manage profile page
   const manageProfileLink = '/home';
@@ -81,44 +79,46 @@ export default function ProfileDropdown() {
   const signUserOut = () => firebase.auth().signOut();
 
   return (
-    <>
-      <Avatar src={user.photoURL} onClick={handleClick} />
-      <StyledMenu
-        anchorEl={dropMenu}
-        keepMounted
-        open={Boolean(dropMenu)}
-        onClose={handleClose}>
-        <Grid container spacing={2} className={classes.gridRoot}>
-          <Grid item className={classes.profilePic}>
-            <Avatar src={user.photoURL} className={classes.medium} />
-          </Grid>
-          <Grid>
-            <Typography variant="h6" component="h4">
-              {user.displayName}
-            </Typography>
-            <Typography component="h6" gutterBottom>
-              {user.email}
-            </Typography>
-            {EXPERIMENT_SHOW_FULL_PROFILE_MENU && (
-              <a href={manageProfileLink}>Manage Your Profile</a>
-            )}
-          </Grid>
+    <StyledMenu
+      anchorEl={anchorEl}
+      keepMounted
+      open={Boolean(anchorEl)}
+      onClose={handleClose}>
+      <Grid container spacing={2} className={classes.gridRoot}>
+        <Grid item className={classes.profilePic}>
+          <Avatar src={user.photoURL} className={classes.medium} />
         </Grid>
-        <Divider className={classes.dividerSpacing} />
-        {EXPERIMENT_SHOW_FULL_PROFILE_MENU && (
-          <>
-            {createMenuItem('New', <NewIcon fontSize="medium" />)}
-            {createMenuItem('Saved', <BookmarkIcon fontSize="medium" />)}
-            {createMenuItem('Applied', <DoneIcon fontSize="medium" />)}
-            <Divider className={classes.dividerSpacing} />
-          </>
-        )}
-        {createMenuItem(
-          'Logout',
-          <ExitToAppIcon fontSize="medium" />,
-          signUserOut
-        )}
-      </StyledMenu>
-    </>
+        <Grid>
+          <Typography variant="h6" component="h4">
+            {user.displayName}
+          </Typography>
+          <Typography component="h6" gutterBottom>
+            {user.email}
+          </Typography>
+          {EXPERIMENT_SHOW_FULL_PROFILE_MENU && (
+            <a href={manageProfileLink}>Manage Your Profile</a>
+          )}
+        </Grid>
+      </Grid>
+      <Divider className={classes.dividerSpacing} />
+      {EXPERIMENT_SHOW_FULL_PROFILE_MENU && (
+        <>
+          {createMenuItem('New', <NewIcon fontSize="medium" />)}
+          {createMenuItem('Saved', <BookmarkIcon fontSize="medium" />)}
+          {createMenuItem('Applied', <DoneIcon fontSize="medium" />)}
+          <Divider className={classes.dividerSpacing} />
+        </>
+      )}
+      {createMenuItem(
+        'Logout',
+        <ExitToAppIcon fontSize="medium" />,
+        signUserOut
+      )}
+    </StyledMenu>
   );
 }
+
+ProfileDropdown.propTypes = {
+  anchorEl: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
+};
