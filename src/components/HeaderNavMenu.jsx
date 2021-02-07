@@ -33,7 +33,7 @@ function HeaderNavMenu() {
     Contact: '/contact',
   };
 
-  const user = firebase.auth().currentUser;
+  const { currentUser } = firebase.auth();
   const [isSignedIn, setIsSignedIn] = useState(
     !!firebase.auth().currentUser || undefined
   );
@@ -61,7 +61,7 @@ function HeaderNavMenu() {
         {!loading && (
           <Zoom in>
             {isSignedIn ? (
-              <Avatar src={user.photoURL} onClick={showProfileMenu} />
+              <Avatar src={currentUser.photoURL} onClick={showProfileMenu} />
             ) : (
               <Button
                 variant="contained"
