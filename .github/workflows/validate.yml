@@ -44,7 +44,7 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@v2
       - name: Load dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: node_modules
           key: ${{ runner.os }}-nodemodules-${{ hashFiles('**/yarn.lock') }}
@@ -62,7 +62,7 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@v2
       - name: Load dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: node_modules
           key: ${{ runner.os }}-nodemodules-${{ hashFiles('**/yarn.lock') }}
@@ -90,7 +90,7 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@v2
       - name: Load dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: node_modules
           key: ${{ runner.os }}-nodemodules-${{ hashFiles('**/yarn.lock') }}
