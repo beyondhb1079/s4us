@@ -64,8 +64,6 @@ export default function ProfileDropdown(props) {
   const classes = useStyles();
   const user = firebase.auth().currentUser;
 
-  const closeDropMenu = () => handleClose(null);
-
   // needs to be updated once there is a working manage profile page
   const manageProfileLink = '/home';
 
@@ -81,44 +79,42 @@ export default function ProfileDropdown(props) {
   const signUserOut = () => firebase.auth().signOut();
 
   return (
-    <>
-      <StyledMenu
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={closeDropMenu}>
-        <Grid container spacing={2} className={classes.gridRoot}>
-          <Grid item className={classes.profilePic}>
-            <Avatar src={user.photoURL} className={classes.medium} />
-          </Grid>
-          <Grid>
-            <Typography variant="h6" component="h4">
-              {user.displayName}
-            </Typography>
-            <Typography component="h6" gutterBottom>
-              {user.email}
-            </Typography>
-            {EXPERIMENT_SHOW_FULL_PROFILE_MENU && (
-              <a href={manageProfileLink}>Manage Your Profile</a>
-            )}
-          </Grid>
+    <StyledMenu
+      anchorEl={anchorEl}
+      keepMounted
+      open={Boolean(anchorEl)}
+      onClose={handleClose}>
+      <Grid container spacing={2} className={classes.gridRoot}>
+        <Grid item className={classes.profilePic}>
+          <Avatar src={user.photoURL} className={classes.medium} />
         </Grid>
-        <Divider className={classes.dividerSpacing} />
-        {EXPERIMENT_SHOW_FULL_PROFILE_MENU && (
-          <>
-            {createMenuItem('New', <NewIcon fontSize="medium" />)}
-            {createMenuItem('Saved', <BookmarkIcon fontSize="medium" />)}
-            {createMenuItem('Applied', <DoneIcon fontSize="medium" />)}
-            <Divider className={classes.dividerSpacing} />
-          </>
-        )}
-        {createMenuItem(
-          'Logout',
-          <ExitToAppIcon fontSize="medium" />,
-          signUserOut
-        )}
-      </StyledMenu>
-    </>
+        <Grid>
+          <Typography variant="h6" component="h4">
+            {user.displayName}
+          </Typography>
+          <Typography component="h6" gutterBottom>
+            {user.email}
+          </Typography>
+          {EXPERIMENT_SHOW_FULL_PROFILE_MENU && (
+            <a href={manageProfileLink}>Manage Your Profile</a>
+          )}
+        </Grid>
+      </Grid>
+      <Divider className={classes.dividerSpacing} />
+      {EXPERIMENT_SHOW_FULL_PROFILE_MENU && (
+        <>
+          {createMenuItem('New', <NewIcon fontSize="medium" />)}
+          {createMenuItem('Saved', <BookmarkIcon fontSize="medium" />)}
+          {createMenuItem('Applied', <DoneIcon fontSize="medium" />)}
+          <Divider className={classes.dividerSpacing} />
+        </>
+      )}
+      {createMenuItem(
+        'Logout',
+        <ExitToAppIcon fontSize="medium" />,
+        signUserOut
+      )}
+    </StyledMenu>
   );
 }
 
