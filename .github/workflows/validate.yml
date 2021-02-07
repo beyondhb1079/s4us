@@ -36,6 +36,7 @@ jobs:
         uses: actions/cache@v1
         with:
           path: node_modules
+          key: ${{ runner.os }}-dependencies-${{ hashFiles('**/yarn.lock') }}
       - name: Build app
         run: yarn build --frozen-lockfile
 
@@ -49,6 +50,7 @@ jobs:
         uses: actions/cache@v1
         with:
           path: node_modules
+          key: ${{ runner.os }}-dependencies-${{ hashFiles('**/yarn.lock') }}
       - name: Lint
         run: yarn lint
 
@@ -72,5 +74,6 @@ jobs:
         uses: actions/cache@v1
         with:
           path: node_modules
+          key: ${{ runner.os }}-dependencies-${{ hashFiles('**/yarn.lock') }}
       - name: Run tests
         run: yarn test
