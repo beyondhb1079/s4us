@@ -37,6 +37,8 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-dependencies-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-dependencies-
       - name: Build app
         run: yarn build --frozen-lockfile
 
@@ -51,6 +53,8 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-dependencies-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-dependencies-
       - name: Lint
         run: yarn lint
 
@@ -75,5 +79,7 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-dependencies-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-dependencies-
       - name: Run tests
         run: yarn test
