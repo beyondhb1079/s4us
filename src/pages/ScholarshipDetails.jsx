@@ -21,24 +21,31 @@ export default function ScholarshipDetails({ history, location, match }) {
   const { id } = match.params;
   const [scholarship, setScholarship] = useState(location.state?.scholarship);
   const [error, setError] = useState();
-  const loading = !error && !scholarship;
-
-  if (scholarship) {
-    document.title = `${BRAND_NAME} | ${scholarship.data.name}`;
-  }
+  const loading = !error && (!scholarship || !scholarship.data);
 
   // Clear location state in case of refresh/navigation to other pages.
   useEffect(() => {
-    if (location.state.scholarship) {
+    if (location.state?.scholarship) {
       history.replace({ state: {} });
     }
   }, [history, location]);
 
   // Fetch the scholarship if we need to load it
   useEffect(() => {
+    let mounted = true;
     if (loading) {
-      Scholarships.id(id).get().then(setScholarship).catch(setError);
+      Scholarships.id(id)
+        .get()
+        .then((s) => {
+          if (mounted) setScholarship(s);
+        })
+        .catch((e) => {
+          if (mounted) setError(e);
+        });
     }
+    return () => {
+      mounted = false;
+    };
   }, [id, loading]);
 
   if (error || loading) {
@@ -49,6 +56,8 @@ export default function ScholarshipDetails({ history, location, match }) {
     );
   }
 
+  document.title = `${BRAND_NAME} | ${scholarship.data.name}`;
+
   const { name, amount, deadline, website, description } = scholarship.data;
 
   return (
@@ -57,10 +66,10 @@ export default function ScholarshipDetails({ history, location, match }) {
         {name}
       </Typography>
       <Typography gutterBottom variant="h4" component="h2">
-        {amount.toString()}
+        {amount?.toString()}
       </Typography>
       <Typography gutterBottom variant="h5" component="h3">
-        {deadline.toLocaleDateString()}
+        {deadline?.toLocaleDateString()}
       </Typography>
       <Typography
         gutterBottom

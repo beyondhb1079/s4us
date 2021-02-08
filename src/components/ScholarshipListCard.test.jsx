@@ -6,20 +6,23 @@ import ScholarshipAmount from '../types/ScholarshipAmount';
 
 test('renders ScholarshipListCard', () => {
   const mockScholarship = {
-    deadline: new Date(),
-    name: 'test scholarship',
-    description: 'desc',
-    organization: 'City of Seattle',
-    amount: new ScholarshipAmount(),
+    id: '0',
+    data: {
+      deadline: new Date(),
+      name: 'test scholarship',
+      description: 'desc',
+      organization: 'City of Seattle',
+      amount: new ScholarshipAmount(),
+    },
   };
 
   const want = mockScholarship;
 
-  render(<ScholarshipListCard scholarship={mockScholarship} id="0" />, {
+  render(<ScholarshipListCard scholarship={mockScholarship} />, {
     wrapper: MemoryRouter,
   });
 
-  Object.entries(want).forEach(([_, v]) => {
+  Object.entries(want.data).forEach(([_, v]) => {
     let value = v;
     if (v instanceof Date) {
       value = v.toLocaleDateString();
