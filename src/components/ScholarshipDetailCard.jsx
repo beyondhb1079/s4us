@@ -1,14 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import ReactRouterPropTypes from 'react-router-prop-types';
-import {
-  Button,
-  Container,
-  Link,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
-import Scholarships from '../models/Scholarships';
-import { BRAND_NAME } from '../config/constants';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Button, Box, Link, makeStyles, Typography } from '@material-ui/core';
+import ScholarshipAmount from '../types/ScholarshipAmount';
 
 const useStyles = makeStyles(() => ({
   description: {
@@ -16,60 +9,20 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function ScholarshipDetails({ history, location, match }) {
+// TODO(issues/358): Style this.
+export default function ScholarshipDetailCard({ scholarship }) {
   const classes = useStyles();
-  const { id } = match.params;
-  const [scholarship, setScholarship] = useState(location.state?.scholarship);
-  const [error, setError] = useState();
-  const loading = !error && (!scholarship || !scholarship.data);
-
-  // Clear location state in case of refresh/navigation to other pages.
-  useEffect(() => {
-    if (location.state?.scholarship) {
-      history.replace({ state: {} });
-    }
-  }, [history, location]);
-
-  // Fetch the scholarship if we need to load it
-  useEffect(() => {
-    let mounted = true;
-    if (loading) {
-      Scholarships.id(id)
-        .get()
-        .then((s) => {
-          if (mounted) setScholarship(s);
-        })
-        .catch((e) => {
-          if (mounted) setError(e);
-        });
-    }
-    return () => {
-      mounted = false;
-    };
-  }, [id, loading]);
-
-  if (error || loading) {
-    return (
-      <Container>
-        <h1>{error?.toString() || 'Loading...'}</h1>
-      </Container>
-    );
-  }
-
-  document.title = `${BRAND_NAME} | ${scholarship.data.name}`;
-
   const { name, amount, deadline, website, description } = scholarship.data;
-
   return (
-    <Container>
+    <Box>
       <Typography gutterBottom variant="h3" component="h1">
         {name}
       </Typography>
       <Typography gutterBottom variant="h4" component="h2">
-        {amount?.toString()}
+        {amount.toString()}
       </Typography>
       <Typography gutterBottom variant="h5" component="h3">
-        {deadline?.toLocaleDateString()}
+        {deadline.toLocaleDateString()}
       </Typography>
       <Typography
         gutterBottom
@@ -86,12 +39,19 @@ export default function ScholarshipDetails({ history, location, match }) {
         variant="contained">
         Apply
       </Button>
-    </Container>
+    </Box>
   );
 }
 
-ScholarshipDetails.propTypes = {
-  history: ReactRouterPropTypes.history.isRequired,
-  location: ReactRouterPropTypes.location.isRequired,
-  match: ReactRouterPropTypes.match.isRequired,
+ScholarshipDetailCard.propTypes = {
+  scholarship: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    data: PropTypes.shape({
+      name: PropTypes.string,
+      amount: PropTypes.instanceOf(ScholarshipAmount),
+      description: PropTypes.string,
+      deadline: PropTypes.instanceOf(Date),
+      website: PropTypes.string,
+    }).isRequired,
+  }).isRequired,
 };
