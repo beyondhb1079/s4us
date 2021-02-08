@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import each from 'jest-each';
 import { MemoryRouter, Route } from 'react-router-dom';
 import { clearFirestoreData, initializeTestApp } from '../lib/testing';
 import ScholarshipDetails from './ScholarshipDetails';
