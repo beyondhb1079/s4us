@@ -1,5 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { makeStyles, Grid } from '@material-ui/core';
 import FilterDropDown from './FilterDropdown';
+import AmountFilter from './AmountFilter';
+
+const useStyles = makeStyles(() => ({
+  root: {
+    flexGrow: 1,
+    justifyContent: 'space-between',
+  },
+  alignText: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+}));
 
 const majors = {
   che: 'Chemical Eng.',
@@ -15,20 +29,61 @@ const grades = {
   16: 'College Senior',
 };
 
-const amounts = {
-  500: '> 500',
-  1000: '> 1000',
-  5000: '> 5000',
+const sortingOptions = {
+  deadlineSoon: 'Deadline (Earliest to Latest)',
+  deadlineLatest: 'Deadline (Latest to Earliest)',
+  amountLow: 'Amount (Low to High)',
+  amountHigh: 'Amount (High to Low)',
 };
 
-function FilterBar() {
+export default function FilterBar(props) {
+  const { changeSortBy, changeSortFormat } = props;
+  const classes = useStyles();
+
+  function updateSorting(sortingOption) {
+    switch (sortingOption) {
+      case 'deadlineSoon':
+        changeSortBy('deadline');
+        changeSortFormat('asc');
+        break;
+      case 'deadlineLatest':
+        changeSortBy('deadline');
+        changeSortFormat('desc');
+        break;
+      case 'amountLow':
+        changeSortBy('amount.min');
+        changeSortFormat('asc');
+        break;
+      case 'amountHigh':
+        changeSortBy('amount.max');
+        changeSortFormat('desc');
+        break;
+      default:
+    }
+  }
+
   return (
-    <div>
-      <FilterDropDown label="Major" items={majors} />
-      <FilterDropDown label="Grade" items={grades} />
-      <FilterDropDown label="Amount" items={amounts} />
-    </div>
+    <Grid container spacing={2} className={classes.root}>
+      <Grid item className={classes.alignText}>
+        <FilterDropDown label="Major" items={majors} />
+        <FilterDropDown label="Grade" items={grades} />
+        <AmountFilter />
+      </Grid>
+      <Grid item className={classes.alignText}>
+        Sort by
+        <FilterDropDown
+          label="Sorting"
+          items={sortingOptions}
+          defaultValue="deadlineSoon"
+          removeNone
+          onChange={updateSorting}
+        />
+      </Grid>
+    </Grid>
   );
 }
 
-export default FilterBar;
+FilterBar.propTypes = {
+  changeSortBy: PropTypes.func.isRequired,
+  changeSortFormat: PropTypes.func.isRequired,
+};

@@ -1,0 +1,123 @@
+name: 'Approvals'
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  dismiss-stale-approvals:
+    runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]'
+    name: Dismiss on major changes
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+      - name: Skip checking merge commits
+        shell: bash
+        run: |
+          git fetch --all
+          if (($(git show --no-patch --format="%P" ${{ github.event.pull_request.head.sha }} | wc -l) > 1)); then
+            echo "merge_commit=true" >> $GITHUB_ENV;
+          fi
+      - name: Auto dismiss on major changes
+        if: ${{ env.merge_commit != 'true' }}
+        uses: actions/github-script@v3
+        with:
+          script: |
+            // Get all the approvals
+            const reviews = await github.pulls.listReviews({
+              owner: context.payload.repository.owner.login,
+              repo: context.payload.repository.name,
+              pull_number: context.payload.pull_request.number
+            });
+
+            const approvals = reviews.data
+              .filter(r => r.user.type == 'User')
+              .filter(r => r.state == 'APPROVED')
+              .sort((a, b) => a.id - b.id);
+
+            if (approvals.length == 0) {
+              console.log('No approvals given.');
+              return
+            }
+
+            // Get info about the last approval
+            const approval = approvals[0];
+            const approver = approval.user.login;
+            const approvedCommit = approval.commit_id;
+            const currentCommit = context.payload.pull_request.head.sha;
+            console.log(`Last approved at commit ${approvedCommit} by ${approver}.`);
+
+            // Get the diff between the current commit and the last approved one.
+            //
+            // Note: this doesn't show which files are added/deleted. If we
+            // want to take that into consideration, we should look into: 
+            // git diff --name-status
+            const { spawnSync } = require('child_process');
+            const args = ['diff', '--numstat', approvedCommit, currentCommit];
+            console.log('git ' + args.join(' '));
+
+            const child = spawnSync('git', args);
+            const { error, stderr, stdout } = child;
+
+            if (error) {
+              console.log(stderr.toString());
+              console.error('Unable to verify approval is OK.');
+              throw error;
+            }
+
+            // Parse the diff output
+            console.log(stdout.toString());
+            const lines = stdout.toString().trim().split('\n', 3);
+            const filesChanged = lines.map(l => {
+              const [insertions, deletions, name] = l.split('\t', 3);
+              return {
+                deletions: Number.parseInt(deletions),
+                insertions: Number.parseInt(insertions),
+                name
+              };
+            });
+
+            const sum = (accumulator, value) => accumulator + value;
+            const insertions = filesChanged.map(f => f.insertions).reduce(sum) || 0;
+            const deletions = filesChanged.map(f => f.deletions).reduce(sum) || 0;
+            const total = insertions + deletions;
+            const summary = filesChanged.length + ' files changed, ' +
+              insertions + ' insertions(+), ' +
+              deletions + ' deletions(-)';
+            console.log(summary);
+
+            // Dismiss the approval if there are too many changes.
+            const insertionsLimit = 7;
+            const deletionsLimit = 10;
+            const totalLimit = 12;
+
+            if (total <= totalLimit
+              && insertions <= insertionsLimit
+              && deletions <= deletionsLimit) {
+              console.log("There doesn't seem to be enough changes to warrant dismissing approval.");
+              return;
+            }
+
+            const message = `Hi @${context.actor},
+
+            I dismissed your review because it looks like you've introduced a significant number of changes to this pull request since it was last approved by @${approver}:
+
+            \`\`\`
+            ${summary}
+            \`\`\`
+
+            If either of you believe my dismissal was premature or a mistake, consider updating [autoapprove.yaml](../blob/main/.github/workflows/autoapprove.yaml) in a separate pull request.
+
+            Thank you for your contributions!`;
+
+            console.log(message);
+
+            github.pulls.dismissReview({
+              owner: context.payload.repository.owner.login,
+              repo: context.payload.repository.name,
+              pull_number: context.payload.pull_request.number,
+              review_id: approval.id,
+              message
+            });
+          github-token: ${{github.token}}

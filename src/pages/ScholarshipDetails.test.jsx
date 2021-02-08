@@ -11,9 +11,9 @@ import AmountType from '../types/AmountType';
 // TODO: Figure out a cleaner solution.
 window.MutationObserver = require('mutation-observer');
 
-function renderAtRoute(route) {
+function renderAtRoute(pathname, state = {}) {
   return render(
-    <MemoryRouter initialEntries={[route]}>
+    <MemoryRouter initialEntries={[{ pathname, state }]}>
       <Route path="/scholarships/:id" component={ScholarshipDetails} />
     </MemoryRouter>
   );
@@ -31,9 +31,51 @@ test('renders loading initially', () => {
 });
 
 test('renders scholarship not found', async () => {
-  renderAtRoute('/scholarships/bad-id');
+  renderAtRoute('/scholarships/abc');
 
-  await screen.findByText(/Scholarships\/bad-id Not Found/i);
+  expect(screen.getByText(/loading/i)).toBeInTheDocument();
+  await screen.findByText(/not found/i);
+});
+
+test('renders loading initially with empty scholarship state', () => {
+  renderAtRoute('/scholarships/abc', { scholarship: { id: 'abc' } });
+
+  expect(screen.getByText(/loading/i)).toBeInTheDocument();
+});
+
+test('renders something when scholarship data corrupt', () => {
+  renderAtRoute('/scholarships/abc', {
+    scholarship: { id: 'abc', data: { bad: 'data' } },
+  });
+
+  expect(screen.getByText(/Apply/i)).toBeInTheDocument();
+});
+
+test('renders passed in scholarship details', () => {
+  const data = {
+    name: 'Foo scholarship',
+    amount: new ScholarshipAmount({
+      type: AmountType.Fixed,
+      min: 1000,
+      max: 1000,
+    }),
+    description: 'description',
+    deadline: new Date('2020-12-17'),
+    website: 'http://foo.com/',
+  };
+
+  renderAtRoute('/scholarships/passed-in', {
+    scholarship: { id: 'abc', data },
+  });
+
+  expect(screen.getByText(data.name)).toBeInTheDocument();
+  expect(screen.getByText(data.amount.toString())).toBeInTheDocument();
+  expect(screen.getByText(data.description)).toBeInTheDocument();
+  expect(
+    screen.getByText(data.deadline.toLocaleDateString())
+  ).toBeInTheDocument();
+  expect(screen.getByRole('button').href).toBe(data.website);
+  expect(document.title).toContain(data.name);
 });
 
 test('renders scholarship details', async () => {
@@ -61,4 +103,5 @@ test('renders scholarship details', async () => {
     screen.getByText(data.deadline.toLocaleDateString())
   ).toBeInTheDocument();
   expect(screen.getByRole('button').href).toBe(data.website);
+  expect(document.title).toContain(data.name);
 });

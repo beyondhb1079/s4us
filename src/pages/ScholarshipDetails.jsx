@@ -1,42 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import ReactRouterPropTypes from 'react-router-prop-types';
-import {
-  Button,
-  Container,
-  Link,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
+import { Container } from '@material-ui/core';
 import Scholarships from '../models/Scholarships';
 import { BRAND_NAME } from '../config/constants';
+import ScholarshipDetailCard from '../components/ScholarshipDetailCard';
 
-const useStyles = makeStyles(() => ({
-  description: {
-    whiteSpace: 'pre-line',
-  },
-}));
-
-export default function ScholarshipDetailsPage({ match }) {
+export default function ScholarshipDetails({ history, location, match }) {
   const { id } = match.params;
-  const [scholarship, setScholarship] = useState();
-  const [loading, setLoading] = useState(true);
+  const [scholarship, setScholarship] = useState(location.state?.scholarship);
   const [error, setError] = useState();
-  const classes = useStyles();
+  const loading = !error && (!scholarship || !scholarship.data);
 
-  useEffect(
-    () =>
-      Scholarships.id(id).subscribe(
-        (s) => {
-          document.title = `${BRAND_NAME} | ${s.data.name}`;
-          setScholarship(s);
-          setLoading(false);
-        },
-        (err) => {
-          setError(err);
-        }
-      ),
-    [id]
-  );
+  // Clear location state in case of refresh/navigation to other pages.
+  useEffect(() => {
+    if (location.state?.scholarship) {
+      history.replace({ state: {} });
+    }
+  }, [history, location]);
+
+  // Fetch the scholarship if we need to load it
+  useEffect(() => {
+    let mounted = true;
+    if (loading) {
+      Scholarships.id(id)
+        .get()
+        .then((s) => {
+          if (mounted) setScholarship(s);
+        })
+        .catch((e) => {
+          if (mounted) setError(e);
+        });
+    }
+    return () => {
+      mounted = false;
+    };
+  }, [id, loading]);
 
   if (error || loading) {
     return (
@@ -46,38 +44,17 @@ export default function ScholarshipDetailsPage({ match }) {
     );
   }
 
-  const { name, amount, deadline, website, description } = scholarship.data;
+  document.title = `${BRAND_NAME} | ${scholarship.data.name}`;
 
   return (
     <Container>
-      <Typography gutterBottom variant="h3" component="h1">
-        {name}
-      </Typography>
-      <Typography gutterBottom variant="h4" component="h2">
-        {amount.toString()}
-      </Typography>
-      <Typography gutterBottom variant="h5" component="h3">
-        {deadline.toLocaleDateString()}
-      </Typography>
-      <Typography
-        gutterBottom
-        variant="body1"
-        component="p"
-        className={classes.description}>
-        {description}
-      </Typography>
-
-      <Button
-        component={Link}
-        href={website}
-        color="primary"
-        variant="contained">
-        Apply
-      </Button>
+      <ScholarshipDetailCard scholarship={scholarship} />
     </Container>
   );
 }
 
-ScholarshipDetailsPage.propTypes = {
+ScholarshipDetails.propTypes = {
+  history: ReactRouterPropTypes.history.isRequired,
+  location: ReactRouterPropTypes.location.isRequired,
   match: ReactRouterPropTypes.match.isRequired,
 };
