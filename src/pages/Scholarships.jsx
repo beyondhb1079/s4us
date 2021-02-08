@@ -5,10 +5,13 @@ import {
   makeStyles,
   Typography,
 } from '@material-ui/core';
+import { useHistory, useLocation } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
+import queryString from 'query-string';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
+import { DEFAULT_SORT_URL_VALUE } from '../config/constants';
 
 const useStyles = makeStyles((theme) => ({
   progress: {
@@ -21,11 +24,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ScholarshipsPage() {
+  const classes = useStyles();
   const [scholarships, setScholarships] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
   const [sortField, setSortField] = useState('deadline');
   const [sortDir, setSortDir] = useState('asc');
+  const history = useHistory();
+  const location = useLocation();
+  const setFoo = (val) => {
+    history.push({
+      search: queryString.stringify({
+        ...queryString.parse(location.search),
+        sorting: val,
+      }),
+    });
+  };
+  const foo = queryString.parse(location.search).foo ?? DEFAULT_SORT_URL_VALUE;
 
   useEffect(() => {
     // TODO: Create cancellable promises
@@ -35,14 +50,16 @@ function ScholarshipsPage() {
       .finally(() => setLoading(false));
   }, [sortDir, sortField]);
 
-  const classes = useStyles();
-
   return (
     <Container>
       <Typography variant="h3" component="h1" style={{ textAlign: 'center' }}>
         Scholarships
       </Typography>
-      <FilterBar changeSortBy={setSortField} changeSortFormat={setSortDir} />
+      <FilterBar
+        changeSortBy={setSortField}
+        changeSortFormat={setSortDir}
+        changeURL={setFoo}
+      />
       {error?.toString() ||
         (loading && <CircularProgress className={classes.progress} />) || (
           <>
