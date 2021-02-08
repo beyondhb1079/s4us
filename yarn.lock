@@ -10030,6 +10030,14 @@ multicast-dns@^6.0.1:
     dns-packet "^1.3.1"
     thunky "^1.0.2"
 
+multiselect-react-dropdown@^1.6.7:
+  version "1.6.7"
+  resolved "https://registry.yarnpkg.com/multiselect-react-dropdown/-/multiselect-react-dropdown-1.6.7.tgz#50f2e08caa126914d5277f6361c39ffcf0a95348"
+  integrity sha512-VDK9VArKw94AkKdrb+vqiAedBhA6Jd9jjmo0SAL37TKypSZ0XDdLneNB0pcGTC8GDoLzzEoLblS8VVGmFABjaw==
+  dependencies:
+    react "^16.7.0"
+    react-dom "^16.7.0"
+
 mutation-observer@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/mutation-observer/-/mutation-observer-1.0.3.tgz#42e9222b101bca82e5ba9d5a7acf4a14c0f263d0"
@@ -12097,7 +12105,7 @@ react-dev-utils@^10.2.1:
     strip-ansi "6.0.0"
     text-table "0.2.0"
 
-react-dom@^16.13.1:
+react-dom@^16.13.1, react-dom@^16.7.0:
   version "16.14.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.14.0.tgz#7ad838ec29a777fb3c75c3a190f661cf92ab8b89"
   integrity sha512-1gCeQXDLoIqMgqD3IO2Ah9bnf0w9kzhwN5q4FGnHZ67hBm9yePzB5JJAIQCc8x3pFnNlwFq4RidZggNAAkzWWw==
@@ -12302,7 +12310,7 @@ react-typing-effect@^2.0.3:
     react "^16.13.1"
     react-dom "^16.13.1"
 
-react@^16.13.1:
+react@^16.13.1, react@^16.7.0:
   version "16.14.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.14.0.tgz#94d776ddd0aaa37da3eda8fc5b6b18a4c9a3114d"
   integrity sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==

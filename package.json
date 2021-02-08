@@ -21,6 +21,7 @@
     "eslint-plugin-jest": "^24.0.2",
     "firebase": "^7.19.1",
     "formik": "^2.2.6",
+    "multiselect-react-dropdown": "^1.6.7",
     "prop-types": "^15.7.2",
     "prop-types-exact": "^1.2.0",
     "react": "^16.13.1",
