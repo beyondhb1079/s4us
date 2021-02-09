@@ -26,14 +26,48 @@ function ScholarshipsPage() {
   const [error, setError] = useState();
   const [sortField, setSortField] = useState('deadline');
   const [sortDir, setSortDir] = useState('asc');
+  const [amountFilterVals, setAmountFilterVals] = useState({ min: 0, max: 0 });
 
   useEffect(() => {
     // TODO: Create cancellable promises
     Scholarships.list({ sortField, sortDir })
-      .then(setScholarships)
+      .then((results) => {
+        if (!amountFilterVals.min && !amountFilterVals.max)
+          return setScholarships(results); // when min and max are unknown
+
+        let collection;
+
+        if (amountFilterVals.min === amountFilterVals.max)
+          collection = results.filter(
+            (result) =>
+              result.data.amount.min === amountFilterVals.min &&
+              result.data.amount.max === amountFilterVals.max
+          );
+
+        if (amountFilterVals.min !== 0 && amountFilterVals.max === 0)
+          collection = results.filter(
+            (result) => result.data.amount.min >= amountFilterVals.min
+          );
+
+        if (amountFilterVals.max !== 0 && amountFilterVals.min === 0)
+          collection = results.filter(
+            (result) =>
+              result.data.amount.max > 0 &&
+              result.data.amount.max <= amountFilterVals.max
+          );
+        if (amountFilterVals.min > 0 && amountFilterVals.max > 0)
+          collection = results.filter(
+            (result) =>
+              result.data.amount.min >= amountFilterVals.min &&
+              result.data.amount.max > 0 &&
+              result.data.amount.max <= amountFilterVals.max
+          );
+
+        return setScholarships(collection);
+      })
       .catch(setError)
       .finally(() => setLoading(false));
-  }, [sortDir, sortField]);
+  }, [sortDir, sortField, amountFilterVals]);
 
   const classes = useStyles();
 
@@ -42,7 +76,11 @@ function ScholarshipsPage() {
       <Typography variant="h3" component="h1" style={{ textAlign: 'center' }}>
         Scholarships
       </Typography>
-      <FilterBar changeSortBy={setSortField} changeSortFormat={setSortDir} />
+      <FilterBar
+        changeSortBy={setSortField}
+        changeSortFormat={setSortDir}
+        {...{ amountFilterVals, setAmountFilterVals }}
+      />
       {error?.toString() ||
         (loading && <CircularProgress className={classes.progress} />) || (
           <>

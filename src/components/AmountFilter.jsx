@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useFormik } from 'formik';
-import {
-  Button,
-  Popover,
-  InputLabel,
-  Grid,
-  FormHelperText,
-} from '@material-ui/core';
+import { useLocation, useHistory } from 'react-router-dom';
+import queryString from 'query-string';
+import PropTypes from 'prop-types';
+import { Button, Popover, InputLabel, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import RemoveIcon from '@material-ui/icons/Remove';
 import AmountTextField from './AmountTextField';
-import AmountFilterValidation from '../validation/AmountFilterValidation';
 
 const useStyles = makeStyles((theme) => ({
   buttonStyle: {
@@ -30,30 +25,36 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AmountFilter() {
+export default function AmountFilter(props) {
   const classes = useStyles();
+  const { amountFilterVals, setAmountFilterVals } = props;
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const formik = useFormik({
-    initialValues: {
-      min: 0,
-      max: 0,
-    },
-    validationSchema: AmountFilterValidation,
-  });
+  const history = useHistory();
+  const location = useLocation();
+  /*
+  const setMinMax = (index, val) => {
+    history.push({
+      search: queryString.stringify({
+        ...queryString.parse(location.search), // {key: value}
+        [index]: val,
+      }),
+    });
+  };
+  // const min = queryString.parse(location.search).min ?? 0;
+  // const max = queryString.parse(location.search).max ?? 0;
 
   useEffect(() => {
     const timeoutId = setTimeout(
-      () => console.log(`${formik.values.min} ${formik.values.max}`),
+      () => console.log(`${values.min} ${values.max}`),
       5000
     );
     return () => clearTimeout(timeoutId);
-  }, [formik.values.min, formik.values.max]);
+  }, [values]); */
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
-  function handleChange(index, val) {
-    formik.setFieldValue(index, parseInt(val, 10) || 0);
-  }
+  const error =
+    !!amountFilterVals.max && amountFilterVals.max < amountFilterVals.min;
 
   return (
     <>
@@ -75,9 +76,14 @@ export default function AmountFilter() {
           <Grid item className={classes.filterStyle}>
             <InputLabel className={classes.labelStyle}>Min Amount</InputLabel>
             <AmountTextField
-              error={formik.errors.min}
-              value={formik.values.min || ''}
-              onChange={(e) => handleChange('min', e.target.value)}
+              error={error}
+              value={amountFilterVals.min || ''}
+              onChange={(e) =>
+                setAmountFilterVals({
+                  ...amountFilterVals,
+                  min: parseInt(e.target.value, 10) || 0,
+                })
+              }
             />
           </Grid>
           <Grid item className={classes.dashStyle}>
@@ -86,15 +92,22 @@ export default function AmountFilter() {
           <Grid item className={classes.filterStyle}>
             <InputLabel className={classes.labelStyle}>Max Amount</InputLabel>
             <AmountTextField
-              value={formik.values.max || ''}
-              onChange={(e) => handleChange('max', e.target.value)}
+              value={amountFilterVals.max || ''}
+              onChange={(e) =>
+                setAmountFilterVals({
+                  ...amountFilterVals,
+                  max: parseInt(e.target.value, 10) || 0,
+                })
+              }
             />
           </Grid>
         </Grid>
-        <FormHelperText error className={classes.helperStyle}>
-          {formik.errors.min}
-        </FormHelperText>
       </Popover>
     </>
   );
 }
+
+AmountFilter.propTypes = {
+  amountFilterVals: PropTypes.objectOf(PropTypes.number).isRequired,
+  setAmountFilterVals: PropTypes.func.isRequired,
+};
