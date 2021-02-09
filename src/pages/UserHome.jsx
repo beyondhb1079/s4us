@@ -1,10 +1,10 @@
 import React from 'react';
-import Box from '@material-ui/core/Box';
 import InboxIcon from '@material-ui/icons/Inbox';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 import {
   Link as MuiLink,
+  Box,
   Button,
   Container,
   Grid,
@@ -35,19 +35,10 @@ const useStyles = makeStyles((theme) => ({
   noScholarshipsAdded: {
     marginTop: theme.spacing(12),
   },
-  addScholarship: {
+  inboxIcon: {
     marginTop: theme.spacing(6),
   },
-  addTextAndLink: {
-    textAlign: 'center',
-  },
-  addIconSpacing: {
-    marginTop: theme.spacing(6),
-  },
-  centerTextAndLink: {
-    textAlign: 'center',
-  },
-  centerIcon: {
+  noScholarshipsBox: {
     textAlign: 'center',
   },
 }));
@@ -95,13 +86,8 @@ export default function UserHome() {
           </Button>
         </Grid>
       </Grid>
-      <Box className={classes.centerIcon}>
-        <InboxIcon
-          style={{ fontSize: 200 }}
-          className={classes.addIconSpacing}
-        />
-      </Box>
-      <Box className={classes.centerTextAndLink}>
+      <Box className={classes.noScholarshipsBox}>
+        <InboxIcon style={{ fontSize: 200 }} />
         <Typography
           variant="h5"
           component="h2"
@@ -110,7 +96,7 @@ export default function UserHome() {
           No Scholarships Added Yet
         </Typography>
 
-        <Typography variant="h10" component="h2" gutterButton color="primary">
+        <Typography component="h2" color="primary">
           <MuiLink component={Link} to="/scholarship/new">
             Add a Scholarship
           </MuiLink>
