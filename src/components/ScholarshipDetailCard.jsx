@@ -19,10 +19,10 @@ export default function ScholarshipDetailCard({ scholarship }) {
         {name}
       </Typography>
       <Typography gutterBottom variant="h4" component="h2">
-        {amount.toString()}
+        {amount?.toString()}
       </Typography>
       <Typography gutterBottom variant="h5" component="h3">
-        {deadline.toLocaleDateString()}
+        {deadline?.toLocaleDateString()}
       </Typography>
       <Typography
         gutterBottom
