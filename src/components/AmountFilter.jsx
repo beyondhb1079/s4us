@@ -43,18 +43,11 @@ export default function AmountFilter(props) {
   };
   // const min = queryString.parse(location.search).min ?? 0;
   // const max = queryString.parse(location.search).max ?? 0;
-
-  useEffect(() => {
-    const timeoutId = setTimeout(
-      () => console.log(`${values.min} ${values.max}`),
-      5000
-    );
-    return () => clearTimeout(timeoutId);
-  }, [values]); */
+*/
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const error =
-    !!amountFilterVals.max && amountFilterVals.max < amountFilterVals.min;
+    amountFilterVals.max > 0 && amountFilterVals.max < amountFilterVals.min;
 
   return (
     <>
@@ -78,12 +71,13 @@ export default function AmountFilter(props) {
             <AmountTextField
               error={error}
               value={amountFilterVals.min || ''}
-              onChange={(e) =>
+              onChange={(e) => {
                 setAmountFilterVals({
                   ...amountFilterVals,
                   min: parseInt(e.target.value, 10) || 0,
-                })
-              }
+                });
+                if (error) console.log('error');
+              }}
             />
           </Grid>
           <Grid item className={classes.dashStyle}>

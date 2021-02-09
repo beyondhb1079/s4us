@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
+import FilterByAmount from '../filter/FilterByAmount';
 
 const useStyles = makeStyles((theme) => ({
   progress: {
@@ -31,40 +32,11 @@ function ScholarshipsPage() {
   useEffect(() => {
     // TODO: Create cancellable promises
     Scholarships.list({ sortField, sortDir })
-      .then((results) => {
-        if (!amountFilterVals.min && !amountFilterVals.max)
-          return setScholarships(results); // when min and max are unknown
-
-        let collection;
-
-        if (amountFilterVals.min === amountFilterVals.max)
-          collection = results.filter(
-            (result) =>
-              result.data.amount.min === amountFilterVals.min &&
-              result.data.amount.max === amountFilterVals.max
-          );
-
-        if (amountFilterVals.min !== 0 && amountFilterVals.max === 0)
-          collection = results.filter(
-            (result) => result.data.amount.min >= amountFilterVals.min
-          );
-
-        if (amountFilterVals.max !== 0 && amountFilterVals.min === 0)
-          collection = results.filter(
-            (result) =>
-              result.data.amount.max > 0 &&
-              result.data.amount.max <= amountFilterVals.max
-          );
-        if (amountFilterVals.min > 0 && amountFilterVals.max > 0)
-          collection = results.filter(
-            (result) =>
-              result.data.amount.min >= amountFilterVals.min &&
-              result.data.amount.max > 0 &&
-              result.data.amount.max <= amountFilterVals.max
-          );
-
-        return setScholarships(collection);
-      })
+      .then((results) =>
+        setScholarships(
+          FilterByAmount(results, amountFilterVals.min, amountFilterVals.max)
+        )
+      )
       .catch(setError)
       .finally(() => setLoading(false));
   }, [sortDir, sortField, amountFilterVals]);
