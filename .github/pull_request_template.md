@@ -1,19 +1,16 @@
-<!--- Provide a general summary of your changes in the Title above -->
-
-## Description
-
-<!--- Describe or list your changes in detail -->
+<!--- SUMMARIZE your changes in the Title above -->
+<!--- Detail any specific changes here -->
 
 ## Motivation and Context
 
-<!--- Why is this change required? What problem does it solve? -->
-<!--- If it fixes an open issue, please link to the issue here. -->
+<!--- EXPLAIN why this change is required. -->
+<!--- Link any relevant issues via "Fixes #" or "Helps with #". -->
 
 Fixes #
 
 ## How Has This Been Tested?
 
-<!--- Please describe in detail how you tested your changes. -->
+<!--- DESCRIBE in detail how you tested your changes. -->
 <!--- Are these changes covered by new tests or existing tests? -->
 <!--- How else did you test these changes? -->
 
@@ -21,7 +18,7 @@ Fixes #
 
 ## Types of changes
 
-<!--- What types of changes does your code introduce? Put an `x` in all the boxes that apply: -->
+<!--- CHECK all the types of changes introduced by replacing "[ ]" with "[x]" in the boxes that apply: -->
 
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
@@ -30,18 +27,20 @@ Fixes #
 
 ## Previewing Changes
 
-<!--- Delete this section if there are no user visible changes. --->
-<!--- List out the steps needed to preview the user visible changes. --->
+<!--- DELETE THIS SECTION IF THERE ARE NO VISIBLE CHANGES. --->
+
+<!--- DETAIL the steps needed to preview your user visible changes. --->
 <!--- Be very specific about what to look for and what things to try. --->
 
-1. Click the `https://s4us-pr-NUMBER.onrender.com` URL **render[bot]** left in the comment below.
+<!-- TODO: REPLACE "NUMBER" WITH THE PULL REQUEST NUMBER --->
+<!-- The URL should match the URL left by render[bot]'s comment. --->
+
+1. Go to https://s4us-pr-NUMBER.onrender.com.
 2.
 
 ## Checklist:
 
-<!--- Go over all the following points, and put an `x` in all the boxes that apply. -->
+<!--- CHECK all the boxes that apply, replacing "[ ]" with "[x]". -->
 <!--- If you're unsure about any of these, don't hesitate to ask. We're here to help! -->
 
-- [ ] My change requires a change to the documentation.
-- [ ] I have updated the documentation accordingly.
 - [ ] I have added tests to cover my changes.
