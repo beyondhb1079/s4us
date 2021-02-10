@@ -8,7 +8,6 @@ import TabContext from '@material-ui/lab/TabContext';
 import TabList from '@material-ui/lab/TabList';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import LoginButton from './LoginButton';
 import HomeSection from './HomeSection';
 import student from '../img/student.png';
 import contributor from '../img/contributor.png';
@@ -50,7 +49,17 @@ const tabs = [
     title: 'Stress-free scholarships',
     description:
       'We intend to provide tools and resources for all students in High School, Community College and University. Our goal is to provide you with access to scholarships to allow you to pursue your career path. We understand that finding scholarships that match your attributes is the most difficult and time consuming task to do as a college student. Our purpose is to connect you with our database to ensure the time you spend finding scholarships is minimize and effectively provide you with scholarships that are right for you.',
-    buttons: [<LoginButton />, OutlineButton('students')],
+    buttons: [
+      <Button
+        variant="contained"
+        color="primary"
+        component={Link}
+        to={{ state: { showLoginDialog: true } }}
+        replace>
+        Login
+      </Button>,
+      OutlineButton('students'),
+    ],
     pic: student,
   },
   {
