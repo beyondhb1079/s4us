@@ -37,12 +37,7 @@ const sortingOptions = {
 };
 
 export default function FilterBar(props) {
-  const {
-    changeSortBy,
-    changeSortFormat,
-    amountFilterVals,
-    setAmountFilterVals,
-  } = props;
+  const { changeSortBy, changeSortFormat, amountFilterVals } = props;
   const classes = useStyles();
 
   function updateSorting(sortingOption) {
@@ -72,7 +67,7 @@ export default function FilterBar(props) {
       <Grid item className={classes.alignText}>
         <FilterDropDown label="Major" items={majors} />
         <FilterDropDown label="Grade" items={grades} />
-        <AmountFilter {...{ amountFilterVals, setAmountFilterVals }} />
+        <AmountFilter {...{ amountFilterVals }} />
       </Grid>
       <Grid item className={classes.alignText}>
         Sort by
@@ -92,5 +87,4 @@ FilterBar.propTypes = {
   changeSortBy: PropTypes.func.isRequired,
   changeSortFormat: PropTypes.func.isRequired,
   amountFilterVals: PropTypes.objectOf(PropTypes.number).isRequired,
-  setAmountFilterVals: PropTypes.func.isRequired,
 };

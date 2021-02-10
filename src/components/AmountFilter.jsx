@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import queryString from 'query-string';
 import PropTypes from 'prop-types';
@@ -27,27 +27,25 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AmountFilter(props) {
   const classes = useStyles();
-  const { amountFilterVals, setAmountFilterVals } = props;
+  const { amountFilterVals } = props;
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const history = useHistory();
   const location = useLocation();
-  /*
+  const history = useHistory();
+
+  const handleClick = (event) => setAnchorEl(event.currentTarget);
+  const error =
+    amountFilterVals.max > 0 && amountFilterVals.max <= amountFilterVals.min;
+  console.log(error);
+
   const setMinMax = (index, val) => {
     history.push({
       search: queryString.stringify({
-        ...queryString.parse(location.search), // {key: value}
+        ...queryString.parse(location.search),
         [index]: val,
       }),
     });
   };
-  // const min = queryString.parse(location.search).min ?? 0;
-  // const max = queryString.parse(location.search).max ?? 0;
-*/
-
-  const handleClick = (event) => setAnchorEl(event.currentTarget);
-  const error =
-    amountFilterVals.max > 0 && amountFilterVals.max < amountFilterVals.min;
 
   return (
     <>
@@ -71,13 +69,9 @@ export default function AmountFilter(props) {
             <AmountTextField
               error={error}
               value={amountFilterVals.min || ''}
-              onChange={(e) => {
-                setAmountFilterVals({
-                  ...amountFilterVals,
-                  min: parseInt(e.target.value, 10) || 0,
-                });
-                if (error) console.log('error');
-              }}
+              onChange={(e) =>
+                setMinMax('min', parseInt(e.target.value, 10) || 0)
+              }
             />
           </Grid>
           <Grid item className={classes.dashStyle}>
@@ -88,10 +82,7 @@ export default function AmountFilter(props) {
             <AmountTextField
               value={amountFilterVals.max || ''}
               onChange={(e) =>
-                setAmountFilterVals({
-                  ...amountFilterVals,
-                  max: parseInt(e.target.value, 10) || 0,
-                })
+                setMinMax('max', parseInt(e.target.value, 10) || 0)
               }
             />
           </Grid>
@@ -103,5 +94,4 @@ export default function AmountFilter(props) {
 
 AmountFilter.propTypes = {
   amountFilterVals: PropTypes.objectOf(PropTypes.number).isRequired,
-  setAmountFilterVals: PropTypes.func.isRequired,
 };

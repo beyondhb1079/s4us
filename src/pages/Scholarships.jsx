@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import queryString from 'query-string';
 import {
   CircularProgress,
   Container,
@@ -28,6 +30,14 @@ function ScholarshipsPage() {
   const [sortField, setSortField] = useState('deadline');
   const [sortDir, setSortDir] = useState('asc');
   const [amountFilterVals, setAmountFilterVals] = useState({ min: 0, max: 0 });
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = queryString.parse(location.search);
+    const minParam = params.min ?? 0;
+    const maxParam = params.max ?? 0;
+    setAmountFilterVals({ min: minParam, max: maxParam });
+  }, [location.search]);
 
   useEffect(() => {
     // TODO: Create cancellable promises
@@ -51,7 +61,7 @@ function ScholarshipsPage() {
       <FilterBar
         changeSortBy={setSortField}
         changeSortFormat={setSortDir}
-        {...{ amountFilterVals, setAmountFilterVals }}
+        {...{ amountFilterVals }}
       />
       {error?.toString() ||
         (loading && <CircularProgress className={classes.progress} />) || (
