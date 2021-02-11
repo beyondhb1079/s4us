@@ -1,5 +1,42 @@
 import AmountType from './AmountType';
 
+// These constants exist to make sorting by amount.min and amount.max
+// possible for unbound scholarships (no range max, full tuition, unknown). 
+
+// If sorting by max, then the scholarship sorting order should be:
+//   1. FULL_TUITION scholarships
+//   2. RANGE scholarships with no amount.max defined
+//   3. FIXED/RANGE scholarships sorted by amount.max
+//   4. UNKNOWN scholarships
+//
+// To accomplish this we can:
+
+// Set the UNKNOWN max value to lower than the lowest max value so it appears last:
+export const UNKNOWN_MAX = -1;
+// Cap the max FIXED/RANGE value to a high number that won't be reached soon:
+export const FIXED_MAX = 1000000000;
+// Set the (unset/empty) RANGE max value to be slightly greater so it appears before
+// any FIXED/RANGE scholarships that have a max value set:
+export const RANGE_MAX = FIXED_MAX + 1;
+// And set the FULL_TUITION max value to be the greatest max value so it appears first:
+export const FULL_TUITION_MAX = RANGE_MAX + 1;
+
+// If sorting by min, then the scholarship sorting order should be:
+//   1. FIXED/RANGE scholarships sorted by amount.min
+//   2. FULL_TUITION scholarships
+//   3. UNKNOWN scholarships
+//
+// To accomplish this we can:
+
+// Set the FULL_TUITION min value to be greater than any possible FIXED/RANGE value:
+export const FULL_TUITION_MIN = FULL_TUITION_MAX;
+// And set the UNKNOWN min value to be slightly greater so it appears last.
+export const UNKNOWN_MIN = FULL_TUITION_MIN + 1;
+
+// Set the UNKNOWN min value to 
+// This means we need FULL_TUITION min values > possible FIXED/RANGE min values.
+//we want FIXED/RANGE scholarships to appear
+// before
 // To make sorting by amount.max make sense for range amounts
 // with no upper bound.
 export const RANGE_MAX = 1000000001;
