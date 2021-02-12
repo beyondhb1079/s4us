@@ -20,22 +20,21 @@ function ScholarshipList({ scholarships, selectedIndex, setSelectedIndex }) {
   const [shareSiteTitle] = useState('');
 
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
-        {scholarships.length === 0 && (
-          <Typography variant="h5" className={classes.noScholarships}>
-            No scholarships found
-          </Typography>
-        )}
-        {scholarships.map(({ id, data }, index) => (
+    <Grid container spacing={1}>
+      {scholarships.length === 0 && (
+        <Typography variant="h5" className={classes.noScholarships}>
+          No scholarships found
+        </Typography>
+      )}
+      {scholarships.map(({ id, data }, index) => (
+        <Grid item xs={12} key={id}>
           <ScholarshipListCard
             scholarship={{ id, data }}
-            key={id}
             selected={index === selectedIndex}
             onClick={() => setSelectedIndex(index)}
           />
-        ))}
-      </Grid>
+        </Grid>
+      ))}
       <ShareDialog
         open={shareDialogOpen}
         onClose={closeShareDialog}

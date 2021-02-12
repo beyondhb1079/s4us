@@ -86,19 +86,11 @@ function ScholarshipsPage() {
   const showList = largeScreen || !showDetail;
   return (
     <Container>
+      <Typography variant="h3" component="h1" style={{ textAlign: 'center' }}>
+        Scholarships
+      </Typography>
       {showList ? (
-        <>
-          <Typography
-            variant="h3"
-            component="h1"
-            style={{ textAlign: 'center' }}>
-            Scholarships
-          </Typography>
-          <FilterBar
-            changeSortBy={setSortField}
-            changeSortFormat={setSortDir}
-          />
-        </>
+        <FilterBar changeSortBy={setSortField} changeSortFormat={setSortDir} />
       ) : (
         <Button color="primary" onClick={() => setSelectedIndex(selectedIndex)}>
           Back to results
