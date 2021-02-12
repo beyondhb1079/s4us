@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import queryString from 'query-string';
 import {
   CircularProgress,
@@ -29,35 +29,49 @@ function ScholarshipsPage() {
   const [error, setError] = useState();
   const [sortField, setSortField] = useState('deadline');
   const [sortDir, setSortDir] = useState('asc');
-  const [amountFilterVals, setAmountFilterVals] = useState({ min: 0, max: 0 });
+  const [amountFilterVals, setAmountFilterVals] = useState({
+    minAmount: 0,
+    maxAmount: 0,
+  });
   const location = useLocation();
+  const history = useHistory();
 
   useEffect(() => {
-    const params = queryString.parse(location.search);
-    const minParam = parseInt(params.min ?? 0, 10);
-    const maxParam = parseInt(params.max ?? 0, 10);
+    const params = queryString.parse(location.search, { parseNumbers: true });
+    const minParam = params.min ?? 0;
+    const maxParam = params.max ?? 0;
     setAmountFilterVals({
-      min: minParam >= 0 ? minParam : 0,
-      max: maxParam >= 0 ? maxParam : 0,
+      minAmount: minParam > 0 ? minParam : 0,
+      maxAmount: maxParam > 0 ? maxParam : 0,
     });
-  }, [location.search]);
+
+    const newParams = { ...params };
+    if (!Number.isInteger(minParam) || minParam <= 0) delete newParams.min;
+    if (!Number.isInteger(maxParam) || maxParam <= 0) delete newParams.max;
+    history.push({ search: queryString.stringify(newParams) });
+  }, [location.search, history]);
 
   useEffect(() => {
     // TODO: Create cancellable promises
     Scholarships.list({ sortField, sortDir })
       .then((results) => {
         const filterError =
-          amountFilterVals.max > 0 &&
-          amountFilterVals.max <= amountFilterVals.min;
+          amountFilterVals.maxAmount > 0 &&
+          amountFilterVals.maxAmount <= amountFilterVals.minAmount;
         if (
-          (amountFilterVals.min === 0 && amountFilterVals.max === 0) ||
+          (amountFilterVals.minAmount === 0 &&
+            amountFilterVals.maxAmount === 0) ||
           filterError
         )
           setScholarships(results);
         else
           setScholarships(
             results.filter((result) =>
-              FilterByAmount(result, amountFilterVals.min, amountFilterVals.max)
+              FilterByAmount(
+                result.data.amount,
+                amountFilterVals.minAmount,
+                amountFilterVals.maxAmount
+              )
             )
           );
       })

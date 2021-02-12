@@ -20,9 +20,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
   },
-  helperStyle: {
-    padding: `0 0 ${theme.spacing(1)}px ${theme.spacing(2)}px`,
-  },
 }));
 
 export default function AmountFilter(props) {
@@ -35,7 +32,8 @@ export default function AmountFilter(props) {
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const error =
-    amountFilterVals.max > 0 && amountFilterVals.max <= amountFilterVals.min;
+    amountFilterVals.maxAmount > 0 &&
+    amountFilterVals.maxAmount <= amountFilterVals.minAmount;
 
   const setMinMax = (index, val) => {
     history.push({
@@ -67,10 +65,8 @@ export default function AmountFilter(props) {
             <InputLabel className={classes.labelStyle}>Min Amount</InputLabel>
             <AmountTextField
               error={error}
-              value={amountFilterVals.min || ''}
-              onChange={(e) =>
-                setMinMax('min', parseInt(e.target.value, 10) || 0)
-              }
+              value={amountFilterVals.minAmount || ''}
+              onChange={(e) => setMinMax('min', e.target.value)}
             />
           </Grid>
           <Grid item className={classes.dashStyle}>
@@ -79,10 +75,8 @@ export default function AmountFilter(props) {
           <Grid item className={classes.filterStyle}>
             <InputLabel className={classes.labelStyle}>Max Amount</InputLabel>
             <AmountTextField
-              value={amountFilterVals.max || ''}
-              onChange={(e) =>
-                setMinMax('max', parseInt(e.target.value, 10) || 0)
-              }
+              value={amountFilterVals.maxAmount || ''}
+              onChange={(e) => setMinMax('max', e.target.value)}
             />
           </Grid>
         </Grid>
