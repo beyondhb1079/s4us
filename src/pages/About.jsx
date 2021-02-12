@@ -49,17 +49,6 @@ const team = [
     ),
   },
   {
-    name: 'Job Hernandez',
-    img: testPic,
-    description: (
-      <>
-        I am interested and driven to solve problems with software; software has
-        tremendous power to make an impact in the world and transform lives.
-      </>
-    ),
-  },
-
-  {
     name: 'Sergio Mejia',
     img: testPic,
     description: <>Todo: about Sergio Mejia</>,
@@ -75,7 +64,7 @@ const team = [
     description: (
       <>
         I am driven to solve problems with software; software has tremendous
-        power to transform society. So, I would like to contribute and have an
+        power to advance society. So, I would like to contribute and have an
         impact.
       </>
     ),
