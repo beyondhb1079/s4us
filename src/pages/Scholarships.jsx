@@ -34,19 +34,33 @@ function ScholarshipsPage() {
 
   useEffect(() => {
     const params = queryString.parse(location.search);
-    const minParam = params.min ?? 0;
-    const maxParam = params.max ?? 0;
-    setAmountFilterVals({ min: minParam, max: maxParam });
+    const minParam = parseInt(params.min ?? 0, 10);
+    const maxParam = parseInt(params.max ?? 0, 10);
+    setAmountFilterVals({
+      min: minParam >= 0 ? minParam : 0,
+      max: maxParam >= 0 ? maxParam : 0,
+    });
   }, [location.search]);
 
   useEffect(() => {
     // TODO: Create cancellable promises
     Scholarships.list({ sortField, sortDir })
-      .then((results) =>
-        setScholarships(
-          FilterByAmount(results, amountFilterVals.min, amountFilterVals.max)
+      .then((results) => {
+        const filterError =
+          amountFilterVals.max > 0 &&
+          amountFilterVals.max <= amountFilterVals.min;
+        if (
+          (amountFilterVals.min === 0 && amountFilterVals.max === 0) ||
+          filterError
         )
-      )
+          setScholarships(results);
+        else
+          setScholarships(
+            results.filter((result) =>
+              FilterByAmount(result, amountFilterVals.min, amountFilterVals.max)
+            )
+          );
+      })
       .catch(setError)
       .finally(() => setLoading(false));
   }, [sortDir, sortField, amountFilterVals]);

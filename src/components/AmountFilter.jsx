@@ -36,7 +36,6 @@ export default function AmountFilter(props) {
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const error =
     amountFilterVals.max > 0 && amountFilterVals.max <= amountFilterVals.min;
-  console.log(error);
 
   const setMinMax = (index, val) => {
     history.push({
