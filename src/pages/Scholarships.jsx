@@ -41,28 +41,31 @@ function ScholarshipsPage() {
       queryString.parse(location.search).sortDir === 'desc'
   );
 
-  const sortField = validField
+  let sortField = validField
     ? queryString.parse(location.search).sortField
     : DEFAULT_SORT_FIELD;
-  const sortDir = validDir
+  let sortDir = validDir
     ? queryString.parse(location.search).sortDir
     : DEFAULT_SORT_DIR;
 
-  const setSortField = (val) => {
-    history.push({
-      search: queryString.stringify({
-        ...queryString.parse(location.search),
-        sortField: val,
-        sortDir,
-      }),
-    });
-  };
-
-  const setSortDir = (val) => {
+  const setSort = (val) => {
+    if (val === 'deadlineSoon') {
+      sortField = 'deadline';
+      sortDir = 'asc';
+    } else if (val === 'deadlineLatest') {
+      sortField = 'deadline';
+      sortDir = 'desc';
+    } else if (val === 'amountLow') {
+      sortField = 'amount.min';
+      sortDir = 'asc';
+    } else if (val === 'amountHigh') {
+      sortField = 'amount.max';
+      sortDir = 'desc';
+    }
     history.push({
       search: queryString.stringify({
         sortField,
-        sortDir: val,
+        sortDir,
       }),
     });
   };
@@ -80,7 +83,7 @@ function ScholarshipsPage() {
       <Typography variant="h3" component="h1" style={{ textAlign: 'center' }}>
         Scholarships
       </Typography>
-      <FilterBar setSortField={setSortField} setSortDir={setSortDir} />
+      <FilterBar setSort={setSort} />
       {error?.toString() ||
         (loading && <CircularProgress className={classes.progress} />) || (
           <>

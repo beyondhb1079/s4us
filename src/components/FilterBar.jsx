@@ -37,26 +37,22 @@ const sortingOptions = {
 };
 
 export default function FilterBar(props) {
-  const { setSortField, setSortDir } = props;
+  const { setSort } = props;
   const classes = useStyles();
 
   function updateSorting(sortingOption) {
     switch (sortingOption) {
       case 'deadlineSoon':
-        setSortField('deadline');
-        setSortDir('asc');
+        setSort('deadlineSoon');
         break;
       case 'deadlineLatest':
-        setSortField('deadline');
-        setSortDir('desc');
+        setSort('deadlineLatest');
         break;
       case 'amountLow':
-        setSortField('amount.min');
-        setSortDir('asc');
+        setSort('amountLow');
         break;
       case 'amountHigh':
-        setSortField('amount.max');
-        setSortDir('desc');
+        setSort('amountHigh');
         break;
       default:
     }
