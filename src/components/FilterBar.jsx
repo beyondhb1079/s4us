@@ -37,30 +37,26 @@ const sortingOptions = {
 };
 
 export default function FilterBar(props) {
-  const { changeSortBy, changeSortFormat, changeURL } = props;
+  const { setSortField, setSortDir } = props;
   const classes = useStyles();
 
   function updateSorting(sortingOption) {
     switch (sortingOption) {
       case 'deadlineSoon':
-        changeSortBy('deadline');
-        changeSortFormat('asc');
-        changeURL('sortField=deadline&sortDir=asc');
+        setSortField('deadline');
+        setSortDir('asc');
         break;
       case 'deadlineLatest':
-        changeSortBy('deadline');
-        changeSortFormat('desc');
-        changeURL('sortField=deadline&sortDir=desc');
+        setSortField('deadline');
+        setSortDir('desc');
         break;
       case 'amountLow':
-        changeSortBy('amount.min');
-        changeSortFormat('asc');
-        changeURL('sortField=amount.min&sortDir=asc');
+        setSortField('amount.min');
+        setSortDir('asc');
         break;
       case 'amountHigh':
-        changeSortBy('amount.max');
-        changeSortFormat('desc');
-        changeURL('sortField=amount.max&sortDir=desc');
+        setSortField('amount.max');
+        setSortDir('desc');
         break;
       default:
     }
@@ -88,7 +84,6 @@ export default function FilterBar(props) {
 }
 
 FilterBar.propTypes = {
-  changeSortBy: PropTypes.func.isRequired,
-  changeSortFormat: PropTypes.func.isRequired,
-  changeURL: PropTypes.func.isRequired,
+  setSortField: PropTypes.func.isRequired,
+  setSortDir: PropTypes.func.isRequired,
 };

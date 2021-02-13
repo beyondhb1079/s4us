@@ -11,7 +11,7 @@ import queryString from 'query-string';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
-import { DEFAULT_SORT_URL_VALUE } from '../config/constants';
+import { DEFAULT_SORT_DIR, DEFAULT_SORT_FIELD } from '../config/constants';
 
 const useStyles = makeStyles((theme) => ({
   progress: {
@@ -28,19 +28,32 @@ function ScholarshipsPage() {
   const [scholarships, setScholarships] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
-  const [sortField, setSortField] = useState('deadline');
-  const [sortDir, setSortDir] = useState('asc');
   const history = useHistory();
   const location = useLocation();
-  const setFoo = (val) => {
+
+  const sortField =
+    queryString.parse(location.search).sortField ?? DEFAULT_SORT_FIELD;
+  const sortDir =
+    queryString.parse(location.search).sortDir ?? DEFAULT_SORT_DIR;
+
+  const setSortField = (val) => {
     history.push({
       search: queryString.stringify({
         ...queryString.parse(location.search),
-        sorting: val,
+        sortField: val,
+        sortDir,
       }),
     });
   };
-  const foo = queryString.parse(location.search).foo ?? DEFAULT_SORT_URL_VALUE;
+
+  const setSortDir = (val) => {
+    history.push({
+      search: queryString.stringify({
+        sortField,
+        sortDir: val,
+      }),
+    });
+  };
 
   useEffect(() => {
     // TODO: Create cancellable promises
@@ -55,11 +68,7 @@ function ScholarshipsPage() {
       <Typography variant="h3" component="h1" style={{ textAlign: 'center' }}>
         Scholarships
       </Typography>
-      <FilterBar
-        changeSortBy={setSortField}
-        changeSortFormat={setSortDir}
-        changeURL={setFoo}
-      />
+      <FilterBar setSortField={setSortField} setSortDir={setSortDir} />
       {error?.toString() ||
         (loading && <CircularProgress className={classes.progress} />) || (
           <>
