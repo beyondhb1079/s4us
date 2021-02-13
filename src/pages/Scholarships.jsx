@@ -31,10 +31,22 @@ function ScholarshipsPage() {
   const history = useHistory();
   const location = useLocation();
 
-  const sortField =
-    queryString.parse(location.search).sortField ?? DEFAULT_SORT_FIELD;
-  const sortDir =
-    queryString.parse(location.search).sortDir ?? DEFAULT_SORT_DIR;
+  const validField = Boolean(
+    queryString.parse(location.search).sortField === 'deadline' ||
+      queryString.parse(location.search).sortField === 'amount.min' ||
+      queryString.parse(location.search).sortField === 'amount.max'
+  );
+  const validDir = Boolean(
+    queryString.parse(location.search).sortDir === 'asc' ||
+      queryString.parse(location.search).sortDir === 'desc'
+  );
+
+  const sortField = validField
+    ? queryString.parse(location.search).sortField
+    : DEFAULT_SORT_FIELD;
+  const sortDir = validDir
+    ? queryString.parse(location.search).sortDir
+    : DEFAULT_SORT_DIR;
 
   const setSortField = (val) => {
     history.push({
