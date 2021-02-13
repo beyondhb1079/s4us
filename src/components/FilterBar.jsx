@@ -40,24 +40,6 @@ export default function FilterBar(props) {
   const { setSort } = props;
   const classes = useStyles();
 
-  function updateSorting(sortingOption) {
-    switch (sortingOption) {
-      case 'deadlineSoon':
-        setSort('deadlineSoon');
-        break;
-      case 'deadlineLatest':
-        setSort('deadlineLatest');
-        break;
-      case 'amountLow':
-        setSort('amountLow');
-        break;
-      case 'amountHigh':
-        setSort('amountHigh');
-        break;
-      default:
-    }
-  }
-
   return (
     <Grid container spacing={2} className={classes.root}>
       <Grid item className={classes.alignText}>
@@ -72,7 +54,7 @@ export default function FilterBar(props) {
           items={sortingOptions}
           defaultValue="deadlineSoon"
           removeNone
-          onChange={updateSorting}
+          setSort={setSort}
         />
       </Grid>
     </Grid>
@@ -80,6 +62,5 @@ export default function FilterBar(props) {
 }
 
 FilterBar.propTypes = {
-  setSortField: PropTypes.func.isRequired,
-  setSortDir: PropTypes.func.isRequired,
+  setSort: PropTypes.func.isRequired,
 };
