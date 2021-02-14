@@ -152,7 +152,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push": "yarn lint && firebase emulators:exec --only firestore 'react-scripts test --watchAll=false'"
+      "pre-push": "yarn lint"
     }
   },
   "lint-staged": {

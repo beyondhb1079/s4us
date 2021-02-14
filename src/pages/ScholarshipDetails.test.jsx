@@ -24,20 +24,34 @@ const app = initializeTestApp({ projectId: 'scholarship-details-test' });
 beforeAll(async () => clearFirestoreData(app.options));
 afterAll(async () => app.delete());
 
-test('renders loading initially', async () => {
+test('renders loading initially', () => {
+  renderAtRoute('/scholarships/abc');
+
+  expect(screen.getByText(/loading/i)).toBeInTheDocument();
+});
+
+test('renders scholarship not found', async () => {
   renderAtRoute('/scholarships/abc');
 
   expect(screen.getByText(/loading/i)).toBeInTheDocument();
   await screen.findByText(/not found/i);
 });
 
-test('renders scholarship not found', async () => {
-  renderAtRoute('/scholarships/bad-id');
+test('renders loading initially with empty scholarship state', () => {
+  renderAtRoute('/scholarships/abc', { scholarship: { id: 'abc' } });
 
-  await screen.findByText(/scholarships\/bad-id Not Found/i);
+  expect(screen.getByText(/loading/i)).toBeInTheDocument();
 });
 
-test('renders passed in scholarship details', async () => {
+test('renders something when scholarship data corrupt', () => {
+  renderAtRoute('/scholarships/abc', {
+    scholarship: { id: 'abc', data: { bad: 'data' } },
+  });
+
+  expect(screen.getByText(/Apply/i)).toBeInTheDocument();
+});
+
+test('renders passed in scholarship details', () => {
   const data = {
     name: 'Foo scholarship',
     amount: new ScholarshipAmount({

@@ -49,39 +49,47 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ScholarshipListCard({ scholarship, id }) {
+function ScholarshipListCard({ scholarship }) {
   const classes = useStyles();
+  const {
+    name,
+    amount,
+    deadline,
+    description,
+    organization,
+    tags,
+  } = scholarship.data;
 
   return (
     <Card variant="outlined">
       <CardActionArea
         component={Link}
         to={{
-          pathname: `/scholarships/${id}`,
-          state: { scholarship: { id, scholarship } },
+          pathname: `/scholarships/${scholarship.id}`,
+          state: { scholarship },
         }}>
         <CardContent className={classes.content}>
           <Typography variant="body1" className={classes.deadline}>
-            {scholarship.deadline.toLocaleDateString()}
+            {deadline?.toLocaleDateString()}
           </Typography>
-          <Typography variant="h5">{scholarship.name}</Typography>
+          <Typography variant="h5">{name}</Typography>
           <Typography variant="subtitle1" className={classes.subtitle}>
-            {scholarship.organization}
+            {organization}
           </Typography>
           <Typography
             variant="subtitle1"
             className={classes.subtitle}
             gutterBottom>
-            {scholarship.amount.toString()}
+            {amount?.toString()}
           </Typography>
           <Typography
             variant="body1"
             color="textSecondary"
             className={classes.description}>
-            {scholarship.description}
+            {description}
           </Typography>
           <Box className={classes.tagWrapper}>
-            {scholarship.tags?.map((tag) => (
+            {tags?.map((tag) => (
               <Chip
                 label={tag.title}
                 variant="outlined"
@@ -97,17 +105,17 @@ function ScholarshipListCard({ scholarship, id }) {
 
 ScholarshipListCard.propTypes = {
   scholarship: PropTypes.shape({
-    name: PropTypes.string,
-    organization: PropTypes.string,
-    description: PropTypes.string,
-    deadline: PropTypes.instanceOf(Date),
-    amount: PropTypes.instanceOf(ScholarshipAmount),
-    tags: PropTypes.arrayOf({ title: PropTypes.string }),
-  }),
-  id: PropTypes.string.isRequired,
-};
-ScholarshipListCard.defaultProps = {
-  scholarship: {},
+    id: PropTypes.string.isRequired,
+    data: PropTypes.shape({
+      name: PropTypes.string,
+      organization: PropTypes.string,
+      amount: PropTypes.instanceOf(ScholarshipAmount),
+      description: PropTypes.string,
+      deadline: PropTypes.instanceOf(Date),
+      website: PropTypes.string,
+      tags: PropTypes.arrayOf({ title: PropTypes.string }),
+    }).isRequired,
+  }).isRequired,
 };
 
 export default ScholarshipListCard;

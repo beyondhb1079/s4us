@@ -1,7 +1,10 @@
 import React from 'react';
+import InboxIcon from '@material-ui/icons/Inbox';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 import {
+  Link as MuiLink,
+  Box,
   Button,
   Container,
   Grid,
@@ -29,6 +32,15 @@ const useStyles = makeStyles((theme) => ({
   scholarshipsAdded: {
     marginTop: theme.spacing(6),
   },
+  noScholarshipsAdded: {
+    marginTop: theme.spacing(12),
+  },
+  inboxIcon: {
+    marginTop: theme.spacing(6),
+  },
+  noScholarshipsBox: {
+    textAlign: 'center',
+  },
 }));
 
 export default function UserHome() {
@@ -46,7 +58,7 @@ export default function UserHome() {
             Looking for scholarships?
           </Typography>
           <Button
-            variant="outlined"
+            variant="contained"
             color="primary"
             component={Link}
             to="/scholarships"
@@ -58,7 +70,6 @@ export default function UserHome() {
           {/* Image here */}
         </Grid>
       </Grid>
-
       <Grid container className={classes.scholarshipsAdded} spacing={2}>
         <Grid item sm={9}>
           <Typography variant="h5" component="h2" gutterBottom>
@@ -67,7 +78,7 @@ export default function UserHome() {
         </Grid>
         <Grid item sm={3} className={classes.addButton}>
           <Button
-            variant="outlined"
+            variant="contained"
             color="primary"
             component={Link}
             to="/scholarships/new">
@@ -75,6 +86,22 @@ export default function UserHome() {
           </Button>
         </Grid>
       </Grid>
+      <Box className={classes.noScholarshipsBox}>
+        <InboxIcon style={{ fontSize: 200 }} />
+        <Typography
+          variant="h5"
+          component="h2"
+          gutterBottom
+          className={classes.noScholarshipsAdded}>
+          No Scholarships Added Yet
+        </Typography>
+
+        <Typography component="h2" color="primary">
+          <MuiLink component={Link} to="/scholarship/new">
+            Add a Scholarship
+          </MuiLink>
+        </Typography>
+      </Box>
     </Container>
   );
 }
