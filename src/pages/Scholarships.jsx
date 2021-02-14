@@ -63,7 +63,7 @@ function ScholarshipsPage() {
       .then((results) => {
         const filterError = maxParam > 0 && maxParam <= minParam;
 
-        if ((!minParam && !maxParam) || filterError) setScholarships(results);
+        if (filterError) setScholarships(results);
         else
           setScholarships(
             results.filter(({ data }) => {

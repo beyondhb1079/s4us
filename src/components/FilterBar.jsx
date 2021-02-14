@@ -45,8 +45,8 @@ export default function FilterBar(props) {
   } = props;
   const classes = useStyles();
 
-  const min = queryParams.minAmount ?? 0;
-  const max = queryParams.maxAmount ?? 0;
+  const minAmount = queryParams.minAmount ?? 0;
+  const maxAmount = queryParams.maxAmount ?? 0;
 
   function updateSorting(sortingOption) {
     switch (sortingOption) {
@@ -75,7 +75,7 @@ export default function FilterBar(props) {
       <Grid item className={classes.alignText}>
         <FilterDropDown label="Major" items={majors} />
         <FilterDropDown label="Grade" items={grades} />
-        <AmountFilter {...{ min, max, onAmountFilterChange }} />
+        <AmountFilter {...{ minAmount, maxAmount, onAmountFilterChange }} />
       </Grid>
       <Grid item className={classes.alignText}>
         Sort by
