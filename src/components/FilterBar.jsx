@@ -37,8 +37,16 @@ const sortingOptions = {
 };
 
 export default function FilterBar(props) {
-  const { changeSortBy, changeSortFormat, amountFilterVals } = props;
+  const {
+    changeSortBy,
+    changeSortFormat,
+    onAmountFilterChange,
+    queryParams,
+  } = props;
   const classes = useStyles();
+
+  const min = queryParams.minAmount ?? 0;
+  const max = queryParams.maxAmount ?? 0;
 
   function updateSorting(sortingOption) {
     switch (sortingOption) {
@@ -67,7 +75,7 @@ export default function FilterBar(props) {
       <Grid item className={classes.alignText}>
         <FilterDropDown label="Major" items={majors} />
         <FilterDropDown label="Grade" items={grades} />
-        <AmountFilter {...{ amountFilterVals }} />
+        <AmountFilter {...{ min, max, onAmountFilterChange }} />
       </Grid>
       <Grid item className={classes.alignText}>
         Sort by
@@ -86,5 +94,9 @@ export default function FilterBar(props) {
 FilterBar.propTypes = {
   changeSortBy: PropTypes.func.isRequired,
   changeSortFormat: PropTypes.func.isRequired,
-  amountFilterVals: PropTypes.objectOf(PropTypes.number).isRequired,
+  queryParams: PropTypes.objectOf(PropTypes.number),
+  onAmountFilterChange: PropTypes.func.isRequired,
+};
+FilterBar.defaultProps = {
+  queryParams: {},
 };
