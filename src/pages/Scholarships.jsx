@@ -30,44 +30,48 @@ function ScholarshipsPage() {
   const [error, setError] = useState();
   const history = useHistory();
   const location = useLocation();
+  const params = queryString.parse(location.search);
+
+  const sortingOptions = {
+    deadlineSoon: {
+      field: 'deadline',
+      dir: 'asc',
+    },
+    deadlineLatest: {
+      field: 'deadline',
+      dir: 'desc',
+    },
+    amountLow: {
+      field: 'amount.min',
+      dir: 'asc',
+    },
+    amountHigh: {
+      field: 'amount.max',
+      dir: 'desc',
+    },
+  };
 
   const validField = Boolean(
-    queryString.parse(location.search).sortField === 'deadline' ||
-      queryString.parse(location.search).sortField === 'amount.min' ||
-      queryString.parse(location.search).sortField === 'amount.max'
+    params.sortField === 'deadline' ||
+      params.sortField === 'amount.min' ||
+      params.sortField === 'amount.max'
   );
   const validDir = Boolean(
-    queryString.parse(location.search).sortDir === 'asc' ||
-      queryString.parse(location.search).sortDir === 'desc'
+    params.sortDir === 'asc' || params.sortDir === 'desc'
   );
 
-  let sortField = validField
-    ? queryString.parse(location.search).sortField
-    : DEFAULT_SORT_FIELD;
-  let sortDir = validDir
-    ? queryString.parse(location.search).sortDir
-    : DEFAULT_SORT_DIR;
+  const sortField = validField ? params.sortField : DEFAULT_SORT_FIELD;
+  const sortDir = validDir ? params.sortDir : DEFAULT_SORT_DIR;
 
   const setSort = (val) => {
-    if (val === 'deadlineSoon') {
-      sortField = 'deadline';
-      sortDir = 'asc';
-    } else if (val === 'deadlineLatest') {
-      sortField = 'deadline';
-      sortDir = 'desc';
-    } else if (val === 'amountLow') {
-      sortField = 'amount.min';
-      sortDir = 'asc';
-    } else if (val === 'amountHigh') {
-      sortField = 'amount.max';
-      sortDir = 'desc';
+    if (val in sortingOptions) {
+      history.push({
+        search: queryString.stringify({
+          sortField: sortingOptions[val].field,
+          sortDir: sortingOptions[val].dir,
+        }),
+      });
     }
-    history.push({
-      search: queryString.stringify({
-        sortField,
-        sortDir,
-      }),
-    });
   };
 
   useEffect(() => {

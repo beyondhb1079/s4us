@@ -40,6 +40,12 @@ export default function FilterBar(props) {
   const { setSort } = props;
   const classes = useStyles();
 
+  function udpateSortingParams(sortOption) {
+    if (sortOption in sortingOptions) {
+      setSort(sortOption);
+    }
+  }
+
   return (
     <Grid container spacing={2} className={classes.root}>
       <Grid item className={classes.alignText}>
@@ -54,6 +60,7 @@ export default function FilterBar(props) {
           items={sortingOptions}
           defaultValue="deadlineSoon"
           removeNone
+          onChange={udpateSortingParams}
           setSort={setSort}
         />
       </Grid>

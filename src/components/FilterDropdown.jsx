@@ -16,13 +16,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function FilterDropdown(props) {
-  const { label, items, defaultValue, removeNone, setSort } = props;
+  const { label, items, defaultValue, removeNone, onChange } = props;
   const [choice, setChoice] = useState(defaultValue);
   const classes = useStyles();
 
   function selectChoice(event) {
     setChoice(event.target.value);
-    setSort(event.target.value);
+    onChange(event.target.value);
   }
 
   return (
@@ -52,12 +52,12 @@ FilterDropdown.propTypes = {
   defaultValue: PropTypes.string,
   items: PropTypes.objectOf(PropTypes.string).isRequired,
   removeNone: PropTypes.bool,
-  setSort: PropTypes.func,
+  onChange: PropTypes.func,
 };
 
 FilterDropdown.defaultProps = {
   defaultValue: '',
-  setSort: () => {},
+  onChange: () => {},
   removeNone: false,
 };
 export default FilterDropdown;
