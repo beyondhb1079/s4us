@@ -22,11 +22,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AmountFilter(props) {
   const classes = useStyles();
-  const { minAmount, maxAmount, onAmountFilterChange } = props;
+  const { min, max, setQueryParam } = props;
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
-  const error = maxAmount > 0 && maxAmount <= minAmount;
+  const error = max > 0 && max <= min;
 
   return (
     <>
@@ -49,10 +49,8 @@ export default function AmountFilter(props) {
             <InputLabel className={classes.labelStyle}>Min Amount</InputLabel>
             <AmountTextField
               error={error}
-              value={minAmount || ''}
-              onChange={(e) =>
-                onAmountFilterChange('minAmount', e.target.value || 0)
-              }
+              value={min || ''}
+              onChange={(e) => setQueryParam('minAmount', e.target.value || 0)}
             />
           </Grid>
           <Grid item className={classes.dashStyle}>
@@ -61,10 +59,8 @@ export default function AmountFilter(props) {
           <Grid item className={classes.filterStyle}>
             <InputLabel className={classes.labelStyle}>Max Amount</InputLabel>
             <AmountTextField
-              value={maxAmount || ''}
-              onChange={(e) =>
-                onAmountFilterChange('maxAmount', e.target.value || 0)
-              }
+              value={max || ''}
+              onChange={(e) => setQueryParam('maxAmount', e.target.value || 0)}
             />
           </Grid>
         </Grid>
@@ -74,7 +70,7 @@ export default function AmountFilter(props) {
 }
 
 AmountFilter.propTypes = {
-  minAmount: PropTypes.number.isRequired,
-  maxAmount: PropTypes.number.isRequired,
-  onAmountFilterChange: PropTypes.func.isRequired,
+  min: PropTypes.number.isRequired,
+  max: PropTypes.number.isRequired,
+  setQueryParam: PropTypes.func.isRequired,
 };

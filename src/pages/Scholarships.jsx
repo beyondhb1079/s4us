@@ -12,6 +12,7 @@ import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
 import AmountType from '../types/AmountType';
+import { intersectsRange } from '../types/ScholarshipAmount';
 
 const useStyles = makeStyles((theme) => ({
   progress: {
@@ -33,54 +34,48 @@ function ScholarshipsPage() {
   const location = useLocation();
   const history = useHistory();
 
-  // sets min and max amount for the amount filter
-  const setMinMax = (index, val) => {
+  const params = queryString.parse(location.search, { parseNumbers: true });
+  const { minAmount, maxAmount } = params;
+
+  const setQueryParam = (index, val) => {
     history.push({
       search: queryString.stringify({
-        ...queryString.parse(location.search),
+        ...params,
         [index]: val,
       }),
     });
   };
 
-  const params = queryString.parse(location.search, { parseNumbers: true });
-  const minParam = params.minAmount;
-  const maxParam = params.maxAmount;
-
-  if ((minParam && !Number.isInteger(minParam)) || minParam === 0) {
-    delete params.minAmount;
-    history.replace({ search: queryString.stringify(params) });
-  }
-
-  if ((maxParam && !Number.isInteger(maxParam)) || maxParam === 0) {
-    delete params.maxAmount;
-    history.replace({ search: queryString.stringify(params) });
-  }
+  const clearQueryParam = (index) => {
+    const newParams = { ...params };
+    delete newParams[index];
+    history.replace({ search: queryString.stringify(newParams) });
+  };
 
   useEffect(() => {
     // TODO: Create cancellable promises
     Scholarships.list({ sortField, sortDir })
       .then((results) => {
-        const filterError = maxParam > 0 && maxParam <= minParam;
-
-        if (filterError) setScholarships(results);
-        else
+        if (maxAmount > 0 && maxAmount <= minAmount)
+          setError('The minimum amount must be less than the Maximum.');
+        else {
+          setError(null);
           setScholarships(
             results.filter(({ data }) => {
               if (data.amount.type === AmountType.Unknown) return true;
-              if (
-                (minParam && data.amount.max < minParam) ||
-                (maxParam && data.amount.min > maxParam)
-              ) {
-                return false;
-              }
-              return true;
+              return intersectsRange(
+                data.amount.min,
+                data.amount.max,
+                minAmount,
+                maxAmount
+              );
             })
           );
+        }
       })
       .catch(setError)
       .finally(() => setLoading(false));
-  }, [sortDir, sortField, minParam, maxParam]);
+  }, [sortDir, sortField, minAmount, maxAmount]);
 
   const classes = useStyles();
 
@@ -92,8 +87,8 @@ function ScholarshipsPage() {
       <FilterBar
         changeSortBy={setSortField}
         changeSortFormat={setSortDir}
-        onAmountFilterChange={setMinMax}
         queryParams={params}
+        {...{ setQueryParam, clearQueryParam }}
       />
       {error?.toString() ||
         (loading && <CircularProgress className={classes.progress} />) || (

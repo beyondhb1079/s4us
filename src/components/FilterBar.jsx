@@ -40,13 +40,27 @@ export default function FilterBar(props) {
   const {
     changeSortBy,
     changeSortFormat,
-    onAmountFilterChange,
+    setQueryParam,
+    clearQueryParam,
     queryParams,
   } = props;
   const classes = useStyles();
 
-  const minAmount = queryParams.minAmount ?? 0;
-  const maxAmount = queryParams.maxAmount ?? 0;
+  const { minAmount, maxAmount } = queryParams;
+
+  if (
+    minAmount !== undefined &&
+    !(Number.isInteger(minAmount) && minAmount > 0)
+  ) {
+    clearQueryParam('minAmount');
+  }
+
+  if (
+    maxAmount !== undefined &&
+    !(Number.isInteger(maxAmount) && maxAmount > 0)
+  ) {
+    clearQueryParam('maxAmount');
+  }
 
   function updateSorting(sortingOption) {
     switch (sortingOption) {
@@ -75,7 +89,11 @@ export default function FilterBar(props) {
       <Grid item className={classes.alignText}>
         <FilterDropDown label="Major" items={majors} />
         <FilterDropDown label="Grade" items={grades} />
-        <AmountFilter {...{ minAmount, maxAmount, onAmountFilterChange }} />
+        <AmountFilter
+          min={minAmount ?? 0}
+          max={maxAmount ?? 0}
+          {...{ setQueryParam }}
+        />
       </Grid>
       <Grid item className={classes.alignText}>
         Sort by
@@ -94,8 +112,9 @@ export default function FilterBar(props) {
 FilterBar.propTypes = {
   changeSortBy: PropTypes.func.isRequired,
   changeSortFormat: PropTypes.func.isRequired,
+  clearQueryParam: PropTypes.func.isRequired,
+  setQueryParam: PropTypes.func.isRequired,
   queryParams: PropTypes.objectOf(PropTypes.number),
-  onAmountFilterChange: PropTypes.func.isRequired,
 };
 FilterBar.defaultProps = {
   queryParams: {},
