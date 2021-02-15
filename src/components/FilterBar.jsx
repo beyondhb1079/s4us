@@ -61,7 +61,6 @@ export default function FilterBar(props) {
           defaultValue="deadlineSoon"
           removeNone
           onChange={udpateSortingParams}
-          setSort={setSort}
         />
       </Grid>
     </Grid>
