@@ -14,15 +14,6 @@ export const FULL_TUITION = RANGE_MAX + 1;
 export const UNKNOWN_MIN = FULL_TUITION + 1;
 export const UNKNOWN_MAX = -1;
 
-export const intersectsRange = (
-  min: number,
-  max: number,
-  filterMin: number,
-  filterMax: number
-): boolean => {
-  return (!filterMin || max >= filterMin) && (!filterMax || min <= filterMax);
-};
-
 export default class ScholarshipAmount {
   readonly type: AmountType;
   readonly min: number;
@@ -87,5 +78,13 @@ export default class ScholarshipAmount {
       default:
         return '(Unknown amount)';
     }
+  }
+
+  intersectsRange(filterMin: number, filterMax: number): boolean {
+    return (
+      this.type === AmountType.Unknown ||
+      ((!filterMin || this.max >= filterMin) &&
+        (!filterMax || this.min <= filterMax))
+    );
   }
 }

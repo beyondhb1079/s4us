@@ -11,8 +11,10 @@ import Button from '@material-ui/core/Button';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
-import AmountType from '../types/AmountType';
-import { intersectsRange } from '../types/ScholarshipAmount';
+import {
+  QUERY_PARAM_MIN_AMOUNT,
+  QUERY_PARAM_MAX_AMOUNT,
+} from '../lib/QueryParams';
 
 const useStyles = makeStyles((theme) => ({
   progress: {
@@ -46,33 +48,38 @@ function ScholarshipsPage() {
     });
   };
 
-  const clearQueryParam = (index) => {
-    const newParams = { ...params };
-    delete newParams[index];
-    history.replace({ search: queryString.stringify(newParams) });
+  const pruneQueryParam = (index) => {
+    delete params[index];
+    history.replace({ search: queryString.stringify(params) });
   };
 
+  if (
+    minAmount !== undefined &&
+    !(Number.isInteger(minAmount) && minAmount > 0)
+  ) {
+    pruneQueryParam(QUERY_PARAM_MIN_AMOUNT);
+  }
+
+  if (
+    maxAmount !== undefined &&
+    !(Number.isInteger(maxAmount) && maxAmount > 0)
+  ) {
+    pruneQueryParam(QUERY_PARAM_MAX_AMOUNT);
+  }
+
   useEffect(() => {
+    if (maxAmount > 0 && maxAmount <= minAmount)
+      setError('The minimum amount must be less than the Maximum.');
     // TODO: Create cancellable promises
     Scholarships.list({ sortField, sortDir })
-      .then((results) => {
-        if (maxAmount > 0 && maxAmount <= minAmount)
-          setError('The minimum amount must be less than the Maximum.');
-        else {
-          setError(null);
-          setScholarships(
-            results.filter(({ data }) => {
-              if (data.amount.type === AmountType.Unknown) return true;
-              return intersectsRange(
-                data.amount.min,
-                data.amount.max,
-                minAmount,
-                maxAmount
-              );
-            })
-          );
-        }
-      })
+      .then((results) =>
+        setScholarships(
+          results.filter((s) =>
+            s.data.amount.intersectsRange(minAmount, maxAmount)
+          )
+        )
+      )
+      .then(() => (maxAmount === 0 || maxAmount > minAmount) && setError(null))
       .catch(setError)
       .finally(() => setLoading(false));
   }, [sortDir, sortField, minAmount, maxAmount]);
@@ -88,7 +95,7 @@ function ScholarshipsPage() {
         changeSortBy={setSortField}
         changeSortFormat={setSortDir}
         queryParams={params}
-        {...{ setQueryParam, clearQueryParam }}
+        {...{ setQueryParam }}
       />
       {error?.toString() ||
         (loading && <CircularProgress className={classes.progress} />) || (

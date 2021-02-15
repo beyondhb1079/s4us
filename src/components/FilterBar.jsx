@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 import { makeStyles, Grid } from '@material-ui/core';
 import FilterDropDown from './FilterDropdown';
 import AmountFilter from './AmountFilter';
+import {
+  QUERY_PARAM_MIN_AMOUNT,
+  QUERY_PARAM_MAX_AMOUNT,
+} from '../lib/QueryParams';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -37,30 +41,10 @@ const sortingOptions = {
 };
 
 export default function FilterBar(props) {
-  const {
-    changeSortBy,
-    changeSortFormat,
-    setQueryParam,
-    clearQueryParam,
-    queryParams,
-  } = props;
+  const { changeSortBy, changeSortFormat, setQueryParam, queryParams } = props;
   const classes = useStyles();
 
   const { minAmount, maxAmount } = queryParams;
-
-  if (
-    minAmount !== undefined &&
-    !(Number.isInteger(minAmount) && minAmount > 0)
-  ) {
-    clearQueryParam('minAmount');
-  }
-
-  if (
-    maxAmount !== undefined &&
-    !(Number.isInteger(maxAmount) && maxAmount > 0)
-  ) {
-    clearQueryParam('maxAmount');
-  }
 
   function updateSorting(sortingOption) {
     switch (sortingOption) {
@@ -92,7 +76,12 @@ export default function FilterBar(props) {
         <AmountFilter
           min={minAmount ?? 0}
           max={maxAmount ?? 0}
-          {...{ setQueryParam }}
+          onMinChange={(e) =>
+            setQueryParam(QUERY_PARAM_MIN_AMOUNT, e.target.value || 0)
+          }
+          onMaxChange={(e) =>
+            setQueryParam(QUERY_PARAM_MAX_AMOUNT, e.target.value || 0)
+          }
         />
       </Grid>
       <Grid item className={classes.alignText}>
@@ -112,7 +101,6 @@ export default function FilterBar(props) {
 FilterBar.propTypes = {
   changeSortBy: PropTypes.func.isRequired,
   changeSortFormat: PropTypes.func.isRequired,
-  clearQueryParam: PropTypes.func.isRequired,
   setQueryParam: PropTypes.func.isRequired,
   queryParams: PropTypes.objectOf(PropTypes.number),
 };
