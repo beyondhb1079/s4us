@@ -51,17 +51,9 @@ function ScholarshipsPage() {
     },
   };
 
-  const validField = Boolean(
-    params.sortField === 'deadline' ||
-      params.sortField === 'amount.min' ||
-      params.sortField === 'amount.max'
-  );
-  const validDir = Boolean(
-    params.sortDir === 'asc' || params.sortDir === 'desc'
-  );
-
-  const sortField = validField ? params.sortField : DEFAULT_SORT_FIELD;
-  const sortDir = validDir ? params.sortDir : DEFAULT_SORT_DIR;
+  const validField =
+    params.sortField === 'deadline' || params.sortField === 'amount';
+  const validDir = params.sortDir === 'asc' || params.sortDir === 'desc';
 
   const setSort = (val) => {
     if (val in sortingOptions) {
@@ -73,6 +65,19 @@ function ScholarshipsPage() {
       });
     }
   };
+
+  if (params.sortField === 'amount') {
+    if (validDir) {
+      if (params.sortDir === 'asc') {
+        setSort('amountLow');
+      } else {
+        setSort('amountHigh');
+      }
+    }
+  }
+
+  const sortField = validField ? params.sortField : DEFAULT_SORT_FIELD;
+  const sortDir = validDir ? params.sortDir : DEFAULT_SORT_DIR;
 
   useEffect(() => {
     // TODO: Create cancellable promises
