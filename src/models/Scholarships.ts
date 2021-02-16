@@ -15,6 +15,12 @@ interface ScholarshipData {
   year?: string;
   authorId?: string;
   authorEmail?: string;
+  states: string[];
+  eligibility?: {
+    GPA: number;
+    majors: string[];
+    ethnicities: string[];
+  };
 }
 
 export const converter: firestore.FirestoreDataConverter<ScholarshipData> = {

@@ -28,7 +28,14 @@ const useStyles = makeStyles((theme) => ({
   groupCellWithoutHeader: {
     marginBottom: theme.spacing(2),
   },
-  eligibilitiesWrapper: {},
+  eligibilitiesWrapper: {
+    marginTop: theme.spacing(6),
+    '& h4': {
+      fontWeight: '500',
+      color: 'rgba(0, 0, 0, 0.6)',
+      marginBottom: theme.spacing(2),
+    },
+  },
 }));
 
 // TODO(issues/358): Style this.
@@ -88,7 +95,15 @@ export default function ScholarshipDetailCard({ scholarship }) {
         <ScholarshiDetailCardCell label="State" text="Washington" />
       </Box>
 
-      <Box className={classes.eligibilitiesWrapper} />
+      <Box className={classes.eligibilitiesWrapper}>
+        <Typography variant="h6" component="h4">
+          Eligibility Requirements
+        </Typography>
+
+        <ScholarshiDetailCardCell label="GPA" text="" />
+        <ScholarshiDetailCardCell label="Demographic" text="" />
+        <ScholarshiDetailCardCell label="Majors" text="Washington" />
+      </Box>
 
       <Button
         component={Link}

@@ -27,14 +27,10 @@ const ScholarshiDetailCardCell = ({ label, text }) => {
   return (
     <Grid container className={classes.container}>
       <Grid item xs={4} className={classes.labelWrapper}>
-        <Typography variant="h6" component="p">
-          {label}
-        </Typography>
+        <Typography component="p">{label}</Typography>
       </Grid>
       <Grid item xs={8} className={classes.textWrapper}>
-        <Typography variant="h6" component="p">
-          {text}
-        </Typography>
+        <Typography component="p">{text}</Typography>
       </Grid>
     </Grid>
   );
