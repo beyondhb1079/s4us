@@ -1,7 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Box, Link, makeStyles, Typography } from '@material-ui/core';
-import { Share, Send } from '@material-ui/icons';
+import {
+  Button,
+  Box,
+  Link,
+  makeStyles,
+  Typography,
+  Chip,
+} from '@material-ui/core';
+import { Share, Send, Info } from '@material-ui/icons';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import ScholarshipEligibility from '../types/ScholarshipEligibility';
 
@@ -15,12 +22,11 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(4),
     padding: `${theme.spacing(1)}px 0`,
-    '& button': {
-      marginRight: theme.spacing(1),
-    },
   },
   applyBtn: {
     backgroundColor: '#3FB1B5',
+
+    marginRight: theme.spacing(1),
   },
   description: {
     whiteSpace: 'pre-line',
@@ -30,13 +36,32 @@ const useStyles = makeStyles((theme) => ({
   groupCellWithoutHeader: {
     marginBottom: theme.spacing(2),
   },
+  sectionHeader: {
+    fontWeight: '500',
+    color: 'rgba(0, 0, 0, 0.6)',
+  },
   eligibilitiesWrapper: {
     marginTop: theme.spacing(6),
     '& h4': {
-      fontWeight: '500',
-      color: 'rgba(0, 0, 0, 0.6)',
       marginBottom: theme.spacing(2),
     },
+  },
+  tagsWrapper: {
+    marginTop: theme.spacing(4),
+  },
+  tagItemsWrapper: {
+    flexDirection: 'row',
+    paddingTop: theme.spacing(2),
+  },
+  tag: {
+    marginRight: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+    color: '#000',
+    borderColor: '#3FB1B5',
+  },
+  reportBtn: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(5),
   },
 }));
 
@@ -50,6 +75,7 @@ export default function ScholarshipDetailCard({ scholarship }) {
     deadline,
     website,
     description,
+    tags,
     states,
     eligibility,
   } = scholarship.data;
@@ -64,6 +90,8 @@ export default function ScholarshipDetailCard({ scholarship }) {
 
       <Box className={classes.actionsWrapper}>
         <Button
+          component={Link}
+          href={website}
           variant="contained"
           color="primary"
           className={classes.applyBtn}
@@ -100,7 +128,10 @@ export default function ScholarshipDetailCard({ scholarship }) {
       </Box>
 
       <Box className={classes.eligibilitiesWrapper}>
-        <Typography variant="h6" component="h4">
+        <Typography
+          variant="h6"
+          component="h4"
+          className={classes.sectionHeader}>
           Eligibility Requirements
         </Typography>
 
@@ -112,13 +143,32 @@ export default function ScholarshipDetailCard({ scholarship }) {
         <ScholarshiDetailCardCell label="Majors" text={eligibility?.majors} />
       </Box>
 
-      <Button
+      <Box className={classes.tagsWrapper}>
+        <Typography
+          variant="h6"
+          component="h4"
+          className={classes.sectionHeader}>
+          Tags
+        </Typography>
+
+        <Box className={classes.tagItemsWrapper}>
+          {tags?.map(({ title, id }) => (
+            <Chip
+              label={title}
+              variant="outlined"
+              className={classes.tag}
+              key={id}
+            />
+          ))}
+        </Box>
+      </Box>
+
+      <Chip
         component={Link}
-        href={website}
-        color="primary"
-        variant="contained">
-        Apply
-      </Button>
+        icon={<Info />}
+        className={classes.reportBtn}
+        label="Report Issue"
+      />
     </Box>
   );
 }
@@ -133,6 +183,7 @@ ScholarshipDetailCard.propTypes = {
       description: PropTypes.string,
       deadline: PropTypes.instanceOf(Date),
       website: PropTypes.string,
+      tags: PropTypes.arrayOf(PropTypes.string),
       states: PropTypes.arrayOf(PropTypes.string),
       eligibility: PropTypes.instanceOf(ScholarshipEligibility),
     }).isRequired,
