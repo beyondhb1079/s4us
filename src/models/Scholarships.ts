@@ -1,5 +1,6 @@
 import { firestore } from 'firebase';
 import ScholarshipAmount from '../types/ScholarshipAmount';
+import ScholarshipEligibility from '../types/ScholarshipEligibility';
 import FirestoreCollection from './base/FirestoreCollection';
 import FirestoreModel from './base/FirestoreModel';
 
@@ -16,11 +17,7 @@ interface ScholarshipData {
   authorId?: string;
   authorEmail?: string;
   states: string[];
-  eligibility?: {
-    GPA: number;
-    majors: string[];
-    ethnicities: string[];
-  };
+  eligibility?: ScholarshipEligibility;
 }
 
 export const converter: firestore.FirestoreDataConverter<ScholarshipData> = {

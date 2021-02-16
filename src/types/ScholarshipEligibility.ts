@@ -11,7 +11,7 @@ export default class ScholarshipEligibility {
     return this.arrToString(this._preMajors);
   }
 
-  constructor(GPA: number, ethnicities: string[] = [], majors: string[] = []) {
+  constructor(GPA = 0, ethnicities: string[] = [], majors: string[] = []) {
     this.GPA = GPA;
     this._preEthnicities = ethnicities;
     this._preMajors = majors;

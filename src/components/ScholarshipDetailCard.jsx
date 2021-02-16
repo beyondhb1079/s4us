@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Button, Box, Link, makeStyles, Typography } from '@material-ui/core';
 import { Share, Send } from '@material-ui/icons';
 import ScholarshipAmount from '../types/ScholarshipAmount';
+import ScholarshipEligibility from '../types/ScholarshipEligibility';
+
 import ScholarshiDetailCardCell from './ScholarshipDetailCardCell';
 
 const useStyles = makeStyles((theme) => ({
@@ -48,6 +50,8 @@ export default function ScholarshipDetailCard({ scholarship }) {
     deadline,
     website,
     description,
+    states,
+    eligibility,
   } = scholarship.data;
 
   return (
@@ -92,7 +96,7 @@ export default function ScholarshipDetailCard({ scholarship }) {
           label="Award Amount"
           text={amount?.toString()}
         />
-        <ScholarshiDetailCardCell label="State" text="Washington" />
+        <ScholarshiDetailCardCell label="State" text={states?.join(', ')} />
       </Box>
 
       <Box className={classes.eligibilitiesWrapper}>
@@ -100,9 +104,12 @@ export default function ScholarshipDetailCard({ scholarship }) {
           Eligibility Requirements
         </Typography>
 
-        <ScholarshiDetailCardCell label="GPA" text="" />
-        <ScholarshiDetailCardCell label="Demographic" text="" />
-        <ScholarshiDetailCardCell label="Majors" text="Washington" />
+        <ScholarshiDetailCardCell label="GPA" text={eligibility?.GPA} />
+        <ScholarshiDetailCardCell
+          label="Demographic"
+          text={eligibility?.ethnicities}
+        />
+        <ScholarshiDetailCardCell label="Majors" text={eligibility?.majors} />
       </Box>
 
       <Button
@@ -126,6 +133,8 @@ ScholarshipDetailCard.propTypes = {
       description: PropTypes.string,
       deadline: PropTypes.instanceOf(Date),
       website: PropTypes.string,
+      states: PropTypes.arrayOf(PropTypes.string),
+      eligibility: PropTypes.instanceOf(ScholarshipEligibility),
     }).isRequired,
   }).isRequired,
 };
