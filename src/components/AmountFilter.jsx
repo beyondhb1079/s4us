@@ -26,7 +26,7 @@ export default function AmountFilter(props) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
-  const error = max > 0 && max <= min;
+  const error = max > 0 && max < min;
 
   return (
     <>

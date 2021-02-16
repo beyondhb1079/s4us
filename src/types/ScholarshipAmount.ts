@@ -80,11 +80,10 @@ export default class ScholarshipAmount {
     }
   }
 
-  intersectsRange(filterMin: number, filterMax: number): boolean {
+  intersectsRange(min: number, max: number): boolean {
     return (
       this.type === AmountType.Unknown ||
-      ((!filterMin || this.max >= filterMin) &&
-        (!filterMax || this.min <= filterMax))
+      ((!min || this.max >= min) && (!max || this.min <= max))
     );
   }
 }

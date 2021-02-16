@@ -3,10 +3,7 @@ import PropTypes from 'prop-types';
 import { makeStyles, Grid } from '@material-ui/core';
 import FilterDropDown from './FilterDropdown';
 import AmountFilter from './AmountFilter';
-import {
-  QUERY_PARAM_MIN_AMOUNT,
-  QUERY_PARAM_MAX_AMOUNT,
-} from '../lib/QueryParams';
+import qParams from '../lib/QueryParams';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -76,12 +73,8 @@ export default function FilterBar(props) {
         <AmountFilter
           min={minAmount ?? 0}
           max={maxAmount ?? 0}
-          onMinChange={(e) =>
-            setQueryParam(QUERY_PARAM_MIN_AMOUNT, e.target.value || 0)
-          }
-          onMaxChange={(e) =>
-            setQueryParam(QUERY_PARAM_MAX_AMOUNT, e.target.value || 0)
-          }
+          onMinChange={(e) => setQueryParam(qParams.MIN_AMOUNT, e.target.value)}
+          onMaxChange={(e) => setQueryParam(qParams.MAX_AMOUNT, e.target.value)}
         />
       </Grid>
       <Grid item className={classes.alignText}>

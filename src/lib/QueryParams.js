@@ -1,2 +1,6 @@
-export const QUERY_PARAM_MIN_AMOUNT = 'minAmount';
-export const QUERY_PARAM_MAX_AMOUNT = 'maxAmount';
+const qParams = {
+  MIN_AMOUNT: 'minAmount',
+  MAX_AMOUNT: 'maxAmount',
+};
+
+export default qParams;

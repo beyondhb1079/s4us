@@ -11,10 +11,7 @@ import Button from '@material-ui/core/Button';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
-import {
-  QUERY_PARAM_MIN_AMOUNT,
-  QUERY_PARAM_MAX_AMOUNT,
-} from '../lib/QueryParams';
+import qParams from '../lib/QueryParams';
 
 const useStyles = makeStyles((theme) => ({
   progress: {
@@ -57,19 +54,21 @@ function ScholarshipsPage() {
     minAmount !== undefined &&
     !(Number.isInteger(minAmount) && minAmount > 0)
   ) {
-    pruneQueryParam(QUERY_PARAM_MIN_AMOUNT);
+    pruneQueryParam(qParams.MIN_AMOUNT);
   }
 
   if (
     maxAmount !== undefined &&
     !(Number.isInteger(maxAmount) && maxAmount > 0)
   ) {
-    pruneQueryParam(QUERY_PARAM_MAX_AMOUNT);
+    pruneQueryParam(qParams.MAX_AMOUNT);
   }
 
   useEffect(() => {
-    if (maxAmount > 0 && maxAmount <= minAmount)
+    if (maxAmount && maxAmount < minAmount) {
       setError('The minimum amount must be less than the Maximum.');
+      return;
+    }
     // TODO: Create cancellable promises
     Scholarships.list({ sortField, sortDir })
       .then((results) =>
@@ -79,7 +78,7 @@ function ScholarshipsPage() {
           )
         )
       )
-      .then(() => (maxAmount === 0 || maxAmount > minAmount) && setError(null))
+      .then(() => setError(null))
       .catch(setError)
       .finally(() => setLoading(false));
   }, [sortDir, sortField, minAmount, maxAmount]);
