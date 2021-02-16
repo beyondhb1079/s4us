@@ -46,8 +46,6 @@ export default function ScholarshipDetails({ history, location, match }) {
 
   document.title = `${BRAND_NAME} | ${scholarship.data.name}`;
 
-  console.log('detail page: ', scholarship);
-
   return (
     <Container>
       <ScholarshipDetailCard scholarship={scholarship} />
