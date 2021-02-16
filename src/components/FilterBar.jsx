@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { makeStyles, Grid } from '@material-ui/core';
 import FilterDropDown from './FilterDropdown';
 import AmountFilter from './AmountFilter';
+import qParams from '../lib/QueryParams';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -37,8 +38,10 @@ const sortingOptions = {
 };
 
 export default function FilterBar(props) {
-  const { changeSortBy, changeSortFormat } = props;
+  const { changeSortBy, changeSortFormat, setQueryParam, queryParams } = props;
   const classes = useStyles();
+
+  const { minAmount, maxAmount } = queryParams;
 
   function updateSorting(sortingOption) {
     switch (sortingOption) {
@@ -67,7 +70,12 @@ export default function FilterBar(props) {
       <Grid item className={classes.alignText}>
         <FilterDropDown label="Major" items={majors} />
         <FilterDropDown label="Grade" items={grades} />
-        <AmountFilter />
+        <AmountFilter
+          min={minAmount ?? 0}
+          max={maxAmount ?? 0}
+          onMinChange={(e) => setQueryParam(qParams.MIN_AMOUNT, e.target.value)}
+          onMaxChange={(e) => setQueryParam(qParams.MAX_AMOUNT, e.target.value)}
+        />
       </Grid>
       <Grid item className={classes.alignText}>
         Sort by
@@ -86,4 +94,9 @@ export default function FilterBar(props) {
 FilterBar.propTypes = {
   changeSortBy: PropTypes.func.isRequired,
   changeSortFormat: PropTypes.func.isRequired,
+  setQueryParam: PropTypes.func.isRequired,
+  queryParams: PropTypes.objectOf(PropTypes.number),
+};
+FilterBar.defaultProps = {
+  queryParams: {},
 };
