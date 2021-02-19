@@ -40,7 +40,7 @@ export default function FilterBar(props) {
   const { setSort } = props;
   const classes = useStyles();
 
-  function udpateSortingParams(sortOption) {
+  function updateSortingParams(sortOption) {
     if (sortOption in sortingOptions) {
       setSort(sortOption);
     }
@@ -60,7 +60,7 @@ export default function FilterBar(props) {
           items={sortingOptions}
           defaultValue="deadlineSoon"
           removeNone
-          onChange={udpateSortingParams}
+          onChange={updateSortingParams}
         />
       </Grid>
     </Grid>
