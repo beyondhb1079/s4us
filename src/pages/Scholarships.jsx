@@ -11,8 +11,7 @@ import Button from '@material-ui/core/Button';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
-import qParams from '../lib/QueryParams';
-import { DEFAULT_SORT_DIR, DEFAULT_SORT_FIELD } from '../config/constants';
+import { qParams } from '../lib/QueryParams';
 
 const useStyles = makeStyles((theme) => ({
   progress: {
@@ -29,61 +28,14 @@ function ScholarshipsPage() {
   const [scholarships, setScholarships] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
+
   const history = useHistory();
   const location = useLocation();
-
   const params = queryString.parse(location.search, { parseNumbers: true });
-  // const params = queryString.parse(location.search);
-
-  const sortingOptions = {
-    deadlineSoon: {
-      field: 'deadline',
-      dir: 'asc',
-    },
-    deadlineLatest: {
-      field: 'deadline',
-      dir: 'desc',
-    },
-    amountLow: {
-      field: 'amount.min',
-      dir: 'asc',
-    },
-    amountHigh: {
-      field: 'amount.max',
-      dir: 'desc',
-    },
+  const pruneQueryParam = (index) => {
+    delete params[index];
+    history.replace({ search: queryString.stringify(params) });
   };
-
-  const validField =
-    params.sortField === 'deadline' || params.sortField === 'amount';
-  const validDir = params.sortDir === 'asc' || params.sortDir === 'desc';
-
-  const setSort = (val) => {
-    if (val in sortingOptions) {
-      history.push({
-        search: queryString.stringify({
-          sortField: sortingOptions[val].field,
-          sortDir: sortingOptions[val].dir,
-        }),
-      });
-    }
-  };
-
-  if (params.sortField === 'amount') {
-    if (validDir) {
-      if (params.sortDir === 'asc') {
-        setSort('amountLow');
-      } else {
-        setSort('amountHigh');
-      }
-    }
-  }
-
-  const sortField = validField ? params.sortField : DEFAULT_SORT_FIELD;
-  const sortDir = validDir ? params.sortDir : DEFAULT_SORT_DIR;
-
-  const { minAmount, maxAmount } = params;
-
   const setQueryParam = (index, val) => {
     history.push({
       search: queryString.stringify({
@@ -93,10 +45,27 @@ function ScholarshipsPage() {
     });
   };
 
-  const pruneQueryParam = (index) => {
-    delete params[index];
-    history.replace({ search: queryString.stringify(params) });
-  };
+  const DEFAULT_SORT_FIELD = 'deadline';
+  const DEFAULT_SORT_DIR = 'asc';
+  let sortField = params.sortField ?? DEFAULT_SORT_FIELD;
+  let sortDir = params.sortDir ?? DEFAULT_SORT_DIR;
+
+  const validateField =
+    sortField === 'deadline' ||
+    sortField === 'amount.min' ||
+    sortField === 'amount.max';
+  if (!validateField) {
+    pruneQueryParam('sortField');
+    sortField = DEFAULT_SORT_FIELD;
+  }
+
+  const validateDir = sortDir === 'asc' || sortDir === 'desc';
+  if (!validateDir) {
+    pruneQueryParam('sortDir');
+    sortDir = DEFAULT_SORT_DIR;
+  }
+
+  const { minAmount, maxAmount } = params;
 
   if (
     minAmount !== undefined &&
@@ -136,11 +105,7 @@ function ScholarshipsPage() {
       <Typography variant="h3" component="h1" style={{ textAlign: 'center' }}>
         Scholarships
       </Typography>
-      <FilterBar
-        setSort={setSort}
-        queryParams={params}
-        {...{ setQueryParam }}
-      />
+      <FilterBar queryParams={params} {...{ setQueryParam }} />
       {error?.toString() ||
         (loading && <CircularProgress className={classes.progress} />) || (
           <>
