@@ -22,13 +22,9 @@ function FilterDropdown(props) {
   const classes = useStyles();
   const location = useLocation();
   const params = queryString.parse(location.search, { parseNumbers: true });
-  const [choice, setChoice] = useState(
-    value === 'sorting'
-      ? params.sortBy === undefined
-        ? 'deadlineAsc'
-        : params.sortBy
-      : ''
-  );
+  const sortByParams =
+    params.sortBy === undefined ? 'deadlineAsc' : params.sortBy;
+  const [choice, setChoice] = useState(value === 'sorting' ? sortByParams : '');
 
   function selectChoice(event) {
     setChoice(event.target.value);
