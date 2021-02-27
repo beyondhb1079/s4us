@@ -61,8 +61,9 @@ function ScholarshipsPage() {
     pruneQueryParam('sortBy');
   }
 
-  const sortField = sortParams[sortBy].field;
-  const sortDir = sortParams[sortBy].dir;
+  const key = params.sortBy !== undefined ? sortBy : DEFAULT_SORT_BY;
+  const sortField = sortParams[key].field;
+  const sortDir = sortParams[key].dir;
 
   const { minAmount, maxAmount } = params;
 
