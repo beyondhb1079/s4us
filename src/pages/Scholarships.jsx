@@ -13,6 +13,8 @@ import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
 import { qParams, sortParams } from '../lib/QueryParams';
 
+const DEFAULT_SORT_BY = 'deadlineAsc';
+
 const useStyles = makeStyles((theme) => ({
   progress: {
     display: 'block',
@@ -31,11 +33,8 @@ function ScholarshipsPage() {
 
   const history = useHistory();
   const location = useLocation();
+
   const params = queryString.parse(location.search, { parseNumbers: true });
-  const pruneQueryParam = (index) => {
-    delete params[index];
-    history.replace({ search: queryString.stringify(params) });
-  };
 
   const setQueryParam = (index, val) => {
     history.push({
@@ -46,7 +45,11 @@ function ScholarshipsPage() {
     });
   };
 
-  const DEFAULT_SORT_BY = 'deadlineAsc';
+  const pruneQueryParam = (index) => {
+    delete params[index];
+    history.replace({ search: queryString.stringify(params) });
+  };
+
   const sortBy = params.sortBy ?? DEFAULT_SORT_BY;
 
   if (
