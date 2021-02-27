@@ -4,6 +4,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import PropTypes from 'prop-types';
+import { useLocation } from 'react-router-dom';
+import queryString from 'query-string';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -16,15 +18,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function FilterDropdown(props) {
-  const { label, items, defaultValue, removeNone, onChange } = props;
-  const [choice, setChoice] = useState(defaultValue);
+  const { label, items, value, removeNone, onChange } = props;
   const classes = useStyles();
+  const location = useLocation();
+  const params = queryString.parse(location.search, { parseNumbers: true });
+  const [choice, setChoice] = useState(
+    value === 'sorting'
+      ? params.sortBy === undefined
+        ? 'deadlineAsc'
+        : params.sortBy
+      : ''
+  );
 
   function selectChoice(event) {
     setChoice(event.target.value);
     onChange(event.target.value);
   }
-
   return (
     <FormControl variant="outlined" className={classes.formControl}>
       <Select
@@ -49,14 +58,14 @@ function FilterDropdown(props) {
 
 FilterDropdown.propTypes = {
   label: PropTypes.string.isRequired,
-  defaultValue: PropTypes.string,
+  value: PropTypes.string,
   items: PropTypes.objectOf(PropTypes.string).isRequired,
   removeNone: PropTypes.bool,
   onChange: PropTypes.func,
 };
 
 FilterDropdown.defaultProps = {
-  defaultValue: '',
+  value: '',
   onChange: () => {},
   removeNone: false,
 };

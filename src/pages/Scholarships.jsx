@@ -11,7 +11,7 @@ import Button from '@material-ui/core/Button';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
-import { qParams } from '../lib/QueryParams';
+import { qParams, sortParams } from '../lib/QueryParams';
 
 const useStyles = makeStyles((theme) => ({
   progress: {
@@ -36,6 +36,7 @@ function ScholarshipsPage() {
     delete params[index];
     history.replace({ search: queryString.stringify(params) });
   };
+
   const setQueryParam = (index, val) => {
     history.push({
       search: queryString.stringify({
@@ -45,25 +46,20 @@ function ScholarshipsPage() {
     });
   };
 
-  const DEFAULT_SORT_FIELD = 'deadline';
-  const DEFAULT_SORT_DIR = 'asc';
-  let sortField = params.sortField ?? DEFAULT_SORT_FIELD;
-  let sortDir = params.sortDir ?? DEFAULT_SORT_DIR;
+  const DEFAULT_SORT_BY = 'deadlineAsc';
+  const sortBy = params.sortBy ?? DEFAULT_SORT_BY;
 
-  const validateField =
-    sortField === 'deadline' ||
-    sortField === 'amount.min' ||
-    sortField === 'amount.max';
-  if (!validateField) {
-    pruneQueryParam('sortField');
-    sortField = DEFAULT_SORT_FIELD;
+  if (
+    sortBy !== 'deadlineAsc' &&
+    sortBy !== 'deadlineDesc' &&
+    sortBy !== 'amountAsc' &&
+    sortBy !== 'amountDesc'
+  ) {
+    pruneQueryParam('sortBy');
   }
 
-  const validateDir = sortDir === 'asc' || sortDir === 'desc';
-  if (!validateDir) {
-    pruneQueryParam('sortDir');
-    sortDir = DEFAULT_SORT_DIR;
-  }
+  const sortField = sortParams[sortBy].field;
+  const sortDir = sortParams[sortBy].dir;
 
   const { minAmount, maxAmount } = params;
 

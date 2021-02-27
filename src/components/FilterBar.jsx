@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { makeStyles, Grid } from '@material-ui/core';
 import FilterDropDown from './FilterDropdown';
 import AmountFilter from './AmountFilter';
-import { qParams } from '../lib/QueryParams';
+import { qParams, sortParams } from '../lib/QueryParams';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -31,29 +31,10 @@ const grades = {
 };
 
 const sortingOptions = {
-  deadlineSoon: 'Deadline (Earliest to Latest)',
-  deadlineLatest: 'Deadline (Latest to Earliest)',
-  amountLow: 'Amount (Low to High)',
-  amountHigh: 'Amount (High to Low)',
-};
-
-const sortParams = {
-  deadlineSoon: {
-    field: 'deadline',
-    dir: 'asc',
-  },
-  deadlineLatest: {
-    field: 'deadline',
-    dir: 'desc',
-  },
-  amountLow: {
-    field: 'amount.min',
-    dir: 'asc',
-  },
-  amountHigh: {
-    field: 'amount.max',
-    dir: 'desc',
-  },
+  deadlineAsc: 'Deadline (Earliest to Latest)',
+  deadlineDesc: 'Deadline (Latest to Earliest)',
+  amountAsc: 'Amount (Low to High)',
+  amountDesc: 'Amount (High to Low)',
 };
 
 export default function FilterBar(props) {
@@ -63,8 +44,7 @@ export default function FilterBar(props) {
 
   function updateSortingParams(sortOption) {
     if (sortOption in sortParams) {
-      setQueryParam('sortDir', sortParams[sortOption].dir);
-      setQueryParam('sortField', sortParams[sortOption].field);
+      setQueryParam('sortBy', sortOption);
     }
   }
 
@@ -85,7 +65,7 @@ export default function FilterBar(props) {
         <FilterDropDown
           label="Sorting"
           items={sortingOptions}
-          defaultValue="deadlineSoon"
+          value="sorting"
           removeNone
           onChange={updateSortingParams}
         />
