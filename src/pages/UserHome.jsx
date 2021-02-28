@@ -14,6 +14,7 @@ import {
 } from '@material-ui/core';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     paddingLeft: theme.spacing(6),
