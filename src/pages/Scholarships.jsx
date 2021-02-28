@@ -79,9 +79,8 @@ function ScholarshipsPage() {
     pruneQueryParam('sortBy');
   }
 
-  const key = params.sortBy !== undefined ? sortBy : DEFAULT_SORT_BY;
-  const sortField = sortOptions[key].field;
-  const sortDir = sortOptions[key].dir;
+  const sortField = sortOptions[params.sortBy ?? 'deadlineAsc'].field;
+  const sortDir = sortOptions[params.sortBy ?? 'deadlineAsc'].dir;
 
   const { minAmount, maxAmount } = params;
 
