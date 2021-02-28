@@ -149,4 +149,3 @@ test('scholarships.list - sort by amount.max desc', async () => {
 
   expect(got.map(extractName)).toEqual(want.map(extractName));
 });
-
