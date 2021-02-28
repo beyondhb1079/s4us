@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Scholarships from '../models/Scholarships';
-import ScholarshipList from '../components/ScholarshipList';
 import InboxIcon from '@material-ui/icons/Inbox';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase';
@@ -14,6 +12,8 @@ import {
   makeStyles,
   Typography,
 } from '@material-ui/core';
+import Scholarships from '../models/Scholarships';
+import ScholarshipList from '../components/ScholarshipList';
 const useStyles = makeStyles((theme) => ({
   root: {
     paddingLeft: theme.spacing(6),
