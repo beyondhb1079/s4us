@@ -55,14 +55,16 @@ const useStyles = makeStyles((theme) => ({
 export default function UserHome() {
   const classes = useStyles();
   const [scholarships, setUserHome] = useState([]);
-  const loading = useState(true);
-  const error = useState();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState();
   const user = firebase.auth().currentUser;
 
   useEffect(() => {
-    Scholarships.list({ authorId: user.uid }).then((results) =>
-      setUserHome(results)
-    );
+    Scholarships.list({ authorId: user.uid })
+      .then((results) => setUserHome(results))
+      .then(() => setError(null))
+      .catch(setError)
+      .finally(() => setLoading(false));
   });
 
   return (
