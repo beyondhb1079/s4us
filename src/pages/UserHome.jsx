@@ -65,7 +65,7 @@ export default function UserHome() {
       .then(() => setError(null))
       .catch(setError)
       .finally(() => setLoading(false));
-  });
+  }, [user.uid]);
 
   return (
     <Container className={classes.root}>
