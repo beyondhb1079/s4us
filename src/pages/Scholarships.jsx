@@ -11,8 +11,26 @@ import Button from '@material-ui/core/Button';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
-import { qParams, sortParams } from '../lib/QueryParams';
+import qParams from '../lib/QueryParams';
 
+const sortOptions = {
+  deadlineAsc: {
+    field: 'deadline',
+    dir: 'asc',
+  },
+  deadlineDesc: {
+    field: 'deadline',
+    dir: 'desc',
+  },
+  amountAsc: {
+    field: 'amount.min',
+    dir: 'asc',
+  },
+  amountDesc: {
+    field: 'amount.max',
+    dir: 'desc',
+  },
+};
 const DEFAULT_SORT_BY = 'deadlineAsc';
 
 const useStyles = makeStyles((theme) => ({
@@ -62,8 +80,8 @@ function ScholarshipsPage() {
   }
 
   const key = params.sortBy !== undefined ? sortBy : DEFAULT_SORT_BY;
-  const sortField = sortParams[key].field;
-  const sortDir = sortParams[key].dir;
+  const sortField = sortOptions[key].field;
+  const sortDir = sortOptions[key].dir;
 
   const { minAmount, maxAmount } = params;
 
