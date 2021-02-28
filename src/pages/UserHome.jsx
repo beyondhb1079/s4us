@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import Scholarships from '../models/Scholarships';
+import ScholarshipList from '../components/ScholarshipList';
 import InboxIcon from '@material-ui/icons/Inbox';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 import {
   Link as MuiLink,
+  CircularProgress,
   Box,
   Button,
   Container,
@@ -11,7 +14,6 @@ import {
   makeStyles,
   Typography,
 } from '@material-ui/core';
-
 const useStyles = makeStyles((theme) => ({
   root: {
     paddingLeft: theme.spacing(6),
@@ -41,11 +43,26 @@ const useStyles = makeStyles((theme) => ({
   noScholarshipsBox: {
     textAlign: 'center',
   },
+  progress: {
+    display: 'block',
+  },
+  loadMoreButton: {
+    margin: theme.spacing(3, 0),
+  },
 }));
 
 export default function UserHome() {
   const classes = useStyles();
+  const [scholarships, setUserHome] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState();
   const user = firebase.auth().currentUser;
+
+  useEffect(() => {
+    Scholarships.list({ authorId: user.uid }).then((results) =>
+      setUserHome(results)
+    );
+  });
 
   return (
     <Container className={classes.root}>
@@ -102,6 +119,20 @@ export default function UserHome() {
           </MuiLink>
         </Typography>
       </Box>
+      {error?.toString() ||
+        (loading && <CircularProgress className={classes.progress} />) || (
+          <>
+            <ScholarshipList scholarships={scholarships} />
+            <Button
+              className={classes.loadMoreButton}
+              color="primary"
+              onclick={() => {
+                alert('clicked');
+              }}>
+              Load More
+            </Button>
+          </>
+        )}
     </Container>
   );
 }
