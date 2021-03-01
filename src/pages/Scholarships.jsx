@@ -103,9 +103,8 @@ function ScholarshipsPage() {
             <Button
               className={classes.loadMoreButton}
               color="primary"
-              onClick={() => {
-                alert('clicked');
-              }}>
+              // eslint-disable-next-line no-alert
+              onClick={() => alert('clicked')}>
               Load More
             </Button>
           </>

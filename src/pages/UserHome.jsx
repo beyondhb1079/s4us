@@ -129,9 +129,8 @@ export default function UserHome() {
             <Button
               className={classes.loadMoreButton}
               color="primary"
-              onclick={() => {
-                alert('clicked');
-              }}>
+              // eslint-disable-next-line no-alert
+              onclick={() => alert('clicked')}>
               Load More
             </Button>
           </>
