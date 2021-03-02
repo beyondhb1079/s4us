@@ -21,7 +21,7 @@ jobs:
       - run: yarn install --frozen-lockfile --production
       - run: yarn build --frozen-lockfile
       - uses: w9jds/firebase-action@master
-        name: Deploy hosting and Firestore indices/rules
+        name: Deploy app and firestore rules/indices
         with:
           args: deploy --only hosting,firestore --project dreamerscholars
         env:
