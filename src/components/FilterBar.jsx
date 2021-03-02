@@ -31,26 +31,26 @@ const grades = {
 };
 
 const sortItems = {
-  deadlineAsc: 'Deadline (Earliest to Latest)',
-  deadlineDesc: 'Deadline (Latest to Earliest)',
-  amountAsc: 'Amount (Low to High)',
-  amountDesc: 'Amount (High to Low)',
+  'deadline.asc': 'Deadline (Earliest to Latest)',
+  'deadline.desc': 'Deadline (Latest to Earliest)',
+  'amount.asc': 'Amount (Low to High)',
+  'amount.desc': 'Amount (High to Low)',
 };
 
 const sortOptions = {
-  deadlineAsc: {
+  'deadline.asc': {
     field: 'deadline',
     dir: 'asc',
   },
-  deadlineDesc: {
+  'deadline.desc': {
     field: 'deadline',
     dir: 'desc',
   },
-  amountAsc: {
+  'amount.asc': {
     field: 'amount.min',
     dir: 'asc',
   },
-  amountDesc: {
+  'amount.desc': {
     field: 'amount.max',
     dir: 'desc',
   },
@@ -84,7 +84,7 @@ export default function FilterBar(props) {
         <FilterDropDown
           label="Sorting"
           items={sortItems}
-          value={queryParams.sortBy ?? 'deadlineAsc'}
+          value={queryParams.sortBy ?? 'deadline.asc'}
           removeNone
           onChange={updateSortingParams}
         />

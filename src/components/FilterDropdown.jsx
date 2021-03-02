@@ -19,15 +19,11 @@ function FilterDropdown(props) {
   const { label, items, value, removeNone, onChange } = props;
   const classes = useStyles();
 
-  function selectChoice(event) {
-    onChange(event.target.value);
-  }
-
   return (
     <FormControl variant="outlined" className={classes.formControl}>
       <Select
         value={value}
-        onChange={selectChoice}
+        onChange={(e) => onChange(e.target.value)}
         displayEmpty
         className={classes.selectStyle}>
         {!removeNone && (

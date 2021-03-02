@@ -14,24 +14,24 @@ import FilterBar from '../components/FilterBar';
 import qParams from '../lib/QueryParams';
 
 const sortOptions = {
-  deadlineAsc: {
+  'deadline.asc': {
     field: 'deadline',
     dir: 'asc',
   },
-  deadlineDesc: {
+  'deadline.desc': {
     field: 'deadline',
     dir: 'desc',
   },
-  amountAsc: {
+  'amount.asc': {
     field: 'amount.min',
     dir: 'asc',
   },
-  amountDesc: {
+  'amount.desc': {
     field: 'amount.max',
     dir: 'desc',
   },
 };
-const DEFAULT_SORT_BY = 'deadlineAsc';
+const DEFAULT_SORT_BY = 'deadline.asc';
 
 const useStyles = makeStyles((theme) => ({
   progress: {
@@ -70,17 +70,12 @@ function ScholarshipsPage() {
 
   const sortBy = params.sortBy ?? DEFAULT_SORT_BY;
 
-  if (
-    sortBy !== DEFAULT_SORT_BY &&
-    sortBy !== 'deadlineDesc' &&
-    sortBy !== 'amountAsc' &&
-    sortBy !== 'amountDesc'
-  ) {
+  if (!sortOptions.hasOwnProperty('deadline.asc')) {
     pruneQueryParam('sortBy');
   }
 
-  const sortField = sortOptions[params.sortBy ?? DEFAULT_SORT_BY].field;
-  const sortDir = sortOptions[params.sortBy ?? DEFAULT_SORT_BY].dir;
+  const sortField = sortOptions[sortBy].field;
+  const sortDir = sortOptions[sortBy].dir;
 
   const { minAmount, maxAmount } = params;
 
