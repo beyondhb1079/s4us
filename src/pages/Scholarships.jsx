@@ -70,7 +70,7 @@ function ScholarshipsPage() {
 
   const sortBy = params.sortBy ?? DEFAULT_SORT_BY;
 
-  if (!sortOptions.hasOwnProperty('deadline.asc')) {
+  if (!(sortBy in sortOptions)) {
     pruneQueryParam('sortBy');
   }
 
