@@ -68,11 +68,11 @@ function ScholarshipsPage() {
     history.replace({ search: queryString.stringify(params) });
   };
 
-  const sortBy = params.sortBy ?? DEFAULT_SORT_BY;
-
-  if (!(sortBy in sortOptions)) {
+  if (params.sortBy && !(params.sortBy in sortOptions)) {
     pruneQueryParam('sortBy');
   }
+
+  const sortBy = params.sortBy ?? DEFAULT_SORT_BY;
 
   const sortField = sortOptions[sortBy].field;
   const sortDir = sortOptions[sortBy].dir;
