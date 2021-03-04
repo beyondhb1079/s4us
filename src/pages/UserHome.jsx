@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import InboxIcon from '@material-ui/icons/Inbox';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 import {
+  Link as MuiLink,
+  CircularProgress,
+  Box,
   Button,
   Container,
   Grid,
   makeStyles,
   Typography,
 } from '@material-ui/core';
+import Scholarships from '../models/Scholarships';
+import ScholarshipList from '../components/ScholarshipList';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,11 +35,37 @@ const useStyles = makeStyles((theme) => ({
   scholarshipsAdded: {
     marginTop: theme.spacing(6),
   },
+  noScholarshipsAdded: {
+    marginTop: theme.spacing(12),
+  },
+  inboxIcon: {
+    marginTop: theme.spacing(6),
+  },
+  noScholarshipsBox: {
+    textAlign: 'center',
+  },
+  progress: {
+    display: 'block',
+  },
+  loadMoreButton: {
+    margin: theme.spacing(3, 0),
+  },
 }));
 
 export default function UserHome() {
   const classes = useStyles();
+  const [scholarships, setScholarships] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState();
   const user = firebase.auth().currentUser;
+
+  useEffect(() => {
+    Scholarships.list({ authorId: user.uid })
+      .then((results) => setScholarships(results))
+      .then(() => setError(null))
+      .catch(setError)
+      .finally(() => setLoading(false));
+  }, [user.uid]);
 
   return (
     <Container className={classes.root}>
@@ -46,7 +78,7 @@ export default function UserHome() {
             Looking for scholarships?
           </Typography>
           <Button
-            variant="outlined"
+            variant="contained"
             color="primary"
             component={Link}
             to="/scholarships"
@@ -58,7 +90,6 @@ export default function UserHome() {
           {/* Image here */}
         </Grid>
       </Grid>
-
       <Grid container className={classes.scholarshipsAdded} spacing={2}>
         <Grid item sm={9}>
           <Typography variant="h5" component="h2" gutterBottom>
@@ -67,7 +98,7 @@ export default function UserHome() {
         </Grid>
         <Grid item sm={3} className={classes.addButton}>
           <Button
-            variant="outlined"
+            variant="contained"
             color="primary"
             component={Link}
             to="/scholarships/new">
@@ -75,6 +106,36 @@ export default function UserHome() {
           </Button>
         </Grid>
       </Grid>
+      <Box className={classes.noScholarshipsBox}>
+        <InboxIcon style={{ fontSize: 200 }} />
+        <Typography
+          variant="h5"
+          component="h2"
+          gutterBottom
+          className={classes.noScholarshipsAdded}>
+          No Scholarships Added Yet
+        </Typography>
+
+        <Typography component="h2" color="primary">
+          <MuiLink component={Link} to="/scholarship/new">
+            Add a Scholarship
+          </MuiLink>
+        </Typography>
+      </Box>
+      {error?.toString() ||
+        (loading && <CircularProgress className={classes.progress} />) || (
+          <>
+            <ScholarshipList scholarships={scholarships} />
+            <Button
+              className={classes.loadMoreButton}
+              color="primary"
+              onclick={() => {
+                alert('clicked');
+              }}>
+              Load More
+            </Button>
+          </>
+        )}
     </Container>
   );
 }
