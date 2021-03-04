@@ -13,6 +13,26 @@ import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
 import qParams from '../lib/QueryParams';
 
+const sortOptions = {
+  'deadline.asc': {
+    field: 'deadline',
+    dir: 'asc',
+  },
+  'deadline.desc': {
+    field: 'deadline',
+    dir: 'desc',
+  },
+  'amount.asc': {
+    field: 'amount.min',
+    dir: 'asc',
+  },
+  'amount.desc': {
+    field: 'amount.max',
+    dir: 'desc',
+  },
+};
+const DEFAULT_SORT_BY = 'deadline.asc';
+
 const useStyles = makeStyles((theme) => ({
   progress: {
     display: 'block',
@@ -24,17 +44,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ScholarshipsPage() {
+  const classes = useStyles();
   const [scholarships, setScholarships] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
-  const [sortField, setSortField] = useState('deadline');
-  const [sortDir, setSortDir] = useState('asc');
 
-  const location = useLocation();
   const history = useHistory();
+  const location = useLocation();
 
   const params = queryString.parse(location.search, { parseNumbers: true });
-  const { minAmount, maxAmount } = params;
 
   const setQueryParam = (index, val) => {
     history.push({
@@ -49,6 +67,17 @@ function ScholarshipsPage() {
     delete params[index];
     history.replace({ search: queryString.stringify(params) });
   };
+
+  if (params.sortBy && !(params.sortBy in sortOptions)) {
+    pruneQueryParam('sortBy');
+  }
+
+  const sortBy = params.sortBy ?? DEFAULT_SORT_BY;
+
+  const sortField = sortOptions[sortBy].field;
+  const sortDir = sortOptions[sortBy].dir;
+
+  const { minAmount, maxAmount } = params;
 
   if (
     minAmount !== undefined &&
@@ -83,19 +112,12 @@ function ScholarshipsPage() {
       .finally(() => setLoading(false));
   }, [sortDir, sortField, minAmount, maxAmount]);
 
-  const classes = useStyles();
-
   return (
     <Container>
       <Typography variant="h3" component="h1" style={{ textAlign: 'center' }}>
         Scholarships
       </Typography>
-      <FilterBar
-        changeSortBy={setSortField}
-        changeSortFormat={setSortDir}
-        queryParams={params}
-        {...{ setQueryParam }}
-      />
+      <FilterBar queryParams={params} {...{ setQueryParam }} />
       {error?.toString() ||
         (loading && <CircularProgress className={classes.progress} />) || (
           <>

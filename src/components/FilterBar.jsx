@@ -30,39 +30,40 @@ const grades = {
   16: 'College Senior',
 };
 
-const sortingOptions = {
-  deadlineSoon: 'Deadline (Earliest to Latest)',
-  deadlineLatest: 'Deadline (Latest to Earliest)',
-  amountLow: 'Amount (Low to High)',
-  amountHigh: 'Amount (High to Low)',
+const sortOptions = {
+  'deadline.asc': {
+    desc: 'Deadline (Earliest to Latest)',
+    field: 'deadline',
+    dir: 'asc',
+  },
+  'deadline.desc': {
+    desc: 'Deadline (Latest to Earliest)',
+    field: 'deadline',
+    dir: 'desc',
+  },
+  'amount.asc': {
+    desc: 'Amount (Low to High)',
+    field: 'amount.min',
+    dir: 'asc',
+  },
+  'amount.desc': {
+    desc: 'Amount (High to Low)',
+    field: 'amount.max',
+    dir: 'desc',
+  },
 };
 
-export default function FilterBar(props) {
-  const { changeSortBy, changeSortFormat, setQueryParam, queryParams } = props;
-  const classes = useStyles();
+const sortItems = Object.fromEntries(
+  Object.entries(sortOptions).map(([k, v]) => [k, v.desc])
+);
 
+export default function FilterBar(props) {
+  const { setQueryParam, queryParams } = props;
+  const classes = useStyles();
   const { minAmount, maxAmount } = queryParams;
 
-  function updateSorting(sortingOption) {
-    switch (sortingOption) {
-      case 'deadlineSoon':
-        changeSortBy('deadline');
-        changeSortFormat('asc');
-        break;
-      case 'deadlineLatest':
-        changeSortBy('deadline');
-        changeSortFormat('desc');
-        break;
-      case 'amountLow':
-        changeSortBy('amount.min');
-        changeSortFormat('asc');
-        break;
-      case 'amountHigh':
-        changeSortBy('amount.max');
-        changeSortFormat('desc');
-        break;
-      default:
-    }
+  function updateSortingParams(sortOption) {
+    setQueryParam('sortBy', sortOption);
   }
 
   return (
@@ -81,10 +82,10 @@ export default function FilterBar(props) {
         Sort by
         <FilterDropDown
           label="Sorting"
-          items={sortingOptions}
-          defaultValue="deadlineSoon"
+          items={sortItems}
+          value={queryParams.sortBy ?? 'deadline.asc'}
           removeNone
-          onChange={updateSorting}
+          onChange={updateSortingParams}
         />
       </Grid>
     </Grid>
@@ -92,8 +93,6 @@ export default function FilterBar(props) {
 }
 
 FilterBar.propTypes = {
-  changeSortBy: PropTypes.func.isRequired,
-  changeSortFormat: PropTypes.func.isRequired,
   setQueryParam: PropTypes.func.isRequired,
   queryParams: PropTypes.objectOf(PropTypes.number),
 };
