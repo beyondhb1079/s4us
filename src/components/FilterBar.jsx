@@ -30,31 +30,32 @@ const grades = {
   16: 'College Senior',
 };
 
-const sortItems = {
-  'deadline.asc': 'Deadline (Earliest to Latest)',
-  'deadline.desc': 'Deadline (Latest to Earliest)',
-  'amount.asc': 'Amount (Low to High)',
-  'amount.desc': 'Amount (High to Low)',
-};
-
 const sortOptions = {
   'deadline.asc': {
+    desc: 'Deadline (Earliest to Latest)',
     field: 'deadline',
     dir: 'asc',
   },
   'deadline.desc': {
+    desc: 'Deadline (Latest to Earliest)',
     field: 'deadline',
     dir: 'desc',
   },
   'amount.asc': {
+    desc: 'Amount (Low to High)',
     field: 'amount.min',
     dir: 'asc',
   },
   'amount.desc': {
+    desc: 'Amount (High to Low)',
     field: 'amount.max',
     dir: 'desc',
   },
 };
+
+const sortItems = Object.fromEntries(
+  Object.entries(sortOptions).map(([k, v]) => [k, v.desc])
+);
 
 export default function FilterBar(props) {
   const { setQueryParam, queryParams } = props;
@@ -62,9 +63,7 @@ export default function FilterBar(props) {
   const { minAmount, maxAmount } = queryParams;
 
   function updateSortingParams(sortOption) {
-    if (sortOption in sortOptions) {
-      setQueryParam('sortBy', sortOption);
-    }
+    setQueryParam('sortBy', sortOption);
   }
 
   return (
