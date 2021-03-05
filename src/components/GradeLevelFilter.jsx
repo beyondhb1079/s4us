@@ -41,6 +41,11 @@ export default function GradeLevelFilter() {
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
 
+  function updateChecked(value) {
+    gradeList[value].isChecked = !gradeList[value].isChecked;
+    setAnchorEl(false);
+  }
+
   return (
     <>
       <Button
@@ -57,15 +62,19 @@ export default function GradeLevelFilter() {
         onClose={() => setAnchorEl(null)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
-        <input
-          key="12"
-          type="checkbox"
-          // eslint-disable-next-line no-return-assign
-          onClick={() => (gradeList[12].isChecked = !gradeList[12].isChecked)}
-          checked={gradeList[12].isChecked}
-          value={gradeList[12].value}
-        />
-        {gradeList[12].value}
+        {Object.keys(gradeList).map((key) => (
+          <>
+            <input
+              key={key}
+              type="checkbox"
+              onClick={() => updateChecked(key)}
+              checked={gradeList[key].isChecked}
+              value={gradeList[key].value}
+            />
+            {gradeList[key].value}
+            <br />
+          </>
+        ))}
       </Popover>
     </>
   );
