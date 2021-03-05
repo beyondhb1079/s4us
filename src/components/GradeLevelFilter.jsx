@@ -8,7 +8,33 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     height: theme.spacing(4),
   },
+  popOverWindow: {
+    minWidth: '200px',
+  },
 }));
+
+const gradeList = {
+  12: {
+    value: 'Highschool Senior',
+    isChecked: false,
+  },
+  13: {
+    value: 'College Freshman',
+    isChecked: false,
+  },
+  14: {
+    value: 'College Sophomore',
+    isChecked: false,
+  },
+  15: {
+    value: 'College Junior',
+    isChecked: false,
+  },
+  16: {
+    value: 'College Senior',
+    isChecked: false,
+  },
+};
 
 export default function GradeLevelFilter() {
   const classes = useStyles();
@@ -25,12 +51,21 @@ export default function GradeLevelFilter() {
         Grade
       </Button>
       <Popover
+        className={classes.popOverWindow}
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
         onClose={() => setAnchorEl(null)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
-        <h4>Multiple Select Options</h4>
+        <input
+          key="12"
+          type="checkbox"
+          // eslint-disable-next-line no-return-assign
+          onClick={() => (gradeList[12].isChecked = !gradeList[12].isChecked)}
+          checked={gradeList[12].isChecked}
+          value={gradeList[12].value}
+        />
+        {gradeList[12].value}
       </Popover>
     </>
   );

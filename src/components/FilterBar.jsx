@@ -23,14 +23,6 @@ const majors = {
   ds: 'Data Science',
 };
 
-const grades = {
-  12: 'Highschool Senior',
-  13: 'College Freshman',
-  14: 'College Sophomore',
-  15: 'College Junior',
-  16: 'College Senior',
-};
-
 const sortOptions = {
   'deadline.asc': {
     desc: 'Deadline (Earliest to Latest)',
