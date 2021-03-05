@@ -48,6 +48,7 @@ function ScholarshipsPage() {
   const [scholarships, setScholarships] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
+  const [lastDoc, setLastDoc] = useState(null);
 
   const history = useHistory();
   const location = useLocation();
@@ -93,25 +94,32 @@ function ScholarshipsPage() {
     pruneQueryParam(qParams.MAX_AMOUNT);
   }
 
+  function displayScholarships() {
+    Scholarships.list({ sortField, sortDir }, lastDoc, setLastDoc)
+      .then((results) => {
+        setScholarships(
+          scholarships.concat(
+            results.filter((s) =>
+              s.data.amount.intersectsRange(minAmount, maxAmount)
+            )
+          )
+        );
+      })
+      .then(() => setError(null))
+      .catch(setError)
+      .finally(() => setLoading(false));
+  }
+
   useEffect(() => {
     if (maxAmount && maxAmount < minAmount) {
       setError('The minimum amount must be less than the Maximum.');
       return;
     }
     // TODO: Create cancellable promises
-    Scholarships.list({ sortField, sortDir })
-      .then((results) =>
-        setScholarships(
-          results.filter((s) =>
-            s.data.amount.intersectsRange(minAmount, maxAmount)
-          )
-        )
-      )
-      .then(() => setError(null))
-      .catch(setError)
-      .finally(() => setLoading(false));
+    displayScholarships();
   }, [sortDir, sortField, minAmount, maxAmount]);
 
+  console.log(lastDoc);
   return (
     <Container>
       <Typography variant="h3" component="h1" style={{ textAlign: 'center' }}>
@@ -125,9 +133,7 @@ function ScholarshipsPage() {
             <Button
               className={classes.loadMoreButton}
               color="primary"
-              onClick={() => {
-                alert('clicked');
-              }}>
+              onClick={() => displayScholarships()}>
               Load More
             </Button>
           </>
