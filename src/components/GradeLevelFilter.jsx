@@ -41,7 +41,7 @@ export default function GradeLevelFilter() {
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
 
-  function updateChecked(value) {
+  function updateGradeSelection(value) {
     gradeList[value].isChecked = !gradeList[value].isChecked;
     setAnchorEl(false);
   }
@@ -67,7 +67,7 @@ export default function GradeLevelFilter() {
             <input
               key={key}
               type="checkbox"
-              onClick={() => updateChecked(key)}
+              onClick={() => updateGradeSelection(key)}
               checked={gradeList[key].isChecked}
               value={gradeList[key].value}
             />
