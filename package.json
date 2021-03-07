@@ -160,6 +160,7 @@
     "**/*": "prettier --write --ignore-unknown"
   },
   "resolutions": {
+    "react-scripts/**/immer": "8.0.1",
     "react-scripts/**/node-forge": "0.10.0",
     "firebase-tools/**/node-forge": "0.10.0"
   }
