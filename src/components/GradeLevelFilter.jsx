@@ -38,10 +38,10 @@ export default function GradeLevelFilter() {
     if (selectedGrades.has(gradeSelected)) {
       newSet.delete(gradeSelected);
       setSelectedGrades(newSet);
-    } else {
-      newSet.add(gradeSelected);
-      setSelectedGrades(newSet);
+      return;
     }
+    newSet.add(gradeSelected);
+    setSelectedGrades(newSet);
   }
 
   return (
