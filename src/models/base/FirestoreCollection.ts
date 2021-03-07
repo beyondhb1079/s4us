@@ -22,17 +22,12 @@ export default abstract class FirestoreCollection<T> {
   protected static list<E>(
     query: firestore.Query<E>
   ): Promise<FirestoreModel<E>[]> {
-    return new Promise((resolve, reject) => {
-      query
-        .get()
-        .then((querySnapshot: firestore.QuerySnapshot<E>) =>
-          resolve(
-            querySnapshot.docs.map(
-              (doc) => new FirestoreModel<E>(doc.ref, doc.data())
-            )
-          )
+    return query
+      .get()
+      .then((querySnapshot: firestore.QuerySnapshot<E>) =>
+        querySnapshot.docs.map(
+          (doc) => new FirestoreModel<E>(doc.ref, doc.data())
         )
-        .catch(reject);
-    });
+      );
   }
 }
