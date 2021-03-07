@@ -12281,9 +12281,9 @@ react-transition-group@^4.0.0, react-transition-group@^4.4.0:
     prop-types "^15.6.2"
 
 react-typing-effect@^2.0.3:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/react-typing-effect/-/react-typing-effect-2.0.4.tgz#99eb6d451f394f079793c158aec1bd9d9cf07b97"
-  integrity sha512-G6ZD9S2rxrWOTW55gdDcvWwFotXA4XjB/DZ+P7JAnBkngrEljQrh+21ESRVHT2paVzyQTJzH8AY8O1Am7zyP6A==
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/react-typing-effect/-/react-typing-effect-2.0.5.tgz#96780526d6958d553e2805124a2aa96c92764f09"
+  integrity sha512-IyVHASfzkdsWYw+/gvh2g1lwMf/ctpWhQHgMZHXQinKWxW8529XDhLGd9KTfnK5yUPLPaucdtA9GZFjIOjKCVg==
   dependencies:
     react "^16.13.1"
     react-dom "^16.13.1"
