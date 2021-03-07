@@ -40,10 +40,19 @@ export default function GradeLevelFilter() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
+  const [selectedGrades, setSelectedGrades] = useState(new Set());
 
   function updateGradeSelection(value) {
     gradeList[value].isChecked = !gradeList[value].isChecked;
-    setAnchorEl(false);
+
+    const newSet = new Set(selectedGrades);
+    if (selectedGrades.has(value)) {
+      newSet.delete(value);
+      setSelectedGrades(newSet);
+    } else {
+      newSet.add(value);
+      setSelectedGrades(newSet);
+    }
   }
 
   return (
