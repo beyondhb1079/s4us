@@ -24,8 +24,12 @@ export default function ScholarshipDetails({ history, location, match }) {
     if (loading) {
       Scholarships.id(id)
         .get()
-        .then((s) => mounted && setScholarship(s))
-        .catch((e) => mounted && setError(e));
+        .then((s) => {
+          if (mounted) setScholarship(s);
+        })
+        .catch((e) => {
+          if (mounted) setError(e);
+        });
     }
     return () => {
       mounted = false;

@@ -12,20 +12,36 @@ export default class FirestoreModel<T> implements Model<T> {
   }
 
   get(): Promise<FirestoreModel<T>> {
-    return this.ref.get().then((doc: firestore.DocumentSnapshot<T>) => {
-      if (!doc.exists) {
-        throw new Error(`${this.ref.path} not found`);
-      }
-      return new FirestoreModel<T>(doc.ref, doc.data() as T);
+    return new Promise((resolve, reject) => {
+      this.ref
+        .get()
+        .then((doc: firestore.DocumentSnapshot<T>) => {
+          if (!doc.exists) {
+            reject(new Error(`${this.ref.path} not found`));
+            return;
+          }
+          resolve(new FirestoreModel<T>(doc.ref, doc.data() as T));
+        })
+        .catch((error) => reject(error));
     });
   }
 
   save(): Promise<FirestoreModel<T>> {
-    return this.ref.set(this.data).then(() => this);
+    return new Promise((resolve, reject) => {
+      this.ref
+        .set(this.data)
+        .then(() => resolve(this))
+        .catch((error) => reject(error));
+    });
   }
 
   delete(): Promise<void> {
-    return this.ref.delete();
+    return new Promise((resolve, reject) => {
+      this.ref
+        .delete()
+        .then(() => resolve())
+        .catch((error) => reject(error));
+    });
   }
 
   subscribe(

@@ -60,15 +60,11 @@ export default function UserHome() {
   const user = firebase.auth().currentUser;
 
   useEffect(() => {
-    let mounted = true;
     Scholarships.list({ authorId: user.uid })
-      .then((results) => mounted && setScholarships(results))
-      .then(() => mounted && setError(null))
-      .catch((e) => mounted && setError(e))
-      .finally(() => mounted && setLoading(false));
-    return () => {
-      mounted = false;
-    };
+      .then((results) => setScholarships(results))
+      .then(() => setError(null))
+      .catch(setError)
+      .finally(() => setLoading(false));
   }, [user.uid]);
 
   return (
