@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const gradeitems = [
+const gradeItems = [
   '12th - High School',
   'College Freshman',
   'College Sophomore',
@@ -59,16 +59,16 @@ export default function GradeLevelFilter() {
         onClose={() => setAnchorEl(null)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
-        {Object.keys(gradeitems).map((key) => (
+        {Object.keys(gradeItems).map((key) => (
           <div className={classes.popOverWindow}>
             <input
               key={key}
               type="checkbox"
-              onClick={() => updateGradeSelection(gradeitems[key])}
-              checked={selectedGrades.has(gradeitems[key])}
-              value={gradeitems[key]}
+              onClick={() => updateGradeSelection(gradeItems[key])}
+              checked={selectedGrades.has(gradeItems[key])}
+              value={gradeItems[key]}
             />
-            {gradeitems[key]}
+            {gradeItems[key]}
             <br />
           </div>
         ))}
