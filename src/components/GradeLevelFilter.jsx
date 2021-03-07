@@ -33,13 +33,13 @@ export default function GradeLevelFilter() {
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const [selectedGrades, setSelectedGrades] = useState(new Set());
 
-  function updateGradeSelection(value) {
+  function updateGradeSelection(gradeSelected) {
     const newSet = new Set(selectedGrades);
-    if (selectedGrades.has(value)) {
-      newSet.delete(value);
+    if (selectedGrades.has(gradeSelected)) {
+      newSet.delete(gradeSelected);
       setSelectedGrades(newSet);
     } else {
-      newSet.add(value);
+      newSet.add(gradeSelected);
       setSelectedGrades(newSet);
     }
   }

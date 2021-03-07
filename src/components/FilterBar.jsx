@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { makeStyles, Grid } from '@material-ui/core';
 import FilterDropDown from './FilterDropdown';
 import AmountFilter from './AmountFilter';
-import GradeLevelFilter from './GradeLevelFilter';
+import GradeFilter from './GradeLevelFilter';
 import qParams from '../lib/QueryParams';
 
 const useStyles = makeStyles(() => ({
@@ -63,7 +63,7 @@ export default function FilterBar(props) {
     <Grid container spacing={2} className={classes.root}>
       <Grid item className={classes.alignText}>
         <FilterDropDown label="Major" items={majors} />
-        <GradeLevelFilter />
+        <GradeFilter />
         <AmountFilter
           min={minAmount ?? 0}
           max={maxAmount ?? 0}
