@@ -96,20 +96,25 @@ function ScholarshipsPage() {
   useEffect(() => {
     if (maxAmount && maxAmount < minAmount) {
       setError('The minimum amount must be less than the Maximum.');
-      return;
+      return () => {};
     }
-    // TODO: Create cancellable promises
+    let mounted = true;
     Scholarships.list({ sortField, sortDir })
-      .then((results) =>
-        setScholarships(
-          results.filter((s) =>
-            s.data.amount.intersectsRange(minAmount, maxAmount)
+      .then(
+        (results) =>
+          mounted &&
+          setScholarships(
+            results.filter((s) =>
+              s.data.amount.intersectsRange(minAmount, maxAmount)
+            )
           )
-        )
       )
-      .then(() => setError(null))
-      .catch(setError)
-      .finally(() => setLoading(false));
+      .then(() => mounted && setError(null))
+      .catch((e) => mounted && setError(e))
+      .finally(() => mounted && setLoading(false));
+    return () => {
+      mounted = false;
+    };
   }, [sortDir, sortField, minAmount, maxAmount]);
 
   return (

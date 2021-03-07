@@ -16,10 +16,8 @@ const converter: firestore.FirestoreDataConverter<NameData> = {
 
 const names = firestore().collection('names').withConverter(converter);
 
-beforeEach(async () =>
-  clearFirestoreData(app.options as { projectId: string })
-);
-afterAll(async () => app.delete());
+beforeEach(() => clearFirestoreData(app.options as { projectId: string }));
+afterAll(() => app.delete());
 
 test('constructor', () => {
   const data = { first: 'Bob', last: 'Smith' };

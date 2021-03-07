@@ -8,7 +8,7 @@ import ScholarshipAmount from '../types/ScholarshipAmount';
 import AmountType from '../types/AmountType';
 
 // hacky workaround to allow findBy to work
-// TODO: Figure out a cleaner solution.
+// TODO: Figure out a cleaner solution..
 window.MutationObserver = require('mutation-observer');
 
 function renderAtRoute(pathname, state = {}) {
@@ -21,20 +21,20 @@ function renderAtRoute(pathname, state = {}) {
 
 const app = initializeTestApp({ projectId: 'scholarship-details-test' });
 
-beforeAll(async () => clearFirestoreData(app.options));
-afterAll(async () => app.delete());
+beforeAll(() => clearFirestoreData(app.options));
+afterAll(() => app.delete());
 
 test('renders loading initially', () => {
+  // Rendering causes UnhandledPromiseRejectionWarning sometimes?
   renderAtRoute('/scholarships/abc');
-
   expect(screen.getByText(/loading/i)).toBeInTheDocument();
 });
 
-test('renders scholarship not found', async () => {
+test('renders scholarship not found', () => {
   renderAtRoute('/scholarships/abc');
 
   expect(screen.getByText(/loading/i)).toBeInTheDocument();
-  await screen.findByText(/not found/i);
+  return expect(screen.findByText(/not found/i)).resolves.toBeInTheDocument();
 });
 
 test('renders loading initially with empty scholarship state', () => {
