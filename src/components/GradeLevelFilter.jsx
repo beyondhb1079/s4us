@@ -10,15 +10,21 @@ const useStyles = makeStyles((theme) => ({
   },
   popOverWindow: {
     minWidth: '200px',
+    fontSize: '15px',
+    paddingTop: theme.spacing(1),
+    paddingLeft: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
   },
 }));
 
 const gradeitems = [
-  'HSSenior',
-  'CollegeFreshman',
-  'CollegeSophomore',
-  'CollegeJunior',
-  'CollegeSenior',
+  '12th - High School',
+  'College Freshman',
+  'College Sophomore',
+  'College Junior',
+  'College Senior',
+  '5th Year',
+  'Post Grad',
 ];
 
 export default function GradeLevelFilter() {
@@ -48,14 +54,13 @@ export default function GradeLevelFilter() {
         Grade
       </Button>
       <Popover
-        className={classes.popOverWindow}
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
         onClose={() => setAnchorEl(null)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
         {Object.keys(gradeitems).map((key) => (
-          <>
+          <div className={classes.popOverWindow}>
             <input
               key={key}
               type="checkbox"
@@ -65,7 +70,7 @@ export default function GradeLevelFilter() {
             />
             {gradeitems[key]}
             <br />
-          </>
+          </div>
         ))}
       </Popover>
     </>
