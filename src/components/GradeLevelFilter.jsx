@@ -13,28 +13,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const gradeList = {
-  12: {
-    value: 'Highschool Senior',
-    isChecked: false,
-  },
-  13: {
-    value: 'College Freshman',
-    isChecked: false,
-  },
-  14: {
-    value: 'College Sophomore',
-    isChecked: false,
-  },
-  15: {
-    value: 'College Junior',
-    isChecked: false,
-  },
-  16: {
-    value: 'College Senior',
-    isChecked: false,
-  },
-};
+const gradeitems = [
+  'HSSenior',
+  'CollegeFreshman',
+  'CollegeSophomore',
+  'CollegeJunior',
+  'CollegeSenior',
+];
 
 export default function GradeLevelFilter() {
   const classes = useStyles();
@@ -43,8 +28,6 @@ export default function GradeLevelFilter() {
   const [selectedGrades, setSelectedGrades] = useState(new Set());
 
   function updateGradeSelection(value) {
-    gradeList[value].isChecked = !gradeList[value].isChecked;
-
     const newSet = new Set(selectedGrades);
     if (selectedGrades.has(value)) {
       newSet.delete(value);
@@ -71,16 +54,16 @@ export default function GradeLevelFilter() {
         onClose={() => setAnchorEl(null)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
-        {Object.keys(gradeList).map((key) => (
+        {Object.keys(gradeitems).map((key) => (
           <>
             <input
               key={key}
               type="checkbox"
-              onClick={() => updateGradeSelection(key)}
-              checked={gradeList[key].isChecked}
-              value={gradeList[key].value}
+              onClick={() => updateGradeSelection(gradeitems[key])}
+              checked={selectedGrades.has(gradeitems[key])}
+              value={gradeitems[key]}
             />
-            {gradeList[key].value}
+            {gradeitems[key]}
             <br />
           </>
         ))}
