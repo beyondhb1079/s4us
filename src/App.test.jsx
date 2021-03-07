@@ -8,7 +8,7 @@ window.MutationObserver = require('mutation-observer');
 
 test('renders home page by default', () => {
   render(<App />);
-  return expect(
-    screen.findByText(/Scholarships/i)
-  ).resolves.toBeInTheDocument();
+
+  const linkElement = screen.findByText(/Scholarships/i);
+  return expect(linkElement).resolves.toBeInTheDocument();
 });
