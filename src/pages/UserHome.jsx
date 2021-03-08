@@ -113,7 +113,7 @@ export default function UserHome() {
           component="h2"
           gutterBottom
           className={classes.noScholarshipsAdded}>
-          <div>{scholarships.length == 0 && 'No Scholarships added.'}</div>
+          <div>{scholarships.length === 0 && 'No Scholarships added.'}</div>
         </Typography>
 
         <Typography component="h2" color="primary">
