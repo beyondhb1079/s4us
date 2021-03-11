@@ -17,6 +17,19 @@ jobs:
         uses: actions/github-script@0.2.0
         with:
           script: |
+            // Skip if there are any approvals
+            const reviews = await github.pulls.listReviews({
+              owner: context.payload.repository.owner.login,
+              repo: context.payload.repository.name,
+              pull_number: context.payload.pull_request.number
+            });
+            const approvals = reviews.data.filter(r => r.state == 'APPROVED');
+            if (approvals.length !== 0) {
+              console.log(`PR already approved by @${approvals[0].user.login}`);
+              return;
+            }
+
+            // Approve and leave a comment for the human reviewer.
             github.pullRequests.createReview({
               owner: context.payload.repository.owner.login,
               repo: context.payload.repository.name,
@@ -27,6 +40,8 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '@dependabot squash and merge'
+              body: 'Dear human reviewer, copy and paste this to get ' +
+                    'this auto merged: \n' +
+                    '@dependabot squash and merge'
             })
           github-token: ${{github.token}}
