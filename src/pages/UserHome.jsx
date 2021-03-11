@@ -33,14 +33,8 @@ const useStyles = makeStyles((theme) => ({
   scholarshipsAdded: {
     marginTop: theme.spacing(6),
   },
-  noScholarshipsAdded: {
-    marginTop: theme.spacing(12),
-  },
   inboxIcon: {
     marginTop: theme.spacing(6),
-  },
-  noScholarshipsBox: {
-    textAlign: 'center',
   },
   progress: {
     display: 'block',
@@ -95,7 +89,7 @@ export default function UserHome() {
       <Grid container className={classes.scholarshipsAdded} spacing={2}>
         <Grid item sm={9}>
           <Typography variant="h5" component="h2" gutterBottom>
-            Scholarships You Have Added{' '}
+            Scholarships You Have Added
           </Typography>
         </Grid>
         <Grid item sm={3} className={classes.addButton}>
@@ -107,29 +101,33 @@ export default function UserHome() {
             Add Scholarship
           </Button>
         </Grid>
-        {scholarships.length === 0 && (
-          <Grid container className={classes.bannerRoot}>
-            <Grid item xs={3}>
-              <InboxIcon style={{ fontsize: 600 }} />
-            </Grid>
-            <Grid item>
-              <Typography variant="h5" gutterButtom>
-                No Scholarships Added Yet{' '}
-              </Typography>
-              <Typography
-                variant="contained"
-                color="primary"
-                component={Link}
-                to="/scholarships/new">
-                Add Scholarship
-              </Typography>
-            </Grid>
-          </Grid>
-        )}
       </Grid>
       {error?.toString() ||
         (loading && <CircularProgress className={classes.progress} />) || (
           <>
+            {scholarships.length === 0 && (
+              <Grid
+                container
+                justify="flex-start"
+                alignItems="center"
+                className={classes.bannerRoot}>
+                <Grid item>
+                  <InboxIcon style={{ fontSize: 200 }} />
+                </Grid>
+                <Grid item>
+                  <Typography variant="h5" gutterButtom>
+                    No Scholarships Added Yet
+                  </Typography>
+                  <Typography
+                    variant="contained"
+                    color="primary"
+                    component={Link}
+                    to="/scholarships/new">
+                    Add Scholarship
+                  </Typography>
+                </Grid>
+              </Grid>
+            )}
             <ScholarshipList scholarships={scholarships} />
             {scholarships.length !== 0 && (
               <Button
