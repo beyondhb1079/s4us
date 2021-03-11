@@ -3,9 +3,7 @@ import InboxIcon from '@material-ui/icons/Inbox';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 import {
-  Link as MuiLink,
   CircularProgress,
-  Box,
   Button,
   Container,
   Grid,
