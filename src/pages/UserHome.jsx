@@ -93,7 +93,7 @@ export default function UserHome() {
       <Grid container className={classes.scholarshipsAdded} spacing={2}>
         <Grid item sm={9}>
           <Typography variant="h5" component="h2" gutterBottom>
-            Scholarships Added
+            Scholarships You Have Added{' '}
           </Typography>
         </Grid>
         <Grid item sm={3} className={classes.addButton}>
@@ -105,35 +105,40 @@ export default function UserHome() {
             Add Scholarship
           </Button>
         </Grid>
+        {scholarships.length === 0 && (
+          <Grid container className={classes.bannerRoot}>
+            <Grid item xs={3}>
+              <InboxIcon style={{ fontsize: 600 }} />
+            </Grid>
+            <Grid item>
+              <Typography variant="h5" gutterButtom>
+                No Scholarships Added Yet{' '}
+              </Typography>
+              <Typography
+                variant="contained"
+                color="primary"
+                component={Link}
+                to="/scholarships/new">
+                Add Scholarship
+              </Typography>
+            </Grid>
+          </Grid>
+        )}
       </Grid>
-      <Box className={classes.noScholarshipsBox}>
-        <InboxIcon style={{ fontSize: 200 }} />
-        <Typography
-          variant="h5"
-          component="h2"
-          gutterBottom
-          className={classes.noScholarshipsAdded}>
-          <div>{scholarships.length === 0 && 'No Scholarships added.'}</div>
-        </Typography>
-
-        <Typography component="h2" color="primary">
-          <MuiLink component={Link} to="/scholarship/new">
-            Add a Scholarship
-          </MuiLink>
-        </Typography>
-      </Box>
       {error?.toString() ||
         (loading && <CircularProgress className={classes.progress} />) || (
           <>
             <ScholarshipList scholarships={scholarships} />
-            <Button
-              className={classes.loadMoreButton}
-              color="primary"
-              onclick={() => {
-                alert('clicked');
-              }}>
-              Load More
-            </Button>
+            {scholarships.length !== 0 && (
+              <Button
+                className={classes.loadMoreButton}
+                color="primary"
+                onclick={() => {
+                  alert('clicked');
+                }}>
+                Load More
+              </Button>
+            )}
           </>
         )}
     </Container>
