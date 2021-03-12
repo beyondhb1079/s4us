@@ -95,25 +95,29 @@ function ScholarshipsPage() {
   }
 
   function displayScholarships() {
-    Scholarships.list({ sortField, sortDir }, lastDoc, setLastDoc)
-      .then((results) => {
-        setScholarships(
-          scholarships.concat(
+    let mounted = true;
+    Scholarships.list({ sortField, sortDir })
+      .then(
+        (results) =>
+          mounted &&
+          setScholarships(
             results.filter((s) =>
               s.data.amount.intersectsRange(minAmount, maxAmount)
             )
           )
-        );
-      })
-      .then(() => setError(null))
-      .catch(setError)
-      .finally(() => setLoading(false));
+      )
+      .then(() => mounted && setError(null))
+      .catch((e) => mounted && setError(e))
+      .finally(() => mounted && setLoading(false));
+    return () => {
+      mounted = false;
+    };
   }
 
   useEffect(() => {
     if (maxAmount && maxAmount < minAmount) {
       setError('The minimum amount must be less than the Maximum.');
-      return;
+      return () => {};
     }
     // TODO: Create cancellable promises
     displayScholarships();
@@ -133,7 +137,7 @@ function ScholarshipsPage() {
             <Button
               className={classes.loadMoreButton}
               color="primary"
-              onClick={() => displayScholarships()}>
+              onClick={displayScholarships}>
               Load More
             </Button>
           </>
