@@ -46,15 +46,14 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
    *
    * @param opts list options.
    */
-  async list(
+  list(
     opts: {
       sortDir?: SortDirection;
       sortField?: string;
       authorId?: string;
     },
-    lastDoc: any,
-    setLastDoc: any
-  ): Promise<FirestoreModel<ScholarshipData>[]> {
+    lastDoc: any
+  ): any {
     let query: firestore.Query<ScholarshipData> = this.collection;
     // TODO(issues/93, issues/94): Support filters and pagination
 
@@ -72,10 +71,20 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
 
     query = query.limit(5).startAfter(lastDoc || 0);
 
-    const snapShot = await query.get();
-    const last = snapShot.docs[snapShot.docs.length - 1];
-    setLastDoc(last);
-    return FirestoreCollection.list(query);
+    // const snapShot = await query.get();
+    // const last = snapShot.docs[snapShot.docs.length - 1];
+    // setLastDoc(last);
+    return FirestoreCollection.list(query).then((results) => {
+      let lastDocument: any;
+      query.get().then((snapshot) => {
+        lastDocument = snapshot.docs[snapshot.docs.length - 1];
+      });
+      const next = () => {
+        return this.list(opts, lastDocument);
+      };
+
+      return { results, next };
+    });
   }
 }
 

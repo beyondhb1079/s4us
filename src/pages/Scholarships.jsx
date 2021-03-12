@@ -48,7 +48,6 @@ function ScholarshipsPage() {
   const [scholarships, setScholarships] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
-  const [lastDoc, setLastDoc] = useState(null);
 
   const history = useHistory();
   const location = useLocation();
@@ -94,25 +93,8 @@ function ScholarshipsPage() {
     pruneQueryParam(qParams.MAX_AMOUNT);
   }
 
-  function displayScholarships() {
-    let mounted = true;
-    Scholarships.list({ sortField, sortDir })
-      .then(
-        (results) =>
-          mounted &&
-          setScholarships(
-            results.filter((s) =>
-              s.data.amount.intersectsRange(minAmount, maxAmount)
-            )
-          )
-      )
-      .then(() => mounted && setError(null))
-      .catch((e) => mounted && setError(e))
-      .finally(() => mounted && setLoading(false));
-    return () => {
-      mounted = false;
-    };
-  }
+  function displayScholarships() {}
+  let nextScholarships = null;
 
   useEffect(() => {
     if (maxAmount && maxAmount < minAmount) {
@@ -120,10 +102,28 @@ function ScholarshipsPage() {
       return () => {};
     }
     // TODO: Create cancellable promises
-    displayScholarships();
+    // displayScholarships();
+    let mounted = true;
+    Scholarships.list({ sortField, sortDir }, null)
+      .then(({ results, next }) => {
+        nextScholarships = next;
+        return (
+          mounted &&
+          setScholarships(
+            results.filter((s) =>
+              s.data.amount.intersectsRange(minAmount, maxAmount)
+            )
+          )
+        );
+      })
+      .then(() => mounted && setError(null))
+      .catch((e) => mounted && setError(e))
+      .finally(() => mounted && setLoading(false));
+    return () => {
+      mounted = false;
+    };
   }, [sortDir, sortField, minAmount, maxAmount]);
 
-  console.log(lastDoc);
   return (
     <Container>
       <Typography variant="h3" component="h1" style={{ textAlign: 'center' }}>
@@ -137,7 +137,7 @@ function ScholarshipsPage() {
             <Button
               className={classes.loadMoreButton}
               color="primary"
-              onClick={displayScholarships}>
+              onClick={() => console.log(nextScholarships)}>
               Load More
             </Button>
           </>
