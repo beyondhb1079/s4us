@@ -1,4 +1,4 @@
-import { firestore } from 'firebase';
+import firebase from 'firebase/app';
 import { clearFirestoreData, initializeTestApp } from '../lib/testing';
 import AmountType from '../types/AmountType';
 import ScholarshipAmount from '../types/ScholarshipAmount';
@@ -65,19 +65,19 @@ test('converter.toFirestore', () => {
 
   expect(got).toEqual({
     ...data,
-    deadline: firestore.Timestamp.fromDate(data.deadline),
+    deadline: firebase.firestore.Timestamp.fromDate(data.deadline),
   });
 });
 
 test('converter.fromFirestore', () => {
-  const snapdata: firestore.DocumentData = {
+  const snapdata: firebase.firestore.DocumentData = {
     name: 'scholarship',
     amount: new ScholarshipAmount(AmountType.Fixed, {
       min: 2500,
       max: 2500,
     }),
     description: 'description',
-    deadline: firestore.Timestamp.fromDate(new Date('2019-02-20')),
+    deadline: firebase.firestore.Timestamp.fromDate(new Date('2019-02-20')),
     website: 'mit.com',
     school: 'MIT',
     year: 'college freshman',
@@ -87,7 +87,7 @@ test('converter.fromFirestore', () => {
   };
 
   const got = converter.fromFirestore(
-    snapshot as firestore.QueryDocumentSnapshot,
+    snapshot as firebase.firestore.QueryDocumentSnapshot,
     {}
   );
 

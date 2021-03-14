@@ -1,4 +1,4 @@
-import { firestore } from 'firebase';
+import firebase from 'firebase/app';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import FirestoreCollection from './base/FirestoreCollection';
 import FirestoreModel from './base/FirestoreModel';
@@ -17,7 +17,7 @@ interface ScholarshipData {
   authorEmail?: string;
 }
 
-export const converter: firestore.FirestoreDataConverter<ScholarshipData> = {
+export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipData> = {
   toFirestore: (data: ScholarshipData) => ({
     ...data,
     amount: {
@@ -25,11 +25,11 @@ export const converter: firestore.FirestoreDataConverter<ScholarshipData> = {
       min: data.amount.min,
       max: data.amount.max,
     },
-    deadline: firestore.Timestamp.fromDate(data.deadline),
+    deadline: firebase.firestore.Timestamp.fromDate(data.deadline),
   }),
   fromFirestore: (snapshot, options) => {
     const data = snapshot.data(options);
-    const deadline = (data.deadline as firestore.Timestamp).toDate();
+    const deadline = (data.deadline as firebase.firestore.Timestamp).toDate();
     const amount = new ScholarshipAmount(data.amount.type, data.amount);
     return { ...data, amount, deadline } as ScholarshipData;
   },
@@ -51,7 +51,7 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
     sortField?: string;
     authorId?: string;
   }): Promise<FirestoreModel<ScholarshipData>[]> {
-    let query: firestore.Query<ScholarshipData> = this.collection;
+    let query: firebase.firestore.Query<ScholarshipData> = this.collection;
     // TODO(issues/93, issues/94): Support filters and pagination
 
     // Sort by requested field + direction
