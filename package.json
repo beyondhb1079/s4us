@@ -43,7 +43,8 @@
     "build": "react-scripts build",
     "test": "firebase emulators:exec --only firestore 'react-scripts test --verbose'",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "env": {
@@ -149,12 +150,6 @@
     "lint-staged": "^10.4.2",
     "mutation-observer": "^1.0.3",
     "prettier": "^2.1.2"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "yarn lint"
-    }
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
