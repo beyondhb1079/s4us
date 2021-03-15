@@ -133,7 +133,6 @@ export default function UserHome() {
               <Button
                 className={classes.loadMoreButton}
                 color="primary"
-                // why is eslint so slowww
                 // eslint-disable-next-line no-alert
                 onclick={() => alert('clicked')}>
                 Load More
