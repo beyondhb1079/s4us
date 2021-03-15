@@ -21,8 +21,8 @@ function renderAtRoute(pathname, state = {}) {
 
 const app = initializeTestApp({ projectId: 'scholarship-details-test' });
 
-beforeAll(async () => clearFirestoreData(app.options));
-afterAll(async () => app.delete());
+beforeAll(() => clearFirestoreData(app.options));
+afterAll(() => app.delete());
 
 test('renders loading initially', () => {
   renderAtRoute('/scholarships/abc');
@@ -30,11 +30,11 @@ test('renders loading initially', () => {
   expect(screen.getByText(/loading/i)).toBeInTheDocument();
 });
 
-test('renders scholarship not found', async () => {
+test('renders scholarship not found', () => {
   renderAtRoute('/scholarships/abc');
 
   expect(screen.getByText(/loading/i)).toBeInTheDocument();
-  await screen.findByText(/not found/i);
+  return expect(screen.findByText(/not found/i)).resolves.toBeInTheDocument();
 });
 
 test('renders loading initially with empty scholarship state', () => {
