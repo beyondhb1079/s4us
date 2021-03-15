@@ -20,13 +20,9 @@ function renderAtRoute(route) {
 }
 
 const app = initializeTestApp({ projectId: 'scholarships-test' });
-app.firestore().settings({
-  host: 'localhost:8080',
-  ssl: false,
-});
 
-beforeAll(async () => clearFirestoreData(app.options));
-afterAll(async () => app.delete());
+beforeAll(() => clearFirestoreData(app.options));
+afterAll(() => app.delete());
 
 test('renders a list of scholarships', async () => {
   const data = {

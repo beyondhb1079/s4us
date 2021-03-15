@@ -40,11 +40,12 @@ const [
   unknown,
 ] = scholarships;
 
-beforeAll(async () => {
-  clearFirestoreData(app.options as { projectId: string });
-  await Promise.all(scholarships.map((s) => s.save()));
-});
-afterAll(async () => app.delete());
+beforeAll(() =>
+  clearFirestoreData(app.options as { projectId: string }).then(() =>
+    Promise.all(scholarships.map((s) => s.save()))
+  )
+);
+afterAll(() => app.delete());
 
 test('converter.toFirestore', () => {
   const data = {
