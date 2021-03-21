@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     padding: theme.spacing(3),
+    [theme.breakpoints.only('xs')]: {
+      padding: theme.spacing(2),
+    },
   },
   subtitle: {
     fontWeight: '500',

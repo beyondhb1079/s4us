@@ -1,6 +1,5 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import PropTypes from 'prop-types';
@@ -17,24 +16,22 @@ const useStyles = makeStyles((theme) => ({
 
 function FilterDropdown(props) {
   const { label, items, value, removeNone, onChange } = props;
+  console.log(label);
   const classes = useStyles();
 
   return (
     <FormControl variant="outlined" className={classes.formControl}>
       <Select
+        native
         value={value}
         onChange={(e) => onChange(e.target.value)}
         displayEmpty
         className={classes.selectStyle}>
-        {!removeNone && (
-          <MenuItem value="">
-            <em>{label}</em>
-          </MenuItem>
-        )}
+        {!removeNone && <option aria-label="None" value="" />}
         {Object.keys(items).map((key) => (
-          <MenuItem key={key} value={key}>
+          <option key={key} value={10}>
             {items[key]}
-          </MenuItem>
+          </option>
         ))}
       </Select>
     </FormControl>
