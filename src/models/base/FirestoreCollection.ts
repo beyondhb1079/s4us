@@ -21,13 +21,21 @@ export default abstract class FirestoreCollection<T> {
   /** Returns a wrapped query promise that converts the data. */
   protected static list<E>(
     query: firestore.Query<E>
-  ): Promise<FirestoreModel<E>[]> {
+  ): Promise<{
+    lastDoc: firestore.QueryDocumentSnapshot<E>;
+    results: FirestoreModel<E>[];
+  }> {
     return query
+      .limit(5)
       .get()
-      .then((querySnapshot: firestore.QuerySnapshot<E>) =>
-        querySnapshot.docs.map(
+      .then((querySnapshot: firestore.QuerySnapshot<E>) => {
+        const results = querySnapshot.docs.map(
           (doc) => new FirestoreModel<E>(doc.ref, doc.data())
-        )
-      );
+        );
+        return {
+          lastDoc: querySnapshot.docs[querySnapshot.docs.length - 1],
+          results,
+        };
+      });
   }
 }

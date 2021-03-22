@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import queryString from 'query-string';
 import {
@@ -48,6 +48,7 @@ function ScholarshipsPage() {
   const [scholarships, setScholarships] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
+  const [nextDocument, setNextDocument] = useState(null);
 
   const history = useHistory();
   const location = useLocation();
@@ -93,8 +94,31 @@ function ScholarshipsPage() {
     pruneQueryParam(qParams.MAX_AMOUNT);
   }
 
-  function displayScholarships() {}
-  let nextScholarships = null;
+  const displayScholarships = useCallback(
+    (scholarshipsList) => {
+      let mounted = true;
+      scholarshipsList
+        .then(({ results, next }) => {
+          setNextDocument(next);
+          return (
+            mounted &&
+            setScholarships(
+              results.filter((s) =>
+                s.data.amount.intersectsRange(minAmount, maxAmount)
+              )
+            )
+          );
+        })
+        .then(() => mounted && setError(null))
+        .catch((e) => mounted && setError(e))
+        .finally(() => mounted && setLoading(false));
+
+      return () => {
+        mounted = false;
+      };
+    },
+    [minAmount, maxAmount]
+  );
 
   useEffect(() => {
     if (maxAmount && maxAmount < minAmount) {
@@ -102,27 +126,8 @@ function ScholarshipsPage() {
       return () => {};
     }
     // TODO: Create cancellable promises
-    // displayScholarships();
-    let mounted = true;
-    Scholarships.list({ sortField, sortDir }, null)
-      .then(({ results, next }) => {
-        nextScholarships = next;
-        return (
-          mounted &&
-          setScholarships(
-            results.filter((s) =>
-              s.data.amount.intersectsRange(minAmount, maxAmount)
-            )
-          )
-        );
-      })
-      .then(() => mounted && setError(null))
-      .catch((e) => mounted && setError(e))
-      .finally(() => mounted && setLoading(false));
-    return () => {
-      mounted = false;
-    };
-  }, [sortDir, sortField, minAmount, maxAmount]);
+    return displayScholarships(Scholarships.list({ sortField, sortDir }));
+  }, [sortDir, sortField, minAmount, maxAmount, displayScholarships]);
 
   return (
     <Container>
@@ -137,7 +142,7 @@ function ScholarshipsPage() {
             <Button
               className={classes.loadMoreButton}
               color="primary"
-              onClick={() => console.log(nextScholarships)}>
+              onClick={() => displayScholarships(nextDocument)}>
               Load More
             </Button>
           </>

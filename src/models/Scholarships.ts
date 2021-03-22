@@ -52,8 +52,11 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
       sortField?: string;
       authorId?: string;
     },
-    lastDoc: any
-  ): any {
+    lastDocument: firestore.QueryDocumentSnapshot<ScholarshipData>
+  ): Promise<{
+    next: () => any;
+    results: FirestoreModel<ScholarshipData>[];
+  }> {
     let query: firestore.Query<ScholarshipData> = this.collection;
     // TODO(issues/93, issues/94): Support filters and pagination
 
@@ -69,21 +72,10 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
       query = query.where('authorId', '==', opts.authorId);
     }
 
-    query = query.limit(5).startAfter(lastDoc || 0);
+    query = query.startAfter(lastDocument || 0);
 
-    // const snapShot = await query.get();
-    // const last = snapShot.docs[snapShot.docs.length - 1];
-    // setLastDoc(last);
-    return FirestoreCollection.list(query).then((results) => {
-      let lastDocument: any;
-      query.get().then((snapshot) => {
-        lastDocument = snapshot.docs[snapshot.docs.length - 1];
-      });
-      const next = () => {
-        return this.list(opts, lastDocument);
-      };
-
-      return { results, next };
+    return FirestoreCollection.list(query).then(({ results, lastDoc }) => {
+      return { results, next: () => this.list(opts, lastDoc) };
     });
   }
 }
