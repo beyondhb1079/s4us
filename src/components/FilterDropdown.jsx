@@ -19,6 +19,7 @@ function FilterDropdown(props) {
   console.log(label);
   const classes = useStyles();
 
+  // TODO: Should we use native select for mobile?
   return (
     <FormControl variant="outlined" className={classes.formControl}>
       <Select

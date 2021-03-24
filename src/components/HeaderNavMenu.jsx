@@ -7,6 +7,7 @@ import {
   Grid,
   Zoom,
   Avatar,
+  useMediaQuery,
 } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import ProfileMenu from './ProfileDropdown';
@@ -48,8 +49,9 @@ function HeaderNavMenu() {
   const showProfileMenu = (event) => setAnchorEl(event.currentTarget);
   const closeProfileMenu = () => setAnchorEl(null);
 
+  const smallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   return (
-    <Grid container spacing={3} className={classes.menu}>
+    <Grid container spacing={smallScreen ? 2 : 3} className={classes.menu}>
       {Object.entries(links).map(([title, link]) => (
         <Grid item key={title}>
           <MuiLink component={Link} to={link} className={classes.menuItem}>

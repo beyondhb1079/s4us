@@ -6,6 +6,7 @@ import {
   Link as MuiLink,
   Grid,
   Snackbar,
+  useMediaQuery,
 } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 
@@ -40,10 +41,11 @@ function Header() {
   }
 
   const classes = useStyles();
+  const smallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   return (
     <Container>
       {alert}
-      <Grid container className={classes.header} spacing={3}>
+      <Grid container className={classes.header} spacing={smallScreen ? 2 : 3}>
         <Grid item>
           <MuiLink component={Link} to="/" variant="h4" underline="none">
             {BRAND_NAME.toUpperCase()}
