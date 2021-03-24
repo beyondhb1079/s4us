@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import InboxIcon from '@material-ui/icons/Inbox';
+import { AddCircle as AddIcon, Inbox as InboxIcon } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 import {
@@ -7,34 +7,49 @@ import {
   Button,
   Container,
   Grid,
+  Link as MuiLink,
   makeStyles,
+  Paper,
   Typography,
 } from '@material-ui/core';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingLeft: theme.spacing(6),
-  },
-  bannerRoot: {
-    backgroundColor: 'white',
-    marginTop: theme.spacing(4),
-    minHeight: '225px',
-    paddingLeft: theme.spacing(3),
-    paddingTop: theme.spacing(4),
+  browseGrid: {
+    padding: theme.spacing(3),
+    [theme.breakpoints.down('xs')]: {
+      padding: theme.spacing(2),
+    },
   },
   browseButton: {
-    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(2),
+    [theme.breakpoints.down('xs')]: {
+      marginBottom: theme.spacing(1),
+      marginTop: theme.spacing(1),
+    },
   },
-  addButton: {
-    textAlign: 'right',
+  scholarshipsAddedBar: {
+    justifyContent: 'space-between',
+    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(2),
+    [theme.breakpoints.down('xs')]: {
+      marginBottom: theme.spacing(1),
+      marginTop: theme.spacing(1),
+    },
   },
-  scholarshipsAdded: {
-    marginTop: theme.spacing(6),
+  noneAddedGrid: {
+    alignItems: 'center',
+    padding: theme.spacing(3),
+    [theme.breakpoints.down('xs')]: {
+      justifyContent: 'center',
+      padding: theme.spacing(2),
+      textAlign: 'center',
+    },
   },
   inboxIcon: {
-    marginTop: theme.spacing(6),
+    fontSize: theme.spacing(25),
   },
   progress: {
     display: 'block',
@@ -64,12 +79,16 @@ export default function UserHome() {
   }, [user.uid]);
 
   return (
-    <Container className={classes.root}>
-      <Typography variant="h4" gutterBottom className={classes.rootText}>
+    <Container>
+      <Typography variant="h4" gutterBottom>
         Welcome {user.displayName}
       </Typography>
-      <Grid container className={classes.bannerRoot}>
-        <Grid item sm={8} xs={12}>
+      <Grid
+        container
+        component={Paper}
+        variant="outlined"
+        className={classes.browseGrid}>
+        <Grid item sm={6} xs={12}>
           <Typography variant="h5" gutterBottom>
             Looking for scholarships?
           </Typography>
@@ -82,20 +101,21 @@ export default function UserHome() {
             Browse Scholarships
           </Button>
         </Grid>
-        <Grid item sm={4} xs={12}>
-          {/* Image here */}
+        <Grid item sm={6} xs={12}>
+          {/* TODO: Image here with certain height */}
         </Grid>
       </Grid>
-      <Grid container className={classes.scholarshipsAdded} spacing={2}>
-        <Grid item sm={9}>
-          <Typography variant="h5" component="h2" gutterBottom>
+      <Grid container spacing={2} className={classes.scholarshipsAddedBar}>
+        <Grid item>
+          <Typography variant="h5" component="h2">
             Scholarships You Have Added
           </Typography>
         </Grid>
-        <Grid item sm={3} className={classes.addButton}>
+        <Grid item>
           <Button
             variant="contained"
             color="primary"
+            startIcon={<AddIcon />}
             component={Link}
             to="/scholarships/new">
             Add Scholarship
@@ -103,44 +123,37 @@ export default function UserHome() {
         </Grid>
       </Grid>
       {error?.toString() ||
-        (loading && <CircularProgress className={classes.progress} />) || (
-          <>
-            {scholarships.length === 0 && (
-              <Grid
-                container
-                justify="flex-start"
-                alignItems="center"
-                className={classes.bannerRoot}>
-                <Grid item>
-                  <InboxIcon style={{ fontSize: 200 }} />
-                </Grid>
-                <Grid item>
-                  <Typography variant="h5" gutterButtom>
-                    No Scholarships Added Yet
-                  </Typography>
-                  <Typography
-                    variant="contained"
-                    color="primary"
-                    component={Link}
-                    to="/scholarships/new">
-                    Add Scholarship
-                  </Typography>
-                </Grid>
-              </Grid>
-            )}
-            <ScholarshipList scholarships={scholarships} />
-            {scholarships.length !== 0 && (
-              <Button
-                className={classes.loadMoreButton}
-                color="primary"
-                onclick={() => {
-                  alert('clicked');
-                }}>
-                Load More
-              </Button>
-            )}
-          </>
-        )}
+      (loading && <CircularProgress className={classes.progress} />) ||
+      scholarships.length === 0 ? (
+        <Grid
+          container
+          component={Paper}
+          variant="outlined"
+          className={classes.noneAddedGrid}>
+          <Grid item>
+            <InboxIcon className={classes.inboxIcon} />
+          </Grid>
+          <Grid item>
+            <Typography variant="h5" gutterButtom>
+              No Scholarships Added Yet
+            </Typography>
+            <MuiLink component={Link} to="/scholarships/new">
+              Add Scholarship
+            </MuiLink>
+          </Grid>
+        </Grid>
+      ) : (
+        <>
+          <ScholarshipList scholarships={scholarships} />
+          <Button
+            className={classes.loadMoreButton}
+            color="primary"
+            // eslint-disable-next-line no-alert
+            onclick={() => alert('clicked')}>
+            Load More
+          </Button>
+        </>
+      )}
     </Container>
   );
 }
