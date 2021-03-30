@@ -158,6 +158,8 @@
     "react-scripts/**/elliptic": "6.5.4",
     "react-scripts/**/immer": "8.0.1",
     "react-scripts/**/node-forge": "0.10.0",
+    "react-scripts/**/ssri": "8.0.1",
+    "react-scripts/**/y18n": "4.0.1",
     "firebase-tools/**/netmask": "2.0.1"
   }
 }
