@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.only('xs')]: {
       marginBottom: theme.spacing(1),
       marginTop: theme.spacing(1),
+      justifyContent: 'space-around',
     },
   },
   noneAddedGrid: {

@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import PropTypes from 'prop-types';
+import { MenuItem } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -16,23 +17,24 @@ const useStyles = makeStyles((theme) => ({
 
 function FilterDropdown(props) {
   const { label, items, value, removeNone, onChange } = props;
-  console.log(label);
   const classes = useStyles();
 
-  // TODO: Should we use native select for mobile?
   return (
     <FormControl variant="outlined" className={classes.formControl}>
       <Select
-        native
         value={value}
         onChange={(e) => onChange(e.target.value)}
         displayEmpty
         className={classes.selectStyle}>
-        {!removeNone && <option aria-label="None" value="" />}
+        {!removeNone && (
+          <MenuItem aria-label="None" value="">
+            <em>{label}</em>
+          </MenuItem>
+        )}
         {Object.keys(items).map((key) => (
-          <option key={key} value={10}>
+          <MenuItem key={key} value={10}>
             {items[key]}
-          </option>
+          </MenuItem>
         ))}
       </Select>
     </FormControl>

@@ -53,7 +53,6 @@ function HeaderNavMenu() {
   const closeProfileMenu = () => setAnchorEl(null);
 
   const smScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  const xsScreen = useMediaQuery((theme) => theme.breakpoints.only('xs'));
   return (
     <Grid container spacing={smScreen ? 2 : 3} className={classes.menu}>
       {Object.entries(links).map(([title, link]) => (
@@ -63,15 +62,21 @@ function HeaderNavMenu() {
           </MuiLink>
         </Grid>
       ))}
-      <Grid item xs={xsScreen ? 12 : 'auto'} className={classes.authItem}>
+      <Grid item className={classes.authItem}>
         {!loading && (
           <Zoom in>
             {isSignedIn ? (
-              <Avatar
-                src={currentUser.photoURL}
-                onClick={showProfileMenu}
-                className={classes.avatar}
-              />
+              <>
+                <Avatar
+                  src={currentUser.photoURL}
+                  onClick={showProfileMenu}
+                  className={classes.avatar}
+                />
+                <ProfileMenu
+                  anchorEl={anchorEl}
+                  handleClose={closeProfileMenu}
+                />
+              </>
             ) : (
               <Button
                 variant="contained"
@@ -83,9 +88,6 @@ function HeaderNavMenu() {
               </Button>
             )}
           </Zoom>
-        )}
-        {isSignedIn && (
-          <ProfileMenu anchorEl={anchorEl} handleClose={closeProfileMenu} />
         )}
       </Grid>
     </Grid>

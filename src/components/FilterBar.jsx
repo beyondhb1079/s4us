@@ -10,8 +10,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     justifyContent: 'space-between',
   },
-  leftItems: {},
-  rightItems: {
+  rightSide: {
     alignItems: 'center',
     display: 'flex',
   },
@@ -72,7 +71,7 @@ export default function FilterBar(props) {
 
   return (
     <Grid container spacing={2} className={classes.root}>
-      <Grid item className={classes.leftItems}>
+      <Grid item>
         <FilterDropDown label="Major" items={majors} />
         <FilterDropDown label="Grade" items={grades} />
         <AmountFilter
@@ -82,7 +81,7 @@ export default function FilterBar(props) {
           onMaxChange={(e) => setQueryParam(qParams.MAX_AMOUNT, e.target.value)}
         />
       </Grid>
-      <Grid item className={classes.rightItems}>
+      <Grid item className={classes.rightSide}>
         <Typography className={classes.sortByText}>Sort by</Typography>
         <FilterDropDown
           label="Sorting"
