@@ -15,10 +15,11 @@ import HeaderNavMenu from './HeaderNavMenu';
 
 const useStyles = makeStyles((theme) => ({
   header: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    justifyContent: 'space-between',
     alignItems: 'center',
+    flexGrow: 1,
+    justifyContent: 'space-between',
+    paddingBottom: theme.spacing(3),
+    paddingTop: theme.spacing(3),
     [theme.breakpoints.down('sm')]: {
       justifyContent: 'space-around',
     },

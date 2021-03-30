@@ -18,14 +18,14 @@ import ScholarshipList from '../components/ScholarshipList';
 const useStyles = makeStyles((theme) => ({
   browseGrid: {
     padding: theme.spacing(3),
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.only('xs')]: {
       padding: theme.spacing(2),
     },
   },
   browseButton: {
     marginBottom: theme.spacing(2),
     marginTop: theme.spacing(2),
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.only('xs')]: {
       marginBottom: theme.spacing(1),
       marginTop: theme.spacing(1),
     },
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     marginBottom: theme.spacing(2),
     marginTop: theme.spacing(2),
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.only('xs')]: {
       marginBottom: theme.spacing(1),
       marginTop: theme.spacing(1),
     },
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   noneAddedGrid: {
     alignItems: 'center',
     padding: theme.spacing(3),
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.only('xs')]: {
       justifyContent: 'center',
       padding: theme.spacing(2),
       textAlign: 'center',
