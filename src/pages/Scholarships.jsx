@@ -48,7 +48,6 @@ function ScholarshipsPage() {
   const [scholarships, setScholarships] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
-  const [nextDocument, setNextDocument] = useState(null);
 
   const history = useHistory();
   const location = useLocation();
@@ -94,20 +93,23 @@ function ScholarshipsPage() {
     pruneQueryParam(qParams.MAX_AMOUNT);
   }
 
-  const displayScholarships = useCallback(
+  const [loadMoreFn, setLoadMoreFn] = useState(() =>
+    Scholarships.list({ sortField, sortDir })
+  );
+
+  const loadMoreScholarships = useCallback(
     (scholarshipsList) => {
       let mounted = true;
       scholarshipsList
         .then(({ results, next }) => {
-          setNextDocument(next);
-          return (
-            mounted &&
+          if (mounted) {
             setScholarships(
               results.filter((s) =>
                 s.data.amount.intersectsRange(minAmount, maxAmount)
               )
-            )
-          );
+            );
+          }
+          setLoadMoreFn(next);
         })
         .then(() => mounted && setError(null))
         .catch((e) => mounted && setError(e))
@@ -126,8 +128,8 @@ function ScholarshipsPage() {
       return () => {};
     }
     // TODO: Create cancellable promises
-    return displayScholarships(Scholarships.list({ sortField, sortDir }));
-  }, [sortDir, sortField, minAmount, maxAmount, displayScholarships]);
+    return loadMoreScholarships(Scholarships.list({ sortField, sortDir }));
+  }, [sortDir, sortField, minAmount, maxAmount, loadMoreScholarships]);
 
   return (
     <Container>
@@ -142,7 +144,7 @@ function ScholarshipsPage() {
             <Button
               className={classes.loadMoreButton}
               color="primary"
-              onClick={() => displayScholarships(nextDocument)}>
+              onClick={() => loadMoreScholarships(loadMoreFn)}>
               Load More
             </Button>
           </>

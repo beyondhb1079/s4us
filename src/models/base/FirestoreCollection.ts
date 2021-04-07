@@ -1,6 +1,7 @@
 import { firestore } from 'firebase';
 import FirestoreModel from './FirestoreModel';
 import Model from './Model';
+import ScholarshipCollectionList from '../../interfaces/ScholarshipCollectionList';
 
 export default abstract class FirestoreCollection<T> {
   abstract readonly name: string;
@@ -20,21 +21,19 @@ export default abstract class FirestoreCollection<T> {
 
   /** Returns a wrapped query promise that converts the data. */
   protected static list<E>(
-    query: firestore.Query<E>
-  ): Promise<{
-    lastDoc: firestore.QueryDocumentSnapshot<E>;
-    results: FirestoreModel<E>[];
-  }> {
+    query: firestore.Query<E>,
+    lastDocument: firestore.QueryDocumentSnapshot<E>
+  ): Promise<ScholarshipCollectionList<E>> {
     return query
       .limit(5)
+      .startAfter(lastDocument || 0)
       .get()
-      .then((querySnapshot: firestore.QuerySnapshot<E>) => {
-        const results = querySnapshot.docs.map(
-          (doc) => new FirestoreModel<E>(doc.ref, doc.data())
-        );
+      .then((qSnap: firestore.QuerySnapshot<E>) => {
         return {
-          lastDoc: querySnapshot.docs[querySnapshot.docs.length - 1],
-          results,
+          next: () => this.list(query, qSnap.docs[qSnap.docs.length - 1]),
+          results: qSnap.docs.map(
+            (doc) => new FirestoreModel<E>(doc.ref, doc.data())
+          ),
         };
       });
   }
