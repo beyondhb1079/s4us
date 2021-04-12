@@ -52,7 +52,7 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
       sortField?: string;
       authorId?: string;
     },
-    lastDocument: firestore.QueryDocumentSnapshot<ScholarshipData>
+    lastDocument?: firestore.QueryDocumentSnapshot<ScholarshipData>
   ): Promise<ScholarshipCollectionList<ScholarshipData>> {
     let query: firestore.Query<ScholarshipData> = this.collection;
     // TODO(issues/93, issues/94): Support filters and pagination

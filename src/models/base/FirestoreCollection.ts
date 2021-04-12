@@ -22,19 +22,19 @@ export default abstract class FirestoreCollection<T> {
   /** Returns a wrapped query promise that converts the data. */
   protected static list<E>(
     query: firestore.Query<E>,
-    lastDocument: firestore.QueryDocumentSnapshot<E>
+    lastDocument?: firestore.QueryDocumentSnapshot<E>
   ): Promise<ScholarshipCollectionList<E>> {
-    return query
-      .limit(5)
-      .startAfter(lastDocument || 0)
-      .get()
-      .then((qSnap: firestore.QuerySnapshot<E>) => {
-        return {
-          next: () => this.list(query, qSnap.docs[qSnap.docs.length - 1]),
-          results: qSnap.docs.map(
-            (doc) => new FirestoreModel<E>(doc.ref, doc.data())
-          ),
-        };
-      });
+    let firestoreQuery: firestore.Query<E> = query.limit(5);
+    if (lastDocument !== undefined)
+      firestoreQuery = firestoreQuery.startAfter(lastDocument);
+
+    return firestoreQuery.get().then((qSnap: firestore.QuerySnapshot<E>) => {
+      return {
+        next: () => this.list(query, qSnap.docs[qSnap.docs.length - 1]),
+        results: qSnap.docs.map(
+          (doc) => new FirestoreModel<E>(doc.ref, doc.data())
+        ),
+      };
+    });
   }
 }

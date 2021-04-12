@@ -94,7 +94,11 @@ export default function FilterBar(props) {
 
 FilterBar.propTypes = {
   setQueryParam: PropTypes.func.isRequired,
-  queryParams: PropTypes.objectOf(PropTypes.number),
+  queryParams: PropTypes.shape({
+    minAmount: PropTypes.number,
+    maxAmount: PropTypes.number,
+    sortBy: PropTypes.string,
+  }),
 };
 FilterBar.defaultProps = {
   queryParams: {},
