@@ -34,6 +34,7 @@ export default abstract class FirestoreCollection<T> {
         results: qSnap.docs.map(
           (doc) => new FirestoreModel<E>(doc.ref, doc.data())
         ),
+        empty: qSnap.empty,
       };
     });
   }

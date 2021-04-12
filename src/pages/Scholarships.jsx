@@ -48,6 +48,7 @@ function ScholarshipsPage() {
   const [scholarships, setScholarships] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
+  const [disableMoreBtn, setDisableMoreBtn] = useState(false);
 
   const history = useHistory();
   const location = useLocation();
@@ -55,6 +56,7 @@ function ScholarshipsPage() {
   const params = queryString.parse(location.search, { parseNumbers: true });
 
   const setQueryParam = (index, val) => {
+    setScholarships([]);
     history.push({
       search: queryString.stringify({
         ...params,
@@ -101,15 +103,17 @@ function ScholarshipsPage() {
     (scholarshipsList) => {
       let mounted = true;
       scholarshipsList
-        .then(({ results, next }) => {
+        .then(({ results, next, empty }) => {
           if (mounted) {
-            setScholarships(
-              results.filter((s) =>
+            setScholarships((prev) => [
+              ...prev,
+              ...results.filter((s) =>
                 s.data.amount.intersectsRange(minAmount, maxAmount)
-              )
-            );
+              ),
+            ]);
           }
           setLoadMoreFn(next);
+          setDisableMoreBtn(empty);
         })
         .then(() => mounted && setError(null))
         .catch((e) => mounted && setError(e))
@@ -144,6 +148,7 @@ function ScholarshipsPage() {
             <Button
               className={classes.loadMoreButton}
               color="primary"
+              disabled={disableMoreBtn}
               onClick={() => loadMoreScholarships(loadMoreFn)}>
               Load More
             </Button>
