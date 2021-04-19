@@ -69,7 +69,7 @@ export default function UserHome() {
   useEffect(() => {
     let mounted = true;
     Scholarships.list({ authorId: user.uid })
-      .then((results) => mounted && setScholarships(results))
+      .then(({ results, next, empty }) => mounted && setScholarships(results))
       .then(() => mounted && setError(null))
       .catch((e) => mounted && setError(e))
       .finally(() => mounted && setLoading(false));
@@ -149,7 +149,7 @@ export default function UserHome() {
             className={classes.loadMoreButton}
             color="primary"
             // eslint-disable-next-line no-alert
-            onclick={() => alert('clicked')}>
+            onClick={() => alert('clicked')}>
             Load More
           </Button>
         </>

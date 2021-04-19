@@ -48,7 +48,7 @@ function ScholarshipsPage() {
   const [scholarships, setScholarships] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
-  const [disableMoreBtn, setDisableMoreBtn] = useState(false);
+  const [canLoadMore, setCanLoadMore] = useState(false);
 
   const history = useHistory();
   const location = useLocation();
@@ -66,6 +66,7 @@ function ScholarshipsPage() {
   };
 
   const pruneQueryParam = (index) => {
+    setScholarships([]);
     delete params[index];
     history.replace({ search: queryString.stringify(params) });
   };
@@ -103,17 +104,17 @@ function ScholarshipsPage() {
     (scholarshipsList) => {
       let mounted = true;
       scholarshipsList
-        .then(({ results, next, empty }) => {
-          if (mounted) {
-            setScholarships((prev) => [
-              ...prev,
-              ...results.filter((s) =>
-                s.data.amount.intersectsRange(minAmount, maxAmount)
-              ),
-            ]);
-          }
+        .then(({ results, next, hasNext }) => {
+          if (!mounted) return;
+          setScholarships((prev) => [
+            ...prev,
+            ...results.filter((s) =>
+              s.data.amount.intersectsRange(minAmount, maxAmount)
+            ),
+          ]);
+
           setLoadMoreFn(next);
-          setDisableMoreBtn(empty);
+          setCanLoadMore(hasNext);
         })
         .then(() => mounted && setError(null))
         .catch((e) => mounted && setError(e))
@@ -148,7 +149,7 @@ function ScholarshipsPage() {
             <Button
               className={classes.loadMoreButton}
               color="primary"
-              disabled={disableMoreBtn}
+              disabled={canLoadMore}
               onClick={() => loadMoreScholarships(loadMoreFn)}>
               Load More
             </Button>

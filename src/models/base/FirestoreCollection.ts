@@ -1,7 +1,7 @@
 import { firestore } from 'firebase';
 import FirestoreModel from './FirestoreModel';
 import Model from './Model';
-import ScholarshipCollectionList from '../../interfaces/ScholarshipCollectionList';
+import FirestoreModelList from './FiretoreModelList';
 
 export default abstract class FirestoreCollection<T> {
   abstract readonly name: string;
@@ -21,21 +21,18 @@ export default abstract class FirestoreCollection<T> {
 
   /** Returns a wrapped query promise that converts the data. */
   protected static list<E>(
-    query: firestore.Query<E>,
-    lastDocument?: firestore.QueryDocumentSnapshot<E>
-  ): Promise<ScholarshipCollectionList<E>> {
-    let firestoreQuery: firestore.Query<E> = query.limit(5);
-    if (lastDocument !== undefined)
-      firestoreQuery = firestoreQuery.startAfter(lastDocument);
+    baseQuery: firestore.Query<E>,
+    lastDoc?: firestore.QueryDocumentSnapshot<E>
+  ): Promise<FirestoreModelList<E>> {
+    let query: firestore.Query<E> = baseQuery.limit(10);
+    if (lastDoc) query = query.startAfter(lastDoc);
 
-    return firestoreQuery.get().then((qSnap: firestore.QuerySnapshot<E>) => {
-      return {
-        next: () => this.list(query, qSnap.docs[qSnap.docs.length - 1]),
-        results: qSnap.docs.map(
-          (doc) => new FirestoreModel<E>(doc.ref, doc.data())
-        ),
-        empty: qSnap.empty,
-      };
-    });
+    return query.get().then((qSnap: firestore.QuerySnapshot<E>) => ({
+      next: () => this.list(baseQuery, qSnap.docs[qSnap.docs.length - 1]),
+      results: qSnap.docs.map(
+        (doc) => new FirestoreModel<E>(doc.ref, doc.data())
+      ),
+      hasNext: qSnap.empty || qSnap.size < 10,
+    }));
   }
 }
