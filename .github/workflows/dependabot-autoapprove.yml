@@ -14,7 +14,7 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@v2
       - name: Automerge
-        uses: actions/github-script@0.2.0
+        uses: actions/github-script@v3
         with:
           script: |
             // Skip if there are any approvals
@@ -44,4 +44,4 @@ jobs:
                     'this auto merged: \n' +
                     '@dependabot squash and merge'
             })
-          github-token: ${{github.token}}
+          github-token: ${{secrets.GITHUB_TOKEN}}
