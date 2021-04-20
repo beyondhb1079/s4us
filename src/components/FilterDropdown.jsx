@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import PropTypes from 'prop-types';
@@ -27,12 +28,12 @@ function FilterDropdown(props) {
         displayEmpty
         className={classes.selectStyle}>
         {!removeNone && (
-          <MenuItem aria-label="None" value="">
+          <MenuItem value="">
             <em>{label}</em>
           </MenuItem>
         )}
         {Object.keys(items).map((key) => (
-          <MenuItem key={key} value={10}>
+          <MenuItem key={key} value={key}>
             {items[key]}
           </MenuItem>
         ))}
