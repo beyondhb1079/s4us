@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, Popover } from '@material-ui/core';
+import {
+  Button,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  Popover,
+} from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 const useStyles = makeStyles((theme) => ({
@@ -30,17 +37,16 @@ const gradeItems = [
 export default function GradeLevelFilter() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
-  const handleClick = (event) => setAnchorEl(event.currentTarget);
+  const openPopover = (event) => setAnchorEl(event.currentTarget);
   const [selectedGrades, setSelectedGrades] = useState(new Set());
 
-  function updateGradeSelection(gradeSelected) {
+  function toggleSelection(grade) {
     const newSet = new Set(selectedGrades);
-    if (selectedGrades.has(gradeSelected)) {
-      newSet.delete(gradeSelected);
-      setSelectedGrades(newSet);
-      return;
+    if (selectedGrades.has(grade)) {
+      newSet.delete(grade);
+    } else {
+      newSet.add(grade);
     }
-    newSet.add(gradeSelected);
     setSelectedGrades(newSet);
   }
 
@@ -49,7 +55,7 @@ export default function GradeLevelFilter() {
       <Button
         variant="outlined"
         className={classes.buttonStyle}
-        onClick={handleClick}
+        onClick={openPopover}
         endIcon={<ArrowDropDownIcon color="primary" />}>
         Grade
       </Button>
@@ -59,19 +65,25 @@ export default function GradeLevelFilter() {
         onClose={() => setAnchorEl(null)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
-        {Object.keys(gradeItems).map((key) => (
-          <div className={classes.popOverWindow}>
-            <input
-              key={key}
-              type="checkbox"
-              onClick={() => updateGradeSelection(gradeItems[key])}
-              checked={selectedGrades.has(gradeItems[key])}
-              value={gradeItems[key]}
-            />
-            {gradeItems[key]}
-            <br />
-          </div>
-        ))}
+        <div className={classes.popOverWindow}>
+          <FormControl component="fieldset" className={classes.formControl}>
+            <FormGroup>
+              {Array.from(gradeItems).map((grade) => (
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      color="primary"
+                      checked={selectedGrades.has(grade)}
+                      onChange={() => toggleSelection(grade)}
+                      name="grade"
+                    />
+                  }
+                  label={grade}
+                />
+              ))}
+            </FormGroup>
+          </FormControl>
+        </div>
       </Popover>
     </>
   );
