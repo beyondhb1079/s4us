@@ -3,7 +3,7 @@ name: 'Dependabot Autoapprove - Action'
 on:
   pull_request:
     branches: [main]
-    paths: ['yarn.lock']
+    # paths: ['yarn.lock']
 
 jobs:
   automerge:
