@@ -1,76 +1,78 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import TextField from '@material-ui/core/TextField';
-import Popover from '@material-ui/core/Popover';
-import Button from '@material-ui/core/Button';
+import { Button, Popover } from '@material-ui/core';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 const useStyles = makeStyles((theme) => ({
-  popOverWindow: {
+  buttonStyle: {
     margin: theme.spacing(1),
-    minWidth: '250px',
-    maxWidth: '500px',
+    height: theme.spacing(4),
+  },
+  popOverWindow: {
+    minWidth: '200px',
+    fontSize: '15px',
+    paddingTop: theme.spacing(1),
+    paddingLeft: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
   },
 }));
 
-const gradeOptions = [
-  { title: '12th - High School' },
-  { title: 'College Freshman' },
-  { title: 'College Sophomore' },
-  { title: 'College Junior' },
-  { title: 'College Senior' },
-  { title: '5th Year' },
-  { title: 'Post Grad' },
+const gradeItems = [
+  '12th - High School',
+  'College Freshman',
+  'College Sophomore',
+  'College Junior',
+  'College Senior',
+  '5th Year',
+  'Post Grad',
 ];
 
 export default function GradeLevelFilter() {
   const classes = useStyles();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleClick = (event) => setAnchorEl(event.currentTarget);
+  const [selectedGrades, setSelectedGrades] = useState(new Set());
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
+  function updateGradeSelection(gradeSelected) {
+    const newSet = new Set(selectedGrades);
+    if (selectedGrades.has(gradeSelected)) {
+      newSet.delete(gradeSelected);
+      setSelectedGrades(newSet);
+      return;
+    }
+    newSet.add(gradeSelected);
+    setSelectedGrades(newSet);
+  }
 
   return (
-    <div>
-      <Button variant="contained" color="primary" onClick={handleClick}>
-        Open Popover
+    <>
+      <Button
+        variant="outlined"
+        className={classes.buttonStyle}
+        onClick={handleClick}
+        endIcon={<ArrowDropDownIcon color="primary" />}>
+        Grade
       </Button>
       <Popover
-        open={open}
+        open={Boolean(anchorEl)}
         anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}>
-        <Autocomplete
-          className={classes.popOverWindow}
-          multiple
-          limitTags={1}
-          options={gradeOptions}
-          getOptionLabel={(option) => option.title}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              variant="outlined"
-              label=" Grade"
-              placeholder="Others"
+        onClose={() => setAnchorEl(null)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
+        {Object.keys(gradeItems).map((key) => (
+          <div className={classes.popOverWindow}>
+            <input
+              key={key}
+              type="checkbox"
+              onClick={() => updateGradeSelection(gradeItems[key])}
+              checked={selectedGrades.has(gradeItems[key])}
+              value={gradeItems[key]}
             />
-          )}
-        />
+            {gradeItems[key]}
+            <br />
+          </div>
+        ))}
       </Popover>
-    </div>
+    </>
   );
 }
