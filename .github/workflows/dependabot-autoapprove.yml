@@ -24,12 +24,12 @@ jobs:
             github.pulls.listReviews({owner, repo, pull_number})
               .then(resp => resp.data.filter(r => r.state == 'APPROVED'))
               .then(approvals => {
-                if (approvals.length === 0) {
+                if (approvals.length !== 0) {
                   console.log(`PR already approved by @${approvals[0].user.login}`);
                   return;
                 }
 
-                // Approve with a comment for the human reviewer.
+                // Approve and leave a comment for the human reviewer.
                 github.pulls.createReview({
                   owner,
                   repo,
