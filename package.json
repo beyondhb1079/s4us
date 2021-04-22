@@ -16,8 +16,6 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "date-fns": "^2.16.1",
-    "eslint-config-airbnb": "^18.2.0",
-    "eslint-config-airbnb-typescript": "^12.0.0",
     "eslint-plugin-jest": "^24.0.2",
     "firebase": "^7.19.1",
     "formik": "^2.2.6",
@@ -42,7 +40,7 @@
     "start": "firebase emulators:exec --import=tmp/ --export-on-exit --ui 'react-scripts start'",
     "build": "react-scripts build",
     "test": "firebase emulators:exec --only firestore 'react-scripts test --verbose'",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint --cache . --ext .js,.jsx,.ts,.tsx",
     "eject": "react-scripts eject",
     "prepare": "husky install"
   },
@@ -54,10 +52,7 @@
     "extends": [
       "airbnb-typescript",
       "airbnb/hooks",
-      "plugin:@typescript-eslint/recommended",
-      "prettier",
-      "prettier/react",
-      "prettier/@typescript-eslint"
+      "prettier"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -69,10 +64,10 @@
       "project": "./tsconfig.json"
     },
     "plugins": [
-      "react",
-      "jsx-a11y",
       "import",
-      "prettier",
+      "jsx-a11y",
+      "react",
+      "react-hooks",
       "@typescript-eslint"
     ],
     "settings": {
@@ -138,10 +133,11 @@
     "@typescript-eslint/parser": "^4.4.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.13.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-airbnb-typescript": "^12.0.0",
+    "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.21.1",
     "eslint-plugin-react-hooks": "^4.1.2",
     "firebase-tools": "^9.2.1",
