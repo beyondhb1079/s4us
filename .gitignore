@@ -23,6 +23,7 @@ package-lock.json
 
 # temporary
 /tmp
+.eslintcache
 
 # misc
 .DS_Store

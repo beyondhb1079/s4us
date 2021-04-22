@@ -22,7 +22,7 @@ test('renders ScholarshipListCard', () => {
     wrapper: MemoryRouter,
   });
 
-  Object.entries(want.data).forEach(([_, v]) => {
+  Object.values(want.data).forEach((v) => {
     let value = v;
     if (v instanceof Date) {
       value = v.toLocaleDateString();
