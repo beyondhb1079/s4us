@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { AddCircle as AddIcon, Inbox as InboxIcon } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase';
@@ -66,17 +66,33 @@ export default function UserHome() {
   const [error, setError] = useState();
   const user = firebase.auth().currentUser;
 
-  useEffect(() => {
-    let mounted = true;
+  const [loadMoreFn, setLoadMoreFn] = useState(() =>
     Scholarships.list({ authorId: user.uid })
-      .then(({ results, next, empty }) => mounted && setScholarships(results))
+  );
+  const [canLoadMore, setCanLoadMore] = useState(false);
+
+  const loadMoreScholarships = useCallback((scholarshipsList) => {
+    let mounted = true;
+    scholarshipsList
+      .then(({ results, next, hasNext }) => {
+        if (!mounted) return;
+        setScholarships((prev) => [...prev, ...results]);
+
+        setLoadMoreFn(next);
+        setCanLoadMore(hasNext);
+      })
       .then(() => mounted && setError(null))
       .catch((e) => mounted && setError(e))
       .finally(() => mounted && setLoading(false));
     return () => {
       mounted = false;
     };
-  }, [user.uid]);
+  }, []);
+
+  useEffect(
+    () => loadMoreScholarships(Scholarships.list({ authorId: user.uid })),
+    [user.uid, loadMoreScholarships]
+  );
 
   return (
     <Container>
@@ -148,8 +164,9 @@ export default function UserHome() {
           <Button
             className={classes.loadMoreButton}
             color="primary"
+            disabled={canLoadMore}
             // eslint-disable-next-line no-alert
-            onClick={() => alert('clicked')}>
+            onClick={() => loadMoreScholarships(loadMoreFn)}>
             Load More
           </Button>
         </>
