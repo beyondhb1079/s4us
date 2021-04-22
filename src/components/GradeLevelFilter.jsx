@@ -11,16 +11,12 @@ import {
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 const useStyles = makeStyles((theme) => ({
-  buttonStyle: {
+  button: {
     margin: theme.spacing(1),
     height: theme.spacing(4),
   },
-  popOverWindow: {
-    minWidth: '200px',
-    fontSize: '15px',
-    paddingTop: theme.spacing(1),
-    paddingLeft: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
+  popover: {
+    padding: theme.spacing(2),
   },
 }));
 
@@ -51,40 +47,37 @@ export default function GradeLevelFilter() {
   }
 
   return (
-    <>
-      <Button
-        variant="outlined"
-        className={classes.buttonStyle}
-        onClick={openPopover}
-        endIcon={<ArrowDropDownIcon color="primary" />}>
-        Grade
-      </Button>
+    <Button
+      variant="outlined"
+      className={classes.button}
+      onClick={openPopover}
+      endIcon={<ArrowDropDownIcon color="primary" />}>
+      Grade
       <Popover
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
         onClose={() => setAnchorEl(null)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
-        <div className={classes.popOverWindow}>
-          <FormControl component="fieldset" className={classes.formControl}>
-            <FormGroup>
-              {Array.from(gradeItems).map((grade) => (
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      color="primary"
-                      checked={selectedGrades.has(grade)}
-                      onChange={() => toggleSelection(grade)}
-                      name="grade"
-                    />
-                  }
-                  label={grade}
-                />
-              ))}
-            </FormGroup>
-          </FormControl>
-        </div>
+        <FormControl component="fieldset" className={classes.popover}>
+          <FormGroup>
+            {Array.from(gradeItems).map((grade) => (
+              <FormControlLabel
+                key={grade}
+                control={
+                  <Checkbox
+                    color="primary"
+                    checked={selectedGrades.has(grade)}
+                    onChange={() => toggleSelection(grade)}
+                    name="grade"
+                  />
+                }
+                label={grade}
+              />
+            ))}
+          </FormGroup>
+        </FormControl>
       </Popover>
-    </>
+    </Button>
   );
 }
