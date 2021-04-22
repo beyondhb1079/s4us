@@ -165,9 +165,8 @@ export default function UserHome() {
             className={classes.loadMoreButton}
             color="primary"
             disabled={canLoadMore}
-            // eslint-disable-next-line no-alert
             onClick={() => loadMoreScholarships(loadMoreFn)}>
-            Load More
+            {canLoadMore ? 'No more results' : 'Load More'}
           </Button>
         </>
       )}

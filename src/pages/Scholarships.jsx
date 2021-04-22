@@ -151,7 +151,7 @@ function ScholarshipsPage() {
               color="primary"
               disabled={canLoadMore}
               onClick={() => loadMoreScholarships(loadMoreFn)}>
-              Load More
+              {canLoadMore ? 'No more results' : 'Load More'}
             </Button>
           </>
         )}
