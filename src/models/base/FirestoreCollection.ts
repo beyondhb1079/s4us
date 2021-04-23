@@ -32,7 +32,7 @@ export default abstract class FirestoreCollection<T> {
       results: qSnap.docs.map(
         (doc) => new FirestoreModel<E>(doc.ref, doc.data())
       ),
-      hasNext: qSnap.empty || qSnap.size < 10,
+      hasNext: !qSnap.empty && qSnap.size >= 10,
     }));
   }
 }

@@ -161,13 +161,17 @@ export default function UserHome() {
       ) : (
         <>
           <ScholarshipList scholarships={scholarships} />
-          <Button
-            className={classes.loadMoreButton}
-            color="primary"
-            disabled={canLoadMore}
-            onClick={() => loadMoreScholarships(loadMoreFn)}>
-            {canLoadMore ? 'No more results' : 'Load More'}
-          </Button>
+          {canLoadMore ? (
+            <Button
+              className={classes.loadMoreButton}
+              color="primary"
+              disabled={!canLoadMore}
+              onClick={() => loadMoreScholarships(loadMoreFn)}>
+              Load More
+            </Button>
+          ) : (
+            'No more results'
+          )}
         </>
       )}
     </Container>
