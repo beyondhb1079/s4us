@@ -112,7 +112,7 @@ test('scholarships.list - sort by deadline asc', async () => {
     sortDir: 'asc',
   });
 
-  expect(got.map(extractName)).toEqual(want.map(extractName));
+  expect(got.results.map(extractName)).toEqual(want.map(extractName));
 });
 
 test('scholarships.list - sort by amount.min asc', async () => {
@@ -130,7 +130,7 @@ test('scholarships.list - sort by amount.min asc', async () => {
     sortDir: 'asc',
   });
 
-  expect(got.map(extractName)).toEqual(want.map(extractName));
+  expect(got.results.map(extractName)).toEqual(want.map(extractName));
 });
 
 test('scholarships.list - sort by amount.max desc', async () => {
@@ -148,5 +148,5 @@ test('scholarships.list - sort by amount.max desc', async () => {
     sortDir: 'desc',
   });
 
-  expect(got.map(extractName)).toEqual(want.map(extractName));
+  expect(got.results.map(extractName)).toEqual(want.map(extractName));
 });
