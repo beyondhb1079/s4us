@@ -150,7 +150,6 @@ function ScholarshipsPage() {
               <Button
                 className={classes.loadMoreButton}
                 color="primary"
-                disabled={!canLoadMore}
                 onClick={() => loadMoreScholarships(loadMoreFn)}>
                 Load More
               </Button>

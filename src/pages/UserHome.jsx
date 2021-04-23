@@ -165,7 +165,6 @@ export default function UserHome() {
             <Button
               className={classes.loadMoreButton}
               color="primary"
-              disabled={!canLoadMore}
               onClick={() => loadMoreScholarships(loadMoreFn)}>
               Load More
             </Button>
