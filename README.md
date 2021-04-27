@@ -68,6 +68,10 @@ You will also see any lint errors in the console.
 
 [Chome Dev Tools](https://developers.google.com/web/tools/chrome-devtools) makes it really easy to debug/prototype HTML, CSS, and JavaScript. Additionally, the [React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en) extension lets you inspect React props, state, and hooks.
 
+### Debugging Firebase Auth and Firestore
+
+After running `yarn start` you can manage local Firebase Auth and Firestore data via the [Emulator Suite](https://firebase.google.com/docs/emulator-suite) at http://localhost:4000/.
+
 ### Running tests
 
 ```sh

@@ -1,14 +1,17 @@
-import { firestore } from 'firebase';
+import firebase from 'firebase/app';
 import FirestoreModel from './FirestoreModel';
 import Model from './Model';
 import FirestoreModelList from './FiretoreModelList';
 
 export default abstract class FirestoreCollection<T> {
   abstract readonly name: string;
-  protected abstract readonly converter: firestore.FirestoreDataConverter<T>;
+  protected abstract readonly converter: firebase.firestore.FirestoreDataConverter<T>;
 
-  get collection(): firestore.CollectionReference<T> {
-    return firestore().collection(this.name).withConverter(this.converter);
+  get collection(): firebase.firestore.CollectionReference<T> {
+    return firebase
+      .firestore()
+      .collection(this.name)
+      .withConverter(this.converter);
   }
 
   new(data?: T): Model<T> {
@@ -21,13 +24,13 @@ export default abstract class FirestoreCollection<T> {
 
   /** Returns a wrapped query promise that converts the data. */
   protected static list<E>(
-    baseQuery: firestore.Query<E>,
-    lastDoc?: firestore.QueryDocumentSnapshot<E>
+    baseQuery: firebase.firestore.Query<E>,
+    lastDoc?: firebase.firestore.QueryDocumentSnapshot<E>
   ): Promise<FirestoreModelList<E>> {
-    let query: firestore.Query<E> = baseQuery.limit(10);
+    let query: firebase.firestore.Query<E> = baseQuery.limit(10);
     if (lastDoc) query = query.startAfter(lastDoc);
 
-    return query.get().then((qSnap: firestore.QuerySnapshot<E>) => ({
+    return query.get().then((qSnap: firebase.firestore.QuerySnapshot<E>) => ({
       next: () => this.list(baseQuery, qSnap.docs[qSnap.docs.length - 1]),
       results: qSnap.docs.map(
         (doc) => new FirestoreModel<E>(doc.ref, doc.data())
