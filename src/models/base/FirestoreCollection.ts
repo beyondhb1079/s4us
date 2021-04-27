@@ -24,7 +24,7 @@ export default abstract class FirestoreCollection<T> {
 
   /** Returns a wrapped query promise that converts the data. */
   protected static list<E>(
-    baseQuery: firestore.firestore.Query<E>,
+    baseQuery: firebase.firestore.Query<E>,
     lastDoc?: firebase.firestore.QueryDocumentSnapshot<E>
   ): Promise<FirestoreModelList<E>> {
     let query: firebase.firestore.Query<E> = baseQuery.limit(10);
