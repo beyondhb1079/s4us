@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import FirestoreCollection from './base/FirestoreCollection';
-import FirestoreModel from './base/FirestoreModel';
+import FirestoreModelList from './base/FiretoreModelList';
 
 interface ScholarshipData {
   // TODO(https://github.com/beyondhb1079/s4us/issues/56):
@@ -50,7 +50,7 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
     sortDir?: SortDirection;
     sortField?: string;
     authorId?: string;
-  }): Promise<FirestoreModel<ScholarshipData>[]> {
+  }): Promise<FirestoreModelList<ScholarshipData>> {
     let query: firebase.firestore.Query<ScholarshipData> = this.collection;
     // TODO(issues/93, issues/94): Support filters and pagination
 
@@ -65,6 +65,7 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
     if (opts.authorId) {
       query = query.where('authorId', '==', opts.authorId);
     }
+
     return FirestoreCollection.list(query);
   }
 }
