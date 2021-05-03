@@ -74,7 +74,9 @@ test('renders passed in scholarship details', () => {
   expect(
     screen.getByText(data.deadline.toLocaleDateString())
   ).toBeInTheDocument();
-  expect(screen.getByRole('button').href).toBe(data.website);
+  expect(screen.getByRole('button', { name: /Apply/i }).href).toBe(
+    data.website
+  );
   expect(document.title).toContain(data.name);
 });
 
@@ -89,6 +91,13 @@ test('renders scholarship details', async () => {
     description: 'description',
     deadline: new Date('2020-12-17'),
     website: 'http://foo.com/',
+
+    states: ['California', 'Washington'],
+    eligibility: {
+      GPA: 4.0,
+      ethnicities: ['Latino', 'African American'],
+      majors: ['Computer Science', 'Software Engineering'],
+    },
   };
   const ref = Scholarships.collection.doc('abc');
   await ref.set(data);
@@ -102,6 +111,16 @@ test('renders scholarship details', async () => {
   expect(
     screen.getByText(data.deadline.toLocaleDateString())
   ).toBeInTheDocument();
-  expect(screen.getByRole('button').href).toBe(data.website);
+  expect(screen.getByRole('button', { name: /Apply/i }).href).toBe(
+    data.website
+  );
   expect(document.title).toContain(data.name);
+  expect(screen.getByText(data.states.join(', '))).toBeInTheDocument();
+  expect(screen.getByText(data.eligibility.GPA)).toBeInTheDocument();
+  expect(
+    screen.getByText(data.eligibility.ethnicities.join(', '))
+  ).toBeInTheDocument();
+  expect(
+    screen.getByText(data.eligibility.majors.join(', '))
+  ).toBeInTheDocument();
 });

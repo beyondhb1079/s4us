@@ -59,6 +59,14 @@ test('converter.toFirestore', () => {
     website: 'mit.com',
     school: 'MIT',
     year: 'college freshman',
+    authorId: 'Bob Ross',
+    authorEmail: 'bobross37@gmail.com',
+    states: ['California', 'Washington'],
+    eligibility: {
+      GPA: 4.0,
+      ethnicities: ['Latino', 'African American'],
+      majors: ['Computer Science', 'Software Engineering'],
+    },
   };
 
   const got = converter.toFirestore(data);
@@ -81,6 +89,14 @@ test('converter.fromFirestore', () => {
     website: 'mit.com',
     school: 'MIT',
     year: 'college freshman',
+    authorId: 'Bob Ross',
+    authorEmail: 'bobross37@gmail.com',
+    states: ['California', 'Washington'],
+    eligibility: {
+      GPA: 4.0,
+      ethnicities: ['Latino', 'African American'],
+      majors: ['Computer Science', 'Software Engineering'],
+    },
   };
   const snapshot = {
     data: () => snapdata,
