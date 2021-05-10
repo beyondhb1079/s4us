@@ -76,7 +76,10 @@ export default function ScholarshipDetailCard({ scholarship }) {
 
   DetailCardCell.propTypes = {
     label: PropTypes.string.isRequired,
-    text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  };
+  DetailCardCell.defaultProps = {
+    text: '',
   };
 
   return (

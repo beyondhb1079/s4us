@@ -113,7 +113,12 @@ ScholarshipListCard.propTypes = {
       description: PropTypes.string,
       deadline: PropTypes.instanceOf(Date),
       website: PropTypes.string,
-      tags: PropTypes.arrayOf({ title: PropTypes.string }),
+      tags: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.string,
+          title: PropTypes.string,
+        })
+      ),
     }).isRequired,
   }).isRequired,
 };

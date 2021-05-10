@@ -19,8 +19,9 @@ interface ScholarshipData {
   states?: String[];
   eligibility?: ScholarshipEligibility;
   organization?: string;
-  tags?: string;
+  tags?: string[];
 }
+// tags: PropTypes.arrayOf({ title: PropTypes.string })
 
 export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipData> = {
   toFirestore: (data: ScholarshipData) => ({
