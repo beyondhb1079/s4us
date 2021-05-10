@@ -1,5 +1,5 @@
 export default interface ScholarshipEligibility {
-  GPA?: number;
+  gpa?: number;
   ethnicities?: string[];
   majors?: string[];
 }

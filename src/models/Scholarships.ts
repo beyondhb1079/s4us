@@ -18,6 +18,8 @@ interface ScholarshipData {
   authorEmail?: string;
   states?: String[];
   eligibility?: ScholarshipEligibility;
+  organization?: string;
+  tags?: string;
 }
 
 export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipData> = {

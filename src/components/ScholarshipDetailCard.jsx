@@ -15,8 +15,7 @@ import ScholarshipAmount from '../types/ScholarshipAmount';
 
 const useStyles = makeStyles((theme) => ({
   actionsWrapper: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(4),
+    margin: `${theme.spacing(3)}px 0`,
     padding: `${theme.spacing(1)}px 0`,
   },
   applyBtn: {
@@ -26,34 +25,21 @@ const useStyles = makeStyles((theme) => ({
     color: 'rgba(0, 0, 0, 0.6)',
     marginBottom: theme.spacing(2),
   },
-  groupCellWithoutHeader: {
-    marginBottom: theme.spacing(2),
-  },
   sectionHeader: {
     fontWeight: '500',
-    color: 'rgba(0, 0, 0, 0.6)',
+    color: 'rgb(100, 100, 100)',
+    marginBottom: theme.spacing(2),
   },
-  eligibilitiesWrapper: {
+  propertiesWrapper: {
+    color: 'rgb(100, 100, 100)',
     marginTop: theme.spacing(6),
-    '& h4': {
-      marginBottom: theme.spacing(2),
-    },
-  },
-  tagsWrapper: {
-    marginTop: theme.spacing(4),
-  },
-  tagItemsWrapper: {
-    flexDirection: 'row',
-    paddingTop: theme.spacing(2),
   },
   tag: {
     marginRight: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-    color: '#000',
+    color: 'rgb(100, 100, 100)',
   },
   reportBtn: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(5),
+    margin: `${theme.spacing(5)}px 0`,
   },
   divider: {
     margin: `${theme.spacing(1.5)}px 0`,
@@ -77,26 +63,20 @@ export default function ScholarshipDetailCard({ scholarship }) {
 
   function DetailCardCell({ label, text }) {
     return (
-      <>
-        <Grid container justify="space-between">
-          <Grid item>
-            <Typography component="p">{label}</Typography>
-          </Grid>
-          <Grid item className={classes.textWrapper}>
-            <Typography component="p">{text}</Typography>
-          </Grid>
+      <Grid container justify="space-between">
+        <Grid item xs={12} sm={3}>
+          <Typography component="p">{label}</Typography>
         </Grid>
-        <Divider light className={classes.divider} />
-      </>
+        <Grid item className={classes.textWrapper} xs={12} sm={3}>
+          <Typography component="p">{text}</Typography>
+        </Grid>
+      </Grid>
     );
   }
 
   DetailCardCell.propTypes = {
     label: PropTypes.string.isRequired,
-    text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  };
-  DetailCardCell.defaultProps = {
-    text: null,
+    text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   };
 
   return (
@@ -132,32 +112,40 @@ export default function ScholarshipDetailCard({ scholarship }) {
         {description}
       </Typography>
 
-      <Box className={classes.groupCellWithoutHeader}>
+      <Box>
         <DetailCardCell
           label="Deadline"
           text={deadline?.toLocaleDateString()}
         />
+        <Divider light className={classes.divider} />
         <DetailCardCell label="Award Amount" text={amount?.toString()} />
-        <DetailCardCell label="State" text={states?.join(', ')} />
+        <Divider light className={classes.divider} />
+        <DetailCardCell label="State" text={states?.join(', ') || 'All'} />
+        <Divider light className={classes.divider} />
       </Box>
 
-      <Box className={classes.eligibilitiesWrapper}>
+      <Box className={classes.propertiesWrapper}>
         <Typography
           variant="h6"
           component="h4"
           className={classes.sectionHeader}>
           Eligibility Requirements
         </Typography>
-
-        <DetailCardCell label="GPA" text={eligibility?.GPA} />
+        <DetailCardCell label="GPA" text={eligibility?.gpa || 'None'} />
+        <Divider light className={classes.divider} />
         <DetailCardCell
           label="Demographic"
-          text={eligibility?.ethnicities?.join(', ')}
+          text={eligibility?.ethnicities?.join(', ') || 'All'}
         />
-        <DetailCardCell label="Majors" text={eligibility?.majors?.join(', ')} />
+        <Divider light className={classes.divider} />
+        <DetailCardCell
+          label="Majors"
+          text={eligibility?.majors?.join(', ') || 'All'}
+        />
+        <Divider light className={classes.divider} />{' '}
       </Box>
 
-      <Box className={classes.tagsWrapper}>
+      <Box className={classes.propertiesWrapper}>
         <Typography
           variant="h6"
           component="h4"
@@ -165,7 +153,7 @@ export default function ScholarshipDetailCard({ scholarship }) {
           Tags
         </Typography>
 
-        <Box className={classes.tagItemsWrapper}>
+        <Grid container>
           {tags?.map(({ title, id }) => (
             <Chip
               label={title}
@@ -175,7 +163,7 @@ export default function ScholarshipDetailCard({ scholarship }) {
               key={id}
             />
           ))}
-        </Box>
+        </Grid>
       </Box>
 
       <Chip
@@ -206,7 +194,7 @@ ScholarshipDetailCard.propTypes = {
       ),
       states: PropTypes.arrayOf(PropTypes.string),
       eligibility: PropTypes.shape({
-        GPA: PropTypes.number,
+        gpa: PropTypes.number,
         ethnicities: PropTypes.arrayOf(PropTypes.string),
         majors: PropTypes.arrayOf(PropTypes.string),
       }),
