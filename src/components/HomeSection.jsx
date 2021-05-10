@@ -30,6 +30,7 @@ export default function HomeSection(props) {
     buttons,
     pic,
   } = props;
+
   return (
     <Container className={classes.root}>
       <Grid container spacing={2} direction={direction} alignItems={alignItems}>

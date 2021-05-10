@@ -76,10 +76,7 @@ export default function ScholarshipDetailCard({ scholarship }) {
 
   DetailCardCell.propTypes = {
     label: PropTypes.string.isRequired,
-    text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  };
-  DetailCardCell.defaultProps = {
-    text: '',
+    text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   };
 
   return (
@@ -118,10 +115,13 @@ export default function ScholarshipDetailCard({ scholarship }) {
       <Box>
         <DetailCardCell
           label="Deadline"
-          text={deadline?.toLocaleDateString()}
+          text={deadline?.toLocaleDateString() || 'Unknown'}
         />
         <Divider light className={classes.divider} />
-        <DetailCardCell label="Award Amount" text={amount?.toString()} />
+        <DetailCardCell
+          label="Award Amount"
+          text={amount?.toString() || 'Unknown'}
+        />
         <Divider light className={classes.divider} />
         <DetailCardCell label="State" text={states?.join(', ') || 'All'} />
         <Divider light className={classes.divider} />
