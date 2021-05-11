@@ -51,14 +51,8 @@ const useStyles = makeStyles((theme) => ({
 
 function ScholarshipListCard({ scholarship }) {
   const classes = useStyles();
-  const {
-    name,
-    amount,
-    deadline,
-    description,
-    organization,
-    tags,
-  } = scholarship.data;
+  const { name, amount, deadline, description, organization, tags } =
+    scholarship.data;
 
   return (
     <Card variant="outlined">
