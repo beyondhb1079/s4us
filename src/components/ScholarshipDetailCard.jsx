@@ -14,11 +14,11 @@ import { Share, Send, Info } from '@material-ui/icons';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 
 const useStyles = makeStyles((theme) => ({
-  actionsWrapper: {
+  actionSection: {
     margin: `${theme.spacing(3)}px 0`,
     padding: `${theme.spacing(1)}px 0`,
   },
-  textWrapper: {
+  cardDetailText: {
     [theme.breakpoints.up('sm')]: {
       textAlign: 'right',
     },
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: '500',
     marginBottom: theme.spacing(2),
   },
-  propertiesWrapper: {
+  propertySection: {
     marginTop: theme.spacing(6),
   },
   tag: {
@@ -71,7 +71,7 @@ export default function ScholarshipDetailCard({ scholarship }) {
           <Grid item xs={12} sm>
             <Typography component="p">{label}</Typography>
           </Grid>
-          <Grid item className={classes.textWrapper} xs={12} sm>
+          <Grid item className={classes.cardDetailText} xs={12} sm>
             <Typography component="p">{text}</Typography>
           </Grid>
         </Grid>
@@ -97,7 +97,7 @@ export default function ScholarshipDetailCard({ scholarship }) {
 
       <Typography variant="h5">{organization}</Typography>
 
-      <Box className={classes.actionsWrapper}>
+      <Box className={classes.actionSection}>
         <Button
           component={Link}
           href={website}
@@ -142,7 +142,7 @@ export default function ScholarshipDetailCard({ scholarship }) {
         />
       </Box>
 
-      <Box className={classes.propertiesWrapper}>
+      <Box className={classes.propertySection}>
         <Typography
           variant="h6"
           component="h4"
@@ -162,7 +162,7 @@ export default function ScholarshipDetailCard({ scholarship }) {
         />
       </Box>
 
-      <Box className={classes.propertiesWrapper}>
+      <Box className={classes.propertySection}>
         <Typography
           variant="h6"
           component="h4"
