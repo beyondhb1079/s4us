@@ -91,7 +91,7 @@ test('renders scholarship details', async () => {
     description: 'description',
     deadline: new Date('2020-12-17'),
     website: 'http://foo.com/',
-    state: ['California', 'Washington'],
+    states: ['California', 'Washington'],
     eligibility: {
       gpa: 4.0,
       ethnicities: ['Latino', 'African American'],
@@ -103,7 +103,6 @@ test('renders scholarship details', async () => {
 
   renderAtRoute('/scholarships/abc');
   await screen.findByText(/Scholarship/i);
-  /*
   expect(screen.getByText(data.name)).toBeInTheDocument();
   expect(screen.getByText(data.amount.toString())).toBeInTheDocument();
   expect(screen.getByText(data.description)).toBeInTheDocument();
@@ -114,12 +113,12 @@ test('renders scholarship details', async () => {
     data.website
   );
   expect(document.title).toContain(data.name);
-  expect(screen.getByText(data.state.join(', '))).toBeInTheDocument();
+  expect(screen.getByText(data.states.join(', '))).toBeInTheDocument();
   expect(screen.getByText(data.eligibility.gpa)).toBeInTheDocument();
   expect(
     screen.getByText(data.eligibility.ethnicities.join(', '))
   ).toBeInTheDocument();
   expect(
     screen.getByText(data.eligibility.majors.join(', '))
-  ).toBeInTheDocument(); */
+  ).toBeInTheDocument();
 });

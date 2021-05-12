@@ -18,25 +18,27 @@ const useStyles = makeStyles((theme) => ({
     margin: `${theme.spacing(3)}px 0`,
     padding: `${theme.spacing(1)}px 0`,
   },
+  textWrapper: {
+    [theme.breakpoints.up('sm')]: {
+      textAlign: 'right',
+    },
+  },
   applyBtn: {
     marginRight: theme.spacing(1),
   },
   description: {
-    color: 'rgba(0, 0, 0, 0.6)',
     marginBottom: theme.spacing(2),
   },
   sectionHeader: {
     fontWeight: '500',
-    color: 'rgb(100, 100, 100)',
     marginBottom: theme.spacing(2),
   },
   propertiesWrapper: {
-    color: 'rgb(100, 100, 100)',
     marginTop: theme.spacing(6),
   },
   tag: {
     marginRight: theme.spacing(2),
-    color: 'rgb(100, 100, 100)',
+    color: '#000',
   },
   reportBtn: {
     margin: `${theme.spacing(5)}px 0`,
@@ -61,22 +63,32 @@ export default function ScholarshipDetailCard({ scholarship }) {
     eligibility,
   } = scholarship.data;
 
-  function DetailCardCell({ label, text }) {
+  function DetailCardCell({ label, text, bottom, top }) {
     return (
-      <Grid container justify="space-between">
-        <Grid item xs={12} sm={3}>
-          <Typography component="p">{label}</Typography>
+      <>
+        {top && <Divider light className={classes.divider} />}
+        <Grid container justify="space-between">
+          <Grid item xs={12} sm>
+            <Typography component="p">{label}</Typography>
+          </Grid>
+          <Grid item className={classes.textWrapper} xs={12} sm>
+            <Typography component="p">{text}</Typography>
+          </Grid>
         </Grid>
-        <Grid item className={classes.textWrapper} xs={12} sm={3}>
-          <Typography component="p">{text}</Typography>
-        </Grid>
-      </Grid>
+        {bottom && <Divider light className={classes.divider} />}
+      </>
     );
   }
 
   DetailCardCell.propTypes = {
     label: PropTypes.string.isRequired,
     text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    bottom: PropTypes.bool,
+    top: PropTypes.bool,
+  };
+  DetailCardCell.defaultProps = {
+    bottom: false,
+    top: false,
   };
 
   return (
@@ -116,15 +128,18 @@ export default function ScholarshipDetailCard({ scholarship }) {
         <DetailCardCell
           label="Deadline"
           text={deadline?.toLocaleDateString() || 'Unknown'}
+          bottom
         />
-        <Divider light className={classes.divider} />
         <DetailCardCell
           label="Award Amount"
           text={amount?.toString() || 'Unknown'}
+          bottom
         />
-        <Divider light className={classes.divider} />
-        <DetailCardCell label="State" text={states?.join(', ') || 'All'} />
-        <Divider light className={classes.divider} />
+        <DetailCardCell
+          label="State"
+          text={states?.join(', ') || 'All'}
+          bottom
+        />
       </Box>
 
       <Box className={classes.propertiesWrapper}>
@@ -134,18 +149,17 @@ export default function ScholarshipDetailCard({ scholarship }) {
           className={classes.sectionHeader}>
           Eligibility Requirements
         </Typography>
-        <DetailCardCell label="GPA" text={eligibility?.gpa || 'None'} />
-        <Divider light className={classes.divider} />
+        <DetailCardCell label="GPA" text={eligibility?.gpa || 'None'} bottom />
         <DetailCardCell
           label="Demographic"
           text={eligibility?.ethnicities?.join(', ') || 'All'}
+          bottom
         />
-        <Divider light className={classes.divider} />
         <DetailCardCell
           label="Majors"
           text={eligibility?.majors?.join(', ') || 'All'}
+          bottom
         />
-        <Divider light className={classes.divider} />{' '}
       </Box>
 
       <Box className={classes.propertiesWrapper}>
@@ -157,15 +171,17 @@ export default function ScholarshipDetailCard({ scholarship }) {
         </Typography>
 
         <Grid container>
-          {tags?.map(({ title, id }) => (
-            <Chip
-              label={title}
-              variant="outlined"
-              color="primary"
-              className={classes.tag}
-              key={id}
-            />
-          ))}
+          {!tags
+            ? 'None'
+            : tags.map(({ title, id }) => (
+                <Chip
+                  label={title}
+                  variant="outlined"
+                  color="primary"
+                  className={classes.tag}
+                  key={id}
+                />
+              ))}
         </Grid>
       </Box>
 
