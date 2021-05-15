@@ -10,5 +10,10 @@ const theme = createMuiTheme({
       main: '#3C64B1',
     },
   },
+  typography: {
+    body1: {
+      color: 'rgb(100, 100, 100)',
+    },
+  },
 });
 export default theme;
