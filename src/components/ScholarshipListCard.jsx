@@ -51,14 +51,8 @@ const useStyles = makeStyles((theme) => ({
 
 function ScholarshipListCard({ scholarship }) {
   const classes = useStyles();
-  const {
-    name,
-    amount,
-    deadline,
-    description,
-    organization,
-    tags,
-  } = scholarship.data;
+  const { name, amount, deadline, description, organization, tags } =
+    scholarship.data;
 
   return (
     <Card variant="outlined">
@@ -89,9 +83,10 @@ function ScholarshipListCard({ scholarship }) {
             {description}
           </Typography>
           <Box className={classes.tagWrapper}>
-            {tags?.map((tag) => (
+            {tags?.map(({ title, id }) => (
               <Chip
-                label={tag.title}
+                key={id}
+                label={title}
                 variant="outlined"
                 className={classes.tag}
               />
@@ -113,7 +108,12 @@ ScholarshipListCard.propTypes = {
       description: PropTypes.string,
       deadline: PropTypes.instanceOf(Date),
       website: PropTypes.string,
-      tags: PropTypes.arrayOf({ title: PropTypes.string }),
+      tags: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.string,
+          title: PropTypes.string,
+        })
+      ),
     }).isRequired,
   }).isRequired,
 };
