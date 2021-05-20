@@ -1,7 +1,8 @@
-import { firestore } from 'firebase';
+import firebase from 'firebase/app';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import FirestoreCollection from './base/FirestoreCollection';
-import FirestoreModel from './base/FirestoreModel';
+import FirestoreModelList from './base/FiretoreModelList';
+import ScholarshipEligibility from '../types/ScholarshipEligibility';
 
 interface ScholarshipData {
   // TODO(https://github.com/beyondhb1079/s4us/issues/56):
@@ -15,25 +16,31 @@ interface ScholarshipData {
   year?: string;
   authorId?: string;
   authorEmail?: string;
+  states?: String[];
+  eligibility?: ScholarshipEligibility;
+  organization?: string;
+  tags?: string[];
 }
+// tags: PropTypes.arrayOf({ title: PropTypes.string })
 
-export const converter: firestore.FirestoreDataConverter<ScholarshipData> = {
-  toFirestore: (data: ScholarshipData) => ({
-    ...data,
-    amount: {
-      type: data.amount.type,
-      min: data.amount.min,
-      max: data.amount.max,
+export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipData> =
+  {
+    toFirestore: (data: ScholarshipData) => ({
+      ...data,
+      amount: {
+        type: data.amount.type,
+        min: data.amount.min,
+        max: data.amount.max,
+      },
+      deadline: firebase.firestore.Timestamp.fromDate(data.deadline),
+    }),
+    fromFirestore: (snapshot, options) => {
+      const data = snapshot.data(options);
+      const deadline = (data.deadline as firebase.firestore.Timestamp).toDate();
+      const amount = new ScholarshipAmount(data.amount.type, data.amount);
+      return { ...data, amount, deadline } as ScholarshipData;
     },
-    deadline: firestore.Timestamp.fromDate(data.deadline),
-  }),
-  fromFirestore: (snapshot, options) => {
-    const data = snapshot.data(options);
-    const deadline = (data.deadline as firestore.Timestamp).toDate();
-    const amount = new ScholarshipAmount(data.amount.type, data.amount);
-    return { ...data, amount, deadline } as ScholarshipData;
-  },
-};
+  };
 
 type SortDirection = 'asc' | 'desc';
 
@@ -50,8 +57,8 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
     sortDir?: SortDirection;
     sortField?: string;
     authorId?: string;
-  }): Promise<FirestoreModel<ScholarshipData>[]> {
-    let query: firestore.Query<ScholarshipData> = this.collection;
+  }): Promise<FirestoreModelList<ScholarshipData>> {
+    let query: firebase.firestore.Query<ScholarshipData> = this.collection;
     // TODO(issues/93, issues/94): Support filters and pagination
 
     // Sort by requested field + direction
@@ -65,6 +72,7 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
     if (opts.authorId) {
       query = query.where('authorId', '==', opts.authorId);
     }
+
     return FirestoreCollection.list(query);
   }
 }

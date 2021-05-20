@@ -1,4 +1,4 @@
-import { firestore } from 'firebase';
+import firebase from 'firebase/app';
 import { clearFirestoreData, initializeTestApp } from '../../lib/testing';
 import FirestoreCollection from './FirestoreCollection';
 
@@ -9,7 +9,7 @@ interface NameData {
   last: string;
 }
 
-const converter: firestore.FirestoreDataConverter<NameData> = {
+const converter: firebase.firestore.FirestoreDataConverter<NameData> = {
   toFirestore: (name: NameData) => ({ ...name }),
   fromFirestore: (snapshot) => ({ ...snapshot.data() } as NameData),
 };
@@ -19,10 +19,8 @@ const names = new (class extends FirestoreCollection<NameData> {
   converter = converter;
 })();
 
-beforeEach(async () =>
-  clearFirestoreData(app.options as { projectId: string })
-);
-afterAll(async () => app.delete());
+beforeEach(() => clearFirestoreData(app.options as { projectId: string }));
+afterAll(() => app.delete());
 
 test('new() returns model with data and generated id', () => {
   const data = { first: 'Bob', last: 'Smith' };
