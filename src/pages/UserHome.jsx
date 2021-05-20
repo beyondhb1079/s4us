@@ -138,40 +138,42 @@ export default function UserHome() {
           </Button>
         </Grid>
       </Grid>
-      {error?.toString() ||
-      (loading && <CircularProgress className={classes.progress} />) ||
-      scholarships.length === 0 ? (
-        <Grid
-          container
-          component={Paper}
-          variant="outlined"
-          className={classes.noneAddedGrid}>
-          <Grid item>
-            <InboxIcon className={classes.inboxIcon} />
-          </Grid>
-          <Grid item>
-            <Typography variant="h5" gutterButtom>
-              No Scholarships Added Yet
-            </Typography>
-            <MuiLink component={Link} to="/scholarships/new">
-              Add Scholarship
-            </MuiLink>
-          </Grid>
-        </Grid>
+      {error?.toString() || loading ? (
+        <CircularProgress className={classes.progress} />
       ) : (
-        <>
-          <ScholarshipList scholarships={scholarships} />
-          {canLoadMore ? (
-            <Button
-              className={classes.loadMoreButton}
-              color="primary"
-              onClick={() => loadMoreScholarships(loadMoreFn)}>
-              Load More
-            </Button>
+        [
+          scholarships.length === 0 ? (
+            <Grid
+              container
+              component={Paper}
+              variant="outlined"
+              className={classes.noneAddedGrid}>
+              <Grid item>
+                <InboxIcon className={classes.inboxIcon} />
+              </Grid>
+              <Grid item>
+                <Typography variant="h5" gutterButtom>
+                  No Scholarships Added Yet
+                </Typography>
+                <MuiLink component={Link} to="/scholarships/new">
+                  Add Scholarship
+                </MuiLink>
+              </Grid>
+            </Grid>
           ) : (
-            'No more results'
-          )}
-        </>
+            <>
+              <ScholarshipList scholarships={scholarships} />
+              {canLoadMore && (
+                <Button
+                  className={classes.loadMoreButton}
+                  color="primary"
+                  onClick={() => loadMoreScholarships(loadMoreFn)}>
+                  Load More
+                </Button>
+              )}
+            </>
+          ),
+        ]
       )}
     </Container>
   );
