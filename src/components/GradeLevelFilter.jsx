@@ -47,12 +47,14 @@ export default function GradeLevelFilter() {
   }
 
   return (
-    <Button
-      variant="outlined"
-      className={classes.button}
-      onClick={openPopover}
-      endIcon={<ArrowDropDownIcon color="primary" />}>
-      Grade
+    <>
+      <Button
+        variant="outlined"
+        className={classes.button}
+        onClick={openPopover}
+        endIcon={<ArrowDropDownIcon color="primary" />}>
+        Grade
+      </Button>
       <Popover
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
@@ -78,6 +80,6 @@ export default function GradeLevelFilter() {
           </FormGroup>
         </FormControl>
       </Popover>
-    </Button>
+    </>
   );
 }
