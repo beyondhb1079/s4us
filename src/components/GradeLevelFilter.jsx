@@ -50,12 +50,11 @@ export default function GradeLevelFilter() {
     <>
       <Button
         variant="outlined"
-        className={classes.buttonStyle}
+        className={classes.button}
         onClick={openPopover}
         endIcon={<ArrowDropDownIcon color="primary" />}>
         Grade
       </Button>
-
       <Popover
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
