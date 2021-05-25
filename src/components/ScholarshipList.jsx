@@ -1,12 +1,33 @@
 import React, { useState } from 'react';
-import { Grid } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  makeStyles,
+  Typography,
+} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { BRAND_NAME } from '../config/constants';
 import ShareDialog from './ShareDialog';
 
 import ScholarshipListCard from './ScholarshipListCard';
 
-function ScholarshipList({ scholarships }) {
+const useStyles = makeStyles((theme) => ({
+  loadMore: {
+    margin: theme.spacing(3),
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    textAlign: 'center',
+  },
+  progress: {
+    display: 'block',
+    margin: 'auto',
+  },
+}));
+
+function ScholarshipList({ loading, onLoadMore, scholarships }) {
+  const classes = useStyles();
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const closeShareDialog = () => setShareDialogOpen(false);
 
@@ -35,27 +56,47 @@ function ScholarshipList({ scholarships }) {
   };
 
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
-        {scholarships.map(({ id, data }) => (
-          <ScholarshipListCard scholarship={{ id, data }} key={id} />
-        ))}
+    <>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          {scholarships.map(({ id, data }) => (
+            <ScholarshipListCard scholarship={{ id, data }} key={id} />
+          ))}
+        </Grid>
+        <ShareDialog
+          open={shareDialogOpen}
+          onClose={closeShareDialog}
+          link={shareSiteLink}
+          title={shareSiteTitle}
+        />
       </Grid>
-      <ShareDialog
-        open={shareDialogOpen}
-        onClose={closeShareDialog}
-        link={shareSiteLink}
-        title={shareSiteTitle}
-      />
-    </Grid>
+      {loading ? (
+        <CircularProgress className={classes.progress} />
+      ) : (
+        <Box className={classes.loadMore}>
+          {onLoadMore ? (
+            <Button color="primary" onClick={onLoadMore}>
+              Load More
+            </Button>
+          ) : (
+            <Typography>End of results</Typography>
+          )}
+        </Box>
+      )}
+    </>
   );
 }
 
 ScholarshipList.propTypes = {
   scholarships: PropTypes.arrayOf(PropTypes.object),
+  // Function to load more or leave null if there is no more to load
+  onLoadMore: PropTypes.func,
+  loading: PropTypes.bool,
 };
 ScholarshipList.defaultProps = {
   scholarships: [],
+  onLoadMore: undefined,
+  loading: false,
 };
 
 export default ScholarshipList;

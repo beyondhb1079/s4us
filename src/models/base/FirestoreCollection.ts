@@ -27,7 +27,7 @@ export default abstract class FirestoreCollection<T> {
     baseQuery: firebase.firestore.Query<E>,
     lastDoc?: firebase.firestore.QueryDocumentSnapshot<E>
   ): Promise<FirestoreModelList<E>> {
-    let query: firebase.firestore.Query<E> = baseQuery.limit(10);
+    let query: firebase.firestore.Query<E> = baseQuery.limit(1);
     if (lastDoc) query = query.startAfter(lastDoc);
 
     return query.get().then((qSnap: firebase.firestore.QuerySnapshot<E>) => ({
@@ -35,7 +35,7 @@ export default abstract class FirestoreCollection<T> {
       results: qSnap.docs.map(
         (doc) => new FirestoreModel<E>(doc.ref, doc.data())
       ),
-      hasNext: !qSnap.empty && qSnap.size >= 10,
+      hasNext: !qSnap.empty && qSnap.size >= 1,
     }));
   }
 }

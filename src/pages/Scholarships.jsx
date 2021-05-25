@@ -1,13 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import queryString from 'query-string';
-import {
-  CircularProgress,
-  Container,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
-import Button from '@material-ui/core/Button';
+import { Container, Typography } from '@material-ui/core';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
@@ -33,18 +27,7 @@ const sortOptions = {
 };
 const DEFAULT_SORT_BY = 'deadline.asc';
 
-const useStyles = makeStyles((theme) => ({
-  progress: {
-    display: 'block',
-    margin: 'auto',
-  },
-  loadMoreButton: {
-    margin: theme.spacing(3, 0),
-  },
-}));
-
 function ScholarshipsPage() {
-  const classes = useStyles();
   const [scholarships, setScholarships] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
@@ -142,22 +125,13 @@ function ScholarshipsPage() {
         Scholarships
       </Typography>
       <FilterBar queryParams={params} {...{ setQueryParam }} />
-      {error?.toString() ||
-        (loading && <CircularProgress className={classes.progress} />) || (
-          <>
-            <ScholarshipList scholarships={scholarships} />
-            {canLoadMore ? (
-              <Button
-                className={classes.loadMoreButton}
-                color="primary"
-                onClick={() => loadMoreScholarships(loadMoreFn)}>
-                Load More
-              </Button>
-            ) : (
-              'No more results'
-            )}
-          </>
-        )}
+      {error?.toString() || (
+        <ScholarshipList
+          scholarships={scholarships}
+          loading={loading}
+          onLoadMore={canLoadMore && (() => loadMoreScholarships(loadMoreFn))}
+        />
+      )}
     </Container>
   );
 }

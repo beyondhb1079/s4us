@@ -3,7 +3,6 @@ import { AddCircle as AddIcon, Inbox as InboxIcon } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 import {
-  CircularProgress,
   Button,
   Container,
   Grid,
@@ -138,43 +137,32 @@ export default function UserHome() {
           </Button>
         </Grid>
       </Grid>
-      {error?.toString() || loading ? (
-        <CircularProgress className={classes.progress} />
-      ) : (
-        [
-          scholarships.length === 0 ? (
-            <Grid
-              container
-              component={Paper}
-              variant="outlined"
-              className={classes.noneAddedGrid}>
-              <Grid item>
-                <InboxIcon className={classes.inboxIcon} />
-              </Grid>
-              <Grid item>
-                <Typography variant="h5" gutterButtom>
-                  No Scholarships Added Yet
-                </Typography>
-                <MuiLink component={Link} to="/scholarships/new">
-                  Add Scholarship
-                </MuiLink>
-              </Grid>
+      {error?.toString() ||
+        (loading || scholarships?.length ? (
+          <ScholarshipList
+            scholarships={scholarships}
+            loading={loading}
+            onLoadMore={canLoadMore && (() => loadMoreScholarships(loadMoreFn))}
+          />
+        ) : (
+          <Grid
+            container
+            component={Paper}
+            variant="outlined"
+            className={classes.noneAddedGrid}>
+            <Grid item>
+              <InboxIcon className={classes.inboxIcon} />
             </Grid>
-          ) : (
-            <>
-              <ScholarshipList scholarships={scholarships} />
-              {canLoadMore && (
-                <Button
-                  className={classes.loadMoreButton}
-                  color="primary"
-                  onClick={() => loadMoreScholarships(loadMoreFn)}>
-                  Load More
-                </Button>
-              )}
-            </>
-          ),
-        ]
-      )}
+            <Grid item>
+              <Typography variant="h5" gutterButtom>
+                No Scholarships Added Yet
+              </Typography>
+              <MuiLink component={Link} to="/scholarships/new">
+                Add Scholarship
+              </MuiLink>
+            </Grid>
+          </Grid>
+        ))}
     </Container>
   );
 }

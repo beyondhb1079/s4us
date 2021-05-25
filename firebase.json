@@ -10,14 +10,17 @@
     ]
   },
   "emulators": {
+    "auth": {
+      "port": 9099
+    },
     "firestore": {
       "port": 8080
     },
+    "hosting": {
+      "enabled": false
+    },
     "ui": {
       "enabled": true
-    },
-    "auth": {
-      "port": 9099
     }
   },
   "firestore": {
