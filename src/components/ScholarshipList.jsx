@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -13,11 +13,9 @@ import ShareDialog from './ShareDialog';
 
 import ScholarshipListCard from './ScholarshipListCard';
 
-const useStyles = makeStyles((theme) => ({
-  loadMore: {
-    margin: theme.spacing(3),
-    marginLeft: 'auto',
-    marginRight: 'auto',
+const useStyles = makeStyles(() => ({
+  centered: {
+    margin: 'auto',
     textAlign: 'center',
   },
   progress: {
@@ -26,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ScholarshipList({ loading, onLoadMore, scholarships }) {
+function ScholarshipList({ noResultsNode, listFn }) {
   const classes = useStyles();
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const closeShareDialog = () => setShareDialogOpen(false);
@@ -55,48 +53,78 @@ function ScholarshipList({ loading, onLoadMore, scholarships }) {
     }
   };
 
+  const [error, setError] = useState();
+  const [scholarships, setScholarships] = useState([]);
+  const [loadState, setLoadState] = useState({
+    loading: true,
+    canLoadMore: true,
+    loadMoreFn: listFn,
+  });
+  const { loading, canLoadMore, loadMoreFn } = loadState;
+
+  useEffect(() => {
+    let mounted = true;
+    if (loading && canLoadMore) {
+      loadMoreFn()
+        .then(({ results, next, hasNext }) => {
+          if (!mounted) return;
+          setError(null);
+          setScholarships((prev) => [...prev, ...results]);
+          setLoadState({
+            loading: false,
+            canLoadMore: hasNext,
+            loadMoreFn: next,
+          });
+        })
+        .catch((e) => mounted && setError(e));
+    }
+    return () => {
+      mounted = false;
+    };
+  }, [loading, canLoadMore, loadMoreFn]);
+
+  const loadMore = () => setLoadState({ ...loadState, loading: true });
+
   return (
-    <>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          {scholarships.map(({ id, data }) => (
-            <ScholarshipListCard scholarship={{ id, data }} key={id} />
-          ))}
-        </Grid>
-        <ShareDialog
-          open={shareDialogOpen}
-          onClose={closeShareDialog}
-          link={shareSiteLink}
-          title={shareSiteTitle}
-        />
-      </Grid>
-      {loading ? (
-        <CircularProgress className={classes.progress} />
-      ) : (
-        <Box className={classes.loadMore}>
-          {onLoadMore ? (
-            <Button color="primary" onClick={onLoadMore}>
-              Load More
-            </Button>
-          ) : (
-            <Typography>End of results</Typography>
-          )}
+    <Grid container spacing={3}>
+      <Grid item xs={12}>
+        {scholarships.map(({ id, data }) => (
+          <ScholarshipListCard scholarship={{ id, data }} key={id} />
+        ))}
+        <Box className={classes.centered}>
+          {(() => {
+            if (error) return <Typography>error.toString()</Typography>;
+            if (loading)
+              return <CircularProgress className={classes.progress} />;
+            if (canLoadMore)
+              return (
+                <Button color="primary" onClick={loadMore}>
+                  Load More
+                </Button>
+              );
+            if (scholarships?.length)
+              return <Typography>End of results</Typography>;
+            return noResultsNode;
+          })()}
         </Box>
-      )}
-    </>
+      </Grid>
+      <ShareDialog
+        open={shareDialogOpen}
+        onClose={closeShareDialog}
+        link={shareSiteLink}
+        title={shareSiteTitle}
+      />
+    </Grid>
   );
 }
 
 ScholarshipList.propTypes = {
-  scholarships: PropTypes.arrayOf(PropTypes.object),
-  // Function to load more or leave null if there is no more to load
-  onLoadMore: PropTypes.func,
-  loading: PropTypes.bool,
+  listFn: PropTypes.func,
+  noResultsNode: PropTypes.node,
 };
 ScholarshipList.defaultProps = {
-  scholarships: [],
-  onLoadMore: undefined,
-  loading: false,
+  listFn: undefined,
+  noResultsNode: <Typography>'No scholarships found'</Typography>,
 };
 
 export default ScholarshipList;
