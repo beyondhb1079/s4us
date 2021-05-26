@@ -34,7 +34,6 @@ function ScholarshipsPage() {
   const params = queryString.parse(location.search, { parseNumbers: true });
 
   const setQueryParam = (index, val) => {
-    // setScholarships([]); needed?
     history.push({
       search: queryString.stringify({
         ...params,
@@ -44,7 +43,6 @@ function ScholarshipsPage() {
   };
 
   const pruneQueryParam = (index) => {
-    // setScholarships([]); needed?
     delete params[index];
     history.replace({ search: queryString.stringify(params) });
   };

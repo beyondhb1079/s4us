@@ -62,6 +62,16 @@ function ScholarshipList({ noResultsNode, listFn }) {
   });
   const { loading, canLoadMore, loadMoreFn } = loadState;
 
+  // Reset scholarships and loading state when listFn changes
+  useEffect(() => {
+    setScholarships([]);
+    setLoadState({
+      loading: true,
+      canLoadMore: true,
+      loadMoreFn: listFn,
+    });
+  }, [listFn]);
+
   useEffect(() => {
     let mounted = true;
     if (loading && canLoadMore) {
@@ -124,7 +134,7 @@ ScholarshipList.propTypes = {
 };
 ScholarshipList.defaultProps = {
   listFn: undefined,
-  noResultsNode: <Typography>'No scholarships found'</Typography>,
+  noResultsNode: <Typography>No scholarships found</Typography>,
 };
 
 export default ScholarshipList;
