@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
@@ -16,20 +16,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function FilterDropdown(props) {
-  const { label, items, defaultValue, removeNone, onChange } = props;
-  const [choice, setChoice] = useState(defaultValue);
+  const { label, items, value, removeNone, onChange } = props;
   const classes = useStyles();
-
-  function selectChoice(event) {
-    setChoice(event.target.value);
-    onChange(event.target.value);
-  }
 
   return (
     <FormControl variant="outlined" className={classes.formControl}>
       <Select
-        value={choice}
-        onChange={selectChoice}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
         displayEmpty
         className={classes.selectStyle}>
         {!removeNone && (
@@ -49,15 +43,16 @@ function FilterDropdown(props) {
 
 FilterDropdown.propTypes = {
   label: PropTypes.string.isRequired,
-  defaultValue: PropTypes.string,
+  value: PropTypes.string,
   items: PropTypes.objectOf(PropTypes.string).isRequired,
   removeNone: PropTypes.bool,
   onChange: PropTypes.func,
 };
 
 FilterDropdown.defaultProps = {
-  defaultValue: '',
+  value: '',
   onChange: () => {},
   removeNone: false,
 };
+
 export default FilterDropdown;

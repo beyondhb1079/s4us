@@ -1,4 +1,4 @@
-import { firestore } from 'firebase';
+import firebase from 'firebase/app';
 import { clearFirestoreData, initializeTestApp } from '../lib/testing';
 import AmountType from '../types/AmountType';
 import ScholarshipAmount from '../types/ScholarshipAmount';
@@ -40,11 +40,12 @@ const [
   unknown,
 ] = scholarships;
 
-beforeAll(async () => {
-  clearFirestoreData(app.options as { projectId: string });
-  await Promise.all(scholarships.map((s) => s.save()));
-});
-afterAll(async () => app.delete());
+beforeAll(() =>
+  clearFirestoreData(app.options as { projectId: string }).then(() =>
+    Promise.all(scholarships.map((s) => s.save()))
+  )
+);
+afterAll(() => app.delete());
 
 test('converter.toFirestore', () => {
   const data = {
@@ -58,35 +59,51 @@ test('converter.toFirestore', () => {
     website: 'mit.com',
     school: 'MIT',
     year: 'college freshman',
+    authorId: 'Bob Ross',
+    authorEmail: 'bobross37@gmail.com',
+    states: ['California', 'Washington'],
+    eligibility: {
+      GPA: 4.0,
+      ethnicities: ['Latino', 'African American'],
+      majors: ['Computer Science', 'Software Engineering'],
+    },
   };
 
   const got = converter.toFirestore(data);
 
   expect(got).toEqual({
     ...data,
-    deadline: firestore.Timestamp.fromDate(data.deadline),
+    deadline: firebase.firestore.Timestamp.fromDate(data.deadline),
   });
 });
 
 test('converter.fromFirestore', () => {
-  const snapdata: firestore.DocumentData = {
+  const snapdata: firebase.firestore.DocumentData = {
     name: 'scholarship',
     amount: new ScholarshipAmount(AmountType.Fixed, {
       min: 2500,
       max: 2500,
     }),
     description: 'description',
-    deadline: firestore.Timestamp.fromDate(new Date('2019-02-20')),
+    deadline: firebase.firestore.Timestamp.fromDate(new Date('2019-02-20')),
     website: 'mit.com',
     school: 'MIT',
     year: 'college freshman',
+    authorId: 'Bob Ross',
+    authorEmail: 'bobross37@gmail.com',
+    states: ['California', 'Washington'],
+    eligibility: {
+      GPA: 4.0,
+      ethnicities: ['Latino', 'African American'],
+      majors: ['Computer Science', 'Software Engineering'],
+    },
   };
   const snapshot = {
     data: () => snapdata,
   };
 
   const got = converter.fromFirestore(
-    snapshot as firestore.QueryDocumentSnapshot,
+    snapshot as firebase.firestore.QueryDocumentSnapshot,
     {}
   );
 
@@ -94,7 +111,7 @@ test('converter.fromFirestore', () => {
 });
 
 const extractName = (s: { data: { name: string } }) => s.data.name;
-/*
+
 test('scholarships.list - sort by deadline asc', async () => {
   const want = [
     fixed500,
@@ -111,7 +128,7 @@ test('scholarships.list - sort by deadline asc', async () => {
     sortDir: 'asc',
   });
 
-  expect(got.map(extractName)).toEqual(want.map(extractName));
+  expect(got.results.map(extractName)).toEqual(want.map(extractName));
 });
 
 test('scholarships.list - sort by amount.min asc', async () => {
@@ -129,7 +146,7 @@ test('scholarships.list - sort by amount.min asc', async () => {
     sortDir: 'asc',
   });
 
-  expect(got.map(extractName)).toEqual(want.map(extractName));
+  expect(got.results.map(extractName)).toEqual(want.map(extractName));
 });
 
 test('scholarships.list - sort by amount.max desc', async () => {
@@ -147,6 +164,27 @@ test('scholarships.list - sort by amount.max desc', async () => {
     sortDir: 'desc',
   });
 
-  expect(got.map(extractName)).toEqual(want.map(extractName));
+  expect(got.results.map(extractName)).toEqual(want.map(extractName));
 });
-*/
+
+test('scholarships.list - filters by minAmount', async () => {
+  const want = [fullTuition, fixed5000, range250to1000, rangeMin500, unknown];
+  const got = await Scholarships.list({
+    minAmount: 1000,
+  });
+
+  expect(got.results.map(extractName).sort()).toEqual(
+    want.map(extractName).sort()
+  );
+});
+
+test('scholarships.list - filters by maxAmount', async () => {
+  const want = [rangeMin500, range250to1000, fixed500, rangeTo500, unknown];
+  const got = await Scholarships.list({
+    maxAmount: 500,
+  });
+
+  expect(got.results.map(extractName).sort()).toEqual(
+    want.map(extractName).sort()
+  );
+});

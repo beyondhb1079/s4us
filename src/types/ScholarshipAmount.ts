@@ -51,7 +51,7 @@ export default class ScholarshipAmount {
           throw new Error(`Invalid range ${min}-${max}`);
         }
         this.min = min ?? 0;
-        this.max = max ?? RANGE_MAX;
+        this.max = max || RANGE_MAX;
         break;
       case AmountType.FullTuition:
         this.min = FULL_TUITION;
@@ -78,5 +78,12 @@ export default class ScholarshipAmount {
       default:
         return '(Unknown amount)';
     }
+  }
+
+  intersectsRange(min?: number, max?: number): boolean {
+    return (
+      this.type === AmountType.Unknown ||
+      ((!min || this.max >= min) && (!max || this.min <= max))
+    );
   }
 }

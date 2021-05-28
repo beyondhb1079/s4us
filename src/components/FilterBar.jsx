@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { makeStyles, Grid } from '@material-ui/core';
 import FilterDropDown from './FilterDropdown';
 import AmountFilter from './AmountFilter';
+import GradeLevelFilter from './GradeLevelFilter';
+import qParams from '../lib/QueryParams';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -21,62 +23,62 @@ const majors = {
   ds: 'Data Science',
 };
 
-const grades = {
-  12: 'Highschool Senior',
-  13: 'College Freshman',
-  14: 'College Sophomore',
-  15: 'College Junior',
-  16: 'College Senior',
+const sortOptions = {
+  'deadline.asc': {
+    desc: 'Deadline (Earliest to Latest)',
+    field: 'deadline',
+    dir: 'asc',
+  },
+  'deadline.desc': {
+    desc: 'Deadline (Latest to Earliest)',
+    field: 'deadline',
+    dir: 'desc',
+  },
+  'amount.asc': {
+    desc: 'Amount (Low to High)',
+    field: 'amount.min',
+    dir: 'asc',
+  },
+  'amount.desc': {
+    desc: 'Amount (High to Low)',
+    field: 'amount.max',
+    dir: 'desc',
+  },
 };
 
-const sortingOptions = {
-  deadlineSoon: 'Deadline (Earliest to Latest)',
-  deadlineLatest: 'Deadline (Latest to Earliest)',
-  amountLow: 'Amount (Low to High)',
-  amountHigh: 'Amount (High to Low)',
-};
+const sortItems = Object.fromEntries(
+  Object.entries(sortOptions).map(([k, v]) => [k, v.desc])
+);
 
 export default function FilterBar(props) {
-  const { changeSortBy, changeSortFormat } = props;
+  const { setQueryParam, queryParams } = props;
   const classes = useStyles();
+  const { minAmount, maxAmount } = queryParams;
 
-  function updateSorting(sortingOption) {
-    switch (sortingOption) {
-      case 'deadlineSoon':
-        changeSortBy('deadline');
-        changeSortFormat('asc');
-        break;
-      case 'deadlineLatest':
-        changeSortBy('deadline');
-        changeSortFormat('desc');
-        break;
-      case 'amountLow':
-        changeSortBy('amount.min');
-        changeSortFormat('asc');
-        break;
-      case 'amountHigh':
-        changeSortBy('amount.max');
-        changeSortFormat('desc');
-        break;
-      default:
-    }
+  function updateSortingParams(sortOption) {
+    setQueryParam('sortBy', sortOption);
   }
 
   return (
     <Grid container spacing={2} className={classes.root}>
       <Grid item className={classes.alignText}>
         <FilterDropDown label="Major" items={majors} />
-        <FilterDropDown label="Grade" items={grades} />
-        <AmountFilter />
+        <GradeLevelFilter />
+        <AmountFilter
+          min={minAmount ?? 0}
+          max={maxAmount ?? 0}
+          onMinChange={(e) => setQueryParam(qParams.MIN_AMOUNT, e.target.value)}
+          onMaxChange={(e) => setQueryParam(qParams.MAX_AMOUNT, e.target.value)}
+        />
       </Grid>
       <Grid item className={classes.alignText}>
         Sort by
         <FilterDropDown
           label="Sorting"
-          items={sortingOptions}
-          defaultValue="deadlineSoon"
+          items={sortItems}
+          value={queryParams.sortBy ?? 'deadline.asc'}
           removeNone
-          onChange={updateSorting}
+          onChange={updateSortingParams}
         />
       </Grid>
     </Grid>
@@ -84,6 +86,13 @@ export default function FilterBar(props) {
 }
 
 FilterBar.propTypes = {
-  changeSortBy: PropTypes.func.isRequired,
-  changeSortFormat: PropTypes.func.isRequired,
+  setQueryParam: PropTypes.func.isRequired,
+  queryParams: PropTypes.shape({
+    minAmount: PropTypes.number,
+    maxAmount: PropTypes.number,
+    sortBy: PropTypes.string,
+  }),
+};
+FilterBar.defaultProps = {
+  queryParams: {},
 };

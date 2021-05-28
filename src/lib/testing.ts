@@ -16,18 +16,17 @@ service cloud.firestore {
 `;
 
 export function initializeTestApp(
-  options: { projectId: string },
+  options: { apiKey?: string; projectId?: string },
   rules: string = openRules
 ): firebase.app.App {
   const app = firebase.initializeApp(options);
-  app.firestore().settings({
-    host: 'localhost:8080',
-    ssl: false,
-  });
-  loadFirestoreRules({
-    projectId: options.projectId,
-    rules,
-  });
+  if (options?.projectId) {
+    app.firestore().useEmulator('localhost', 8080);
+    loadFirestoreRules({
+      projectId: options.projectId,
+      rules,
+    });
+  }
   return app;
 }
 

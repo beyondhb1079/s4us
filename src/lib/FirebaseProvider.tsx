@@ -22,9 +22,13 @@ export default function FirebaseProvider(props: {
     if (process.env.NODE_ENV === 'production') {
       firebase.initializeApp(config);
     } else {
-      // TODO (issues/214): Setup auth emulator once supported
-      firebase.initializeApp(config);
-      firebase.firestore().settings({ host: 'localhost:8080', ssl: false });
+      firebase.initializeApp({
+        apiKey: 'fake-api-key',
+        authDomain: 'dreamscholars.org',
+        projectId: 'dreamerscholars',
+      });
+      firebase.firestore().useEmulator('localhost', 8080);
+      firebase.auth().useEmulator('http://localhost:9099/');
     }
   }
   return (

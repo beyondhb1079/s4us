@@ -16,43 +16,40 @@ const newScholarship = {
     max: 0,
   },
 };
-const authenticatedApp = initializeTestApp({
+const authedApp = initializeTestApp({
   projectId: MY_PROJECT_ID,
   auth: { uid: 'alice' },
 });
-const unathenticatedApp = initializeTestApp({
+const unauthedApp = initializeTestApp({
   projectId: MY_PROJECT_ID,
 });
 
-beforeEach(async () => clearFirestoreData({ projectId: MY_PROJECT_ID }));
-afterAll(async () => {
-  await authenticatedApp.delete();
-  await unathenticatedApp.delete();
-});
+beforeEach(() => clearFirestoreData({ projectId: MY_PROJECT_ID }));
+afterAll(() => Promise.all([authedApp.delete(), unauthedApp.delete()]));
 
-test('Can read whether you are signed in or not', async () => {
-  const testDoc = unathenticatedApp
+test('Can read whether you are signed in or not', () => {
+  const testDoc = unauthedApp
     .firestore()
     .collection('scholarships')
     .doc('ASDK91023JUS')
     .get();
-  await assertSucceeds(testDoc);
+  return assertSucceeds(testDoc);
 });
 
-test('does not write to scholarships doc when signed out', async () => {
-  const testDoc = unathenticatedApp
+test('does not write to scholarships doc when signed out', () => {
+  const testDoc = unauthedApp
     .firestore()
     .collection('scholarships')
     .doc('H12HASJD9')
     .set(newScholarship);
-  await assertFails(testDoc);
+  return assertFails(testDoc);
 });
 
-test('allows write to scholarships doc when signed in', async () => {
-  const testDoc = authenticatedApp
+test('allows write to scholarships doc when signed in', () => {
+  const testDoc = authedApp
     .firestore()
     .collection('scholarships')
     .doc('KJ019JSD')
     .set(newScholarship);
-  await assertSucceeds(testDoc);
+  return assertSucceeds(testDoc);
 });

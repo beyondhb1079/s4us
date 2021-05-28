@@ -5,7 +5,15 @@
       "queryScope": "COLLECTION",
       "fields": [
         { "fieldPath": "amount.min", "order": "ASCENDING" },
-        { "fieldPath": "amount.deadline", "order": "ASCENDING" }
+        { "fieldPath": "deadline", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "scholarships",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "authorId", "order": "ASCENDING" },
+        { "fieldPath": "deadline", "order": "ASCENDING" }
       ]
     },
     {
@@ -13,7 +21,7 @@
       "queryScope": "COLLECTION",
       "fields": [
         { "fieldPath": "amount.max", "order": "DESCENDING" },
-        { "fieldPath": "amount.deadline", "order": "ASCENDING" }
+        { "fieldPath": "deadline", "order": "ASCENDING" }
       ]
     }
   ],

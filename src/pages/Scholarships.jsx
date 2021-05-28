@@ -1,26 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import React from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
+import queryString from 'query-string';
 import {
   Button,
   Box,
-  CircularProgress,
   Container,
-  makeStyles,
   Typography,
   Grid,
   useMediaQuery,
+  makeStyles,
 } from '@material-ui/core';
-import queryString from 'query-string';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
 import ScholarshipDetailCard from '../components/ScholarshipDetailCard';
+import qParams from '../lib/QueryParams';
 
-const useStyles = makeStyles((theme) => ({
-  progress: {
-    display: 'block',
-    margin: 'auto',
+const sortOptions = {
+  'deadline.asc': {
+    field: 'deadline',
+    dir: 'asc',
   },
+  'deadline.desc': {
+    field: 'deadline',
+    dir: 'desc',
+  },
+  'amount.asc': {
+    field: 'amount.min',
+    dir: 'asc',
+  },
+  'amount.desc': {
+    field: 'amount.max',
+    dir: 'desc',
+  },
+};
+const DEFAULT_SORT_BY = 'deadline.asc';
+
+const useStyles = makeStyles(() => ({
   resultsArea: {
     display: 'flex',
     flexDirection: 'column',
@@ -29,60 +45,67 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     minHeight: '20vh',
   },
-  loadMoreButton: {
-    margin: theme.spacing(3, 0),
-  },
 }));
 
 function ScholarshipsPage() {
   const classes = useStyles();
-  const [scholarships, setScholarships] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState();
-  const [sortField, setSortField] = useState('deadline');
-  const [sortDir, setSortDir] = useState('asc');
-
-  useEffect(() => {
-    let mounted = true;
-    Scholarships.list({ sortField, sortDir })
-      .then((results) => {
-        if (mounted) setScholarships(results);
-      })
-      .catch((e) => {
-        if (mounted) setError(e);
-      })
-      .finally(() => {
-        if (mounted) setLoading(false);
-      });
-    return () => {
-      mounted = false;
-    };
-  }, [sortDir, sortField]);
-
   const history = useHistory();
   const location = useLocation();
+
   const params = queryString.parse(location.search, { parseNumbers: true });
 
-  // Parse whether an item has been selected
-  let selectedIndex = params.selectedIndex ?? undefined;
-  if (
-    typeof selectedIndex !== 'number' ||
-    selectedIndex < 0 ||
-    selectedIndex >= scholarships.length
-  ) {
-    selectedIndex = undefined;
-  }
-  const setSelectedIndex = (index) => {
-    const newParams = { ...params, selectedIndex: index };
-    if (index === selectedIndex) {
-      delete newParams.selectedIndex;
-    }
-
-    history.push({ search: queryString.stringify(newParams) });
+  const setQueryParam = (index, val) => {
+    history.push({
+      search: queryString.stringify({
+        ...params,
+        [index]: val,
+      }),
+    });
   };
 
+  const pruneQueryParam = (index) => {
+    delete params[index];
+    history.replace({ search: queryString.stringify(params) });
+  };
+
+  if (params.sortBy && !(params.sortBy in sortOptions)) {
+    pruneQueryParam('sortBy');
+  }
+
+  // Parse selectedScholarship
+  // Note: to avoid overcomplicating things we don't keep track of this in the URL.
+  // Users can share a specific scholarship instead.
+  const selectedScholarship = history.location.state?.scholarship;
+  const setSelectedScholarship = (s) =>
+    history.replace({ state: { scholarship: { id: s.id, data: s.data } } });
+  const clearSelectedScholarship = () => history.replace({ state: {} });
+
+  const sortBy = params.sortBy ?? DEFAULT_SORT_BY;
+
+  const sortField = sortOptions[sortBy].field;
+  const sortDir = sortOptions[sortBy].dir;
+
+  const { minAmount, maxAmount } = params;
+
+  if (
+    minAmount !== undefined &&
+    !(Number.isInteger(minAmount) && minAmount > 0)
+  ) {
+    pruneQueryParam(qParams.MIN_AMOUNT);
+  }
+
+  if (
+    maxAmount !== undefined &&
+    !(Number.isInteger(maxAmount) && maxAmount > 0)
+  ) {
+    pruneQueryParam(qParams.MAX_AMOUNT);
+  }
+
+  const listScholarships = () =>
+    Scholarships.list({ sortField, sortDir, minAmount, maxAmount });
+
   const largeScreen = useMediaQuery((theme) => theme.breakpoints.up('sm'));
-  const showDetail = selectedIndex !== undefined;
+  const showDetail = !!selectedScholarship;
   const showList = largeScreen || !showDetail;
   return (
     <Container>
@@ -90,46 +113,29 @@ function ScholarshipsPage() {
         Scholarships
       </Typography>
       {showList ? (
-        <FilterBar changeSortBy={setSortField} changeSortFormat={setSortDir} />
+        <FilterBar queryParams={params} {...{ setQueryParam }} />
       ) : (
-        <Button color="primary" onClick={() => setSelectedIndex(selectedIndex)}>
+        <Button color="primary" onClick={clearSelectedScholarship}>
           Back to results
         </Button>
       )}
       <Box className={classes.resultsArea}>
-        {error?.toString() ||
-          (loading && <CircularProgress className={classes.progress} />) || (
-            <Grid container spacing={3}>
-              {showList && (
-                <Grid item xs={12} md={showDetail ? 6 : 12}>
-                  <ScholarshipList
-                    scholarships={scholarships}
-                    selectedIndex={selectedIndex}
-                    setSelectedIndex={setSelectedIndex}
-                  />
-                  <Button
-                    className={classes.loadMoreButton}
-                    color="primary"
-                    onClick={() =>
-                      // eslint-disable-next-line no-alert
-                      alert('TODO: Issue #94')
-                    }>
-                    Load More
-                  </Button>
-                </Grid>
-              )}
-              {showDetail && (
-                <Grid item xs={12} md={6}>
-                  <ScholarshipDetailCard
-                    scholarship={{
-                      id: scholarships[selectedIndex].id,
-                      data: scholarships[selectedIndex].data,
-                    }}
-                  />
-                </Grid>
-              )}
+        <Grid container spacing={3}>
+          {showList && (
+            <Grid item xs={12} md={showDetail ? 6 : 12}>
+              <ScholarshipList
+                listFn={listScholarships}
+                selectedId={selectedScholarship?.id}
+                onItemSelect={setSelectedScholarship}
+              />
             </Grid>
           )}
+          {showDetail && (
+            <Grid item xs={12} md={6}>
+              <ScholarshipDetailCard scholarship={selectedScholarship} />
+            </Grid>
+          )}
+        </Grid>
       </Box>
     </Container>
   );

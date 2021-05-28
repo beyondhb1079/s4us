@@ -1,26 +1,32 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import firebase from 'firebase';
 import { render, screen } from '@testing-library/react';
+import { initializeTestApp } from '../lib/testing';
 import Header from './Header';
 
-firebase.initializeApp({ apiKey: 'fake-api-key' });
+initializeTestApp({ apiKey: 'fake-api-key' });
 
-test('does not render alert by default', () => {
+// hacky workaround to allow findBy to work
+// TODO: Figure out a cleaner solution.
+window.MutationObserver = require('mutation-observer');
+
+test('does not render alert by default', async () => {
   delete window.location;
   window.location = new URL('https://www.example.com');
 
   render(<Header />, { wrapper: MemoryRouter });
+  await screen.findByText('Login');
 
   const alertElement = screen.queryByText(/This is a preview/i);
   expect(alertElement).not.toBeInTheDocument();
 });
 
-test('renders alert on PR preview URL', () => {
+test('renders alert on PR preview URL', async () => {
   delete window.location;
   window.location = new URL('https://s4us-pr-49.onrender.com/foo');
 
   render(<Header />, { wrapper: MemoryRouter });
+  await screen.findByText('Login');
 
   const alertElement = screen.getByText(/This is a preview/i);
   expect(alertElement).toBeInTheDocument();

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Button, Popover, InputLabel, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
@@ -19,14 +20,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AmountFilter() {
+export default function AmountFilter(props) {
   const classes = useStyles();
+  const { min, max, onMinChange, onMaxChange } = props;
   const [anchorEl, setAnchorEl] = useState(null);
-  const [values, setValues] = useState({ min: 0, max: 0 });
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
-  const handleChange = (index, val) =>
-    setValues({ ...values, [index]: parseInt(val, 10) || '' });
+  const error = max > 0 && max < min;
 
   return (
     <>
@@ -48,8 +48,9 @@ export default function AmountFilter() {
           <Grid item className={classes.filterStyle}>
             <InputLabel className={classes.labelStyle}>Min Amount</InputLabel>
             <AmountTextField
-              value={values.min}
-              onChange={(e) => handleChange('min', e.target.value)}
+              error={error}
+              value={min || ''}
+              onChange={onMinChange}
             />
           </Grid>
           <Grid item className={classes.dashStyle}>
@@ -57,13 +58,17 @@ export default function AmountFilter() {
           </Grid>
           <Grid item className={classes.filterStyle}>
             <InputLabel className={classes.labelStyle}>Max Amount</InputLabel>
-            <AmountTextField
-              value={values.max}
-              onChange={(e) => handleChange('max', e.target.value)}
-            />
+            <AmountTextField value={max || ''} onChange={onMaxChange} />
           </Grid>
         </Grid>
       </Popover>
     </>
   );
 }
+
+AmountFilter.propTypes = {
+  min: PropTypes.number.isRequired,
+  max: PropTypes.number.isRequired,
+  onMinChange: PropTypes.func.isRequired,
+  onMaxChange: PropTypes.func.isRequired,
+};
