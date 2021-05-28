@@ -62,7 +62,6 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
     maxAmount?: number;
   }): Promise<FirestoreModelList<ScholarshipData>> {
     let query: firebase.firestore.Query<ScholarshipData> = this.collection;
-    // TODO(issues/93, issues/94): Support filters and pagination
 
     // Sort by requested field + direction
     if (opts.sortField) {
