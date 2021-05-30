@@ -23,24 +23,23 @@ interface ScholarshipData {
 }
 // tags: PropTypes.arrayOf({ title: PropTypes.string })
 
-export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipData> =
-  {
-    toFirestore: (data: ScholarshipData) => ({
-      ...data,
-      amount: {
-        type: data.amount.type,
-        min: data.amount.min,
-        max: data.amount.max,
-      },
-      deadline: firebase.firestore.Timestamp.fromDate(data.deadline),
-    }),
-    fromFirestore: (snapshot, options) => {
-      const data = snapshot.data(options);
-      const deadline = (data.deadline as firebase.firestore.Timestamp).toDate();
-      const amount = new ScholarshipAmount(data.amount.type, data.amount);
-      return { ...data, amount, deadline } as ScholarshipData;
+export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipData> = {
+  toFirestore: (data: ScholarshipData) => ({
+    ...data,
+    amount: {
+      type: data.amount.type,
+      min: data.amount.min,
+      max: data.amount.max,
     },
-  };
+    deadline: firebase.firestore.Timestamp.fromDate(data.deadline),
+  }),
+  fromFirestore: (snapshot, options) => {
+    const data = snapshot.data(options);
+    const deadline = (data.deadline as firebase.firestore.Timestamp).toDate();
+    const amount = new ScholarshipAmount(data.amount.type, data.amount);
+    return { ...data, amount, deadline } as ScholarshipData;
+  },
+};
 
 type SortDirection = 'asc' | 'desc';
 
