@@ -21,8 +21,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function HomeSection(props) {
   const classes = useStyles();
-  const { alignItems, direction, tab, title, description, buttons, pic } =
-    props;
+  const {
+    alignItems,
+    direction,
+    tab,
+    title,
+    description,
+    buttons,
+    pic,
+  } = props;
 
   return (
     <Container className={classes.root}>
