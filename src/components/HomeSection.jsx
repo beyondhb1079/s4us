@@ -28,7 +28,7 @@ export default function HomeSection(props) {
     title,
     description,
     buttons,
-    pic
+    pic,
   } = props;
 
   return (
