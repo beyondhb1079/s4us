@@ -1,3 +1,6 @@
+/**
+ * @jest-environment node
+ */
 import FirestoreModel from './FirestoreModel';
 
 export default interface FirestoreModelList<E> {

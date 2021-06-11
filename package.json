@@ -30,7 +30,7 @@
     "react-paginate": "^7.0.0",
     "react-router-dom": "^5.2.0",
     "react-router-prop-types": "^1.0.5",
-    "react-scripts": "^3.4.3",
+    "react-scripts": "4.0.3",
     "react-share": "^4.3.1",
     "react-typing-effect": "^2.0.3",
     "reactstrap": "^8.6.0",
@@ -40,7 +40,7 @@
   "scripts": {
     "start": "firebase emulators:exec --import=tmp/ --export-on-exit --ui 'react-scripts start'",
     "build": "react-scripts build",
-    "test": "firebase emulators:exec --only firestore 'react-scripts test --verbose'",
+    "test": "firebase emulators:exec --only firestore 'react-scripts test --verbose --detectOpenHandles'",
     "lint": "eslint --cache . --ext .js,.jsx,.ts,.tsx",
     "eject": "react-scripts eject",
     "prepare": "husky install"
@@ -133,7 +133,7 @@
     "@typescript-eslint/eslint-plugin": "^4.4.0",
     "@typescript-eslint/parser": "^4.4.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^6.8.0",
+    "eslint": "^7.11.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-airbnb-typescript": "^12.0.0",
     "eslint-config-prettier": "^8.1.0",
@@ -152,6 +152,8 @@
     "**/*": "prettier --write --ignore-unknown"
   },
   "resolutions": {
+    "//": "Temporary mitigation for https://github.com/facebook/jest/issues/7780 and https://github.com/firebase/firebase-js-sdk/issues/3096",
+    "react-scripts/**/jest-environment-jsdom": "^25.0.3",
     "react-scripts/**/elliptic": "6.5.4",
     "react-scripts/**/immer": "8.0.1",
     "react-scripts/**/node-forge": "0.10.0",
