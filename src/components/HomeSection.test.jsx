@@ -42,30 +42,24 @@ describe('HomeSection', () => {
     const items = screen.queryByRole('button');
     expect(items).toBe(null);
   });
-    
-    test('render given buttons', async () => {
-        render(
-            <HomeSection
-              title="Topology"
-              description="Math course"
-              buttons={[
-                  <Button
-                    to="/about"
-                    variant="outlined"
-                    color="primary">
-                    Hello
-                  </Button>,
-                  <Button
-                    to="/about"
-                    variant="outlined"
-                    color="primary">
-                    Hello
-                  </Button>,
-              ]}
-              pic="manifold"/>
-        );
-        const items = screen.queryAllByRole('button');
-        expect(items).toHaveLength(2);
-    });
-});
 
+  test('render given buttons', async () => {
+    render(
+      <HomeSection
+        title="Topology"
+        description="Math course"
+        buttons={[
+          <Button to="/about" variant="outlined" color="primary">
+            Hello
+          </Button>,
+          <Button to="/about" variant="outlined" color="primary">
+            Hello
+          </Button>,
+        ]}
+        pic="manifold"
+      />
+    );
+    const items = screen.queryAllByRole('button');
+    expect(items).toHaveLength(2);
+  });
+});
