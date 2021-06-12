@@ -1,9 +1,11 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import HomeSection from './HomeSection';
+import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
 
 describe('HomeSection', () => {
-  test('checks if the title is in the document', () => {
+  test('renders the given title', () => {
     render(
       <HomeSection
         title="Topology"
@@ -16,7 +18,7 @@ describe('HomeSection', () => {
     expect(screen.getByText('Topology')).toBeInTheDocument();
   });
 
-  test('checks if the description is in the document', () => {
+  test('renders given description', () => {
     render(
       <HomeSection
         title="Topology"
@@ -28,7 +30,7 @@ describe('HomeSection', () => {
     expect(screen.getByText('Math course')).toBeInTheDocument();
   });
 
-  test('checks if it renders the given number of buttons', () => {
+  test('renders no buttons by default', () => {
     render(
       <HomeSection
         title="Topology"
@@ -41,4 +43,30 @@ describe('HomeSection', () => {
     const items = screen.queryByRole('button');
     expect(items).toBe(null);
   });
+    
+    test('render given buttons', async () => {
+        render(
+            <HomeSection
+              title="Topology"
+              description="Math course"
+              buttons={[
+                  <Button
+                    to="/about"
+                    variant="outlined"
+                    color="primary">
+                    Hello
+                  </Button>,
+                  <Button
+                    to="/about"
+                    variant="outlined"
+                    color="primary">
+                    Hello
+                  </Button>,
+              ]}
+              pic="manifold"/>
+        );
+        const items = screen.queryAllByRole('button');
+        expect(items).toHaveLength(2);
+    });
 });
+
