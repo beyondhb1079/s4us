@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import HomeSection from './HomeSection';
 import Button from '@material-ui/core/Button';
-import { Link } from 'react-router-dom';
 
 describe('HomeSection', () => {
   test('renders the given title', () => {
