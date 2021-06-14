@@ -25,18 +25,18 @@ export default abstract class FirestoreCollection<T> {
   /** Returns a wrapped query promise that converts the data. */
   protected static list<E>(
     baseQuery: firebase.firestore.Query<E>,
-    lastDoc?: firebase.firestore.QueryDocumentSnapshot<E>,
-    postProcessFilter: (results: FirestoreModel<E>) => boolean = () => true
+    postProcessFilter: (results: FirestoreModel<E>) => boolean = () => true,
+    lastDoc?: firebase.firestore.QueryDocumentSnapshot<E>
   ): Promise<FirestoreModelList<E>> {
-    let query: firebase.firestore.Query<E> = baseQuery.limit(1);
+    let query: firebase.firestore.Query<E> = baseQuery.limit(10);
     if (lastDoc) query = query.startAfter(lastDoc);
 
     return query.get().then((qSnap: firebase.firestore.QuerySnapshot<E>) => ({
       next: () =>
         this.list(
           baseQuery,
-          qSnap.docs[qSnap.docs.length - 1],
-          postProcessFilter
+          postProcessFilter,
+          qSnap.docs[qSnap.docs.length - 1]
         ),
       results: qSnap.docs
         .map((doc) => new FirestoreModel<E>(doc.ref, doc.data()))
