@@ -7,15 +7,18 @@ import AmountType from './AmountType';
 export const MIN_REAL_VALUE = 0;
 export const MAX_REAL_VALUE = 1000000000;
 
-// Next, we need to set unbound max to be greater than max possible real value:
+// Next, we need to set range max to be greater than max possible real value:
+export const RANGE_MIN = MIN_REAL_VALUE;
 export const RANGE_MAX = MAX_REAL_VALUE + 1;
 
-// Next, we need to set full tuition value to be greater than unbound maxes:
+// Next, we need to set full tuition values to be greater than range maxes:
 export const FULL_TUITION = RANGE_MAX + 1;
 
 // Finally, we need to set unknown min/max values such that:
-// - unknown min is greatest of all
-// - unknown max is smallest of all
+// - unknown min is greater than any other value
+// - unknown max is smaller than any other value
+// This allows unknown amount scholarships to appear at the end of results
+// sorted by amount.
 export const UNKNOWN_MIN = FULL_TUITION + 1;
 export const UNKNOWN_MAX = -1;
 
