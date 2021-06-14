@@ -105,7 +105,12 @@ function ScholarshipList({ noResultsNode, listFn }) {
           {(() => {
             if (error) return <Typography>error.toString()</Typography>;
             if (loading)
-              return <CircularProgress className={classes.progress} />;
+              return (
+                <CircularProgress
+                  data-testid="progress"
+                  className={classes.progress}
+                />
+              );
             if (canLoadMore)
               return (
                 <Button color="primary" onClick={loadMore}>
