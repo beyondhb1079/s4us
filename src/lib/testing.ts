@@ -21,10 +21,7 @@ export function initializeTestApp(
 ): firebase.app.App {
   const app = firebase.initializeApp(options);
   if (options?.projectId) {
-    app.firestore().settings({
-      host: 'localhost:8080',
-      ssl: false,
-    });
+    app.firestore().useEmulator('localhost', 8080);
     loadFirestoreRules({
       projectId: options.projectId,
       rules,

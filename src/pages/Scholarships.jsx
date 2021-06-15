@@ -1,13 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import queryString from 'query-string';
-import {
-  CircularProgress,
-  Container,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
-import Button from '@material-ui/core/Button';
+import { Container, Typography } from '@material-ui/core';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
@@ -33,30 +27,13 @@ const sortOptions = {
 };
 const DEFAULT_SORT_BY = 'deadline.asc';
 
-const useStyles = makeStyles((theme) => ({
-  progress: {
-    display: 'block',
-    margin: 'auto',
-  },
-  loadMoreButton: {
-    margin: theme.spacing(3, 0),
-  },
-}));
-
 function ScholarshipsPage() {
-  const classes = useStyles();
-  const [scholarships, setScholarships] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState();
-  const [canLoadMore, setCanLoadMore] = useState(false);
-
   const history = useHistory();
   const location = useLocation();
 
   const params = queryString.parse(location.search, { parseNumbers: true });
 
   const setQueryParam = (index, val) => {
-    setScholarships([]);
     history.push({
       search: queryString.stringify({
         ...params,
@@ -66,7 +43,6 @@ function ScholarshipsPage() {
   };
 
   const pruneQueryParam = (index) => {
-    setScholarships([]);
     delete params[index];
     history.replace({ search: queryString.stringify(params) });
   };
@@ -96,45 +72,8 @@ function ScholarshipsPage() {
     pruneQueryParam(qParams.MAX_AMOUNT);
   }
 
-  const [loadMoreFn, setLoadMoreFn] = useState(() =>
-    Scholarships.list({ sortField, sortDir })
-  );
-
-  const loadMoreScholarships = useCallback(
-    (scholarshipsList) => {
-      let mounted = true;
-      scholarshipsList
-        .then(({ results, next, hasNext }) => {
-          if (!mounted) return;
-          setScholarships((prev) => [
-            ...prev,
-            ...results.filter((s) =>
-              s.data.amount.intersectsRange(minAmount, maxAmount)
-            ),
-          ]);
-
-          setLoadMoreFn(next);
-          setCanLoadMore(hasNext);
-        })
-        .then(() => mounted && setError(null))
-        .catch((e) => mounted && setError(e))
-        .finally(() => mounted && setLoading(false));
-
-      return () => {
-        mounted = false;
-      };
-    },
-    [minAmount, maxAmount]
-  );
-
-  useEffect(() => {
-    if (maxAmount && maxAmount < minAmount) {
-      setError('The minimum amount must be less than the Maximum.');
-      return () => {};
-    }
-    // TODO: Create cancellable promises
-    return loadMoreScholarships(Scholarships.list({ sortField, sortDir }));
-  }, [sortDir, sortField, minAmount, maxAmount, loadMoreScholarships]);
+  const listScholarships = () =>
+    Scholarships.list({ sortField, sortDir, minAmount, maxAmount });
 
   return (
     <Container>
@@ -142,22 +81,7 @@ function ScholarshipsPage() {
         Scholarships
       </Typography>
       <FilterBar queryParams={params} {...{ setQueryParam }} />
-      {error?.toString() ||
-        (loading && <CircularProgress className={classes.progress} />) || (
-          <>
-            <ScholarshipList scholarships={scholarships} />
-            {canLoadMore ? (
-              <Button
-                className={classes.loadMoreButton}
-                color="primary"
-                onClick={() => loadMoreScholarships(loadMoreFn)}>
-                Load More
-              </Button>
-            ) : (
-              'No more results'
-            )}
-          </>
-        )}
+      <ScholarshipList listFn={listScholarships} />
     </Container>
   );
 }

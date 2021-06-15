@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React from 'react';
 import { AddCircle as AddIcon, Inbox as InboxIcon } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 import {
-  CircularProgress,
   Button,
   Container,
   Grid,
@@ -61,38 +60,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UserHome() {
   const classes = useStyles();
-  const [scholarships, setScholarships] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState();
   const user = firebase.auth().currentUser;
 
-  const [loadMoreFn, setLoadMoreFn] = useState(() =>
-    Scholarships.list({ authorId: user.uid })
-  );
-  const [canLoadMore, setCanLoadMore] = useState(false);
-
-  const loadMoreScholarships = useCallback((scholarshipsList) => {
-    let mounted = true;
-    scholarshipsList
-      .then(({ results, next, hasNext }) => {
-        if (!mounted) return;
-        setScholarships((prev) => [...prev, ...results]);
-
-        setLoadMoreFn(next);
-        setCanLoadMore(hasNext);
-      })
-      .then(() => mounted && setError(null))
-      .catch((e) => mounted && setError(e))
-      .finally(() => mounted && setLoading(false));
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  useEffect(
-    () => loadMoreScholarships(Scholarships.list({ authorId: user.uid })),
-    [user.uid, loadMoreScholarships]
-  );
+  const listScholarshipsFn = () => Scholarships.list({ authorId: user.uid });
 
   return (
     <Container>
@@ -138,43 +108,28 @@ export default function UserHome() {
           </Button>
         </Grid>
       </Grid>
-      {error?.toString() || loading ? (
-        <CircularProgress className={classes.progress} />
-      ) : (
-        [
-          scholarships.length === 0 ? (
-            <Grid
-              container
-              component={Paper}
-              variant="outlined"
-              className={classes.noneAddedGrid}>
-              <Grid item>
-                <InboxIcon className={classes.inboxIcon} />
-              </Grid>
-              <Grid item>
-                <Typography variant="h5" gutterButtom>
-                  No Scholarships Added Yet
-                </Typography>
-                <MuiLink component={Link} to="/scholarships/new">
-                  Add Scholarship
-                </MuiLink>
-              </Grid>
+      <ScholarshipList
+        listFn={listScholarshipsFn}
+        noResultsNode={
+          <Grid
+            container
+            component={Paper}
+            variant="outlined"
+            className={classes.noneAddedGrid}>
+            <Grid item>
+              <InboxIcon className={classes.inboxIcon} />
             </Grid>
-          ) : (
-            <>
-              <ScholarshipList scholarships={scholarships} />
-              {canLoadMore && (
-                <Button
-                  className={classes.loadMoreButton}
-                  color="primary"
-                  onClick={() => loadMoreScholarships(loadMoreFn)}>
-                  Load More
-                </Button>
-              )}
-            </>
-          ),
-        ]
-      )}
+            <Grid item>
+              <Typography variant="h5" gutterButtom>
+                No Scholarships Added Yet
+              </Typography>
+              <MuiLink component={Link} to="/scholarships/new">
+                Add Scholarship
+              </MuiLink>
+            </Grid>
+          </Grid>
+        }
+      />
     </Container>
   );
 }

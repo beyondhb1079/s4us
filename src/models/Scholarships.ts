@@ -3,6 +3,7 @@ import ScholarshipAmount from '../types/ScholarshipAmount';
 import FirestoreCollection from './base/FirestoreCollection';
 import FirestoreModelList from './base/FiretoreModelList';
 import ScholarshipEligibility from '../types/ScholarshipEligibility';
+import FirestoreModel from './base/FirestoreModel';
 
 interface ScholarshipData {
   // TODO(https://github.com/beyondhb1079/s4us/issues/56):
@@ -54,12 +55,13 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
    * @param opts list options.
    */
   list(opts: {
+    authorId?: string;
     sortDir?: SortDirection;
     sortField?: string;
-    authorId?: string;
+    minAmount?: number;
+    maxAmount?: number;
   }): Promise<FirestoreModelList<ScholarshipData>> {
     let query: firebase.firestore.Query<ScholarshipData> = this.collection;
-    // TODO(issues/93, issues/94): Support filters and pagination
 
     // Sort by requested field + direction
     if (opts.sortField) {
@@ -73,7 +75,10 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
       query = query.where('authorId', '==', opts.authorId);
     }
 
-    return FirestoreCollection.list(query);
+    const postProcessFilter = (s: FirestoreModel<ScholarshipData>) =>
+      s.data.amount.intersectsRange(opts.minAmount, opts.maxAmount);
+
+    return FirestoreCollection.list(query, postProcessFilter);
   }
 }
 
