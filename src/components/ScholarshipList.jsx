@@ -8,8 +8,6 @@ import {
   Typography,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import { BRAND_NAME } from '../config/constants';
-import ShareDialog from './ShareDialog';
 
 import ScholarshipListCard from './ScholarshipListCard';
 
@@ -26,32 +24,6 @@ const useStyles = makeStyles(() => ({
 
 function ScholarshipList({ noResultsNode, listFn }) {
   const classes = useStyles();
-  const [shareDialogOpen, setShareDialogOpen] = useState(false);
-  const closeShareDialog = () => setShareDialogOpen(false);
-
-  const [shareSiteLink, setShareSiteLink] = React.useState('');
-  const [shareSiteTitle, setShareSiteTitle] = React.useState('');
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-  const shareFn = (id, data) => () => {
-    const title = `${data.amount} - ${data.name} | ${BRAND_NAME}`;
-    const url = `https://${window.location.hostname}/scholarships/${id}`;
-    const text =
-      `${data.amount} - ${data.name} | ${BRAND_NAME}\n` +
-      `${data.deadline.toLocaleDateString()}\n`;
-    if (navigator.share) {
-      navigator
-        .share({ title, url, text })
-        // eslint-disable-next-line no-console
-        .then(() => console.log('Thanks for sharing!'))
-        // eslint-disable-next-line no-console
-        .catch(console.error);
-    } else {
-      setShareSiteLink(url);
-      setShareSiteTitle(title);
-      setShareDialogOpen(true);
-    }
-  };
 
   const [error, setError] = useState();
   const [scholarships, setScholarships] = useState([]);
@@ -123,12 +95,6 @@ function ScholarshipList({ noResultsNode, listFn }) {
           })()}
         </Box>
       </Grid>
-      <ShareDialog
-        open={shareDialogOpen}
-        onClose={closeShareDialog}
-        link={shareSiteLink}
-        title={shareSiteTitle}
-      />
     </Grid>
   );
 }

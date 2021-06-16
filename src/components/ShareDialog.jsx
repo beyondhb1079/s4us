@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useLocation, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Button,
@@ -21,6 +21,7 @@ import {
   TwitterShareButton,
   TwitterIcon,
 } from 'react-share';
+import { BRAND_NAME } from '../config/constants';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,51 +37,52 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ShareDialog(props) {
+export default function ShareDialog() {
+  const location = useLocation();
+  const { showShareDialog, shareTitle, shareURL } = location.state || {
+    showShareDialog: false,
+  };
+
+  const history = useHistory();
+  const closeDialog = () =>
+    history.replace({ state: { showShareDialog: false } });
+
   const classes = useStyles();
-  const { open, onClose, link, title } = props;
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={showShareDialog} onClose={closeDialog}>
       <DialogTitle className={classes.root}>SHARE</DialogTitle>
       <DialogContent className={classes.root}>
         <DialogContentText className={classes.root}>
-          Currently Sharing: {title}
+          Currently Sharing: {`${shareTitle} | ${BRAND_NAME}`}
         </DialogContentText>
-        <EmailShareButton url={link} className={classes.shareIcon}>
+        <EmailShareButton url={shareURL} className={classes.shareIcon}>
           <EmailIcon round />
         </EmailShareButton>
-        <FacebookShareButton url={link} className={classes.shareIcon}>
+        <FacebookShareButton url={shareURL} className={classes.shareIcon}>
           <FacebookIcon round />
         </FacebookShareButton>
-        <TwitterShareButton url={link} className={classes.shareIcon}>
+        <TwitterShareButton url={shareURL} className={classes.shareIcon}>
           <TwitterIcon round />
         </TwitterShareButton>
-        <LinkedinShareButton url={link} className={classes.shareIcon}>
+        <LinkedinShareButton url={shareURL} className={classes.shareIcon}>
           <LinkedinIcon round />
         </LinkedinShareButton>
-        <RedditShareButton url={link} className={classes.shareIcon}>
+        <RedditShareButton url={shareURL} className={classes.shareIcon}>
           <RedditIcon round />
         </RedditShareButton>
         <Typography
           variant="overline"
           component="p"
           className={classes.copyText}>
-          {link}
+          {shareURL}
         </Typography>
         <Button
           color="primary"
-          onClick={() => navigator.clipboard.writeText(link)}>
+          onClick={() => navigator.clipboard.writeText(shareURL)}>
           Copy Link
         </Button>
       </DialogContent>
     </Dialog>
   );
 }
-
-ShareDialog.propTypes = {
-  open: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-  link: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-};

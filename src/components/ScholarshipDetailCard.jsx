@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   Button,
@@ -50,6 +51,8 @@ const useStyles = makeStyles((theme) => ({
 
 // TODO(issues/358): Style this.
 export default function ScholarshipDetailCard({ scholarship }) {
+  const history = useHistory();
+
   const classes = useStyles();
   const {
     name,
@@ -94,9 +97,7 @@ export default function ScholarshipDetailCard({ scholarship }) {
   return (
     <Box>
       <Typography variant="h4">{name}</Typography>
-
       <Typography variant="h5">{organization}</Typography>
-
       <Box className={classes.actionSection}>
         <Button
           component={Link}
@@ -111,7 +112,16 @@ export default function ScholarshipDetailCard({ scholarship }) {
         <Button
           variant="outlined"
           className={classes.shareBtn}
-          startIcon={<Share />}>
+          startIcon={<Share />}
+          onClick={() =>
+            history.replace({
+              state: {
+                showShareDialog: true,
+                shareTitle: `${amount?.toString()} - ${name}`,
+                shareURL: `https://${window.location.hostname}/scholarships/${scholarship.id}`,
+              },
+            })
+          }>
           Share
         </Button>
       </Box>
@@ -123,7 +133,6 @@ export default function ScholarshipDetailCard({ scholarship }) {
         className={classes.description}>
         {description}
       </Typography>
-
       <Box>
         <DetailCardCell
           label="Deadline"
@@ -141,7 +150,6 @@ export default function ScholarshipDetailCard({ scholarship }) {
           bottom
         />
       </Box>
-
       <Box className={classes.propertySection}>
         <Typography
           variant="h6"
@@ -161,7 +169,6 @@ export default function ScholarshipDetailCard({ scholarship }) {
           bottom
         />
       </Box>
-
       <Box className={classes.propertySection}>
         <Typography
           variant="h6"
@@ -184,7 +191,6 @@ export default function ScholarshipDetailCard({ scholarship }) {
               ))}
         </Grid>
       </Box>
-
       <Chip
         component={Link}
         icon={<Info />}
