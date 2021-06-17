@@ -9,7 +9,6 @@ describe('HomeSection', () => {
       <HomeSection
         title="Topology"
         description="Math course"
-        buttons={[]}
         pic="manifold"
       />
     );
@@ -22,7 +21,6 @@ describe('HomeSection', () => {
       <HomeSection
         title="Topology"
         description="Math course"
-        buttons={[]}
         pic="manifold"
       />
     );
