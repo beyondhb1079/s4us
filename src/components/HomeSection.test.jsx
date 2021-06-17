@@ -28,7 +28,7 @@ describe('HomeSection', () => {
     expect(item).toBe(null);
   });
 
-  test('render given buttons', async () => {
+  test('renders given buttons', async () => {
     render(
       <HomeSection
         title="Topology"
