@@ -66,6 +66,36 @@ export default function ScholarshipDetailCard({ scholarship }) {
     eligibility,
   } = scholarship.data;
 
+  const shareDialog = {
+    showShareDialog: true,
+    shareTitle: `${amount?.toString()} - ${name}`,
+    shareURL: `https://${window.location.hostname}/scholarships/${scholarship.id}`,
+  };
+
+  const shareText = `${
+    shareDialog.shareTitle
+  } | ${deadline.toLocaleDateString()}\n`;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+  const shareFn = () => {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: shareDialog.shareTitle,
+          url: shareDialog.shareURL,
+          text: shareText,
+        })
+        // eslint-disable-next-line no-console
+        .then(() => console.log('Thanks for sharing!'))
+        // eslint-disable-next-line no-console
+        .catch(console.error);
+    } else {
+      history.replace({
+        state: { shareDialog },
+      });
+    }
+  };
+
   function DetailCardCell({ label, text, bottom, top }) {
     return (
       <>
@@ -113,15 +143,7 @@ export default function ScholarshipDetailCard({ scholarship }) {
           variant="outlined"
           className={classes.shareBtn}
           startIcon={<Share />}
-          onClick={() =>
-            history.replace({
-              state: {
-                showShareDialog: true,
-                shareTitle: `${amount?.toString()} - ${name}`,
-                shareURL: `https://${window.location.hostname}/scholarships/${scholarship.id}`,
-              },
-            })
-          }>
+          onClick={shareFn}>
           Share
         </Button>
       </Box>

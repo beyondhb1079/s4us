@@ -39,13 +39,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ShareDialog() {
   const location = useLocation();
-  const { showShareDialog, shareTitle, shareURL } = location.state || {
+  const { showShareDialog, shareTitle, shareURL } = location.state
+    ?.shareDialog || {
     showShareDialog: false,
   };
 
   const history = useHistory();
   const closeDialog = () =>
-    history.replace({ state: { showShareDialog: false } });
+    history.replace({
+      state: { shareDialog: { shareTitle, shareURL, showShareDialog: false } },
+    });
 
   const classes = useStyles();
 
