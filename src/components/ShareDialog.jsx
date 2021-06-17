@@ -38,15 +38,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ShareDialog() {
   const location = useLocation();
-  const { showShareDialog, shareTitle, shareURL } = location.state
-    ?.shareDialog || {
-    showShareDialog: false,
-  };
+
+  const showShareDialog = location.state?.showShareDialog ?? false;
+  const shareData = location.state?.shareData ?? {};
+  const { title, url } = shareData;
 
   const history = useHistory();
   const closeDialog = () =>
     history.replace({
-      state: { shareDialog: { shareTitle, shareURL, showShareDialog: false } },
+      state: { shareData },
     });
 
   const classes = useStyles();
@@ -56,32 +56,32 @@ export default function ShareDialog() {
       <DialogTitle className={classes.root}>SHARE</DialogTitle>
       <DialogContent className={classes.root}>
         <DialogContentText className={classes.root}>
-          Currently Sharing: {shareTitle}
+          Currently Sharing: {title}
         </DialogContentText>
-        <EmailShareButton url={shareURL} className={classes.shareIcon}>
+        <EmailShareButton url={url} className={classes.shareIcon}>
           <EmailIcon round />
         </EmailShareButton>
-        <FacebookShareButton url={shareURL} className={classes.shareIcon}>
+        <FacebookShareButton url={url} className={classes.shareIcon}>
           <FacebookIcon round />
         </FacebookShareButton>
-        <TwitterShareButton url={shareURL} className={classes.shareIcon}>
+        <TwitterShareButton url={url} className={classes.shareIcon}>
           <TwitterIcon round />
         </TwitterShareButton>
-        <LinkedinShareButton url={shareURL} className={classes.shareIcon}>
+        <LinkedinShareButton url={url} className={classes.shareIcon}>
           <LinkedinIcon round />
         </LinkedinShareButton>
-        <RedditShareButton url={shareURL} className={classes.shareIcon}>
+        <RedditShareButton url={url} className={classes.shareIcon}>
           <RedditIcon round />
         </RedditShareButton>
         <Typography
           variant="overline"
           component="p"
           className={classes.copyText}>
-          {shareURL}
+          {url}
         </Typography>
         <Button
           color="primary"
-          onClick={() => navigator.clipboard.writeText(shareURL)}>
+          onClick={() => navigator.clipboard.writeText(url)}>
           Copy Link
         </Button>
       </DialogContent>

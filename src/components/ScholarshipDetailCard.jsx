@@ -67,32 +67,24 @@ export default function ScholarshipDetailCard({ scholarship }) {
     eligibility,
   } = scholarship.data;
 
-  const shareDialog = {
-    showShareDialog: true,
-    shareTitle: `${amount?.toString()} - ${name} | ${BRAND_NAME}`,
-    shareURL: `https://${window.location.hostname}/scholarships/${scholarship.id}`,
-  };
-
-  const shareText = `${
-    shareDialog.shareTitle
-  } \n ${deadline?.toLocaleDateString()}\n`;
-
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
   const shareFn = () => {
+    const data = {
+      title: `${amount?.toString()} - ${name} | ${BRAND_NAME}`,
+      text: `${amount?.toString()} - ${name} | ${BRAND_NAME} \n ${deadline?.toLocaleDateString()}\n`,
+      url: `https://${window.location.hostname}/scholarships/${scholarship.id}`,
+    };
+
     if (navigator.share) {
       navigator
-        .share({
-          title: shareDialog.shareTitle,
-          url: shareDialog.shareURL,
-          text: shareText,
-        })
+        .share(data)
         // eslint-disable-next-line no-console
         .then(() => console.log('Thanks for sharing!'))
         // eslint-disable-next-line no-console
         .catch(console.error);
     } else {
       history.replace({
-        state: { shareDialog },
+        state: { showShareDialog: true, shareData: data },
       });
     }
   };
