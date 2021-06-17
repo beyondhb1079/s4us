@@ -74,7 +74,7 @@ export default function ScholarshipDetailCard({ scholarship }) {
 
   const shareText = `${
     shareDialog.shareTitle
-  } | ${deadline.toLocaleDateString()}\n`;
+  } | ${deadline?.toLocaleDateString()}\n`;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
   const shareFn = () => {
