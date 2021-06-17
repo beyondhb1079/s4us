@@ -6,11 +6,7 @@ import HomeSection from './HomeSection';
 describe('HomeSection', () => {
   test('renders the given title', () => {
     render(
-      <HomeSection
-        title="Topology"
-        description="Math course"
-        pic="manifold"
-      />
+      <HomeSection title="Topology" description="Math course" pic="manifold" />
     );
     screen.debug();
     expect(screen.getByText('Topology')).toBeInTheDocument();
@@ -18,11 +14,7 @@ describe('HomeSection', () => {
 
   test('renders given description', () => {
     render(
-      <HomeSection
-        title="Topology"
-        description="Math course"
-        pic="manifold"
-      />
+      <HomeSection title="Topology" description="Math course" pic="manifold" />
     );
     expect(screen.getByText('Math course')).toBeInTheDocument();
   });
