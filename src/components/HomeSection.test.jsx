@@ -48,14 +48,7 @@ describe('HomeSection', () => {
       <HomeSection
         title="Topology"
         description="Math course"
-        buttons={[
-          <Button to="/about" variant="outlined" color="primary">
-            Hello
-          </Button>,
-          <Button to="/about" variant="outlined" color="primary">
-            Hello
-          </Button>,
-        ]}
+        buttons={[<Button>Hello</Button>, <Button>Hello</Button>]}
         pic="manifold"
       />
     );
