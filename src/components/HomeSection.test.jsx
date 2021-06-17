@@ -31,16 +31,11 @@ describe('HomeSection', () => {
 
   test('renders no buttons by default', () => {
     render(
-      <HomeSection
-        title="Topology"
-        description="Math course"
-        buttons={[]}
-        pic="manifold"
-      />
+      <HomeSection title="Topology" description="Math course" pic="manifold" />
     );
     screen.debug();
-    const items = screen.queryByRole('button');
-    expect(items).toBe(null);
+    const item = screen.queryByRole('button');
+    expect(item).toBe(null);
   });
 
   test('render given buttons', async () => {
