@@ -68,6 +68,7 @@ HomeSection.defaultProps = {
   alignItems: 'flex-start',
   direction: 'row',
   tab: '',
+  buttons: '[]',
 };
 
 HomeSection.propTypes = {
