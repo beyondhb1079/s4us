@@ -21,8 +21,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function HomeSection(props) {
   const classes = useStyles();
-  const { alignItems, direction, tab, title, description, buttons, pic } =
-    props;
+  const {
+    alignItems,
+    direction,
+    tab,
+    title,
+    description,
+    buttons,
+    pic,
+  } = props;
 
   return (
     <Container className={classes.root}>
@@ -69,6 +76,6 @@ HomeSection.propTypes = {
   tab: PropTypes.string,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  buttons: PropTypes.arrayOf(PropTypes.element).isRequired,
+  buttons: PropTypes.arrayOf(PropTypes.element),
   pic: PropTypes.string.isRequired,
 };
