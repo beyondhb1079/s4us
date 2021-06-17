@@ -21,7 +21,6 @@ import {
   TwitterShareButton,
   TwitterIcon,
 } from 'react-share';
-import { BRAND_NAME } from '../config/constants';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,7 +56,7 @@ export default function ShareDialog() {
       <DialogTitle className={classes.root}>SHARE</DialogTitle>
       <DialogContent className={classes.root}>
         <DialogContentText className={classes.root}>
-          Currently Sharing: {`${shareTitle} | ${BRAND_NAME}`}
+          Currently Sharing: {shareTitle}
         </DialogContentText>
         <EmailShareButton url={shareURL} className={classes.shareIcon}>
           <EmailIcon round />

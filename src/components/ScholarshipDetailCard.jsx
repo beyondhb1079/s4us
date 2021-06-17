@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core';
 import { Share, Send, Info } from '@material-ui/icons';
 import ScholarshipAmount from '../types/ScholarshipAmount';
+import { BRAND_NAME } from '../config/constants';
 
 const useStyles = makeStyles((theme) => ({
   actionSection: {
@@ -68,13 +69,13 @@ export default function ScholarshipDetailCard({ scholarship }) {
 
   const shareDialog = {
     showShareDialog: true,
-    shareTitle: `${amount?.toString()} - ${name}`,
+    shareTitle: `${amount?.toString()} - ${name} | ${BRAND_NAME}`,
     shareURL: `https://${window.location.hostname}/scholarships/${scholarship.id}`,
   };
 
   const shareText = `${
     shareDialog.shareTitle
-  } | ${deadline?.toLocaleDateString()}\n`;
+  } \n ${deadline?.toLocaleDateString()}\n`;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
   const shareFn = () => {
