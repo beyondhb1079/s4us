@@ -80,7 +80,7 @@ export default class ScholarshipAmount {
     }
   }
 
-  intersectsRange(min: number, max: number): boolean {
+  intersectsRange(min?: number, max?: number): boolean {
     return (
       this.type === AmountType.Unknown ||
       ((!min || this.max >= min) && (!max || this.min <= max))

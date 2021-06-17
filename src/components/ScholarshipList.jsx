@@ -1,12 +1,31 @@
-import React, { useState } from 'react';
-import { Grid } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  makeStyles,
+  Typography,
+} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { BRAND_NAME } from '../config/constants';
 import ShareDialog from './ShareDialog';
 
 import ScholarshipListCard from './ScholarshipListCard';
 
-function ScholarshipList({ scholarships }) {
+const useStyles = makeStyles(() => ({
+  centered: {
+    margin: 'auto',
+    textAlign: 'center',
+  },
+  progress: {
+    display: 'block',
+    margin: 'auto',
+  },
+}));
+
+function ScholarshipList({ noResultsNode, listFn }) {
+  const classes = useStyles();
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const closeShareDialog = () => setShareDialogOpen(false);
 
@@ -34,12 +53,75 @@ function ScholarshipList({ scholarships }) {
     }
   };
 
+  const [error, setError] = useState();
+  const [scholarships, setScholarships] = useState([]);
+  const [loadState, setLoadState] = useState({
+    loading: true,
+    canLoadMore: true,
+    loadMoreFn: listFn,
+  });
+  const { loading, canLoadMore, loadMoreFn } = loadState;
+
+  // Reset scholarships and loading state when listFn changes
+  useEffect(() => {
+    setScholarships([]);
+    setLoadState({
+      loading: true,
+      canLoadMore: true,
+      loadMoreFn: listFn,
+    });
+  }, [listFn]);
+
+  useEffect(() => {
+    let mounted = true;
+    if (loading && canLoadMore) {
+      loadMoreFn()
+        .then(({ results, next, hasNext }) => {
+          if (!mounted) return;
+          setError(null);
+          setScholarships((prev) => [...prev, ...results]);
+          setLoadState({
+            loading: false,
+            canLoadMore: hasNext,
+            loadMoreFn: next,
+          });
+        })
+        .catch((e) => mounted && setError(e));
+    }
+    return () => {
+      mounted = false;
+    };
+  }, [loading, canLoadMore, loadMoreFn]);
+
+  const loadMore = () => setLoadState({ ...loadState, loading: true });
+
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
         {scholarships.map(({ id, data }) => (
           <ScholarshipListCard scholarship={{ id, data }} key={id} />
         ))}
+        <Box className={classes.centered}>
+          {(() => {
+            if (error) return <Typography>error.toString()</Typography>;
+            if (loading)
+              return (
+                <CircularProgress
+                  data-testid="progress"
+                  className={classes.progress}
+                />
+              );
+            if (canLoadMore)
+              return (
+                <Button color="primary" onClick={loadMore}>
+                  Load More
+                </Button>
+              );
+            if (scholarships?.length)
+              return <Typography>End of results</Typography>;
+            return noResultsNode;
+          })()}
+        </Box>
       </Grid>
       <ShareDialog
         open={shareDialogOpen}
@@ -52,10 +134,12 @@ function ScholarshipList({ scholarships }) {
 }
 
 ScholarshipList.propTypes = {
-  scholarships: PropTypes.arrayOf(PropTypes.object),
+  listFn: PropTypes.func,
+  noResultsNode: PropTypes.node,
 };
 ScholarshipList.defaultProps = {
-  scholarships: [],
+  listFn: undefined,
+  noResultsNode: <Typography>No scholarships found</Typography>,
 };
 
 export default ScholarshipList;

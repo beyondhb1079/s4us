@@ -166,3 +166,25 @@ test('scholarships.list - sort by amount.max desc', async () => {
 
   expect(got.results.map(extractName)).toEqual(want.map(extractName));
 });
+
+test('scholarships.list - filters by minAmount', async () => {
+  const want = [fullTuition, fixed5000, range250to1000, rangeMin500, unknown];
+  const got = await Scholarships.list({
+    minAmount: 1000,
+  });
+
+  expect(got.results.map(extractName).sort()).toEqual(
+    want.map(extractName).sort()
+  );
+});
+
+test('scholarships.list - filters by maxAmount', async () => {
+  const want = [rangeMin500, range250to1000, fixed500, rangeTo500, unknown];
+  const got = await Scholarships.list({
+    maxAmount: 500,
+  });
+
+  expect(got.results.map(extractName).sort()).toEqual(
+    want.map(extractName).sort()
+  );
+});

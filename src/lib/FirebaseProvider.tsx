@@ -27,7 +27,7 @@ export default function FirebaseProvider(props: {
         authDomain: 'dreamscholars.org',
         projectId: 'dreamerscholars',
       });
-      firebase.firestore().settings({ host: 'localhost:8080', ssl: false });
+      firebase.firestore().useEmulator('localhost', 8080);
       firebase.auth().useEmulator('http://localhost:9099/');
     }
   }
