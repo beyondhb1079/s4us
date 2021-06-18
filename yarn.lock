@@ -12333,6 +12333,11 @@ react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.1.tgz#5b3531bd76a645a4c9fb6e693ed36419e3301339"
   integrity sha512-NAnt2iGDXohE5LI7uBnLnqvLQMtzhkiAOLXTmv+qnF9Ky7xAPcX8Up/xWIhxvLVGJvuLiNc4xQLtuqDRzb4fSA==
 
+react-js-banner@^0.6.0-beta3:
+  version "0.6.0-beta3"
+  resolved "https://registry.yarnpkg.com/react-js-banner/-/react-js-banner-0.6.0-beta3.tgz#f6f50f247b2f509a1e3a369860ce563dd8943ed5"
+  integrity sha512-GEbT9Ds8xDTwX27CbmjuJRaqHAV+T1k1HMKIM9VdWt5UuPYCw8sJI1uZ22K+pEQ5rZIz78BEyGWFkUpH7V9IXQ==
+
 react-lifecycles-compat@^3.0.0, react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
