@@ -2,10 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import { makeStyles, Typography } from '@material-ui/core';
+import Banner from 'react-js-banner';
 import ScholarshipsMadeSimple from '../components/ScholarshipsMadeSimple';
 import HomeSection from '../components/HomeSection';
 import community from '../img/community.png';
-import Banner from 'react-js-banner';
 
 const useStyles = makeStyles(() => ({
   description: {
