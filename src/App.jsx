@@ -16,6 +16,7 @@ import { BRAND_NAME } from './config/constants';
 import FirebaseProvider from './lib/FirebaseProvider';
 import ProtectedRoute from './components/ProtectedRoute';
 import LoginDialog from './components/LoginDialog';
+import ShareDialog from './components/ShareDialog';
 
 function RouteWithTitle({ path, component, title, guard }) {
   useEffect(() => {
@@ -91,6 +92,7 @@ function App() {
             ))}
           </Switch>
           <LoginDialog />
+          <ShareDialog />
           <Footer />
         </Router>
       </ThemeProvider>
