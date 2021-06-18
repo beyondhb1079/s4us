@@ -5,6 +5,7 @@ import { makeStyles, Typography } from '@material-ui/core';
 import ScholarshipsMadeSimple from '../components/ScholarshipsMadeSimple';
 import HomeSection from '../components/HomeSection';
 import community from '../img/community.png';
+import Banner from 'react-js-banner';
 
 const useStyles = makeStyles(() => ({
   description: {
@@ -16,6 +17,7 @@ function PublicHome() {
   const classes = useStyles();
   return (
     <>
+      <Banner title="Currently, this site is being worked on. So, the website is not 100 percent functional. Thank you." />
       <Typography variant="h2" className={classes.description} gutterBottom>
         Find Scholarships Today
       </Typography>
