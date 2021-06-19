@@ -11,7 +11,7 @@ import NewIcon from '@material-ui/icons/NewReleases';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import DoneIcon from '@material-ui/icons/Done';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { expShowFullProfileMenu } from '../lib/experiments';
+import experiments from '../lib/experiments';
 
 // hacky way to override Menu style
 const StyledMenu = withStyles((theme) => ({
@@ -95,13 +95,13 @@ export default function ProfileDropdown(props) {
           <Typography component="h6" gutterBottom>
             {user.email}
           </Typography>
-          {expShowFullProfileMenu && (
+          {experiments.expShowFullProfileMenu && (
             <a href={manageProfileLink}>Manage Your Profile</a>
           )}
         </Grid>
       </Grid>
       <Divider className={classes.dividerSpacing} />
-      {expShowFullProfileMenu && (
+      {experiments.expShowFullProfileMenu && (
         <>
           {createMenuItem('New', <NewIcon fontSize="medium" />)}
           {createMenuItem('Saved', <BookmarkIcon fontSize="medium" />)}
