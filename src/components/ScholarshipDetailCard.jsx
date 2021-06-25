@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core';
 import { Share, Send, Info } from '@material-ui/icons';
 import ScholarshipAmount from '../types/ScholarshipAmount';
-import { BRAND_NAME } from '../config/constants';
+import { deviceInfo, BRAND_NAME } from '../config/constants';
 
 const useStyles = makeStyles((theme) => ({
   actionSection: {
@@ -88,6 +88,10 @@ export default function ScholarshipDetailCard({ scholarship }) {
       });
     }
   };
+
+  function mailTo() {
+    window.location.href = `mailto:dreamscholars-contact@googlegroups.com?subject=Bug%20Report&body=${deviceInfo}`;
+  }
 
   function DetailCardCell({ label, text, bottom, top }) {
     return (
@@ -207,10 +211,10 @@ export default function ScholarshipDetailCard({ scholarship }) {
         </Grid>
       </Box>
       <Chip
-        component={Link}
         icon={<Info />}
         className={classes.reportBtn}
         label="Report Issue"
+        onClick={mailTo}
       />
     </Box>
   );
