@@ -1,7 +1,7 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
 import { Link } from 'react-router-dom';
-import { BRAND_NAME } from '../config/constants';
+import { BRAND_NAME, SUBSCRIPTION_FORM_URL } from '../config/constants';
 
 function Contact() {
   return (
@@ -27,8 +27,7 @@ function Contact() {
       </p>
       <h3>Subscribe</h3>
       <p>
-        You can subscribe for updates{' '}
-        <a href="https://forms.gle/qCpPA34L7ZNVpGH27">here</a>.
+        You can subscribe for updates <a href={SUBSCRIPTION_FORM_URL}>here</a>.
       </p>
 
       <h3>Reach Out</h3>
