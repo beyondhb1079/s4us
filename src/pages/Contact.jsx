@@ -17,13 +17,18 @@ function Contact() {
       <h3>Found a bug</h3>
       <p>
         If you found a bug you can file it{' '}
-        <a href="https://github.com/beyondhb1079/s4us/issues">here</a> .
+        <a href="https://github.com/beyondhb1079/s4us/issues">here</a>.
       </p>
 
       <h3>Learn About Us</h3>
       <p>
         You can learn more about {BRAND_NAME} and the developers{' '}
-        <Link to="/about">here</Link> .
+        <Link to="/about">here</Link>.
+      </p>
+      <h3>Subscribe</h3>
+      <p>
+        You can subscribe for updates{' '}
+        <a href="https://forms.gle/qCpPA34L7ZNVpGH27">here</a>.
       </p>
 
       <h3>Reach Out</h3>
