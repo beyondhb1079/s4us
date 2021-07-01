@@ -5,12 +5,12 @@ name: Audit
 on:
   pull_request:
     branches: [main]
-#     paths: ['yarn.lock']
+    paths: ['yarn.lock']
 
 jobs:
   audit:
     runs-on: ubuntu-latest
-    name: Ensure audit report is not worse than before
+    name: No new vulnerabilities
     steps:
       - name: Setup node.js
         uses: actions/setup-node@v2-beta
