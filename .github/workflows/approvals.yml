@@ -7,8 +7,8 @@ on:
 jobs:
   autoapprove-dependabot:
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]'
-    name: Autoapprove dependabot changes
+#     if: github.actor == 'dependabot[bot]'
+    name: Approve dependabot changes
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
