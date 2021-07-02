@@ -7,7 +7,7 @@ on:
 jobs:
   autoapprove-dependabot:
     runs-on: ubuntu-latest
-#     if: github.actor == 'dependabot[bot]'
+    if: github.actor == 'dependabot[bot]'
     name: Approve dependabot changes
     steps:
       - name: Checkout the repo
@@ -46,7 +46,7 @@ jobs:
                   event,
                 });
               });
-  
+
   dismiss-stale-approvals:
     runs-on: ubuntu-latest
     if: github.actor != 'dependabot[bot]'
