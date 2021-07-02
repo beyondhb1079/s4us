@@ -1,0 +1,52 @@
+name: 'Dependabot'
+
+on:
+  pull_request_target:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  autoapprove:
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+    name: Autoapprove
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+      - name: Autoapprove
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const owner = context.payload.repository.owner.login;
+            const repo = context.payload.repository.name;
+            const pull_number = context.payload.pull_request.number;
+
+            github.pulls
+              .listReviews({ owner, repo, pull_number })
+              .then((response) =>
+                response.data
+                  .filter(r => r.state == 'APPROVED')
+                  .filter(r => r.user.login = 'github-actions[bot]')
+              )
+              .then((approvals) => {
+                if (approvals.length !== 0) {
+                  console.log('I already approved this PR! :)');
+                  return;
+                }
+
+                // Approve and leave a comment for the human reviewer.
+                const body =
+                  'Dear human reviewer, copy and paste this to auto merge: \n' +
+                  '@dependabot squash and merge';
+                const event = 'APPROVE';
+                return github.pulls.createReview({
+                  owner,
+                  repo,
+                  pull_number,
+                  body,
+                  event,
+                });
+              });
