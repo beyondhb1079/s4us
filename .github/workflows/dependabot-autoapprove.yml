@@ -39,7 +39,7 @@ jobs:
                   'Dear human reviewer, copy and paste this to auto merge: \n' +
                   '@dependabot squash and merge';
                 const event = 'APPROVE';
-                await github.pulls.createReview({
+                return github.pulls.createReview({
                   owner,
                   repo,
                   pull_number,
