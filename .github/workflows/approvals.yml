@@ -21,20 +21,20 @@ jobs:
           fi
       - name: Auto dismiss on major changes
         if: ${{ env.merge_commit != 'true' }}
-        uses: actions/github-script@v3
+        uses: actions/github-script@v4
         with:
           script: |
-            // Get all the approvals
-            const reviews = await github.pulls.listReviews({
-              owner: context.payload.repository.owner.login,
-              repo: context.payload.repository.name,
-              pull_number: context.payload.pull_request.number
-            });
+            const owner = context.payload.repository.owner.login;
+            const repo = context.payload.repository.name;
+            const pull_number = context.payload.pull_request.number;
 
-            const approvals = reviews.data
-              .filter(r => r.user.type == 'User')
-              .filter(r => r.state == 'APPROVED')
-              .sort((a, b) => a.id - b.id);
+            const approvals = await github.pulls
+              .listReviews({ owner, repo, pull_number })
+              .then((response) =>
+                response.data
+                  .filter(r => r.user.type == 'User' && r.state == 'APPROVED')
+                  .sort((a, b) => a.id - b.id)
+              );
 
             if (approvals.length == 0) {
               console.log('No approvals given.');
@@ -113,11 +113,10 @@ jobs:
 
             console.log(message);
 
-            github.pulls.dismissReview({
-              owner: context.payload.repository.owner.login,
-              repo: context.payload.repository.name,
-              pull_number: context.payload.pull_request.number,
+            await github.pulls.dismissReview({
+              owner,
+              repo,
+              pull_number,
               review_id: approval.id,
               message
             });
-          github-token: ${{github.token}}

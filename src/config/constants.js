@@ -19,6 +19,4 @@ export const featureRequest =
   "Is%20your%20feature%20request%20related%20to%20a%20problem%3F%20Please%20Describe%3A%0A%0ADescribe%20the%20solution%20you'd%20like%3A%0A%0ADescribe%20alternatives%20you've%20considered%3A%0A%0AAdditional%20content%3A";
 
 export const BRAND_NAME = 'DreamScholars';
-const params = new URLSearchParams(window.location.search);
-export const EXPERIMENT_SHOW_FULL_PROFILE_MENU =
-  params.get('experimentShowFullProfileMenu') === '1';
+export const SUBSCRIPTION_FORM_URL = 'https://forms.gle/qCpPA34L7ZNVpGH27';

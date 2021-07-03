@@ -1,7 +1,12 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
 import { Link } from 'react-router-dom';
-import { deviceInfo, featureRequest, BRAND_NAME } from '../config/constants';
+import {
+  deviceInfo,
+  featureRequest,
+  BRAND_NAME,
+  SUBSCRIPTION_FORM_URL,
+} from '../config/constants';
 
 function Contact() {
   return (
@@ -35,7 +40,11 @@ function Contact() {
       <h3>Learn About Us</h3>
       <p>
         You can learn more about {BRAND_NAME} and the developers{' '}
-        <Link to="/about">here</Link> .
+        <Link to="/about">here</Link>.
+      </p>
+      <h3>Subscribe</h3>
+      <p>
+        You can subscribe for updates <a href={SUBSCRIPTION_FORM_URL}>here</a>.
       </p>
 
       <h3>Reach Out</h3>
