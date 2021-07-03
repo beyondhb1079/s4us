@@ -12388,9 +12388,9 @@ react-fast-compare@^2.0.1:
   integrity sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
 
 react-firebaseui@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/react-firebaseui/-/react-firebaseui-5.0.1.tgz#deaaf015ec4a0142ad3360952c3cfaa2b33f07d1"
-  integrity sha512-sn3PnSvWgdUY2+tr1gxZUIS/TKLDfOTMHNBseZlORU64PEQpXMfyt7nfgqCykSuiN80gRed9JUrv+iVdLq6XgA==
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/react-firebaseui/-/react-firebaseui-5.0.2.tgz#7496bc595454abdd3e1c10612bb3446cb125181a"
+  integrity sha512-ZfIWfRKlKAkMwEI+41rMPkwdNEQEfBLXV6TVaN5er3cdwMD0vQecWt6YOE4/v1ELziaj10NNRB8yB42V56QBMQ==
   dependencies:
     firebaseui "^4.8.0"
 
