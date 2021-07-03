@@ -1,6 +1,7 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
 import { Link } from 'react-router-dom';
+import getMailToLink from '../lib/Mailto';
 import {
   deviceInfo,
   featureRequest,
@@ -22,8 +23,7 @@ function Contact() {
       <h3>Found a bug</h3>
       <p>
         If you found a bug you can file it{' '}
-        <a
-          href={`mailto:dreamscholars-contact@googlegroups.com?subject=Bug%20Report&body=${deviceInfo}`}>
+        <a href={getMailToLink({ subject: 'Bug Report', body: deviceInfo })}>
           here.
         </a>
       </p>
@@ -32,7 +32,10 @@ function Contact() {
       <p>
         You can suggest an idea for this project{' '}
         <a
-          href={`mailto:dreamscholars-contact@googlegroups.com?subject=Feature%20Request&body=${featureRequest}`}>
+          href={getMailToLink({
+            subject: 'Feature Request',
+            body: featureRequest,
+          })}>
           here.
         </a>
       </p>
