@@ -21,7 +21,7 @@
     "formik": "^2.2.6",
     "prop-types": "^15.7.2",
     "prop-types-exact": "^1.2.0",
-    "query-string": "^6.13.8",
+    "query-string": "^7.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-firebaseui": "^5.0.1",
