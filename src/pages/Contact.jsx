@@ -53,7 +53,11 @@ function Contact() {
       <h3>Reach Out</h3>
       <p>
         We are happy to answer any of your questions. You can email us{' '}
-        <a href="mailto:dreamscholars-contact@googlegroups.com?subject=Feature&body=">
+        <a
+          href={getMailToLink({
+            subject: 'Outreach',
+            body: 'Please describe the purpose of your outreach below.\n',
+          })}>
           here
         </a>{' '}
         and we&apos;ll be in touch as soon as possible.
