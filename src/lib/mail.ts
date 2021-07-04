@@ -38,8 +38,10 @@ export const reportIssue =
 export const featureRequest = 'Please describe your feature request.';
 
 export function emailTemplate(device: string, template: string): string {
-  return `---------- DO NOT EDIT THIS SECTION ----------
-${device}---------------------------------------------------------------
+  return `${template}
 
-${template}`;
+
+
+---------------------------------------------------------------
+${device}---------------------------------------------------------------`;
 }
