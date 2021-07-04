@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   Button,
@@ -12,7 +12,7 @@ import {
   Divider,
 } from '@material-ui/core';
 import { Share, Send, Info } from '@material-ui/icons';
-import { genMailToLink, bugReport } from '../lib/mail';
+import { genMailToLink } from '../lib/mail';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import { BRAND_NAME } from '../config/constants';
 
@@ -54,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
 // TODO(issues/358): Style this.
 export default function ScholarshipDetailCard({ scholarship }) {
   const history = useHistory();
+  const location = useLocation();
 
   const classes = useStyles();
   const {
@@ -66,6 +67,7 @@ export default function ScholarshipDetailCard({ scholarship }) {
     tags,
     states,
     eligibility,
+    authorEmail,
   } = scholarship.data;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
@@ -210,8 +212,9 @@ export default function ScholarshipDetailCard({ scholarship }) {
       <Chip
         component={Link}
         href={genMailToLink({
-          subject: 'Report Scholarship Issue',
-          body: bugReport,
+          subject: `Report Issue for ${name}`,
+          bcc: authorEmail,
+          body: `Please describe the issue for the scholarship located at https://${window.location.hostname}${location.pathname}:`,
         })}
         icon={<Info />}
         className={classes.reportBtn}
@@ -226,6 +229,7 @@ ScholarshipDetailCard.propTypes = {
     id: PropTypes.string.isRequired,
     data: PropTypes.shape({
       name: PropTypes.string,
+      authorEmail: PropTypes.string,
       organization: PropTypes.string,
       amount: PropTypes.instanceOf(ScholarshipAmount),
       description: PropTypes.string,

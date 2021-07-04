@@ -1,7 +1,13 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
 import { Link } from 'react-router-dom';
-import { genMailToLink, bugReport, featureRequest } from '../lib/mail';
+import {
+  genMailToLink,
+  deviceInfo,
+  reportIssue,
+  featureRequest,
+  emailTemplate,
+} from '../lib/mail';
 import { BRAND_NAME, SUBSCRIPTION_FORM_URL } from '../config/constants';
 
 function Contact() {
@@ -18,7 +24,11 @@ function Contact() {
       <h3>Found a bug</h3>
       <p>
         If you found a bug you can file it{' '}
-        <a href={genMailToLink({ subject: 'Bug Report', body: bugReport })}>
+        <a
+          href={genMailToLink({
+            subject: 'Bug Report',
+            body: emailTemplate(deviceInfo, reportIssue),
+          })}>
           here.
         </a>
       </p>
@@ -29,7 +39,7 @@ function Contact() {
         <a
           href={genMailToLink({
             subject: 'Feature Request',
-            body: featureRequest,
+            body: emailTemplate(deviceInfo, featureRequest),
           })}>
           here.
         </a>

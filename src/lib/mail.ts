@@ -18,28 +18,28 @@ interface MailToParams {
 }
 
 const teamEmail = 'dreamscholars-contact@googlegroups.com';
+
 export function genMailToLink(params: MailToParams): string {
   return `mailto:${teamEmail}?${queryString.stringify(params)}`;
 }
 
-const mobileInfo = `
-Device Type: ${deviceType}
+const mobileInfo = `Device Type: ${deviceType}
 Vendor: ${mobileVendor}
 Model: ${mobileModel}`;
 
-export const bugReport = `
----------- DO NOT EDIT THIS SECTION ----------
-OS: ${osName}
-OSVersion: ${osVersion} 
+export const deviceInfo = `OS: ${osName}
+OS Version: ${osVersion} 
 Browser: ${browserName}
 Browser Version: ${fullBrowserVersion}
-${isMobile ? mobileInfo : ''}
----------------------------------------------------------------
-Describe the bug:
-Steps to reproduce the behavior:
-Description of what you expected to happen:`;
+${isMobile ? mobileInfo : ''}`;
 
-export const featureRequest = `
-Is your feature request related to a problem? Please Describe:Describe the solution you'd like:
-Describe alternatives you've considered:
-Additional content:`;
+export const reportIssue =
+  'Describe the issue in detail, including steps to reproduce and expected behavior.';
+export const featureRequest = 'Please describe your feature request.';
+
+export function emailTemplate(device: string, template: string): string {
+  return `---------- DO NOT EDIT THIS SECTION ----------
+${device}---------------------------------------------------------------
+
+${template}`;
+}
