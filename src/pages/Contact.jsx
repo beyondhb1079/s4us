@@ -1,13 +1,8 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
 import { Link } from 'react-router-dom';
-import getMailToLink from '../lib/Mailto';
-import {
-  deviceInfo,
-  featureRequest,
-  BRAND_NAME,
-  SUBSCRIPTION_FORM_URL,
-} from '../config/constants';
+import { genMailToLink, bugReport, featureRequest } from '../lib/mail';
+import { BRAND_NAME, SUBSCRIPTION_FORM_URL } from '../config/constants';
 
 function Contact() {
   return (
@@ -23,7 +18,7 @@ function Contact() {
       <h3>Found a bug</h3>
       <p>
         If you found a bug you can file it{' '}
-        <a href={getMailToLink({ subject: 'Bug Report', body: deviceInfo })}>
+        <a href={genMailToLink({ subject: 'Bug Report', body: bugReport })}>
           here.
         </a>
       </p>
@@ -32,7 +27,7 @@ function Contact() {
       <p>
         You can suggest an idea for this project{' '}
         <a
-          href={getMailToLink({
+          href={genMailToLink({
             subject: 'Feature Request',
             body: featureRequest,
           })}>
@@ -54,7 +49,7 @@ function Contact() {
       <p>
         We are happy to answer any of your questions. You can email us{' '}
         <a
-          href={getMailToLink({
+          href={genMailToLink({
             subject: 'Outreach',
             body: 'Please describe the purpose of your outreach below.\n',
           })}>

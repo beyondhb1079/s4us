@@ -12,9 +12,9 @@ import {
   Divider,
 } from '@material-ui/core';
 import { Share, Send, Info } from '@material-ui/icons';
-import getMailToLink from '../lib/Mailto';
+import { genMailToLink, bugReport } from '../lib/mail';
 import ScholarshipAmount from '../types/ScholarshipAmount';
-import { deviceInfo, BRAND_NAME } from '../config/constants';
+import { BRAND_NAME } from '../config/constants';
 
 const useStyles = makeStyles((theme) => ({
   actionSection: {
@@ -209,7 +209,10 @@ export default function ScholarshipDetailCard({ scholarship }) {
       </Box>
       <Chip
         component={Link}
-        href={getMailToLink({ subject: 'Bug Report', body: deviceInfo })}
+        href={genMailToLink({
+          subject: 'Report Scholarship Issue',
+          body: bugReport,
+        })}
         icon={<Info />}
         className={classes.reportBtn}
         label="Report Issue"
