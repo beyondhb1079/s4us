@@ -12,6 +12,7 @@ import {
   Divider,
 } from '@material-ui/core';
 import { Share, Send, Info } from '@material-ui/icons';
+import { genMailToLink, withDeviceInfo } from '../lib/mail';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import { BRAND_NAME } from '../config/constants';
 
@@ -65,14 +66,17 @@ export default function ScholarshipDetailCard({ scholarship }) {
     tags,
     states,
     eligibility,
+    authorEmail,
   } = scholarship.data;
+
+  const URL = `https://${window.location.hostname}/scholarships/${scholarship.id}`;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
   const shareFn = () => {
     const data = {
       title: `${amount?.toString()} - ${name} | ${BRAND_NAME}`,
       text: `${amount?.toString()} - ${name} | ${BRAND_NAME} \n ${deadline?.toLocaleDateString()}\n`,
-      url: `https://${window.location.hostname}/scholarships/${scholarship.id}`,
+      url: URL,
     };
 
     if (navigator.share) {
@@ -208,6 +212,13 @@ export default function ScholarshipDetailCard({ scholarship }) {
       </Box>
       <Chip
         component={Link}
+        href={genMailToLink({
+          subject: `Report Issue for ${name}`,
+          bcc: authorEmail,
+          body: withDeviceInfo(
+            `Please describe the issue for the scholarship located at ${URL}.`
+          ),
+        })}
         icon={<Info />}
         className={classes.reportBtn}
         label="Report Issue"
@@ -221,6 +232,7 @@ ScholarshipDetailCard.propTypes = {
     id: PropTypes.string.isRequired,
     data: PropTypes.shape({
       name: PropTypes.string,
+      authorEmail: PropTypes.string,
       organization: PropTypes.string,
       amount: PropTypes.instanceOf(ScholarshipAmount),
       description: PropTypes.string,
