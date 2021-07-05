@@ -37,11 +37,11 @@ export const reportIssue =
   'Describe the issue in detail, including steps to reproduce and expected behavior.';
 export const featureRequest = 'Please describe your feature request.';
 
-export function emailTemplate(device: string, template: string): string {
-  return `${template}
+export function withDeviceInfo(body: string): string {
+  return `${body}
 
 
 
 ---------------------------------------------------------------
-${device}---------------------------------------------------------------`;
+${deviceInfo}---------------------------------------------------------------`;
 }

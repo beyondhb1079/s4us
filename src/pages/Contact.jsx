@@ -3,10 +3,9 @@ import Container from '@material-ui/core/Container';
 import { Link } from 'react-router-dom';
 import {
   genMailToLink,
-  deviceInfo,
   reportIssue,
   featureRequest,
-  emailTemplate,
+  withDeviceInfo,
 } from '../lib/mail';
 import { BRAND_NAME, SUBSCRIPTION_FORM_URL } from '../config/constants';
 
@@ -27,7 +26,7 @@ function Contact() {
         <a
           href={genMailToLink({
             subject: 'Bug Report',
-            body: emailTemplate(deviceInfo, reportIssue),
+            body: withDeviceInfo(reportIssue),
           })}>
           here.
         </a>
@@ -39,7 +38,7 @@ function Contact() {
         <a
           href={genMailToLink({
             subject: 'Feature Request',
-            body: emailTemplate(deviceInfo, featureRequest),
+            body: withDeviceInfo(featureRequest),
           })}>
           here.
         </a>
