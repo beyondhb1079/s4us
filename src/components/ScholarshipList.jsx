@@ -8,7 +8,6 @@ import {
   Typography,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import ShareDialog from './ShareDialog';
 
 import ScholarshipListCard from './ScholarshipListCard';
 
@@ -23,19 +22,8 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function ScholarshipList({
-  listFn,
-  reload,
-  noResultsNode,
-  selectedId,
-  onItemSelect,
-}) {
+function ScholarshipList({ listFn, noResultsNode, selectedId, onItemSelect }) {
   const classes = useStyles();
-  const [shareDialogOpen, setShareDialogOpen] = useState(false);
-  const closeShareDialog = () => setShareDialogOpen(false);
-
-  const [shareSiteLink] = useState('');
-  const [shareSiteTitle] = useState('');
 
   const [error, setError] = useState();
   const [scholarships, setScholarships] = useState([]);
@@ -111,19 +99,12 @@ function ScholarshipList({
           })()}
         </Box>
       </Grid>
-      <ShareDialog
-        open={shareDialogOpen}
-        onClose={closeShareDialog}
-        link={shareSiteLink}
-        title={shareSiteTitle}
-      />
     </Grid>
   );
 }
 
 ScholarshipList.propTypes = {
   listFn: PropTypes.func,
-  reload: PropTypes.bool,
   noResultsNode: PropTypes.node,
   selectedId: PropTypes.number,
   onItemSelect: PropTypes.func,
@@ -131,7 +112,6 @@ ScholarshipList.propTypes = {
 
 ScholarshipList.defaultProps = {
   listFn: undefined,
-  reload: false,
   noResultsNode: <Typography>No scholarships found</Typography>,
   selectedId: undefined,
   onItemSelect: () => {},

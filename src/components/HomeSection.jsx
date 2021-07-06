@@ -61,6 +61,7 @@ HomeSection.defaultProps = {
   alignItems: 'flex-start',
   direction: 'row',
   tab: '',
+  buttons: [],
 };
 
 HomeSection.propTypes = {
@@ -69,6 +70,6 @@ HomeSection.propTypes = {
   tab: PropTypes.string,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  buttons: PropTypes.arrayOf(PropTypes.element).isRequired,
+  buttons: PropTypes.arrayOf(PropTypes.element),
   pic: PropTypes.string.isRequired,
 };
