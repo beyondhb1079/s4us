@@ -9,7 +9,7 @@ test('getField - default', () => {
 });
 
 test('getField - amount asc', () => {
-  expect(getField(AMOUNT_ASC)).toBe('amoiunt.min');
+  expect(getField(AMOUNT_ASC)).toBe('amount.min');
 });
 
 test('getField - amount desc', () => {
