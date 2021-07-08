@@ -152,26 +152,7 @@
     "**/*": "prettier --write --ignore-unknown"
   },
   "resolutions": {
-    "react-scripts/**/browserslist": "^4.16.5",
-    "react-scripts/**/css-what": "^5.0.1",
-    "react-scripts/**/dns-packet": "^1.3.2",
-    "react-scripts/**/elliptic": "6.5.4",
-    "react-scripts/**/glob-parent": "^5.1.2",
-    "react-scripts/**/hosted-git-info": "^2.8.9",
-    "react-scripts/**/immer": "8.0.1",
     "//": "Temporary mitigation for https://github.com/facebook/jest/issues/7780 and https://github.com/firebase/firebase-js-sdk/issues/3096",
-    "react-scripts/**/jest-environment-jsdom": "^25.0.3",
-    "**/json-ptr": "^2.1.0",
-    "react-scripts/**/node-forge": "0.10.0",
-    "react-scripts/**/normalize-url": "^4.5.1",
-    "firebase-tools/**/normalize-url": "^4.5.1",
-    "react-scripts/**/postcss": "^8.2.10",
-    "react-scripts/**/ssri": "8.0.1",
-    "**/url-parse": "^1.5.0",
-    "firebase-tools/**/ws": "^7.4.6",
-    "react-scripts/**/ws": "^7.4.6",
-    "react-scripts/**/y18n": "4.0.1",
-    "firebase-tools/**/netmask": "2.0.1",
-    "**/lodash": "^4.17.21"
+    "react-scripts/**/jest-environment-jsdom": "^25.0.3"
   }
 }
