@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import queryString from 'query-string';
 import {
@@ -72,13 +72,17 @@ function ScholarshipsPage() {
     pruneQueryParam('sortBy');
   }
 
-  // Parse selectedScholarship
+  // Parse selected scholarship
   // Note: to avoid overcomplicating things we don't keep track of this in the URL.
   // Users can share a specific scholarship instead.
-  const selectedScholarship = history.location.state?.scholarship;
-  const setSelectedScholarship = (s) =>
-    history.replace({ state: { scholarship: { id: s.id, data: s.data } } });
-  const clearSelectedScholarship = () => history.replace({ state: {} });
+  const selected = history.location.state?.scholarship;
+  const setSelected = (s) =>
+    history.replace({
+      state: {
+        scholarship: { id: s.id, data: s.data },
+      },
+    });
+  const clearSelected = () => history.replace({ state: {} });
 
   const sortBy = params.sortBy ?? DEFAULT_SORT_BY;
 
@@ -101,11 +105,13 @@ function ScholarshipsPage() {
     pruneQueryParam(qParams.MAX_AMOUNT);
   }
 
-  const listScholarships = () =>
-    Scholarships.list({ sortField, sortDir, minAmount, maxAmount });
+  const listScholarships = useCallback(
+    () => Scholarships.list({ sortField, sortDir, minAmount, maxAmount }),
+    [sortField, sortDir, minAmount, maxAmount]
+  );
 
   const largeScreen = useMediaQuery((theme) => theme.breakpoints.up('sm'));
-  const showDetail = !!selectedScholarship;
+  const showDetail = !!selected;
   const showList = largeScreen || !showDetail;
   return (
     <Container>
@@ -115,7 +121,7 @@ function ScholarshipsPage() {
       {showList ? (
         <FilterBar queryParams={params} {...{ setQueryParam }} />
       ) : (
-        <Button color="primary" onClick={clearSelectedScholarship}>
+        <Button color="primary" onClick={clearSelected}>
           Back to results
         </Button>
       )}
@@ -125,14 +131,16 @@ function ScholarshipsPage() {
             <Grid item xs={12} md={showDetail ? 6 : 12}>
               <ScholarshipList
                 listFn={listScholarships}
-                selectedId={selectedScholarship?.id}
-                onItemSelect={setSelectedScholarship}
+                selectedId={selected?.id}
+                onItemSelect={(s) =>
+                  s.id === selected?.id ? clearSelected() : setSelected(s)
+                }
               />
             </Grid>
           )}
           {showDetail && (
             <Grid item xs={12} md={6}>
-              <ScholarshipDetailCard scholarship={selectedScholarship} />
+              <ScholarshipDetailCard scholarship={selected} />
             </Grid>
           )}
         </Grid>
