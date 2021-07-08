@@ -9,6 +9,7 @@ import {
   Grid,
   useMediaQuery,
   makeStyles,
+  Hidden,
 } from '@material-ui/core';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
@@ -95,9 +96,9 @@ function ScholarshipsPage() {
     [sortField, sortDir, minAmount, maxAmount]
   );
 
-  const largeScreen = useMediaQuery((theme) => theme.breakpoints.up('sm'));
+  const smallScreen = useMediaQuery((theme) => theme.breakpoints.down('xs'));
   const showDetail = !!selected;
-  const showList = largeScreen || !showDetail;
+  const showList = !smallScreen || !selected;
   return (
     <Container>
       <Typography variant="h3" component="h1" style={{ textAlign: 'center' }}>
@@ -112,8 +113,8 @@ function ScholarshipsPage() {
       )}
       <Box className={classes.resultsArea}>
         <Grid container spacing={3}>
-          {showList && (
-            <Grid item xs={12} md={showDetail ? 6 : 12}>
+          <Hidden xsDown={showDetail}>
+            <Grid item xs={showDetail ? 6 : 12}>
               <ScholarshipList
                 listFn={listScholarships}
                 selectedId={selected?.id}
@@ -122,12 +123,10 @@ function ScholarshipsPage() {
                 }
               />
             </Grid>
-          )}
-          {showDetail && (
-            <Grid item xs={12} md={6}>
-              <ScholarshipDetailCard scholarship={selected} />
-            </Grid>
-          )}
+          </Hidden>
+          <Grid item xs>
+            {selected && <ScholarshipDetailCard scholarship={selected} />}
+          </Grid>
         </Grid>
       </Box>
     </Container>

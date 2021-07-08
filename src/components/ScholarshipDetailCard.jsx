@@ -54,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
 // TODO(issues/358): Style this.
 export default function ScholarshipDetailCard({ scholarship }) {
   const history = useHistory();
+
   const classes = useStyles();
   const {
     name,
