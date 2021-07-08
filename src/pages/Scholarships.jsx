@@ -15,26 +15,11 @@ import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
 import ScholarshipDetailCard from '../components/ScholarshipDetailCard';
 import qParams from '../lib/QueryParams';
-
-const sortOptions = {
-  'deadline.asc': {
-    field: 'deadline',
-    dir: 'asc',
-  },
-  'deadline.desc': {
-    field: 'deadline',
-    dir: 'desc',
-  },
-  'amount.asc': {
-    field: 'amount.min',
-    dir: 'asc',
-  },
-  'amount.desc': {
-    field: 'amount.max',
-    dir: 'desc',
-  },
-};
-const DEFAULT_SORT_BY = 'deadline.asc';
+import sortOptions, {
+  DEADLINE_ASC,
+  getDir,
+  getField,
+} from '../lib/sortOptions';
 
 const useStyles = makeStyles(() => ({
   resultsArea: {
@@ -84,10 +69,10 @@ function ScholarshipsPage() {
     });
   const clearSelected = () => history.replace({ state: {} });
 
-  const sortBy = params.sortBy ?? DEFAULT_SORT_BY;
+  const sortBy = params.sortBy ?? DEADLINE_ASC;
 
-  const sortField = sortOptions[sortBy].field;
-  const sortDir = sortOptions[sortBy].dir;
+  const sortField = getField(sortBy);
+  const sortDir = getDir(sortBy);
 
   const { minAmount, maxAmount } = params;
 
