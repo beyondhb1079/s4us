@@ -75,7 +75,7 @@ function ScholarshipList({ noResultsNode, listFn }) {
         ))}
         <Box className={classes.centered}>
           {(() => {
-            if (error) return <Typography>error.toString()</Typography>;
+            if (error) return <Typography>{error.toString()}</Typography>;
             if (loading)
               return (
                 <CircularProgress

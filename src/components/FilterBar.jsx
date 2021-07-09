@@ -5,6 +5,7 @@ import FilterDropDown from './FilterDropdown';
 import AmountFilter from './AmountFilter';
 import GradeLevelFilter from './GradeLevelFilter';
 import qParams from '../lib/QueryParams';
+import sortOptions, { DEADLINE_ASC } from '../lib/sortOptions';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -23,41 +24,10 @@ const majors = {
   ds: 'Data Science',
 };
 
-const sortOptions = {
-  'deadline.asc': {
-    desc: 'Deadline (Earliest to Latest)',
-    field: 'deadline',
-    dir: 'asc',
-  },
-  'deadline.desc': {
-    desc: 'Deadline (Latest to Earliest)',
-    field: 'deadline',
-    dir: 'desc',
-  },
-  'amount.asc': {
-    desc: 'Amount (Low to High)',
-    field: 'amount.min',
-    dir: 'asc',
-  },
-  'amount.desc': {
-    desc: 'Amount (High to Low)',
-    field: 'amount.max',
-    dir: 'desc',
-  },
-};
-
-const sortItems = Object.fromEntries(
-  Object.entries(sortOptions).map(([k, v]) => [k, v.desc])
-);
-
 export default function FilterBar(props) {
   const { setQueryParam, queryParams } = props;
   const classes = useStyles();
   const { minAmount, maxAmount } = queryParams;
-
-  function updateSortingParams(sortOption) {
-    setQueryParam('sortBy', sortOption);
-  }
 
   return (
     <Grid container spacing={2} className={classes.root}>
@@ -75,10 +45,10 @@ export default function FilterBar(props) {
         Sort by
         <FilterDropDown
           label="Sorting"
-          items={sortItems}
-          value={queryParams.sortBy ?? 'deadline.asc'}
+          items={sortOptions}
+          value={queryParams.sortBy ?? DEADLINE_ASC}
           removeNone
-          onChange={updateSortingParams}
+          onChange={(option) => setQueryParam('sortBy', option)}
         />
       </Grid>
     </Grid>
