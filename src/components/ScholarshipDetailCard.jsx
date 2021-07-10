@@ -97,7 +97,7 @@ export default function ScholarshipDetailCard({ scholarship }) {
     return (
       <>
         {top && <Divider light className={classes.divider} />}
-        <Grid container justify="space-between">
+        <Grid container justifyContent="space-between">
           <Grid item xs={12} sm>
             <Typography component="p">{label}</Typography>
           </Grid>

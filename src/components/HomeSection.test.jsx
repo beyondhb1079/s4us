@@ -8,7 +8,6 @@ describe('HomeSection', () => {
     render(
       <HomeSection title="Topology" description="Math course" pic="manifold" />
     );
-    screen.debug();
     expect(screen.getByText('Topology')).toBeInTheDocument();
   });
 
@@ -23,7 +22,6 @@ describe('HomeSection', () => {
     render(
       <HomeSection title="Topology" description="Math course" pic="manifold" />
     );
-    screen.debug();
     const item = screen.queryByRole('button');
     expect(item).toBe(null);
   });
