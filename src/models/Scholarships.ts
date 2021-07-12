@@ -13,14 +13,13 @@ interface ScholarshipData {
   description: string;
   deadline: Date;
   website: string;
-  school?: string;
-  year?: string;
-  authorId?: string;
-  authorEmail?: string;
-  states?: String[];
-  eligibility?: ScholarshipEligibility;
   organization?: string;
   tags?: string[];
+  requirements?: ScholarshipEligibility;
+  author?: {
+    authorId?: string;
+    authorEmail?: string;
+  };
 }
 // tags: PropTypes.arrayOf({ title: PropTypes.string })
 
@@ -72,7 +71,7 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
       query = query.orderBy('deadline', 'asc');
     }
     if (opts.authorId) {
-      query = query.where('authorId', '==', opts.authorId);
+      query = query.where('author.authorId', '==', opts.authorId);
     }
 
     const postProcessFilter = (s: FirestoreModel<ScholarshipData>) =>

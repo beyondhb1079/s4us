@@ -60,15 +60,17 @@ test('converter.toFirestore', () => {
     description: 'description',
     deadline: new Date('2019-02-20'),
     website: 'mit.com',
-    school: 'MIT',
     year: 'college freshman',
-    authorId: 'Bob Ross',
-    authorEmail: 'bobross37@gmail.com',
-    states: ['California', 'Washington'],
-    eligibility: {
-      GPA: 4.0,
+    requirements: {
+      gpa: 4.0,
       ethnicities: ['Latino', 'African American'],
       majors: ['Computer Science', 'Software Engineering'],
+      states: ['California', 'Washington'],
+      schools: ['MIT'],
+    },
+    author: {
+      authorId: 'Bob Ross',
+      authorEmail: 'bobross37@gmail.com',
     },
   };
 
@@ -90,15 +92,17 @@ test('converter.fromFirestore', () => {
     description: 'description',
     deadline: firebase.firestore.Timestamp.fromDate(new Date('2019-02-20')),
     website: 'mit.com',
-    school: 'MIT',
     year: 'college freshman',
-    authorId: 'Bob Ross',
-    authorEmail: 'bobross37@gmail.com',
-    states: ['California', 'Washington'],
-    eligibility: {
-      GPA: 4.0,
+    requirements: {
+      gpa: 4.0,
       ethnicities: ['Latino', 'African American'],
       majors: ['Computer Science', 'Software Engineering'],
+      states: ['California', 'Washington'],
+      schools: ['MIT'],
+    },
+    author: {
+      authorId: 'Bob Ross',
+      authorEmail: 'bobross37@gmail.com',
     },
   };
   const snapshot = {

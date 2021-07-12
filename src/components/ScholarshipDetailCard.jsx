@@ -64,9 +64,8 @@ export default function ScholarshipDetailCard({ scholarship }) {
     website,
     description,
     tags,
-    states,
-    eligibility,
-    authorEmail,
+    requirements,
+    author,
   } = scholarship.data;
 
   const URL = `https://${window.location.hostname}/scholarships/${scholarship.id}`;
@@ -165,7 +164,7 @@ export default function ScholarshipDetailCard({ scholarship }) {
         />
         <DetailCardCell
           label="State"
-          text={states?.join(', ') || 'All'}
+          text={requirements?.states?.join(', ') || 'All'}
           bottom
         />
       </Box>
@@ -176,15 +175,15 @@ export default function ScholarshipDetailCard({ scholarship }) {
           className={classes.sectionHeader}>
           Eligibility Requirements
         </Typography>
-        <DetailCardCell label="GPA" text={eligibility?.gpa || 'None'} bottom />
+        <DetailCardCell label="GPA" text={requirements?.gpa || 'None'} bottom />
         <DetailCardCell
           label="Demographic"
-          text={eligibility?.ethnicities?.join(', ') || 'All'}
+          text={requirements?.ethnicities?.join(', ') || 'All'}
           bottom
         />
         <DetailCardCell
           label="Majors"
-          text={eligibility?.majors?.join(', ') || 'All'}
+          text={requirements?.majors?.join(', ') || 'All'}
           bottom
         />
       </Box>
@@ -214,7 +213,7 @@ export default function ScholarshipDetailCard({ scholarship }) {
         component={Link}
         href={genMailToLink({
           subject: `Report Issue for ${name}`,
-          bcc: authorEmail,
+          bcc: author?.authorEmail,
           body: withDeviceInfo(
             `Please describe the issue for the scholarship located at ${URL}.`
           ),
@@ -232,7 +231,6 @@ ScholarshipDetailCard.propTypes = {
     id: PropTypes.string.isRequired,
     data: PropTypes.shape({
       name: PropTypes.string,
-      authorEmail: PropTypes.string,
       organization: PropTypes.string,
       amount: PropTypes.instanceOf(ScholarshipAmount),
       description: PropTypes.string,
@@ -244,11 +242,15 @@ ScholarshipDetailCard.propTypes = {
           title: PropTypes.string,
         })
       ),
-      states: PropTypes.arrayOf(PropTypes.string),
-      eligibility: PropTypes.shape({
+      author: PropTypes.shape({
+        authorEmail: PropTypes.string,
+        authorId: PropTypes.string,
+      }),
+      requirements: PropTypes.shape({
         gpa: PropTypes.number,
         ethnicities: PropTypes.arrayOf(PropTypes.string),
         majors: PropTypes.arrayOf(PropTypes.string),
+        states: PropTypes.arrayOf(PropTypes.string),
       }),
     }).isRequired,
   }).isRequired,
