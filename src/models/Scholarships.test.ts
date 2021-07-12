@@ -60,13 +60,13 @@ test('converter.toFirestore', () => {
     description: 'description',
     deadline: new Date('2019-02-20'),
     website: 'mit.com',
-    year: 'college freshman',
     requirements: {
       gpa: 4.0,
       ethnicities: ['Latino', 'African American'],
       majors: ['Computer Science', 'Software Engineering'],
       states: ['California', 'Washington'],
       schools: ['MIT'],
+      grades: ['College Freshman'],
     },
     author: {
       authorId: 'Bob Ross',
@@ -92,13 +92,13 @@ test('converter.fromFirestore', () => {
     description: 'description',
     deadline: firebase.firestore.Timestamp.fromDate(new Date('2019-02-20')),
     website: 'mit.com',
-    year: 'college freshman',
     requirements: {
       gpa: 4.0,
       ethnicities: ['Latino', 'African American'],
       majors: ['Computer Science', 'Software Engineering'],
       states: ['California', 'Washington'],
       schools: ['MIT'],
+      grades: ['College Freshman'],
     },
     author: {
       authorId: 'Bob Ross',
