@@ -15,7 +15,11 @@ export default abstract class FirestoreCollection<T> {
   }
 
   new(data?: T): Model<T> {
-    return new FirestoreModel<T>(this.collection.doc(), data ?? ({} as T));
+    let Data = data;
+    if (data != null)
+      Data = { ...data, dateAdded: new Date(), lastModified: new Date() };
+
+    return new FirestoreModel<T>(this.collection.doc(), Data ?? ({} as T));
   }
 
   id(id: string): Model<T> {

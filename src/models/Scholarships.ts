@@ -35,19 +35,24 @@ export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipDat
         max: data.amount.max,
       },
       deadline: firebase.firestore.Timestamp.fromDate(data.deadline),
-      dateAdded: firebase.firestore.Timestamp.fromDate(new Date()),
-      lastModified: firebase.firestore.Timestamp.fromDate(new Date()),
+      dateAdded: data.dateAdded
+        ? firebase.firestore.Timestamp.fromDate(data.dateAdded)
+        : null,
+      lastModified: data.lastModified
+        ? firebase.firestore.Timestamp.fromDate(data.lastModified)
+        : null,
     }),
     fromFirestore: (snapshot, options) => {
       const data = snapshot.data(options);
       const deadline = (data.deadline as firebase.firestore.Timestamp).toDate();
-      const dateAdded = (
-        data.dateAdded as firebase.firestore.Timestamp
-      ).toDate();
-      const lastModified = (
-        data.lastModified as firebase.firestore.Timestamp
-      ).toDate();
+      const dateAdded = data.dateAdded
+        ? (data.dateAdded as firebase.firestore.Timestamp).toDate()
+        : null;
+      const lastModified = data.lastModified
+        ? (data.lastModified as firebase.firestore.Timestamp).toDate()
+        : null;
       const amount = new ScholarshipAmount(data.amount.type, data.amount);
+
       return {
         ...data,
         amount,

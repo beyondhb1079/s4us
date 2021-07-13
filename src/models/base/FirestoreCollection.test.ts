@@ -10,6 +10,8 @@ const app = initializeTestApp({ projectId: 'fs-collection-test' });
 interface NameData {
   first: string;
   last: string;
+  dateAdded?: Date;
+  lastModified?: Date;
 }
 
 const converter: firebase.firestore.FirestoreDataConverter<NameData> = {
@@ -31,7 +33,11 @@ test('new() returns model with data and generated id', () => {
   const got = names.new(data);
 
   expect(got.id.length).toBeGreaterThan(0);
-  expect(got.data).toBe(data);
+  expect(got.data).toEqual({
+    ...data,
+    dateAdded: got.data.dateAdded,
+    lastModified: got.data.lastModified,
+  });
 });
 
 test('id() returns model with id', () => {
