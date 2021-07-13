@@ -69,8 +69,8 @@ test('converter.toFirestore', () => {
       grades: ['College Freshman'],
     },
     author: {
-      authorId: 'Bob Ross',
-      authorEmail: 'bobross37@gmail.com',
+      id: 'Bob Ross',
+      email: 'bobross37@gmail.com',
     },
   };
 
@@ -79,6 +79,8 @@ test('converter.toFirestore', () => {
   expect(got).toEqual({
     ...data,
     deadline: firebase.firestore.Timestamp.fromDate(data.deadline),
+    dateAdded: got.dateAdded,
+    lastModified: got.lastModified,
   });
 });
 
@@ -92,6 +94,8 @@ test('converter.fromFirestore', () => {
     description: 'description',
     deadline: firebase.firestore.Timestamp.fromDate(new Date('2019-02-20')),
     website: 'mit.com',
+    dateAdded: firebase.firestore.Timestamp.fromDate(new Date('2019-01-20')),
+    lastModified: firebase.firestore.Timestamp.fromDate(new Date('2019-01-23')),
     requirements: {
       gpa: 4.0,
       ethnicities: ['Latino', 'African American'],
@@ -101,8 +105,8 @@ test('converter.fromFirestore', () => {
       grades: ['College Freshman'],
     },
     author: {
-      authorId: 'Bob Ross',
-      authorEmail: 'bobross37@gmail.com',
+      id: 'Bob Ross',
+      email: 'bobross37@gmail.com',
     },
   };
   const snapshot = {
@@ -114,7 +118,12 @@ test('converter.fromFirestore', () => {
     {}
   );
 
-  expect(got).toEqual({ ...snapdata, deadline: new Date('2019-02-20') });
+  expect(got).toEqual({
+    ...snapdata,
+    deadline: new Date('2019-02-20'),
+    dateAdded: got.dateAdded,
+    lastModified: got.lastModified,
+  });
 });
 
 const extractName = (s: { data: { name: string } }) => s.data.name;

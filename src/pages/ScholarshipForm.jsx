@@ -46,8 +46,8 @@ function ScholarshipForm() {
       Scholarships.new({
         ...values,
         author: {
-          authorId: user?.uid,
-          authorEmail: user?.email,
+          id: user?.uid,
+          email: user?.email,
         },
       })
         .save()

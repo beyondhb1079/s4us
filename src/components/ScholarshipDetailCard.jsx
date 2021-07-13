@@ -213,7 +213,7 @@ export default function ScholarshipDetailCard({ scholarship }) {
         component={Link}
         href={genMailToLink({
           subject: `Report Issue for ${name}`,
-          bcc: author?.authorEmail,
+          bcc: author?.email,
           body: withDeviceInfo(
             `Please describe the issue for the scholarship located at ${URL}.`
           ),
@@ -243,8 +243,8 @@ ScholarshipDetailCard.propTypes = {
         })
       ),
       author: PropTypes.shape({
-        authorEmail: PropTypes.string,
-        authorId: PropTypes.string,
+        email: PropTypes.string,
+        id: PropTypes.string,
       }),
       requirements: PropTypes.shape({
         gpa: PropTypes.number,

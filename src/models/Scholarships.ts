@@ -15,10 +15,12 @@ interface ScholarshipData {
   website: string;
   organization?: string;
   tags?: string[];
+  dateAdded: Date;
+  lastModified: Date;
   requirements?: ScholarshipEligibility;
   author?: {
-    authorId?: string;
-    authorEmail?: string;
+    id?: string;
+    email?: string;
   };
 }
 // tags: PropTypes.arrayOf({ title: PropTypes.string })
@@ -33,12 +35,26 @@ export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipDat
         max: data.amount.max,
       },
       deadline: firebase.firestore.Timestamp.fromDate(data.deadline),
+      dateAdded: firebase.firestore.Timestamp.fromDate(new Date()),
+      lastModified: firebase.firestore.Timestamp.fromDate(new Date()),
     }),
     fromFirestore: (snapshot, options) => {
       const data = snapshot.data(options);
       const deadline = (data.deadline as firebase.firestore.Timestamp).toDate();
+      const dateAdded = (
+        data.dateAdded as firebase.firestore.Timestamp
+      ).toDate();
+      const lastModified = (
+        data.lastModified as firebase.firestore.Timestamp
+      ).toDate();
       const amount = new ScholarshipAmount(data.amount.type, data.amount);
-      return { ...data, amount, deadline } as ScholarshipData;
+      return {
+        ...data,
+        amount,
+        deadline,
+        dateAdded,
+        lastModified,
+      } as ScholarshipData;
     },
   };
 
@@ -71,7 +87,7 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
       query = query.orderBy('deadline', 'asc');
     }
     if (opts.authorId) {
-      query = query.where('author.authorId', '==', opts.authorId);
+      query = query.where('author.id', '==', opts.authorId);
     }
 
     const postProcessFilter = (s: FirestoreModel<ScholarshipData>) =>
