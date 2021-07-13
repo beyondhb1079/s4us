@@ -15,8 +15,8 @@ interface ScholarshipData {
   website: string;
   organization?: string;
   tags?: string[];
-  dateAdded: Date;
-  lastModified: Date;
+  dateAdded?: Date;
+  lastModified?: Date;
   requirements?: ScholarshipEligibility;
   author?: {
     id?: string;
