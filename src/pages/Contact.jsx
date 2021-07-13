@@ -14,12 +14,6 @@ function Contact() {
     <Container>
       <h1 style={{ textAlign: 'center' }}>Contact Us</h1>
 
-      <h3>Check Our FAQ</h3>
-      <p>
-        You can check our <Link to="/">FAQ</Link> to see if others have the same
-        question as you.
-      </p>
-
       <h3>Found a bug</h3>
       <p>
         If you found a bug you can file it{' '}
