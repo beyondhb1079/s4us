@@ -17,6 +17,10 @@ import ScholarshipAmount from '../types/ScholarshipAmount';
 import { BRAND_NAME } from '../config/constants';
 
 const useStyles = makeStyles((theme) => ({
+  detailSection: {
+    backgroundColor: '#fff',
+    padding: theme.spacing(3),
+  },
   actionSection: {
     margin: `${theme.spacing(3)}px 0`,
     padding: `${theme.spacing(1)}px 0`,
@@ -122,7 +126,7 @@ export default function ScholarshipDetailCard({ scholarship }) {
   };
 
   return (
-    <Box>
+    <Box className={classes.detailSection}>
       <Typography variant="h4">{name}</Typography>
       <Typography variant="h5">{organization}</Typography>
       <Box className={classes.actionSection}>
