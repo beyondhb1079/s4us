@@ -6,6 +6,7 @@ import {
   Link as MuiLink,
   Grid,
   Snackbar,
+  useMediaQuery,
 } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 
@@ -14,10 +15,11 @@ import HeaderNavMenu from './HeaderNavMenu';
 
 const useStyles = makeStyles((theme) => ({
   header: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    justifyContent: 'space-between',
     alignItems: 'center',
+    flexGrow: 1,
+    justifyContent: 'space-between',
+    paddingBottom: theme.spacing(3),
+    paddingTop: theme.spacing(3),
     [theme.breakpoints.down('sm')]: {
       justifyContent: 'space-around',
     },
@@ -40,10 +42,11 @@ function Header() {
   }
 
   const classes = useStyles();
+  const smallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   return (
     <Container>
       {alert}
-      <Grid container className={classes.header} spacing={3}>
+      <Grid container className={classes.header} spacing={smallScreen ? 2 : 3}>
         <Grid item>
           <MuiLink component={Link} to="/" variant="h4" underline="none">
             {BRAND_NAME.toUpperCase()}

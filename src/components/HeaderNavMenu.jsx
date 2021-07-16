@@ -7,6 +7,7 @@ import {
   Grid,
   Zoom,
   Avatar,
+  useMediaQuery,
 } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import ProfileMenu from './ProfileDropdown';
@@ -21,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
   },
   authItem: {
     minWidth: '100px',
+  },
+  avatar: {
+    margin: 'auto',
   },
 }));
 
@@ -48,8 +52,9 @@ function HeaderNavMenu() {
   const showProfileMenu = (event) => setAnchorEl(event.currentTarget);
   const closeProfileMenu = () => setAnchorEl(null);
 
+  const smScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   return (
-    <Grid container spacing={3} className={classes.menu}>
+    <Grid container spacing={smScreen ? 2 : 3} className={classes.menu}>
       {Object.entries(links).map(([title, link]) => (
         <Grid item key={title}>
           <MuiLink component={Link} to={link} className={classes.menuItem}>
@@ -61,7 +66,17 @@ function HeaderNavMenu() {
         {!loading && (
           <Zoom in>
             {isSignedIn ? (
-              <Avatar src={currentUser.photoURL} onClick={showProfileMenu} />
+              <>
+                <Avatar
+                  src={currentUser.photoURL}
+                  onClick={showProfileMenu}
+                  className={classes.avatar}
+                />
+                <ProfileMenu
+                  anchorEl={anchorEl}
+                  handleClose={closeProfileMenu}
+                />
+              </>
             ) : (
               <Button
                 variant="contained"
@@ -73,9 +88,6 @@ function HeaderNavMenu() {
               </Button>
             )}
           </Zoom>
-        )}
-        {isSignedIn && (
-          <ProfileMenu anchorEl={anchorEl} handleClose={closeProfileMenu} />
         )}
       </Grid>
     </Grid>

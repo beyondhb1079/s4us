@@ -1,20 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, Grid } from '@material-ui/core';
+import { Grid, makeStyles, Typography } from '@material-ui/core';
 import FilterDropDown from './FilterDropdown';
 import AmountFilter from './AmountFilter';
 import GradeLevelFilter from './GradeLevelFilter';
 import qParams from '../lib/QueryParams';
 import sortOptions, { DEADLINE_ASC } from '../lib/sortOptions';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     justifyContent: 'space-between',
   },
-  alignText: {
-    display: 'flex',
+  rightSide: {
     alignItems: 'center',
+    display: 'flex',
+  },
+  sortByText: {
+    margin: theme.spacing(1),
   },
 }));
 
@@ -31,7 +34,7 @@ export default function FilterBar(props) {
 
   return (
     <Grid container spacing={2} className={classes.root}>
-      <Grid item className={classes.alignText}>
+      <Grid item>
         <FilterDropDown label="Major" items={majors} />
         <GradeLevelFilter />
         <AmountFilter
@@ -41,8 +44,8 @@ export default function FilterBar(props) {
           onMaxChange={(e) => setQueryParam(qParams.MAX_AMOUNT, e.target.value)}
         />
       </Grid>
-      <Grid item className={classes.alignText}>
-        Sort by
+      <Grid item className={classes.rightSide}>
+        <Typography className={classes.sortByText}>Sort by</Typography>
         <FilterDropDown
           label="Sorting"
           items={sortOptions}
