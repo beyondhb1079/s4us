@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { CssBaseline, ThemeProvider } from '@material-ui/core';
 import Footer from './components/Footer';
-import Header from './components/Header';
+import Header from './components/ViewController';
 import Home from './pages/Home';
 import ScholarshipDetails from './pages/ScholarshipDetails';
 import Scholarships from './pages/Scholarships';
