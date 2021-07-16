@@ -73,32 +73,14 @@ const team = [
 function About() {
   return (
     <Container>
-      <h1 style={{ textAlign: 'center' }}>About {BRAND_NAME}</h1>
-      <h2>Scholarship Search With {BRAND_NAME}</h2>
+      <h3>Meet the Team</h3>
+      <h1>For and by the undocu community.</h1>
       <p>
-        Est elit eu mollit reprehenderit enim nisi ea velit mollit dolore.
-        Tempor exercitation ullamco tempor occaecat ad ex velit labore excepteur
-        eiusmod minim. Enim id aliqua irure veniam est irure culpa ea deseru.
-        Ullamco laboris ea ut cupidatat non velit mollit ea ullamco eiu. Enim
-        amet officia fugiat dolore ullamco consequat laboris culpa.
+        Meet the team behind DreamScholars. We are a group of life long learners
+        who are passionate about technology and community upliftment. The
+        project arose from our own struggles as students and lack of resources
+        for our community.
       </p>
-      <h2>Our History</h2>
-      <p>
-        Et dolor ex pariatur ex voluptate commodo voluptate culpa commodo
-        pariatur magna occaecat. Mollit fugiat ad exercitation enim. Eu pariatur
-        id ut mollit do sunt proident consequat exercitation est. Voluptate
-        cillum tempor elit proident. Esse culpa eiusmod irure aute qui nulla.
-        Reprehenderit enim aute commodo cupidatat ut ipsum ea minim magna velit.
-      </p>
-      <h2>How {BRAND_NAME} Works</h2>
-      <p>
-        Laboris amet nostrud amet anim fugiat deserunt ad laboris dolore sint
-        eiusmod. In cupidatat amet eu excepteur reprehenderit quis enim id velit
-        labore duis culpa. Ex culpa occaecat velit consequat eu. Labore eiusmod
-        pariatur occaecat aliqua reprehenderit laboris. Officia qui ad do magna
-        excepteur proident laborum ea laborum consectetur aliqua pariatur.
-      </p>
-      <h2>Meet the Team</h2>
       <Grid container justify="flex-start" alignItems="stretch" spacing={3}>
         {team.map(({ name, img, description }) => (
           <Grid item key={name} xs={12} sm={6} md={4}>
@@ -106,17 +88,13 @@ function About() {
           </Grid>
         ))}
       </Grid>
-      <h2>Apply for Scholarships today</h2>
-      <p>
-        Laborum aliqua labore nulla non consequat mollit nostrud quis commodo
-        tempor labore irure.
-      </p>
+      <h2>Looking for Scholarships?</h2>
       <Button
         component={Link}
         to="/scholarships"
         variant="contained"
         color="primary">
-        Start Your Search
+        Browse Scholarships
       </Button>
     </Container>
   );
