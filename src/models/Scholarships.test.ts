@@ -60,15 +60,17 @@ test('converter.toFirestore', () => {
     description: 'description',
     deadline: new Date('2019-02-20'),
     website: 'mit.com',
-    school: 'MIT',
-    year: 'college freshman',
-    authorId: 'Bob Ross',
-    authorEmail: 'bobross37@gmail.com',
-    states: ['California', 'Washington'],
-    eligibility: {
-      GPA: 4.0,
+    requirements: {
+      gpa: 4.0,
       ethnicities: ['Latino', 'African American'],
       majors: ['Computer Science', 'Software Engineering'],
+      states: ['California', 'Washington'],
+      schools: ['MIT'],
+      grades: ['College Freshman'],
+    },
+    author: {
+      id: 'Bob Ross',
+      email: 'bobross37@gmail.com',
     },
   };
 
@@ -77,6 +79,8 @@ test('converter.toFirestore', () => {
   expect(got).toEqual({
     ...data,
     deadline: firebase.firestore.Timestamp.fromDate(data.deadline),
+    dateAdded: got.dateAdded,
+    lastModified: got.lastModified,
   });
 });
 
@@ -90,15 +94,19 @@ test('converter.fromFirestore', () => {
     description: 'description',
     deadline: firebase.firestore.Timestamp.fromDate(new Date('2019-02-20')),
     website: 'mit.com',
-    school: 'MIT',
-    year: 'college freshman',
-    authorId: 'Bob Ross',
-    authorEmail: 'bobross37@gmail.com',
-    states: ['California', 'Washington'],
-    eligibility: {
-      GPA: 4.0,
+    dateAdded: firebase.firestore.Timestamp.fromDate(new Date('2019-01-20')),
+    lastModified: firebase.firestore.Timestamp.fromDate(new Date('2019-01-23')),
+    requirements: {
+      gpa: 4.0,
       ethnicities: ['Latino', 'African American'],
       majors: ['Computer Science', 'Software Engineering'],
+      states: ['California', 'Washington'],
+      schools: ['MIT'],
+      grades: ['College Freshman'],
+    },
+    author: {
+      id: 'Bob Ross',
+      email: 'bobross37@gmail.com',
     },
   };
   const snapshot = {
@@ -110,7 +118,12 @@ test('converter.fromFirestore', () => {
     {}
   );
 
-  expect(got).toEqual({ ...snapdata, deadline: new Date('2019-02-20') });
+  expect(got).toEqual({
+    ...snapdata,
+    deadline: new Date('2019-02-20'),
+    dateAdded: got.dateAdded,
+    lastModified: got.lastModified,
+  });
 });
 
 const extractName = (s: { data: { name: string } }) => s.data.name;

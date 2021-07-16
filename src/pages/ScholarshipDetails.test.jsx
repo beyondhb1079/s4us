@@ -91,8 +91,8 @@ test('renders scholarship details', async () => {
     description: 'description',
     deadline: new Date('2020-12-17'),
     website: 'http://foo.com/',
-    states: ['California', 'Washington'],
-    eligibility: {
+    requirements: {
+      states: ['California', 'Washington'],
       gpa: 4.0,
       ethnicities: ['Latino', 'African American'],
       majors: ['Computer Science', 'Software Engineering'],
@@ -113,12 +113,14 @@ test('renders scholarship details', async () => {
     data.website
   );
   expect(document.title).toContain(data.name);
-  expect(screen.getByText(data.states.join(', '))).toBeInTheDocument();
-  expect(screen.getByText(data.eligibility.gpa)).toBeInTheDocument();
   expect(
-    screen.getByText(data.eligibility.ethnicities.join(', '))
+    screen.getByText(data.requirements.states.join(', '))
+  ).toBeInTheDocument();
+  expect(screen.getByText(data.requirements.gpa)).toBeInTheDocument();
+  expect(
+    screen.getByText(data.requirements.ethnicities.join(', '))
   ).toBeInTheDocument();
   expect(
-    screen.getByText(data.eligibility.majors.join(', '))
+    screen.getByText(data.requirements.majors.join(', '))
   ).toBeInTheDocument();
 });
