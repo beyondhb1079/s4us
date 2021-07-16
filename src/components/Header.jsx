@@ -22,6 +22,10 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: 'space-around',
     },
   },
+  banner: {
+    backgroundColor: 'black',
+    color: 'white',
+  },
 }));
 
 function Header() {
@@ -42,6 +46,9 @@ function Header() {
   const classes = useStyles();
   return (
     <Container>
+      <Alert className={classes.banner} severity="info">
+        Website Actively Under-Construction!
+      </Alert>
       {alert}
       <Grid container className={classes.header} spacing={3}>
         <Grid item>
