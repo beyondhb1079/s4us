@@ -10,6 +10,7 @@ import {
   Chip,
   Grid,
   Divider,
+  Card,
 } from '@material-ui/core';
 import { Share, Send, Info } from '@material-ui/icons';
 import { genMailToLink, withDeviceInfo } from '../lib/mail';
@@ -18,7 +19,6 @@ import { BRAND_NAME } from '../config/constants';
 
 const useStyles = makeStyles((theme) => ({
   detailSection: {
-    backgroundColor: '#fff',
     padding: theme.spacing(3),
   },
   actionSection: {
@@ -126,7 +126,7 @@ export default function ScholarshipDetailCard({ scholarship }) {
   };
 
   return (
-    <Box className={classes.detailSection}>
+    <Card className={classes.detailSection}>
       <Typography variant="h4">{name}</Typography>
       <Typography variant="h5">{organization}</Typography>
       <Box className={classes.actionSection}>
@@ -227,7 +227,7 @@ export default function ScholarshipDetailCard({ scholarship }) {
         className={classes.reportBtn}
         label="Report Issue"
       />
-    </Box>
+    </Card>
   );
 }
 
