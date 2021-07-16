@@ -22,13 +22,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function ScholarshipList({ noResultsNode, listFn }) {
+function ScholarshipList({ listFn, noResultsNode, selectedId, onItemSelect }) {
   const classes = useStyles();
 
   const [error, setError] = useState();
   const [scholarships, setScholarships] = useState([]);
   const [loadState, setLoadState] = useState({
-    loading: true,
     canLoadMore: true,
     loadMoreFn: listFn,
   });
@@ -70,8 +69,13 @@ function ScholarshipList({ noResultsNode, listFn }) {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
-        {scholarships.map(({ id, data }) => (
-          <ScholarshipListCard scholarship={{ id, data }} key={id} />
+        {scholarships.map((scholarship) => (
+          <ScholarshipListCard
+            scholarship={scholarship}
+            key={scholarship.id}
+            selected={scholarship.id === selectedId}
+            onClick={() => onItemSelect(scholarship)}
+          />
         ))}
         <Box className={classes.centered}>
           {(() => {
@@ -102,10 +106,15 @@ function ScholarshipList({ noResultsNode, listFn }) {
 ScholarshipList.propTypes = {
   listFn: PropTypes.func,
   noResultsNode: PropTypes.node,
+  selectedId: PropTypes.number,
+  onItemSelect: PropTypes.func,
 };
+
 ScholarshipList.defaultProps = {
   listFn: undefined,
   noResultsNode: <Typography>No scholarships found</Typography>,
+  selectedId: undefined,
+  onItemSelect: () => {},
 };
 
 export default ScholarshipList;

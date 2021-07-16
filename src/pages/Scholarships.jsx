@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import queryString from 'query-string';
-import { Container, Typography } from '@material-ui/core';
+import {
+  Button,
+  Box,
+  Container,
+  Typography,
+  Grid,
+  useMediaQuery,
+  makeStyles,
+  Hidden,
+} from '@material-ui/core';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
+import ScholarshipDetailCard from '../components/ScholarshipDetailCard';
 import qParams from '../lib/QueryParams';
 import sortOptions, {
   DEADLINE_ASC,
@@ -12,7 +22,19 @@ import sortOptions, {
   getField,
 } from '../lib/sortOptions';
 
+const useStyles = makeStyles(() => ({
+  resultsArea: {
+    display: 'flex',
+    flexDirection: 'column',
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '20vh',
+  },
+}));
+
 function ScholarshipsPage() {
+  const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
 
@@ -36,6 +58,18 @@ function ScholarshipsPage() {
     pruneQueryParam('sortBy');
   }
 
+  // Parse selected scholarship
+  // Note: to avoid overcomplicating things we don't keep track of this in the URL.
+  // Users can share a specific scholarship instead.
+  const selected = history.location.state?.scholarship;
+  const setSelected = (s) =>
+    history.replace({
+      state: {
+        scholarship: { id: s.id, data: s.data },
+      },
+    });
+  const clearSelected = () => history.replace({ state: {} });
+
   const sortBy = params.sortBy ?? DEADLINE_ASC;
 
   const sortField = getField(sortBy);
@@ -57,16 +91,44 @@ function ScholarshipsPage() {
     pruneQueryParam(qParams.MAX_AMOUNT);
   }
 
-  const listScholarships = () =>
-    Scholarships.list({ sortField, sortDir, minAmount, maxAmount });
+  const listScholarships = useCallback(
+    () => Scholarships.list({ sortField, sortDir, minAmount, maxAmount }),
+    [sortField, sortDir, minAmount, maxAmount]
+  );
 
+  const smallScreen = useMediaQuery((theme) => theme.breakpoints.down('xs'));
+  const showDetail = !!selected;
+  const showList = !smallScreen || !selected;
   return (
     <Container>
       <Typography variant="h3" component="h1" style={{ textAlign: 'center' }}>
         Scholarships
       </Typography>
-      <FilterBar queryParams={params} {...{ setQueryParam }} />
-      <ScholarshipList listFn={listScholarships} />
+      {showList ? (
+        <FilterBar queryParams={params} {...{ setQueryParam }} />
+      ) : (
+        <Button color="primary" onClick={clearSelected}>
+          Back to results
+        </Button>
+      )}
+      <Box className={classes.resultsArea}>
+        <Grid container spacing={3}>
+          <Hidden xsDown={showDetail}>
+            <Grid item xs={showDetail ? 6 : 12}>
+              <ScholarshipList
+                listFn={listScholarships}
+                selectedId={selected?.id}
+                onItemSelect={(s) =>
+                  s.id === selected?.id ? clearSelected() : setSelected(s)
+                }
+              />
+            </Grid>
+          </Hidden>
+          <Grid item xs>
+            {selected && <ScholarshipDetailCard scholarship={selected} />}
+          </Grid>
+        </Grid>
+      </Box>
     </Container>
   );
 }
