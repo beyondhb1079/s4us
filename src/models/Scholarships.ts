@@ -4,10 +4,9 @@ import FirestoreCollection from './base/FirestoreCollection';
 import FirestoreModelList from './base/FiretoreModelList';
 import ScholarshipEligibility from '../types/ScholarshipEligibility';
 import FirestoreModel from './base/FirestoreModel';
+import Model from './base/Model';
 
-interface ScholarshipData {
-  // TODO(https://github.com/beyondhb1079/s4us/issues/56):
-  // Update this to reflect the schema
+export interface ScholarshipData {
   name: string;
   amount: ScholarshipAmount;
   description: string;
@@ -23,7 +22,6 @@ interface ScholarshipData {
     email?: string;
   };
 }
-// tags: PropTypes.arrayOf({ title: PropTypes.string })
 
 export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipData> =
   {
@@ -99,6 +97,13 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
       s.data.amount.intersectsRange(opts.minAmount, opts.maxAmount);
 
     return FirestoreCollection.list(query, postProcessFilter);
+  }
+
+  save(data: ScholarshipData): Promise<Model<ScholarshipData>> {
+    const Data = { ...data, lastModified: new Date() };
+    if (!data.dateAdded) Data.dateAdded = new Date();
+
+    return super.new(Data).save();
   }
 }
 

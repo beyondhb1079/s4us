@@ -1,4 +1,4 @@
-import GenderType from './GenderType';
+import Gender from './Gender';
 
 export default interface ScholarshipEligibility {
   gpa?: number;
@@ -7,5 +7,5 @@ export default interface ScholarshipEligibility {
   schools?: string[];
   grades?: string[];
   states?: String[];
-  gender?: GenderType;
+  gender?: Gender[];
 }

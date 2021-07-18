@@ -1,9 +1,8 @@
-enum GenderType {
+enum Gender {
   Unknown = 'UNKNOWN',
-  All = 'ALL',
   Female = 'FEMALE',
   Male = 'MALE',
   Other = 'OTHER',
 }
 
-export default GenderType;
+export default Gender;

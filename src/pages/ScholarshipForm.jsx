@@ -43,14 +43,13 @@ function ScholarshipForm() {
     validationSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
       setSubmitting(true);
-      Scholarships.new({
+      Scholarships.save({
         ...values,
         author: {
           id: user?.uid,
           email: user?.email,
         },
       })
-        .save()
         .then((scholarship) => {
           setSubmissionAlert(
             <Alert
