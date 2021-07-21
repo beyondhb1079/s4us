@@ -4,9 +4,8 @@ import FirestoreCollection from './base/FirestoreCollection';
 import FirestoreModelList from './base/FiretoreModelList';
 import ScholarshipEligibility from '../types/ScholarshipEligibility';
 import FirestoreModel from './base/FirestoreModel';
-import Model from './base/Model';
 
-export interface ScholarshipData {
+interface ScholarshipData {
   name: string;
   amount: ScholarshipAmount;
   description: string;
@@ -97,13 +96,6 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
       s.data.amount.intersectsRange(opts.minAmount, opts.maxAmount);
 
     return FirestoreCollection.list(query, postProcessFilter);
-  }
-
-  save(data: ScholarshipData): Promise<Model<ScholarshipData>> {
-    const Data = { ...data, lastModified: new Date() };
-    if (!data.dateAdded) Data.dateAdded = new Date();
-
-    return super.new(Data).save();
   }
 }
 

@@ -2,6 +2,7 @@ import firebase from 'firebase/app';
 import FirestoreModel from './FirestoreModel';
 import Model from './Model';
 import FirestoreModelList from './FiretoreModelList';
+import ScholarshipModel from './ScholarshipModel';
 
 export default abstract class FirestoreCollection<T> {
   abstract readonly name: string;
@@ -14,8 +15,9 @@ export default abstract class FirestoreCollection<T> {
       .withConverter(this.converter);
   }
 
-  new(data?: T): Model<T> {
-    return new FirestoreModel<T>(this.collection.doc(), data ?? ({} as T));
+  new(data?: T): ScholarshipModel<T> {
+    // return new FirestoreModel<T>(this.collection.doc(), data ?? ({} as T));
+    return new ScholarshipModel<T>(this.collection.doc(), data ?? ({} as T));
   }
 
   id(id: string): Model<T> {

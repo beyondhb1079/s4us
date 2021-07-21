@@ -50,30 +50,29 @@ beforeAll(() =>
 );
 afterAll(() => app.delete());
 
-const data = {
-  name: 'scholarship',
-  amount: new ScholarshipAmount(AmountType.Fixed, {
-    min: 2500,
-    max: 2500,
-  }),
-  description: 'description',
-  deadline: new Date('2019-02-20'),
-  website: 'mit.com',
-  requirements: {
-    gpa: 4.0,
-    ethnicities: ['Latino', 'African American'],
-    majors: ['Computer Science', 'Software Engineering'],
-    states: ['California', 'Washington'],
-    schools: ['MIT'],
-    grades: ['College Freshman'],
-  },
-  author: {
-    id: '123',
-    email: 'bobross37@gmail.com',
-  },
-};
-
 test('converter.toFirestore', () => {
+  const data = {
+    name: 'scholarship',
+    amount: new ScholarshipAmount(AmountType.Fixed, {
+      min: 2500,
+      max: 2500,
+    }),
+    description: 'description',
+    deadline: new Date('2019-02-20'),
+    website: 'mit.com',
+    requirements: {
+      gpa: 4.0,
+      ethnicities: ['Latino', 'African American'],
+      majors: ['Computer Science', 'Software Engineering'],
+      states: ['California', 'Washington'],
+      schools: ['MIT'],
+      grades: ['College Freshman'],
+    },
+    author: {
+      id: '123',
+      email: 'bobross37@gmail.com',
+    },
+  };
   const got = converter.toFirestore(data);
 
   expect(got).toEqual({
@@ -203,12 +202,4 @@ test('scholarships.list - filters by maxAmount', async () => {
   expect(got.results.map(extractName).sort()).toEqual(
     want.map(extractName).sort()
   );
-});
-
-test('dateAdded & lastModified gets set on saving a new scholarship', async () => {
-  Scholarships.save(data);
-  const got = await Scholarships.list({ authorId: '123' });
-
-  expect(got.results.map((s) => s.data.dateAdded)).toBeDefined();
-  expect(got.results.map((s) => s.data.lastModified)).toBeDefined();
 });
