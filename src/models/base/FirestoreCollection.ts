@@ -16,7 +16,6 @@ export default abstract class FirestoreCollection<T> {
   }
 
   new(data?: T): ScholarshipModel<T> {
-    // return new FirestoreModel<T>(this.collection.doc(), data ?? ({} as T));
     return new ScholarshipModel<T>(this.collection.doc(), data ?? ({} as T));
   }
 
