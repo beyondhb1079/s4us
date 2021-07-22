@@ -24,7 +24,7 @@ function PublicHome() {
         alignItems="center"
         direction="row-reverse"
         title="For and by the Community"
-        description="Et has minim eltir intellegat. Mea aeterno elefiend antiopam ad, nam no suscipit quaerendum. At name mininum ponderum. Est audiam animal molestiate te."
+        description="Interested in helping students find scholarships? Join the family of community contributors, help find scholarships that are open to anyone regardless of citizen status."
         buttons={[
           <Button
             component={Link}
