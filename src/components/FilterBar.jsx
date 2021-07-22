@@ -6,6 +6,7 @@ import AmountFilter from './AmountFilter';
 import GradeLevelFilter from './GradeLevelFilter';
 import qParams from '../lib/QueryParams';
 import sortOptions, { DEADLINE_ASC } from '../lib/sortOptions';
+import experiments from '../lib/experiments';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -32,8 +33,10 @@ export default function FilterBar(props) {
   return (
     <Grid container spacing={2} className={classes.root}>
       <Grid item className={classes.alignText}>
-        <FilterDropDown label="Major" items={majors} />
-        <GradeLevelFilter />
+        {experiments.expshowMajorFilter && (
+          <FilterDropDown label="Major" items={majors} />
+        )}
+        {experiments.expShowGradeFilter && <GradeLevelFilter />}
         <AmountFilter
           min={minAmount ?? 0}
           max={maxAmount ?? 0}
@@ -41,6 +44,7 @@ export default function FilterBar(props) {
           onMaxChange={(e) => setQueryParam(qParams.MAX_AMOUNT, e.target.value)}
         />
       </Grid>
+
       <Grid item className={classes.alignText}>
         Sort by
         <FilterDropDown
