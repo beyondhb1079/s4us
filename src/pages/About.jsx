@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import MuiLink from '@material-ui/core/Link';
 import { Grid, Button, Container, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import AboutCard from '../components/AboutCard';
 import testPic from '../logo.svg';
 import { BRAND_NAME } from '../config/constants';
@@ -73,27 +72,23 @@ const team = [
   },
 ];
 
-const aboutText = `DreamScholar looks to make it easier for people to pay for school. Our mission is to remove the barriers that prevent and discourage students from pursuing higher education due to difficulties finding scholarships that they qualify for. Meet the team behind DreammScholar. Want to get involved? Shoot us an email!
-
-Meet the team behind DreamScholars. We are a group of lifelong learners who are passionate about technology and community upliftment. The project arose from our own struggles as students and the lack of resources for our community.  
-`;
-
-const useStyles = makeStyles((theme) => ({
-  aboutText: {
-    marginBottom: theme.spacing(2),
-    whiteSpace: 'pre-line',
-  },
-}));
-
 function About() {
-  const classes = useStyles();
-
   return (
     <Container>
       <h3>Meet the Team</h3>
       <h1>For and by the undocu community.</h1>
-      <Typography component="p" className={classes.aboutText}>
-        {aboutText}
+      <Typography paragraph>
+        DreamScholars looks to make it easier for people to pay for school. Our
+        mission is to remove the barriers that prevent and discourage students
+        from pursuing higher education due to difficulties finding scholarships
+        that they qualify for. Meet the team behind DreamScholars. Want to get
+        involved? Shoot us an email!
+      </Typography>
+      <Typography paragraph>
+        Meet the team behind DreamScholars. We are a group of lifelong learners
+        who are passionate about technology and community upliftment. The
+        project arose from our own struggles as students and the lack of
+        resources for our community.
       </Typography>
 
       <Grid container justify="flex-start" alignItems="stretch" spacing={3}>
