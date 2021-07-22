@@ -33,7 +33,7 @@ export default function FilterBar(props) {
   return (
     <Grid container spacing={2} className={classes.root}>
       <Grid item className={classes.alignText}>
-        {experiments.expshowMajorFilter && (
+        {experiments.expShowMajorFilter && (
           <FilterDropDown label="Major" items={majors} />
         )}
         {experiments.expShowGradeFilter && <GradeLevelFilter />}
