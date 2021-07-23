@@ -1,9 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 import MuiLink from '@material-ui/core/Link';
-import Container from '@material-ui/core/Container';
+import { Grid, Button, Container, Typography } from '@material-ui/core';
 import AboutCard from '../components/AboutCard';
 import testPic from '../logo.svg';
 import { BRAND_NAME } from '../config/constants';
@@ -51,12 +49,15 @@ const team = [
   {
     name: 'Sergio Mejia',
     img: testPic,
-    description: <>Todo: about Sergio Mejia</>,
-  },
-  {
-    name: 'Alejandro Loaiza',
-    img: testPic,
-    description: <>Todo: about Alejandro Loaiza</>,
+    description: (
+      <>
+        I’m a UX Designer that is interested in using technology as a means to
+        solve problems. My personal experiences have inspired my focus on
+        empathy and universal design. I find joy in the ability to explore ideas
+        with a central aim to create solutions that will help people solve
+        meaningful problems.
+      </>
+    ),
   },
   {
     name: 'Job Hernandez',
@@ -70,17 +71,26 @@ const team = [
     ),
   },
 ];
+
 function About() {
   return (
     <Container>
       <h3>Meet the Team</h3>
       <h1>For and by the undocu community.</h1>
-      <p>
-        Meet the team behind DreamScholars. We are a group of life long learners
+      <Typography paragraph>
+        DreamScholars looks to make it easier for people to pay for school. Our
+        mission is to remove the barriers that prevent and discourage students
+        from pursuing higher education due to difficulties finding scholarships
+        that they qualify for. Meet the team behind DreamScholars. Want to get
+        involved? Shoot us an email!
+      </Typography>
+      <Typography paragraph>
+        Meet the team behind DreamScholars. We are a group of lifelong learners
         who are passionate about technology and community upliftment. The
-        project arose from our own struggles as students and lack of resources
-        for our community.
-      </p>
+        project arose from our own struggles as students and the lack of
+        resources for our community.
+      </Typography>
+
       <Grid container justify="flex-start" alignItems="stretch" spacing={3}>
         {team.map(({ name, img, description }) => (
           <Grid item key={name} xs={12} sm={6} md={4}>
@@ -88,6 +98,7 @@ function About() {
           </Grid>
         ))}
       </Grid>
+
       <h2>Looking for Scholarships?</h2>
       <Button
         component={Link}
