@@ -38,7 +38,7 @@ test('save updated scholarship - dateAdded unchanged but lastModified set', asyn
   const scholarship = new ScholarshipModel(ref, data);
   await scholarship.save();
 
-  const { dateAdded, lastModified, description } = scholarship.data;
+  const { dateAdded, lastModified } = scholarship.data;
   scholarship.data.name = 'updated scholarship';
   await expect(scholarship.save()).resolves.toBeDefined();
 
@@ -46,5 +46,4 @@ test('save updated scholarship - dateAdded unchanged but lastModified set', asyn
   expect(got.data()?.dateAdded).toEqual(dateAdded);
   expect(got.data()?.lastModified).not.toEqual(lastModified);
   expect(got.data()?.name).toEqual('updated scholarship');
-  expect(got.data()?.description).toEqual(description);
 });
