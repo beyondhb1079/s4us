@@ -2,25 +2,9 @@ import firebase from 'firebase/app';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import FirestoreCollection from './base/FirestoreCollection';
 import FirestoreModelList from './base/FiretoreModelList';
-import ScholarshipEligibility from '../types/ScholarshipEligibility';
 import FirestoreModel from './base/FirestoreModel';
-
-interface ScholarshipData {
-  name: string;
-  amount: ScholarshipAmount;
-  description: string;
-  deadline: Date;
-  website: string;
-  organization?: string;
-  tags?: string[];
-  dateAdded?: Date;
-  lastModified?: Date;
-  requirements?: ScholarshipEligibility;
-  author?: {
-    id?: string;
-    email?: string;
-  };
-}
+import ScholarshipModel from './ScholarshipModel';
+import ScholarshipData from '../types/ScholarshipData';
 
 export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipData> =
   {
@@ -96,6 +80,13 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
       s.data.amount.intersectsRange(opts.minAmount, opts.maxAmount);
 
     return FirestoreCollection.list(query, postProcessFilter);
+  }
+
+  new(data?: ScholarshipData): ScholarshipModel {
+    return new ScholarshipModel(
+      this.collection.doc(),
+      data ?? ({} as ScholarshipData)
+    );
   }
 }
 

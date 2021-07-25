@@ -1,35 +1,10 @@
 import firebase from 'firebase/app';
-import { clearFirestoreData, initializeTestApp } from '../../lib/testing';
+import { clearFirestoreData, initializeTestApp } from '../lib/testing';
+import ScholarshipAmount from '../types/ScholarshipAmount';
 import ScholarshipModel from './ScholarshipModel';
+import { converter } from './Scholarships';
 
 const app = initializeTestApp({ projectId: 'fs-model-test' });
-
-interface ScholarshipData {
-  name: string;
-  description: string;
-  lastModified?: Date;
-  dateAdded?: Date;
-}
-
-const converter: firebase.firestore.FirestoreDataConverter<ScholarshipData> = {
-  toFirestore: (data: ScholarshipData) => ({
-    ...data,
-    lastModified: data.lastModified
-      ? firebase.firestore.Timestamp.fromDate(data.lastModified)
-      : null,
-    dateAdded: data.dateAdded
-      ? firebase.firestore.Timestamp.fromDate(data.dateAdded)
-      : null,
-  }),
-  fromFirestore: (snapshot) => {
-    const data = snapshot.data();
-    const dateAdded = (data.dateAdded as firebase.firestore.Timestamp).toDate();
-    const lastModified = (
-      data.lastModified as firebase.firestore.Timestamp
-    ).toDate();
-    return { ...data, dateAdded, lastModified } as ScholarshipData;
-  },
-};
 
 const scholarships = firebase
   .firestore()
@@ -39,11 +14,17 @@ const scholarships = firebase
 beforeEach(() => clearFirestoreData(app.options as { projectId: string }));
 afterAll(() => app.delete());
 
-const data = { name: 'scholarship 1', description: 'this is a test' };
+const data = {
+  name: 'scholarship 1',
+  deadline: new Date('December 17, 2021'),
+  description: 'this is a test',
+  website: 'http://test.com',
+  amount: new ScholarshipAmount(),
+};
 
 test('save new scholarship - dateAdded and lastModified get set', async () => {
   const ref = scholarships.doc('scholarship 1');
-  const scholarship = new ScholarshipModel<ScholarshipData>(ref, data);
+  const scholarship = new ScholarshipModel(ref, data);
 
   await expect(scholarship.save()).resolves.toBeDefined();
 
@@ -54,7 +35,7 @@ test('save new scholarship - dateAdded and lastModified get set', async () => {
 
 test('save updated scholarship - dateAdded unchanged but lastModified set', async () => {
   const ref = scholarships.doc('scholarship 1');
-  const scholarship = new ScholarshipModel<ScholarshipData>(ref, data);
+  const scholarship = new ScholarshipModel(ref, data);
   await scholarship.save();
 
   const { dateAdded, lastModified, description } = scholarship.data;

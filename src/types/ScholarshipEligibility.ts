@@ -6,6 +6,6 @@ export default interface ScholarshipEligibility {
   majors?: string[];
   schools?: string[];
   grades?: string[];
-  states?: String[];
+  states?: string[];
   genders?: Gender[];
 }
