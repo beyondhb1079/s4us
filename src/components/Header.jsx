@@ -6,10 +6,11 @@ import {
   Link as MuiLink,
   Grid,
   Snackbar,
+  Button,
 } from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
+import { Alert, AlertTitle } from '@material-ui/lab';
 
-import { BRAND_NAME } from '../config/constants';
+import { BRAND_NAME, SUBSCRIPTION_FORM_URL } from '../config/constants';
 import HeaderNavMenu from './HeaderNavMenu';
 
 const useStyles = makeStyles((theme) => ({
@@ -21,10 +22,6 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       justifyContent: 'space-around',
     },
-  },
-  banner: {
-    backgroundColor: 'black',
-    color: 'white',
   },
 }));
 
@@ -46,8 +43,15 @@ function Header() {
   const classes = useStyles();
   return (
     <Container>
-      <Alert className={classes.banner} severity="info">
-        Website Actively Under-Construction!
+      <Alert
+        severity="warning"
+        action={
+          <Button component={MuiLink} href={SUBSCRIPTION_FORM_URL}>
+            SUBSCRIBE FOR UPDATES
+          </Button>
+        }>
+        <AlertTitle>Warning</AlertTitle>
+        🚧 Website Actively Under-Construction! 🚧
       </Alert>
       {alert}
       <Grid container className={classes.header} spacing={3}>
