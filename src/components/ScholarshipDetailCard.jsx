@@ -10,12 +10,17 @@ import {
   Chip,
   Grid,
   Divider,
+  Card,
 } from '@material-ui/core';
 import { Share, Send, Info } from '@material-ui/icons';
+import { genMailToLink, withDeviceInfo } from '../lib/mail';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import { BRAND_NAME } from '../config/constants';
 
 const useStyles = makeStyles((theme) => ({
+  detailSection: {
+    padding: theme.spacing(3),
+  },
   actionSection: {
     margin: `${theme.spacing(3)}px 0`,
     padding: `${theme.spacing(1)}px 0`,
@@ -65,14 +70,17 @@ export default function ScholarshipDetailCard({ scholarship }) {
     tags,
     states,
     eligibility,
+    authorEmail,
   } = scholarship.data;
+
+  const URL = `https://${window.location.hostname}/scholarships/${scholarship.id}`;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
   const shareFn = () => {
     const data = {
       title: `${amount?.toString()} - ${name} | ${BRAND_NAME}`,
       text: `${amount?.toString()} - ${name} | ${BRAND_NAME} \n ${deadline?.toLocaleDateString()}\n`,
-      url: `https://${window.location.hostname}/scholarships/${scholarship.id}`,
+      url: URL,
     };
 
     if (navigator.share) {
@@ -93,7 +101,7 @@ export default function ScholarshipDetailCard({ scholarship }) {
     return (
       <>
         {top && <Divider light className={classes.divider} />}
-        <Grid container justify="space-between">
+        <Grid container justifyContent="space-between">
           <Grid item xs={12} sm>
             <Typography component="p">{label}</Typography>
           </Grid>
@@ -118,7 +126,7 @@ export default function ScholarshipDetailCard({ scholarship }) {
   };
 
   return (
-    <Box>
+    <Card className={classes.detailSection}>
       <Typography variant="h4">{name}</Typography>
       <Typography variant="h5">{organization}</Typography>
       <Box className={classes.actionSection}>
@@ -208,11 +216,18 @@ export default function ScholarshipDetailCard({ scholarship }) {
       </Box>
       <Chip
         component={Link}
+        href={genMailToLink({
+          subject: `Report Issue for ${name}`,
+          bcc: authorEmail,
+          body: withDeviceInfo(
+            `Please describe the issue for the scholarship located at ${URL}.`
+          ),
+        })}
         icon={<Info />}
         className={classes.reportBtn}
         label="Report Issue"
       />
-    </Box>
+    </Card>
   );
 }
 
@@ -221,6 +236,7 @@ ScholarshipDetailCard.propTypes = {
     id: PropTypes.string.isRequired,
     data: PropTypes.shape({
       name: PropTypes.string,
+      authorEmail: PropTypes.string,
       organization: PropTypes.string,
       amount: PropTypes.instanceOf(ScholarshipAmount),
       description: PropTypes.string,
