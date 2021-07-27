@@ -29,20 +29,4 @@ export default class FirestoreModel<T> implements Model<T> {
   delete(): Promise<void> {
     return this.ref.delete();
   }
-
-  subscribe(
-    onChange: (model: Model<T>) => void,
-    onError = console.error // eslint-disable-line no-console
-  ): () => void {
-    return this.ref.onSnapshot(
-      (doc: firebase.firestore.DocumentSnapshot<T>) => {
-        if (!doc.exists) {
-          onError(new Error(`${this.ref.path} not found`));
-          return;
-        }
-        onChange(new FirestoreModel<T>(doc.ref, doc.data() as T));
-      },
-      onError
-    );
-  }
 }
