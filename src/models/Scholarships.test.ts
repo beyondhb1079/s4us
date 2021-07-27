@@ -50,6 +50,10 @@ beforeAll(() =>
 );
 afterAll(() => app.delete());
 
+const deadline = new Date('2019-02-20');
+const dateAdded = new Date('2019-01-20');
+const lastModified = new Date('2019-01-23');
+
 test('converter.toFirestore', () => {
   const data = {
     name: 'scholarship',
@@ -58,7 +62,7 @@ test('converter.toFirestore', () => {
       max: 2500,
     }),
     description: 'description',
-    deadline: new Date('2019-02-20'),
+    deadline,
     website: 'mit.com',
     requirements: {
       gpa: 4.0,
@@ -77,9 +81,9 @@ test('converter.toFirestore', () => {
 
   expect(got).toEqual({
     ...data,
-    deadline: firebase.firestore.Timestamp.fromDate(data.deadline),
-    dateAdded: got.dateAdded,
-    lastModified: got.lastModified,
+    deadline: firebase.firestore.Timestamp.fromDate(deadline),
+    dateAdded: null,
+    lastModified: null,
   });
 });
 
@@ -91,10 +95,10 @@ test('converter.fromFirestore', () => {
       max: 2500,
     }),
     description: 'description',
-    deadline: firebase.firestore.Timestamp.fromDate(new Date('2019-02-20')),
+    deadline: firebase.firestore.Timestamp.fromDate(deadline),
     website: 'mit.com',
-    dateAdded: firebase.firestore.Timestamp.fromDate(new Date('2019-01-20')),
-    lastModified: firebase.firestore.Timestamp.fromDate(new Date('2019-01-23')),
+    dateAdded: firebase.firestore.Timestamp.fromDate(dateAdded),
+    lastModified: firebase.firestore.Timestamp.fromDate(lastModified),
     requirements: {
       gpa: 4.0,
       ethnicities: ['Latino', 'African American'],
@@ -119,9 +123,9 @@ test('converter.fromFirestore', () => {
 
   expect(got).toEqual({
     ...snapdata,
-    deadline: new Date('2019-02-20'),
-    dateAdded: got.dateAdded,
-    lastModified: got.lastModified,
+    deadline,
+    dateAdded,
+    lastModified,
   });
 });
 

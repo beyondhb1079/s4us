@@ -4,7 +4,7 @@ import ScholarshipAmount from '../types/ScholarshipAmount';
 import ScholarshipModel from './ScholarshipModel';
 import { converter } from './Scholarships';
 
-const app = initializeTestApp({ projectId: 'fs-model-test' });
+const app = initializeTestApp({ projectId: 'scholarship-model-test' });
 
 const scholarships = firebase
   .firestore()
@@ -28,9 +28,9 @@ test('save new scholarship - dateAdded and lastModified get set', async () => {
 
   await expect(scholarship.save()).resolves.toBeDefined();
 
-  const got = await scholarships.doc(scholarship.id).get();
-  expect(got.data()).toHaveProperty('dateAdded');
-  expect(got.data()).toHaveProperty('lastModified');
+  const got = (await scholarships.doc(scholarship.id).get()).data();
+  expect(got).toHaveProperty('dateAdded');
+  expect(got).toHaveProperty('lastModified');
 });
 
 test('save updated scholarship - dateAdded unchanged but lastModified set', async () => {
@@ -42,8 +42,8 @@ test('save updated scholarship - dateAdded unchanged but lastModified set', asyn
   scholarship.data.name = 'updated scholarship';
   await expect(scholarship.save()).resolves.toBeDefined();
 
-  const got = await scholarships.doc(scholarship.id).get();
-  expect(got.data()?.dateAdded).toEqual(dateAdded);
-  expect(got.data()?.lastModified).not.toEqual(lastModified);
-  expect(got.data()?.name).toEqual('updated scholarship');
+  const got = (await scholarships.doc(scholarship.id).get()).data();
+  expect(got?.dateAdded).toEqual(dateAdded);
+  expect(got?.lastModified).not.toEqual(lastModified);
+  expect(got?.name).toEqual('updated scholarship');
 });

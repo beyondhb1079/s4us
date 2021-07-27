@@ -79,6 +79,7 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
     const postProcessFilter = (s: FirestoreModel<ScholarshipData>) =>
       s.data.amount.intersectsRange(opts.minAmount, opts.maxAmount);
 
+    // TODO: Fix .get() and .list() to work with ScholarshipModel's .save() method
     return FirestoreCollection.list(query, postProcessFilter);
   }
 
