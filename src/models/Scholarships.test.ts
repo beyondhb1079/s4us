@@ -50,6 +50,10 @@ beforeAll(() =>
 );
 afterAll(() => app.delete());
 
+const deadline = new Date('2019-02-20');
+const dateAdded = new Date('2019-01-20');
+const lastModified = new Date('2019-01-23');
+
 test('converter.toFirestore', () => {
   const data = {
     name: 'scholarship',
@@ -58,25 +62,28 @@ test('converter.toFirestore', () => {
       max: 2500,
     }),
     description: 'description',
-    deadline: new Date('2019-02-20'),
+    deadline,
     website: 'mit.com',
-    school: 'MIT',
-    year: 'college freshman',
-    authorId: 'Bob Ross',
-    authorEmail: 'bobross37@gmail.com',
-    states: ['California', 'Washington'],
-    eligibility: {
-      GPA: 4.0,
+    requirements: {
+      gpa: 4.0,
       ethnicities: ['Latino', 'African American'],
       majors: ['Computer Science', 'Software Engineering'],
+      states: ['California', 'Washington'],
+      schools: ['MIT'],
+      grades: ['College Freshman'],
+    },
+    author: {
+      id: '123',
+      email: 'bobross37@gmail.com',
     },
   };
-
   const got = converter.toFirestore(data);
 
   expect(got).toEqual({
     ...data,
-    deadline: firebase.firestore.Timestamp.fromDate(data.deadline),
+    deadline: firebase.firestore.Timestamp.fromDate(deadline),
+    dateAdded: null,
+    lastModified: null,
   });
 });
 
@@ -88,17 +95,21 @@ test('converter.fromFirestore', () => {
       max: 2500,
     }),
     description: 'description',
-    deadline: firebase.firestore.Timestamp.fromDate(new Date('2019-02-20')),
+    deadline: firebase.firestore.Timestamp.fromDate(deadline),
     website: 'mit.com',
-    school: 'MIT',
-    year: 'college freshman',
-    authorId: 'Bob Ross',
-    authorEmail: 'bobross37@gmail.com',
-    states: ['California', 'Washington'],
-    eligibility: {
-      GPA: 4.0,
+    dateAdded: firebase.firestore.Timestamp.fromDate(dateAdded),
+    lastModified: firebase.firestore.Timestamp.fromDate(lastModified),
+    requirements: {
+      gpa: 4.0,
       ethnicities: ['Latino', 'African American'],
       majors: ['Computer Science', 'Software Engineering'],
+      states: ['California', 'Washington'],
+      schools: ['MIT'],
+      grades: ['College Freshman'],
+    },
+    author: {
+      id: 'Bob Ross',
+      email: 'bobross37@gmail.com',
     },
   };
   const snapshot = {
@@ -110,7 +121,12 @@ test('converter.fromFirestore', () => {
     {}
   );
 
-  expect(got).toEqual({ ...snapdata, deadline: new Date('2019-02-20') });
+  expect(got).toEqual({
+    ...snapdata,
+    deadline,
+    dateAdded,
+    lastModified,
+  });
 });
 
 const extractName = (s: { data: { name: string } }) => s.data.name;
