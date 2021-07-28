@@ -2,27 +2,9 @@ import firebase from 'firebase/app';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import FirestoreCollection from './base/FirestoreCollection';
 import FirestoreModelList from './base/FiretoreModelList';
-import ScholarshipEligibility from '../types/ScholarshipEligibility';
 import FirestoreModel from './base/FirestoreModel';
-
-interface ScholarshipData {
-  // TODO(https://github.com/beyondhb1079/s4us/issues/56):
-  // Update this to reflect the schema
-  name: string;
-  amount: ScholarshipAmount;
-  description: string;
-  deadline: Date;
-  website: string;
-  school?: string;
-  year?: string;
-  authorId?: string;
-  authorEmail?: string;
-  states?: String[];
-  eligibility?: ScholarshipEligibility;
-  organization?: string;
-  tags?: string[];
-}
-// tags: PropTypes.arrayOf({ title: PropTypes.string })
+import ScholarshipModel from './ScholarshipModel';
+import ScholarshipData from '../types/ScholarshipData';
 
 export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipData> =
   {
@@ -34,12 +16,31 @@ export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipDat
         max: data.amount.max,
       },
       deadline: firebase.firestore.Timestamp.fromDate(data.deadline),
+      dateAdded: data.dateAdded
+        ? firebase.firestore.Timestamp.fromDate(data.dateAdded)
+        : null,
+      lastModified: data.lastModified
+        ? firebase.firestore.Timestamp.fromDate(data.lastModified)
+        : null,
     }),
     fromFirestore: (snapshot, options) => {
       const data = snapshot.data(options);
       const deadline = (data.deadline as firebase.firestore.Timestamp).toDate();
+      const dateAdded = data.dateAdded
+        ? (data.dateAdded as firebase.firestore.Timestamp).toDate()
+        : null;
+      const lastModified = data.lastModified
+        ? (data.lastModified as firebase.firestore.Timestamp).toDate()
+        : null;
       const amount = new ScholarshipAmount(data.amount.type, data.amount);
-      return { ...data, amount, deadline } as ScholarshipData;
+
+      return {
+        ...data,
+        amount,
+        deadline,
+        dateAdded,
+        lastModified,
+      } as ScholarshipData;
     },
   };
 
@@ -72,13 +73,21 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
       query = query.orderBy('deadline', 'asc');
     }
     if (opts.authorId) {
-      query = query.where('authorId', '==', opts.authorId);
+      query = query.where('author.id', '==', opts.authorId);
     }
 
     const postProcessFilter = (s: FirestoreModel<ScholarshipData>) =>
       s.data.amount.intersectsRange(opts.minAmount, opts.maxAmount);
 
+    // TODO: Fix .get() and .list() to work with ScholarshipModel's .save() method
     return FirestoreCollection.list(query, postProcessFilter);
+  }
+
+  new(data?: ScholarshipData): ScholarshipModel {
+    return new ScholarshipModel(
+      this.collection.doc(),
+      data ?? ({} as ScholarshipData)
+    );
   }
 }
 

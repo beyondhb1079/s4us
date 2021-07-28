@@ -12,7 +12,7 @@
       "collectionGroup": "scholarships",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "authorId", "order": "ASCENDING" },
+        { "fieldPath": "author.id", "order": "ASCENDING" },
         { "fieldPath": "deadline", "order": "ASCENDING" }
       ]
     },
