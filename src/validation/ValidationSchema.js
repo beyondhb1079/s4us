@@ -14,6 +14,9 @@ const validationSchema = yup.object({
     .string()
     .url('Website must be a valid URL')
     .required('Please enter the scholarship website'),
+  organization: yup
+    .string()
+    .required('Please enter the name of the organization'),
   amount: yup.object().shape({
     type: yup.mixed().required('Please choose an option above'),
     min: yup
