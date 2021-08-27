@@ -20,7 +20,7 @@ export default class ScholarshipAmount {
   readonly max: number;
 
   constructor(
-    type: AmountType = AmountType.Unknown,
+    type: AmountType = AmountType.Varies,
     data?: { min?: number; max?: number }
   ) {
     this.type = type;
@@ -37,7 +37,7 @@ export default class ScholarshipAmount {
         this.min = min;
         this.max = max;
         break;
-      case AmountType.Range:
+      case AmountType.Varies:
         if (min && min < 0) {
           throw new Error(`Invalid min amount: ${min}.`);
         }
@@ -70,7 +70,7 @@ export default class ScholarshipAmount {
         return 'Full Tuition';
       case AmountType.Fixed:
         return `$${this.min}`;
-      case AmountType.Range:
+      case AmountType.Varies:
         if (this.min && this.max !== RANGE_MAX) {
           return `$${this.min}-$${this.max}`;
         }
@@ -82,7 +82,7 @@ export default class ScholarshipAmount {
 
   intersectsRange(min?: number, max?: number): boolean {
     return (
-      this.type === AmountType.Unknown ||
+      this.type === AmountType.Varies ||
       ((!min || this.max >= min) && (!max || this.min <= max))
     );
   }

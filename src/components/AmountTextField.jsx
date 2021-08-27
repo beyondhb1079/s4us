@@ -37,6 +37,6 @@ AmountTextField.propTypes = {
 AmountTextField.defaultProps = {
   disabled: false,
   error: false,
-  variation: 'standard',
+  variation: 'outlined',
 };
 export default AmountTextField;

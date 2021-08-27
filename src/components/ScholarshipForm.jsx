@@ -10,7 +10,7 @@ import {
   Step,
   StepLabel,
   StepContent,
-  // Paper,
+  Grid,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { Alert, AlertTitle } from '@material-ui/lab';
@@ -22,12 +22,8 @@ import validationSchema from '../validation/ValidationSchema';
 import Scholarships from '../models/Scholarships';
 
 const useStyles = makeStyles((theme) => ({
-  fieldStyle: {
-    paddingBottom: theme.spacing(1),
-    width: 300,
-  },
   submitStyle: {
-    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(2),
   },
 }));
 
@@ -106,82 +102,101 @@ function ScholarshipForm({ setSubmissionAlert }) {
 
   const stepperItems = {};
   stepperItems.General = (
-    <div>
-      <TextField
-        className={classes.fieldStyle}
-        variant="outlined"
-        id="name"
-        label="Scholarship Name *"
-        error={formik.touched.name && Boolean(formik.errors.name)}
-        helperText={(formik.touched.name && formik.errors.name) || ' '}
-        value={formik.values.name}
-        onChange={formik.handleChange}
-      />
-      <TextField
-        className={classes.fieldStyle}
-        variant="outlined"
-        id="organization"
-        label="Organization *"
-        error={
-          formik.touched.organization && Boolean(formik.errors.organization)
-        }
-        helperText={
-          (formik.touched.organization && formik.errors.organization) || ' '
-        }
-        value={formik.values.organization}
-        onChange={formik.handleChange}
-      />
-      <TextField
-        className={classes.fieldStyle}
-        variant="outlined"
-        id="website"
-        label="Website *"
-        error={formik.touched.website && Boolean(formik.errors.website)}
-        helperText={(formik.touched.website && formik.errors.website) || ' '}
-        value={formik.values.website}
-        onChange={formik.handleChange}
-      />
-      <DatePicker
-        id="deadline"
-        label="Deadline *"
-        error={formik.touched.deadline && Boolean(formik.errors.deadline)}
-        helperText={(formik.touched.deadline && formik.errors.deadline) || ' '}
-        value={formik.values.deadline}
-        onChange={(date) => formik.setFieldValue('deadline', date, true)}
-      />
-      <ScholarshipAmountField
-        className={classes.fieldStyle}
-        helperText={
-          (getIn(formik.touched, 'amount.type') &&
-            getIn(formik.errors, 'amount.type')) ||
-          getIn(formik.errors, 'amount.min') ||
-          getIn(formik.errors, 'amount.max') ||
-          ''
-        }
-        amountType={formik.values.amount.type}
-        minAmount={formik.values.amount.min}
-        maxAmount={formik.values.amount.max}
-        onTypeChange={(e) =>
-          formik.setFieldValue('amount.type', e.target.value, true)
-        }
-        updateAmount={updateAmount}
-      />
-      <TextField
-        className={classes.fieldStyle}
-        variant="outlined"
-        id="description"
-        label="Description *"
-        error={formik.touched.description && Boolean(formik.errors.description)}
-        helperText={
-          (formik.touched.description && formik.errors.description) || ' '
-        }
-        value={formik.values.description}
-        onChange={formik.handleChange}
-        multiline
-        rows={8}
-        fullWidth
-      />
-    </div>
+    <Grid container spacing={5}>
+      <Grid item xs={6}>
+        <TextField
+          variant="outlined"
+          id="name"
+          label="Scholarship Name *"
+          error={formik.touched.name && Boolean(formik.errors.name)}
+          helperText={(formik.touched.name && formik.errors.name) || ' '}
+          value={formik.values.name}
+          onChange={formik.handleChange}
+          fullWidth
+        />
+      </Grid>
+
+      <Grid item xs={6}>
+        <TextField
+          variant="outlined"
+          id="organization"
+          label="Organization *"
+          error={
+            formik.touched.organization && Boolean(formik.errors.organization)
+          }
+          helperText={
+            (formik.touched.organization && formik.errors.organization) || ' '
+          }
+          value={formik.values.organization}
+          onChange={formik.handleChange}
+          fullWidth
+        />
+      </Grid>
+
+      <Grid item xs={6}>
+        <TextField
+          variant="outlined"
+          id="website"
+          label="Website *"
+          error={formik.touched.website && Boolean(formik.errors.website)}
+          helperText={(formik.touched.website && formik.errors.website) || ' '}
+          value={formik.values.website}
+          onChange={formik.handleChange}
+          fullWidth
+        />
+      </Grid>
+
+      <Grid item xs={6}>
+        <DatePicker
+          id="deadline"
+          label="Deadline *"
+          error={formik.touched.deadline && Boolean(formik.errors.deadline)}
+          helperText={
+            (formik.touched.deadline && formik.errors.deadline) || ' '
+          }
+          value={formik.values.deadline}
+          onChange={(date) => formik.setFieldValue('deadline', date, true)}
+        />
+      </Grid>
+
+      <Grid item>
+        <ScholarshipAmountField
+          helperText={
+            (getIn(formik.touched, 'amount.type') &&
+              getIn(formik.errors, 'amount.type')) ||
+            getIn(formik.errors, 'amount.min') ||
+            getIn(formik.errors, 'amount.max') ||
+            ''
+          }
+          amountType={formik.values.amount.type}
+          minAmount={formik.values.amount.min}
+          maxAmount={formik.values.amount.max}
+          onTypeChange={(e) =>
+            formik.setFieldValue('amount.type', e.target.value, true)
+          }
+          updateAmount={updateAmount}
+        />
+      </Grid>
+
+      <Grid item xs={12}>
+        <TextField
+          variant="outlined"
+          id="description"
+          label="Description *"
+          error={
+            formik.touched.description && Boolean(formik.errors.description)
+          }
+          helperText={
+            (formik.touched.description && formik.errors.description) || ' '
+          }
+          value={formik.values.description}
+          onChange={formik.handleChange}
+          fullWidth
+          multiline
+          rows={8}
+        />
+      </Grid>
+    </Grid>
   );
 
   stepperItems.Requirements = 'requirements';
