@@ -50,11 +50,17 @@ jobs:
 
             // Get the diff between the current commit and the last approved one.
             //
-            // Note: this doesn't show which files are added/deleted. If we
-            // want to take that into consideration, we should look into: 
+            // Note: this doesn't show which files are added/deleted.
+            // If we want to take that into consideration, we should look into:
             // git diff --name-status
             const { spawnSync } = require('child_process');
-            const args = ['diff', '--numstat', approvedCommit, currentCommit];
+            const args = [
+              'diff',
+              '--ignore-all-space',
+              '--numstat',
+              approvedCommit,
+              currentCommit
+            ];
             console.log('git ' + args.join(' '));
 
             const child = spawnSync('git', args);
@@ -88,9 +94,9 @@ jobs:
             console.log(summary);
 
             // Dismiss the approval if there are too many changes.
-            const insertionsLimit = 7;
-            const deletionsLimit = 10;
-            const totalLimit = 12;
+            const insertionsLimit = 10;
+            const deletionsLimit = 20;
+            const totalLimit = 25;
 
             if (total <= totalLimit
               && insertions <= insertionsLimit
@@ -101,13 +107,17 @@ jobs:
 
             const message = `Hi @${context.actor},
 
-            I dismissed your review because it looks like you've introduced a significant number of changes to this pull request since it was last approved by @${approver}:
+            I dismissed your review because it looks like you've introduced a significant
+            number of changes to this pull request since it was last approved by
+            @${approver}:
 
             \`\`\`
             ${summary}
             \`\`\`
 
-            If either of you believe my dismissal was premature or a mistake, consider updating [autoapprove.yaml](../blob/main/.github/workflows/autoapprove.yaml) in a separate pull request.
+            If either of you believe my dismissal was a mistake, consider updating
+            [approvals.yml](../blob/main/.github/workflows/approvals.yml)
+            in a separate pull request.
 
             Thank you for your contributions!`;
 
