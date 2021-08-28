@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
+import firebase from 'firebase';
 import { Link } from 'react-router-dom';
 import { useFormik, getIn } from 'formik';
-import firebase from 'firebase';
 import { Container, Button, TextField, IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
-import ScholarshipAmountField from '../components/ScholarshipAmountField';
-import DatePicker from '../components/DatePicker';
+import PropTypes from 'prop-types';
 import validationSchema from '../validation/ValidationSchema';
 import Scholarships from '../models/Scholarships';
+import ScholarshipAmountField from './ScholarshipAmountField';
+import DatePicker from './DatePicker';
 
 const useStyles = makeStyles((theme) => ({
   containerStyle: {
@@ -23,9 +24,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ScholarshipForm() {
+function ScholarshipForm({ setSubmissionAlert }) {
   const classes = useStyles();
-  const [submissionAlert, setSubmissionAlert] = useState(null);
   const user = firebase.auth().currentUser;
 
   const formik = useFormik({
@@ -98,7 +98,6 @@ function ScholarshipForm() {
   return (
     <Container maxWidth="md">
       <form className={classes.containerStyle} onSubmit={formik.handleSubmit}>
-        <h1>Submit a Scholarship</h1>
         <div>
           <TextField
             className={classes.fieldStyle}
@@ -186,8 +185,15 @@ function ScholarshipForm() {
           </Button>
         </div>
       </form>
-      {submissionAlert}
     </Container>
   );
 }
+
+ScholarshipForm.propTypes = {
+  setSubmissionAlert: PropTypes.func,
+};
+ScholarshipForm.defaultProps = {
+  setSubmissionAlert: undefined,
+};
+
 export default ScholarshipForm;
