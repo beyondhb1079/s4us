@@ -10,7 +10,7 @@ import ScholarshipDetails from './pages/ScholarshipDetails';
 import Scholarships from './pages/Scholarships';
 import About from './pages/About';
 import Contact from './pages/Contact';
-import ScholarshipForm from './pages/ScholarshipForm';
+import AddScholarship from './pages/AddScholarship';
 import theme from './theme';
 import { BRAND_NAME } from './config/constants';
 import FirebaseProvider from './lib/FirebaseProvider';
@@ -42,7 +42,7 @@ const routes = [
   {
     path: '/scholarships/new',
     title: 'Add a scholarship',
-    component: ScholarshipForm,
+    component: AddScholarship,
     guard: true,
   },
   {
