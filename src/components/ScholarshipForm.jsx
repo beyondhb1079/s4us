@@ -2,7 +2,7 @@ import React from 'react';
 import firebase from 'firebase';
 import { Link } from 'react-router-dom';
 import { useFormik, getIn } from 'formik';
-import { Container, Button, TextField, IconButton } from '@material-ui/core';
+import { Button, TextField, IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
@@ -96,96 +96,90 @@ function ScholarshipForm({ setSubmissionAlert }) {
   }
 
   return (
-    <Container maxWidth="md">
-      <form className={classes.containerStyle} onSubmit={formik.handleSubmit}>
-        <div>
-          <TextField
-            className={classes.fieldStyle}
-            id="name"
-            label="Scholarship Name *"
-            error={formik.touched.name && Boolean(formik.errors.name)}
-            helperText={(formik.touched.name && formik.errors.name) || ' '}
-            value={formik.values.name}
-            onChange={formik.handleChange}
-            fullWidth
-          />
-        </div>
-
-        <DatePicker
+    <form className={classes.containerStyle} onSubmit={formik.handleSubmit}>
+      <div>
+        <TextField
           className={classes.fieldStyle}
-          id="deadline"
-          label="Deadline *"
-          error={formik.touched.deadline && Boolean(formik.errors.deadline)}
-          helperText={
-            (formik.touched.deadline && formik.errors.deadline) || ' '
-          }
-          value={formik.values.deadline}
-          onChange={(date) => formik.setFieldValue('deadline', date, true)}
+          id="name"
+          label="Scholarship Name *"
+          error={formik.touched.name && Boolean(formik.errors.name)}
+          helperText={(formik.touched.name && formik.errors.name) || ' '}
+          value={formik.values.name}
+          onChange={formik.handleChange}
+          fullWidth
         />
+      </div>
 
-        <div>
-          <TextField
-            className={classes.fieldStyle}
-            id="description"
-            label="Description *"
-            error={
-              formik.touched.description && Boolean(formik.errors.description)
-            }
-            helperText={
-              (formik.touched.description && formik.errors.description) || ' '
-            }
-            value={formik.values.description}
-            onChange={formik.handleChange}
-            multiline
-            fullWidth
-          />
-        </div>
+      <DatePicker
+        className={classes.fieldStyle}
+        id="deadline"
+        label="Deadline *"
+        error={formik.touched.deadline && Boolean(formik.errors.deadline)}
+        helperText={(formik.touched.deadline && formik.errors.deadline) || ' '}
+        value={formik.values.deadline}
+        onChange={(date) => formik.setFieldValue('deadline', date, true)}
+      />
 
-        <div>
-          <TextField
-            className={classes.fieldStyle}
-            id="website"
-            label="Website *"
-            error={formik.touched.website && Boolean(formik.errors.website)}
-            helperText={
-              (formik.touched.website && formik.errors.website) || ' '
-            }
-            value={formik.values.website}
-            onChange={formik.handleChange}
-            fullWidth
-          />
-        </div>
-
-        <ScholarshipAmountField
+      <div>
+        <TextField
           className={classes.fieldStyle}
+          id="description"
+          label="Description *"
+          error={
+            formik.touched.description && Boolean(formik.errors.description)
+          }
           helperText={
-            (getIn(formik.touched, 'amount.type') &&
-              getIn(formik.errors, 'amount.type')) ||
-            getIn(formik.errors, 'amount.min') ||
-            getIn(formik.errors, 'amount.max') ||
-            ''
+            (formik.touched.description && formik.errors.description) || ' '
           }
-          amountType={formik.values.amount.type}
-          minAmount={formik.values.amount.min}
-          maxAmount={formik.values.amount.max}
-          onTypeChange={(e) =>
-            formik.setFieldValue('amount.type', e.target.value, true)
-          }
-          updateAmount={updateAmount}
+          value={formik.values.description}
+          onChange={formik.handleChange}
+          multiline
+          fullWidth
         />
+      </div>
 
-        <div>
-          <Button
-            className={classes.submitStyle}
-            variant="contained"
-            color="primary"
-            type="submit"
-            disabled={formik.isSubmitting}>
-            Submit
-          </Button>
-        </div>
-      </form>
-    </Container>
+      <div>
+        <TextField
+          className={classes.fieldStyle}
+          id="website"
+          label="Website *"
+          error={formik.touched.website && Boolean(formik.errors.website)}
+          helperText={(formik.touched.website && formik.errors.website) || ' '}
+          value={formik.values.website}
+          onChange={formik.handleChange}
+          fullWidth
+        />
+      </div>
+
+      <ScholarshipAmountField
+        className={classes.fieldStyle}
+        helperText={
+          (getIn(formik.touched, 'amount.type') &&
+            getIn(formik.errors, 'amount.type')) ||
+          getIn(formik.errors, 'amount.min') ||
+          getIn(formik.errors, 'amount.max') ||
+          ''
+        }
+        amountType={formik.values.amount.type}
+        minAmount={formik.values.amount.min}
+        maxAmount={formik.values.amount.max}
+        onTypeChange={(e) =>
+          formik.setFieldValue('amount.type', e.target.value, true)
+        }
+        updateAmount={updateAmount}
+      />
+
+      <div>
+        <Button
+          className={classes.submitStyle}
+          variant="contained"
+          color="primary"
+          type="submit"
+          disabled={formik.isSubmitting}>
+          Submit
+        </Button>
+      </div>
+    </form>
   );
 }
 
