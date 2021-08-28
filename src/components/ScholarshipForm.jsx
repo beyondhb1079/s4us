@@ -184,10 +184,7 @@ function ScholarshipForm({ setSubmissionAlert }) {
 }
 
 ScholarshipForm.propTypes = {
-  setSubmissionAlert: PropTypes.func,
-};
-ScholarshipForm.defaultProps = {
-  setSubmissionAlert: undefined,
+  setSubmissionAlert: PropTypes.func.isRequired,
 };
 
 export default ScholarshipForm;
