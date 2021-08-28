@@ -1,9 +1,7 @@
 import React from 'react';
 import firebase from 'firebase';
-import { Link } from 'react-router-dom';
 import { useFormik, getIn } from 'formik';
-import { Button, TextField, IconButton } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
+import { Button, TextField } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -11,6 +9,7 @@ import validationSchema from '../validation/ValidationSchema';
 import Scholarships from '../models/Scholarships';
 import ScholarshipAmountField from './ScholarshipAmountField';
 import DatePicker from './DatePicker';
+import SubmissionAlert from './SubmissionAlert';
 
 const useStyles = makeStyles((theme) => ({
   containerStyle: {
@@ -53,28 +52,11 @@ function ScholarshipForm({ setSubmissionAlert }) {
         .save()
         .then((scholarship) => {
           setSubmissionAlert(
-            <Alert
-              severity="success"
-              action={
-                <>
-                  <Button
-                    color="inherit"
-                    size="medium"
-                    component={Link}
-                    to={`/scholarships/${scholarship.id}`}>
-                    VIEW
-                  </Button>
-                  <IconButton
-                    size="medium"
-                    color="inhert"
-                    onClick={() => setSubmissionAlert(null)}>
-                    <CloseIcon fontSize="small" />
-                  </IconButton>
-                </>
-              }>
-              <AlertTitle>Success</AlertTitle>
-              {`${scholarship.data.name} submitted successfully.`}
-            </Alert>
+            <SubmissionAlert
+              id={scholarship.id}
+              name={scholarship.data.name}
+              closeFn={() => setSubmissionAlert(null)}
+            />
           );
           resetForm();
         })
