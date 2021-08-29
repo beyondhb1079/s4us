@@ -24,12 +24,18 @@ import sortOptions, {
 
 const useStyles = makeStyles(() => ({
   resultsArea: {
+    alignItems: 'center',
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
     justifyContent: 'center',
-    alignItems: 'center',
     minHeight: '20vh',
+  },
+  listView: {
+    maxHeight: '100vh',
+    overflowY: 'auto',
+    position: 'sticky',
+    top: 0,
   },
 }));
 
@@ -114,7 +120,7 @@ function ScholarshipsPage() {
       <Box className={classes.resultsArea}>
         <Grid container spacing={3}>
           <Hidden xsDown={showDetail}>
-            <Grid item xs={showDetail ? 6 : 12}>
+            <Grid item xs={showDetail ? 6 : 12} className={classes.listView}>
               <ScholarshipList
                 listFn={listScholarships}
                 selectedId={selected?.id}
@@ -125,7 +131,9 @@ function ScholarshipsPage() {
             </Grid>
           </Hidden>
           <Grid item xs>
-            {selected && <ScholarshipDetailCard scholarship={selected} />}
+            <Container maxWidth="md">
+              {selected && <ScholarshipDetailCard scholarship={selected} />}
+            </Container>
           </Grid>
         </Grid>
       </Box>

@@ -33,8 +33,8 @@ const useStyles = makeStyles((theme) => ({
   },
   description: {
     display: '-webkit-box',
-    '-webkit-line-clamp': 5,
-    lineClamp: 5,
+    '-webkit-line-clamp': 3,
+    lineClamp: 3,
     '-webkit-box-orient': 'vertical',
     overflow: 'hidden',
     whiteSpace: 'pre-line',
