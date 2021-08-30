@@ -4,9 +4,12 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
-  amountField: {
-    margin: theme.spacing(1),
-    maxWidth: 120,
+  amountSelect: {
+    marginTop: theme.spacing(1),
+    minWidth: 150,
+  },
+  amountLabel: {
+    marginLeft: theme.spacing(1),
   },
 }));
 
@@ -37,6 +40,6 @@ AmountTextField.propTypes = {
 AmountTextField.defaultProps = {
   disabled: false,
   error: false,
-  variation: 'standard',
+  variation: 'outlined',
 };
 export default AmountTextField;
