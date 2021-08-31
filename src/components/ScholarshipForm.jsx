@@ -9,6 +9,8 @@ import {
   StepLabel,
   StepContent,
   Grid,
+  Typography,
+  InputLabel,
 } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
@@ -22,6 +24,12 @@ import SubmissionAlert from './SubmissionAlert';
 const useStyles = makeStyles((theme) => ({
   submitStyle: {
     marginTop: theme.spacing(2),
+  },
+  stepperDescription: {
+    marginBottom: theme.spacing(3),
+  },
+  inputLabel: {
+    marginBottom: theme.spacing(2),
   },
 }));
 
@@ -82,12 +90,20 @@ function ScholarshipForm({ setSubmissionAlert }) {
 
   const stepperItems = {};
   stepperItems.General = (
-    <Grid container spacing={5}>
-      <Grid item xs={5}>
+    <Grid container spacing={3}>
+      <Grid item xs={12}>
+        <Typography className={classes.stepperDescription}>
+          Please add the general information about the scholarship.{' '}
+        </Typography>
+      </Grid>
+
+      <Grid item xs={6}>
+        <InputLabel className={classes.inputLabel}>
+          Scholarship Name *
+        </InputLabel>
         <TextField
           variant="outlined"
           id="name"
-          label="Scholarship Name *"
           error={formik.touched.name && Boolean(formik.errors.name)}
           helperText={(formik.touched.name && formik.errors.name) || ' '}
           value={formik.values.name}
@@ -96,11 +112,11 @@ function ScholarshipForm({ setSubmissionAlert }) {
         />
       </Grid>
 
-      <Grid item xs={5}>
+      <Grid item xs={6}>
+        <InputLabel className={classes.inputLabel}>Organization</InputLabel>
         <TextField
           variant="outlined"
           id="organization"
-          label="Organization *"
           error={
             formik.touched.organization && Boolean(formik.errors.organization)
           }
@@ -113,11 +129,11 @@ function ScholarshipForm({ setSubmissionAlert }) {
         />
       </Grid>
 
-      <Grid item xs={5}>
+      <Grid item xs={6}>
+        <InputLabel className={classes.inputLabel}>Website *</InputLabel>
         <TextField
           variant="outlined"
           id="website"
-          label="Website *"
           error={formik.touched.website && Boolean(formik.errors.website)}
           helperText={(formik.touched.website && formik.errors.website) || ' '}
           value={formik.values.website}
@@ -126,10 +142,10 @@ function ScholarshipForm({ setSubmissionAlert }) {
         />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={4}>
+        <InputLabel className={classes.inputLabel}>Deadline *</InputLabel>
         <DatePicker
           id="deadline"
-          label="Deadline *"
           error={formik.touched.deadline && Boolean(formik.errors.deadline)}
           helperText={
             (formik.touched.deadline && formik.errors.deadline) || ' '
@@ -159,10 +175,10 @@ function ScholarshipForm({ setSubmissionAlert }) {
       </Grid>
 
       <Grid item xs={12}>
+        <InputLabel className={classes.inputLabel}>Description *</InputLabel>
         <TextField
           variant="outlined"
           id="description"
-          label="Description *"
           error={
             formik.touched.description && Boolean(formik.errors.description)
           }
