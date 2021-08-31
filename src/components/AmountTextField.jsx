@@ -4,12 +4,9 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
-  amountSelect: {
-    marginTop: theme.spacing(1),
-    minWidth: 150,
-  },
-  amountLabel: {
-    marginLeft: theme.spacing(1),
+  amountField: {
+    margin: theme.spacing(1),
+    maxWidth: 120,
   },
 }));
 
