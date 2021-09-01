@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
   dash: {
     marginTop: theme.spacing(1),
   },
+  inputLabel: {
+    marginBottom: theme.spacing(1),
+  },
 }));
 
 function ScholarshipAmountField(props) {
@@ -83,8 +86,7 @@ function ScholarshipAmountField(props) {
 
   return (
     <>
-      <InputLabel style={{ marginBottom: 10 }}>Award Amount *</InputLabel>
-
+      <InputLabel className={classes.inputLabel}>Award Amount *</InputLabel>
       <Grid container spacing={3}>
         <Grid item>
           <Select
