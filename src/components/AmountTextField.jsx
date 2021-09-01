@@ -3,10 +3,9 @@ import { TextField, InputAdornment } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   amountField: {
-    margin: theme.spacing(1),
-    maxWidth: 120,
+    maxWidth: 130,
   },
 }));
 

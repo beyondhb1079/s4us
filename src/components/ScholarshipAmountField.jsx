@@ -14,8 +14,10 @@ import AmountTextField from './AmountTextField';
 
 const useStyles = makeStyles((theme) => ({
   amountSelect: {
-    marginTop: theme.spacing(1),
     minWidth: 150,
+  },
+  dash: {
+    marginTop: theme.spacing(1),
   },
 }));
 
@@ -50,7 +52,7 @@ function ScholarshipAmountField(props) {
       </Grid>
 
       <Grid item>
-        <RemoveIcon />
+        <RemoveIcon className={classes.dash} />
       </Grid>
 
       <Grid item>
@@ -80,8 +82,9 @@ function ScholarshipAmountField(props) {
   labels[AmountType.FullTuition] = <AmountTextField disabled />;
 
   return (
-    <Grid container xs={12}>
-      <InputLabel>Award Amount *</InputLabel>
+    <>
+      <InputLabel style={{ marginBottom: 10 }}>Award Amount *</InputLabel>
+
       <Grid container spacing={3}>
         <Grid item>
           <Select
@@ -101,7 +104,7 @@ function ScholarshipAmountField(props) {
         <Grid item>{labels[amountType]}</Grid>
       </Grid>
       <FormHelperText error>{helperText || ' '}</FormHelperText>
-    </Grid>
+    </>
   );
 }
 

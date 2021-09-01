@@ -97,7 +97,7 @@ function ScholarshipForm({ setSubmissionAlert }) {
         </Typography>
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item sm={6} xs={12}>
         <InputLabel className={classes.inputLabel}>
           Scholarship Name *
         </InputLabel>
@@ -112,7 +112,7 @@ function ScholarshipForm({ setSubmissionAlert }) {
         />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item sm={6} xs={12}>
         <InputLabel className={classes.inputLabel}>Organization</InputLabel>
         <TextField
           variant="outlined"
@@ -129,7 +129,7 @@ function ScholarshipForm({ setSubmissionAlert }) {
         />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item sm={6} xs={12}>
         <InputLabel className={classes.inputLabel}>Website *</InputLabel>
         <TextField
           variant="outlined"
@@ -142,7 +142,7 @@ function ScholarshipForm({ setSubmissionAlert }) {
         />
       </Grid>
 
-      <Grid item xs={4}>
+      <Grid item sm={6}>
         <InputLabel className={classes.inputLabel}>Deadline *</InputLabel>
         <DatePicker
           id="deadline"
