@@ -93,7 +93,7 @@ function ScholarshipForm({ setSubmissionAlert }) {
     <Grid container spacing={3}>
       <Grid item xs={12}>
         <Typography className={classes.stepperDescription}>
-          Please add the general information about the scholarship.{' '}
+          Please add the general information about the scholarship.
         </Typography>
       </Grid>
 
