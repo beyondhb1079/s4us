@@ -20,7 +20,7 @@ export default class ScholarshipAmount {
   readonly max: number;
 
   constructor(
-    type: AmountType = AmountType.Unknown,
+    type: AmountType = AmountType.Varies,
     data?: { min?: number; max?: number }
   ) {
     this.type = type;
@@ -37,15 +37,17 @@ export default class ScholarshipAmount {
         this.min = min;
         this.max = max;
         break;
-      case AmountType.Range:
+      case AmountType.Varies:
+        if (!min && !max) {
+          this.min = UNKNOWN_MIN;
+          this.max = UNKNOWN_MAX;
+          break;
+        }
         if (min && min < 0) {
           throw new Error(`Invalid min amount: ${min}.`);
         }
         if (max && max < 0) {
           throw new Error(`Invalid max amount: ${max}.`);
-        }
-        if (!max && !min) {
-          throw new Error(`No bounds given. At least one bound is required.`);
         }
         if (max && min && min >= max) {
           throw new Error(`Invalid range ${min}-${max}`);
@@ -53,14 +55,10 @@ export default class ScholarshipAmount {
         this.min = min ?? 0;
         this.max = max || RANGE_MAX;
         break;
-      case AmountType.FullTuition:
+      default:
+        // full tuition
         this.min = FULL_TUITION;
         this.max = FULL_TUITION;
-        break;
-      default:
-        // amount unknown
-        this.min = UNKNOWN_MIN;
-        this.max = UNKNOWN_MAX;
     }
   }
 
@@ -70,19 +68,20 @@ export default class ScholarshipAmount {
         return 'Full Tuition';
       case AmountType.Fixed:
         return `$${this.min}`;
-      case AmountType.Range:
+      default:
+        if (this.min === UNKNOWN_MIN && this.max === UNKNOWN_MAX) {
+          return '(Unknown amount)';
+        }
         if (this.min && this.max !== RANGE_MAX) {
           return `$${this.min}-$${this.max}`;
         }
         return this.min ? `$${this.min}+` : `Up to $${this.max}`;
-      default:
-        return '(Unknown amount)';
     }
   }
 
   intersectsRange(min?: number, max?: number): boolean {
     return (
-      this.type === AmountType.Unknown ||
+      (min === UNKNOWN_MIN && max === UNKNOWN_MAX) ||
       ((!min || this.max >= min) && (!max || this.min <= max))
     );
   }

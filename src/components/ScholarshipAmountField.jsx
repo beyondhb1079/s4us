@@ -35,22 +35,22 @@ function ScholarshipAmountField(props) {
     updateAmount,
   } = props;
 
-  const isRange = amountType === AmountType.Range;
+  const isVaries = amountType === AmountType.Varies;
   const isFixed = amountType === AmountType.Fixed;
   const error = !!helperText; // no error if helperText empty
 
   const labels = {};
-  labels[AmountType.Range] = (
+  labels[AmountType.Varies] = (
     <Grid container alignItems="center">
       <Grid item>
         <AmountTextField
-          error={isRange && error && (!!maxAmount || minAmount >= maxAmount)}
+          error={isVaries && error && (!!maxAmount || minAmount >= maxAmount)}
           value={minAmount || ''}
           onChange={(e) => {
             const val = parseInt(e.target.value, 10);
             updateAmount(val || 0, maxAmount);
           }}
-          disabled={!isRange}
+          disabled={!isVaries}
         />
       </Grid>
 
@@ -60,13 +60,13 @@ function ScholarshipAmountField(props) {
 
       <Grid item>
         <AmountTextField
-          error={isRange && error && !minAmount && !maxAmount}
+          error={isVaries && error && !minAmount && !maxAmount}
           value={maxAmount || ''}
           onChange={(e) => {
             const val = parseInt(e.target.value, 10);
             updateAmount(minAmount, val || 0);
           }}
-          disabled={!isRange}
+          disabled={!isVaries}
         />
       </Grid>
     </Grid>
@@ -96,9 +96,8 @@ function ScholarshipAmountField(props) {
             onChange={onTypeChange}
             displayEmpty>
             <MenuItem value={null}>None</MenuItem>
-            <MenuItem value={AmountType.Unknown}>Unknown</MenuItem>
             <MenuItem value={AmountType.Fixed}>Fixed</MenuItem>
-            <MenuItem value={AmountType.Range}>Range</MenuItem>
+            <MenuItem value={AmountType.Varies}>Varies</MenuItem>
             <MenuItem value={AmountType.FullTuition}>Full Tuition</MenuItem>
           </Select>
         </Grid>
