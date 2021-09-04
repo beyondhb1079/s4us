@@ -82,7 +82,9 @@ function ScholarshipAmountField(props) {
       disabled={!isFixed}
     />
   );
-  labels[AmountType.FullTuition] = <AmountTextField disabled />;
+  labels[AmountType.FullTuition] = (
+    <AmountTextField disabled value="" onChange={() => {}} />
+  );
 
   return (
     <>
@@ -95,7 +97,6 @@ function ScholarshipAmountField(props) {
             value={amountType}
             onChange={onTypeChange}
             displayEmpty>
-            <MenuItem value={null}>None</MenuItem>
             <MenuItem value={AmountType.Unknown}>Unknown</MenuItem>
             <MenuItem value={AmountType.Fixed}>Fixed</MenuItem>
             <MenuItem value={AmountType.Range}>Range</MenuItem>
