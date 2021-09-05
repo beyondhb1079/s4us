@@ -165,7 +165,7 @@ function ScholarshipForm({ setSubmissionAlert }) {
             getIn(formik.errors, 'amount.max') ||
             ''
           }
-          amountType={formik.values.amount.type ?? 'FIXED'}
+          amountType={formik.values.amount.type ?? 'UNKNOWN'}
           minAmount={formik.values.amount.min}
           maxAmount={formik.values.amount.max}
           onTypeChange={(e) =>

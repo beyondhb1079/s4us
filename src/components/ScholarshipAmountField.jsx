@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 150,
   },
   dash: {
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(2),
   },
   inputLabel: {
     marginBottom: theme.spacing(1),
@@ -39,39 +39,33 @@ function ScholarshipAmountField(props) {
   const isFixed = amountType === AmountType.Fixed;
   const error = !!helperText; // no error if helperText empty
 
-  const labels = {};
-  labels[AmountType.Range] = (
-    <Grid container alignItems="center">
-      <Grid item>
-        <AmountTextField
-          error={isRange && error && (!!maxAmount || minAmount >= maxAmount)}
-          value={minAmount || ''}
-          onChange={(e) => {
-            const val = parseInt(e.target.value, 10);
-            updateAmount(val || 0, maxAmount);
-          }}
-          disabled={!isRange}
-        />
-      </Grid>
+  const inputFields = {};
+  inputFields[AmountType.Range] = (
+    <>
+      <AmountTextField
+        error={isRange && error && (!!maxAmount || minAmount >= maxAmount)}
+        value={minAmount || ''}
+        onChange={(e) => {
+          const val = parseInt(e.target.value, 10);
+          updateAmount(val || 0, maxAmount);
+        }}
+        disabled={!isRange}
+      />
 
-      <Grid item>
-        <RemoveIcon className={classes.dash} />
-      </Grid>
+      <RemoveIcon className={classes.dash} />
 
-      <Grid item>
-        <AmountTextField
-          error={isRange && error && !minAmount && !maxAmount}
-          value={maxAmount || ''}
-          onChange={(e) => {
-            const val = parseInt(e.target.value, 10);
-            updateAmount(minAmount, val || 0);
-          }}
-          disabled={!isRange}
-        />
-      </Grid>
-    </Grid>
+      <AmountTextField
+        error={isRange && error && !minAmount && !maxAmount}
+        value={maxAmount || ''}
+        onChange={(e) => {
+          const val = parseInt(e.target.value, 10);
+          updateAmount(minAmount, val || 0);
+        }}
+        disabled={!isRange}
+      />
+    </>
   );
-  labels[AmountType.Fixed] = (
+  inputFields[AmountType.Fixed] = (
     <AmountTextField
       error={isFixed && error}
       value={minAmount || ''}
@@ -81,9 +75,6 @@ function ScholarshipAmountField(props) {
       }}
       disabled={!isFixed}
     />
-  );
-  labels[AmountType.FullTuition] = (
-    <AmountTextField disabled value="" onChange={() => {}} />
   );
 
   return (
@@ -104,7 +95,7 @@ function ScholarshipAmountField(props) {
           </Select>
         </Grid>
 
-        <Grid item>{labels[amountType]}</Grid>
+        <Grid item>{amountType && inputFields[amountType]}</Grid>
       </Grid>
       <FormHelperText error>{helperText || ' '}</FormHelperText>
     </>
