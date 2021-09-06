@@ -111,7 +111,7 @@ ScholarshipAmountField.propTypes = {
   helperText: PropTypes.string,
 };
 ScholarshipAmountField.defaultProps = {
-  amountType: null,
+  amountType: '',
   helperText: '',
   minAmount: 0,
   maxAmount: 0,
