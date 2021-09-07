@@ -1,25 +1,41 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import UserEvent from '@testing-library/user-event';
 import ScholarshipAmountField from './ScholarshipAmountField';
 
-test('renders radio buttons', () => {
-  const labels = ['Full Tuition', /Fixed Amount:.*/, /Range:.*/, 'Unknown'];
-  render(
-    <ScholarshipAmountField onTypeChange={() => {}} updateAmount={() => {}} />
+function renderWithAmountType(type) {
+  return render(
+    <ScholarshipAmountField
+      onTypeChange={() => {}}
+      updateAmount={() => {}}
+      amountType={type}
+    />
   );
+}
 
-  expect(screen.getAllByRole('radio')).toHaveLength(4);
-  labels.forEach((name) =>
-    expect(screen.getByRole('radio', { name })).toBeInTheDocument()
-  );
+test('renders select options', () => {
+  renderWithAmountType('FIXED');
+
+  const select = screen.getByRole('button');
+  UserEvent.click(select);
+
+  const options = screen.getAllByRole('option');
+  expect(options[1]).toHaveTextContent('Fixed');
+  expect(options[2]).toHaveTextContent('Range');
+  expect(options[3]).toHaveTextContent('Full Tuition');
 });
 
-test('renders all amount input fields', () => {
-  render(
-    <ScholarshipAmountField onTypeChange={() => {}} updateAmount={() => {}} />
-  );
+test('single textfield when Fixed selected', () => {
+  renderWithAmountType('FIXED');
+  expect(screen.getAllByRole('textbox')).toHaveLength(1);
+});
 
-  const amountFields = screen.getAllByRole('textbox');
-  expect(amountFields).toHaveLength(3);
-  amountFields.forEach((input) => expect(input).toBeDisabled());
+test('two textfields when Range selected', () => {
+  renderWithAmountType('RANGE');
+  expect(screen.getAllByRole('textbox')).toHaveLength(2);
+});
+
+test('no textfield when Full Tuition selected', () => {
+  renderWithAmountType('FULL_TUITION');
+  expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
 });

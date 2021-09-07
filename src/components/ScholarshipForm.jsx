@@ -143,9 +143,10 @@ function ScholarshipForm({ setSubmissionAlert }) {
       </Grid>
 
       <Grid item sm={6}>
-        <InputLabel className={classes.inputLabel}>Deadline *</InputLabel>
         <DatePicker
           id="deadline"
+          label="Deadline *"
+          labelStyle={classes.inputLabel}
           error={formik.touched.deadline && Boolean(formik.errors.deadline)}
           helperText={
             (formik.touched.deadline && formik.errors.deadline) || ' '
@@ -164,7 +165,7 @@ function ScholarshipForm({ setSubmissionAlert }) {
             getIn(formik.errors, 'amount.max') ||
             ''
           }
-          amountType={formik.values.amount.type}
+          amountType={formik.values.amount.type ?? 'FIXED'}
           minAmount={formik.values.amount.min}
           maxAmount={formik.values.amount.max}
           onTypeChange={(e) =>
