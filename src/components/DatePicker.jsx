@@ -24,7 +24,7 @@ function DatePicker(props) {
           value,
           onChange,
           helperText,
-          className: labelStyle,
+          labelStyle,
         }}
       />
     </MuiPickersUtilsProvider>
