@@ -4,7 +4,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import PropTypes from 'prop-types';
-import { InputLabel } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -19,14 +18,10 @@ const useStyles = makeStyles((theme) => ({
 function FilterDropdown(props) {
   const { label, items, value, removeNone, onChange } = props;
   const classes = useStyles();
-  const labelId = `${label}-select-helper-label`;
   return (
     <FormControl variant="outlined" className={classes.formControl}>
-      <InputLabel id={labelId}>{label}</InputLabel>
       <Select
         value={value}
-        labelId={labelId}
-        label={label}
         onChange={(e) => onChange(e.target.value)}
         displayEmpty
         className={classes.selectStyle}>

@@ -11,10 +11,10 @@ import PropTypes from 'prop-types';
 
 import ScholarshipListCard from './ScholarshipListCard';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    paddingLeft: 12,
-    paddingRight: 12,
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
   },
   centered: {
     margin: 'auto',
@@ -24,7 +24,6 @@ const useStyles = makeStyles(() => ({
     display: 'block',
     margin: 'auto',
   },
-  item: {},
 }));
 
 function ScholarshipList({ listFn, noResultsNode, selectedId, onItemSelect }) {
@@ -74,16 +73,15 @@ function ScholarshipList({ listFn, noResultsNode, selectedId, onItemSelect }) {
   return (
     <Grid container spacing={2} className={classes.root}>
       {scholarships.map((scholarship) => (
-        <Grid item xs={12} key={id} className={classes.item}>
+        <Grid item xs={12} key={scholarship.id}>
           <ScholarshipListCard
             scholarship={scholarship}
-            key={scholarship.id}
             selected={scholarship.id === selectedId}
             onClick={() => onItemSelect(scholarship)}
           />
         </Grid>
       ))}
-      <Grid item xs={12} className={classes.item}>
+      <Grid item xs={12}>
         <Box className={classes.centered}>
           {(() => {
             if (error) return <Typography>{error.toString()}</Typography>;

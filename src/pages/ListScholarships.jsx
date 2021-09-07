@@ -2,15 +2,16 @@ import React, { useCallback } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import queryString from 'query-string';
 import {
-  Button,
+  // Button,
   Box,
   Container,
-  Typography,
+  // Typography,
   Grid,
-  useMediaQuery,
+  // useMediaQuery,
   makeStyles,
   Hidden,
   Drawer,
+  CssBaseline,
 } from '@material-ui/core';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
@@ -24,9 +25,7 @@ import sortOptions, {
 } from '../lib/sortOptions';
 
 const useStyles = makeStyles(() => ({
-  root: {
-    display: 'flex',
-  },
+  root: {},
   resultsArea: {
     alignItems: 'center',
     display: 'flex',
@@ -39,6 +38,7 @@ const useStyles = makeStyles(() => ({
     // main centered view
     position: 'sticky',
     top: 0,
+    maxWidth: '800px',
   },
   listBarView: {
     // when it appears on the left
@@ -46,15 +46,11 @@ const useStyles = makeStyles(() => ({
     overflowY: 'auto',
     position: 'sticky',
     top: 0,
-  },
-  drawer: {
-    width: 400,
-    flexShrink: 0,
-  },
-  drawerPaper: {
-    width: 330,
+    maxWidth: '40vw',
   },
 }));
+
+const drawerWidth = 240;
 
 function ListScholarships() {
   const classes = useStyles();
@@ -119,59 +115,77 @@ function ListScholarships() {
     [sortField, sortDir, minAmount, maxAmount]
   );
 
-  const smallScreen = useMediaQuery((theme) => theme.breakpoints.down('xs'));
+  // const smallScreen = useMediaQuery((theme) => theme.breakpoints.down('xs'));
   const showDetail = !!selected;
-  const showList = !smallScreen || !selected;
+  // const showList = !smallScreen || !selected;
   return (
-    <Container className={classes.root}>
-      <Typography variant="h3" component="h1" style={{ textAlign: 'center' }}>
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
+      {/* <Typography
+        variant="h3"
+        component="h1"
+        style={{ textAlign: 'center' }}
+        gutterBottom>
         Scholarships
       </Typography>
       {!showList && (
         <Button color="primary" onClick={clearSelected}>
           Back to results
         </Button>
-      )}
-      <Drawer
-        variant="permanent"
-        className={classes.drawer}
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-        anchor="left">
-        <ScholarshipList
-          listFn={listScholarships}
-          selectedId={selected?.id}
-          onItemSelect={(s) =>
-            s.id === selected?.id ? clearSelected() : setSelected(s)
-          }
-        />
-      </Drawer>
-      <Box className={classes.resultsArea}>
-        <Grid container spacing={3}>
+      )} */}
+      <Box
+        component="nav"
+        style={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        aria-label="mailbox folder">
+        <Drawer
+          variant="permanent"
+          style={{
+            display: { xs: 'none', sm: 'block' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: drawerWidth,
+            },
+            width: drawerWidth,
+            flexShrink: 0,
+          }}
+          anchor="left">
+          Something here for you all to see that is very long and has no end.
+          Something here for you all to see that is very long and has no end.
+        </Drawer>
+      </Box>
+      {/* </nav> */}
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, p: 3 }}
+        className={classes.resultsArea}>
+        <Grid container spacing={3} justifyContent="space-around">
           <Hidden xsDown={showDetail}>
             <Grid
               item
-              xs={showDetail ? 6 : 12}
-              className={showDetail ? classes.listBarView : classes.listView}>
-              <FilterBar queryParams={params} {...{ setQueryParam }} />
-              <ScholarshipList
-                listFn={listScholarships}
-                selectedId={selected?.id}
-                onItemSelect={(s) =>
-                  s.id === selected?.id ? clearSelected() : setSelected(s)
-                }
-              />
+              xs
+              className={
+                showDetail ? classes.listBarView : classes.listContainerView
+              }>
+              <Container maxWidth="md" disableGutters>
+                <FilterBar queryParams={params} {...{ setQueryParam }} />
+                <ScholarshipList
+                  listFn={listScholarships}
+                  selectedId={selected?.id}
+                  onItemSelect={(s) =>
+                    s.id === selected?.id ? clearSelected() : setSelected(s)
+                  }
+                />
+              </Container>
             </Grid>
           </Hidden>
-          <Grid item xs>
-            <Container maxWidth="md">
-              {selected && <ScholarshipDetailCard scholarship={selected} />}
-            </Container>
-          </Grid>
+          {selected && (
+            <Grid item xs>
+              <ScholarshipDetailCard scholarship={selected} />
+            </Grid>
+          )}
         </Grid>
       </Box>
-    </Container>
+    </Box>
   );
 }
 
