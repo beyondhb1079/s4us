@@ -2,16 +2,14 @@ import React, { useCallback } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import queryString from 'query-string';
 import {
-  // Button,
+  Button,
   Box,
   Container,
-  // Typography,
+  Typography,
   Grid,
-  // useMediaQuery,
+  useMediaQuery,
   makeStyles,
   Hidden,
-  Drawer,
-  CssBaseline,
 } from '@material-ui/core';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
@@ -49,8 +47,6 @@ const useStyles = makeStyles(() => ({
     maxWidth: '40vw',
   },
 }));
-
-const drawerWidth = 240;
 
 function ListScholarships() {
   const classes = useStyles();
@@ -115,13 +111,12 @@ function ListScholarships() {
     [sortField, sortDir, minAmount, maxAmount]
   );
 
-  // const smallScreen = useMediaQuery((theme) => theme.breakpoints.down('xs'));
+  const smallScreen = useMediaQuery((theme) => theme.breakpoints.down('xs'));
   const showDetail = !!selected;
-  // const showList = !smallScreen || !selected;
+  const showList = !smallScreen || !selected;
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      {/* <Typography
+    <Container>
+      <Typography
         variant="h3"
         component="h1"
         style={{ textAlign: 'center' }}
@@ -132,32 +127,8 @@ function ListScholarships() {
         <Button color="primary" onClick={clearSelected}>
           Back to results
         </Button>
-      )} */}
-      <Box
-        component="nav"
-        style={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folder">
-        <Drawer
-          variant="permanent"
-          style={{
-            display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: drawerWidth,
-            },
-            width: drawerWidth,
-            flexShrink: 0,
-          }}
-          anchor="left">
-          Something here for you all to see that is very long and has no end.
-          Something here for you all to see that is very long and has no end.
-        </Drawer>
-      </Box>
-      {/* </nav> */}
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, p: 3 }}
-        className={classes.resultsArea}>
+      )}
+      <Box className={classes.resultsArea}>
         <Grid container spacing={3} justifyContent="space-around">
           <Hidden xsDown={showDetail}>
             <Grid
@@ -185,7 +156,7 @@ function ListScholarships() {
           )}
         </Grid>
       </Box>
-    </Box>
+    </Container>
   );
 }
 
