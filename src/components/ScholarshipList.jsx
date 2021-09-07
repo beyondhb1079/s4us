@@ -70,8 +70,8 @@ function ScholarshipList({ noResultsNode, listFn }) {
   return (
     <Grid container spacing={3}>
       {scholarships.map(({ id, data }) => (
-        <Grid item xs={12}>
-          <ScholarshipListCard scholarship={{ id, data }} key={id} />
+        <Grid item xs={12} key={id}>
+          <ScholarshipListCard scholarship={{ id, data }} />
         </Grid>
       ))}
       <Grid item xs={12}>
