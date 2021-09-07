@@ -10,6 +10,7 @@ import {
   useMediaQuery,
   makeStyles,
   Hidden,
+  Drawer,
 } from '@material-ui/core';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
@@ -23,6 +24,9 @@ import sortOptions, {
 } from '../lib/sortOptions';
 
 const useStyles = makeStyles(() => ({
+  root: {
+    display: 'flex',
+  },
   resultsArea: {
     alignItems: 'center',
     display: 'flex',
@@ -31,11 +35,24 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
     minHeight: '20vh',
   },
-  listView: {
+  listContainerView: {
+    // main centered view
+    position: 'sticky',
+    top: 0,
+  },
+  listBarView: {
+    // when it appears on the left
     maxHeight: '100vh',
     overflowY: 'auto',
     position: 'sticky',
     top: 0,
+  },
+  drawer: {
+    width: 400,
+    flexShrink: 0,
+  },
+  drawerPaper: {
+    width: 330,
   },
 }));
 
@@ -106,21 +123,38 @@ function ScholarshipsPage() {
   const showDetail = !!selected;
   const showList = !smallScreen || !selected;
   return (
-    <Container>
+    <Container className={classes.root}>
       <Typography variant="h3" component="h1" style={{ textAlign: 'center' }}>
         Scholarships
       </Typography>
-      {showList ? (
-        <FilterBar queryParams={params} {...{ setQueryParam }} />
-      ) : (
+      {!showList && (
         <Button color="primary" onClick={clearSelected}>
           Back to results
         </Button>
       )}
+      <Drawer
+        variant="permanent"
+        className={classes.drawer}
+        classes={{
+          paper: classes.drawerPaper,
+        }}
+        anchor="left">
+        <ScholarshipList
+          listFn={listScholarships}
+          selectedId={selected?.id}
+          onItemSelect={(s) =>
+            s.id === selected?.id ? clearSelected() : setSelected(s)
+          }
+        />
+      </Drawer>
       <Box className={classes.resultsArea}>
         <Grid container spacing={3}>
           <Hidden xsDown={showDetail}>
-            <Grid item xs={showDetail ? 6 : 12} className={classes.listView}>
+            <Grid
+              item
+              xs={showDetail ? 6 : 12}
+              className={showDetail ? classes.listBarView : classes.listView}>
+              <FilterBar queryParams={params} {...{ setQueryParam }} />
               <ScholarshipList
                 listFn={listScholarships}
                 selectedId={selected?.id}
