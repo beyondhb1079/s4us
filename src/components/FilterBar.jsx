@@ -12,8 +12,6 @@ const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
     justifyContent: 'space-between',
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
   },
   alignText: {
     display: 'flex',

@@ -11,11 +11,7 @@ import PropTypes from 'prop-types';
 
 import ScholarshipListCard from './ScholarshipListCard';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
-  },
+const useStyles = makeStyles(() => ({
   centered: {
     margin: 'auto',
     textAlign: 'center',
@@ -71,7 +67,7 @@ function ScholarshipList({ listFn, noResultsNode, selectedId, onItemSelect }) {
   const loadMore = () => setLoadState({ ...loadState, loading: true });
 
   return (
-    <Grid container spacing={2} className={classes.root}>
+    <Grid container spacing={2}>
       {scholarships.map((scholarship) => (
         <Grid item xs={12} key={scholarship.id}>
           <ScholarshipListCard

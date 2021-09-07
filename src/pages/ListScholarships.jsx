@@ -109,7 +109,7 @@ function ListScholarships() {
         gutterBottom>
         Scholarships
       </Typography>
-      <Grid container spacing={3} justifyContent="space-around">
+      <Grid container spacing={5} justifyContent="space-around">
         <Hidden xsDown={showDetail}>
           <Grid
             item
