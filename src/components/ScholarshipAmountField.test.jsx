@@ -20,9 +20,9 @@ test('renders select options', () => {
   UserEvent.click(select);
 
   const options = screen.getAllByRole('option');
-  expect(options[1]).toHaveTextContent('Fixed');
-  expect(options[2]).toHaveTextContent('Range');
-  expect(options[3]).toHaveTextContent('Full Tuition');
+  expect(options[0]).toHaveTextContent('Fixed');
+  expect(options[1]).toHaveTextContent('Varies');
+  expect(options[2]).toHaveTextContent('Full Tuition');
 });
 
 test('single textfield when Fixed selected', () => {
@@ -30,8 +30,8 @@ test('single textfield when Fixed selected', () => {
   expect(screen.getAllByRole('textbox')).toHaveLength(1);
 });
 
-test('two textfields when Range selected', () => {
-  renderWithAmountType('RANGE');
+test('two textfields when Varies selected', () => {
+  renderWithAmountType('VARIES');
   expect(screen.getAllByRole('textbox')).toHaveLength(2);
 });
 
