@@ -8,7 +8,6 @@ import AmountTextField from './AmountTextField';
 
 const useStyles = makeStyles((theme) => ({
   buttonStyle: {
-    margin: theme.spacing(1),
     height: theme.spacing(4),
   },
   filterStyle: { margin: theme.spacing(1) },

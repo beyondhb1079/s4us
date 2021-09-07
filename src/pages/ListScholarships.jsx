@@ -2,12 +2,11 @@ import React, { useCallback } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import queryString from 'query-string';
 import {
-  Button,
   Box,
+  Button,
   Container,
   Typography,
   Grid,
-  useMediaQuery,
   makeStyles,
   Hidden,
 } from '@material-ui/core';
@@ -22,21 +21,11 @@ import sortOptions, {
   getField,
 } from '../lib/sortOptions';
 
-const useStyles = makeStyles(() => ({
-  root: {},
-  resultsArea: {
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'column',
-    flexGrow: 1,
-    justifyContent: 'center',
-    minHeight: '20vh',
-  },
+const useStyles = makeStyles((theme) => ({
   listContainerView: {
     // main centered view
     position: 'sticky',
     top: 0,
-    maxWidth: '800px',
   },
   listBarView: {
     // when it appears on the left
@@ -44,7 +33,11 @@ const useStyles = makeStyles(() => ({
     overflowY: 'auto',
     position: 'sticky',
     top: 0,
-    maxWidth: '40vw',
+    maxWidth: '480px',
+  },
+  filters: {
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
   },
 }));
 
@@ -111,9 +104,7 @@ function ListScholarships() {
     [sortField, sortDir, minAmount, maxAmount]
   );
 
-  const smallScreen = useMediaQuery((theme) => theme.breakpoints.down('xs'));
   const showDetail = !!selected;
-  const showList = !smallScreen || !selected;
   return (
     <Container>
       <Typography
@@ -123,39 +114,39 @@ function ListScholarships() {
         gutterBottom>
         Scholarships
       </Typography>
-      {!showList && (
-        <Button color="primary" onClick={clearSelected}>
-          Back to results
-        </Button>
-      )}
-      <Box className={classes.resultsArea}>
-        <Grid container spacing={3} justifyContent="space-around">
-          <Hidden xsDown={showDetail}>
-            <Grid
-              item
-              xs
-              className={
-                showDetail ? classes.listBarView : classes.listContainerView
-              }>
-              <Container maxWidth="md" disableGutters>
+      <Grid container spacing={3} justifyContent="space-around">
+        <Hidden xsDown={showDetail}>
+          <Grid
+            item
+            xs
+            className={
+              showDetail ? classes.listBarView : classes.listContainerView
+            }>
+            <Container maxWidth="md" disableGutters>
+              <Box className={classes.filters}>
                 <FilterBar queryParams={params} {...{ setQueryParam }} />
-                <ScholarshipList
-                  listFn={listScholarships}
-                  selectedId={selected?.id}
-                  onItemSelect={(s) =>
-                    s.id === selected?.id ? clearSelected() : setSelected(s)
-                  }
-                />
-              </Container>
-            </Grid>
-          </Hidden>
-          {selected && (
-            <Grid item xs>
-              <ScholarshipDetailCard scholarship={selected} />
-            </Grid>
-          )}
-        </Grid>
-      </Box>
+              </Box>
+              <ScholarshipList
+                listFn={listScholarships}
+                selectedId={selected?.id}
+                onItemSelect={(s) =>
+                  s.id === selected?.id ? clearSelected() : setSelected(s)
+                }
+              />
+            </Container>
+          </Grid>
+        </Hidden>
+        {selected && (
+          <Grid item xs>
+            <Hidden smUp>
+              <Button color="primary" onClick={clearSelected}>
+                Back to results
+              </Button>
+            </Hidden>
+            <ScholarshipDetailCard scholarship={selected} />
+          </Grid>
+        )}
+      </Grid>
     </Container>
   );
 }

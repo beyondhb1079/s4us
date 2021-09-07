@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
 function FilterDropdown(props) {
   const { label, items, value, removeNone, onChange } = props;
   const classes = useStyles();
+
   return (
     <FormControl variant="outlined" className={classes.formControl}>
       <Select
