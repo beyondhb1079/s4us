@@ -2,7 +2,6 @@ import React, { useCallback } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import queryString from 'query-string';
 import {
-  Box,
   Button,
   Container,
   Typography,
@@ -21,7 +20,7 @@ import sortOptions, {
   getField,
 } from '../lib/sortOptions';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   listContainerView: {
     // main centered view
     position: 'sticky',
@@ -34,10 +33,6 @@ const useStyles = makeStyles((theme) => ({
     position: 'sticky',
     top: 0,
     maxWidth: '480px',
-  },
-  filters: {
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
   },
 }));
 
@@ -123,9 +118,7 @@ function ListScholarships() {
               showDetail ? classes.listBarView : classes.listContainerView
             }>
             <Container maxWidth="md" disableGutters>
-              <Box className={classes.filters}>
-                <FilterBar queryParams={params} {...{ setQueryParam }} />
-              </Box>
+              <FilterBar queryParams={params} {...{ setQueryParam }} />
               <ScholarshipList
                 listFn={listScholarships}
                 selectedId={selected?.id}
