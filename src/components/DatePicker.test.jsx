@@ -14,7 +14,7 @@ test('renders date picker field', () => {
     { wrapper: MemoryRouter }
   );
 
-  const deadlineField = screen.getByLabelText('Deadline *');
+  const deadlineField = screen.getByRole('textbox');
   expect(deadlineField).toBeInTheDocument();
 });
 
@@ -29,7 +29,7 @@ test('date change', () => {
     { wrapper: MemoryRouter }
   );
 
-  const deadline = screen.getByLabelText('Deadline *');
+  const deadline = screen.getByRole('textbox');
   fireEvent.change(deadline, {
     target: { value: new Date('December 17, 2005') },
   });

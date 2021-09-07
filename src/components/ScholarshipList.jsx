@@ -74,7 +74,7 @@ function ScholarshipList({ listFn, noResultsNode, selectedId, onItemSelect }) {
   return (
     <Grid container spacing={2} className={classes.root}>
       {scholarships.map((scholarship) => (
-        <Grid item xs={12} className={classes.item}>
+        <Grid item xs={12} key={id} className={classes.item}>
           <ScholarshipListCard
             scholarship={scholarship}
             key={scholarship.id}

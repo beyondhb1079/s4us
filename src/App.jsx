@@ -6,11 +6,11 @@ import { CssBaseline, ThemeProvider } from '@material-ui/core';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import Home from './pages/Home';
-import ScholarshipDetails from './pages/ScholarshipDetails';
-import Scholarships from './pages/Scholarships';
+import ViewScholarship from './pages/ViewScholarship';
+import ListScholarships from './pages/ListScholarships';
 import About from './pages/About';
 import Contact from './pages/Contact';
-import ScholarshipForm from './pages/ScholarshipForm';
+import AddScholarship from './pages/AddScholarship';
 import theme from './theme';
 import { BRAND_NAME } from './config/constants';
 import FirebaseProvider from './lib/FirebaseProvider';
@@ -42,18 +42,18 @@ const routes = [
   {
     path: '/scholarships/new',
     title: 'Add a scholarship',
-    component: ScholarshipForm,
+    component: AddScholarship,
     guard: true,
   },
   {
     path: '/scholarships/:id',
     title: 'Details',
-    component: ScholarshipDetails,
+    component: ViewScholarship,
   },
   {
     path: '/scholarships',
     title: 'Scholarships',
-    component: Scholarships,
+    component: ListScholarships,
   },
   {
     path: '/about',

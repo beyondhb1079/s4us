@@ -56,7 +56,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function ScholarshipsPage() {
+function ListScholarships() {
   const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
@@ -175,4 +175,4 @@ function ScholarshipsPage() {
   );
 }
 
-export default ScholarshipsPage;
+export default ListScholarships;

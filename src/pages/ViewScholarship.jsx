@@ -5,7 +5,7 @@ import Scholarships from '../models/Scholarships';
 import { BRAND_NAME } from '../config/constants';
 import ScholarshipDetailCard from '../components/ScholarshipDetailCard';
 
-export default function ScholarshipDetails({ history, location, match }) {
+export default function ViewScholarship({ history, location, match }) {
   const { id } = match.params;
   const [scholarship, setScholarship] = useState(location.state?.scholarship);
   const [error, setError] = useState();
@@ -49,7 +49,7 @@ export default function ScholarshipDetails({ history, location, match }) {
   );
 }
 
-ScholarshipDetails.propTypes = {
+ViewScholarship.propTypes = {
   history: ReactRouterPropTypes.history.isRequired,
   location: ReactRouterPropTypes.location.isRequired,
   match: ReactRouterPropTypes.match.isRequired,

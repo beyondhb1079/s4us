@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route } from 'react-router-dom';
 import { clearFirestoreData, initializeTestApp } from '../lib/testing';
-import ScholarshipDetails from './ScholarshipDetails';
+import ViewScholarship from './ViewScholarship';
 import Scholarships from '../models/Scholarships';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import AmountType from '../types/AmountType';
@@ -14,7 +14,7 @@ window.MutationObserver = require('mutation-observer');
 function renderAtRoute(pathname, state = {}) {
   return render(
     <MemoryRouter initialEntries={[{ pathname, state }]}>
-      <Route path="/scholarships/:id" component={ScholarshipDetails} />
+      <Route path="/scholarships/:id" component={ViewScholarship} />
     </MemoryRouter>
   );
 }
@@ -91,8 +91,8 @@ test('renders scholarship details', async () => {
     description: 'description',
     deadline: new Date('2020-12-17'),
     website: 'http://foo.com/',
-    states: ['California', 'Washington'],
-    eligibility: {
+    requirements: {
+      states: ['California', 'Washington'],
       gpa: 4.0,
       ethnicities: ['Latino', 'African American'],
       majors: ['Computer Science', 'Software Engineering'],
@@ -113,12 +113,14 @@ test('renders scholarship details', async () => {
     data.website
   );
   expect(document.title).toContain(data.name);
-  expect(screen.getByText(data.states.join(', '))).toBeInTheDocument();
-  expect(screen.getByText(data.eligibility.gpa)).toBeInTheDocument();
   expect(
-    screen.getByText(data.eligibility.ethnicities.join(', '))
+    screen.getByText(data.requirements.states.join(', '))
+  ).toBeInTheDocument();
+  expect(screen.getByText(data.requirements.gpa)).toBeInTheDocument();
+  expect(
+    screen.getByText(data.requirements.ethnicities.join(', '))
   ).toBeInTheDocument();
   expect(
-    screen.getByText(data.eligibility.majors.join(', '))
+    screen.getByText(data.requirements.majors.join(', '))
   ).toBeInTheDocument();
 });

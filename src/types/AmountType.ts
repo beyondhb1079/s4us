@@ -1,7 +1,7 @@
 enum AmountType {
   Unknown = 'UNKNOWN',
   Fixed = 'FIXED',
-  Range = 'RANGE',
+  Varies = 'VARIES',
   FullTuition = 'FULL_TUITION',
 }
 
