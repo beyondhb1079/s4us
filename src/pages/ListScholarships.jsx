@@ -62,7 +62,10 @@ function ListScholarships() {
 
   return (
     <Container>
-      <Typography variant="h3" component="h1" style={{ textAlign: 'center' }}>
+      <Typography
+        variant="h4"
+        component="h1"
+        style={{ textAlign: 'center', padding: '8px' }}>
         Scholarships
       </Typography>
       <FilterBar queryParams={params} {...{ setQueryParam }} />

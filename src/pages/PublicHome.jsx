@@ -6,8 +6,9 @@ import ScholarshipsMadeSimple from '../components/ScholarshipsMadeSimple';
 import HomeSection from '../components/HomeSection';
 import community from '../img/community.png';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   description: {
+    padding: theme.spacing(1),
     textAlign: 'center',
   },
 }));

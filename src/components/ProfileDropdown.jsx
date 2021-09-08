@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import firebase from 'firebase';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Avatar, Divider, Grid, Typography } from '@material-ui/core';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -14,38 +14,31 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import experiments from '../lib/experiments';
 
 // hacky way to override Menu style
-const StyledMenu = withStyles((theme) => ({
-  paper: {
-    border: '1px solid black',
-    width: '350px',
-    background: theme.palette.background.default,
-  },
-  // placing dropdown menu below the avatar
-}))((props) => (
+const StyledMenu = (props) => (
   <Menu
     elevation={0}
     getContentAnchorEl={null}
     anchorOrigin={{
       vertical: 'bottom',
-      horizontal: 'center',
+      horizontal: 'right',
     }}
     transformOrigin={{
       vertical: 'top',
-      horizontal: 'center',
+      horizontal: 'right',
     }}
     // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}
   />
-));
+);
 
 const useStyles = makeStyles((theme) => ({
   gridRoot: {
     padding: theme.spacing(1),
   },
-  menuListItem: {
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-  },
+  // menuListItem: {
+  //   paddingTop: theme.spacing(1),
+  //   paddingBottom: theme.spacing(1),
+  // },
   dividerSpacing: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
@@ -84,22 +77,28 @@ export default function ProfileDropdown(props) {
       keepMounted
       open={Boolean(anchorEl)}
       onClose={handleClose}>
-      <Grid container spacing={2} className={classes.gridRoot}>
-        <Grid item className={classes.profilePic}>
-          <Avatar src={user.photoURL} className={classes.medium} />
+      <MenuItem>
+        <Grid
+          container
+          spacing={3}
+          alignItems="center"
+          className={classes.gridRoot}>
+          <Grid item className={classes.profilePic}>
+            <Avatar src={user.photoURL} className={classes.medium} />
+          </Grid>
+          <Grid>
+            <Typography variant="h6" component="h4">
+              {user.displayName}
+            </Typography>
+            <Typography component="h6" gutterBottom>
+              {user.email}
+            </Typography>
+            {experiments.expShowFullProfileMenu && (
+              <a href={manageProfileLink}>Manage Your Profile</a>
+            )}
+          </Grid>
         </Grid>
-        <Grid>
-          <Typography variant="h6" component="h4">
-            {user.displayName}
-          </Typography>
-          <Typography component="h6" gutterBottom>
-            {user.email}
-          </Typography>
-          {experiments.expShowFullProfileMenu && (
-            <a href={manageProfileLink}>Manage Your Profile</a>
-          )}
-        </Grid>
-      </Grid>
+      </MenuItem>
       <Divider className={classes.dividerSpacing} />
       {experiments.expShowFullProfileMenu && (
         <>

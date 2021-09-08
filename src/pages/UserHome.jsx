@@ -66,7 +66,7 @@ export default function UserHome() {
 
   return (
     <Container>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" component="h1" style={{ padding: '8px' }}>
         Welcome {user.displayName}
       </Typography>
       <Grid
