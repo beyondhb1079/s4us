@@ -19,12 +19,10 @@ function DatePicker(props) {
         format="MM/dd/yyyy"
         {...{
           id,
-          label,
           error,
           value,
           onChange,
           helperText,
-          className: labelStyle,
         }}
       />
     </MuiPickersUtilsProvider>
