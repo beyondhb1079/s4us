@@ -25,11 +25,11 @@ function create(amount: ScholarshipAmount, index: number) {
 const scholarships = [
   create(new ScholarshipAmount(AmountType.Fixed, { min: 500, max: 500 }), 1),
   create(new ScholarshipAmount(AmountType.Fixed, { min: 5000, max: 5000 }), 2),
-  create(new ScholarshipAmount(AmountType.Range, { min: 250, max: 2000 }), 3),
-  create(new ScholarshipAmount(AmountType.Range, { max: 500 }), 4),
-  create(new ScholarshipAmount(AmountType.Range, { min: 500 }), 5),
+  create(new ScholarshipAmount(AmountType.Varies, { min: 250, max: 2000 }), 3),
+  create(new ScholarshipAmount(AmountType.Varies, { max: 500 }), 4),
+  create(new ScholarshipAmount(AmountType.Varies, { min: 500 }), 5),
   create(new ScholarshipAmount(AmountType.FullTuition), 6),
-  create(new ScholarshipAmount(AmountType.Unknown), 7),
+  create(new ScholarshipAmount(AmountType.Varies), 7),
 ];
 
 // Readable names for all the scholarships.
