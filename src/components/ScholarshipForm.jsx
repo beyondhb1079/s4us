@@ -105,7 +105,7 @@ function ScholarshipForm({ setSubmissionAlert }) {
           variant="outlined"
           id="name"
           error={formik.touched.name && Boolean(formik.errors.name)}
-          helperText={(formik.touched.name && formik.errors.name) || ' '}
+          helperText={formik.touched.name && formik.errors.name}
           value={formik.values.name}
           onChange={formik.handleChange}
           fullWidth
@@ -120,9 +120,7 @@ function ScholarshipForm({ setSubmissionAlert }) {
           error={
             formik.touched.organization && Boolean(formik.errors.organization)
           }
-          helperText={
-            (formik.touched.organization && formik.errors.organization) || ' '
-          }
+          helperText={formik.touched.organization && formik.errors.organization}
           value={formik.values.organization}
           onChange={formik.handleChange}
           fullWidth
@@ -135,7 +133,7 @@ function ScholarshipForm({ setSubmissionAlert }) {
           variant="outlined"
           id="website"
           error={formik.touched.website && Boolean(formik.errors.website)}
-          helperText={(formik.touched.website && formik.errors.website) || ' '}
+          helperText={formik.touched.website && formik.errors.website}
           value={formik.values.website}
           onChange={formik.handleChange}
           fullWidth
@@ -148,9 +146,7 @@ function ScholarshipForm({ setSubmissionAlert }) {
           label="Deadline *"
           labelStyle={classes.inputLabel}
           error={formik.touched.deadline && Boolean(formik.errors.deadline)}
-          helperText={
-            (formik.touched.deadline && formik.errors.deadline) || ' '
-          }
+          helperText={formik.touched.deadline && formik.errors.deadline}
           value={formik.values.deadline}
           onChange={(date) => formik.setFieldValue('deadline', date, true)}
         />
@@ -162,8 +158,7 @@ function ScholarshipForm({ setSubmissionAlert }) {
             (getIn(formik.touched, 'amount.type') &&
               getIn(formik.errors, 'amount.type')) ||
             getIn(formik.errors, 'amount.min') ||
-            getIn(formik.errors, 'amount.max') ||
-            ''
+            getIn(formik.errors, 'amount.max')
           }
           amountType={formik.values.amount.type ?? 'UNKNOWN'}
           minAmount={formik.values.amount.min}
@@ -183,9 +178,7 @@ function ScholarshipForm({ setSubmissionAlert }) {
           error={
             formik.touched.description && Boolean(formik.errors.description)
           }
-          helperText={
-            (formik.touched.description && formik.errors.description) || ' '
-          }
+          helperText={formik.touched.description && formik.errors.description}
           value={formik.values.description}
           onChange={formik.handleChange}
           fullWidth
