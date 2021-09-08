@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import firebase from 'firebase';
 import {
-  Container,
-  makeStyles,
-  Link as MuiLink,
-  Grid,
-  Snackbar,
+  Avatar,
   Button,
+  Container,
+  Grid,
+  Link as MuiLink,
+  makeStyles,
+  Snackbar,
+  Zoom,
 } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
+import ProfileMenu from './ProfileDropdown';
 
 import { BRAND_NAME, SUBSCRIPTION_FORM_URL } from '../config/constants';
 import HeaderNavMenu from './HeaderNavMenu';
@@ -41,6 +45,47 @@ const UnderConstructionAlert = () => (
   </Alert>
 );
 
+const AuthZoomButton = () => {
+  const { currentUser } = firebase.auth();
+  const [isSignedIn, setIsSignedIn] = useState(
+    !!firebase.auth().currentUser || undefined
+  );
+
+  useEffect(
+    () => firebase.auth().onAuthStateChanged((user) => setIsSignedIn(!!user)),
+    []
+  );
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const showProfileMenu = (event) => setAnchorEl(event.currentTarget);
+  const closeProfileMenu = () => setAnchorEl(null);
+  return (
+    <Zoom in={isSignedIn !== undefined}>
+      {isSignedIn ? (
+        <>
+          <IconButton
+            size="medium"
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            onClick={showProfileMenu}
+            color="inherit">
+            <Avatar src={currentUser.photoURL} />
+          </IconButton>
+          <ProfileMenu anchorEl={anchorEl} handleClose={closeProfileMenu} />
+        </>
+      ) : (
+        <Button
+          color="inherit"
+          component={Link}
+          to={{ state: { showLoginDialog: true } }}>
+          Login
+        </Button>
+      )}
+    </Zoom>
+  );
+};
+
 const useStyles = makeStyles((theme) => ({
   header: {
     flexGrow: 1,
@@ -50,6 +95,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       justifyContent: 'space-around',
     },
+  },
+  authItem: {
+    minWidth: '100px',
   },
 }));
 
@@ -67,6 +115,10 @@ function Header() {
         </Grid>
         <Grid item>
           <HeaderNavMenu />
+        </Grid>
+
+        <Grid item className={classes.authItem}>
+          <AuthZoomButton />
         </Grid>
       </Grid>
     </Container>

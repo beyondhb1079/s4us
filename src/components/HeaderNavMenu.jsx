@@ -1,15 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import firebase from 'firebase';
-import {
-  makeStyles,
-  Link as MuiLink,
-  Grid,
-  Zoom,
-  Avatar,
-} from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import ProfileMenu from './ProfileDropdown';
+import { makeStyles, Link as MuiLink, Grid } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   menu: {
@@ -18,9 +9,6 @@ const useStyles = makeStyles((theme) => ({
   },
   menuItem: {
     color: theme.palette.text.secondary,
-  },
-  authItem: {
-    minWidth: '100px',
   },
 }));
 
@@ -33,21 +21,6 @@ function HeaderNavMenu() {
     Contact: '/contact',
   };
 
-  const { currentUser } = firebase.auth();
-  const [isSignedIn, setIsSignedIn] = useState(
-    !!firebase.auth().currentUser || undefined
-  );
-  const loading = isSignedIn === undefined;
-
-  useEffect(
-    () => firebase.auth().onAuthStateChanged((user) => setIsSignedIn(!!user)),
-    []
-  );
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const showProfileMenu = (event) => setAnchorEl(event.currentTarget);
-  const closeProfileMenu = () => setAnchorEl(null);
-
   return (
     <Grid container spacing={3} className={classes.menu}>
       {Object.entries(links).map(([title, link]) => (
@@ -57,27 +30,6 @@ function HeaderNavMenu() {
           </MuiLink>
         </Grid>
       ))}
-      <Grid item className={classes.authItem}>
-        {!loading && (
-          <Zoom in>
-            {isSignedIn ? (
-              <Avatar src={currentUser.photoURL} onClick={showProfileMenu} />
-            ) : (
-              <Button
-                variant="contained"
-                color="primary"
-                component={Link}
-                to={{ state: { showLoginDialog: true } }}
-                replace>
-                Login
-              </Button>
-            )}
-          </Zoom>
-        )}
-        {isSignedIn && (
-          <ProfileMenu anchorEl={anchorEl} handleClose={closeProfileMenu} />
-        )}
-      </Grid>
     </Grid>
   );
 }
