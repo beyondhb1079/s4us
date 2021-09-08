@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route } from 'react-router-dom';
 import { clearFirestoreData, initializeTestApp } from '../lib/testing';
-import ScholarshipsPage from './Scholarships';
+import ListScholarships from './ListScholarships';
 import Scholarships from '../models/Scholarships';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import AmountType from '../types/AmountType';
@@ -14,7 +14,7 @@ window.MutationObserver = require('mutation-observer');
 function renderAtRoute(route) {
   return render(
     <MemoryRouter initialEntries={[route]}>
-      <Route path="/scholarships" component={ScholarshipsPage} />
+      <Route path="/scholarships" component={ListScholarships} />
     </MemoryRouter>
   );
 }
