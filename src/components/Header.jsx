@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Container,
@@ -13,6 +13,34 @@ import { Alert, AlertTitle } from '@material-ui/lab';
 import { BRAND_NAME, SUBSCRIPTION_FORM_URL } from '../config/constants';
 import HeaderNavMenu from './HeaderNavMenu';
 
+const OnRenderSnackbar = () => {
+  const match = window.location.hostname.match(/s4us-pr-(\d+)\.onrender\.com/);
+  const [open, setOpen] = useState(true);
+  if (!match) return null;
+
+  const link = `https://github.com/beyondhb1079/s4us/pull/${match[1]}`;
+  return (
+    <Snackbar open={open}>
+      <Alert onClose={() => setOpen(false)} severity="info">
+        This is a preview of <a href={link}>Pull Request #{match[1]}</a>
+      </Alert>
+    </Snackbar>
+  );
+};
+
+const UnderConstructionAlert = () => (
+  <Alert
+    severity="warning"
+    action={
+      <Button component={MuiLink} href={SUBSCRIPTION_FORM_URL}>
+        SUBSCRIBE FOR UPDATES
+      </Button>
+    }>
+    <AlertTitle>Warning</AlertTitle>
+    🚧 Website Actively Under-Construction! 🚧
+  </Alert>
+);
+
 const useStyles = makeStyles((theme) => ({
   header: {
     flexGrow: 1,
@@ -26,34 +54,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Header() {
-  const match = window.location.hostname.match(/s4us-pr-(\d+)\.onrender\.com/);
-  let alert = '';
-  const [open, setOpen] = React.useState(match !== null);
-  if (match !== null) {
-    const link = `https://github.com/beyondhb1079/s4us/pull/${match[1]}`;
-    alert = (
-      <Snackbar open={open}>
-        <Alert onClose={() => setOpen(false)} severity="info">
-          This is a preview of <a href={link}>Pull Request #{match[1]}</a>
-        </Alert>
-      </Snackbar>
-    );
-  }
-
   const classes = useStyles();
   return (
     <Container>
-      <Alert
-        severity="warning"
-        action={
-          <Button component={MuiLink} href={SUBSCRIPTION_FORM_URL}>
-            SUBSCRIBE FOR UPDATES
-          </Button>
-        }>
-        <AlertTitle>Warning</AlertTitle>
-        🚧 Website Actively Under-Construction! 🚧
-      </Alert>
-      {alert}
+      <UnderConstructionAlert />
+      <OnRenderSnackbar />
       <Grid container className={classes.header} spacing={3}>
         <Grid item>
           <MuiLink component={Link} to="/" variant="h4" underline="none">
