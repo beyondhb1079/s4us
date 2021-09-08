@@ -56,25 +56,22 @@ WEST VIRGINIA	WV
 WISCONSIN	WI
 WYOMING	WY`;
 
-export const STATES = RAW_STATES.split('\n').map(s => s.split('\t')[1]);
+export const STATES = RAW_STATES.split('\n').map((s) => s.split('\t')[1]);
 
 // Source: https://matchcollege.com/top-majors
 //
 // From the console:
 // copy([...document.querySelectorAll('td > a')].map(s => s.innerText).join('\n'))
 const RAW_MAJORS = `Accounting
-Administration & Social Services
 Administrative Assistant
 Advertising and Marketing
 Agriculture
 Aircraft Mechanic
-Animal & Agriculture Studies
 Animal Science
 Animation
 Anthropology
 Architecture
 Art History
-Arts & Design
 Athletic Training
 Audio and Video Production
 Audiology and Speech Pathology
@@ -82,7 +79,6 @@ Auto Body
 Auto Mechanic
 Aviation
 Baking And Pastry
-Beauty & Hospitality Services
 Behavioral Science
 Biochemistry
 Biology
@@ -91,7 +87,6 @@ Biomedical Science
 Biotechnology
 Bookkeeping
 Bus and Truck Driver
-Business & Finance
 Business Administration
 Carpentry
 Chemical Engineering
@@ -103,13 +98,11 @@ Cinematography And Film
 Civil Engineering
 Clinical Psychology
 Commercial and Advertising Art
-Communication & Media
 Communications
 Computer Aided Design (CAD)
 Computer Networking
 Computer Programming
 Computer Science
-Computers & Information Technology
 Construction Management
 Corrections Officer
 Cosmetology
@@ -126,22 +119,20 @@ Design and Visual Communications
 Diesel Mechanic
 Dietetics
 Drama and Theatre Arts
+EMT & Paramedic
+ESL
 Early Childhood Education
 Economics
-Education
 Education
 Educational Leadership and Administration
 Electrical Engineering
 Electrician
 Elementary Education
-EMT & Paramedic
 Engineering
-Engineering & Architecture
 Engineering Management
 English
 Entrepreneurship
 Environmental Science
-ESL
 Esthetician
 Exercise Physiology
 Family Practice Nurse
@@ -175,16 +166,14 @@ Information Science
 Information Systems
 Information Technology
 Interior Design
-International and Global Studies
 International Business
 International Relations
+International and Global Studies
 Journalism
 Kinesiology And Exercise Science
 Law
-Law & Criminal Justice
 Law and Justice Administration
 Liberal Arts
-Liberal Arts and Humanities
 Licensed Practical Nurse (LPN)
 Logistics and Supply Chain Management
 Machinist
@@ -204,7 +193,6 @@ Medical Office Assistant
 Medical Office Management
 Medical Technology
 Medicine
-Medicine & Allied Health
 Mental Health Counseling
 Middle School Teacher
 Ministry
@@ -218,16 +206,14 @@ Nursing Administration
 Nursing Assistant
 Nursing Science
 Nutrition
-Nutrition
-Nutrition and Wellness
 Occupational Therapy
 Occupational Therapy Assistant (OTA)
 Office Management and Supervision
 Operations Management
 Optometry
-Organizational and Nonprofit Management
 Organizational Behavior Studies
 Organizational Leadership
+Organizational and Nonprofit Management
 Osteopathy
 Paralegal
 Parks and Recreation Management
@@ -235,7 +221,6 @@ Pharmacy
 Pharmacy Technician
 Philosophy
 Phlebotomy
-Physical & Life Sciences
 Physical Education
 Physical Therapist Assistant
 Physical Therapy
@@ -243,7 +228,6 @@ Physician Assistant
 Physics
 Political Science
 Project Management
-Psychology
 Psychology
 Public Administration
 Public Health
@@ -258,9 +242,7 @@ Risk Management and Insurance
 Sales Manager
 School Psychology
 Secondary Education
-Skilled Trades & Repair Services
 Social Science
-Social Sciences
 Social Work
 Sociology
 Software Engineering
@@ -280,12 +262,11 @@ Veterinary Medicine
 Web Design
 Welding`;
 
-export const MAJORS = RAW_MAJORS.split('\n');
+export const MAJORS = new Set(RAW_MAJORS.split('\n'));
 
 // Source (copying and pasting):
 // https://www.theedadvocate.org/an-a-z-list-of-u-s-colleges-and-universities/
-const RAW_SCHOOLS = `Southeastern Louisiana University	http://southeastern.edu	LA
-A.T. Still University	http://atsu.edu	MO
+const RAW_SCHOOLS = `A.T. Still University	http://atsu.edu	MO
 AIB College of Business	http://aib.edu	IA
 ASA College	http://asa.edu	NY
 ATI College	http://ati.edu	CA
@@ -1376,7 +1357,6 @@ Oglethorpe University	http://oglethorpe.edu	GA
 Ohio Dominican University	http://ohiodominican.edu	OH
 Ohio Northern University	http://onu.edu	OH
 Ohio State University	http://osu.edu	OH
-Ohio State University	http://osu.edu	OH
 Ohio University	http://ohio.edu	OH
 Ohio Valley University	http://ovu.edu	WV
 Ohio Wesleyan University	http://owu.edu	OH
@@ -1666,6 +1646,7 @@ Southeastern Baptist Theological Seminary	http://sebts.edu	NC
 Southeastern Bible College	http://sebc.edu	AL
 Southeastern Community College	http://sccnc.edu	NC
 Southeastern Illinois College	http://sic.edu	IL
+Southeastern Louisiana University	http://southeastern.edu	LA
 Southeastern Oklahoma State University	http://se.edu	OK
 Southeastern Technical College	http://southeasterntech.edu	GA
 Southern Adventist University	http://southern.edu	TN
@@ -1912,7 +1893,6 @@ University of Illinois	http://uillinois.edu	IL
 University of Illinois Springfield	http://uis.edu	IL
 University of Illinois at Chicago	http://uic.edu	IL
 University of Illinois at Urbana-Champaign	http://illinois.edu	IL
-University of Illinois at Urbana-Champaign	http://illinois.edu	IL
 University of Indianapolis	http://uindy.edu	IN
 University of La Verne	http://laverne.edu	CA
 University of Louisiana Lafayette	http://louisiana.edu	LA
@@ -2029,12 +2009,11 @@ University of Toledo	http://utoledo.edu	OH
 University of Tulsa	http://utulsa.edu	OK
 University of Utah	http://utah.edu	UT
 University of Vermont	http://uvm.edu	VT
-University of Vermont	http://uvm.edu	VT
 University of Virginia	http://virginia.edu	VA
 University of Virginia’s College at Wise	http://uvawise.edu	VA
-University of Washington	http://uw.edu	WA
 University of Washington	http://washington.edu	WA
 University of Washington Bothell	http://uwb.edu	WA
+University of Washington Tacoma	http://tacoma.uw.edu	WA
 University of West Florida	http://uwf.edu	FL
 University of West Georgia	http://westga.edu	GA
 University of Wisconsin Colleges	http://uwc.edu	WI
@@ -2214,4 +2193,10 @@ Yosemite Community College District	http://yosemite.edu	CA
 Youngstown State University	http://ysu.edu	OH
 Yuba Community College District	http://yccd.edu	CA`;
 
-export const SCHOOLS = RAW_SCHOOLS.split('\n').map(s => s.split('\t', 3)[0]);
+export const SCHOOLS = new Set(
+  RAW_SCHOOLS.split('\n').map((s) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [name, site, state] = s.split('\t', 3);
+    return `${name} (${state})`;
+  })
+);
