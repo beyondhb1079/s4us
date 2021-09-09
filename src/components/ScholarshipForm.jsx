@@ -10,6 +10,7 @@ import Scholarships from '../models/Scholarships';
 import ScholarshipAmountField from './ScholarshipAmountField';
 import DatePicker from './DatePicker';
 import SubmissionAlert from './SubmissionAlert';
+import InitialValues from '../formik/InitialValues';
 
 const useStyles = makeStyles((theme) => ({
   containerStyle: {
@@ -28,17 +29,7 @@ function ScholarshipForm({ setSubmissionAlert }) {
   const user = firebase.auth().currentUser;
 
   const formik = useFormik({
-    initialValues: {
-      name: '',
-      deadline: null,
-      description: '',
-      amount: {
-        type: null,
-        min: 0,
-        max: 0,
-      },
-      website: '',
-    },
+    initialValues: InitialValues,
     validationSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
       setSubmitting(true);
