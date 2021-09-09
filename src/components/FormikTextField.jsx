@@ -17,7 +17,7 @@ function FormikTextField(props) {
         onChange={formik.handleChange}
         fullWidth
         multiline={rows > 0}
-        rows={rows}
+        minRows={rows}
       />
     </>
   );
