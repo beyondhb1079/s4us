@@ -12,7 +12,7 @@ import sortOptions, {
   getField,
 } from '../lib/sortOptions';
 
-function ScholarshipsPage() {
+function ListScholarships() {
   const history = useHistory();
   const location = useLocation();
 
@@ -71,4 +71,4 @@ function ScholarshipsPage() {
   );
 }
 
-export default ScholarshipsPage;
+export default ListScholarships;
