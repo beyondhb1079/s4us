@@ -1,7 +1,7 @@
 import React from 'react';
 import firebase from 'firebase';
 import { useFormik, getIn } from 'formik';
-import { Button, TextField } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -10,6 +10,7 @@ import Scholarships from '../models/Scholarships';
 import ScholarshipAmountField from './ScholarshipAmountField';
 import DatePicker from './DatePicker';
 import SubmissionAlert from './SubmissionAlert';
+import FormikTextField from './FormikTextField';
 
 const useStyles = makeStyles((theme) => ({
   containerStyle: {
@@ -80,16 +81,7 @@ function ScholarshipForm({ setSubmissionAlert }) {
   return (
     <form className={classes.containerStyle} onSubmit={formik.handleSubmit}>
       <div>
-        <TextField
-          className={classes.fieldStyle}
-          id="name"
-          label="Scholarship Name *"
-          error={formik.touched.name && Boolean(formik.errors.name)}
-          helperText={(formik.touched.name && formik.errors.name) || ' '}
-          value={formik.values.name}
-          onChange={formik.handleChange}
-          fullWidth
-        />
+        <FormikTextField label="Scholarship Name *" id="name" formik={formik} />
       </div>
 
       <DatePicker
@@ -103,33 +95,19 @@ function ScholarshipForm({ setSubmissionAlert }) {
       />
 
       <div>
-        <TextField
-          className={classes.fieldStyle}
-          id="description"
+        <FormikTextField
           label="Description *"
-          error={
-            formik.touched.description && Boolean(formik.errors.description)
-          }
-          helperText={
-            (formik.touched.description && formik.errors.description) || ' '
-          }
-          value={formik.values.description}
-          onChange={formik.handleChange}
-          multiline
-          fullWidth
+          id="description"
+          formik={formik}
+          rows={8}
         />
       </div>
 
       <div>
-        <TextField
-          className={classes.fieldStyle}
+        <FormikTextField
+          label="Scholarship Link *"
           id="website"
-          label="Website *"
-          error={formik.touched.website && Boolean(formik.errors.website)}
-          helperText={(formik.touched.website && formik.errors.website) || ' '}
-          value={formik.values.website}
-          onChange={formik.handleChange}
-          fullWidth
+          formik={formik}
         />
       </div>
 
