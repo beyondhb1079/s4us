@@ -53,7 +53,7 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@v2
       - name: Install Prettier
-        run: yarn global add prettier
+        run: yarn global add prettier@^2.3.0
       - name: Style
         run: $(yarn global bin)/prettier --check . || $(yarn global bin)/prettier --write . && git diff --exit-code
 
