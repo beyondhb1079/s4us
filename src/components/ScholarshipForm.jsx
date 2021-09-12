@@ -9,8 +9,14 @@ import {
   StepContent,
   Grid,
   Typography,
+  FormControlLabel,
+  Checkbox,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
 } from '@material-ui/core';
-import { Alert, AlertTitle } from '@material-ui/lab';
+import { Alert, AlertTitle, Autocomplete } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import validationSchema from '../validation/ValidationSchema';
@@ -20,12 +26,33 @@ import DatePicker from './DatePicker';
 import SubmissionAlert from './SubmissionAlert';
 import FormikTextField from './FormikTextField';
 
+const grades = [
+  'Middle School',
+  'HS Freshman',
+  'HS Sophomore',
+  'HS Junior',
+  'HS Senior',
+  'College Freshman',
+  'College Sophomore',
+  'College Junior',
+  'College Senior',
+];
+
+const ethnicities = [
+  'American Indian or Alaska Native',
+  'Asian',
+  'Black or African American',
+  'Hispanic or Latino',
+  'Native Hawaiian or Other Pacific Islander',
+  'White',
+];
+
 const useStyles = makeStyles((theme) => ({
   submitStyle: {
     marginTop: theme.spacing(2),
   },
   stepperDescription: {
-    marginBottom: theme.spacing(3),
+    marginBottom: theme.spacing(2),
   },
   inputLabel: {
     marginBottom: theme.spacing(2),
@@ -165,7 +192,98 @@ function ScholarshipForm({ setSubmissionAlert }) {
     </Grid>
   );
 
-  stepperItems.Requirements = 'requirements';
+  stepperItems['Eligibility Requirements'] = (
+    <Grid container spacing={3}>
+      <Grid item xs={12}>
+        <Typography className={classes.stepperDescription}>
+          Include information that is required for applicants to have
+        </Typography>
+      </Grid>
+
+      <Grid item xs={12}>
+        <FormControlLabel
+          control={
+            <Checkbox checked={false} onChange={() => {}} color="primary" />
+          }
+          label="NO ELIGIBILITY REQUIREMENTS"
+        />
+      </Grid>
+
+      <Grid item sm={6} xs={12}>
+        <InputLabel className={classes.inputLabel}>Grade</InputLabel>
+        <Select
+          multiple
+          value={formik.values.grades || []}
+          onChange={formik.handleChange}
+          renderValue={(selected) =>
+            selected.map((value) => <Chip key={value} label={value} />)
+          }
+          fullWidth
+          variant="outlined">
+          {grades.map((name) => (
+            <MenuItem key={name} value={name}>
+              {name}
+            </MenuItem>
+          ))}
+        </Select>
+      </Grid>
+
+      <Grid item sm={6} xs={12}>
+        <FormikTextField
+          label="GPA"
+          id="gpa"
+          formik={formik}
+          labelStyle={classes.inputLabel}
+        />
+      </Grid>
+
+      <Grid item sm={6} xs={12}>
+        <InputLabel className={classes.inputLabel}>School</InputLabel>
+        <Autocomplete
+          freeSolo
+          renderInput={() => (
+            <TextField variant="outlined" fullWidth />
+          )}></Autocomplete>
+      </Grid>
+
+      <Grid item sm={6} xs={12}>
+        <InputLabel className={classes.inputLabel}>State</InputLabel>
+        <Autocomplete
+          renderInput={() => <TextField variant="outlined" fullWidth />}
+        />
+      </Grid>
+
+      <Grid item xs={6}>
+        <InputLabel className={classes.inputLabel}>Major</InputLabel>
+        <Autocomplete
+          freeSolo
+          renderInput={() => (
+            <TextField variant="outlined" fullWidth />
+          )}></Autocomplete>
+      </Grid>
+
+      <Grid item xs={6}>
+        <InputLabel className={classes.inputLabel}>Ethnicity</InputLabel>
+        <Select
+          multiple
+          displayEmpty
+          fullWidth
+          value={formik.values.grades || []}
+          onChange={formik.handleChange}
+          renderValue={(selected) => {
+            selected.map((value) => <Chip key={value} label={value} />);
+          }}
+          autoWidth
+          variant="outlined">
+          {ethnicities.map((name) => (
+            <MenuItem key={name} value={name}>
+              {name}
+            </MenuItem>
+          ))}
+        </Select>
+      </Grid>
+    </Grid>
+  );
 
   return (
     <form onSubmit={formik.handleSubmit}>
