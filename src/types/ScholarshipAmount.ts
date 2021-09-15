@@ -20,11 +20,14 @@ export default class ScholarshipAmount {
   readonly max: number;
 
   constructor(
-    type: AmountType = AmountType.Varies,
+    type: AmountType = AmountType.Unknown,
     data?: { min?: number; max?: number }
   ) {
-    this.type = type;
     const [min, max] = [data?.min, data?.max];
+
+    if (type === AmountType.Varies && !min && !max)
+      this.type = AmountType.Unknown;
+    else this.type = type;
 
     switch (this.type) {
       case AmountType.Fixed:
@@ -38,11 +41,6 @@ export default class ScholarshipAmount {
         this.max = max;
         break;
       case AmountType.Varies:
-        if (!min && !max) {
-          this.min = UNKNOWN_MIN;
-          this.max = UNKNOWN_MAX;
-          break;
-        }
         if (min && min < 0) {
           throw new Error(`Invalid min amount: ${min}.`);
         }
@@ -55,10 +53,14 @@ export default class ScholarshipAmount {
         this.min = min ?? 0;
         this.max = max || RANGE_MAX;
         break;
-      default:
-        // full tuition
+      case AmountType.FullTuition:
         this.min = FULL_TUITION;
         this.max = FULL_TUITION;
+        break;
+      default:
+        // amount unknown
+        this.min = UNKNOWN_MIN;
+        this.max = UNKNOWN_MAX;
     }
   }
 
@@ -68,20 +70,19 @@ export default class ScholarshipAmount {
         return 'Full Tuition';
       case AmountType.Fixed:
         return `$${this.min}`;
-      default:
-        if (this.min === UNKNOWN_MIN && this.max === UNKNOWN_MAX) {
-          return '(Unknown amount)';
-        }
+      case AmountType.Varies:
         if (this.min && this.max !== RANGE_MAX) {
           return `$${this.min}-$${this.max}`;
         }
         return this.min ? `$${this.min}+` : `Up to $${this.max}`;
+      default:
+        return '(Unknown amount)';
     }
   }
 
   intersectsRange(min?: number, max?: number): boolean {
     return (
-      (this.min === UNKNOWN_MIN && this.max === UNKNOWN_MAX) ||
+      this.type === AmountType.Unknown ||
       ((!min || this.max >= min) && (!max || this.min <= max))
     );
   }
