@@ -69,10 +69,12 @@ function ScholarshipList({ noResultsNode, listFn }) {
 
   return (
     <Grid container spacing={3}>
+      {scholarships.map(({ id, data }) => (
+        <Grid item xs={12} key={id}>
+          <ScholarshipListCard scholarship={{ id, data }} />
+        </Grid>
+      ))}
       <Grid item xs={12}>
-        {scholarships.map(({ id, data }) => (
-          <ScholarshipListCard scholarship={{ id, data }} key={id} />
-        ))}
         <Box className={classes.centered}>
           {(() => {
             if (error) return <Typography>{error.toString()}</Typography>;
