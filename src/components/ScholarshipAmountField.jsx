@@ -35,45 +35,42 @@ function ScholarshipAmountField(props) {
     updateAmount,
   } = props;
 
-  const isVaries = amountType === AmountType.Varies;
-  const isFixed = amountType === AmountType.Fixed;
   const error = !!helperText; // no error if helperText empty
 
   const inputFields = {};
   inputFields[AmountType.Varies] = (
     <>
       <AmountTextField
-        error={isVaries && error && (!!maxAmount || minAmount >= maxAmount)}
+        error={
+          error && (minAmount < 0 || (minAmount && minAmount >= maxAmount))
+        }
         value={minAmount || ''}
         onChange={(e) => {
           const val = parseInt(e.target.value, 10);
           updateAmount(val || 0, maxAmount);
         }}
-        disabled={!isVaries}
       />
 
       <RemoveIcon className={classes.dash} />
 
       <AmountTextField
-        error={isVaries && error && !minAmount && !maxAmount}
+        error={error && maxAmount < 0}
         value={maxAmount || ''}
         onChange={(e) => {
           const val = parseInt(e.target.value, 10);
           updateAmount(minAmount, val || 0);
         }}
-        disabled={!isVaries}
       />
     </>
   );
   inputFields[AmountType.Fixed] = (
     <AmountTextField
-      error={isFixed && error}
+      error={error}
       value={minAmount || ''}
       onChange={(e) => {
         const val = parseInt(e.target.value, 10);
         updateAmount(val || 0, val || 0);
       }}
-      disabled={!isFixed}
     />
   );
 

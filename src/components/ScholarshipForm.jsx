@@ -142,9 +142,9 @@ function ScholarshipForm({ setSubmissionAlert }) {
       <Grid item>
         <ScholarshipAmountField
           helperText={
-            (getIn(formik.touched, 'amount.type') &&
-              getIn(formik.errors, 'amount.type')) ||
-            getIn(formik.errors, 'amount.min') ||
+            (getIn(formik.touched, 'amount.min') &&
+              getIn(formik.touched, 'amount.max') &&
+              getIn(formik.errors, 'amount.min')) ||
             getIn(formik.errors, 'amount.max')
           }
           amountType={formik.values.amount.type}
