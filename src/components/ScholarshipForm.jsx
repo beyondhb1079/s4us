@@ -19,6 +19,7 @@ import ScholarshipAmountField from './ScholarshipAmountField';
 import DatePicker from './DatePicker';
 import SubmissionAlert from './SubmissionAlert';
 import FormikTextField from './FormikTextField';
+import AmountType from '../types/AmountType';
 
 const useStyles = makeStyles((theme) => ({
   submitStyle: {
@@ -46,7 +47,7 @@ function ScholarshipForm({ setSubmissionAlert }) {
       deadline: null,
       description: '',
       amount: {
-        type: null,
+        type: AmountType.Fixed,
         min: 0,
         max: 0,
       },
@@ -146,7 +147,7 @@ function ScholarshipForm({ setSubmissionAlert }) {
             getIn(formik.errors, 'amount.min') ||
             getIn(formik.errors, 'amount.max')
           }
-          amountType={formik.values.amount.type ?? 'FIXED'}
+          amountType={formik.values.amount.type}
           minAmount={formik.values.amount.min}
           maxAmount={formik.values.amount.max}
           onTypeChange={(e) =>

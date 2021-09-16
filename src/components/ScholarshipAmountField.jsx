@@ -86,8 +86,7 @@ function ScholarshipAmountField(props) {
             className={classes.amountSelect}
             variant="outlined"
             value={amountType}
-            onChange={onTypeChange}
-            displayEmpty>
+            onChange={onTypeChange}>
             <MenuItem value={AmountType.Fixed}>Fixed</MenuItem>
             <MenuItem value={AmountType.Varies}>Varies</MenuItem>
             <MenuItem value={AmountType.FullTuition}>Full Tuition</MenuItem>
