@@ -22,13 +22,16 @@ import FormikTextField from './FormikTextField';
 
 const useStyles = makeStyles((theme) => ({
   submitStyle: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(4),
   },
   stepperDescription: {
-    marginBottom: theme.spacing(3),
+    marginBottom: theme.spacing(2),
   },
   inputLabel: {
     marginBottom: theme.spacing(2),
+  },
+  stepperBtns: {
+    marginTop: theme.spacing(4),
   },
 }));
 
@@ -175,7 +178,7 @@ function ScholarshipForm({ setSubmissionAlert }) {
             <StepLabel>{key}</StepLabel>
             <StepContent>
               {stepperItems[key]}
-              <div>
+              <div className={classes.stepperBtns}>
                 <Button
                   disabled={activeStep === 0}
                   onClick={() => setActiveStep((prevStep) => prevStep - 1)}>

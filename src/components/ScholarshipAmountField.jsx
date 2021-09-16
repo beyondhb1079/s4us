@@ -96,7 +96,7 @@ function ScholarshipAmountField(props) {
 
         <Grid item>{amountType && inputFields[amountType]}</Grid>
       </Grid>
-      <FormHelperText error>{helperText || ' '}</FormHelperText>
+      <FormHelperText error>{helperText}</FormHelperText>
     </>
   );
 }
