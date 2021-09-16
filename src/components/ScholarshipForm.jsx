@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
   stepperDescription: {
-    marginBottom: theme.spacing(3),
+    marginBottom: theme.spacing(2),
   },
   inputLabel: {
     marginBottom: theme.spacing(2),

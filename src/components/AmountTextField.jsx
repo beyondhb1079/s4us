@@ -11,12 +11,12 @@ const useStyles = makeStyles(() => ({
 
 function AmountTextField(props) {
   const classes = useStyles();
-  const { value, onChange, disabled, error, variation } = props;
+  const { value, onChange, disabled, error } = props;
 
   return (
     <TextField
       className={classes.amountField}
-      variant={variation}
+      variant="outlined"
       placeholder="Unknown"
       InputProps={{
         inputProps: { min: 0, max: 100000, step: 50 },
@@ -31,11 +31,9 @@ AmountTextField.propTypes = {
   onChange: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
   error: PropTypes.bool,
-  variation: PropTypes.string,
 };
 AmountTextField.defaultProps = {
   disabled: false,
   error: false,
-  variation: 'outlined',
 };
 export default AmountTextField;
