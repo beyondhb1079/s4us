@@ -17,6 +17,7 @@ function DatePicker(props) {
       <KeyboardDatePicker
         inputVariant="outlined"
         format="MM/dd/yyyy"
+        fullWidth
         {...{
           id,
           error,
