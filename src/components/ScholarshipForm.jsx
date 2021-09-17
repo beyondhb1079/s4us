@@ -66,6 +66,7 @@ function ScholarshipForm({ setSubmissionAlert }) {
   const classes = useStyles();
   const user = firebase.auth().currentUser;
   const [activeStep, setActiveStep] = useState(0);
+  const [hasReqs, setHasReqs] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -199,14 +200,18 @@ function ScholarshipForm({ setSubmissionAlert }) {
     <Grid container spacing={3}>
       <Grid item xs={12}>
         <Typography className={classes.stepperDescription}>
-          Include information that is required for applicants to have
+          Include information that is required for applicants to have.
         </Typography>
       </Grid>
 
       <Grid item xs={12}>
         <FormControlLabel
           control={
-            <Checkbox checked={false} onChange={() => {}} color="primary" />
+            <Checkbox
+              checked={hasReqs}
+              onChange={(event) => setHasReqs(event.target.checked)}
+              color="primary"
+            />
           }
           label="NO ELIGIBILITY REQUIREMENTS"
         />
