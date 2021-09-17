@@ -26,7 +26,7 @@ import DatePicker from './DatePicker';
 import SubmissionAlert from './SubmissionAlert';
 import FormikTextField from './FormikTextField';
 
-const grades = [
+const gradeOptions = [
   'Middle School',
   'HS Freshman',
   'HS Sophomore',
@@ -46,6 +46,19 @@ const ethnicities = [
   'Native Hawaiian or Other Pacific Islander',
   'White',
 ];
+
+const MenuProps = {
+  getContentAnchorEl: null, //TODO: remove this when material-ui gets updated to version 5
+  anchorOrigin: {
+    vertical: 'bottom',
+  },
+  PaperProps: {
+    style: {
+      maxHeight: 250,
+      width: 250,
+    },
+  },
+};
 
 const useStyles = makeStyles((theme) => ({
   submitStyle: {
@@ -67,6 +80,8 @@ function ScholarshipForm({ setSubmissionAlert }) {
   const user = firebase.auth().currentUser;
   const [activeStep, setActiveStep] = useState(0);
   const [hasReqs, setHasReqs] = useState(false);
+
+  const [grades, setGrades] = useState([]);
 
   const formik = useFormik({
     initialValues: {
@@ -221,14 +236,15 @@ function ScholarshipForm({ setSubmissionAlert }) {
         <InputLabel className={classes.inputLabel}>Grade</InputLabel>
         <Select
           multiple
-          value={formik.values.grades || []}
-          onChange={formik.handleChange}
-          renderValue={(selected) =>
-            selected.map((value) => <Chip key={value} label={value} />)
-          }
           fullWidth
-          variant="outlined">
-          {grades.map((name) => (
+          variant="outlined"
+          value={grades}
+          onChange={(event) => {
+            const val = event.target.value;
+            setGrades(typeof val === 'string' ? val.split(',') : val);
+          }}
+          MenuProps={MenuProps}>
+          {gradeOptions.map((name) => (
             <MenuItem key={name} value={name}>
               {name}
             </MenuItem>
