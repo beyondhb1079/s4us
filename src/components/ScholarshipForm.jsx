@@ -38,7 +38,7 @@ const gradeOptions = [
   'College Senior',
 ];
 
-const ethnicities = [
+const ethnicityOptions = [
   'American Indian or Alaska Native',
   'Asian',
   'Black or African American',
@@ -83,6 +83,7 @@ function ScholarshipForm({ setSubmissionAlert }) {
   const [hasReqs, setHasReqs] = useState(false);
 
   const [grades, setGrades] = useState([]);
+  const [ethnicities, setEthnicities] = useState([]);
 
   const formik = useFormik({
     initialValues: {
@@ -240,10 +241,7 @@ function ScholarshipForm({ setSubmissionAlert }) {
           fullWidth
           variant="outlined"
           value={grades}
-          onChange={(event) => {
-            const val = event.target.value;
-            setGrades(typeof val === 'string' ? val.split(',') : val);
-          }}
+          onChange={(event) => setGrades(event.target.value)}
           MenuProps={MenuProps}>
           {gradeOptions.map((name) => (
             <MenuItem key={name} value={name}>
@@ -291,16 +289,12 @@ function ScholarshipForm({ setSubmissionAlert }) {
         <InputLabel className={classes.inputLabel}>Ethnicity</InputLabel>
         <Select
           multiple
-          displayEmpty
           fullWidth
-          value={formik.values.grades || []}
-          onChange={formik.handleChange}
-          renderValue={(selected) => {
-            selected.map((value) => <Chip key={value} label={value} />);
-          }}
-          autoWidth
-          variant="outlined">
-          {ethnicities.map((name) => (
+          variant="outlined"
+          value={ethnicities}
+          onChange={(event) => setEthnicities(event.target.value)}
+          MenuProps={MenuProps}>
+          {ethnicityOptions.map((name) => (
             <MenuItem key={name} value={name}>
               {name}
             </MenuItem>
@@ -309,6 +303,8 @@ function ScholarshipForm({ setSubmissionAlert }) {
       </Grid>
     </Grid>
   );
+
+  console.log(ethnicities);
 
   return (
     <form onSubmit={formik.handleSubmit}>
