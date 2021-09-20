@@ -47,6 +47,8 @@ const ethnicityOptions = [
   'White',
 ];
 
+const schoolOptions = [{ title: 'school1' }, { title: 'school2' }];
+
 const MenuProps = {
   getContentAnchorEl: null, //TODO: remove this when material-ui gets updated to version 5
   anchorOrigin: {
@@ -263,10 +265,13 @@ function ScholarshipForm({ setSubmissionAlert }) {
       <Grid item sm={6} xs={12}>
         <InputLabel className={classes.inputLabel}>School</InputLabel>
         <Autocomplete
-          freeSolo
-          renderInput={() => (
-            <TextField variant="outlined" fullWidth />
-          )}></Autocomplete>
+          options={schoolOptions}
+          getOptionLabel={(option) => option.title}
+          renderInput={(params) => (
+            /* eslint-disable react/jsx-props-no-spreading */
+            <TextField {...params} variant="outlined" fullWidth />
+          )}
+        />
       </Grid>
 
       <Grid item sm={6} xs={12}>
@@ -280,9 +285,8 @@ function ScholarshipForm({ setSubmissionAlert }) {
         <InputLabel className={classes.inputLabel}>Major</InputLabel>
         <Autocomplete
           freeSolo
-          renderInput={() => (
-            <TextField variant="outlined" fullWidth />
-          )}></Autocomplete>
+          renderInput={() => <TextField variant="outlined" fullWidth />}
+        />
       </Grid>
 
       <Grid item xs={6}>
