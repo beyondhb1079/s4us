@@ -48,6 +48,7 @@ const ethnicityOptions = [
 ];
 
 const schoolOptions = [{ title: 'school1' }, { title: 'school2' }];
+const stateOptions = [{ title: 'CA' }, { title: 'WA' }];
 
 const MenuProps = {
   getContentAnchorEl: null, //TODO: remove this when material-ui gets updated to version 5
@@ -277,7 +278,11 @@ function ScholarshipForm({ setSubmissionAlert }) {
       <Grid item sm={6} xs={12}>
         <InputLabel className={classes.inputLabel}>State</InputLabel>
         <Autocomplete
-          renderInput={() => <TextField variant="outlined" fullWidth />}
+          options={stateOptions}
+          getOptionLabel={(option) => option.title}
+          renderInput={(params) => (
+            <TextField {...params} variant="outlined" fullWidth />
+          )}
         />
       </Grid>
 
