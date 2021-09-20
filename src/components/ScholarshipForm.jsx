@@ -12,8 +12,6 @@ import {
   FormControlLabel,
   Checkbox,
   InputLabel,
-  MenuItem,
-  Select,
   TextField,
 } from '@material-ui/core';
 import { Alert, AlertTitle, Autocomplete } from '@material-ui/lab';
@@ -25,6 +23,7 @@ import ScholarshipAmountField from './ScholarshipAmountField';
 import DatePicker from './DatePicker';
 import SubmissionAlert from './SubmissionAlert';
 import FormikTextField from './FormikTextField';
+import FormikMultiSelect from './FormikMultiSelect';
 
 const gradeOptions = [
   'Middle School',
@@ -50,20 +49,6 @@ const ethnicityOptions = [
 const schoolOptions = [{ title: 'school1' }, { title: 'school2' }];
 const stateOptions = [{ title: 'CA' }, { title: 'WA' }];
 const majorOptions = [{ title: 'major1' }, { title: 'major2' }];
-
-const MenuProps = {
-  getContentAnchorEl: null, //TODO: remove this when material-ui gets updated to version 5
-  anchorOrigin: {
-    vertical: 'bottom',
-    horizontal: 'left',
-  },
-  PaperProps: {
-    style: {
-      maxHeight: 250,
-      width: 250,
-    },
-  },
-};
 
 const useStyles = makeStyles((theme) => ({
   submitStyle: {
@@ -240,20 +225,13 @@ function ScholarshipForm({ setSubmissionAlert }) {
       </Grid>
 
       <Grid item sm={6} xs={12}>
-        <InputLabel className={classes.inputLabel}>Grade</InputLabel>
-        <Select
-          multiple
-          fullWidth
-          variant="outlined"
+        <FormikMultiSelect
+          label="Grade"
+          labelStyle={classes.inputLabel}
           value={grades}
-          onChange={(event) => setGrades(event.target.value)}
-          MenuProps={MenuProps}>
-          {gradeOptions.map((name) => (
-            <MenuItem key={name} value={name}>
-              {name}
-            </MenuItem>
-          ))}
-        </Select>
+          options={gradeOptions}
+          changeFn={setGrades}
+        />
       </Grid>
 
       <Grid item sm={6} xs={12}>
@@ -299,25 +277,16 @@ function ScholarshipForm({ setSubmissionAlert }) {
       </Grid>
 
       <Grid item xs={6}>
-        <InputLabel className={classes.inputLabel}>Ethnicity</InputLabel>
-        <Select
-          multiple
-          fullWidth
-          variant="outlined"
+        <FormikMultiSelect
+          label="Ethnicity"
+          labelStyle={classes.inputLabel}
           value={ethnicities}
-          onChange={(event) => setEthnicities(event.target.value)}
-          MenuProps={MenuProps}>
-          {ethnicityOptions.map((name) => (
-            <MenuItem key={name} value={name}>
-              {name}
-            </MenuItem>
-          ))}
-        </Select>
+          changeFn={setEthnicities}
+          options={ethnicityOptions}
+        />
       </Grid>
     </Grid>
   );
-
-  console.log(ethnicities);
 
   return (
     <form onSubmit={formik.handleSubmit}>
