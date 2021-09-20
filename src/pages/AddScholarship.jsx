@@ -1,14 +1,48 @@
 import React, { useState } from 'react';
 import { Container } from '@material-ui/core';
 import ScholarshipForm from '../components/ScholarshipForm';
+import Scholarships from '../models/Scholarships';
+import SubmissionAlert from '../components/SubmissionAlert';
 
 function AddScholarship() {
   const [submissionAlert, setSubmissionAlert] = useState(null);
 
+  const scholarship = Scholarships.new({
+    name: '',
+    deadline: null,
+    description: '',
+    amount: {
+      type: null,
+      min: 0,
+      max: 0,
+    },
+    website: '',
+  });
+
   return (
     <Container maxWidth="md">
       <h1>Submit a Scholarship</h1>
-      <ScholarshipForm setSubmissionAlert={setSubmissionAlert} />
+      <ScholarshipForm
+        scholarship={scholarship}
+        submitFn={() =>
+          setSubmissionAlert(
+            <SubmissionAlert
+              id={scholarship.id}
+              name={scholarship.data.name}
+              closeFn={setSubmissionAlert(false)}
+            />
+          )
+        }
+        onSubmitError={() =>
+          setSubmissionAlert(
+            <Alert severity="error" onClose={() => setSubmissionAlert(null)}>
+              <AlertTitle>Error</AlertTitle>
+              {error.toString()}
+            </Alert>
+          )
+        }
+      />
+
       {submissionAlert}
     </Container>
   );

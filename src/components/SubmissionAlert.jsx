@@ -18,7 +18,7 @@ function SubmissionAlert({ id, name, closeFn }) {
             to={`/scholarships/${id}`}>
             VIEW
           </Button>
-          <IconButton size="medium" color="inhert" onClick={closeFn}>
+          <IconButton size="medium" color="inherit" onClick={closeFn}>
             <CloseIcon fontSize="small" />
           </IconButton>
         </>
