@@ -49,6 +49,7 @@ const ethnicityOptions = [
 
 const schoolOptions = [{ title: 'school1' }, { title: 'school2' }];
 const stateOptions = [{ title: 'CA' }, { title: 'WA' }];
+const majorOptions = [{ title: 'major1' }, { title: 'major2' }];
 
 const MenuProps = {
   getContentAnchorEl: null, //TODO: remove this when material-ui gets updated to version 5
@@ -138,6 +139,7 @@ function ScholarshipForm({ setSubmissionAlert }) {
     formik.setFieldValue('amount.max', max, true);
   }
 
+  /* eslint-disable react/jsx-props-no-spreading */
   const stepperItems = {};
   stepperItems.General = (
     <Grid container spacing={3}>
@@ -269,7 +271,6 @@ function ScholarshipForm({ setSubmissionAlert }) {
           options={schoolOptions}
           getOptionLabel={(option) => option.title}
           renderInput={(params) => (
-            /* eslint-disable react/jsx-props-no-spreading */
             <TextField {...params} variant="outlined" fullWidth />
           )}
         />
@@ -289,8 +290,11 @@ function ScholarshipForm({ setSubmissionAlert }) {
       <Grid item xs={6}>
         <InputLabel className={classes.inputLabel}>Major</InputLabel>
         <Autocomplete
-          freeSolo
-          renderInput={() => <TextField variant="outlined" fullWidth />}
+          options={majorOptions}
+          getOptionLabel={(option) => option.title}
+          renderInput={(params) => (
+            <TextField {...params} variant="outlined" fullWidth />
+          )}
         />
       </Grid>
 
