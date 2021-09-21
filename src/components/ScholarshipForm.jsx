@@ -15,11 +15,9 @@ import validationSchema from '../validation/ValidationSchema';
 import ScholarshipAmountField from './ScholarshipAmountField';
 import DatePicker from './DatePicker';
 import FormikTextField from './FormikTextField';
+import AmountType from '../types/AmountType';
 
 const useStyles = makeStyles((theme) => ({
-  submitStyle: {
-    marginTop: theme.spacing(4),
-  },
   stepperDescription: {
     marginBottom: theme.spacing(2),
   },
@@ -111,7 +109,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
             getIn(formik.errors, 'amount.min') ||
             getIn(formik.errors, 'amount.max')
           }
-          amountType={formik.values.amount.type ?? 'UNKNOWN'}
+          amountType={formik.values.amount.type ?? AmountType.Unknown}
           minAmount={formik.values.amount.min}
           maxAmount={formik.values.amount.max}
           onTypeChange={(e) =>
@@ -128,13 +126,11 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
           id="description"
           labelStyle={classes.inputLabel}
           formik={formik}
-          rows={8}
+          minRows={8}
         />
       </Grid>
     </Grid>
   );
-
-  stepperItems.Requirements = 'requirements';
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -144,34 +140,34 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
             <StepLabel>{key}</StepLabel>
             <StepContent>
               {stepperItems[key]}
-              <div className={classes.stepperBtns}>
+              {activeStep == Object.keys(stepperItems).length - 1 ? (
                 <Button
-                  disabled={activeStep === 0}
-                  onClick={() => setActiveStep((prevStep) => prevStep - 1)}>
-                  BACK
-                </Button>
-                <Button
+                  className={classes.stepperBtns}
                   variant="contained"
                   color="primary"
-                  onClick={() => setActiveStep((prevStep) => prevStep + 1)}>
-                  NEXT
+                  type="submit"
+                  disabled={formik.isSubmitting}>
+                  Submit
                 </Button>
-              </div>
+              ) : (
+                <div className={classes.stepperBtns}>
+                  <Button
+                    disabled={activeStep === 0}
+                    onClick={() => setActiveStep((prevStep) => prevStep - 1)}>
+                    BACK
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => setActiveStep((prevStep) => prevStep + 1)}>
+                    NEXT
+                  </Button>
+                </div>
+              )}
             </StepContent>
           </Step>
         ))}
       </Stepper>
-
-      <div>
-        <Button
-          className={classes.submitStyle}
-          variant="contained"
-          color="primary"
-          type="submit"
-          disabled={formik.isSubmitting}>
-          Submit
-        </Button>
-      </div>
     </form>
   );
 }
