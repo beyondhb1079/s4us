@@ -1,5 +1,4 @@
 import React from 'react';
-import firebase from 'firebase';
 import { useFormik, getIn } from 'formik';
 import { Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -23,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
 
 function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
   const classes = useStyles();
-  const user = firebase.auth().currentUser;
 
   const formik = useFormik({
     initialValues: scholarship.data,
@@ -32,7 +30,6 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
       setSubmitting(true);
       scholarship.data = {
         ...values,
-        author: { id: user?.uid, email: user?.email },
       };
       scholarship
         .save()

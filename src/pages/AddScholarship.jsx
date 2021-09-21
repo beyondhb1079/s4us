@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import firebase from 'firebase';
 import { Container } from '@material-ui/core';
 import ScholarshipForm from '../components/ScholarshipForm';
 import Scholarships from '../models/Scholarships';
@@ -6,6 +7,7 @@ import SubmissionAlert from '../components/SubmissionAlert';
 
 function AddScholarship() {
   const [submissionAlert, setSubmissionAlert] = useState(null);
+  const user = firebase.auth().currentUser;
 
   const scholarship = Scholarships.new({
     name: '',
@@ -17,6 +19,7 @@ function AddScholarship() {
       max: 0,
     },
     website: '',
+    author: { id: user?.uid, email: user?.email },
   });
 
   return (
@@ -29,7 +32,7 @@ function AddScholarship() {
             <SubmissionAlert
               id={scholarship.id}
               name={scholarship.data.name}
-              closeFn={setSubmissionAlert(false)}
+              onClose={() => setSubmissionAlert(null)}
             />
           )
         }
