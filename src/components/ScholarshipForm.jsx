@@ -140,30 +140,29 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
             <StepLabel>{key}</StepLabel>
             <StepContent>
               {stepperItems[key]}
-              {activeStep == Object.keys(stepperItems).length - 1 ? (
+              <div className={classes.stepperBtns}>
                 <Button
-                  className={classes.stepperBtns}
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  disabled={formik.isSubmitting}>
-                  Submit
+                  disabled={activeStep === 0}
+                  onClick={() => setActiveStep((prevStep) => prevStep - 1)}>
+                  BACK
                 </Button>
-              ) : (
-                <div className={classes.stepperBtns}>
+                {activeStep == Object.keys(stepperItems).length - 1 ? (
                   <Button
-                    disabled={activeStep === 0}
-                    onClick={() => setActiveStep((prevStep) => prevStep - 1)}>
-                    BACK
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    disabled={formik.isSubmitting}>
+                    Submit
                   </Button>
+                ) : (
                   <Button
                     variant="contained"
                     color="primary"
                     onClick={() => setActiveStep((prevStep) => prevStep + 1)}>
                     NEXT
                   </Button>
-                </div>
-              )}
+                )}
+              </div>
             </StepContent>
           </Step>
         ))}
