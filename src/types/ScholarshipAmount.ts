@@ -25,9 +25,8 @@ export default class ScholarshipAmount {
   ) {
     const [min, max] = [data?.min, data?.max];
 
-    if (type === AmountType.Varies && !min && !max)
-      this.type = AmountType.Unknown;
-    else this.type = type;
+    this.type =
+      type === AmountType.Varies && !min && !max ? AmountType.Unknown : type;
 
     switch (this.type) {
       case AmountType.Fixed:
