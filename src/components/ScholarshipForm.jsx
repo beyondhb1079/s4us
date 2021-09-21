@@ -28,9 +28,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
     validationSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
       setSubmitting(true);
-      scholarship.data = {
-        ...values,
-      };
+      scholarship.data = { ...values };
       scholarship
         .save()
         .then(submitFn)
