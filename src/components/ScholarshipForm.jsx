@@ -118,6 +118,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
             formik.setFieldValue('amount.type', e.target.value, true)
           }
           updateAmount={updateAmount}
+          labelStyle={classes.inputLabel}
         />
       </Grid>
 
