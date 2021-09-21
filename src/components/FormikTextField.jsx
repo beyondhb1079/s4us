@@ -3,7 +3,7 @@ import { InputLabel, TextField } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
 function FormikTextField(props) {
-  const { label, labelStyle, id, formik, rows } = props;
+  const { label, labelStyle, id, formik, minRows } = props;
 
   return (
     <>
@@ -16,8 +16,8 @@ function FormikTextField(props) {
         value={formik.values[id]}
         onChange={formik.handleChange}
         fullWidth
-        multiline={rows > 0}
-        minRows={rows}
+        multiline={minRows > 0}
+        minRows={minRows}
       />
     </>
   );
@@ -28,10 +28,10 @@ FormikTextField.propTypes = {
   labelStyle: PropTypes.string,
   id: PropTypes.string.isRequired,
   formik: PropTypes.object.isRequired,
-  rows: PropTypes.number,
+  minRows: PropTypes.number,
 };
 FormikTextField.defaultProps = {
   labelStyle: null,
-  rows: 0,
+  minRows: 0,
 };
 export default FormikTextField;
