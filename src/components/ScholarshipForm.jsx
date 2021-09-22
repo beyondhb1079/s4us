@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useFormik, getIn } from 'formik';
+import { useFormik } from 'formik';
 import {
   Button,
   Stepper,
@@ -46,11 +46,6 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
         .finally(() => setSubmitting(false));
     },
   });
-
-  function updateAmount(min, max) {
-    formik.setFieldValue('amount.min', min, true);
-    formik.setFieldValue('amount.max', max, true);
-  }
 
   const stepperItems = {};
   stepperItems.General = (
@@ -102,19 +97,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 
       <Grid item>
         <ScholarshipAmountField
-          helperText={
-            (getIn(formik.touched, 'amount.min') &&
-              getIn(formik.touched, 'amount.max') &&
-              getIn(formik.errors, 'amount.min')) ||
-            getIn(formik.errors, 'amount.max')
-          }
-          amountType={formik.values.amount.type}
-          minAmount={formik.values.amount.min}
-          maxAmount={formik.values.amount.max}
-          onTypeChange={(e) =>
-            formik.setFieldValue('amount.type', e.target.value, true)
-          }
-          updateAmount={updateAmount}
+          formik={formik}
           labelStyle={classes.inputLabel}
         />
       </Grid>
