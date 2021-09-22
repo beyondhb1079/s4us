@@ -10,10 +10,7 @@ import {
   Typography,
   FormControlLabel,
   Checkbox,
-  InputLabel,
-  TextField,
 } from '@material-ui/core';
-import { Autocomplete } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import validationSchema from '../validation/ValidationSchema';
@@ -22,6 +19,7 @@ import DatePicker from './DatePicker';
 import FormikTextField from './FormikTextField';
 import AmountType from '../types/AmountType';
 import FormikMultiSelect from './FormikMultiSelect';
+import FormikAutocomplete from './FormikAutocomplete';
 
 const gradeOptions = [
   'Middle School',
@@ -209,35 +207,26 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
       </Grid>
 
       <Grid item sm={6} xs={12}>
-        <InputLabel className={classes.inputLabel}>School</InputLabel>
-        <Autocomplete
+        <FormikAutocomplete
+          label="School"
+          labelStyle={classes.inputLabel}
           options={schoolOptions}
-          getOptionLabel={(option) => option.title}
-          renderInput={(params) => (
-            <TextField {...params} variant="outlined" fullWidth />
-          )}
         />
       </Grid>
 
       <Grid item sm={6} xs={12}>
-        <InputLabel className={classes.inputLabel}>State</InputLabel>
-        <Autocomplete
+        <FormikAutocomplete
+          label="State"
+          labelStyle={classes.inputLabel}
           options={stateOptions}
-          getOptionLabel={(option) => option.title}
-          renderInput={(params) => (
-            <TextField {...params} variant="outlined" fullWidth />
-          )}
         />
       </Grid>
 
       <Grid item xs={6}>
-        <InputLabel className={classes.inputLabel}>Major</InputLabel>
-        <Autocomplete
+        <FormikAutocomplete
+          label="Major"
+          labelStyle={classes.inputLabel}
           options={majorOptions}
-          getOptionLabel={(option) => option.title}
-          renderInput={(params) => (
-            <TextField {...params} variant="outlined" fullWidth />
-          )}
         />
       </Grid>
 
