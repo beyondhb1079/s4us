@@ -27,25 +27,16 @@ function ScholarshipAmountField(props) {
   const classes = useStyles();
   const { labelStyle, formik } = props;
 
-  function updateAmount(min, max) {
-    formik.setFieldValue('amount.min', min, true);
-    formik.setFieldValue('amount.max', max, true);
-  }
-
-  function onTypeChange(e) {
-    formik.setFieldValue('amount.type', e.target.value, true);
-  }
-
   const amountType = formik.values.amount.type;
-  const minAmount = formik.values.amount.min;
-  const maxAmount = formik.values.amount.max;
   const minError = getIn(formik.errors, 'amount.min');
   const maxError = getIn(formik.errors, 'amount.max');
 
-  function formatHelperText() {
-    if (!minError && !maxError) return;
-    if (getIn(formik.touched, 'amount.min') && minError) return minError;
-    if (getIn(formik.touche, 'amount.max') && maxError) return maxError;
+  let helperText = '';
+  if (
+    getIn(formik.touched, 'amount.min') ||
+    getIn(formik.touched, 'amount.max')
+  ) {
+    helperText = minError || maxError;
   }
 
   const inputFields = {};
@@ -53,10 +44,10 @@ function ScholarshipAmountField(props) {
     <>
       <AmountTextField
         error={Boolean(minError)}
-        value={minAmount || ''}
+        value={formik.values.amount.min || ''}
         onChange={(e) => {
           const val = parseInt(e.target.value, 10);
-          updateAmount(val || 0, maxAmount);
+          formik.setFieldValue('amount.min', val || 0, true);
         }}
       />
 
@@ -64,10 +55,10 @@ function ScholarshipAmountField(props) {
 
       <AmountTextField
         error={Boolean(maxError)}
-        value={maxAmount || ''}
+        value={formik.values.amount.max || ''}
         onChange={(e) => {
           const val = parseInt(e.target.value, 10);
-          updateAmount(minAmount, val || 0);
+          formik.setFieldValue('amount.max', val || 0, true);
         }}
       />
     </>
@@ -75,10 +66,11 @@ function ScholarshipAmountField(props) {
   inputFields[AmountType.Fixed] = (
     <AmountTextField
       error={getIn(formik.touched, 'amount.min') && Boolean(minError)}
-      value={minAmount || ''}
+      value={formik.values.amount.min || ''}
       onChange={(e) => {
         const val = parseInt(e.target.value, 10);
-        updateAmount(val || 0, val || 0);
+        formik.setFieldValue('amount.min', val || 0, true);
+        formik.setFieldValue('amount.max', val || 0, true);
       }}
     />
   );
@@ -92,7 +84,9 @@ function ScholarshipAmountField(props) {
             className={classes.amountSelect}
             variant="outlined"
             value={amountType}
-            onChange={onTypeChange}>
+            onChange={(e) =>
+              formik.setFieldValue('amount.type', e.target.value, true)
+            }>
             <MenuItem value={AmountType.Fixed}>Fixed</MenuItem>
             <MenuItem value={AmountType.Varies}>Varies</MenuItem>
             <MenuItem value={AmountType.FullTuition}>Full Tuition</MenuItem>
@@ -101,7 +95,7 @@ function ScholarshipAmountField(props) {
 
         <Grid item>{amountType && inputFields[amountType]}</Grid>
       </Grid>
-      <FormHelperText error>{formatHelperText()}</FormHelperText>
+      <FormHelperText error>{helperText}</FormHelperText>
     </>
   );
 }
