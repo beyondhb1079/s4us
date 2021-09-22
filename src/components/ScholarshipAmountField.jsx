@@ -42,7 +42,6 @@ function ScholarshipAmountField(props) {
   const minError = getIn(formik.errors, 'amount.min');
   const maxError = getIn(formik.errors, 'amount.max');
 
-  console.log(minError);
   function formatHelperText() {
     if (!minError && !maxError) return;
     if (getIn(formik.touched, 'amount.min') && minError) return minError;
