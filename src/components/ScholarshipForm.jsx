@@ -211,6 +211,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
           label="School"
           labelStyle={classes.inputLabel}
           options={schoolOptions}
+          freeSolo
         />
       </Grid>
 
@@ -227,6 +228,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
           label="Major"
           labelStyle={classes.inputLabel}
           options={majorOptions}
+          freeSolo
         />
       </Grid>
 

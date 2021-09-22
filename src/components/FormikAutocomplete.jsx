@@ -6,14 +6,15 @@ import PropTypes from 'prop-types';
 /* eslint-disable react/jsx-props-no-spreading */
 function FormikAutocomplete(props) {
   const { label, labelStyle, options, freeSolo } = props;
+  console.log(freeSolo);
+
   return (
     <>
       <InputLabel className={labelStyle}>{label}</InputLabel>
       <Autocomplete
         freeSolo={freeSolo}
         multiple
-        options={options}
-        getOptionLabel={(option) => option.title}
+        options={options.map((option) => option.title)}
         renderInput={(params) => (
           <TextField {...params} variant="outlined" fullWidth />
         )}
