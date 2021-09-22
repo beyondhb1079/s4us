@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 /* eslint-disable react/jsx-props-no-spreading */
 function FormikAutocomplete(props) {
   const { label, labelStyle, options, freeSolo } = props;
-  console.log(freeSolo);
 
   return (
     <>
