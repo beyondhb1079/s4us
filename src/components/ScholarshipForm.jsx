@@ -8,7 +8,12 @@ import {
   StepContent,
   Grid,
   Typography,
+  FormControlLabel,
+  Checkbox,
+  InputLabel,
+  TextField,
 } from '@material-ui/core';
+import { Autocomplete } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import validationSchema from '../validation/ValidationSchema';
@@ -157,7 +162,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
           id="description"
           labelStyle={classes.inputLabel}
           formik={formik}
-          labelStyle={classes.inputLabel}
+          minRows={8}
         />
       </Grid>
     </Grid>
