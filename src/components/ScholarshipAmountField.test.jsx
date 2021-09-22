@@ -4,14 +4,15 @@ import UserEvent from '@testing-library/user-event';
 import ScholarshipAmountField from './ScholarshipAmountField';
 import AmountType from '../types/AmountType';
 
+const formik = {
+  values: {
+    amount: {},
+  },
+};
+
 function renderWithAmountType(type) {
-  return render(
-    <ScholarshipAmountField
-      onTypeChange={() => {}}
-      updateAmount={() => {}}
-      amountType={type}
-    />
-  );
+  formik.values.amount.type = type;
+  return render(<ScholarshipAmountField formik={formik} />);
 }
 
 test('renders select options', () => {
