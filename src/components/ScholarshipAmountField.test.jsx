@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import UserEvent from '@testing-library/user-event';
 import ScholarshipAmountField from './ScholarshipAmountField';
+import AmountType from '../types/AmountType';
 
 function renderWithAmountType(type) {
   return render(
@@ -14,7 +15,7 @@ function renderWithAmountType(type) {
 }
 
 test('renders select options', () => {
-  renderWithAmountType('FIXED');
+  renderWithAmountType(AmountType.Fixed);
 
   const select = screen.getByRole('button');
   UserEvent.click(select);
@@ -26,16 +27,16 @@ test('renders select options', () => {
 });
 
 test('single textfield when Fixed selected', () => {
-  renderWithAmountType('FIXED');
+  renderWithAmountType(AmountType.Fixed);
   expect(screen.getAllByRole('textbox')).toHaveLength(1);
 });
 
 test('two textfields when Range selected', () => {
-  renderWithAmountType('RANGE');
+  renderWithAmountType(AmountType.Range);
   expect(screen.getAllByRole('textbox')).toHaveLength(2);
 });
 
 test('no textfield when Full Tuition selected', () => {
-  renderWithAmountType('FULL_TUITION');
+  renderWithAmountType(AmountType.FullTuition);
   expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
 });

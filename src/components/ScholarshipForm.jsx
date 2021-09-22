@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import firebase from 'firebase';
 import { useFormik, getIn } from 'formik';
 import {
   Button,
@@ -9,20 +8,14 @@ import {
   StepContent,
   Grid,
   Typography,
-  FormControlLabel,
-  Checkbox,
-  InputLabel,
-  TextField,
 } from '@material-ui/core';
-import { Alert, AlertTitle, Autocomplete } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import validationSchema from '../validation/ValidationSchema';
-import Scholarships from '../models/Scholarships';
 import ScholarshipAmountField from './ScholarshipAmountField';
 import DatePicker from './DatePicker';
-import SubmissionAlert from './SubmissionAlert';
 import FormikTextField from './FormikTextField';
+import AmountType from '../types/AmountType';
 import FormikMultiSelect from './FormikMultiSelect';
 
 const gradeOptions = [
@@ -51,9 +44,6 @@ const stateOptions = [{ title: 'CA' }, { title: 'WA' }];
 const majorOptions = [{ title: 'major1' }, { title: 'major2' }];
 
 const useStyles = makeStyles((theme) => ({
-  submitStyle: {
-    marginTop: theme.spacing(4),
-  },
   stepperDescription: {
     marginBottom: theme.spacing(2),
   },
@@ -65,9 +55,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ScholarshipForm({ setSubmissionAlert }) {
+function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
   const classes = useStyles();
-  const user = firebase.auth().currentUser;
   const [activeStep, setActiveStep] = useState(0);
   const [hasReqs, setHasReqs] = useState(false);
 
@@ -75,46 +64,16 @@ function ScholarshipForm({ setSubmissionAlert }) {
   const [ethnicities, setEthnicities] = useState([]);
 
   const formik = useFormik({
-    initialValues: {
-      name: '',
-      deadline: null,
-      description: '',
-      amount: {
-        type: null,
-        min: 0,
-        max: 0,
-      },
-      website: '',
-    },
+    initialValues: scholarship.data,
     validationSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
       setSubmitting(true);
-      Scholarships.new({
-        ...values,
-        author: {
-          id: user?.uid,
-          email: user?.email,
-        },
-      })
+      scholarship.data = { ...values };
+      scholarship
         .save()
-        .then((scholarship) => {
-          setSubmissionAlert(
-            <SubmissionAlert
-              id={scholarship.id}
-              name={scholarship.data.name}
-              closeFn={() => setSubmissionAlert(null)}
-            />
-          );
-          resetForm();
-        })
-        .catch((error) =>
-          setSubmissionAlert(
-            <Alert severity="error" onClose={() => setSubmissionAlert(null)}>
-              <AlertTitle>Error</AlertTitle>
-              {error.toString()}
-            </Alert>
-          )
-        )
+        .then(submitFn)
+        .then(resetForm)
+        .catch(onSubmitError)
         .finally(() => setSubmitting(false));
     },
   });
@@ -181,13 +140,14 @@ function ScholarshipForm({ setSubmissionAlert }) {
             getIn(formik.errors, 'amount.min') ||
             getIn(formik.errors, 'amount.max')
           }
-          amountType={formik.values.amount.type ?? 'UNKNOWN'}
+          amountType={formik.values.amount.type ?? AmountType.Unknown}
           minAmount={formik.values.amount.min}
           maxAmount={formik.values.amount.max}
           onTypeChange={(e) =>
             formik.setFieldValue('amount.type', e.target.value, true)
           }
           updateAmount={updateAmount}
+          labelStyle={classes.inputLabel}
         />
       </Grid>
 
@@ -197,7 +157,7 @@ function ScholarshipForm({ setSubmissionAlert }) {
           id="description"
           labelStyle={classes.inputLabel}
           formik={formik}
-          rows={8}
+          labelStyle={classes.inputLabel}
         />
       </Grid>
     </Grid>
@@ -302,34 +262,35 @@ function ScholarshipForm({ setSubmissionAlert }) {
                   onClick={() => setActiveStep((prevStep) => prevStep - 1)}>
                   BACK
                 </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => setActiveStep((prevStep) => prevStep + 1)}>
-                  NEXT
-                </Button>
+                {activeStep == Object.keys(stepperItems).length - 1 ? (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    disabled={formik.isSubmitting}>
+                    Submit
+                  </Button>
+                ) : (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => setActiveStep((prevStep) => prevStep + 1)}>
+                    NEXT
+                  </Button>
+                )}
               </div>
             </StepContent>
           </Step>
         ))}
       </Stepper>
-
-      <div>
-        <Button
-          className={classes.submitStyle}
-          variant="contained"
-          color="primary"
-          type="submit"
-          disabled={formik.isSubmitting}>
-          Submit
-        </Button>
-      </div>
     </form>
   );
 }
 
 ScholarshipForm.propTypes = {
-  setSubmissionAlert: PropTypes.func.isRequired,
+  scholarship: PropTypes.object.isRequired,
+  submitFn: PropTypes.func.isRequired,
+  onSubmitError: PropTypes.func.isRequired,
 };
 
 export default ScholarshipForm;

@@ -12,15 +12,13 @@ import PropTypes from 'prop-types';
 import AmountType from '../types/AmountType';
 import AmountTextField from './AmountTextField';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   amountSelect: {
     minWidth: 150,
   },
   dash: {
-    marginTop: theme.spacing(2),
-  },
-  inputLabel: {
-    marginBottom: theme.spacing(1),
+    height: '100%',
+    textAlign: 'center',
   },
 }));
 
@@ -33,6 +31,7 @@ function ScholarshipAmountField(props) {
     maxAmount,
     onTypeChange,
     updateAmount,
+    labelStyle,
   } = props;
 
   const isRange = amountType === AmountType.Range;
@@ -79,7 +78,7 @@ function ScholarshipAmountField(props) {
 
   return (
     <>
-      <InputLabel className={classes.inputLabel}>Award Amount *</InputLabel>
+      <InputLabel className={labelStyle}>Award Amount *</InputLabel>
       <Grid container spacing={3}>
         <Grid item>
           <Select
@@ -109,11 +108,13 @@ ScholarshipAmountField.propTypes = {
   onTypeChange: PropTypes.func.isRequired,
   updateAmount: PropTypes.func.isRequired,
   helperText: PropTypes.string,
+  labelStyle: PropTypes.string,
 };
 ScholarshipAmountField.defaultProps = {
-  amountType: '',
+  amountType: undefined,
   helperText: '',
   minAmount: 0,
   maxAmount: 0,
+  labelStyle: '',
 };
 export default ScholarshipAmountField;
