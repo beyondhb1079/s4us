@@ -11,6 +11,7 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import PropTypes from 'prop-types';
 import AmountType from '../types/AmountType';
 import AmountTextField from './AmountTextField';
+import { getIn } from 'formik';
 
 const useStyles = makeStyles(() => ({
   amountSelect: {
@@ -24,55 +25,53 @@ const useStyles = makeStyles(() => ({
 
 function ScholarshipAmountField(props) {
   const classes = useStyles();
-  const {
-    helperText,
-    amountType,
-    minAmount,
-    maxAmount,
-    onTypeChange,
-    updateAmount,
-    labelStyle,
-  } = props;
+  const { labelStyle, formik } = props;
 
-  const isRange = amountType === AmountType.Range;
-  const isFixed = amountType === AmountType.Fixed;
-  const error = !!helperText; // no error if helperText empty
+  const amountType = formik.values.amount.type;
+  const minError = getIn(formik.errors, 'amount.min');
+  const maxError = getIn(formik.errors, 'amount.max');
+
+  let helperText = '';
+  if (
+    getIn(formik.touched, 'amount.min') ||
+    getIn(formik.touched, 'amount.max')
+  ) {
+    helperText = minError || maxError;
+  }
 
   const inputFields = {};
-  inputFields[AmountType.Range] = (
+  inputFields[AmountType.Varies] = (
     <>
       <AmountTextField
-        error={isRange && error && (!!maxAmount || minAmount >= maxAmount)}
-        value={minAmount || ''}
+        error={Boolean(minError)}
+        value={formik.values.amount.min || ''}
         onChange={(e) => {
           const val = parseInt(e.target.value, 10);
-          updateAmount(val || 0, maxAmount);
+          formik.setFieldValue('amount.min', val || 0, true);
         }}
-        disabled={!isRange}
       />
 
       <RemoveIcon className={classes.dash} />
 
       <AmountTextField
-        error={isRange && error && !minAmount && !maxAmount}
-        value={maxAmount || ''}
+        error={Boolean(maxError)}
+        value={formik.values.amount.max || ''}
         onChange={(e) => {
           const val = parseInt(e.target.value, 10);
-          updateAmount(minAmount, val || 0);
+          formik.setFieldValue('amount.max', val || 0, true);
         }}
-        disabled={!isRange}
       />
     </>
   );
   inputFields[AmountType.Fixed] = (
     <AmountTextField
-      error={isFixed && error}
-      value={minAmount || ''}
+      error={getIn(formik.touched, 'amount.min') && Boolean(minError)}
+      value={formik.values.amount.min || ''}
       onChange={(e) => {
         const val = parseInt(e.target.value, 10);
-        updateAmount(val || 0, val || 0);
+        formik.setFieldValue('amount.min', val || 0, true);
+        formik.setFieldValue('amount.max', val || 0, true);
       }}
-      disabled={!isFixed}
     />
   );
 
@@ -85,11 +84,11 @@ function ScholarshipAmountField(props) {
             className={classes.amountSelect}
             variant="outlined"
             value={amountType}
-            onChange={onTypeChange}
-            displayEmpty>
-            <MenuItem value={AmountType.Unknown}>Unknown</MenuItem>
+            onChange={(e) =>
+              formik.setFieldValue('amount.type', e.target.value, true)
+            }>
             <MenuItem value={AmountType.Fixed}>Fixed</MenuItem>
-            <MenuItem value={AmountType.Range}>Range</MenuItem>
+            <MenuItem value={AmountType.Varies}>Varies</MenuItem>
             <MenuItem value={AmountType.FullTuition}>Full Tuition</MenuItem>
           </Select>
         </Grid>
@@ -102,19 +101,10 @@ function ScholarshipAmountField(props) {
 }
 
 ScholarshipAmountField.propTypes = {
-  amountType: PropTypes.oneOf(Object.values(AmountType)),
-  minAmount: PropTypes.number,
-  maxAmount: PropTypes.number,
-  onTypeChange: PropTypes.func.isRequired,
-  updateAmount: PropTypes.func.isRequired,
-  helperText: PropTypes.string,
   labelStyle: PropTypes.string,
+  formik: PropTypes.object.isRequired,
 };
 ScholarshipAmountField.defaultProps = {
-  amountType: undefined,
-  helperText: '',
-  minAmount: 0,
-  maxAmount: 0,
   labelStyle: '',
 };
 export default ScholarshipAmountField;

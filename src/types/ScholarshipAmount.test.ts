@@ -26,34 +26,42 @@ test('constructor - fixed', () => {
 });
 
 test('constructor - range', () => {
-  const amount = new ScholarshipAmount(AmountType.Range, {
+  const amount = new ScholarshipAmount(AmountType.Varies, {
     min: 2,
     max: 20,
   });
 
-  expect(amount.type).toBe(AmountType.Range);
+  expect(amount.type).toBe(AmountType.Varies);
   expect(amount.min).toBe(2);
   expect(amount.max).toBe(20);
 });
 
 test('constructor - range no min', () => {
-  const amount = new ScholarshipAmount(AmountType.Range, {
+  const amount = new ScholarshipAmount(AmountType.Varies, {
     max: 20,
   });
 
-  expect(amount.type).toBe(AmountType.Range);
+  expect(amount.type).toBe(AmountType.Varies);
   expect(amount.min).toBe(0);
   expect(amount.max).toBe(20);
 });
 
 test('constructor - range no max', () => {
-  const amount = new ScholarshipAmount(AmountType.Range, {
+  const amount = new ScholarshipAmount(AmountType.Varies, {
     min: 2,
   });
 
-  expect(amount.type).toBe(AmountType.Range);
+  expect(amount.type).toBe(AmountType.Varies);
   expect(amount.min).toBe(2);
   expect(amount.max).toBe(RANGE_MAX);
+});
+
+test('constructor - range no min, no max', () => {
+  const amount = new ScholarshipAmount(AmountType.Varies);
+
+  expect(amount.type).toBe(AmountType.Unknown);
+  expect(amount.min).toBe(UNKNOWN_MIN);
+  expect(amount.max).toBe(UNKNOWN_MAX);
 });
 
 test('constructor - full tuition', () => {
@@ -94,7 +102,7 @@ test('constructor exceptions - fixed value not positive', () => {
 test('constructor exceptions - range min negative', () => {
   expect(
     () =>
-      new ScholarshipAmount(AmountType.Range, {
+      new ScholarshipAmount(AmountType.Varies, {
         min: -2,
       })
   ).toThrow(/.*invalid min*/i);
@@ -103,22 +111,16 @@ test('constructor exceptions - range min negative', () => {
 test('constructor exceptions - range max negative', () => {
   expect(
     () =>
-      new ScholarshipAmount(AmountType.Range, {
+      new ScholarshipAmount(AmountType.Varies, {
         max: -2,
       })
   ).toThrow(/.*invalid max*/i);
 });
 
-test('constructor exceptions - range no bounds', () => {
-  expect(() => new ScholarshipAmount(AmountType.Range, {})).toThrow(
-    /.*at least one bound is required*/i
-  );
-});
-
 test('constructor exceptions - range max <= min', () => {
   expect(
     () =>
-      new ScholarshipAmount(AmountType.Range, {
+      new ScholarshipAmount(AmountType.Varies, {
         min: 20,
         max: 2,
       })
@@ -153,7 +155,7 @@ test('toString - Fixed', () => {
 });
 
 test('toString - Range - min only', () => {
-  const amount = new ScholarshipAmount(AmountType.Range, { min: 1000 });
+  const amount = new ScholarshipAmount(AmountType.Varies, { min: 1000 });
 
   const res = amount.toString();
 
@@ -161,7 +163,7 @@ test('toString - Range - min only', () => {
 });
 
 test('toString - Range - max only', () => {
-  const amount = new ScholarshipAmount(AmountType.Range, { max: 1000 });
+  const amount = new ScholarshipAmount(AmountType.Varies, { max: 1000 });
 
   const res = amount.toString();
 
@@ -169,7 +171,7 @@ test('toString - Range - max only', () => {
 });
 
 test('toString - Range - min and max', () => {
-  const amount = new ScholarshipAmount(AmountType.Range, {
+  const amount = new ScholarshipAmount(AmountType.Varies, {
     min: 1000,
     max: 2500,
   });
