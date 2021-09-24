@@ -23,8 +23,10 @@ export default class ScholarshipAmount {
     type: AmountType = AmountType.Unknown,
     data?: { min?: number; max?: number }
   ) {
-    this.type = type;
     const [min, max] = [data?.min, data?.max];
+
+    this.type =
+      type === AmountType.Varies && !min && !max ? AmountType.Unknown : type;
 
     switch (this.type) {
       case AmountType.Fixed:
@@ -37,15 +39,12 @@ export default class ScholarshipAmount {
         this.min = min;
         this.max = max;
         break;
-      case AmountType.Range:
+      case AmountType.Varies:
         if (min && min < 0) {
           throw new Error(`Invalid min amount: ${min}.`);
         }
         if (max && max < 0) {
           throw new Error(`Invalid max amount: ${max}.`);
-        }
-        if (!max && !min) {
-          throw new Error(`No bounds given. At least one bound is required.`);
         }
         if (max && min && min >= max) {
           throw new Error(`Invalid range ${min}-${max}`);
@@ -70,7 +69,7 @@ export default class ScholarshipAmount {
         return 'Full Tuition';
       case AmountType.Fixed:
         return `$${this.min}`;
-      case AmountType.Range:
+      case AmountType.Varies:
         if (this.min && this.max !== RANGE_MAX) {
           return `$${this.min}-$${this.max}`;
         }
