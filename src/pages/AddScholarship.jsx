@@ -4,6 +4,7 @@ import { Container } from '@material-ui/core';
 import ScholarshipForm from '../components/ScholarshipForm';
 import Scholarships from '../models/Scholarships';
 import SubmissionAlert from '../components/SubmissionAlert';
+import AmountType from '../types/AmountType';
 
 function AddScholarship() {
   const [submissionAlert, setSubmissionAlert] = useState(null);
@@ -14,7 +15,7 @@ function AddScholarship() {
     deadline: null,
     description: '',
     amount: {
-      type: null,
+      type: AmountType.Fixed,
       min: 0,
       max: 0,
     },
