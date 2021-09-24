@@ -17,7 +17,7 @@ const MenuProps = {
 };
 
 function FormikMultiSelect(props) {
-  const { label, labelStyle, value, changeFn, options } = props;
+  const { label, id, labelStyle, formik, options } = props;
 
   return (
     <>
@@ -25,9 +25,16 @@ function FormikMultiSelect(props) {
       <Select
         multiple
         fullWidth
+        id={id}
         variant="outlined"
-        value={value}
-        onChange={(event) => changeFn(event.target.value)}
+        value={formik.values.requirements[id]}
+        onChange={(e) =>
+          formik.setFieldValue(
+            `requirements.${id}`,
+            e.target.value,
+            /* shouldValidate = */ false
+          )
+        }
         MenuProps={MenuProps}>
         {options.map((name) => (
           <MenuItem key={name} value={name}>
@@ -43,8 +50,8 @@ export default FormikMultiSelect;
 
 FormikMultiSelect.propTypes = {
   label: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
   labelStyle: PropTypes.string.isRequired,
-  value: PropTypes.arrayOf(PropTypes.string).isRequired,
-  changeFn: PropTypes.func.isRequired,
+  formik: PropTypes.object.isRequired,
   options: PropTypes.arrayOf(PropTypes.string).isRequired,
 };

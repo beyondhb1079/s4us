@@ -62,9 +62,6 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
   const [activeStep, setActiveStep] = useState(0);
   const [hasReqs, setHasReqs] = useState(false);
 
-  const [grades, setGrades] = useState([]);
-  const [ethnicities, setEthnicities] = useState([]);
-
   const formik = useFormik({
     initialValues: scholarship.data,
     validationSchema,
@@ -172,10 +169,10 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
       <Grid item sm={6} xs={12}>
         <FormikMultiSelect
           label="Grade"
+          id="grades"
           labelStyle={classes.inputLabel}
-          value={grades}
+          formik={formik}
           options={gradeOptions}
-          changeFn={setGrades}
         />
       </Grid>
 
@@ -217,9 +214,9 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
       <Grid item xs={6}>
         <FormikMultiSelect
           label="Ethnicity"
+          id="ethnicities"
           labelStyle={classes.inputLabel}
-          value={ethnicities}
-          changeFn={setEthnicities}
+          formik={formik}
           options={ethnicityOptions}
         />
       </Grid>
