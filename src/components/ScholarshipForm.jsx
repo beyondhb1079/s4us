@@ -168,7 +168,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 
       <Grid item sm={6} xs={12}>
         <FormikMultiSelect
-          label="Grade"
+          label="Grade(s)"
           id="grades"
           labelStyle={classes.inputLabel}
           formik={formik}
@@ -178,7 +178,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 
       <Grid item sm={6} xs={12}>
         <FormikTextField
-          label="GPA"
+          label="Minimum GPA"
           id="gpa"
           formik={formik}
           labelStyle={classes.inputLabel}
@@ -187,7 +187,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 
       <Grid item sm={6} xs={12}>
         <FormikAutocomplete
-          label="School"
+          label="School(s)"
           id="schools"
           labelStyle={classes.inputLabel}
           options={schoolOptions}
@@ -198,7 +198,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 
       <Grid item sm={6} xs={12}>
         <FormikAutocomplete
-          label="State"
+          label="State(s)"
           id="states"
           labelStyle={classes.inputLabel}
           options={stateOptions}
@@ -208,7 +208,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 
       <Grid item xs={6}>
         <FormikAutocomplete
-          label="Major"
+          label="Major(s)"
           id="majors"
           labelStyle={classes.inputLabel}
           options={majorOptions}
@@ -219,7 +219,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 
       <Grid item xs={6}>
         <FormikMultiSelect
-          label="Ethnicity"
+          label="Ethnicity(s)"
           id="ethnicities"
           labelStyle={classes.inputLabel}
           formik={formik}
@@ -228,7 +228,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
       </Grid>
     </Grid>
   );
-  console.log(formik.values.requirements.majors);
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <Stepper activeStep={activeStep} orientation="vertical">
