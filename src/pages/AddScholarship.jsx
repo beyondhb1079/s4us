@@ -24,7 +24,7 @@ function AddScholarship() {
     tags: [],
     author: { id: user?.uid, email: user?.email },
     requirements: {
-      gpa: null,
+      gpa: 0,
       ethnicities: [],
       majors: [],
       schools: [],
