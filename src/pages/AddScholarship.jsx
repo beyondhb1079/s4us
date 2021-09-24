@@ -20,7 +20,18 @@ function AddScholarship() {
       max: 0,
     },
     website: '',
+    organization: '',
+    tags: [],
     author: { id: user?.uid, email: user?.email },
+    requirements: {
+      gpa: 0,
+      ethnicities: [],
+      majors: [],
+      schools: [],
+      grades: [],
+      states: [],
+      genders: [],
+    },
   });
 
   return (
