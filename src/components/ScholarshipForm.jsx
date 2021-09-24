@@ -188,26 +188,32 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
       <Grid item sm={6} xs={12}>
         <FormikAutocomplete
           label="School"
+          id="schools"
           labelStyle={classes.inputLabel}
           options={schoolOptions}
           freeSolo
+          formik={formik}
         />
       </Grid>
 
       <Grid item sm={6} xs={12}>
         <FormikAutocomplete
           label="State"
+          id="states"
           labelStyle={classes.inputLabel}
           options={stateOptions}
+          formik={formik}
         />
       </Grid>
 
       <Grid item xs={6}>
         <FormikAutocomplete
           label="Major"
+          id="majors"
           labelStyle={classes.inputLabel}
           options={majorOptions}
           freeSolo
+          formik={formik}
         />
       </Grid>
 
@@ -222,7 +228,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
       </Grid>
     </Grid>
   );
-
+  console.log(formik.values.requirements.majors);
   return (
     <form onSubmit={formik.handleSubmit}>
       <Stepper activeStep={activeStep} orientation="vertical">
