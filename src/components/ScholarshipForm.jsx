@@ -114,7 +114,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
     </Grid>
   );
 
-  const lastStep = activeStep == Object.keys(stepperItems).length - 1;
+  const onLastStep = activeStep == Object.keys(stepperItems).length - 1;
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -132,14 +132,15 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
                 </Button>
 
                 <Button
+                  key={onLastStep ? 'submit' : 'next'}
                   variant="contained"
                   color="primary"
                   disabled={formik.isSubmitting}
-                  type={lastStep ? 'submit' : 'button'}
+                  type={onLastStep ? 'submit' : 'button'}
                   onClick={() =>
-                    lastStep && setActiveStep((prevStep) => prevStep + 1)
+                    !onLastStep && setActiveStep((prevStep) => prevStep + 1)
                   }>
-                  {lastStep ? 'Submit' : 'NEXT'}
+                  {onLastStep ? 'Submit' : 'NEXT'}
                 </Button>
               </div>
             </StepContent>
