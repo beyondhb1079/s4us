@@ -30,11 +30,11 @@ FormikTextField.propTypes = {
   id: PropTypes.string.isRequired,
   formik: PropTypes.object.isRequired,
   minRows: PropTypes.number,
-  diasbled: PropTypes.bool,
+  disabled: PropTypes.bool,
 };
 FormikTextField.defaultProps = {
   labelStyle: null,
   minRows: 0,
-  PropTypes: false,
+  disabled: false,
 };
 export default FormikTextField;
