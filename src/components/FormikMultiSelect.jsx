@@ -17,12 +17,13 @@ const MenuProps = {
 };
 
 function FormikMultiSelect(props) {
-  const { label, id, labelStyle, formik, options } = props;
+  const { label, id, labelStyle, formik, options, disabled } = props;
 
   return (
     <>
       <InputLabel className={labelStyle}>{label}</InputLabel>
       <Select
+        disabled={disabled}
         multiple
         fullWidth
         id={id}
@@ -54,4 +55,9 @@ FormikMultiSelect.propTypes = {
   labelStyle: PropTypes.string.isRequired,
   formik: PropTypes.object.isRequired,
   options: PropTypes.arrayOf(PropTypes.string).isRequired,
+  disabled: PropTypes.bool,
+};
+
+FormikMultiSelect.defaultProps = {
+  disabled: false,
 };

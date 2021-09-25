@@ -5,12 +5,13 @@ import PropTypes from 'prop-types';
 
 /* eslint-disable react/jsx-props-no-spreading */
 function FormikAutocomplete(props) {
-  const { label, id, labelStyle, options, freeSolo, formik } = props;
+  const { label, id, labelStyle, options, freeSolo, formik, disabled } = props;
 
   return (
     <>
       <InputLabel className={labelStyle}>{label}</InputLabel>
       <Autocomplete
+        disabled={disabled}
         id={id}
         freeSolo={freeSolo}
         multiple
@@ -38,10 +39,12 @@ FormikAutocomplete.propTypes = {
   options: PropTypes.array.isRequired,
   freeSolo: PropTypes.bool,
   formik: PropTypes.object.isRequired,
+  disabled: PropTypes.bool,
 };
 FormikAutocomplete.defaultProps = {
   label: '',
   labelStyle: '',
   freeSolo: false,
+  disabled: false,
 };
 export default FormikAutocomplete;

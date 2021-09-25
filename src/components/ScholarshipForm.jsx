@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
 function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
-  const [hasReqs, setHasReqs] = useState(false);
+  const [noReqsChecked, setNoReqsChecked] = useState(false);
 
   const formik = useFormik({
     initialValues: scholarship.data,
@@ -68,6 +68,14 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
     onSubmit: (values, { setSubmitting, resetForm }) => {
       setSubmitting(true);
       scholarship.data = { ...values };
+
+      if (noReqsChecked) {
+        Object.keys(scholarship.data.requirements).forEach(
+          (k) => (scholarship.data.requirements[k] = [])
+        );
+        scholarship.data.requirements.gpa = 0;
+      }
+
       scholarship
         .save()
         .then(submitFn)
@@ -157,8 +165,8 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
         <FormControlLabel
           control={
             <Checkbox
-              checked={hasReqs}
-              onChange={(event) => setHasReqs(event.target.checked)}
+              checked={noReqsChecked}
+              onChange={(event) => setNoReqsChecked(event.target.checked)}
               color="primary"
             />
           }
@@ -168,6 +176,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 
       <Grid item sm={6} xs={12}>
         <FormikMultiSelect
+          disabled={noReqsChecked}
           label="Grade(s)"
           id="grades"
           labelStyle={classes.inputLabel}
@@ -178,6 +187,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 
       <Grid item sm={6} xs={12}>
         <FormikTextField
+          disabled={noReqsChecked}
           label="Minimum GPA"
           id="gpa"
           formik={formik}
@@ -187,6 +197,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 
       <Grid item sm={6} xs={12}>
         <FormikAutocomplete
+          disabled={noReqsChecked}
           label="School(s)"
           id="schools"
           labelStyle={classes.inputLabel}
@@ -198,6 +209,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 
       <Grid item sm={6} xs={12}>
         <FormikAutocomplete
+          disabled={noReqsChecked}
           label="State(s)"
           id="states"
           labelStyle={classes.inputLabel}
@@ -208,6 +220,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 
       <Grid item xs={6}>
         <FormikAutocomplete
+          disabled={noReqsChecked}
           label="Major(s)"
           id="majors"
           labelStyle={classes.inputLabel}
@@ -219,6 +232,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 
       <Grid item xs={6}>
         <FormikMultiSelect
+          disabled={noReqsChecked}
           label="Ethnicity(s)"
           id="ethnicities"
           labelStyle={classes.inputLabel}
