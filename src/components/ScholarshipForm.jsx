@@ -10,6 +10,7 @@ import {
   Typography,
   FormControlLabel,
   Checkbox,
+  FormHelperText,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -61,6 +62,8 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const [noReqsChecked, setNoReqsChecked] = useState(false);
+
+  const [noReqsHelperText, setNoReqsHelperText] = useState('');
 
   const formik = useFormik({
     initialValues: scholarship.data,
@@ -172,6 +175,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
           }
           label="NO ELIGIBILITY REQUIREMENTS"
         />
+        <FormHelperText error>{noReqsHelperText}</FormHelperText>
       </Grid>
 
       <Grid item sm={6} xs={12}>
@@ -243,42 +247,58 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
     </Grid>
   );
 
+  function validationCheck() {
+    console.log(formik.values.requirements);
+    if (
+      !Object.values(formik.values.requirements).some((val) => {
+        if (typeof val == 'number') return val != 0;
+        return val.length != 0;
+      }) &&
+      !noReqsChecked
+    ) {
+      setNoReqsHelperText(
+        'Check this box if there are no requirements for this scholarship.'
+      );
+      return;
+    }
+    setNoReqsHelperText('');
+    formik.submitForm();
+  }
+
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <Stepper activeStep={activeStep} orientation="vertical">
-        {Object.keys(stepperItems).map((key) => (
-          <Step key={key}>
-            <StepLabel>{key}</StepLabel>
-            <StepContent>
-              {stepperItems[key]}
-              <div className={classes.stepperBtns}>
+    <Stepper activeStep={activeStep} orientation="vertical">
+      {Object.keys(stepperItems).map((key) => (
+        <Step key={key}>
+          <StepLabel>{key}</StepLabel>
+          <StepContent>
+            {stepperItems[key]}
+            <div className={classes.stepperBtns}>
+              <Button
+                disabled={activeStep === 0}
+                onClick={() => setActiveStep((prevStep) => prevStep - 1)}>
+                BACK
+              </Button>
+              {activeStep == Object.keys(stepperItems).length - 1 ? (
                 <Button
-                  disabled={activeStep === 0}
-                  onClick={() => setActiveStep((prevStep) => prevStep - 1)}>
-                  BACK
+                  variant="contained"
+                  color="primary"
+                  onClick={validationCheck}
+                  disabled={formik.isSubmitting}>
+                  Submit
                 </Button>
-                {activeStep == Object.keys(stepperItems).length - 1 ? (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    disabled={formik.isSubmitting}>
-                    Submit
-                  </Button>
-                ) : (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => setActiveStep((prevStep) => prevStep + 1)}>
-                    NEXT
-                  </Button>
-                )}
-              </div>
-            </StepContent>
-          </Step>
-        ))}
-      </Stepper>
-    </form>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => setActiveStep((prevStep) => prevStep + 1)}>
+                  NEXT
+                </Button>
+              )}
+            </div>
+          </StepContent>
+        </Step>
+      ))}
+    </Stepper>
   );
 }
 
