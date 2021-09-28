@@ -10,6 +10,7 @@ import {
   Typography,
   FormControlLabel,
   Checkbox,
+  FormHelperText,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -60,7 +61,9 @@ const useStyles = makeStyles((theme) => ({
 function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
-  const [hasReqs, setHasReqs] = useState(false);
+  const [noReqsChecked, setNoReqsChecked] = useState(false);
+
+  const [noReqsHelperText, setNoReqsHelperText] = useState('');
 
   const formik = useFormik({
     initialValues: scholarship.data,
@@ -68,6 +71,14 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
     onSubmit: (values, { setSubmitting, resetForm }) => {
       setSubmitting(true);
       scholarship.data = { ...values };
+
+      if (noReqsChecked) {
+        Object.keys(scholarship.data.requirements).forEach(
+          (k) => (scholarship.data.requirements[k] = [])
+        );
+        scholarship.data.requirements.gpa = 0;
+      }
+
       scholarship
         .save()
         .then(submitFn)
@@ -157,17 +168,19 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
         <FormControlLabel
           control={
             <Checkbox
-              checked={hasReqs}
-              onChange={(event) => setHasReqs(event.target.checked)}
+              checked={noReqsChecked}
+              onChange={(event) => setNoReqsChecked(event.target.checked)}
               color="primary"
             />
           }
           label="NO ELIGIBILITY REQUIREMENTS"
         />
+        <FormHelperText error>{noReqsHelperText}</FormHelperText>
       </Grid>
 
       <Grid item sm={6} xs={12}>
         <FormikMultiSelect
+          disabled={noReqsChecked}
           label="Grade(s)"
           id="grades"
           labelStyle={classes.inputLabel}
@@ -178,6 +191,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 
       <Grid item sm={6} xs={12}>
         <FormikTextField
+          disabled={noReqsChecked}
           label="Minimum GPA"
           id="gpa"
           formik={formik}
@@ -187,6 +201,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 
       <Grid item sm={6} xs={12}>
         <FormikAutocomplete
+          disabled={noReqsChecked}
           label="School(s)"
           id="schools"
           labelStyle={classes.inputLabel}
@@ -198,6 +213,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 
       <Grid item sm={6} xs={12}>
         <FormikAutocomplete
+          disabled={noReqsChecked}
           label="State(s)"
           id="states"
           labelStyle={classes.inputLabel}
@@ -208,6 +224,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 
       <Grid item xs={6}>
         <FormikAutocomplete
+          disabled={noReqsChecked}
           label="Major(s)"
           id="majors"
           labelStyle={classes.inputLabel}
@@ -219,6 +236,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 
       <Grid item xs={6}>
         <FormikMultiSelect
+          disabled={noReqsChecked}
           label="Ethnicity(s)"
           id="ethnicities"
           labelStyle={classes.inputLabel}
@@ -229,42 +247,58 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
     </Grid>
   );
 
+  function validationCheck() {
+    // no requirements and checkbox not checked
+    if (
+      !Object.values(formik.values.requirements).some((val) => {
+        if (typeof val == 'number') return val != 0;
+        return val.length != 0;
+      }) &&
+      !noReqsChecked
+    ) {
+      setNoReqsHelperText(
+        'Check this box if there are no requirements for this scholarship.'
+      );
+      return;
+    }
+    setNoReqsHelperText('');
+    formik.submitForm();
+  }
+
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <Stepper activeStep={activeStep} orientation="vertical">
-        {Object.keys(stepperItems).map((key) => (
-          <Step key={key}>
-            <StepLabel>{key}</StepLabel>
-            <StepContent>
-              {stepperItems[key]}
-              <div className={classes.stepperBtns}>
+    <Stepper activeStep={activeStep} orientation="vertical">
+      {Object.keys(stepperItems).map((key) => (
+        <Step key={key}>
+          <StepLabel>{key}</StepLabel>
+          <StepContent>
+            {stepperItems[key]}
+            <div className={classes.stepperBtns}>
+              <Button
+                disabled={activeStep === 0}
+                onClick={() => setActiveStep((prevStep) => prevStep - 1)}>
+                BACK
+              </Button>
+              {activeStep == Object.keys(stepperItems).length - 1 ? (
                 <Button
-                  disabled={activeStep === 0}
-                  onClick={() => setActiveStep((prevStep) => prevStep - 1)}>
-                  BACK
+                  variant="contained"
+                  color="primary"
+                  onClick={validationCheck}
+                  disabled={formik.isSubmitting}>
+                  Submit
                 </Button>
-                {activeStep == Object.keys(stepperItems).length - 1 ? (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    disabled={formik.isSubmitting}>
-                    Submit
-                  </Button>
-                ) : (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => setActiveStep((prevStep) => prevStep + 1)}>
-                    NEXT
-                  </Button>
-                )}
-              </div>
-            </StepContent>
-          </Step>
-        ))}
-      </Stepper>
-    </form>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => setActiveStep((prevStep) => prevStep + 1)}>
+                  NEXT
+                </Button>
+              )}
+            </div>
+          </StepContent>
+        </Step>
+      ))}
+    </Stepper>
   );
 }
 
