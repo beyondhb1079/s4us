@@ -248,7 +248,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
   );
 
   function validationCheck() {
-    console.log(formik.values.requirements);
+    // no requirements and checkbox not checked
     if (
       !Object.values(formik.values.requirements).some((val) => {
         if (typeof val == 'number') return val != 0;
