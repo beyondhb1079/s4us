@@ -19,6 +19,7 @@ import DatePicker from './DatePicker';
 import FormikTextField from './FormikTextField';
 import FormikMultiSelect from './FormikMultiSelect';
 import FormikAutocomplete from './FormikAutocomplete';
+import ScholarshipDetailCard from './ScholarshipDetailCard';
 
 const gradeOptions = [
   'Middle School',
@@ -227,6 +228,10 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
         />
       </Grid>
     </Grid>
+  );
+
+  stepperItems.Review = (
+    <ScholarshipDetailCard scholarship={{ data: formik.values }} review />
   );
 
   return (

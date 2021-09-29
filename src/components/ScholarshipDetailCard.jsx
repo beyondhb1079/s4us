@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
   },
   description: {
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(3),
   },
   sectionHeader: {
     fontWeight: '500',
@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // TODO(issues/358): Style this.
-export default function ScholarshipDetailCard({ scholarship }) {
+export default function ScholarshipDetailCard({ scholarship, review }) {
   const history = useHistory();
 
   const classes = useStyles();
@@ -127,25 +127,30 @@ export default function ScholarshipDetailCard({ scholarship }) {
   return (
     <Card className={classes.detailSection}>
       <Typography variant="h4">{name}</Typography>
-      <Typography variant="h5">{organization}</Typography>
-      <Box className={classes.actionSection}>
-        <Button
-          component={Link}
-          href={website}
-          variant="contained"
-          color="primary"
-          className={classes.applyBtn}
-          startIcon={<Send />}>
-          Apply
-        </Button>
-
-        <Button
-          variant="outlined"
-          className={classes.shareBtn}
-          startIcon={<Share />}
-          onClick={shareFn}>
-          Share
-        </Button>
+      <Typography variant="h5" className={review ? classes.description : ''}>
+        {organization}
+      </Typography>
+      <Box className={!review ? classes.actionSection : ''}>
+        {!review && (
+          <>
+            <Button
+              component={Link}
+              href={website}
+              variant="contained"
+              color="primary"
+              className={classes.applyBtn}
+              startIcon={<Send />}>
+              Apply
+            </Button>
+            <Button
+              variant="outlined"
+              className={classes.shareBtn}
+              startIcon={<Share />}
+              onClick={shareFn}>
+              Share
+            </Button>{' '}
+          </>
+        )}
       </Box>
 
       <Typography
@@ -163,7 +168,11 @@ export default function ScholarshipDetailCard({ scholarship }) {
         />
         <DetailCardCell
           label="Award Amount"
-          text={amount?.toString() || 'Unknown'}
+          text={
+            review
+              ? new ScholarshipAmount(amount.type, amount).toString()
+              : amount?.toString() || 'Unknown'
+          }
           bottom
         />
         <DetailCardCell
@@ -258,4 +267,9 @@ ScholarshipDetailCard.propTypes = {
       }),
     }).isRequired,
   }).isRequired,
+  review: PropTypes.bool,
+};
+
+ScholarshipDetailCard.defaultProps = {
+  review: false,
 };
