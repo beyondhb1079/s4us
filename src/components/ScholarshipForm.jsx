@@ -116,6 +116,10 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 
   const onLastStep = activeStep == Object.keys(stepperItems).length - 1;
 
+  stepperItems.Review = (
+    <ScholarshipDetailCard scholarship={{ data: formik.values }} review />
+  );
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <Stepper activeStep={activeStep} orientation="vertical">
