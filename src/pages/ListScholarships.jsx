@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import queryString from 'query-string';
-import { Container, Typography } from '@material-ui/core';
+import {
+  Button,
+  Container,
+  Typography,
+  Grid,
+  makeStyles,
+  Hidden,
+} from '@material-ui/core';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
+import ScholarshipDetailCard from '../components/ScholarshipDetailCard';
 import qParams from '../lib/QueryParams';
 import sortOptions, {
   DEADLINE_ASC,
@@ -12,7 +20,24 @@ import sortOptions, {
   getField,
 } from '../lib/sortOptions';
 
+const useStyles = makeStyles(() => ({
+  listContainerView: {
+    // main centered view
+    position: 'sticky',
+    top: 0,
+  },
+  listBarView: {
+    // when it appears on the left
+    maxHeight: '100vh',
+    overflowY: 'auto',
+    position: 'sticky',
+    top: 0,
+    maxWidth: '480px',
+  },
+}));
+
 function ListScholarships() {
+  const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
 
@@ -36,6 +61,18 @@ function ListScholarships() {
     pruneQueryParam('sortBy');
   }
 
+  // Parse selected scholarship
+  // Note: to avoid overcomplicating things we don't keep track of this in the URL.
+  // Users can share a specific scholarship instead.
+  const selected = history.location.state?.scholarship;
+  const setSelected = (s) =>
+    history.replace({
+      state: {
+        scholarship: { id: s.id, data: s.data },
+      },
+    });
+  const clearSelected = () => history.replace({ state: {} });
+
   const sortBy = params.sortBy ?? DEADLINE_ASC;
 
   const sortField = getField(sortBy);
@@ -57,16 +94,52 @@ function ListScholarships() {
     pruneQueryParam(qParams.MAX_AMOUNT);
   }
 
-  const listScholarships = () =>
-    Scholarships.list({ sortField, sortDir, minAmount, maxAmount });
+  const listScholarships = useCallback(
+    () => Scholarships.list({ sortField, sortDir, minAmount, maxAmount }),
+    [sortField, sortDir, minAmount, maxAmount]
+  );
 
+  const showDetail = !!selected;
   return (
     <Container>
-      <Typography variant="h3" component="h1" style={{ textAlign: 'center' }}>
+      <Typography
+        variant="h3"
+        component="h1"
+        style={{ textAlign: 'center' }}
+        gutterBottom>
         Scholarships
       </Typography>
-      <FilterBar queryParams={params} {...{ setQueryParam }} />
-      <ScholarshipList listFn={listScholarships} />
+      <Grid container spacing={5} justifyContent="space-around">
+        <Hidden xsDown={showDetail}>
+          <Grid
+            item
+            xs
+            className={
+              showDetail ? classes.listBarView : classes.listContainerView
+            }>
+            <Container maxWidth="md" disableGutters>
+              <FilterBar queryParams={params} {...{ setQueryParam }} />
+              <ScholarshipList
+                listFn={listScholarships}
+                selectedId={selected?.id}
+                onItemSelect={(s) =>
+                  s.id === selected?.id ? clearSelected() : setSelected(s)
+                }
+              />
+            </Container>
+          </Grid>
+        </Hidden>
+        {selected && (
+          <Grid item xs>
+            <Hidden smUp>
+              <Button color="primary" onClick={clearSelected}>
+                Back to results
+              </Button>
+            </Hidden>
+            <ScholarshipDetailCard scholarship={selected} />
+          </Grid>
+        )}
+      </Grid>
     </Container>
   );
 }

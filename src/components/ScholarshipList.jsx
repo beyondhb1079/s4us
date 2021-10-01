@@ -22,13 +22,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function ScholarshipList({ noResultsNode, listFn }) {
+function ScholarshipList({ listFn, noResultsNode, selectedId, onItemSelect }) {
   const classes = useStyles();
 
   const [error, setError] = useState();
   const [scholarships, setScholarships] = useState([]);
   const [loadState, setLoadState] = useState({
-    loading: true,
     canLoadMore: true,
     loadMoreFn: listFn,
   });
@@ -68,10 +67,14 @@ function ScholarshipList({ noResultsNode, listFn }) {
   const loadMore = () => setLoadState({ ...loadState, loading: true });
 
   return (
-    <Grid container spacing={3}>
-      {scholarships.map(({ id, data }) => (
-        <Grid item xs={12} key={id}>
-          <ScholarshipListCard scholarship={{ id, data }} />
+    <Grid container spacing={2}>
+      {scholarships.map((scholarship) => (
+        <Grid item xs={12} key={scholarship.id}>
+          <ScholarshipListCard
+            scholarship={scholarship}
+            selected={scholarship.id === selectedId}
+            onClick={() => onItemSelect(scholarship)}
+          />
         </Grid>
       ))}
       <Grid item xs={12}>
@@ -104,10 +107,15 @@ function ScholarshipList({ noResultsNode, listFn }) {
 ScholarshipList.propTypes = {
   listFn: PropTypes.func,
   noResultsNode: PropTypes.node,
+  selectedId: PropTypes.number,
+  onItemSelect: PropTypes.func,
 };
+
 ScholarshipList.defaultProps = {
   listFn: undefined,
   noResultsNode: <Typography>No scholarships found</Typography>,
+  selectedId: undefined,
+  onItemSelect: () => {},
 };
 
 export default ScholarshipList;

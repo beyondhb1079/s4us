@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import {
   Card,
   CardActionArea,
@@ -13,6 +13,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 
 const useStyles = makeStyles((theme) => ({
+  selectedRoot: {
+    borderColor: theme.palette.primary.light,
+    color: theme.palette.primary.main,
+  },
   actions: {
     padding: theme.spacing(2),
     paddingTop: theme.spacing(1),
@@ -29,8 +33,8 @@ const useStyles = makeStyles((theme) => ({
   },
   description: {
     display: '-webkit-box',
-    '-webkit-line-clamp': 5,
-    lineClamp: 5,
+    '-webkit-line-clamp': 3,
+    lineClamp: 3,
     '-webkit-box-orient': 'vertical',
     overflow: 'hidden',
     whiteSpace: 'pre-line',
@@ -49,19 +53,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ScholarshipListCard({ scholarship }) {
+function ScholarshipListCard({ scholarship, onClick, selected }) {
   const classes = useStyles();
+  const history = useHistory();
   const { name, amount, deadline, description, organization, tags } =
     scholarship.data;
 
   return (
-    <Card variant="outlined">
+    <Card variant="outlined" className={selected ? classes.selectedRoot : ''}>
       <CardActionArea
-        component={Link}
-        to={{
-          pathname: `/scholarships/${scholarship.id}`,
-          state: { scholarship },
-        }}>
+        onClick={
+          onClick ||
+          (() =>
+            history.push({
+              pathname: `/scholarships/${scholarship.id}`,
+              state: { scholarship },
+            }))
+        }>
         <CardContent className={classes.content}>
           <Typography variant="body1" className={classes.deadline}>
             {deadline?.toLocaleDateString()}
@@ -116,6 +124,12 @@ ScholarshipListCard.propTypes = {
       ),
     }).isRequired,
   }).isRequired,
+  onClick: PropTypes.func,
+  selected: PropTypes.bool,
+};
+ScholarshipListCard.defaultProps = {
+  onClick: undefined,
+  selected: false,
 };
 
 export default ScholarshipListCard;

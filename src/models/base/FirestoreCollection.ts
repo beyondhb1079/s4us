@@ -3,6 +3,8 @@ import FirestoreModel from './FirestoreModel';
 import Model from './Model';
 import FirestoreModelList from './FiretoreModelList';
 
+const PAGE_LIMIT = 10;
+
 export default abstract class FirestoreCollection<T> {
   abstract readonly name: string;
   protected abstract readonly converter: firebase.firestore.FirestoreDataConverter<T>;
@@ -28,7 +30,7 @@ export default abstract class FirestoreCollection<T> {
     postProcessFilter: (results: FirestoreModel<E>) => boolean = () => true,
     lastDoc?: firebase.firestore.QueryDocumentSnapshot<E>
   ): Promise<FirestoreModelList<E>> {
-    let query: firebase.firestore.Query<E> = baseQuery.limit(10);
+    let query: firebase.firestore.Query<E> = baseQuery.limit(PAGE_LIMIT);
     if (lastDoc) query = query.startAfter(lastDoc);
 
     return query.get().then((qSnap: firebase.firestore.QuerySnapshot<E>) => ({
@@ -41,7 +43,7 @@ export default abstract class FirestoreCollection<T> {
       results: qSnap.docs
         .map((doc) => new FirestoreModel<E>(doc.ref, doc.data()))
         .filter(postProcessFilter),
-      hasNext: !qSnap.empty && qSnap.size >= 1,
+      hasNext: !qSnap.empty && qSnap.size >= PAGE_LIMIT,
     }));
   }
 }
