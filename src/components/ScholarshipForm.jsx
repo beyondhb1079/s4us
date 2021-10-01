@@ -58,8 +58,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-console.log(SCHOOLS);
-
 function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
