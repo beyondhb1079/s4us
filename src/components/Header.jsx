@@ -128,10 +128,6 @@ function Header() {
         <Grid item className={classes.authItem}>
           <AuthZoomButton />
         </Grid>
-
-        <Grid item className={classes.authItem}>
-          <AuthZoomButton />
-        </Grid>
       </Grid>
     </Container>
   );
