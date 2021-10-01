@@ -56,7 +56,7 @@ WEST VIRGINIA	WV
 WISCONSIN	WI
 WYOMING	WY`;
 
-export const STATES = RAW_STATES.split('\n').map(s => s.split('\t')).map([name, abbr] => abbr);
+export const STATES = RAW_STATES.split('\n').map(s => s.split('\t')[1]);
 
 // Source: https://matchcollege.com/top-majors
 //
@@ -2214,4 +2214,4 @@ Northwest College	http://northwestcollege.edu	WY
 Northern Wyoming Community College District	http://sheridan.edu	WY
 University of Wyoming	http://uwyo.edu	WY`
 
-export const SCHOOLS = RAW_SCHOOLS.split('\n').map(s => s.split('\t')).map([name, site, state] => name);
+export const SCHOOLS = RAW_SCHOOLS.split('\n').map(s => s.split('\t', 3)[0]);
