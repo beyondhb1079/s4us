@@ -10,6 +10,7 @@ import {
   makeStyles,
   Snackbar,
   Zoom,
+  IconButton,
 } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import ProfileMenu from './ProfileDropdown';
@@ -122,6 +123,10 @@ function Header() {
         </Grid>
         <Grid item>
           <HeaderNavMenu links={links} />
+        </Grid>
+
+        <Grid item className={classes.authItem}>
+          <AuthZoomButton />
         </Grid>
 
         <Grid item className={classes.authItem}>
