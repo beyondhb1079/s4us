@@ -5,6 +5,7 @@ const experiments: { [k: string]: boolean } = {
   expShowFullProfileMenu: false,
   expShowMajorFilter: false,
   expShowGradeFilter: false,
+  expShowRequirementsSection: false,
 };
 
 export function loadExperiments(query = window.location.search): void {

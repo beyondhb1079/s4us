@@ -19,31 +19,32 @@ import DatePicker from './DatePicker';
 import FormikTextField from './FormikTextField';
 import FormikMultiSelect from './FormikMultiSelect';
 import FormikAutocomplete from './FormikAutocomplete';
+import { SCHOOLS, STATES, MAJORS } from '../types/options';
+import GradeLevel from '../types/GradeLevel';
+import Ethnicity from '../types/Ethnicity';
+import experiments from '../lib/experiments';
 
-const gradeOptions = [
-  'Middle School',
-  'HS Freshman',
-  'HS Sophomore',
-  'HS Junior',
-  'HS Senior',
-  'College Freshman',
-  'College Sophomore',
-  'College Junior',
-  'College Senior',
-];
+const gradeOptions = {
+  'Middle School': GradeLevel.MiddleSchool,
+  'HS Freshman': GradeLevel.HsFreshman,
+  'HS Sophomore': GradeLevel.HsSophomore,
+  'HS Junior': GradeLevel.HsJunior,
+  'HS Senior': GradeLevel.HsSenior,
+  'College Freshman': GradeLevel.CollegeFreshman,
+  'College Sophomore': GradeLevel.CollegeSophomore,
+  'College Junior': GradeLevel.CollegeJunior,
+  'College Senior': GradeLevel.CollegeSenior,
+};
 
-const ethnicityOptions = [
-  'American Indian or Alaska Native',
-  'Asian',
-  'Black or African American',
-  'Hispanic or Latino',
-  'Native Hawaiian or Other Pacific Islander',
-  'White',
-];
-
-const schoolOptions = [{ title: 'school1' }, { title: 'school2' }];
-const stateOptions = [{ title: 'CA' }, { title: 'WA' }];
-const majorOptions = [{ title: 'major1' }, { title: 'major2' }];
+const ethnicityOptions = {
+  'American Indian or Alaska Native': Ethnicity.AmericanIndianOrAlaskaNative,
+  Asian: Ethnicity.Asian,
+  'Black or African American': Ethnicity.BlackOrAfricanAmerican,
+  'Hispanic or Latino': Ethnicity.HispanicOrLatino,
+  'Native Hawaiian or Other Pacific Islander':
+    Ethnicity.NativeHawaiianOrOtherPacificIslander,
+  White: Ethnicity.White,
+};
 
 const useStyles = makeStyles((theme) => ({
   stepperDescription: {
@@ -56,6 +57,8 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(4),
   },
 }));
+
+console.log(SCHOOLS);
 
 function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
   const classes = useStyles();
@@ -145,89 +148,96 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
     </Grid>
   );
 
-  stepperItems['Eligibility Requirements'] = (
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
-        <Typography className={classes.stepperDescription}>
-          Include information that is required for applicants to have.
-        </Typography>
-      </Grid>
+  if (experiments.expShowRequirementsSection) {
+    stepperItems['Eligibility Requirements'] = (
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Typography className={classes.stepperDescription}>
+            Include information that is required for applicants to have.
+          </Typography>
+        </Grid>
 
-      <Grid item xs={12}>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={hasReqs}
-              onChange={(event) => setHasReqs(event.target.checked)}
-              color="primary"
-            />
-          }
-          label="NO ELIGIBILITY REQUIREMENTS"
-        />
-      </Grid>
+        <Grid item xs={12}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={hasReqs}
+                onChange={(event) => setHasReqs(event.target.checked)}
+                color="primary"
+              />
+            }
+            label="NO ELIGIBILITY REQUIREMENTS"
+          />
+        </Grid>
 
-      <Grid item sm={6} xs={12}>
-        <FormikMultiSelect
-          label="Grade(s)"
-          id="grades"
-          labelStyle={classes.inputLabel}
-          formik={formik}
-          options={gradeOptions}
-        />
-      </Grid>
+        <Grid item sm={6} xs={12}>
+          <FormikMultiSelect
+            label="Grade(s)"
+            id="grades"
+            labelStyle={classes.inputLabel}
+            formik={formik}
+            options={gradeOptions}
+            placeholder="No grade requirements"
+          />
+        </Grid>
 
-      <Grid item sm={6} xs={12}>
-        <FormikTextField
-          label="Minimum GPA"
-          id="gpa"
-          formik={formik}
-          labelStyle={classes.inputLabel}
-        />
-      </Grid>
+        <Grid item sm={6} xs={12}>
+          <FormikTextField
+            label="Minimum GPA"
+            id="gpa"
+            formik={formik}
+            labelStyle={classes.inputLabel}
+          />
+        </Grid>
 
-      <Grid item sm={6} xs={12}>
-        <FormikAutocomplete
-          label="School(s)"
-          id="schools"
-          labelStyle={classes.inputLabel}
-          options={schoolOptions}
-          freeSolo
-          formik={formik}
-        />
-      </Grid>
+        <Grid item sm={6} xs={12}>
+          <FormikAutocomplete
+            label="School(s)"
+            id="schools"
+            labelStyle={classes.inputLabel}
+            options={[...SCHOOLS]}
+            freeSolo
+            formik={formik}
+            placeholder="No school requirements"
+          />
+        </Grid>
 
-      <Grid item sm={6} xs={12}>
-        <FormikAutocomplete
-          label="State(s)"
-          id="states"
-          labelStyle={classes.inputLabel}
-          options={stateOptions}
-          formik={formik}
-        />
-      </Grid>
+        <Grid item sm={6} xs={12}>
+          <FormikAutocomplete
+            label="State(s)"
+            id="states"
+            labelStyle={classes.inputLabel}
+            options={STATES}
+            formik={formik}
+            placeholder="No state requirements"
+          />
+        </Grid>
 
-      <Grid item xs={6}>
-        <FormikAutocomplete
-          label="Major(s)"
-          id="majors"
-          labelStyle={classes.inputLabel}
-          options={majorOptions}
-          freeSolo
-          formik={formik}
-        />
-      </Grid>
+        <Grid item sm={6} xs={12}>
+          <FormikAutocomplete
+            label="Major(s)"
+            id="majors"
+            labelStyle={classes.inputLabel}
+            options={[...MAJORS]}
+            freeSolo
+            formik={formik}
+            placeholder="No major requirements"
+          />
+        </Grid>
 
-      <Grid item xs={6}>
-        <FormikMultiSelect
-          label="Ethnicity(s)"
-          id="ethnicities"
-          labelStyle={classes.inputLabel}
-          formik={formik}
-          options={ethnicityOptions}
-        />
+        <Grid item sm={6} xs={12}>
+          <FormikMultiSelect
+            label="Ethnicity(s)"
+            id="ethnicities"
+            labelStyle={classes.inputLabel}
+            formik={formik}
+            options={ethnicityOptions}
+            placeholder="No ethnicity requirements"
+          />
+        </Grid>
       </Grid>
-    </Grid>
-  );
+    );
+  }
 
   return (
     <form onSubmit={formik.handleSubmit}>
