@@ -15,6 +15,7 @@ import validationSchema from '../validation/ValidationSchema';
 import ScholarshipAmountField from './ScholarshipAmountField';
 import DatePicker from './DatePicker';
 import FormikTextField from './FormikTextField';
+import ScholarshipDetailCard from './ScholarshipDetailCard';
 
 const useStyles = makeStyles((theme) => ({
   stepperDescription: {
@@ -47,6 +48,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
     },
   });
 
+  /* eslint-disable react/jsx-props-no-spreading */
   const stepperItems = {};
   stepperItems.General = (
     <Grid container spacing={3}>
