@@ -66,7 +66,7 @@ function ListScholarships() {
       <Helmet>
         <title>Search Scholarships</title>
       </Helmet>
-      <Typography variant="h3" component="h1" style={{ textAlign: 'center' }}>
+      <Typography variant="h3" component="h1" align="center">
         Scholarships
       </Typography>
       <FilterBar queryParams={params} {...{ setQueryParam }} />
