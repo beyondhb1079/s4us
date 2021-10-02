@@ -1,7 +1,7 @@
 import './App.css';
+import React from 'react';
+import { Helmet } from 'react-helmet';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { CssBaseline, ThemeProvider } from '@material-ui/core';
 import Footer from './components/Footer';
 import Header from './components/Header';
@@ -18,78 +18,29 @@ import ProtectedRoute from './components/ProtectedRoute';
 import LoginDialog from './components/LoginDialog';
 import ShareDialog from './components/ShareDialog';
 
-function RouteWithTitle({ path, component, title, guard }) {
-  useEffect(() => {
-    document.title = `${BRAND_NAME} | ${title}`;
-  }, [title]);
-  return guard ? (
-    <ProtectedRoute {...{ path, component }} />
-  ) : (
-    <Route {...{ path, component }} />
-  );
-}
-RouteWithTitle.propTypes = {
-  component: PropTypes.elementType.isRequired,
-  path: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  guard: PropTypes.bool,
-};
-RouteWithTitle.defaultProps = {
-  guard: false,
-};
-
-const routes = [
-  {
-    path: '/scholarships/new',
-    title: 'Add a scholarship',
-    component: AddScholarship,
-    guard: true,
-  },
-  {
-    path: '/scholarships/:id',
-    title: 'Details',
-    component: ViewScholarship,
-  },
-  {
-    path: '/scholarships',
-    title: 'Scholarships',
-    component: ListScholarships,
-  },
-  {
-    path: '/about',
-    title: 'About',
-    component: About,
-  },
-  {
-    path: '/contact',
-    title: 'Contact',
-    component: Contact,
-  },
-  {
-    path: '/',
-    title: 'Home',
-    component: Home,
-  },
-];
-
 function App() {
-  useEffect(() => {
-    document.title = `${BRAND_NAME} | Scholarships for Undocumented Students`;
-  }, []);
-
   return (
     <FirebaseProvider>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <Helmet
+          titleTemplate={`%s | ${BRAND_NAME}`}
+          defaultTitle={
+            BRAND_NAME + ' | Scholarships for Undocumented Students'
+          }
+        />
         <Router>
           <Header />
           <Switch>
-            {routes.map(({ path, component, title, guard }) => (
-              <RouteWithTitle
-                key={path}
-                {...{ path, component, title, guard }}
-              />
-            ))}
+            <ProtectedRoute
+              path="/scholarships/new"
+              component={AddScholarship}
+            />
+            <Route path="/scholarships/:id" component={ViewScholarship} />
+            <Route path="/scholarships" component={ListScholarships} />
+            <Route path="/about" component={About} />
+            <Route path="/contact" component={Contact} />
+            <Route path="/" component={Home} />
           </Switch>
           <LoginDialog />
           <ShareDialog />

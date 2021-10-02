@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import MuiLink from '@material-ui/core/Link';
 import { Grid, Button, Container, Typography } from '@material-ui/core';
@@ -75,6 +76,9 @@ const team = [
 function About() {
   return (
     <Container>
+      <Helmet>
+        <title>About</title>
+      </Helmet>
       <h3>Meet the Team</h3>
       <h1>For and by the undocu community.</h1>
       <Typography paragraph>

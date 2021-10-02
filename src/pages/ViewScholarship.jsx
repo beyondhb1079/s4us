@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { Container } from '@material-ui/core';
 import Scholarships from '../models/Scholarships';
-import { BRAND_NAME } from '../config/constants';
 import ScholarshipDetailCard from '../components/ScholarshipDetailCard';
 
 export default function ViewScholarship({ history, location, match }) {
@@ -40,10 +40,11 @@ export default function ViewScholarship({ history, location, match }) {
     );
   }
 
-  document.title = `${BRAND_NAME} | ${scholarship.data.name}`;
-
   return (
     <Container>
+      <Helmet>
+        <title>{scholarship.data.name}</title>
+      </Helmet>
       <ScholarshipDetailCard scholarship={scholarship} />
     </Container>
   );
