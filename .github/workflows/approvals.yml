@@ -16,6 +16,7 @@ jobs:
         uses: actions/github-script@v4
         with:
           script: |
+            set -v
             const owner = context.payload.repository.owner.login;
             const repo = context.payload.repository.name;
             const pull_number = context.payload.pull_request.number;
