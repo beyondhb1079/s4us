@@ -12,15 +12,72 @@ jobs:
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
-      - name: Skip checking merge commits
+      - name: Get hash of last approved commit
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const owner = context.payload.repository.owner.login;
+            const repo = context.payload.repository.name;
+            const pull_number = context.payload.pull_request.number;
+
+            const approvals = await github.pulls
+              .listReviews({ owner, repo, pull_number })
+              .then((response) =>
+                response.data
+                  .filter(r => r.user.type == 'User' && r.state == 'APPROVED')
+                  .sort((a, b) => a.id - b.id)
+              );
+
+            if (approvals.length == 0) {
+              console.log('No approvals given.');
+              return;
+            }
+            
+            const approval = approvals[0];
+            const commitHash = approval.commit_id;
+            console.log(`Last approved at commit ${commitHash} by ${approval.user.login}.`);
+            
+            // Set APPROVED_SHA environment variable
+            const fs = require('fs');
+            fs.appendFileSync(process.env.GITHUB_ENV, `APPROVED_SHA=${approvedSha}\n`);
+      - name: Check if there are only clean merges
         shell: bash
         run: |
+          set -x -v
           git fetch --all
-          if (($(git show --no-patch --format="%P" ${{ github.event.pull_request.head.sha }} | wc -l) > 1)); then
-            echo "merge_commit=true" >> $GITHUB_ENV;
+          HEAD_SHA=${{ github.event.pull_request.head.sha }}
+          APPROVED_SHA=${{ env.APPROVED_SHA }}
+          MAIN_SHA=$(git rev-parse main)
+          echo HEAD_SHA=$HEAD_SHA
+          echo APPROVED_SHA=$APPROVED_SHA
+          echo MAIN_SHA=$MAIN_SHA
+          
+          if git merge-base --is-ancestor $MAIN_SHA $APPROVED_SHA
+          then
+            echo "No merges happened";
+          else
+            echo "MERGE_HAPPENED=true" >> $GITHUB_ENV;
+            ANCESTOR_SHA=$(git merge-base $MAIN_SHA $HEAD_SHA)
+            if git merge-tree $ANCESTOR_SHA $APPROVED_SHA $MAIN_SHA | grep -q '^+<*\.our$'
+            then
+              echo "An unclean merge happened";
+            else
+              echo "No unclean merges";
+              MERGE_COMMIT_MSG="Merge branch 'main' into $(git name-rev --name-only $HEAD_SHA)";
+              PATH_LENGTH=$(git log --oneline --ancestry-path $APPROVED_SHA...$HEAD_SHA | wc -l);
+              NUM_MERGES=$(git log --oneline --ancestry-path $APPROVED_SHA...$HEAD_SHA | grep $MERGE_COMMIT_MSG);
+              
+              if (( $PATH_LENGTH == $NUM_MERGES ))
+              then
+                echo "Only clean merges have happened.";
+                echo "ONLY_CLEAN_MERGES=true" >> $GITHUB_ENV;
+              else
+                echo "Some non-merge commits have happened.";
+              fi
+            fi
           fi
       - name: Auto dismiss on major changes
-        if: ${{ env.merge_commit != 'true' }}
+        if: ${{ env.ONLY_CLEAN_MERGES != 'true' }}
         uses: actions/github-script@v4
         with:
           script: |
