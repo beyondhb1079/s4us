@@ -1,37 +1,52 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { makeStyles, Link as MuiLink, Grid } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import { Link, useLocation } from 'react-router-dom';
+import { makeStyles, Tab, Tabs } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
-  menu: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  menuItem: {
-    color: theme.palette.text.secondary,
+  tab: {
+    minWidth: 72,
+    [theme.breakpoints.down('sm')]: {
+      minWidth: 64,
+    },
+    padding: theme.spacing(0),
+    textTransform: 'none',
   },
 }));
 
-function HeaderNavMenu() {
+function HeaderNavMenu({ links }) {
   const classes = useStyles();
-  const links = {
-    Scholarships: '/scholarships',
-    Add: '/scholarships/new',
-    About: '/about',
-    Contact: '/contact',
-  };
+  const location = useLocation();
+  let currentTab = false;
+  Object.entries(links).map(([title, link]) => {
+    if (location.pathname.startsWith(link)) {
+      currentTab = title;
+    }
+  });
 
   return (
-    <Grid container spacing={3} className={classes.menu}>
+    <Tabs
+      aria-label="tabs"
+      indicatorColor="primary"
+      scrollButtons="auto"
+      value={currentTab}
+      variant="scrollable">
       {Object.entries(links).map(([title, link]) => (
-        <Grid item key={title}>
-          <MuiLink component={Link} to={link} className={classes.menuItem}>
-            {title}
-          </MuiLink>
-        </Grid>
+        <Tab
+          className={classes.tab}
+          component={Link}
+          key={title}
+          label={title}
+          value={title}
+          to={link}
+        />
       ))}
-    </Grid>
+    </Tabs>
   );
 }
+
+HeaderNavMenu.propTypes = {
+  links: PropTypes.objectOf(PropTypes.string).isRequired,
+};
 
 export default HeaderNavMenu;
