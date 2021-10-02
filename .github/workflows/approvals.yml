@@ -48,9 +48,7 @@ jobs:
           HEAD_SHA=${{ github.event.pull_request.head.sha }}
           APPROVED_SHA=${{ env.APPROVED_SHA }}
           BASE_SHA=${{ github.event.pull_request.base.sha }}
-          echo HEAD_SHA=$HEAD_SHA
-          echo APPROVED_SHA=$APPROVED_SHA
-          echo BASE_SHA=$BASE_SHA
+          
           if [ -z "$APPROVED_SHA" ] || git merge-base --is-ancestor $BASE_SHA $APPROVED_SHA
           then
             echo "No merges happened";
