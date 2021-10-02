@@ -47,7 +47,7 @@ jobs:
           git fetch --all
           HEAD_SHA=${{ github.event.pull_request.head.sha }}
           APPROVED_SHA=${{ env.APPROVED_SHA }}
-          MAIN_SHA=$(git rev-parse main)
+          MAIN_SHA=$(git rev-parse origin/main)
           echo HEAD_SHA=$HEAD_SHA
           echo APPROVED_SHA=$APPROVED_SHA
           echo MAIN_SHA=$MAIN_SHA
