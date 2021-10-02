@@ -8,6 +8,7 @@ import {
   StepContent,
   Grid,
   Typography,
+  Box,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -26,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
   },
   stepperBtns: {
     marginTop: theme.spacing(4),
+  },
+  reviewSection: {
+    marginTop: theme.spacing(2),
   },
 }));
 
@@ -116,11 +120,13 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
     </Grid>
   );
 
-  const onLastStep = activeStep == Object.keys(stepperItems).length - 1;
-
   stepperItems.Review = (
-    <ScholarshipDetailCard scholarship={{ data: formik.values }} review />
+    <Box className={classes.reviewSection}>
+      <ScholarshipDetailCard scholarship={{ data: formik.values }} review />
+    </Box>
   );
+
+  const onLastStep = activeStep == Object.keys(stepperItems).length - 1;
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -143,9 +149,14 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
                   color="primary"
                   disabled={formik.isSubmitting}
                   type={onLastStep ? 'submit' : 'button'}
-                  onClick={() =>
-                    !onLastStep && setActiveStep((prevStep) => prevStep + 1)
-                  }>
+                  onClick={() => {
+                    if (onLastStep) return;
+                    formik.validateForm().then((errors) => {
+                      if (Object.keys(errors).length === 0)
+                        return setActiveStep((prevStep) => prevStep + 1);
+                      return formik.setErrors(errors);
+                    });
+                  }}>
                   {onLastStep ? 'Submit' : 'Next'}
                 </Button>
               </div>

@@ -33,13 +33,6 @@ const useStyles = makeStyles((theme) => ({
   applyBtn: {
     marginRight: theme.spacing(1),
   },
-  description: {
-    marginBottom: theme.spacing(3),
-  },
-  sectionHeader: {
-    fontWeight: '500',
-    marginBottom: theme.spacing(2),
-  },
   propertySection: {
     marginTop: theme.spacing(6),
   },
@@ -127,11 +120,11 @@ export default function ScholarshipDetailCard({ scholarship, review }) {
   return (
     <Card className={classes.detailSection}>
       <Typography variant="h4">{name}</Typography>
-      <Typography variant="h5" className={review ? classes.description : ''}>
+      <Typography variant="h5" gutterBottom>
         {organization}
       </Typography>
-      <Box className={!review ? classes.actionSection : ''}>
-        {!review && (
+      {!review && (
+        <Box className={classes.actionSection}>
           <>
             <Button
               component={Link}
@@ -142,22 +135,14 @@ export default function ScholarshipDetailCard({ scholarship, review }) {
               startIcon={<Send />}>
               Apply
             </Button>
-            <Button
-              variant="outlined"
-              className={classes.shareBtn}
-              startIcon={<Share />}
-              onClick={shareFn}>
+            <Button variant="outlined" startIcon={<Share />} onClick={shareFn}>
               Share
-            </Button>{' '}
+            </Button>
           </>
-        )}
-      </Box>
+        </Box>
+      )}
 
-      <Typography
-        gutterBottom
-        variant="body1"
-        component="p"
-        className={classes.description}>
+      <Typography gutterBottom variant="body1" component="p" paragraph>
         {description}
       </Typography>
       <Box>
@@ -182,10 +167,7 @@ export default function ScholarshipDetailCard({ scholarship, review }) {
         />
       </Box>
       <Box className={classes.propertySection}>
-        <Typography
-          variant="h6"
-          component="h4"
-          className={classes.sectionHeader}>
+        <Typography variant="h6" component="h4" paragraph>
           Eligibility Requirements
         </Typography>
         <DetailCardCell label="GPA" text={requirements?.gpa || 'None'} bottom />
@@ -201,10 +183,7 @@ export default function ScholarshipDetailCard({ scholarship, review }) {
         />
       </Box>
       <Box className={classes.propertySection}>
-        <Typography
-          variant="h6"
-          component="h4"
-          className={classes.sectionHeader}>
+        <Typography variant="h6" component="h4" paragraph>
           Tags
         </Typography>
 
@@ -241,7 +220,7 @@ export default function ScholarshipDetailCard({ scholarship, review }) {
 
 ScholarshipDetailCard.propTypes = {
   scholarship: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    id: PropTypes.string,
     data: PropTypes.shape({
       name: PropTypes.string,
       organization: PropTypes.string,
@@ -271,5 +250,6 @@ ScholarshipDetailCard.propTypes = {
 };
 
 ScholarshipDetailCard.defaultProps = {
+  id: '',
   review: false,
 };
