@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import { useLocation, useHistory } from 'react-router-dom';
 import queryString from 'query-string';
 import { Container, Typography } from '@material-ui/core';
@@ -62,6 +63,9 @@ function ListScholarships() {
 
   return (
     <Container>
+      <Helmet>
+        <title>Search Scholarships</title>
+      </Helmet>
       <Typography variant="h3" component="h1" style={{ textAlign: 'center' }}>
         Scholarships
       </Typography>

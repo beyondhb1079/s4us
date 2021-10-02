@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet';
 import firebase from 'firebase';
 import { Container } from '@material-ui/core';
 import ScholarshipForm from '../components/ScholarshipForm';
@@ -36,6 +37,9 @@ function AddScholarship() {
 
   return (
     <Container maxWidth="md">
+      <Helmet>
+        <title>Add a Scholarship</title>
+      </Helmet>
       <h1>Submit a Scholarship</h1>
       <ScholarshipForm
         scholarship={scholarship}
