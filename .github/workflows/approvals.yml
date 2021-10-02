@@ -47,17 +47,17 @@ jobs:
           git fetch --all
           HEAD_SHA=${{ github.event.pull_request.head.sha }}
           APPROVED_SHA=${{ env.APPROVED_SHA }}
-          MAIN_SHA=$(git rev-parse origin/main)
+          BASE_SHA=${{ github.event.pull_request.base.sha }}
           echo HEAD_SHA=$HEAD_SHA
           echo APPROVED_SHA=$APPROVED_SHA
-          echo MAIN_SHA=$MAIN_SHA
-          if [ -z "$APPROVED_SHA" ] || git merge-base --is-ancestor $MAIN_SHA $APPROVED_SHA
+          echo BASE_SHA=$BASE_SHA
+          if [ -z "$APPROVED_SHA" ] || git merge-base --is-ancestor $BASE_SHA $APPROVED_SHA
           then
             echo "No merges happened";
           else
             echo "MERGE_HAPPENED=true" >> $GITHUB_ENV;
-            ANCESTOR_SHA=$(git merge-base $MAIN_SHA $HEAD_SHA)
-            if git merge-tree $ANCESTOR_SHA $APPROVED_SHA $MAIN_SHA | grep -q '^+<*\.our$'
+            ANCESTOR_SHA=$(git merge-base $BASE_SHA $HEAD_SHA)
+            if git merge-tree $ANCESTOR_SHA $APPROVED_SHA $BASE_SHA | grep -q '^+<*\.our$'
             then
               echo "An unclean merge happened";
             else
