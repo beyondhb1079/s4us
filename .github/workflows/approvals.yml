@@ -39,7 +39,7 @@ jobs:
 
             // Set APPROVED_SHA environment variable
             const fs = require('fs');
-            fs.appendFileSync(process.env.GITHUB_ENV, `APPROVED_SHA=${approvedSha}\n`);
+            fs.appendFileSync(process.env.GITHUB_ENV, `APPROVED_SHA=${commitHash}\n`);
       - name: Check if there are only clean merges since the last approval
         shell: bash
         run: |
