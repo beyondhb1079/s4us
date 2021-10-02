@@ -102,6 +102,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const links = {
+  Scholarships: '/scholarships',
+  Add: '/scholarships/new',
+  About: '/about',
+  Contact: '/contact',
+};
+
 function Header() {
   const classes = useStyles();
   return (
@@ -115,7 +122,7 @@ function Header() {
           </MuiLink>
         </Grid>
         <Grid item>
-          <HeaderNavMenu />
+          <HeaderNavMenu links={links} />
         </Grid>
 
         <Grid item className={classes.authItem}>
