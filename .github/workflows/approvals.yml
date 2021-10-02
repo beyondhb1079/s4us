@@ -60,7 +60,7 @@ jobs:
               echo "An unclean merge happened";
             else
               echo "No unclean merges";
-              MERGE_COMMIT_MSG="Merge branch 'main' into ${GITHUB_REF#refs/heads/}";
+              MERGE_COMMIT_MSG="Merge branch 'main' into ${GITHUB_HEAD_REF}";
               PATH_LENGTH=$(git log --oneline --ancestry-path $APPROVED_SHA...$HEAD_SHA | wc -l);
               NUM_MERGES=$(git log --oneline --ancestry-path $APPROVED_SHA...$HEAD_SHA | grep "$MERGE_COMMIT_MSG" | wc -l);
               echo reached here
