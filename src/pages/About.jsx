@@ -86,10 +86,10 @@ function About() {
         For and by the undocu community.
       </Typography>
       <Typography paragraph>
-        DreamScholars looks to make it easier for people to pay for school. Our
-        mission is to remove the barriers that prevent and discourage students
-        from pursuing higher education due to difficulties finding scholarships
-        that they qualify for. Meet the team behind DreamScholars.
+        DreamScholars aims to make it easier for undocumented students to pay
+        for school. Our mission is to remove the financial barriers that prevent
+        and discourage undocumented students from pursuing higher education due
+        to the difficulties of finding scholarships they qualify for.
       </Typography>
       <Typography paragraph>
         Meet the team behind DreamScholars. We are a group of lifelong learners
