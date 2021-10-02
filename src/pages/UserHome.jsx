@@ -1,4 +1,5 @@
 import React from 'react';
+import Helmet from 'react-helmet';
 import { AddCircle as AddIcon, Inbox as InboxIcon } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase';
