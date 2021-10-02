@@ -1,4 +1,5 @@
 import React from 'react';
+import Helmet from 'react-helmet';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route } from 'react-router-dom';
 import { clearFirestoreData, initializeTestApp } from '../lib/testing';
@@ -77,7 +78,7 @@ test('renders passed in scholarship details', () => {
   expect(screen.getByRole('button', { name: /Apply/i }).href).toBe(
     data.website
   );
-  expect(document.title).toContain(data.name);
+  expect(Helmet.peek().title).toBe(data.name);
 });
 
 test('renders scholarship details', async () => {
@@ -112,7 +113,7 @@ test('renders scholarship details', async () => {
   expect(screen.getByRole('button', { name: /Apply/i }).href).toBe(
     data.website
   );
-  expect(document.title).toContain(data.name);
+  expect(Helmet.peek().title).toBe(data.name);
   expect(
     screen.getByText(data.requirements.states.join(', '))
   ).toBeInTheDocument();
