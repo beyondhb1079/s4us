@@ -1,6 +1,7 @@
 import React from 'react';
-import Container from '@material-ui/core/Container';
+import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
+import Container from '@material-ui/core/Container';
 import {
   genMailToLink,
   reportIssue,
@@ -12,6 +13,9 @@ import { BRAND_NAME, SUBSCRIPTION_FORM_URL } from '../config/constants';
 function Contact() {
   return (
     <Container>
+      <Helmet>
+        <title>Contact</title>
+      </Helmet>
       <h1 style={{ textAlign: 'center' }}>Contact Us</h1>
 
       <h3>Found a bug</h3>
