@@ -43,7 +43,7 @@ jobs:
       - name: Check if there are only clean merges since the last approval
         shell: bash
         run: |
-          set -v
+          set -v -x
           git fetch --all
           HEAD_SHA=${{ github.event.pull_request.head.sha }}
           APPROVED_SHA=${{ env.APPROVED_SHA }}
