@@ -23,11 +23,12 @@ const OnRenderSnackbar = () => {
   const [open, setOpen] = useState(true);
   if (!match) return null;
 
-  const link = `https://github.com/beyondhb1079/s4us/pull/${match[1]}`;
+  const num = match[1];
+  const link = `https://github.com/beyondhb1079/s4us/pull/${num}`;
   return (
     <Snackbar open={open}>
       <Alert onClose={() => setOpen(false)} severity="info">
-        This is a preview of <a href={link}>Pull Request #{match[1]}</a>
+        This is a preview of <MuiLink href={link}>Pull Request #{num}</MuiLink>
       </Alert>
     </Snackbar>
   );
