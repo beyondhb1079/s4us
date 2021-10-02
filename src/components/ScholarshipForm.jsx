@@ -132,7 +132,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
                 </Button>
 
                 <Button
-                  key={onLastStep ? 'submit' : 'next'}
+                  key={activeStep}
                   variant="contained"
                   color="primary"
                   disabled={formik.isSubmitting}
@@ -140,7 +140,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
                   onClick={() =>
                     !onLastStep && setActiveStep((prevStep) => prevStep + 1)
                   }>
-                  {onLastStep ? 'Submit' : 'NEXT'}
+                  {onLastStep ? 'Submit' : 'Next'}
                 </Button>
               </div>
             </StepContent>
