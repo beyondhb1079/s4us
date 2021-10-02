@@ -66,6 +66,9 @@ export default function UserHome() {
 
   return (
     <Container>
+      <Helmet>
+        <title>Dashboard</title>
+      </Helmet>
       <Typography variant="h4" gutterBottom>
         Welcome {user.displayName}
       </Typography>
