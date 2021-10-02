@@ -32,11 +32,11 @@ jobs:
               console.log('No approvals given.');
               return;
             }
-            
+
             const approval = approvals[0];
             const commitHash = approval.commit_id;
             console.log(`Last approved at commit ${commitHash} by ${approval.user.login}.`);
-            
+
             // Set APPROVED_SHA environment variable
             const fs = require('fs');
             fs.appendFileSync(process.env.GITHUB_ENV, `APPROVED_SHA=${approvedSha}\n`);
@@ -48,7 +48,7 @@ jobs:
           HEAD_SHA=${{ github.event.pull_request.head.sha }}
           APPROVED_SHA=${{ env.APPROVED_SHA }}
           BASE_SHA=${{ github.event.pull_request.base.sha }}
-          
+
           if [ -z "$APPROVED_SHA" ] || git merge-base --is-ancestor $BASE_SHA $APPROVED_SHA
           then
             echo "No merges happened";
