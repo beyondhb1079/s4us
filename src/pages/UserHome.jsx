@@ -1,4 +1,5 @@
 import React from 'react';
+import Helmet from 'react-helmet';
 import { AddCircle as AddIcon, Inbox as InboxIcon } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase';
@@ -66,7 +67,10 @@ export default function UserHome() {
 
   return (
     <Container>
-      <Typography variant="h4" component="h1" style={{ padding: '8px' }}>
+      <Helmet>
+        <title>Dashboard</title>
+      </Helmet>
+      <Typography variant="h4" component="h1" style={{ padding: '8px' }} gutterBottom>
         Welcome {user.displayName}
       </Typography>
       <Grid

@@ -9,7 +9,6 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(0),
     [theme.breakpoints.down('sm')]: {
       minWidth: 64,
-      marginRight: theme.spacing(0),
     },
     padding: theme.spacing(0),
     textTransform: 'none',
@@ -19,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 function HeaderNavMenu({ links }) {
   const classes = useStyles();
   const location = useLocation();
-  let currentTab = -1;
+  let currentTab = false;
   Object.entries(links).map(([title, link]) => {
     if (location.pathname.startsWith(link)) {
       currentTab = title;
@@ -28,11 +27,11 @@ function HeaderNavMenu({ links }) {
 
   return (
     <Tabs
-      value={currentTab}
       aria-label="tabs"
-      variant="scrollable"
       indicatorColor="secondary"
-      scrollButtons="auto">
+      scrollButtons="auto"
+      value={currentTab}
+      variant="scrollable">
       {Object.entries(links).map(([title, link]) => (
         <Tab
           className={classes.tab}

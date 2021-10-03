@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 import {
@@ -23,11 +23,12 @@ const OnRenderSnackbar = () => {
   const [open, setOpen] = useState(true);
   if (!match) return null;
 
-  const link = `https://github.com/beyondhb1079/s4us/pull/${match[1]}`;
+  const num = match[1];
+  const link = `https://github.com/beyondhb1079/s4us/pull/${num}`;
   return (
     <Snackbar open={open}>
       <Alert onClose={() => setOpen(false)} severity="info">
-        This is a preview of <a href={link}>Pull Request #{match[1]}</a>
+        This is a preview of <MuiLink href={link}>Pull Request #{num}</MuiLink>
       </Alert>
     </Snackbar>
   );
@@ -46,23 +47,7 @@ const UnderConstructionAlert = () => (
   </Alert>
 );
 
-const links = {
-  Scholarships: '/scholarships',
-  Add: '/scholarships/new',
-  About: '/about',
-  Contact: '/contact',
-};
-
-const useStyles = makeStyles((theme) => ({
-  title: {
-    flexGrow: 1,
-  },
-  authZoom: {
-    marginLeft: theme.spacing(2),
-  },
-}));
-
-function Header() {
+const AuthZoomButton = () => {
   const { currentUser } = firebase.auth();
   const [isSignedIn, setIsSignedIn] = useState(
     !!firebase.auth().currentUser || undefined
@@ -76,7 +61,53 @@ function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const showProfileMenu = (event) => setAnchorEl(event.currentTarget);
   const closeProfileMenu = () => setAnchorEl(null);
+  return (
+    <Zoom in={isSignedIn !== undefined}>
+      {isSignedIn ? (
+        <>
+          <IconButton
+            size="medium"
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            onClick={showProfileMenu}
+            color="inherit">
+            <Avatar src={currentUser.photoURL} />
+          </IconButton>
+          <ProfileMenu anchorEl={anchorEl} handleClose={closeProfileMenu} />
+        </>
+      ) : (
+        <Button
+          color="inherit"
+          component={Link}
+          to={{ state: { showLoginDialog: true } }}>
+          Login
+        </Button>
+      )}
+    </Zoom>
+  );
+};
 
+const useStyles = makeStyles((theme) => ({
+  title: {
+    flexGrow: 1,
+  },
+  authZoom: {
+    marginLeft: theme.spacing(2),
+  },
+  authItem: {
+    minWidth: '100px',
+  },
+}));
+
+const links = {
+  Scholarships: '/scholarships',
+  Add: '/scholarships/new',
+  About: '/about',
+  Contact: '/contact',
+};
+
+function Header() {
   const classes = useStyles();
   return (
     <AppBar position="static">
@@ -86,7 +117,7 @@ function Header() {
         <MuiLink
           component={Link}
           to="/"
-          variant="h5"
+          variant="h4"
           color="inherit"
           underline="none"
           className={classes.title}>
@@ -95,29 +126,7 @@ function Header() {
         <Hidden xsDown>
           <HeaderNavMenu links={links} />
         </Hidden>
-        <Zoom in={isSignedIn !== undefined}>
-          {isSignedIn ? (
-            <>
-              <IconButton
-                size="medium"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={showProfileMenu}
-                color="inherit">
-                <Avatar src={currentUser.photoURL} />
-              </IconButton>
-              <ProfileMenu anchorEl={anchorEl} handleClose={closeProfileMenu} />
-            </>
-          ) : (
-            <Button
-              color="inherit"
-              component={Link}
-              to={{ state: { showLoginDialog: true } }}>
-              Login
-            </Button>
-          )}
-        </Zoom>
+        <AuthZoomButton />
       </Toolbar>
       <Hidden smUp>
         <Toolbar variant="dense">
