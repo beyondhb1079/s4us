@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import ReactRouterPropTypes from 'react-router-prop-types';
-import { Container } from '@material-ui/core';
+import { Container, Typography } from '@material-ui/core';
 import Scholarships from '../models/Scholarships';
 import ScholarshipDetailCard from '../components/ScholarshipDetailCard';
 
@@ -35,7 +35,9 @@ export default function ViewScholarship({ history, location, match }) {
   if (error || loading) {
     return (
       <Container>
-        <h1>{error?.toString() || 'Loading...'}</h1>
+        <Typography variant="h4" gutterBottom align="center">
+          {error?.toString() || 'Loading...'}
+        </Typography>
       </Container>
     );
   }
