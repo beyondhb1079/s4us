@@ -93,7 +93,8 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   authZoom: {
-    marginLeft: theme.spacing(2),
+    flexGrow: 1,
+    justifyContent: 'right',
   },
   authItem: {
     minWidth: '100px',
@@ -126,7 +127,7 @@ function Header() {
         <Hidden xsDown>
           <HeaderNavMenu links={links} />
         </Hidden>
-        <AuthZoomButton />
+        <AuthZoomButton className={classes.authItem} />
       </Toolbar>
       <Hidden smUp>
         <Toolbar variant="dense">
