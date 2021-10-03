@@ -122,7 +122,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 
   stepperItems.Review = (
     <Box className={classes.reviewSection}>
-      <ScholarshipDetailCard scholarship={{ data: formik.values }} review />
+      <ScholarshipDetailCard scholarship={{ data: formik.values }} preview />
     </Box>
   );
 

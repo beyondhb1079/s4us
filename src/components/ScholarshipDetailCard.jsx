@@ -48,8 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// TODO(issues/358): Style this.
-export default function ScholarshipDetailCard({ scholarship, review }) {
+export default function ScholarshipDetailCard({ scholarship, preview }) {
   const history = useHistory();
 
   const classes = useStyles();
@@ -65,10 +64,9 @@ export default function ScholarshipDetailCard({ scholarship, review }) {
     author,
   } = scholarship.data;
 
-  const URL = `https://${window.location.hostname}/scholarships/${scholarship.id}`;
-
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
   const shareFn = () => {
+    const URL = `https://${window.location.hostname}/scholarships/${scholarship.id}`;
     const data = {
       title: `${amount?.toString()} - ${name} | ${BRAND_NAME}`,
       text: `${amount?.toString()} - ${name} | ${BRAND_NAME} \n ${deadline?.toLocaleDateString()}\n`,
@@ -123,28 +121,34 @@ export default function ScholarshipDetailCard({ scholarship, review }) {
       <Typography variant="h5" gutterBottom>
         {organization}
       </Typography>
-      {!review && (
-        <Box className={classes.actionSection}>
-          <>
-            <Button
-              component={Link}
-              href={website}
-              variant="contained"
-              color="primary"
-              className={classes.applyBtn}
-              startIcon={<Send />}>
-              Apply
-            </Button>
-            <Button variant="outlined" startIcon={<Share />} onClick={shareFn}>
-              Share
-            </Button>
-          </>
-        </Box>
+      {preview && (
+        <Link href="#" underline="always" onClick={(e) => e.preventDefault()}>
+          {website}
+        </Link>
       )}
 
-      <Typography gutterBottom variant="body1" component="p" paragraph>
-        {description}
-      </Typography>
+      <Box className={classes.actionSection}>
+        {!preview && (
+          <Button
+            component={Link}
+            href={website}
+            variant="contained"
+            color="primary"
+            className={classes.applyBtn}
+            startIcon={<Send />}>
+            Apply
+          </Button>
+        )}
+        <Button
+          variant="outlined"
+          startIcon={<Share />}
+          onClick={shareFn}
+          disabled={scholarship.id === undefined}>
+          Share
+        </Button>
+      </Box>
+
+      <Typography paragraph>{description}</Typography>
       <Box>
         <DetailCardCell
           label="Deadline"
@@ -154,7 +158,7 @@ export default function ScholarshipDetailCard({ scholarship, review }) {
         <DetailCardCell
           label="Award Amount"
           text={
-            review
+            preview
               ? new ScholarshipAmount(amount.type, amount).toString()
               : amount?.toString() || 'Unknown'
           }
@@ -167,7 +171,7 @@ export default function ScholarshipDetailCard({ scholarship, review }) {
         />
       </Box>
       <Box className={classes.propertySection}>
-        <Typography variant="h6" component="h4" paragraph>
+        <Typography variant="h5" component="h4" gutterBottom>
           Eligibility Requirements
         </Typography>
         <DetailCardCell label="GPA" text={requirements?.gpa || 'None'} bottom />
@@ -183,7 +187,7 @@ export default function ScholarshipDetailCard({ scholarship, review }) {
         />
       </Box>
       <Box className={classes.propertySection}>
-        <Typography variant="h6" component="h4" paragraph>
+        <Typography variant="h5" component="h4" gutterBottom>
           Tags
         </Typography>
 
@@ -246,10 +250,10 @@ ScholarshipDetailCard.propTypes = {
       }),
     }).isRequired,
   }).isRequired,
-  review: PropTypes.bool,
+  preview: PropTypes.bool,
 };
 
 ScholarshipDetailCard.defaultProps = {
-  id: '',
-  review: false,
+  id: undefined,
+  preview: false,
 };
