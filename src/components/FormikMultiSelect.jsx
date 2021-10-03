@@ -47,9 +47,7 @@ function FormikMultiSelect(props) {
             /* shouldValidate = */ false
           )
         }
-        renderValue={(selected) =>
-          selected.length === 0 ? placeholder : selected.join(', ')
-        }
+        renderValue={(selected) => selected.join(', ') || placeholder}
         MenuProps={MenuProps}>
         {Object.entries(options).map(([name, value]) => (
           <MenuItem key={value} value={value}>
@@ -68,7 +66,7 @@ FormikMultiSelect.propTypes = {
   id: PropTypes.string.isRequired,
   labelStyle: PropTypes.string.isRequired,
   formik: PropTypes.object.isRequired,
-  options: PropTypes.arrayOf(PropTypes.string).isRequired,
+  options: PropTypes.objectOf(PropTypes.string).isRequired,
   placeholder: PropTypes.string,
 };
 FormikMultiSelect.defaultProps = {

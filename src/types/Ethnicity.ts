@@ -5,6 +5,7 @@ enum Ethnicity {
   HispanicOrLatino = 'HISPANIC_OR_LATINO',
   NativeHawaiianOrOtherPacificIslander = 'NATIVE_HAWAIIAN_OR_OTHER_PACIFIC_ISLANDER',
   White = 'WHITE',
+  Mixed = 'MIXED',
 }
 
 export default Ethnicity;
