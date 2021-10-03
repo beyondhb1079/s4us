@@ -155,12 +155,14 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
 
       <Typography paragraph>{description}</Typography>
       <Box>
-        <DetailCardCell
-          label="Scholarship Link"
-          text={website || 'Unknown'}
-          bottom
-          link
-        />
+        {preview && (
+          <DetailCardCell
+            label="Scholarship Link"
+            text={website || 'Unknown'}
+            bottom
+            link
+          />
+        )}
         <DetailCardCell
           label="Deadline"
           text={deadline?.toLocaleDateString() || 'Unknown'}
