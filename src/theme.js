@@ -1,21 +1,19 @@
-import { createTheme, adaptV4Theme } from '@mui/material';
+import { createTheme } from '@mui/material';
 
-const theme = createTheme(
-  adaptV4Theme({
-    palette: {
-      background: {
-        default: '#F3F6FA',
-        secondary: '#242424',
-      },
-      primary: {
-        main: '#3C64B1',
-      },
+const theme = createTheme({
+  palette: {
+    background: {
+      default: '#F3F6FA',
+      secondary: '#242424',
     },
-    typography: {
-      body1: {
-        color: 'rgb(100, 100, 100)',
-      },
+    primary: {
+      main: '#3C64B1',
     },
-  })
-);
+  },
+  typography: {
+    body1: {
+      color: 'rgb(100, 100, 100)',
+    },
+  },
+});
 export default theme;
