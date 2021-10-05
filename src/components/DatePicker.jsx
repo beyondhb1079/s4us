@@ -1,17 +1,17 @@
 import React from 'react';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import DatePicker from '@mui/lab/DatePicker';
+import DatePicker as MuiDatePicker from '@mui/lab/DatePicker';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { InputLabel, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 import exact from 'prop-types-exact';
 
-function OurDatePicker(props) {
+function DatePicker(props) {
   const { id, label, error, helperText, value, onChange, labelStyle } = props;
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <InputLabel className={labelStyle}>{label}</InputLabel>
-      <DatePicker
+      <MuiDatePicker
         inputFormat="MM/dd/yyyy"
         onChange={onChange}
         value={value}
@@ -27,7 +27,8 @@ function OurDatePicker(props) {
     </LocalizationProvider>
   );
 }
-OurDatePicker.propTypes = exact({
+
+DatePicker.propTypes = exact({
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   error: PropTypes.bool,
@@ -36,10 +37,12 @@ OurDatePicker.propTypes = exact({
   onChange: PropTypes.func.isRequired,
   labelStyle: PropTypes.string,
 });
-OurDatePicker.defaultProps = {
+
+DatePicker.defaultProps = {
   value: null, // so console doesn't complain about deadline being null in the beginning
   error: false,
   helperText: '',
   labelStyle: null,
 };
-export default OurDatePicker;
+
+export default DatePicker;
