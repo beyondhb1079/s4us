@@ -70,7 +70,9 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
     }
     // Sort ties by deadline earliest to earliest
     if (opts.sortField !== 'deadline') {
-      query = query.orderBy('deadline', 'asc');
+      query = query
+        .where('deadline', '>', new Date())
+        .orderBy('deadline', 'asc');
     }
     if (opts.authorId) {
       query = query.where('author.id', '==', opts.authorId);
