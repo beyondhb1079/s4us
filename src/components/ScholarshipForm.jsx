@@ -8,8 +8,8 @@ import {
   StepContent,
   Grid,
   Typography,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import PropTypes from 'prop-types';
 import validationSchema from '../validation/ValidationSchema';
 import ScholarshipAmountField from './ScholarshipAmountField';
@@ -127,7 +127,8 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
               <div className={classes.stepperBtns}>
                 <Button
                   disabled={activeStep === 0}
-                  onClick={() => setActiveStep((prevStep) => prevStep - 1)}>
+                  onClick={() => setActiveStep((prevStep) => prevStep - 1)}
+                >
                   BACK
                 </Button>
 
@@ -139,7 +140,8 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
                   type={onLastStep ? 'submit' : 'button'}
                   onClick={() =>
                     !onLastStep && setActiveStep((prevStep) => prevStep + 1)
-                  }>
+                  }
+                >
                   {onLastStep ? 'Submit' : 'Next'}
                 </Button>
               </div>

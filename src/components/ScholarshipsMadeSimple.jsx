@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Tab from '@material-ui/core/Tab';
-import TabPanel from '@material-ui/lab/TabPanel';
-import TabContext from '@material-ui/lab/TabContext';
-import TabList from '@material-ui/lab/TabList';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import makeStyles from '@mui/styles/makeStyles';
+import AppBar from '@mui/material/AppBar';
+import Tab from '@mui/material/Tab';
+import TabPanel from '@mui/lab/TabPanel';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import HomeSection from './HomeSection';
 import student from '../img/student.png';
 import contributor from '../img/contributor.png';
@@ -37,7 +37,8 @@ function OutlineButton(user) {
       variant="outlined"
       color="primary"
       component={Link}
-      to={user === 'students' ? '/scholarships' : '/scholarships/new'}>
+      to={user === 'students' ? '/scholarships' : '/scholarships/new'}
+    >
       {user === 'students' ? 'Find Scholarships' : 'Submit A Scholarship'}
     </Button>
   );
@@ -55,7 +56,8 @@ const tabs = [
         color="primary"
         component={Link}
         to={{ state: { showLoginDialog: true } }}
-        replace>
+        replace
+      >
         Login
       </Button>,
       OutlineButton('students'),
@@ -84,7 +86,8 @@ export default function ScholarshipsMadeSimpleSection() {
         variant="h4"
         component="h4"
         className={classes.description}
-        gutterBottom>
+        gutterBottom
+      >
         Scholarships Made Simple
       </Typography>
       <TabContext value={user}>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-import Container from '@material-ui/core/Container';
+import Container from '@mui/material/Container';
 import {
   genMailToLink,
   reportIssue,
@@ -9,7 +9,7 @@ import {
   withDeviceInfo,
 } from '../lib/mail';
 import { BRAND_NAME, SUBSCRIPTION_FORM_URL } from '../config/constants';
-import { Link as MuiLink, Typography } from '@material-ui/core';
+import { Link as MuiLink, Typography } from '@mui/material';
 
 function Contact() {
   return (
@@ -31,7 +31,8 @@ function Contact() {
           href={genMailToLink({
             subject: 'Bug Report',
             body: withDeviceInfo(reportIssue),
-          })}>
+          })}
+        >
           here
         </MuiLink>
         .
@@ -46,7 +47,8 @@ function Contact() {
           href={genMailToLink({
             subject: 'Feature Request',
             body: withDeviceInfo(featureRequest),
-          })}>
+          })}
+        >
           here
         </MuiLink>
         .
@@ -80,7 +82,8 @@ function Contact() {
           href={genMailToLink({
             subject: 'Outreach',
             body: 'Please describe the purpose of your outreach below.\n',
-          })}>
+          })}
+        >
           here
         </MuiLink>{' '}
         and we&apos;ll be in touch as soon as possible.

@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Button from '@material-ui/core/Button';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Button from '@mui/material/Button';
 import { MemoryRouter } from 'react-router-dom';
 import ScholarshipList from './ScholarshipList';
 import scholarships from '../testdata/scholarships';
@@ -8,6 +9,9 @@ import scholarships from '../testdata/scholarships';
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.
 window.MutationObserver = require('mutation-observer');
+
+const renderWithTheme = (ui, options) =>
+  render(<ThemeProvider theme={createTheme()}>{ui}</ThemeProvider>, options);
 
 const fakeNoResults = new Promise((resolve) => {
   resolve({ results: [], next: undefined, hasNext: false });
@@ -20,7 +24,7 @@ const fakeFirstPageOfManyResults = new Promise((resolve) => {
 });
 
 test('renders no results', async () => {
-  render(<ScholarshipList listFn={() => fakeNoResults} />, {
+  renderWithTheme(<ScholarshipList listFn={() => fakeNoResults} />, {
     wrapper: MemoryRouter,
   });
 
@@ -30,7 +34,7 @@ test('renders no results', async () => {
 });
 
 test('renders custom no results node', async () => {
-  render(
+  renderWithTheme(
     <ScholarshipList
       listFn={() => fakeNoResults}
       noResultsNode={<Button>Oh no</Button>}
@@ -48,9 +52,12 @@ test('renders custom no results node', async () => {
 test('renders results with load more', async () => {
   const want = scholarships;
 
-  render(<ScholarshipList listFn={() => fakeFirstPageOfManyResults} />, {
-    wrapper: MemoryRouter,
-  });
+  renderWithTheme(
+    <ScholarshipList listFn={() => fakeFirstPageOfManyResults} />,
+    {
+      wrapper: MemoryRouter,
+    }
+  );
 
   expect(await screen.findByText('Load More')).toBeInTheDocument();
   want.forEach(({ data }) =>
@@ -61,7 +68,7 @@ test('renders results with load more', async () => {
 test('renders results without load more', async () => {
   const want = scholarships;
 
-  render(<ScholarshipList listFn={() => fakeSinglePageResults} />, {
+  renderWithTheme(<ScholarshipList listFn={() => fakeSinglePageResults} />, {
     wrapper: MemoryRouter,
   });
 

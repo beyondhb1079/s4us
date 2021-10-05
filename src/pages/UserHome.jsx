@@ -1,6 +1,6 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import { AddCircle as AddIcon, Inbox as InboxIcon } from '@material-ui/icons';
+import { AddCircle as AddIcon, Inbox as InboxIcon } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 import {
@@ -8,24 +8,24 @@ import {
   Container,
   Grid,
   Link as MuiLink,
-  makeStyles,
   Paper,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 
 const useStyles = makeStyles((theme) => ({
   browseGrid: {
     padding: theme.spacing(3),
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(2),
     },
   },
   browseButton: {
     marginBottom: theme.spacing(2),
     marginTop: theme.spacing(2),
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       marginBottom: theme.spacing(1),
       marginTop: theme.spacing(1),
     },
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     marginBottom: theme.spacing(2),
     marginTop: theme.spacing(2),
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       marginBottom: theme.spacing(1),
       marginTop: theme.spacing(1),
     },
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   noneAddedGrid: {
     alignItems: 'center',
     padding: theme.spacing(3),
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       justifyContent: 'center',
       padding: theme.spacing(2),
       textAlign: 'center',
@@ -77,7 +77,8 @@ export default function UserHome() {
         container
         component={Paper}
         variant="outlined"
-        className={classes.browseGrid}>
+        className={classes.browseGrid}
+      >
         <Grid item sm={6} xs={12}>
           <Typography variant="h5" gutterBottom>
             Looking for scholarships?
@@ -87,7 +88,8 @@ export default function UserHome() {
             color="primary"
             component={Link}
             to="/scholarships"
-            className={classes.browseButton}>
+            className={classes.browseButton}
+          >
             Browse Scholarships
           </Button>
         </Grid>
@@ -107,7 +109,8 @@ export default function UserHome() {
             color="primary"
             startIcon={<AddIcon />}
             component={Link}
-            to="/scholarships/new">
+            to="/scholarships/new"
+          >
             Add Scholarship
           </Button>
         </Grid>
@@ -119,7 +122,8 @@ export default function UserHome() {
             container
             component={Paper}
             variant="outlined"
-            className={classes.noneAddedGrid}>
+            className={classes.noneAddedGrid}
+          >
             <Grid item>
               <InboxIcon className={classes.inboxIcon} />
             </Grid>

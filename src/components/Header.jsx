@@ -7,12 +7,12 @@ import {
   Container,
   Grid,
   Link as MuiLink,
-  makeStyles,
   Snackbar,
   Zoom,
   IconButton,
-} from '@material-ui/core';
-import { Alert, AlertTitle } from '@material-ui/lab';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import { Alert, AlertTitle } from '@mui/material';
 import ProfileMenu from './ProfileDropdown';
 
 import { BRAND_NAME, SUBSCRIPTION_FORM_URL } from '../config/constants';
@@ -41,7 +41,8 @@ const UnderConstructionAlert = () => (
       <Button component={MuiLink} href={SUBSCRIPTION_FORM_URL}>
         SUBSCRIBE FOR UPDATES
       </Button>
-    }>
+    }
+  >
     <AlertTitle>Warning</AlertTitle>
     🚧 Website Actively Under-Construction! 🚧
   </Alert>
@@ -71,7 +72,8 @@ const AuthZoomButton = () => {
             aria-controls="menu-appbar"
             aria-haspopup="true"
             onClick={showProfileMenu}
-            color="inherit">
+            color="inherit"
+          >
             <Avatar src={currentUser.photoURL} />
           </IconButton>
           <ProfileMenu anchorEl={anchorEl} handleClose={closeProfileMenu} />
@@ -80,7 +82,8 @@ const AuthZoomButton = () => {
         <Button
           color="inherit"
           component={Link}
-          to={{ state: { showLoginDialog: true } }}>
+          to={{ state: { showLoginDialog: true } }}
+        >
           Login
         </Button>
       )}
@@ -94,7 +97,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
     justifyContent: 'space-between',
     alignItems: 'center',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       justifyContent: 'space-around',
     },
   },

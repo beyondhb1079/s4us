@@ -5,7 +5,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-import { InputLabel } from '@material-ui/core';
+import { InputLabel } from '@mui/material';
 import PropTypes from 'prop-types';
 import exact from 'prop-types-exact';
 

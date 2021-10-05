@@ -5,9 +5,9 @@ import {
   Select,
   MenuItem,
   FormHelperText,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import RemoveIcon from '@material-ui/icons/Remove';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import RemoveIcon from '@mui/icons-material/Remove';
 import PropTypes from 'prop-types';
 import AmountType from '../types/AmountType';
 import AmountTextField from './AmountTextField';
@@ -86,7 +86,8 @@ function ScholarshipAmountField(props) {
             value={amountType}
             onChange={(e) =>
               formik.setFieldValue('amount.type', e.target.value, true)
-            }>
+            }
+          >
             <MenuItem value={AmountType.Fixed}>Fixed</MenuItem>
             <MenuItem value={AmountType.Varies}>Varies</MenuItem>
             <MenuItem value={AmountType.FullTuition}>Full Tuition</MenuItem>

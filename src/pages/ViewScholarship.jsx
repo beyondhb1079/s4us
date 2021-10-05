@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import ReactRouterPropTypes from 'react-router-prop-types';
-import { Container, Typography } from '@material-ui/core';
+import { Container, Typography } from '@mui/material';
 import Scholarships from '../models/Scholarships';
 import ScholarshipDetailCard from '../components/ScholarshipDetailCard';
 

@@ -1,9 +1,9 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import { Container } from '@material-ui/core';
+import makeStyles from '@mui/styles/makeStyles';
+import { Container } from '@mui/material';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,7 +37,8 @@ export default function HomeSection(props) {
           <Typography
             variant="body2"
             gutterBottom
-            className={classes.description}>
+            className={classes.description}
+          >
             {description}
           </Typography>
           <Grid container spacing={2}>

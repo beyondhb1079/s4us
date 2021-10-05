@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import {
   Button,
   Checkbox,
@@ -7,8 +7,8 @@ import {
   FormControlLabel,
   FormGroup,
   Popover,
-} from '@material-ui/core';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+} from '@mui/material';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -52,7 +52,8 @@ export default function GradeLevelFilter() {
         variant="outlined"
         className={classes.button}
         onClick={openPopover}
-        endIcon={<ArrowDropDownIcon color="primary" />}>
+        endIcon={<ArrowDropDownIcon color="primary" />}
+      >
         Grade
       </Button>
       <Popover
@@ -60,7 +61,8 @@ export default function GradeLevelFilter() {
         anchorEl={anchorEl}
         onClose={() => setAnchorEl(null)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
+        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+      >
         <FormControl component="fieldset" className={classes.popover}>
           <FormGroup>
             {Array.from(gradeItems).map((grade) => (

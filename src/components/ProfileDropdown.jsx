@@ -1,16 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import firebase from 'firebase';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
-import { Avatar, Divider, Grid, Typography } from '@material-ui/core';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import NewIcon from '@material-ui/icons/NewReleases';
-import BookmarkIcon from '@material-ui/icons/Bookmark';
-import DoneIcon from '@material-ui/icons/Done';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import withStyles from '@mui/styles/withStyles';
+import makeStyles from '@mui/styles/makeStyles';
+import { Avatar, Divider, Grid, Typography } from '@mui/material';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import NewIcon from '@mui/icons-material/NewReleases';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import DoneIcon from '@mui/icons-material/Done';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import experiments from '../lib/experiments';
 
 // hacky way to override Menu style
@@ -83,7 +84,8 @@ export default function ProfileDropdown(props) {
       anchorEl={anchorEl}
       keepMounted
       open={Boolean(anchorEl)}
-      onClose={handleClose}>
+      onClose={handleClose}
+    >
       <Grid container spacing={2} className={classes.gridRoot}>
         <Grid item className={classes.profilePic}>
           <Avatar src={user.photoURL} className={classes.medium} />

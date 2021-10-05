@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
-import { makeStyles, Tab, Tabs } from '@material-ui/core';
+import { Tab, Tabs } from '@mui/material';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 const useStyles = makeStyles((theme) => ({
   tab: {
     minWidth: 72,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       minWidth: 64,
     },
     padding: theme.spacing(0),
@@ -30,7 +32,8 @@ function HeaderNavMenu({ links }) {
       indicatorColor="primary"
       scrollButtons="auto"
       value={currentTab}
-      variant="scrollable">
+      variant="scrollable"
+    >
       {Object.entries(links).map(([title, link]) => (
         <Tab
           className={classes.tab}

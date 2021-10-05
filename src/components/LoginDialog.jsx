@@ -1,9 +1,9 @@
 import React from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import firebase from 'firebase';
 import StyleFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 
@@ -32,7 +32,8 @@ export default function LoginDialog() {
     <Dialog
       open={showLoginDialog}
       onClose={closeDialog}
-      aria-labelledby="responsive-dialog-title">
+      aria-labelledby="responsive-dialog-title"
+    >
       <DialogTitle id="responsive-dialog-title">
         Login using your account or email.
       </DialogTitle>

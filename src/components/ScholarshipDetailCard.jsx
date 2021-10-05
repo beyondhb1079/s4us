@@ -5,14 +5,14 @@ import {
   Button,
   Box,
   Link,
-  makeStyles,
   Typography,
   Chip,
   Grid,
   Divider,
   Card,
-} from '@material-ui/core';
-import { Share, Send, Info } from '@material-ui/icons';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import { Share, Send, Info } from '@mui/icons-material';
 import { genMailToLink, withDeviceInfo } from '../lib/mail';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import { BRAND_NAME } from '../config/constants';
@@ -22,8 +22,8 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
   },
   actionSection: {
-    margin: `${theme.spacing(3)}px 0`,
-    padding: `${theme.spacing(1)}px 0`,
+    margin: `${theme.spacing(3)} 0`,
+    padding: `${theme.spacing(1)} 0`,
   },
   cardDetailText: {
     [theme.breakpoints.up('sm')]: {
@@ -48,10 +48,10 @@ const useStyles = makeStyles((theme) => ({
     color: '#000',
   },
   reportBtn: {
-    margin: `${theme.spacing(5)}px 0`,
+    margin: `${theme.spacing(5)} 0`,
   },
   divider: {
-    margin: `${theme.spacing(1.5)}px 0`,
+    margin: `${theme.spacing(1.5)} 0`,
   },
 }));
 
@@ -135,7 +135,8 @@ export default function ScholarshipDetailCard({ scholarship }) {
           variant="contained"
           color="primary"
           className={classes.applyBtn}
-          startIcon={<Send />}>
+          startIcon={<Send />}
+        >
           Apply
         </Button>
 
@@ -143,7 +144,8 @@ export default function ScholarshipDetailCard({ scholarship }) {
           variant="outlined"
           className={classes.shareBtn}
           startIcon={<Share />}
-          onClick={shareFn}>
+          onClick={shareFn}
+        >
           Share
         </Button>
       </Box>
@@ -152,7 +154,8 @@ export default function ScholarshipDetailCard({ scholarship }) {
         gutterBottom
         variant="body1"
         component="p"
-        className={classes.description}>
+        className={classes.description}
+      >
         {description}
       </Typography>
       <Box>
@@ -176,7 +179,8 @@ export default function ScholarshipDetailCard({ scholarship }) {
         <Typography
           variant="h6"
           component="h4"
-          className={classes.sectionHeader}>
+          className={classes.sectionHeader}
+        >
           Eligibility Requirements
         </Typography>
         <DetailCardCell label="GPA" text={requirements?.gpa || 'None'} bottom />
@@ -195,7 +199,8 @@ export default function ScholarshipDetailCard({ scholarship }) {
         <Typography
           variant="h6"
           component="h4"
-          className={classes.sectionHeader}>
+          className={classes.sectionHeader}
+        >
           Tags
         </Typography>
 

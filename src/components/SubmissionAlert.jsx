@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, IconButton } from '@material-ui/core';
-import { Alert, AlertTitle } from '@material-ui/lab';
-import CloseIcon from '@material-ui/icons/Close';
+import { Button, IconButton } from '@mui/material';
+import { Alert, AlertTitle } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import PropTypes from 'prop-types';
 
 function SubmissionAlert({ id, name, onClose }) {
@@ -15,14 +15,16 @@ function SubmissionAlert({ id, name, onClose }) {
             color="inherit"
             size="medium"
             component={Link}
-            to={`/scholarships/${id}`}>
+            to={`/scholarships/${id}`}
+          >
             VIEW
           </Button>
           <IconButton size="medium" color="inherit" onClick={onClose}>
             <CloseIcon fontSize="small" />
           </IconButton>
         </>
-      }>
+      }
+    >
       <AlertTitle>Success</AlertTitle>
       {`${name} submitted successfully.`}
     </Alert>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import {
   Button,
   Dialog,
@@ -8,7 +8,7 @@ import {
   DialogContentText,
   DialogTitle,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
   FacebookShareButton,
   FacebookIcon,
@@ -76,12 +76,14 @@ export default function ShareDialog() {
         <Typography
           variant="overline"
           component="p"
-          className={classes.copyText}>
+          className={classes.copyText}
+        >
           {url}
         </Typography>
         <Button
           color="primary"
-          onClick={() => navigator.clipboard.writeText(url)}>
+          onClick={() => navigator.clipboard.writeText(url)}
+        >
           Copy Link
         </Button>
       </DialogContent>

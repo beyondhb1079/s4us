@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Popover, InputLabel, Grid } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import RemoveIcon from '@material-ui/icons/Remove';
+import { Button, Popover, InputLabel, Grid } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import RemoveIcon from '@mui/icons-material/Remove';
 import AmountTextField from './AmountTextField';
 
 const useStyles = makeStyles((theme) => ({
@@ -34,7 +34,8 @@ export default function AmountFilter(props) {
         variant="outlined"
         className={classes.buttonStyle}
         onClick={handleClick}
-        endIcon={<ArrowDropDownIcon color="primary" />}>
+        endIcon={<ArrowDropDownIcon color="primary" />}
+      >
         Amount
       </Button>
       <Popover
@@ -43,7 +44,8 @@ export default function AmountFilter(props) {
         anchorEl={anchorEl}
         onClose={() => setAnchorEl(null)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
+        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+      >
         <Grid container>
           <Grid item className={classes.filterStyle}>
             <InputLabel className={classes.labelStyle}>Min Amount</InputLabel>

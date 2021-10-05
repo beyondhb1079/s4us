@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import firebase from 'firebase';
-import { Container, Typography } from '@material-ui/core';
+import { Container, Typography } from '@mui/material';
 import ScholarshipForm from '../components/ScholarshipForm';
 import Scholarships from '../models/Scholarships';
 import SubmissionAlert from '../components/SubmissionAlert';
