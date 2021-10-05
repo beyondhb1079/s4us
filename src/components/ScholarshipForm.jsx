@@ -8,6 +8,8 @@ import {
   StepContent,
   Grid,
   Typography,
+  FormControlLabel,
+  Checkbox,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -15,6 +17,34 @@ import validationSchema from '../validation/ValidationSchema';
 import ScholarshipAmountField from './ScholarshipAmountField';
 import DatePicker from './DatePicker';
 import FormikTextField from './FormikTextField';
+import FormikMultiSelect from './FormikMultiSelect';
+import FormikAutocomplete from './FormikAutocomplete';
+import { SCHOOLS, STATES, MAJORS } from '../types/options';
+import GradeLevel from '../types/GradeLevel';
+import Ethnicity from '../types/Ethnicity';
+import experiments from '../lib/experiments';
+
+const gradeOptions = {
+  'Middle School': GradeLevel.MiddleSchool,
+  'HS Freshman': GradeLevel.HsFreshman,
+  'HS Sophomore': GradeLevel.HsSophomore,
+  'HS Junior': GradeLevel.HsJunior,
+  'HS Senior': GradeLevel.HsSenior,
+  'College Freshman': GradeLevel.CollegeFreshman,
+  'College Sophomore': GradeLevel.CollegeSophomore,
+  'College Junior': GradeLevel.CollegeJunior,
+  'College Senior': GradeLevel.CollegeSenior,
+};
+
+const ethnicityOptions = {
+  'American Indian or Alaska Native': Ethnicity.AmericanIndianOrAlaskaNative,
+  Asian: Ethnicity.Asian,
+  'Black or African American': Ethnicity.BlackOrAfricanAmerican,
+  'Hispanic or Latino': Ethnicity.HispanicOrLatino,
+  'Native Hawaiian or Other Pacific Islander':
+    Ethnicity.NativeHawaiianOrOtherPacificIslander,
+  White: Ethnicity.White,
+};
 
 const useStyles = makeStyles((theme) => ({
   stepperDescription: {
@@ -31,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
 function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
+  const [hasReqs, setHasReqs] = useState(false);
 
   const formik = useFormik({
     initialValues: scholarship.data,
@@ -47,6 +78,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
     },
   });
 
+  /* eslint-disable react/jsx-props-no-spreading */
   const stepperItems = {};
   stepperItems.General = (
     <Grid container spacing={3}>
@@ -114,6 +146,96 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
     </Grid>
   );
 
+  if (experiments.expShowRequirementsSection) {
+    stepperItems['Eligibility Requirements'] = (
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Typography className={classes.stepperDescription}>
+            Include information that is required for applicants to have.
+          </Typography>
+        </Grid>
+
+        <Grid item xs={12}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={hasReqs}
+                onChange={(event) => setHasReqs(event.target.checked)}
+                color="primary"
+              />
+            }
+            label="NO ELIGIBILITY REQUIREMENTS"
+          />
+        </Grid>
+
+        <Grid item sm={6} xs={12}>
+          <FormikMultiSelect
+            label="Grade(s)"
+            id="grades"
+            labelStyle={classes.inputLabel}
+            formik={formik}
+            options={gradeOptions}
+            placeholder="No grade requirements"
+          />
+        </Grid>
+
+        <Grid item sm={6} xs={12}>
+          <FormikTextField
+            label="Minimum GPA"
+            id="gpa"
+            formik={formik}
+            labelStyle={classes.inputLabel}
+          />
+        </Grid>
+
+        <Grid item sm={6} xs={12}>
+          <FormikAutocomplete
+            label="School(s)"
+            id="schools"
+            labelStyle={classes.inputLabel}
+            options={[...SCHOOLS]}
+            freeSolo
+            formik={formik}
+            placeholder="No school requirements"
+          />
+        </Grid>
+
+        <Grid item sm={6} xs={12}>
+          <FormikAutocomplete
+            label="State(s)"
+            id="states"
+            labelStyle={classes.inputLabel}
+            options={STATES}
+            formik={formik}
+            placeholder="No state requirements"
+          />
+        </Grid>
+
+        <Grid item sm={6} xs={12}>
+          <FormikAutocomplete
+            label="Major(s)"
+            id="majors"
+            labelStyle={classes.inputLabel}
+            options={[...MAJORS]}
+            freeSolo
+            formik={formik}
+            placeholder="No major requirements"
+          />
+        </Grid>
+
+        <Grid item sm={6} xs={12}>
+          <FormikMultiSelect
+            label="Ethnicity(s)"
+            id="ethnicities"
+            labelStyle={classes.inputLabel}
+            formik={formik}
+            options={ethnicityOptions}
+            placeholder="No ethnicity requirements"
+          />
+        </Grid>
+      </Grid>
+    );
+  }
   const onLastStep = activeStep == Object.keys(stepperItems).length - 1;
 
   return (
