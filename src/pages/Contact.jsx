@@ -1,6 +1,7 @@
 import React from 'react';
-import Container from '@material-ui/core/Container';
+import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
+import Container from '@material-ui/core/Container';
 import {
   genMailToLink,
   reportIssue,
@@ -8,58 +9,82 @@ import {
   withDeviceInfo,
 } from '../lib/mail';
 import { BRAND_NAME, SUBSCRIPTION_FORM_URL } from '../config/constants';
+import { Link as MuiLink, Typography } from '@material-ui/core';
 
 function Contact() {
   return (
     <Container>
-      <h1 style={{ textAlign: 'center' }}>Contact Us</h1>
+      <Helmet>
+        <title>Contact</title>
+      </Helmet>
 
-      <h3>Found a bug</h3>
-      <p>
-        If you found a bug you can file it{' '}
-        <a
+      <Typography variant="h4" align="center" gutterBottom>
+        Contact Us
+      </Typography>
+
+      <Typography variant="h5" gutterBottom>
+        Found a bug?
+      </Typography>
+      <Typography paragraph>
+        You can file it{' '}
+        <MuiLink
           href={genMailToLink({
             subject: 'Bug Report',
             body: withDeviceInfo(reportIssue),
           })}>
-          here.
-        </a>
-      </p>
+          here
+        </MuiLink>
+        .
+      </Typography>
 
-      <h3>Feature Request</h3>
-      <p>
+      <Typography variant="h5" gutterBottom>
+        Feature Requests
+      </Typography>
+      <Typography paragraph>
         You can suggest an idea for this project{' '}
-        <a
+        <MuiLink
           href={genMailToLink({
             subject: 'Feature Request',
             body: withDeviceInfo(featureRequest),
           })}>
-          here.
-        </a>
-      </p>
+          here
+        </MuiLink>
+        .
+      </Typography>
 
-      <h3>Learn About Us</h3>
-      <p>
+      <Typography variant="h5" gutterBottom>
+        Learn About Us
+      </Typography>
+      <Typography paragraph>
         You can learn more about {BRAND_NAME} and the developers{' '}
-        <Link to="/about">here</Link>.
-      </p>
-      <h3>Subscribe</h3>
-      <p>
-        You can subscribe for updates <a href={SUBSCRIPTION_FORM_URL}>here</a>.
-      </p>
+        <MuiLink component={Link} to="/about">
+          here
+        </MuiLink>
+        .
+      </Typography>
 
-      <h3>Reach Out</h3>
-      <p>
+      <Typography variant="h5" gutterBottom>
+        Subscribe
+      </Typography>
+      <Typography paragraph>
+        You can subscribe for updates{' '}
+        <MuiLink href={SUBSCRIPTION_FORM_URL}>here</MuiLink>.
+      </Typography>
+
+      <Typography variant="h5" gutterBottom>
+        Reach Out
+      </Typography>
+      <Typography paragraph>
         We are happy to answer any of your questions. You can email us{' '}
-        <a
+        <MuiLink
           href={genMailToLink({
             subject: 'Outreach',
             body: 'Please describe the purpose of your outreach below.\n',
           })}>
           here
-        </a>{' '}
+        </MuiLink>{' '}
         and we&apos;ll be in touch as soon as possible.
-      </p>
+      </Typography>
     </Container>
   );
 }

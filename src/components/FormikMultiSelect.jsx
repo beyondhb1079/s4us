@@ -1,6 +1,13 @@
 import React from 'react';
 import { InputLabel, Select, MenuItem } from '@material-ui/core';
 import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  textColor: {
+    color: theme.palette.grey[500],
+  },
+}));
 
 const MenuProps = {
   getContentAnchorEl: null, //TODO: remove this when material-ui gets updated to version 5
@@ -17,15 +24,21 @@ const MenuProps = {
 };
 
 function FormikMultiSelect(props) {
-  const { label, id, labelStyle, formik, options, disabled } = props;
+  const { label, id, labelStyle, formik, options, disabled, placeholder } =
+    props;
+  const classes = useStyles();
 
   return (
     <>
       <InputLabel className={labelStyle}>{label}</InputLabel>
       <Select
+        className={
+          formik.values.requirements[id].length === 0 ? classes.textColor : ''
+        }
         disabled={disabled}
         multiple
         fullWidth
+        displayEmpty
         id={id}
         variant="outlined"
         value={formik.values.requirements[id]}
@@ -36,9 +49,10 @@ function FormikMultiSelect(props) {
             /* shouldValidate = */ false
           )
         }
+        renderValue={(selected) => selected.join(', ') || placeholder}
         MenuProps={MenuProps}>
-        {options.map((name) => (
-          <MenuItem key={name} value={name}>
+        {Object.entries(options).map(([name, value]) => (
+          <MenuItem key={value} value={value}>
             {name}
           </MenuItem>
         ))}
@@ -54,10 +68,12 @@ FormikMultiSelect.propTypes = {
   id: PropTypes.string.isRequired,
   labelStyle: PropTypes.string.isRequired,
   formik: PropTypes.object.isRequired,
-  options: PropTypes.arrayOf(PropTypes.string).isRequired,
+  options: PropTypes.objectOf(PropTypes.string).isRequired,
   disabled: PropTypes.bool,
+  placeholder: PropTypes.string,
 };
 
 FormikMultiSelect.defaultProps = {
   disabled: false,
+  placeholder: '',
 };

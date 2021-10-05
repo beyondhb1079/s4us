@@ -5,7 +5,16 @@ import PropTypes from 'prop-types';
 
 /* eslint-disable react/jsx-props-no-spreading */
 function FormikAutocomplete(props) {
-  const { label, id, labelStyle, options, freeSolo, formik, disabled } = props;
+  const {
+    label,
+    id,
+    labelStyle,
+    options,
+    freeSolo,
+    formik,
+    disabled,
+    placeholder,
+  } = props;
 
   return (
     <>
@@ -23,9 +32,16 @@ function FormikAutocomplete(props) {
             /* shouldValidate = */ false
           )
         }
-        options={options.map((option) => option.title)}
+        options={options}
         renderInput={(params) => (
-          <TextField {...params} variant="outlined" fullWidth />
+          <TextField
+            {...params}
+            variant="outlined"
+            fullWidth
+            placeholder={
+              formik.values.requirements[id].length == 0 ? placeholder : ''
+            }
+          />
         )}
       />
     </>
@@ -40,11 +56,13 @@ FormikAutocomplete.propTypes = {
   freeSolo: PropTypes.bool,
   formik: PropTypes.object.isRequired,
   disabled: PropTypes.bool,
+  placeholder: PropTypes.string,
 };
 FormikAutocomplete.defaultProps = {
   label: '',
   labelStyle: '',
   freeSolo: false,
   disabled: false,
+  placeholder: '',
 };
 export default FormikAutocomplete;

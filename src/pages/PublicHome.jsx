@@ -1,22 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-import { makeStyles, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import ScholarshipsMadeSimple from '../components/ScholarshipsMadeSimple';
 import HomeSection from '../components/HomeSection';
 import community from '../img/community.png';
 
-const useStyles = makeStyles(() => ({
-  description: {
-    textAlign: 'center',
-  },
-}));
-
 function PublicHome() {
-  const classes = useStyles();
   return (
     <>
-      <Typography variant="h2" className={classes.description} gutterBottom>
+      <Typography variant="h2" align="center" gutterBottom>
         Find Scholarships Today
       </Typography>
       <ScholarshipsMadeSimple />

@@ -7,7 +7,7 @@ const config = {
   // TODO (issues/213): Configure a separate staging project.
   // These values should really be read from the environment.
   apiKey: 'AIzaSyAXDqsWK4quNVaf9-YV2e28NsxkfA9rzJA',
-  authDomain: 'dreamerscholars.firebaseapp.com',
+  authDomain: 'auth.dreamscholars.org',
   projectId: 'dreamerscholars',
 };
 

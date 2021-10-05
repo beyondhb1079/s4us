@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import MuiLink from '@material-ui/core/Link';
 import { Grid, Button, Container, Typography } from '@material-ui/core';
@@ -75,14 +76,20 @@ const team = [
 function About() {
   return (
     <Container>
-      <h3>Meet the Team</h3>
-      <h1>For and by the undocu community.</h1>
+      <Helmet>
+        <title>About</title>
+      </Helmet>
+      <Typography component="h2" variant="button" gutterBottom>
+        MEET THE TEAM
+      </Typography>
+      <Typography variant="h4" gutterBottom>
+        For and by the undocu community.
+      </Typography>
       <Typography paragraph>
-        DreamScholars looks to make it easier for people to pay for school. Our
-        mission is to remove the barriers that prevent and discourage students
-        from pursuing higher education due to difficulties finding scholarships
-        that they qualify for. Meet the team behind DreamScholars. Want to get
-        involved? Shoot us an email!
+        DreamScholars aims to make it easier for undocumented students to pay
+        for school. Our mission is to remove the financial barriers that prevent
+        and discourage undocumented students from pursuing higher education due
+        to the difficulties of finding scholarships they qualify for.
       </Typography>
       <Typography paragraph>
         Meet the team behind DreamScholars. We are a group of lifelong learners
@@ -90,7 +97,9 @@ function About() {
         project arose from our own struggles as students and the lack of
         resources for our community.
       </Typography>
-
+      <Typography paragraph>
+        Want to get involved? Shoot us an email!
+      </Typography>
       <Grid container justify="flex-start" alignItems="stretch" spacing={3}>
         {team.map(({ name, img, description }) => (
           <Grid item key={name} xs={12} sm={6} md={4}>
@@ -99,7 +108,9 @@ function About() {
         ))}
       </Grid>
 
-      <h2>Looking for Scholarships?</h2>
+      <Typography variant="h5" gutterBottom>
+        Looking for scholarships?
+      </Typography>
       <Button
         component={Link}
         to="/scholarships"

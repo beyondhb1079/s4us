@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet';
 import firebase from 'firebase';
-import { Container } from '@material-ui/core';
+import { Container, Typography } from '@material-ui/core';
 import ScholarshipForm from '../components/ScholarshipForm';
 import Scholarships from '../models/Scholarships';
 import SubmissionAlert from '../components/SubmissionAlert';
@@ -36,7 +37,12 @@ function AddScholarship() {
 
   return (
     <Container maxWidth="md">
-      <h1>Submit a Scholarship</h1>
+      <Helmet>
+        <title>Add a Scholarship</title>
+      </Helmet>
+      <Typography variant="h4" gutterBottom>
+        Submit a Scholarship
+      </Typography>
       <ScholarshipForm
         scholarship={scholarship}
         submitFn={() =>
