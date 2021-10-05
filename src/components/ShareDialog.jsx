@@ -76,14 +76,12 @@ export default function ShareDialog() {
         <Typography
           variant="overline"
           component="p"
-          className={classes.copyText}
-        >
+          className={classes.copyText}>
           {url}
         </Typography>
         <Button
           color="primary"
-          onClick={() => navigator.clipboard.writeText(url)}
-        >
+          onClick={() => navigator.clipboard.writeText(url)}>
           Copy Link
         </Button>
       </DialogContent>

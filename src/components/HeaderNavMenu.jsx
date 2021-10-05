@@ -32,8 +32,7 @@ function HeaderNavMenu({ links }) {
       indicatorColor="primary"
       scrollButtons="auto"
       value={currentTab}
-      variant="scrollable"
-    >
+      variant="scrollable">
       {Object.entries(links).map(([title, link]) => (
         <Tab
           className={classes.tab}

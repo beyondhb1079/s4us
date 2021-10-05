@@ -32,8 +32,7 @@ export default function LoginDialog() {
     <Dialog
       open={showLoginDialog}
       onClose={closeDialog}
-      aria-labelledby="responsive-dialog-title"
-    >
+      aria-labelledby="responsive-dialog-title">
       <DialogTitle id="responsive-dialog-title">
         Login using your account or email.
       </DialogTitle>
