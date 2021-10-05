@@ -104,8 +104,7 @@ function About() {
         container
         justifyContent="flex-start"
         alignItems="stretch"
-        spacing={3}
-      >
+        spacing={3}>
         {team.map(({ name, img, description }) => (
           <Grid item key={name} xs={12} sm={6} md={4}>
             <AboutCard {...{ name, img, description }} />
@@ -120,8 +119,7 @@ function About() {
         component={Link}
         to="/scholarships"
         variant="contained"
-        color="primary"
-      >
+        color="primary">
         Browse Scholarships
       </Button>
     </Container>
