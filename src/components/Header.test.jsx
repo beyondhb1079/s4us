@@ -12,7 +12,8 @@ initializeTestApp({ apiKey: 'fake-api-key' });
 window.MutationObserver = require('mutation-observer');
 
 function renderAtUrl(url) {
-  window.location.hostname = url;
+  delete window.location;
+  window.location = new URL(url);
   return render(
     <ThemeProvider theme={createTheme()}>
       <BrowserRouter>

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@date-io/date-fns": "1.x",
+    "@date-io/date-fns": "^2.11.0",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
     "@firebase/rules-unit-testing": "^1.2.5",
@@ -17,7 +17,7 @@
     "@types/node": "^16.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
-    "date-fns": "^2.16.1",
+    "date-fns": "^2.24.0",
     "eslint-plugin-jest": "^24.3.6",
     "firebase": "^8.3.1",
     "formik": "^2.2.6",
