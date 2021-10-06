@@ -2,10 +2,10 @@
  * @jest-environment node
  */
 import {
-  clearFirestoreData,
-  initializeTestApp,
   assertFails,
   assertSucceeds,
+  clearFirestoreData,
+  initializeTestApp,
 } from '@firebase/rules-unit-testing';
 
 const MY_PROJECT_ID = 'scholarships-rules-test';

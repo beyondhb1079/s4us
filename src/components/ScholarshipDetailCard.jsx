@@ -2,14 +2,14 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
-  Button,
   Box,
+  Button,
+  Card,
+  Chip,
+  Divider,
+  Grid,
   Link,
   Typography,
-  Chip,
-  Grid,
-  Divider,
-  Card,
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { Share, Send, Info } from '@mui/icons-material';

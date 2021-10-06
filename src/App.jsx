@@ -4,8 +4,8 @@ import { Helmet } from 'react-helmet';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import {
   CssBaseline,
-  ThemeProvider,
   StyledEngineProvider,
+  ThemeProvider,
 } from '@mui/material';
 import Footer from './components/Footer';
 import Header from './components/Header';

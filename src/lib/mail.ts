@@ -1,13 +1,13 @@
 import queryString from 'query-string';
 import {
-  isMobile,
-  osVersion,
-  osName,
-  fullBrowserVersion,
   browserName,
   deviceType,
-  mobileVendor,
+  fullBrowserVersion,
+  isMobile,
   mobileModel,
+  mobileVendor,
+  osName,
+  osVersion,
 } from 'react-device-detect';
 
 interface MailToParams {

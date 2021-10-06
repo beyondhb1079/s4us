@@ -5,10 +5,10 @@ import {
   Checkbox,
   FormControlLabel,
   Grid,
-  Stepper,
   Step,
-  StepLabel,
   StepContent,
+  StepLabel,
+  Stepper,
   Typography,
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';

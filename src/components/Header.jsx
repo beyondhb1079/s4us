@@ -8,10 +8,10 @@ import {
   Button,
   Container,
   Grid,
+  IconButton,
   Link as MuiLink,
   Snackbar,
   Zoom,
-  IconButton,
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import ProfileMenu from './ProfileDropdown';

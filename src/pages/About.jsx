@@ -2,11 +2,11 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import {
-  Grid,
   Button,
   Container,
-  Typography,
+  Grid,
   Link as MuiLink,
+  Typography,
 } from '@mui/material';
 import AboutCard from '../components/AboutCard';
 import testPic from '../logo.svg';

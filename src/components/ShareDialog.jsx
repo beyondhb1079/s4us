@@ -10,16 +10,16 @@ import {
   Typography,
 } from '@mui/material';
 import {
-  FacebookShareButton,
-  FacebookIcon,
-  EmailShareButton,
   EmailIcon,
-  LinkedinShareButton,
+  EmailShareButton,
+  FacebookIcon,
+  FacebookShareButton,
   LinkedinIcon,
-  RedditShareButton,
+  LinkedinShareButton,
   RedditIcon,
-  TwitterShareButton,
+  RedditShareButton,
   TwitterIcon,
+  TwitterShareButton,
 } from 'react-share';
 
 const useStyles = makeStyles((theme) => ({
