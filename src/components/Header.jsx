@@ -88,7 +88,7 @@ const AuthGrowButton = () => {
   );
 };
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   title: {
     flexGrow: 1,
   },
