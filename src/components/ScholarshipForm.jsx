@@ -69,7 +69,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
   const [activeStep, setActiveStep] = useState(0);
   const [noReqsChecked, setNoReqsChecked] = useState(false);
 
-  const [noReqsHelperText, setNoReqsHelperText] = useState('');
+  // const [noReqsHelperText, setNoReqsHelperText] = useState('');
 
   const formik = useFormik({
     initialValues: scholarship.data,
@@ -182,7 +182,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
             }
             label="NO ELIGIBILITY REQUIREMENTS"
           />
-          <FormHelperText error>{noReqsHelperText}</FormHelperText>
+          <FormHelperText error>{error}</FormHelperText>
         </Grid>
 
         <Grid item sm={6} xs={12}>
