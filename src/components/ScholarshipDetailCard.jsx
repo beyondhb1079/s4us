@@ -12,7 +12,11 @@ import {
   Typography,
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
-import { Share, Send, Info } from '@mui/icons-material';
+import {
+  Info as InfoIcon,
+  Send as SendIcon,
+  Share as ShareIcon,
+} from '@mui/icons-material';
 import { genMailToLink, withDeviceInfo } from '../lib/mail';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import { BRAND_NAME } from '../config/constants';
@@ -135,14 +139,14 @@ export default function ScholarshipDetailCard({ scholarship }) {
           variant="contained"
           color="primary"
           className={classes.applyBtn}
-          startIcon={<Send />}>
+          startIcon={<SendIcon />}>
           Apply
         </Button>
 
         <Button
           variant="outlined"
           className={classes.shareBtn}
-          startIcon={<Share />}
+          startIcon={<ShareIcon />}
           onClick={shareFn}>
           Share
         </Button>
@@ -222,7 +226,7 @@ export default function ScholarshipDetailCard({ scholarship }) {
             `Please describe the issue for the scholarship located at ${URL}.`
           ),
         })}
-        icon={<Info />}
+        icon={<InfoIcon />}
         className={classes.reportBtn}
         label="Report Issue"
       />

@@ -4,7 +4,7 @@ import { Button, Popover, InputLabel, Grid } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import {
   ArrowDropDown as ArrowDropDownIcon,
-  RemoveIcon,
+  Remove as RemoveIcon,
 } from '@mui/icons-material';
 import AmountTextField from './AmountTextField';
 

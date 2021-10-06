@@ -13,10 +13,10 @@ import {
   Typography,
 } from '@mui/material';
 import {
-  BookmarkIcon,
-  DoneIcon,
-  ExitToAppIcon,
-  NewIcon,
+  Bookmark as BookmarkIcon,
+  Done as DoneIcon,
+  ExitToApp as ExitToAppIcon,
+  NewReleases as NewIcon,
 } from '@mui/icons-material';
 import experiments from '../lib/experiments';
 
