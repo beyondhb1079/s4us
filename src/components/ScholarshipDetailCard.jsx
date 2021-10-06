@@ -33,13 +33,6 @@ const useStyles = makeStyles((theme) => ({
   applyBtn: {
     marginRight: theme.spacing(1),
   },
-  description: {
-    marginBottom: theme.spacing(2),
-  },
-  sectionHeader: {
-    fontWeight: '500',
-    marginBottom: theme.spacing(2),
-  },
   propertySection: {
     marginTop: theme.spacing(6),
   },
@@ -55,8 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// TODO(issues/358): Style this.
-export default function ScholarshipDetailCard({ scholarship }) {
+export default function ScholarshipDetailCard({ scholarship, preview }) {
   const history = useHistory();
 
   const classes = useStyles();
@@ -72,10 +64,9 @@ export default function ScholarshipDetailCard({ scholarship }) {
     author,
   } = scholarship.data;
 
-  const URL = `https://${window.location.hostname}/scholarships/${scholarship.id}`;
-
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
   const shareFn = () => {
+    const URL = `https://${window.location.hostname}/scholarships/${scholarship.id}`;
     const data = {
       title: `${amount?.toString()} - ${name} | ${BRAND_NAME}`,
       text: `${amount?.toString()} - ${name} | ${BRAND_NAME} \n ${deadline?.toLocaleDateString()}\n`,
@@ -102,10 +93,10 @@ export default function ScholarshipDetailCard({ scholarship }) {
         {top && <Divider light className={classes.divider} />}
         <Grid container justifyContent="space-between">
           <Grid item xs={12} sm>
-            <Typography component="p">{label}</Typography>
+            <Typography>{label}</Typography>
           </Grid>
           <Grid item className={classes.cardDetailText} xs={12} sm>
-            <Typography component="p">{text}</Typography>
+            <Typography>{text}</Typography>
           </Grid>
         </Grid>
         {bottom && <Divider light className={classes.divider} />}
@@ -127,34 +118,36 @@ export default function ScholarshipDetailCard({ scholarship }) {
   return (
     <Card className={classes.detailSection}>
       <Typography variant="h4">{name}</Typography>
-      <Typography variant="h5">{organization}</Typography>
+      <Typography variant="h5" gutterBottom>
+        {organization}
+      </Typography>
+      {preview && (
+        <Link href="#" underline="always" onClick={(e) => e.preventDefault()}>
+          {website}
+        </Link>
+      )}
+
       <Box className={classes.actionSection}>
         <Button
           component={Link}
           href={website}
+          target="_blank"
           variant="contained"
           color="primary"
           className={classes.applyBtn}
           startIcon={<Send />}>
           Apply
         </Button>
-
         <Button
           variant="outlined"
-          className={classes.shareBtn}
           startIcon={<Share />}
-          onClick={shareFn}>
+          onClick={shareFn}
+          disabled={scholarship.id === undefined}>
           Share
         </Button>
       </Box>
 
-      <Typography
-        gutterBottom
-        variant="body1"
-        component="p"
-        className={classes.description}>
-        {description}
-      </Typography>
+      <Typography paragraph>{description}</Typography>
       <Box>
         <DetailCardCell
           label="Deadline"
@@ -163,7 +156,11 @@ export default function ScholarshipDetailCard({ scholarship }) {
         />
         <DetailCardCell
           label="Award Amount"
-          text={amount?.toString() || 'Unknown'}
+          text={
+            preview
+              ? new ScholarshipAmount(amount.type, amount).toString()
+              : amount?.toString() || 'Unknown'
+          }
           bottom
         />
         <DetailCardCell
@@ -173,10 +170,7 @@ export default function ScholarshipDetailCard({ scholarship }) {
         />
       </Box>
       <Box className={classes.propertySection}>
-        <Typography
-          variant="h6"
-          component="h4"
-          className={classes.sectionHeader}>
+        <Typography variant="h5" component="h4" gutterBottom>
           Eligibility Requirements
         </Typography>
         <DetailCardCell label="GPA" text={requirements?.gpa || 'None'} bottom />
@@ -192,10 +186,7 @@ export default function ScholarshipDetailCard({ scholarship }) {
         />
       </Box>
       <Box className={classes.propertySection}>
-        <Typography
-          variant="h6"
-          component="h4"
-          className={classes.sectionHeader}>
+        <Typography variant="h5" component="h4" gutterBottom>
           Tags
         </Typography>
 
@@ -232,7 +223,7 @@ export default function ScholarshipDetailCard({ scholarship }) {
 
 ScholarshipDetailCard.propTypes = {
   scholarship: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    id: PropTypes.string,
     data: PropTypes.shape({
       name: PropTypes.string,
       organization: PropTypes.string,
@@ -258,4 +249,10 @@ ScholarshipDetailCard.propTypes = {
       }),
     }).isRequired,
   }).isRequired,
+  preview: PropTypes.bool,
+};
+
+ScholarshipDetailCard.defaultProps = {
+  id: undefined,
+  preview: false,
 };

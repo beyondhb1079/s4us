@@ -8,6 +8,7 @@ import {
   StepContent,
   Grid,
   Typography,
+  Box,
   FormControlLabel,
   Checkbox,
 } from '@material-ui/core';
@@ -17,6 +18,7 @@ import validationSchema from '../validation/ValidationSchema';
 import ScholarshipAmountField from './ScholarshipAmountField';
 import DatePicker from './DatePicker';
 import FormikTextField from './FormikTextField';
+import ScholarshipDetailCard from './ScholarshipDetailCard';
 import FormikMultiSelect from './FormikMultiSelect';
 import FormikAutocomplete from './FormikAutocomplete';
 import { SCHOOLS, STATES, MAJORS } from '../types/options';
@@ -55,6 +57,9 @@ const useStyles = makeStyles((theme) => ({
   },
   stepperBtns: {
     marginTop: theme.spacing(4),
+  },
+  reviewSection: {
+    marginTop: theme.spacing(2),
   },
 }));
 
@@ -236,6 +241,13 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
       </Grid>
     );
   }
+
+  stepperItems.Review = (
+    <Box className={classes.reviewSection}>
+      <ScholarshipDetailCard scholarship={{ data: formik.values }} preview />
+    </Box>
+  );
+
   const onLastStep = activeStep == Object.keys(stepperItems).length - 1;
 
   return (
@@ -259,9 +271,14 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
                   color="primary"
                   disabled={formik.isSubmitting}
                   type={onLastStep ? 'submit' : 'button'}
-                  onClick={() =>
-                    !onLastStep && setActiveStep((prevStep) => prevStep + 1)
-                  }>
+                  onClick={() => {
+                    if (onLastStep) return;
+                    formik.validateForm().then((errors) => {
+                      if (Object.keys(errors).length === 0)
+                        return setActiveStep((prevStep) => prevStep + 1);
+                      return formik.setErrors(errors);
+                    });
+                  }}>
                   {onLastStep ? 'Submit' : 'Next'}
                 </Button>
               </div>

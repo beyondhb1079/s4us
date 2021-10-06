@@ -6,6 +6,7 @@ import ScholarshipForm from '../components/ScholarshipForm';
 import Scholarships from '../models/Scholarships';
 import SubmissionAlert from '../components/SubmissionAlert';
 import AmountType from '../types/AmountType';
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 function AddScholarship() {
   const [submissionAlert, setSubmissionAlert] = useState(null);
@@ -54,7 +55,7 @@ function AddScholarship() {
             />
           )
         }
-        onSubmitError={() =>
+        onSubmitError={(error) =>
           setSubmissionAlert(
             <Alert severity="error" onClose={() => setSubmissionAlert(null)}>
               <AlertTitle>Error</AlertTitle>
