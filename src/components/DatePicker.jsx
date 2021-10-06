@@ -1,5 +1,7 @@
 import React from 'react';
-import { AdapterDateFns, DatePicker as MuiDatePicker, LocalizationProvider } from '@mui/lab';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import MuiDatePicker from '@mui/lab/DatePicker';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { InputLabel, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 import exact from 'prop-types-exact';

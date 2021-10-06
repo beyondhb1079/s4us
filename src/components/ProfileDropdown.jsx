@@ -1,17 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import firebase from 'firebase';
-import withStyles from '@mui/styles/withStyles';
-import makeStyles from '@mui/styles/makeStyles';
-import { Avatar, Divider, Grid, Typography } from '@mui/material';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import NewIcon from '@mui/icons-material/NewReleases';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
-import DoneIcon from '@mui/icons-material/Done';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { makeStyles, withStyles } from '@mui/styles';
+import {
+  Avatar,
+  BookmarkIcon,
+  Divider,
+  DoneIcon,
+  ExitToAppIcon,
+  Grid,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  Typography,
+} from '@mui/material';
 import experiments from '../lib/experiments';
 
 // hacky way to override Menu style

@@ -1,11 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import makeStyles from '@mui/styles/makeStyles';
-import AppBar from '@mui/material/AppBar';
-import Tab from '@mui/material/Tab';
-import { TabPanel, TabContext, TabList } from '@mui/lab';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import { AppBar, Button, Tab, Typography } from '@mui/material';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
 import HomeSection from './HomeSection';
 import student from '../img/student.png';
 import contributor from '../img/contributor.png';

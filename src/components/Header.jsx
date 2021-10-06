@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 import {
+  Alert,
+  AlertTitle,
   Avatar,
   Button,
   Container,
@@ -12,7 +14,6 @@ import {
   IconButton,
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
-import { Alert, AlertTitle } from '@mui/material';
 import ProfileMenu from './ProfileDropdown';
 
 import { BRAND_NAME, SUBSCRIPTION_FORM_URL } from '../config/constants';
