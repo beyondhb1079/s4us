@@ -87,25 +87,16 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
     }
   };
 
-  function DetailCardCell({ label, text, bottom, top, link }) {
+  function DetailCardCell({ label, text, bottom, top }) {
     return (
       <>
         {top && <Divider light className={classes.divider} />}
         <Grid container justifyContent="space-between">
           <Grid item xs={12} sm>
-            <Typography component="p">{label}</Typography>
+            <Typography>{label}</Typography>
           </Grid>
           <Grid item className={classes.cardDetailText} xs={12} sm>
-            {link ? (
-              <Link
-                href="#"
-                underline="always"
-                onClick={(e) => e.preventDefault()}>
-                {text}
-              </Link>
-            ) : (
-              <Typography component="p">{text}</Typography>
-            )}
+            <Typography>{text}</Typography>
           </Grid>
         </Grid>
         {bottom && <Divider light className={classes.divider} />}
@@ -118,12 +109,10 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
     text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     bottom: PropTypes.bool,
     top: PropTypes.bool,
-    link: PropTypes.bool,
   };
   DetailCardCell.defaultProps = {
     bottom: false,
     top: false,
-    link: false,
   };
 
   return (
@@ -132,16 +121,21 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
       <Typography variant="h5" gutterBottom>
         {organization}
       </Typography>
+      {preview && (
+        <Link href="#" underline="always" onClick={(e) => e.preventDefault()}>
+          {website}
+        </Link>
+      )}
 
       <Box className={classes.actionSection}>
         <Button
           component={Link}
           href={website}
+          target="_blank"
           variant="contained"
           color="primary"
           className={classes.applyBtn}
-          startIcon={<Send />}
-          disabled={scholarship.id === undefined}>
+          startIcon={<Send />}>
           Apply
         </Button>
         <Button
@@ -155,14 +149,6 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
 
       <Typography paragraph>{description}</Typography>
       <Box>
-        {preview && (
-          <DetailCardCell
-            label="Scholarship Link"
-            text={website || 'Unknown'}
-            bottom
-            link
-          />
-        )}
         <DetailCardCell
           label="Deadline"
           text={deadline?.toLocaleDateString() || 'Unknown'}
