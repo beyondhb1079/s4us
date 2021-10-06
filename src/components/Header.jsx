@@ -5,16 +5,16 @@ import {
   AppBar,
   Avatar,
   Button,
+  Grow,
   Hidden,
   IconButton,
   Link as MuiLink,
   makeStyles,
   Snackbar,
   Toolbar,
-  Zoom,
 } from '@material-ui/core';
-import ProfileMenu from './ProfileDropdown';
 import { Alert, AlertTitle } from '@material-ui/lab';
+import ProfileMenu from './ProfileDropdown';
 import { BRAND_NAME, SUBSCRIPTION_FORM_URL } from '../config/constants';
 import HeaderNavMenu from './HeaderNavMenu';
 
@@ -47,7 +47,7 @@ const UnderConstructionAlert = () => (
   </Alert>
 );
 
-const AuthZoomButton = () => {
+const AuthGrowButton = () => {
   const { currentUser } = firebase.auth();
   const [isSignedIn, setIsSignedIn] = useState(
     !!firebase.auth().currentUser || undefined
@@ -62,7 +62,7 @@ const AuthZoomButton = () => {
   const showProfileMenu = (event) => setAnchorEl(event.currentTarget);
   const closeProfileMenu = () => setAnchorEl(null);
   return (
-    <Zoom in={isSignedIn !== undefined}>
+    <Grow in={isSignedIn !== undefined}>
       {isSignedIn ? (
         <>
           <IconButton
@@ -84,7 +84,7 @@ const AuthZoomButton = () => {
           Login
         </Button>
       )}
-    </Zoom>
+    </Grow>
   );
 };
 
@@ -92,12 +92,10 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
-  authZoom: {
+  authItem: {
+    display: 'flex',
     flexGrow: 1,
     justifyContent: 'right',
-  },
-  authItem: {
-    minWidth: '100px',
   },
 }));
 
@@ -127,7 +125,7 @@ function Header() {
         <Hidden xsDown>
           <HeaderNavMenu links={links} />
         </Hidden>
-        <AuthZoomButton className={classes.authItem} />
+        <AuthGrowButton className={classes.authItem} />
       </Toolbar>
       <Hidden smUp>
         <Toolbar variant="dense">
