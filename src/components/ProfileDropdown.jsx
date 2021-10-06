@@ -12,7 +12,12 @@ import {
   MenuItem,
   Typography,
 } from '@mui/material';
-import { BookmarkIcon, DoneIcon, ExitToAppIcon } from '@mui/icons-material';
+import {
+  BookmarkIcon,
+  DoneIcon,
+  ExitToAppIcon,
+  NewIcon,
+} from '@mui/icons-material';
 import experiments from '../lib/experiments';
 
 // hacky way to override Menu style
