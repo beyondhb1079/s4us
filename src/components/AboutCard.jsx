@@ -1,9 +1,6 @@
 import React from 'react';
 import makeStyles from '@mui/styles/makeStyles';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
+import { Card, CardContent, CardMedia, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 
 const useStyles = makeStyles({

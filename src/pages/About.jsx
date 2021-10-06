@@ -1,8 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-import MuiLink from '@mui/material/Link';
-import { Grid, Button, Container, Typography } from '@mui/material';
+import { Grid, Button, Container, Typography, Link as MuiLink } from '@mui/material';
 import AboutCard from '../components/AboutCard';
 import testPic from '../logo.svg';
 import { BRAND_NAME } from '../config/constants';
