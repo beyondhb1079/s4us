@@ -1,6 +1,11 @@
 import React from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import { Dialog, DialogContent, DialogContentText, DialogTitle} from '@mui/material';
+import {
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from '@mui/material';
 import firebase from 'firebase';
 import StyleFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 
