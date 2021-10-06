@@ -4,10 +4,7 @@ import firebase from 'firebase';
 import { makeStyles, withStyles } from '@mui/styles';
 import {
   Avatar,
-  BookmarkIcon,
   Divider,
-  DoneIcon,
-  ExitToAppIcon,
   Grid,
   ListItemIcon,
   ListItemText,
@@ -15,6 +12,7 @@ import {
   MenuItem,
   Typography,
 } from '@mui/material';
+import { BookmarkIcon, DoneIcon, ExitToAppIcon } from '@mui/icons-material';
 import experiments from '../lib/experiments';
 
 // hacky way to override Menu style
