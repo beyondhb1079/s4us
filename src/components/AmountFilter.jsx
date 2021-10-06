@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Popover, InputLabel, Grid } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
-import { ArrowDropDownIcon, RemoveIcon } from '@mui/icons-material';
+import {
+  ArrowDropDown as ArrowDropDownIcon,
+  RemoveIcon,
+} from '@mui/icons-material';
 import AmountTextField from './AmountTextField';
 
 const useStyles = makeStyles((theme) => ({
