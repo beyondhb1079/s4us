@@ -1,6 +1,5 @@
 import React from 'react';
-import { InputLabel, TextField } from '@material-ui/core';
-import { Autocomplete } from '@material-ui/lab';
+import { Autocomplete, InputLabel, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 
 /* eslint-disable react/jsx-props-no-spreading */

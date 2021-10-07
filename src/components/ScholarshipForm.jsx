@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import {
-  Button,
-  Stepper,
-  Step,
-  StepLabel,
-  StepContent,
-  Grid,
-  Typography,
   Box,
-  FormControlLabel,
+  Button,
   Checkbox,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+  FormControlLabel,
+  Grid,
+  Step,
+  StepContent,
+  StepLabel,
+  Stepper,
+  Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import PropTypes from 'prop-types';
 import validationSchema from '../validation/ValidationSchema';
 import ScholarshipAmountField from './ScholarshipAmountField';

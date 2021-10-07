@@ -1,15 +1,14 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-import Container from '@material-ui/core/Container';
 import {
+  featureRequest,
   genMailToLink,
   reportIssue,
-  featureRequest,
   withDeviceInfo,
 } from '../lib/mail';
 import { BRAND_NAME, SUBSCRIPTION_FORM_URL } from '../config/constants';
-import { Link as MuiLink, Typography } from '@material-ui/core';
+import { Container, Link as MuiLink, Typography } from '@mui/material';
 
 function Contact() {
   return (

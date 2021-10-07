@@ -2,17 +2,21 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
-  Button,
   Box,
-  Link,
-  makeStyles,
-  Typography,
-  Chip,
-  Grid,
-  Divider,
+  Button,
   Card,
-} from '@material-ui/core';
-import { Share, Send, Info } from '@material-ui/icons';
+  Chip,
+  Divider,
+  Grid,
+  Link,
+  Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import {
+  Info as InfoIcon,
+  Send as SendIcon,
+  Share as ShareIcon,
+} from '@mui/icons-material';
 import { genMailToLink, withDeviceInfo } from '../lib/mail';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import { BRAND_NAME } from '../config/constants';
@@ -22,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
   },
   actionSection: {
-    margin: `${theme.spacing(3)}px 0`,
-    padding: `${theme.spacing(1)}px 0`,
+    margin: `${theme.spacing(3)} 0`,
+    padding: `${theme.spacing(1)} 0`,
   },
   cardDetailText: {
     [theme.breakpoints.up('sm')]: {
@@ -41,10 +45,10 @@ const useStyles = makeStyles((theme) => ({
     color: '#000',
   },
   reportBtn: {
-    margin: `${theme.spacing(5)}px 0`,
+    margin: `${theme.spacing(5)} 0`,
   },
   divider: {
-    margin: `${theme.spacing(1.5)}px 0`,
+    margin: `${theme.spacing(1.5)} 0`,
   },
 }));
 
@@ -135,12 +139,12 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
           variant="contained"
           color="primary"
           className={classes.applyBtn}
-          startIcon={<Send />}>
+          startIcon={<SendIcon />}>
           Apply
         </Button>
         <Button
           variant="outlined"
-          startIcon={<Share />}
+          startIcon={<ShareIcon />}
           onClick={shareFn}
           disabled={scholarship.id === undefined}>
           Share
@@ -213,7 +217,7 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
             `Please describe the issue for the scholarship located at ${URL}.`
           ),
         })}
-        icon={<Info />}
+        icon={<InfoIcon />}
         className={classes.reportBtn}
         label="Report Issue"
       />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { InputLabel, TextField } from '@material-ui/core';
+import { InputLabel, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 
 function FormikTextField(props) {
