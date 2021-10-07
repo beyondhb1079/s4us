@@ -1,9 +1,6 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Typography from '@material-ui/core/Typography';
+import makeStyles from '@mui/styles/makeStyles';
+import { Card, CardContent, CardMedia, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 
 const useStyles = makeStyles({

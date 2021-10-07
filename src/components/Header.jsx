@@ -2,17 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 import {
+  Alert,
+  AlertTitle,
   Avatar,
   Button,
   Container,
   Grid,
+  IconButton,
   Link as MuiLink,
-  makeStyles,
   Snackbar,
   Zoom,
-  IconButton,
-} from '@material-ui/core';
-import { Alert, AlertTitle } from '@material-ui/lab';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import ProfileMenu from './ProfileDropdown';
 
 import { BRAND_NAME, SUBSCRIPTION_FORM_URL } from '../config/constants';
@@ -94,7 +95,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
     justifyContent: 'space-between',
     alignItems: 'center',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       justifyContent: 'space-around',
     },
   },

@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route } from 'react-router-dom';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { clearFirestoreData, initializeTestApp } from '../lib/testing';
 import ListScholarships from './ListScholarships';
 import Scholarships from '../models/Scholarships';
@@ -13,9 +14,11 @@ window.MutationObserver = require('mutation-observer');
 
 function renderAtRoute(route) {
   return render(
-    <MemoryRouter initialEntries={[route]}>
-      <Route path="/scholarships" component={ListScholarships} />
-    </MemoryRouter>
+    <ThemeProvider theme={createTheme()}>
+      <MemoryRouter initialEntries={[route]}>
+        <Route path="/scholarships" component={ListScholarships} />
+      </MemoryRouter>
+    </ThemeProvider>
   );
 }
 

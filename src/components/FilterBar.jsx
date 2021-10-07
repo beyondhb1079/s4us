@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import FilterDropDown from './FilterDropdown';
 import AmountFilter from './AmountFilter';
 import GradeLevelFilter from './GradeLevelFilter';

@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import firebase from 'firebase';
-import { Container, Typography } from '@material-ui/core';
+import { Alert, AlertTitle, Container, Typography } from '@mui/material';
 import ScholarshipForm from '../components/ScholarshipForm';
 import Scholarships from '../models/Scholarships';
 import SubmissionAlert from '../components/SubmissionAlert';
 import AmountType from '../types/AmountType';
-import { Alert, AlertTitle } from '@material-ui/lab';
 
 function AddScholarship() {
   const [submissionAlert, setSubmissionAlert] = useState(null);

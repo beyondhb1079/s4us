@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import { Typography } from '@material-ui/core';
+import { Typography, Button } from '@mui/material';
 import ScholarshipsMadeSimple from '../components/ScholarshipsMadeSimple';
 import HomeSection from '../components/HomeSection';
 import community from '../img/community.png';

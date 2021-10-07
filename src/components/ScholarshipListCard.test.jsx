@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ScholarshipListCard from './ScholarshipListCard';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 
@@ -18,9 +19,14 @@ test('renders ScholarshipListCard', () => {
 
   const want = mockScholarship;
 
-  render(<ScholarshipListCard scholarship={mockScholarship} />, {
-    wrapper: MemoryRouter,
-  });
+  render(
+    <ThemeProvider theme={createTheme()}>
+      <ScholarshipListCard scholarship={mockScholarship} />
+    </ThemeProvider>,
+    {
+      wrapper: MemoryRouter,
+    }
+  );
 
   Object.values(want.data).forEach((v) => {
     let value = v;

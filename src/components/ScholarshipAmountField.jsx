@@ -1,13 +1,13 @@
 import React from 'react';
 import {
-  InputLabel,
   Grid,
-  Select,
-  MenuItem,
   FormHelperText,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import RemoveIcon from '@material-ui/icons/Remove';
+  InputLabel,
+  MenuItem,
+  Select,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import RemoveIcon from '@mui/icons-material/Remove';
 import PropTypes from 'prop-types';
 import AmountType from '../types/AmountType';
 import AmountTextField from './AmountTextField';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import {
   Button,
   Dialog,
@@ -8,18 +8,18 @@ import {
   DialogContentText,
   DialogTitle,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
-  FacebookShareButton,
-  FacebookIcon,
-  EmailShareButton,
   EmailIcon,
-  LinkedinShareButton,
+  EmailShareButton,
+  FacebookIcon,
+  FacebookShareButton,
   LinkedinIcon,
-  RedditShareButton,
+  LinkedinShareButton,
   RedditIcon,
-  TwitterShareButton,
+  RedditShareButton,
   TwitterIcon,
+  TwitterShareButton,
 } from 'react-share';
 
 const useStyles = makeStyles((theme) => ({

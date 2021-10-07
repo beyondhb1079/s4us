@@ -1,6 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { render, screen } from '@testing-library/react';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { MemoryRouter, Route } from 'react-router-dom';
 import { clearFirestoreData, initializeTestApp } from '../lib/testing';
 import ViewScholarship from './ViewScholarship';
@@ -14,9 +15,11 @@ window.MutationObserver = require('mutation-observer');
 
 function renderAtRoute(pathname, state = {}) {
   return render(
-    <MemoryRouter initialEntries={[{ pathname, state }]}>
-      <Route path="/scholarships/:id" component={ViewScholarship} />
-    </MemoryRouter>
+    <ThemeProvider theme={createTheme()}>
+      <MemoryRouter initialEntries={[{ pathname, state }]}>
+        <Route path="/scholarships/:id" component={ViewScholarship} />
+      </MemoryRouter>
+    </ThemeProvider>
   );
 }
 
@@ -75,9 +78,7 @@ test('renders passed in scholarship details', () => {
   expect(
     screen.getByText(data.deadline.toLocaleDateString())
   ).toBeInTheDocument();
-  expect(screen.getByRole('button', { name: /Apply/i }).href).toBe(
-    data.website
-  );
+  expect(screen.getByRole('link', { name: /Apply/i }).href).toBe(data.website);
   expect(Helmet.peek().title).toBe(data.name);
 });
 
@@ -110,9 +111,7 @@ test('renders scholarship details', async () => {
   expect(
     screen.getByText(data.deadline.toLocaleDateString())
   ).toBeInTheDocument();
-  expect(screen.getByRole('button', { name: /Apply/i }).href).toBe(
-    data.website
-  );
+  expect(screen.getByRole('link', { name: /Apply/i }).href).toBe(data.website);
   expect(Helmet.peek().title).toBe(data.name);
   expect(
     screen.getByText(data.requirements.states.join(', '))

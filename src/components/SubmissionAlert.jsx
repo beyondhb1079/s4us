@@ -1,8 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, IconButton } from '@material-ui/core';
-import { Alert, AlertTitle } from '@material-ui/lab';
-import CloseIcon from '@material-ui/icons/Close';
+import { Alert, AlertTitle, Button, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import PropTypes from 'prop-types';
 
 function SubmissionAlert({ id, name, onClose }) {

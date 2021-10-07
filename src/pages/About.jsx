@@ -1,8 +1,13 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-import MuiLink from '@material-ui/core/Link';
-import { Grid, Button, Container, Typography } from '@material-ui/core';
+import {
+  Button,
+  Container,
+  Grid,
+  Link as MuiLink,
+  Typography,
+} from '@mui/material';
 import AboutCard from '../components/AboutCard';
 import testPic from '../logo.svg';
 import { BRAND_NAME } from '../config/constants';
@@ -100,7 +105,11 @@ function About() {
       <Typography paragraph>
         Want to get involved? Shoot us an email!
       </Typography>
-      <Grid container justify="flex-start" alignItems="stretch" spacing={3}>
+      <Grid
+        container
+        justifyContent="flex-start"
+        alignItems="stretch"
+        spacing={3}>
         {team.map(({ name, img, description }) => (
           <Grid item key={name} xs={12} sm={6} md={4}>
             <AboutCard {...{ name, img, description }} />
