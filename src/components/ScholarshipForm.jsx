@@ -68,8 +68,6 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
   const [activeStep, setActiveStep] = useState(0);
   const [noReqsChecked, setNoReqsChecked] = useState(false);
 
-  // const [noReqsHelperText, setNoReqsHelperText] = useState('');
-
   const formik = useFormik({
     initialValues: scholarship.data,
     validationSchema,
@@ -77,12 +75,12 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
       setSubmitting(true);
       scholarship.data = { ...values };
 
-      if (noReqsChecked) {
-        Object.keys(scholarship.data.requirements).forEach(
-          (k) => (scholarship.data.requirements[k] = [])
-        );
-        scholarship.data.requirements.gpa = 0;
-      }
+      // if (noReqsChecked) {
+      //   Object.keys(scholarship.data.requirements).forEach(
+      //     (k) => (scholarship.data.requirements[k] = [])
+      //   );
+      //   scholarship.data.requirements.gpa = 0;
+      // }
 
       scholarship
         .save()
@@ -175,13 +173,16 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
             control={
               <Checkbox
                 checked={noReqsChecked}
-                onChange={(event) => setNoReqsChecked(event.target.checked)}
+                onChange={(event) => {
+                  formik.values.requirements = {};
+                  return setNoReqsChecked(event.target.checked);
+                }}
                 color="primary"
               />
             }
             label="NO ELIGIBILITY REQUIREMENTS"
           />
-          <FormHelperText error>{error}</FormHelperText>
+          <FormHelperText error>{formik.errors.checkbox}</FormHelperText>
         </Grid>
 
         <Grid item sm={6} xs={12}>
@@ -258,24 +259,20 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
       </Grid>
     );
   }
-  /*
+
   function validationCheck() {
-    // no requirements and checkbox not checked
-    if (
-      !Object.values(formik.values.requirements).some((val) => {
-        if (typeof val == 'number') return val != 0;
-        return val.length != 0;
-      }) &&
-      !noReqsChecked
-    ) {
-      setNoReqsHelperText(
-        'Check this box if there are no requirements for this scholarship.'
-      );
-      return;
+    const noReqsGiven = Object.keys(formik.values.requirements).length === 0;
+    // no requirements & no checkbox fails
+    if (activeStep == 1 && !noReqsChecked && noReqsGiven) {
+      formik.setErrors({
+        ...errors,
+        checkbox:
+          'Check this box if there are no requirements for this scholarship.',
+      });
+      return false;
     }
-    setNoReqsHelperText('');
-    formik.submitForm();
-  } */
+    return true;
+  }
 
   stepperItems.Review = (
     <Box className={classes.reviewSection}>
@@ -309,8 +306,9 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
                   onClick={() => {
                     if (onLastStep) return;
                     formik.validateForm().then((errors) => {
-                      if (Object.keys(errors).length === 0)
+                      if (validationCheck() && Object.keys(errors).length === 0)
                         return setActiveStep((prevStep) => prevStep + 1);
+                      // validationCheck();
                       return formik.setErrors(errors);
                     });
                   }}>
