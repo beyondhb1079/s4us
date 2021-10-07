@@ -11,6 +11,7 @@ import {
   StepLabel,
   Stepper,
   Typography,
+  FormHelperText,
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import PropTypes from 'prop-types';
@@ -74,14 +75,6 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
     onSubmit: (values, { setSubmitting, resetForm }) => {
       setSubmitting(true);
       scholarship.data = { ...values };
-
-      // if (noReqsChecked) {
-      //   Object.keys(scholarship.data.requirements).forEach(
-      //     (k) => (scholarship.data.requirements[k] = [])
-      //   );
-      //   scholarship.data.requirements.gpa = 0;
-      // }
-
       scholarship
         .save()
         .then(submitFn)
@@ -91,7 +84,6 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
     },
   });
 
-  /* eslint-disable react/jsx-props-no-spreading */
   const stepperItems = {};
   stepperItems.General = (
     <Grid container spacing={3}>
@@ -264,14 +256,12 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
     const noReqsGiven = Object.keys(formik.values.requirements).length === 0;
     // no requirements & no checkbox fails
     if (activeStep == 1 && !noReqsChecked && noReqsGiven) {
-      formik.setErrors({
-        ...errors,
+      return {
         checkbox:
           'Check this box if there are no requirements for this scholarship.',
-      });
-      return false;
+      };
     }
-    return true;
+    return {};
   }
 
   stepperItems.Review = (
@@ -306,9 +296,12 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
                   onClick={() => {
                     if (onLastStep) return;
                     formik.validateForm().then((errors) => {
-                      if (validationCheck() && Object.keys(errors).length === 0)
-                        return setActiveStep((prevStep) => prevStep + 1);
-                      // validationCheck();
+                      const checkboxError = validationCheck();
+                      errors = { ...errors, ...checkboxError };
+
+                      if (Object.keys(errors).length === 0)
+                        setActiveStep((prevStep) => prevStep + 1);
+
                       return formik.setErrors(errors);
                     });
                   }}>

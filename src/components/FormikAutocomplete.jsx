@@ -23,7 +23,7 @@ function FormikAutocomplete(props) {
         id={id}
         freeSolo={freeSolo}
         multiple
-        value={formik.values.requirements[id]}
+        value={formik.values.requirements[id] ?? []}
         onChange={(e, newVal) =>
           formik.setFieldValue(
             `requirements.${id}`,
@@ -37,9 +37,7 @@ function FormikAutocomplete(props) {
             {...params}
             variant="outlined"
             fullWidth
-            placeholder={
-              formik.values.requirements[id].length == 0 ? placeholder : ''
-            }
+            placeholder={formik.values.requirements[id] ? '' : placeholder}
           />
         )}
       />
