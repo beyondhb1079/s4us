@@ -3,17 +3,11 @@ import PropTypes from 'prop-types';
 import makeStyles from '@mui/styles/makeStyles';
 import { Container, Grid, Typography } from '@mui/material';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(4),
-  },
+const useStyles = makeStyles(() => ({
   img: {
     width: '100%',
     height: '100%',
     objectFit: 'contain',
-  },
-  description: {
-    marginBottom: theme.spacing(3),
   },
 }));
 
@@ -23,7 +17,7 @@ export default function HomeSection(props) {
     props;
 
   return (
-    <Container className={classes.root}>
+    <Container sx={{ padding: 4 }}>
       <Grid container spacing={2} direction={direction} alignItems={alignItems}>
         <Grid item xs={12} sm={6}>
           <Typography variant="overline" component="h6" gutterBottom>
@@ -32,10 +26,7 @@ export default function HomeSection(props) {
           <Typography variant="h2" component="h2" gutterBottom>
             {title}
           </Typography>
-          <Typography
-            variant="body2"
-            gutterBottom
-            className={classes.description}>
+          <Typography variant="body2" paragraph>
             {description}
           </Typography>
           <Grid container spacing={2}>

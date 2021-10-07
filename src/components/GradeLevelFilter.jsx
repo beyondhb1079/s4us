@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import makeStyles from '@mui/styles/makeStyles';
 import {
   Button,
   Checkbox,
@@ -9,16 +8,6 @@ import {
   Popover,
 } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-
-const useStyles = makeStyles((theme) => ({
-  button: {
-    margin: theme.spacing(1),
-    height: theme.spacing(4),
-  },
-  popover: {
-    padding: theme.spacing(2),
-  },
-}));
 
 const gradeItems = [
   '12th - High School',
@@ -31,7 +20,6 @@ const gradeItems = [
 ];
 
 export default function GradeLevelFilter() {
-  const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const openPopover = (event) => setAnchorEl(event.currentTarget);
   const [selectedGrades, setSelectedGrades] = useState(new Set());
@@ -50,7 +38,7 @@ export default function GradeLevelFilter() {
     <>
       <Button
         variant="outlined"
-        className={classes.button}
+        sx={{ margin: 1, height: 4 }}
         onClick={openPopover}
         endIcon={<ArrowDropDownIcon color="primary" />}>
         Grade
@@ -61,7 +49,7 @@ export default function GradeLevelFilter() {
         onClose={() => setAnchorEl(null)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
-        <FormControl component="fieldset" className={classes.popover}>
+        <FormControl component="fieldset" sx={{ padding: 2 }}>
           <FormGroup>
             {Array.from(gradeItems).map((grade) => (
               <FormControlLabel
