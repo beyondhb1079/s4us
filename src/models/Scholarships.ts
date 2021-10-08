@@ -72,7 +72,6 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
         .where('deadline', '>=', new Date())
         .orderBy('deadline', opts.sortDir ?? 'asc');
     }
-    // Sort ties by deadline earliest to latest
 
     if (opts.sortField === 'deadline') {
       query = query
