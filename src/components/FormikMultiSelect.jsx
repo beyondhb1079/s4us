@@ -10,11 +10,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MenuProps = {
-  getContentAnchorEl: null, //TODO: remove this when material-ui gets updated to version 5
-  anchorOrigin: {
-    vertical: 'bottom',
-    horizontal: 'left',
-  },
   PaperProps: {
     style: {
       maxHeight: 250,
