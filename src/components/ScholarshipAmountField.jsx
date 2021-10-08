@@ -31,13 +31,7 @@ function ScholarshipAmountField(props) {
   const minError = getIn(formik.errors, 'amount.min');
   const maxError = getIn(formik.errors, 'amount.max');
 
-  let helperText = '';
-  if (
-    getIn(formik.touched, 'amount.min') ||
-    getIn(formik.touched, 'amount.max')
-  ) {
-    helperText = minError || maxError;
-  }
+  let helperText = minError || maxError || '';
 
   const inputFields = {};
   inputFields[AmountType.Varies] = (
@@ -47,7 +41,11 @@ function ScholarshipAmountField(props) {
         value={formik.values.amount.min || ''}
         onChange={(e) => {
           const val = parseInt(e.target.value, 10);
-          formik.setFieldValue('amount.min', val || 0, true);
+          formik.setFieldValue(
+            'amount.min',
+            val || 0,
+            /* shouldValidate = */ false
+          );
         }}
       />
 
@@ -58,19 +56,19 @@ function ScholarshipAmountField(props) {
         value={formik.values.amount.max || ''}
         onChange={(e) => {
           const val = parseInt(e.target.value, 10);
-          formik.setFieldValue('amount.max', val || 0, true);
+          formik.setFieldValue('amount.max', val || 0, false);
         }}
       />
     </>
   );
   inputFields[AmountType.Fixed] = (
     <AmountTextField
-      error={getIn(formik.touched, 'amount.min') && Boolean(minError)}
+      error={Boolean(minError)}
       value={formik.values.amount.min || ''}
       onChange={(e) => {
         const val = parseInt(e.target.value, 10);
-        formik.setFieldValue('amount.min', val || 0, true);
-        formik.setFieldValue('amount.max', val || 0, true);
+        formik.setFieldValue('amount.min', val || 0, false);
+        formik.setFieldValue('amount.max', val || 0, false);
       }}
     />
   );
@@ -85,7 +83,7 @@ function ScholarshipAmountField(props) {
             variant="outlined"
             value={amountType}
             onChange={(e) =>
-              formik.setFieldValue('amount.type', e.target.value, true)
+              formik.setFieldValue('amount.type', e.target.value, false)
             }>
             <MenuItem value={AmountType.Fixed}>Fixed</MenuItem>
             <MenuItem value={AmountType.Varies}>Varies</MenuItem>

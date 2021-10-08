@@ -71,6 +71,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
   const formik = useFormik({
     initialValues: scholarship.data,
     validationSchema,
+    validateOnChange: false,
     onSubmit: (values, { setSubmitting, resetForm }) => {
       setSubmitting(true);
       scholarship.data = { ...values };
@@ -125,10 +126,12 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
           id="deadline"
           label="Deadline *"
           labelStyle={classes.inputLabel}
-          error={formik.touched.deadline && Boolean(formik.errors.deadline)}
-          helperText={formik.touched.deadline && formik.errors.deadline}
+          error={Boolean(formik.errors.deadline)}
+          helperText={formik.errors.deadline}
           value={formik.values.deadline}
-          onChange={(date) => formik.setFieldValue('deadline', date, true)}
+          onChange={(date) =>
+            formik.setFieldValue('deadline', date, /* shouldValidate = */ false)
+          }
         />
       </Grid>
 

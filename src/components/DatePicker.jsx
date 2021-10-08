@@ -8,6 +8,7 @@ import exact from 'prop-types-exact';
 
 function DatePicker(props) {
   const { id, label, error, helperText, value, onChange, labelStyle } = props;
+
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <InputLabel className={labelStyle}>{label}</InputLabel>
@@ -20,7 +21,7 @@ function DatePicker(props) {
             variant="outlined"
             fullWidth
             // eslint-disable-next-line react/jsx-props-no-spreading
-            {...{ error, helperText, id, ...params }}
+            {...{ ...params, helperText, id, error }}
           />
         )}
       />
