@@ -6,6 +6,7 @@ import FirestoreModel from './base/FirestoreModel';
 import ScholarshipModel from './ScholarshipModel';
 import ScholarshipData from '../types/ScholarshipData';
 
+// FirestoreDataConverter converts data of type T to firestore data
 export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipData> =
   {
     toFirestore: (data: ScholarshipData) => ({
@@ -65,15 +66,20 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
     let query: firebase.firestore.Query<ScholarshipData> = this.collection;
 
     // Sort by requested field + direction
-    if (opts.sortField) {
-      query = query.orderBy(opts.sortField, opts.sortDir ?? 'asc');
-    }
-    // Sort ties by deadline earliest to earliest
+
     if (opts.sortField !== 'deadline') {
       query = query
-        .where('deadline', '>', new Date())
-        .orderBy('deadline', 'asc');
+        .where('deadline', '>=', new Date())
+        .orderBy('deadline', opts.sortDir ?? 'asc');
     }
+    // Sort ties by deadline earliest to latest
+
+    if (opts.sortField === 'deadline') {
+      query = query
+        .where('deadline', '>=', new Date())
+        .orderBy('deadline', opts.sortDir ?? 'asc');
+    }
+
     if (opts.authorId) {
       query = query.where('author.id', '==', opts.authorId);
     }

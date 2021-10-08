@@ -83,7 +83,8 @@ export default function ProfileDropdown(props) {
       anchorEl={anchorEl}
       keepMounted
       open={Boolean(anchorEl)}
-      onClose={handleClose}>
+      onClose={handleClose}
+    >
       <Grid container spacing={2} className={classes.gridRoot}>
         <Grid item className={classes.profilePic}>
           <Avatar src={user.photoURL} className={classes.medium} />

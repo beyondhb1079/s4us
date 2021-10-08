@@ -15,14 +15,16 @@ function SubmissionAlert({ id, name, onClose }) {
             color="inherit"
             size="medium"
             component={Link}
-            to={`/scholarships/${id}`}>
+            to={`/scholarships/${id}`}
+          >
             VIEW
           </Button>
           <IconButton size="medium" color="inherit" onClick={onClose}>
             <CloseIcon fontSize="small" />
           </IconButton>
         </>
-      }>
+      }
+    >
       <AlertTitle>Success</AlertTitle>
       {`${name} submitted successfully.`}
     </Alert>

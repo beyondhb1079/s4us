@@ -34,7 +34,8 @@ export default function AmountFilter(props) {
         variant="outlined"
         className={classes.buttonStyle}
         onClick={handleClick}
-        endIcon={<ArrowDropDownIcon color="primary" />}>
+        endIcon={<ArrowDropDownIcon color="primary" />}
+      >
         Amount
       </Button>
       <Popover
@@ -43,7 +44,8 @@ export default function AmountFilter(props) {
         anchorEl={anchorEl}
         onClose={() => setAnchorEl(null)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
+        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+      >
         <Grid container>
           <Grid item className={classes.filterStyle}>
             <InputLabel className={classes.labelStyle}>Min Amount</InputLabel>

@@ -41,7 +41,8 @@ const UnderConstructionAlert = () => (
       <Button component={MuiLink} href={SUBSCRIPTION_FORM_URL}>
         SUBSCRIBE FOR UPDATES
       </Button>
-    }>
+    }
+  >
     <AlertTitle>Warning</AlertTitle>
     🚧 Website Actively Under-Construction! 🚧
   </Alert>
@@ -71,7 +72,8 @@ const AuthZoomButton = () => {
             aria-controls="menu-appbar"
             aria-haspopup="true"
             onClick={showProfileMenu}
-            color="inherit">
+            color="inherit"
+          >
             <Avatar src={currentUser.photoURL} />
           </IconButton>
           <ProfileMenu anchorEl={anchorEl} handleClose={closeProfileMenu} />
@@ -80,7 +82,8 @@ const AuthZoomButton = () => {
         <Button
           color="inherit"
           component={Link}
-          to={{ state: { showLoginDialog: true } }}>
+          to={{ state: { showLoginDialog: true } }}
+        >
           Login
         </Button>
       )}

@@ -86,7 +86,8 @@ function ScholarshipAmountField(props) {
             value={amountType}
             onChange={(e) =>
               formik.setFieldValue('amount.type', e.target.value, true)
-            }>
+            }
+          >
             <MenuItem value={AmountType.Fixed}>Fixed</MenuItem>
             <MenuItem value={AmountType.Varies}>Varies</MenuItem>
             <MenuItem value={AmountType.FullTuition}>Full Tuition</MenuItem>

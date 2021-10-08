@@ -77,7 +77,8 @@ export default function UserHome() {
         container
         component={Paper}
         variant="outlined"
-        className={classes.browseGrid}>
+        className={classes.browseGrid}
+      >
         <Grid item sm={6} xs={12}>
           <Typography variant="h5" gutterBottom>
             Looking for scholarships?
@@ -87,7 +88,8 @@ export default function UserHome() {
             color="primary"
             component={Link}
             to="/scholarships"
-            className={classes.browseButton}>
+            className={classes.browseButton}
+          >
             Browse Scholarships
           </Button>
         </Grid>
@@ -107,7 +109,8 @@ export default function UserHome() {
             color="primary"
             startIcon={<AddIcon />}
             component={Link}
-            to="/scholarships/new">
+            to="/scholarships/new"
+          >
             Add Scholarship
           </Button>
         </Grid>
@@ -119,7 +122,8 @@ export default function UserHome() {
             container
             component={Paper}
             variant="outlined"
-            className={classes.noneAddedGrid}>
+            className={classes.noneAddedGrid}
+          >
             <Grid item>
               <InboxIcon className={classes.inboxIcon} />
             </Grid>

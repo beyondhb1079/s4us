@@ -48,7 +48,8 @@ function FormikMultiSelect(props) {
           )
         }
         renderValue={(selected) => selected.join(', ') || placeholder}
-        MenuProps={MenuProps}>
+        MenuProps={MenuProps}
+      >
         {Object.entries(options).map(([name, value]) => (
           <MenuItem key={value} value={value}>
             {name}
