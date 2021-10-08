@@ -31,8 +31,7 @@ function Contact() {
           href={genMailToLink({
             subject: 'Bug Report',
             body: withDeviceInfo(reportIssue),
-          })}
-        >
+          })}>
           here
         </MuiLink>
         .
@@ -47,8 +46,7 @@ function Contact() {
           href={genMailToLink({
             subject: 'Feature Request',
             body: withDeviceInfo(featureRequest),
-          })}
-        >
+          })}>
           here
         </MuiLink>
         .
@@ -82,8 +80,7 @@ function Contact() {
           href={genMailToLink({
             subject: 'Outreach',
             body: 'Please describe the purpose of your outreach below.\n',
-          })}
-        >
+          })}>
           here
         </MuiLink>{' '}
         and we&apos;ll be in touch as soon as possible.

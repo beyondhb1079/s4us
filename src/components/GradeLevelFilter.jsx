@@ -52,8 +52,7 @@ export default function GradeLevelFilter() {
         variant="outlined"
         className={classes.button}
         onClick={openPopover}
-        endIcon={<ArrowDropDownIcon color="primary" />}
-      >
+        endIcon={<ArrowDropDownIcon color="primary" />}>
         Grade
       </Button>
       <Popover
@@ -61,8 +60,7 @@ export default function GradeLevelFilter() {
         anchorEl={anchorEl}
         onClose={() => setAnchorEl(null)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-      >
+        transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
         <FormControl component="fieldset" className={classes.popover}>
           <FormGroup>
             {Array.from(gradeItems).map((grade) => (

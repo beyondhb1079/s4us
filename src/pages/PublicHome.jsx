@@ -23,8 +23,7 @@ function PublicHome() {
             component={Link}
             to="/about"
             variant="outlined"
-            color="primary"
-          >
+            color="primary">
             Learn More
           </Button>,
         ]}

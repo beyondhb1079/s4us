@@ -115,8 +115,7 @@ function About() {
         component={Link}
         to="/scholarships"
         variant="contained"
-        color="primary"
-      >
+        color="primary">
         Browse Scholarships
       </Button>
     </Container>

@@ -37,8 +37,7 @@ export default function HomeSection(props) {
           <Typography
             variant="body2"
             gutterBottom
-            className={classes.description}
-          >
+            className={classes.description}>
             {description}
           </Typography>
           <Grid container spacing={2}>

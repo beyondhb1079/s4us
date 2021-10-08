@@ -249,8 +249,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
               <div className={classes.stepperBtns}>
                 <Button
                   disabled={activeStep === 0}
-                  onClick={() => setActiveStep((prevStep) => prevStep - 1)}
-                >
+                  onClick={() => setActiveStep((prevStep) => prevStep - 1)}>
                   BACK
                 </Button>
 
@@ -262,8 +261,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
                   type={onLastStep ? 'submit' : 'button'}
                   onClick={() =>
                     !onLastStep && setActiveStep((prevStep) => prevStep + 1)
-                  }
-                >
+                  }>
                   {onLastStep ? 'Submit' : 'Next'}
                 </Button>
               </div>

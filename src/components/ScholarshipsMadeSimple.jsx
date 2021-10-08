@@ -37,8 +37,7 @@ function OutlineButton(user) {
       variant="outlined"
       color="primary"
       component={Link}
-      to={user === 'students' ? '/scholarships' : '/scholarships/new'}
-    >
+      to={user === 'students' ? '/scholarships' : '/scholarships/new'}>
       {user === 'students' ? 'Find Scholarships' : 'Submit A Scholarship'}
     </Button>
   );
@@ -56,8 +55,7 @@ const tabs = [
         color="primary"
         component={Link}
         to={{ state: { showLoginDialog: true } }}
-        replace
-      >
+        replace>
         Login
       </Button>,
       OutlineButton('students'),
@@ -86,8 +84,7 @@ export default function ScholarshipsMadeSimpleSection() {
         variant="h4"
         component="h4"
         className={classes.description}
-        gutterBottom
-      >
+        gutterBottom>
         Scholarships Made Simple
       </Typography>
       <TabContext value={user}>

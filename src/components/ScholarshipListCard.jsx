@@ -61,8 +61,7 @@ function ScholarshipListCard({ scholarship }) {
         to={{
           pathname: `/scholarships/${scholarship.id}`,
           state: { scholarship },
-        }}
-      >
+        }}>
         <CardContent className={classes.content}>
           <Typography variant="body1" className={classes.deadline}>
             {deadline?.toLocaleDateString()}
@@ -74,15 +73,13 @@ function ScholarshipListCard({ scholarship }) {
           <Typography
             variant="subtitle1"
             className={classes.subtitle}
-            gutterBottom
-          >
+            gutterBottom>
             {amount?.toString()}
           </Typography>
           <Typography
             variant="body1"
             color="textSecondary"
-            className={classes.description}
-          >
+            className={classes.description}>
             {description}
           </Typography>
           <Box className={classes.tagWrapper}>
