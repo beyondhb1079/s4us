@@ -59,33 +59,36 @@ const AuthZoomButton = () => {
     []
   );
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const showProfileMenu = (event) => setAnchorEl(event.currentTarget);
-  const closeProfileMenu = () => setAnchorEl(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   return (
-    <Zoom in={isSignedIn !== undefined}>
-      {isSignedIn ? (
-        <>
+    <>
+      <Zoom in={isSignedIn !== undefined}>
+        {isSignedIn ? (
           <IconButton
             size="medium"
             aria-label="account of current user"
             aria-controls="menu-appbar"
             aria-haspopup="true"
-            onClick={showProfileMenu}
+            onClick={(e) => setAnchorEl(e.currentTarget)}
             color="inherit">
             <Avatar src={currentUser.photoURL} />
           </IconButton>
-          <ProfileMenu anchorEl={anchorEl} handleClose={closeProfileMenu} />
-        </>
-      ) : (
-        <Button
-          color="inherit"
-          component={Link}
-          to={{ state: { showLoginDialog: true } }}>
-          Login
-        </Button>
+        ) : (
+          <Button
+            color="inherit"
+            component={Link}
+            to={{ state: { showLoginDialog: true } }}>
+            Login
+          </Button>
+        )}
+      </Zoom>
+      {isSignedIn && (
+        <ProfileMenu
+          anchorEl={anchorEl}
+          handleClose={() => setAnchorEl(null)}
+        />
       )}
-    </Zoom>
+    </>
   );
 };
 
