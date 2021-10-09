@@ -7,20 +7,24 @@ import PropTypes from 'prop-types';
 import exact from 'prop-types-exact';
 
 function DatePicker(props) {
-  const { id, label, error, helperText, value, onChange, labelStyle } = props;
+  const { label, labelStyle, formik } = props;
+
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <InputLabel className={labelStyle}>{label}</InputLabel>
       <MuiDatePicker
         inputFormat="MM/dd/yyyy"
-        onChange={onChange}
-        value={value}
+        value={formik.values.deadline}
+        onChange={(date) => formik.setFieldValue('deadline', date)}
         renderInput={(params) => (
           <TextField
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            {...params}
+            id="deadline"
             variant="outlined"
             fullWidth
-            // eslint-disable-next-line react/jsx-props-no-spreading
-            {...{ error, helperText, id, ...params }}
+            helperText={formik.errors.deadline}
+            error={Boolean(formik.errors.deadline)}
           />
         )}
       />
@@ -29,19 +33,12 @@ function DatePicker(props) {
 }
 
 DatePicker.propTypes = exact({
-  id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  error: PropTypes.bool,
-  helperText: PropTypes.string,
-  value: PropTypes.instanceOf(Date),
-  onChange: PropTypes.func.isRequired,
   labelStyle: PropTypes.string,
+  formik: PropTypes.object.isRequired,
 });
 
 DatePicker.defaultProps = {
-  value: null, // so console doesn't complain about deadline being null in the beginning
-  error: false,
-  helperText: '',
   labelStyle: null,
 };
 
