@@ -123,13 +123,9 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 
       <Grid item sm={6}>
         <DatePicker
-          id="deadline"
           label="Deadline *"
           labelStyle={classes.inputLabel}
-          error={Boolean(formik.errors.deadline)}
-          helperText={formik.errors.deadline}
-          value={formik.values.deadline}
-          onChange={(date) => formik.setFieldValue('deadline', date)}
+          formik={formik}
         />
       </Grid>
 
