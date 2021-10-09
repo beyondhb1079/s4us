@@ -77,6 +77,9 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
     validateOnChange: false,
     onSubmit: (values, { setSubmitting, resetForm }) => {
       setSubmitting(true);
+      if (values.requirements.gpa)
+        values.requirements.gpa = parseFloat(values.requirements.gpa);
+
       scholarship.data = { ...values };
       scholarship
         .save()
@@ -193,13 +196,13 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
             <InputLabel className={classes.inputLabel}>Minimum GPA</InputLabel>
             <TextField
               disabled={noReqsChecked}
-              id="gpa"
+              id="requirements.gpa"
               value={formik.values.requirements.gpa ?? ''}
+              error={Boolean(getIn(formik.errors, 'requirements.gpa'))}
               helperText={getIn(formik.errors, 'requirements.gpa')}
               placeholder="All"
-              onChange={(e) =>
-                formik.setFieldValue('requirements.gpa', e.target.value)
-              }
+              onChange={formik.handleChange}
+              fullWidth
             />
           </>
         </Grid>
@@ -275,7 +278,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
   const onLastStep = activeStep == Object.keys(stepperItems).length - 1;
 
   return (
-    <form>
+    <form onSubmit={formik.handleSubmit}>
       <Stepper activeStep={activeStep} orientation="vertical">
         {Object.keys(stepperItems).map((key) => (
           <Step key={key}>

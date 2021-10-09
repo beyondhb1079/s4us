@@ -3,14 +3,12 @@ import { InputLabel, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 
 function FormikTextField(props) {
-  const { label, labelStyle, id, formik, minRows, disabled } = props;
+  const { label, labelStyle, id, formik, minRows } = props;
 
   return (
     <>
       <InputLabel className={labelStyle}>{label}</InputLabel>
       <TextField
-        disabled={disabled}
-        variant="outlined"
         id={id}
         error={Boolean(formik.errors[id])}
         helperText={formik.errors[id]}
@@ -30,11 +28,9 @@ FormikTextField.propTypes = {
   id: PropTypes.string.isRequired,
   formik: PropTypes.object.isRequired,
   minRows: PropTypes.number,
-  disabled: PropTypes.bool,
 };
 FormikTextField.defaultProps = {
   labelStyle: null,
   minRows: 0,
-  disabled: false,
 };
 export default FormikTextField;
