@@ -10,11 +10,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MenuProps = {
-  getContentAnchorEl: null, //TODO: remove this when material-ui gets updated to version 5
-  anchorOrigin: {
-    vertical: 'bottom',
-    horizontal: 'left',
-  },
   PaperProps: {
     style: {
       maxHeight: 250,
@@ -41,11 +36,7 @@ function FormikMultiSelect(props) {
         variant="outlined"
         value={formik.values.requirements[id]}
         onChange={(e) =>
-          formik.setFieldValue(
-            `requirements.${id}`,
-            e.target.value,
-            /* shouldValidate = */ false
-          )
+          formik.setFieldValue(`requirements.${id}`, e.target.value)
         }
         renderValue={(selected) => selected.join(', ') || placeholder}
         MenuProps={MenuProps}>

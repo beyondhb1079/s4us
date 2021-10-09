@@ -4,25 +4,18 @@ import PropTypes from 'prop-types';
 
 /* eslint-disable react/jsx-props-no-spreading */
 function FormikAutocomplete(props) {
-  const { label, id, labelStyle, options, freeSolo, formik, placeholder } =
-    props;
+  const { label, id, labelStyle, formik, placeholder, ...otherProps } = props;
 
   return (
     <>
       <InputLabel className={labelStyle}>{label}</InputLabel>
       <Autocomplete
         id={id}
-        freeSolo={freeSolo}
         multiple
         value={formik.values.requirements[id]}
         onChange={(e, newVal) =>
-          formik.setFieldValue(
-            `requirements.${id}`,
-            newVal,
-            /* shouldValidate = */ false
-          )
+          formik.setFieldValue(`requirements.${id}`, newVal)
         }
-        options={options}
         renderInput={(params) => (
           <TextField
             {...params}
@@ -33,6 +26,7 @@ function FormikAutocomplete(props) {
             }
           />
         )}
+        {...otherProps}
       />
     </>
   );
