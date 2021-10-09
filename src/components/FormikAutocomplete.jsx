@@ -14,11 +14,7 @@ function FormikAutocomplete(props) {
         multiple
         value={formik.values.requirements[id]}
         onChange={(e, newVal) =>
-          formik.setFieldValue(
-            `requirements.${id}`,
-            newVal,
-            /* shouldValidate = */ false
-          )
+          formik.setFieldValue(`requirements.${id}`, newVal)
         }
         renderInput={(params) => (
           <TextField

@@ -36,11 +36,7 @@ function FormikMultiSelect(props) {
         variant="outlined"
         value={formik.values.requirements[id]}
         onChange={(e) =>
-          formik.setFieldValue(
-            `requirements.${id}`,
-            e.target.value,
-            /* shouldValidate = */ false
-          )
+          formik.setFieldValue(`requirements.${id}`, e.target.value)
         }
         renderValue={(selected) => selected.join(', ') || placeholder}
         MenuProps={MenuProps}>

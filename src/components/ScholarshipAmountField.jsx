@@ -41,11 +41,7 @@ function ScholarshipAmountField(props) {
         value={formik.values.amount.min || ''}
         onChange={(e) => {
           const val = parseInt(e.target.value, 10);
-          formik.setFieldValue(
-            'amount.min',
-            val || 0,
-            /* shouldValidate = */ false
-          );
+          formik.setFieldValue('amount.min', val || 0);
         }}
       />
 
@@ -56,7 +52,7 @@ function ScholarshipAmountField(props) {
         value={formik.values.amount.max || ''}
         onChange={(e) => {
           const val = parseInt(e.target.value, 10);
-          formik.setFieldValue('amount.max', val || 0, false);
+          formik.setFieldValue('amount.max', val || 0);
         }}
       />
     </>
@@ -67,8 +63,8 @@ function ScholarshipAmountField(props) {
       value={formik.values.amount.min || ''}
       onChange={(e) => {
         const val = parseInt(e.target.value, 10);
-        formik.setFieldValue('amount.min', val || 0, false);
-        formik.setFieldValue('amount.max', val || 0, false);
+        formik.setFieldValue('amount.min', val || 0);
+        formik.setFieldValue('amount.max', val || 0);
       }}
     />
   );
@@ -79,12 +75,11 @@ function ScholarshipAmountField(props) {
       <Grid container spacing={3}>
         <Grid item>
           <Select
+            name="amount.type"
             className={classes.amountSelect}
             variant="outlined"
             value={amountType}
-            onChange={(e) =>
-              formik.setFieldValue('amount.type', e.target.value, false)
-            }>
+            onChange={formik.handleChange}>
             <MenuItem value={AmountType.Fixed}>Fixed</MenuItem>
             <MenuItem value={AmountType.Varies}>Varies</MenuItem>
             <MenuItem value={AmountType.FullTuition}>Full Tuition</MenuItem>

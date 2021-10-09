@@ -129,9 +129,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
           error={Boolean(formik.errors.deadline)}
           helperText={formik.errors.deadline}
           value={formik.values.deadline}
-          onChange={(date) =>
-            formik.setFieldValue('deadline', date, /* shouldValidate = */ false)
-          }
+          onChange={(date) => formik.setFieldValue('deadline', date)}
         />
       </Grid>
 
