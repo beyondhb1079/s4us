@@ -12,7 +12,7 @@ function FormikAutocomplete(props) {
       <Autocomplete
         id={id}
         multiple
-        value={formik.values.requirements[id]}
+        value={formik.values.requirements[id] ?? []}
         onChange={(e, newVal) =>
           formik.setFieldValue(`requirements.${id}`, newVal)
         }
@@ -21,9 +21,7 @@ function FormikAutocomplete(props) {
             {...params}
             variant="outlined"
             fullWidth
-            placeholder={
-              formik.values.requirements[id].length == 0 ? placeholder : ''
-            }
+            placeholder={formik.values.requirements[id] ? '' : placeholder}
           />
         )}
         {...otherProps}
@@ -36,15 +34,12 @@ FormikAutocomplete.propTypes = {
   label: PropTypes.string,
   id: PropTypes.string.isRequired,
   labelStyle: PropTypes.string,
-  options: PropTypes.array.isRequired,
-  freeSolo: PropTypes.bool,
   formik: PropTypes.object.isRequired,
   placeholder: PropTypes.string,
 };
 FormikAutocomplete.defaultProps = {
   label: '',
   labelStyle: '',
-  freeSolo: false,
   placeholder: '',
 };
 export default FormikAutocomplete;

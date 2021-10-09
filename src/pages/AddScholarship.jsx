@@ -24,15 +24,7 @@ function AddScholarship() {
     organization: '',
     tags: [],
     author: { id: user?.uid, email: user?.email },
-    requirements: {
-      gpa: 0,
-      ethnicities: [],
-      majors: [],
-      schools: [],
-      grades: [],
-      states: [],
-      genders: [],
-    },
+    requirements: {},
   });
 
   return (
