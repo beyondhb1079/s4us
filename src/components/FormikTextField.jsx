@@ -12,8 +12,8 @@ function FormikTextField(props) {
         disabled={disabled}
         variant="outlined"
         id={id}
-        error={formik.touched[id] && Boolean(formik.errors[id])}
-        helperText={formik.touched[id] && formik.errors[id]}
+        error={Boolean(formik.errors[id])}
+        helperText={formik.errors[id]}
         value={formik.values[id]}
         onChange={formik.handleChange}
         fullWidth
