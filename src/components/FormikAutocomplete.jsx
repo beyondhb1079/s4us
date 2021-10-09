@@ -10,7 +10,6 @@ function FormikAutocomplete(props) {
     <>
       <InputLabel className={labelStyle}>{label}</InputLabel>
       <Autocomplete
-        disabled={disabled}
         id={id}
         multiple
         value={formik.values.requirements[id] ?? []}
@@ -35,17 +34,12 @@ FormikAutocomplete.propTypes = {
   label: PropTypes.string,
   id: PropTypes.string.isRequired,
   labelStyle: PropTypes.string,
-  options: PropTypes.array.isRequired,
-  freeSolo: PropTypes.bool,
   formik: PropTypes.object.isRequired,
-  disabled: PropTypes.bool,
   placeholder: PropTypes.string,
 };
 FormikAutocomplete.defaultProps = {
   label: '',
   labelStyle: '',
-  freeSolo: false,
-  disabled: false,
   placeholder: '',
 };
 export default FormikAutocomplete;

@@ -252,13 +252,10 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
   function validationCheck() {
     const noReqsGiven = Object.keys(formik.values.requirements).length === 0;
     // no requirements & no checkbox fails
-    if (activeStep == 1 && !noReqsChecked && noReqsGiven) {
-      return {
-        checkbox:
-          'Check this box if there are no requirements for this scholarship.',
-      };
-    }
-    return {};
+    if (activeStep == 1 && !noReqsChecked && noReqsGiven)
+      return 'Check this box if there are no requirements for this scholarship.';
+
+    return '';
   }
 
   stepperItems.Review = (
@@ -294,7 +291,8 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
                     if (onLastStep) return;
                     formik.validateForm().then((errors) => {
                       const checkboxError = validationCheck();
-                      errors = { ...errors, ...checkboxError };
+                      if (checkboxError)
+                        errors = { ...errors, checkbox: checkboxError };
 
                       if (Object.keys(errors).length === 0)
                         setActiveStep((prevStep) => prevStep + 1);
