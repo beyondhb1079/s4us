@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useFormik } from 'formik';
+import { getIn, useFormik } from 'formik';
 import {
   Box,
   Button,
@@ -12,6 +12,8 @@ import {
   Stepper,
   Typography,
   FormHelperText,
+  TextField,
+  InputLabel,
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import PropTypes from 'prop-types';
@@ -187,13 +189,19 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
         </Grid>
 
         <Grid item sm={6} xs={12}>
-          <FormikTextField
-            disabled={noReqsChecked}
-            label="Minimum GPA"
-            id="gpa"
-            formik={formik}
-            labelStyle={classes.inputLabel}
-          />
+          <>
+            <InputLabel className={classes.inputLabel}>Minimum GPA</InputLabel>
+            <TextField
+              disabled={noReqsChecked}
+              id="gpa"
+              value={formik.values.requirements.gpa ?? ''}
+              helperText={getIn(formik.errors, 'requirements.gpa')}
+              placeholder="All"
+              onChange={(e) =>
+                formik.setFieldValue('requirements.gpa', e.target.value)
+              }
+            />
+          </>
         </Grid>
 
         <Grid item sm={6} xs={12}>
