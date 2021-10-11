@@ -41,9 +41,9 @@
     "yup": "^0.32.8"
   },
   "scripts": {
-    "start": "firebase emulators:exec --import=tmp/ --export-on-exit --ui 'react-scripts start'",
     "build": "react-scripts build",
-    "test": "firebase emulators:exec --only firestore 'react-scripts test --verbose --detectOpenHandles'",
+    "start": "scripts/emulators_exec.sh 'react-scripts start'",
+    "test": "scripts/emulators_exec.sh 'react-scripts test --verbose --detectOpenHandles'",
     "lint": "eslint --cache src/ --ext .js,.jsx,.ts,.tsx",
     "eject": "react-scripts eject",
     "prepare": "husky install"
