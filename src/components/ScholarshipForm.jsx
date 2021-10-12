@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getIn, useFormik } from 'formik';
+import { useFormik } from 'formik';
 import {
   Box,
   Button,
@@ -12,8 +12,6 @@ import {
   Stepper,
   Typography,
   FormHelperText,
-  TextField,
-  InputLabel,
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import PropTypes from 'prop-types';
@@ -189,20 +187,17 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
         </Grid>
 
         <Grid item sm={6} xs={12}>
-          <>
-            <InputLabel className={classes.inputLabel}>Minimum GPA</InputLabel>
-            <TextField
-              disabled={noReqsChecked}
-              type="number"
-              id="requirements.gpa"
-              value={formik.values.requirements.gpa ?? ''}
-              error={Boolean(getIn(formik.errors, 'requirements.gpa'))}
-              helperText={getIn(formik.errors, 'requirements.gpa')}
-              placeholder="None"
-              onChange={formik.handleChange}
-              fullWidth
-            />
-          </>
+          <FormikTextField
+            id="requirements.gpa"
+            nested
+            type="number"
+            disabled={noReqsChecked}
+            formik={formik}
+            value={formik.values.requirements.gpa ?? ''}
+            label="Minimum GPA"
+            labelStyle={classes.inputLabel}
+            placeholder="None"
+          />
         </Grid>
 
         <Grid item sm={6} xs={12}>
@@ -274,7 +269,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
   );
 
   const onLastStep = activeStep == Object.keys(stepperItems).length - 1;
-  console.log(formik.values);
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <Stepper activeStep={activeStep} orientation="vertical">
