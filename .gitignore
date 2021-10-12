@@ -6,6 +6,8 @@
 # Firebase
 .firebase/
 *-debug.log
+.firebase-emulator.lock
+firebase-export-*/
 
 # because we use yarn
 package-lock.json

@@ -11,6 +11,7 @@ import {
   StepLabel,
   Stepper,
   Typography,
+  FormHelperText,
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import PropTypes from 'prop-types';
@@ -66,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
 function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
-  const [hasReqs, setHasReqs] = useState(false);
+  const [noReqsChecked, setNoReqsChecked] = useState(false);
 
   const formik = useFormik({
     initialValues: scholarship.data,
@@ -84,7 +85,6 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
     },
   });
 
-  /* eslint-disable react/jsx-props-no-spreading */
   const stepperItems = {};
   stepperItems.General = (
     <Grid container spacing={3}>
@@ -161,17 +161,22 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
           <FormControlLabel
             control={
               <Checkbox
-                checked={hasReqs}
-                onChange={(event) => setHasReqs(event.target.checked)}
+                checked={noReqsChecked}
+                onChange={(event) => {
+                  formik.values.requirements = {};
+                  return setNoReqsChecked(event.target.checked);
+                }}
                 color="primary"
               />
             }
             label="NO ELIGIBILITY REQUIREMENTS"
           />
+          <FormHelperText error>{formik.errors.checkbox}</FormHelperText>
         </Grid>
 
         <Grid item sm={6} xs={12}>
           <FormikMultiSelect
+            disabled={noReqsChecked}
             label="Grade(s)"
             id="grades"
             labelStyle={classes.inputLabel}
@@ -183,6 +188,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 
         <Grid item sm={6} xs={12}>
           <FormikTextField
+            disabled={noReqsChecked}
             label="Minimum GPA"
             id="gpa"
             formik={formik}
@@ -192,6 +198,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 
         <Grid item sm={6} xs={12}>
           <FormikAutocomplete
+            disabled={noReqsChecked}
             label="School(s)"
             id="schools"
             labelStyle={classes.inputLabel}
@@ -204,6 +211,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 
         <Grid item sm={6} xs={12}>
           <FormikAutocomplete
+            disabled={noReqsChecked}
             label="State(s)"
             id="states"
             labelStyle={classes.inputLabel}
@@ -215,6 +223,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 
         <Grid item sm={6} xs={12}>
           <FormikAutocomplete
+            disabled={noReqsChecked}
             label="Major(s)"
             id="majors"
             labelStyle={classes.inputLabel}
@@ -227,6 +236,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 
         <Grid item sm={6} xs={12}>
           <FormikMultiSelect
+            disabled={noReqsChecked}
             label="Ethnicity(s)"
             id="ethnicities"
             labelStyle={classes.inputLabel}
@@ -239,6 +249,15 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
     );
   }
 
+  function validationCheck() {
+    const noReqsGiven = Object.keys(formik.values.requirements).length === 0;
+    // no requirements & no checkbox fails
+    if (activeStep == 1 && !noReqsChecked && noReqsGiven)
+      return 'Check this box if there are no requirements for this scholarship.';
+
+    return '';
+  }
+
   stepperItems.Review = (
     <Box className={classes.reviewSection}>
       <ScholarshipDetailCard scholarship={{ data: formik.values }} preview />
@@ -248,7 +267,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
   const onLastStep = activeStep == Object.keys(stepperItems).length - 1;
 
   return (
-    <form onSubmit={formik.handleSubmit}>
+    <form>
       <Stepper activeStep={activeStep} orientation="vertical">
         {Object.keys(stepperItems).map((key) => (
           <Step key={key}>
@@ -271,8 +290,13 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
                   onClick={() => {
                     if (onLastStep) return;
                     formik.validateForm().then((errors) => {
+                      const checkboxError = validationCheck();
+                      if (checkboxError)
+                        errors = { ...errors, checkbox: checkboxError };
+
                       if (Object.keys(errors).length === 0)
-                        return setActiveStep((prevStep) => prevStep + 1);
+                        setActiveStep((prevStep) => prevStep + 1);
+
                       return formik.setErrors(errors);
                     });
                   }}>
