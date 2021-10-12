@@ -44,8 +44,6 @@ export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipDat
     },
   };
 
-type SortDirection = 'asc' | 'desc';
-
 class Scholarships extends FirestoreCollection<ScholarshipData> {
   name = 'scholarships';
   converter = converter;
@@ -53,29 +51,41 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
   /**
    * Lists all items in this collection.
    *
-   * @param opts list options.
+   * @param opts filter and sorting options.
    */
   list(opts: {
     authorId?: string;
-    sortDir?: SortDirection;
-    sortField?: string;
     minAmount?: number;
     maxAmount?: number;
+    sortDir?: 'asc' | 'desc';
+    sortField?: string;
   }): Promise<FirestoreModelList<ScholarshipData>> {
     let query: firebase.firestore.Query<ScholarshipData> = this.collection;
 
+    // Set default sorting field and direction if they're not set
+    if (!opts.sortField) opts.sortField = 'deadline';
+    if (!opts.sortDir) opts.sortDir = 'asc';
+
     // Sort by requested field + direction
-    if (opts.sortField) {
-      query = query.orderBy(opts.sortField, opts.sortDir ?? 'asc');
-    }
-    // Sort ties by deadline earliest to earliest
+    query = query.orderBy(opts.sortField, opts.sortDir);
+
+    // Sort ties by earliest deadline first
     if (opts.sortField !== 'deadline') {
       query = query.orderBy('deadline', 'asc');
     }
+
+    // Apply filter(s)
+    //
+    // Note: Firestore currently has limitations on how filters can be combined
+    // so we cannot apply a range filter operator (e.g. '>') unless the sorting
+    // field is the same.
+    // https://firebase.google.com/docs/firestore/query-data/order-limit-data#limitations
     if (opts.authorId) {
       query = query.where('author.id', '==', opts.authorId);
     }
 
+    // Filter to apply *on* the results. This allows us to apply complex
+    // filters Firestore doesn't support.
     const postProcessFilter = (s: FirestoreModel<ScholarshipData>) =>
       s.data.amount.intersectsRange(opts.minAmount, opts.maxAmount);
 
