@@ -189,7 +189,6 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
         <Grid item sm={6} xs={12}>
           <FormikTextField
             id="requirements.gpa"
-            nested
             type="number"
             disabled={noReqsChecked}
             formik={formik}

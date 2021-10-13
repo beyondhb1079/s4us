@@ -179,7 +179,7 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
         </Typography>
         <DetailCardCell
           label="GPA"
-          text={requirements?.gpa ? requirements.gpa.toFixed(1) : 'All'}
+          text={requirements?.gpa?.toFixed(1) || 'All'}
           bottom
         />
         <DetailCardCell

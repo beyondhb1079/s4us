@@ -11,7 +11,6 @@ function FormikTextField(props) {
     id,
     formik,
     minRows,
-    type,
     nested,
     value,
     ...otherProps
@@ -22,13 +21,8 @@ function FormikTextField(props) {
       <InputLabel className={labelStyle}>{label}</InputLabel>
       <TextField
         id={id}
-        type={type}
-        error={
-          nested
-            ? Boolean(getIn(formik.errors, id))
-            : Boolean(formik.errors[id])
-        }
-        helperText={nested ? getIn(formik.errors, id) : formik.errors[id]}
+        error={Boolean(getIn(formik.errors, id))}
+        helperText={getIn(formik.errors, id)}
         value={value ?? formik.values[id]}
         onChange={formik.handleChange}
         fullWidth
@@ -46,15 +40,11 @@ FormikTextField.propTypes = {
   id: PropTypes.string.isRequired,
   formik: PropTypes.object.isRequired,
   minRows: PropTypes.number,
-  type: PropTypes.string,
-  nested: PropTypes.bool,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 FormikTextField.defaultProps = {
   labelStyle: null,
   minRows: 0,
-  type: 'text',
-  nested: false,
   value: undefined,
 };
 export default FormikTextField;
