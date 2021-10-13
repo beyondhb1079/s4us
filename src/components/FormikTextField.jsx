@@ -1,24 +1,34 @@
 import React from 'react';
 import { InputLabel, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
+import { getIn } from 'formik';
 
+/* eslint-disable react/jsx-props-no-spreading */
 function FormikTextField(props) {
-  const { label, labelStyle, id, formik, minRows, disabled } = props;
+  const {
+    label,
+    labelStyle,
+    id,
+    formik,
+    minRows,
+    nested,
+    value,
+    ...otherProps
+  } = props;
 
   return (
     <>
       <InputLabel className={labelStyle}>{label}</InputLabel>
       <TextField
-        disabled={disabled}
-        variant="outlined"
         id={id}
-        error={Boolean(formik.errors[id])}
-        helperText={formik.errors[id]}
-        value={formik.values[id]}
+        error={Boolean(getIn(formik.errors, id))}
+        helperText={getIn(formik.errors, id)}
+        value={value ?? formik.values[id]}
         onChange={formik.handleChange}
         fullWidth
         multiline={minRows > 0}
         minRows={minRows}
+        {...otherProps}
       />
     </>
   );
@@ -30,11 +40,11 @@ FormikTextField.propTypes = {
   id: PropTypes.string.isRequired,
   formik: PropTypes.object.isRequired,
   minRows: PropTypes.number,
-  disabled: PropTypes.bool,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 FormikTextField.defaultProps = {
   labelStyle: null,
   minRows: 0,
-  disabled: false,
+  value: undefined,
 };
 export default FormikTextField;

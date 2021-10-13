@@ -188,11 +188,14 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 
         <Grid item sm={6} xs={12}>
           <FormikTextField
+            id="requirements.gpa"
+            type="number"
             disabled={noReqsChecked}
-            label="Minimum GPA"
-            id="gpa"
             formik={formik}
+            value={formik.values.requirements.gpa ?? ''}
+            label="Minimum GPA"
             labelStyle={classes.inputLabel}
+            placeholder="None"
           />
         </Grid>
 
@@ -267,7 +270,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
   const onLastStep = activeStep == Object.keys(stepperItems).length - 1;
 
   return (
-    <form>
+    <form onSubmit={formik.handleSubmit}>
       <Stepper activeStep={activeStep} orientation="vertical">
         {Object.keys(stepperItems).map((key) => (
           <Step key={key}>

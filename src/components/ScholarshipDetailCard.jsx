@@ -177,7 +177,11 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
         <Typography variant="h5" component="h4" gutterBottom>
           Eligibility Requirements
         </Typography>
-        <DetailCardCell label="GPA" text={requirements?.gpa || 'None'} bottom />
+        <DetailCardCell
+          label="GPA"
+          text={requirements?.gpa?.toFixed(1) || 'All'}
+          bottom
+        />
         <DetailCardCell
           label="Demographic"
           text={requirements?.ethnicities?.join(', ') || 'All'}
