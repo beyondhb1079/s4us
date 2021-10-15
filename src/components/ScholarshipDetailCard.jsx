@@ -73,9 +73,8 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
     const URL = `https://${window.location.hostname}/scholarships/${scholarship.id}`;
     const data = {
       title: `${ScholarshipAmount.toString(amount)} - ${name} | ${BRAND_NAME}`,
-      text: `${ScholarshipAmount.toString(
-        amount
-      )} - ${name} | ${BRAND_NAME} \n ${deadline?.toLocaleDateString()}\n`,
+      text: `${ScholarshipAmount.toString(amount)}
+       - ${name} | ${BRAND_NAME} \n ${deadline?.toLocaleDateString()}\n`,
       url: URL,
     };
 

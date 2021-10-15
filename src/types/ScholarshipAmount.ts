@@ -74,10 +74,10 @@ export default class ScholarshipAmount {
       case AmountType.Fixed:
         return `$${amount.min}`;
       case AmountType.Varies:
+        if (!amount.min && !amount.max) return '(Unknown amount)';
         if (amount.min && amount.max !== RANGE_MAX) {
           return `$${amount.min}-$${amount.max}`;
         }
-        if (!amount.min && !amount.max) return '(Unknown amount)';
         return amount.min ? `$${amount.min}+` : `Up to $${amount.max}`;
       default:
         return '(Unknown amount)';
