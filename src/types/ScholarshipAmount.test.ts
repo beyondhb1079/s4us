@@ -130,7 +130,7 @@ test('constructor exceptions - range max <= min', () => {
 test('toString - Unknown', () => {
   const amount = new ScholarshipAmount(AmountType.Unknown);
 
-  const res = amount.toString();
+  const res = ScholarshipAmount.toString(amount);
 
   expect(res).toBe('(Unknown amount)');
 });
@@ -138,7 +138,7 @@ test('toString - Unknown', () => {
 test('toString - FullTuition', () => {
   const amount = new ScholarshipAmount(AmountType.FullTuition);
 
-  const res = amount.toString();
+  const res = ScholarshipAmount.toString(amount);
 
   expect(res).toBe('Full Tuition');
 });
@@ -149,7 +149,7 @@ test('toString - Fixed', () => {
     max: 1000,
   });
 
-  const res = amount.toString();
+  const res = ScholarshipAmount.toString(amount);
 
   expect(res).toBe('$1000');
 });
@@ -157,7 +157,7 @@ test('toString - Fixed', () => {
 test('toString - Range - min only', () => {
   const amount = new ScholarshipAmount(AmountType.Varies, { min: 1000 });
 
-  const res = amount.toString();
+  const res = ScholarshipAmount.toString(amount);
 
   expect(res).toBe('$1000+');
 });
@@ -165,7 +165,7 @@ test('toString - Range - min only', () => {
 test('toString - Range - max only', () => {
   const amount = new ScholarshipAmount(AmountType.Varies, { max: 1000 });
 
-  const res = amount.toString();
+  const res = ScholarshipAmount.toString(amount);
 
   expect(res).toBe('Up to $1000');
 });
@@ -176,7 +176,7 @@ test('toString - Range - min and max', () => {
     max: 2500,
   });
 
-  const res = amount.toString();
+  const res = ScholarshipAmount.toString(amount);
 
   expect(res).toBe('$1000-$2500');
 });

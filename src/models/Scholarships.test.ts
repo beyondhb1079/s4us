@@ -13,7 +13,7 @@ const app = initializeTestApp({ projectId: 'scholarship-test' });
 // The deadline is set to the time this function is called + index ms.
 function create(amount: ScholarshipAmount, index: number) {
   return Scholarships.new({
-    name: amount.toString(),
+    name: ScholarshipAmount.toString(amount),
     amount,
     deadline: new Date(new Date().getTime() + index),
     website: 'foo.com',
