@@ -73,7 +73,9 @@ test('renders passed in scholarship details', () => {
   });
 
   expect(screen.getByText(data.name)).toBeInTheDocument();
-  expect(screen.getByText(data.amount.toString())).toBeInTheDocument();
+  expect(
+    screen.getByText(ScholarshipAmount.toString(data.amount))
+  ).toBeInTheDocument();
   expect(screen.getByText(data.description)).toBeInTheDocument();
   expect(
     screen.getByText(data.deadline.toLocaleDateString())
@@ -106,7 +108,9 @@ test('renders scholarship details', async () => {
   renderAtRoute('/scholarships/abc');
   await screen.findByText(/Scholarship/i);
   expect(screen.getByText(data.name)).toBeInTheDocument();
-  expect(screen.getByText(data.amount.toString())).toBeInTheDocument();
+  expect(
+    screen.getByText(ScholarshipAmount.toString(data.amount))
+  ).toBeInTheDocument();
   expect(screen.getByText(data.description)).toBeInTheDocument();
   expect(
     screen.getByText(data.deadline.toLocaleDateString())
@@ -116,7 +120,7 @@ test('renders scholarship details', async () => {
   expect(
     screen.getByText(data.requirements.states.join(', '))
   ).toBeInTheDocument();
-  expect(screen.getByText(data.requirements.gpa)).toBeInTheDocument();
+  expect(screen.getByText(data.requirements.gpa + '.0')).toBeInTheDocument();
   expect(
     screen.getByText(data.requirements.ethnicities.join(', '))
   ).toBeInTheDocument();

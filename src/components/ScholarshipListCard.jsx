@@ -74,7 +74,7 @@ function ScholarshipListCard({ scholarship }) {
             variant="subtitle1"
             className={classes.subtitle}
             gutterBottom>
-            {amount?.toString()}
+            {ScholarshipAmount.toString(amount)}
           </Typography>
           <Typography
             variant="body1"

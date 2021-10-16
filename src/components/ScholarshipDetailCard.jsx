@@ -72,8 +72,9 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
   const shareFn = () => {
     const URL = `https://${window.location.hostname}/scholarships/${scholarship.id}`;
     const data = {
-      title: `${amount?.toString()} - ${name} | ${BRAND_NAME}`,
-      text: `${amount?.toString()} - ${name} | ${BRAND_NAME} \n ${deadline?.toLocaleDateString()}\n`,
+      title: `${ScholarshipAmount.toString(amount)} - ${name} | ${BRAND_NAME}`,
+      text: `${ScholarshipAmount.toString(amount)}
+       - ${name} | ${BRAND_NAME} \n ${deadline?.toLocaleDateString()}\n`,
       url: URL,
     };
 
@@ -160,11 +161,7 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
         />
         <DetailCardCell
           label="Award Amount"
-          text={
-            preview
-              ? new ScholarshipAmount(amount.type, amount).toString()
-              : amount?.toString() || 'Unknown'
-          }
+          text={ScholarshipAmount.toString(amount)}
           bottom
         />
         <DetailCardCell

@@ -63,17 +63,22 @@ export default class ScholarshipAmount {
     }
   }
 
-  toString(): string {
-    switch (this.type) {
+  static toString(amount?: {
+    type: AmountType;
+    min: number;
+    max: number;
+  }): string {
+    switch (amount?.type) {
       case AmountType.FullTuition:
         return 'Full Tuition';
       case AmountType.Fixed:
-        return `$${this.min}`;
+        return `$${amount.min}`;
       case AmountType.Varies:
-        if (this.min && this.max !== RANGE_MAX) {
-          return `$${this.min}-$${this.max}`;
+        if (!amount.min && !amount.max) return '(Unknown amount)';
+        if (amount.min && amount.max !== RANGE_MAX) {
+          return `$${amount.min}-$${amount.max}`;
         }
-        return this.min ? `$${this.min}+` : `Up to $${this.max}`;
+        return amount.min ? `$${amount.min}+` : `Up to $${amount.max}`;
       default:
         return '(Unknown amount)';
     }
