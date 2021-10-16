@@ -63,7 +63,7 @@ export default class ScholarshipAmount {
     }
   }
 
-  static toString(amount: {
+  static toString(amount?: {
     type: AmountType;
     min: number;
     max: number;

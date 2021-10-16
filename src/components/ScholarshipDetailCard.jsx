@@ -161,7 +161,7 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
         />
         <DetailCardCell
           label="Award Amount"
-          text={ScholarshipAmount.toString(amount) || 'Unknown'}
+          text={ScholarshipAmount.toString(amount)}
           bottom
         />
         <DetailCardCell
