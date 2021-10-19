@@ -22,7 +22,7 @@ function FormikMultiSelect(props) {
   const { label, id, labelStyle, formik, options, disabled, placeholder } =
     props;
   const classes = useStyles();
-
+  console.log(Object.keys(options));
   return (
     <>
       <InputLabel className={labelStyle}>{label}</InputLabel>

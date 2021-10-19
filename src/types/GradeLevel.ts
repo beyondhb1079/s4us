@@ -1,13 +1,19 @@
 enum GradeLevel {
-  MiddleSchool = 'MIDDLE_SCHOOL',
-  HsFreshman = 'HIGH_SCHOOL_FRESHMAN',
-  HsSophomore = 'HIGH_SCHOOL_SOPHOMORE',
-  HsJunior = 'HIGH_SCHOOL_JUNIOR',
-  HsSenior = 'HIGH_SCHOOL_SENIOR',
-  CollegeFreshman = 'COLLEGE_FRESHMAN',
-  CollegeSophomore = 'COLLEGE_SOPHOMORE',
-  CollegeJunior = 'COLLEGE_JUNIOR',
-  CollegeSenior = 'COLLEGE_SENIOR',
+  MiddleSchool = 8,
+  HsFreshman = 9,
+  HsSophomore = 10,
+  HsJunior = 11,
+  HsSenior = 12,
+  CollegeFreshman = 13,
+  CollegeSophomore = 14,
+  CollegeJunior = 15,
+  CollegeSenior = 16,
+}
+
+namespace GradeLevel {
+  export function toString(grade: GradeLevel): string {
+    return GradeLevel[grade];
+  }
 }
 
 export default GradeLevel;

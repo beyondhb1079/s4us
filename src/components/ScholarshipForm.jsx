@@ -27,18 +27,6 @@ import GradeLevel from '../types/GradeLevel';
 import Ethnicity from '../types/Ethnicity';
 import experiments from '../lib/experiments';
 
-const gradeOptions = {
-  'Middle School': GradeLevel.MiddleSchool,
-  'HS Freshman': GradeLevel.HsFreshman,
-  'HS Sophomore': GradeLevel.HsSophomore,
-  'HS Junior': GradeLevel.HsJunior,
-  'HS Senior': GradeLevel.HsSenior,
-  'College Freshman': GradeLevel.CollegeFreshman,
-  'College Sophomore': GradeLevel.CollegeSophomore,
-  'College Junior': GradeLevel.CollegeJunior,
-  'College Senior': GradeLevel.CollegeSenior,
-};
-
 const ethnicityOptions = {
   'American Indian or Alaska Native': Ethnicity.AmericanIndianOrAlaskaNative,
   Asian: Ethnicity.Asian,
@@ -181,7 +169,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
             id="grades"
             labelStyle={classes.inputLabel}
             formik={formik}
-            options={gradeOptions}
+            options={GradeLevel}
             placeholder="No grade requirements"
           />
         </Grid>
