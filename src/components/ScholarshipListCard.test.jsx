@@ -35,7 +35,7 @@ test('renders ScholarshipListCard', () => {
     }
 
     if (v instanceof ScholarshipAmount) {
-      value = v.toString();
+      value = ScholarshipAmount.toString(v);
     }
 
     expect(screen.getByText(value)).toBeInTheDocument();
