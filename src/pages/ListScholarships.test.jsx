@@ -36,7 +36,7 @@ test('renders a list of scholarships', async () => {
       type: AmountType.Fixed,
     }),
     description: 'Foo description',
-    deadline: new Date('2020-12-17'),
+    deadline: new Date('3020-12-17'),
     website: 'foo.com',
   };
   const ref = Scholarships.collection.doc('abc');
@@ -49,4 +49,25 @@ test('renders a list of scholarships', async () => {
   expect(
     screen.getByText(data.deadline.toLocaleDateString())
   ).toBeInTheDocument();
+});
+
+test('does not render expired scholarships by default', async () => {
+  const data = {
+    name: 'Expired scholarship',
+    amount: new ScholarshipAmount({
+      min: 1000,
+      max: 1000,
+      type: AmountType.Fixed,
+    }),
+    description: 'Expired description',
+    deadline: new Date('2020-12-17'),
+    website: 'expired.com',
+  };
+  const ref = Scholarships.collection.doc('abc-expired');
+  await ref.set(data);
+
+  renderAtRoute('/scholarships');
+
+  await screen.findByText('End of results');
+  expect(screen.queryText(data.name)).not.toBeInTheDocument();
 });
