@@ -47,7 +47,8 @@ function ScholarshipList({ noResultsNode, listFn }) {
           setError(null);
           setScholarships((prev) => [...prev, ...results]);
           setLoadState({
-            loading: false,
+            // Load if there were no results but there's more to load.
+            loading: !results.length && hasNext,
             canLoadMore: hasNext,
             loadMoreFn: next,
           });
