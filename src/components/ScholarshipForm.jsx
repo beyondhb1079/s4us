@@ -24,10 +24,10 @@ import FormikMultiSelect from './FormikMultiSelect';
 import FormikAutocomplete from './FormikAutocomplete';
 import { SCHOOLS, STATES, MAJORS } from '../types/options';
 import GradeLevel from '../types/GradeLevel';
-import Ethnicity from '../types/Ethnicity';
+// import Ethnicity from '../types/Ethnicity';
 import experiments from '../lib/experiments';
 
-const ethnicityOptions = {
+/*const ethnicityOptions = {
   'American Indian or Alaska Native': Ethnicity.AmericanIndianOrAlaskaNative,
   Asian: Ethnicity.Asian,
   'Black or African American': Ethnicity.BlackOrAfricanAmerican,
@@ -35,7 +35,7 @@ const ethnicityOptions = {
   'Native Hawaiian or Other Pacific Islander':
     Ethnicity.NativeHawaiianOrOtherPacificIslander,
   White: Ethnicity.White,
-};
+};*/
 
 const useStyles = makeStyles((theme) => ({
   stepperDescription: {
@@ -170,7 +170,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
             id="grades"
             labelStyle={classes.inputLabel}
             formik={formik}
-            options={GradeLevel}
+            options={GradeLevel.values()}
             placeholder="No grade requirements"
           />
         </Grid>
@@ -226,7 +226,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
           />
         </Grid>
 
-        <Grid item sm={6} xs={12}>
+        {/* <Grid item sm={6} xs={12}>
           <FormikMultiSelect
             disabled={noReqsChecked}
             label="Ethnicity(s)"
@@ -236,7 +236,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
             options={ethnicityOptions}
             placeholder="No ethnicity requirements"
           />
-        </Grid>
+        </Grid>*/}
       </Grid>
     );
   }
