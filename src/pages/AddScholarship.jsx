@@ -9,15 +9,30 @@ import {
   Grid,
   Card,
 } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import ScholarshipForm from '../components/ScholarshipForm';
 import Scholarships from '../models/Scholarships';
 import SubmissionAlert from '../components/SubmissionAlert';
 import AmountType from '../types/AmountType';
 import { ReactComponent as BackgroundImg } from '../img/img3.svg';
 
+const useStyles = makeStyles((theme) => ({
+  img: {
+    width: '120%',
+    overflow: 'hidden',
+  },
+  formSection: {
+    zIndex: 5,
+    position: 'relative',
+    padding: theme.spacing(1),
+    bottom: theme.spacing(4),
+  },
+}));
+
 function AddScholarship() {
   const [submissionAlert, setSubmissionAlert] = useState(null);
   const user = firebase.auth().currentUser;
+  const classes = useStyles();
 
   const scholarship = Scholarships.new({
     name: '',
@@ -55,19 +70,11 @@ function AddScholarship() {
         </Grid>
 
         <Grid item xs={12} sm={6}>
-          <BackgroundImg style={{ width: '120%', overflow: 'hidden' }} />
+          <BackgroundImg className={classes.img} />
         </Grid>
       </Grid>
 
-      <Grid
-        container
-        style={{
-          marginTop: '-80px',
-          zIndex: 5,
-          position: 'relative',
-          padding: '8px',
-        }}
-        component={Card}>
+      <Container className={classes.formSection} component={Card}>
         <ScholarshipForm
           scholarship={scholarship}
           submitFn={() =>
@@ -90,7 +97,7 @@ function AddScholarship() {
         />
 
         {submissionAlert}
-      </Grid>
+      </Container>
     </Container>
   );
 }
