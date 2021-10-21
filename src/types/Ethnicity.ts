@@ -21,7 +21,7 @@ const toStringMappings = {
 
 namespace Ethnicity {
   export function values(): any {
-    return Object.values(Ethnicity);
+    return Object.values(Ethnicity).filter((v) => typeof v === 'string');
   }
 
   export function toString(ethnicity: Ethnicity): string {
