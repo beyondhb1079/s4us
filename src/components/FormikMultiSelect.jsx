@@ -2,7 +2,6 @@ import React from 'react';
 import { InputLabel, Select, MenuItem } from '@mui/material';
 import PropTypes from 'prop-types';
 import makeStyles from '@mui/styles/makeStyles';
-import GradeLevel from '../types/GradeLevel';
 
 const useStyles = makeStyles((theme) => ({
   textColor: {
@@ -20,10 +19,18 @@ const MenuProps = {
 };
 
 function FormikMultiSelect(props) {
-  const { label, id, labelStyle, formik, options, disabled, placeholder } =
-    props;
+  const {
+    label,
+    id,
+    labelStyle,
+    formik,
+    options,
+    disabled,
+    placeholder,
+    toString,
+  } = props;
   const classes = useStyles();
-  console.log(options);
+
   return (
     <>
       <InputLabel className={labelStyle}>{label}</InputLabel>
@@ -43,7 +50,7 @@ function FormikMultiSelect(props) {
         MenuProps={MenuProps}>
         {options.map((option) => (
           <MenuItem key={option} value={option}>
-            {GradeLevel.toString(option)}
+            {toString(option)}
           </MenuItem>
         ))}
       </Select>
@@ -61,6 +68,7 @@ FormikMultiSelect.propTypes = {
   options: PropTypes.objectOf(PropTypes.string).isRequired,
   disabled: PropTypes.bool,
   placeholder: PropTypes.string,
+  toString: PropTypes.func.isRequired,
 };
 
 FormikMultiSelect.defaultProps = {

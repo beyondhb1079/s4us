@@ -24,18 +24,8 @@ import FormikMultiSelect from './FormikMultiSelect';
 import FormikAutocomplete from './FormikAutocomplete';
 import { SCHOOLS, STATES, MAJORS } from '../types/options';
 import GradeLevel from '../types/GradeLevel';
-// import Ethnicity from '../types/Ethnicity';
+import Ethnicity from '../types/Ethnicity';
 import experiments from '../lib/experiments';
-
-/*const ethnicityOptions = {
-  'American Indian or Alaska Native': Ethnicity.AmericanIndianOrAlaskaNative,
-  Asian: Ethnicity.Asian,
-  'Black or African American': Ethnicity.BlackOrAfricanAmerican,
-  'Hispanic or Latino': Ethnicity.HispanicOrLatino,
-  'Native Hawaiian or Other Pacific Islander':
-    Ethnicity.NativeHawaiianOrOtherPacificIslander,
-  White: Ethnicity.White,
-};*/
 
 const useStyles = makeStyles((theme) => ({
   stepperDescription: {
@@ -145,7 +135,6 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
             Include information that is required for applicants to have.
           </Typography>
         </Grid>
-
         <Grid item xs={12}>
           <FormControlLabel
             control={
@@ -162,7 +151,6 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
           />
           <FormHelperText error>{formik.errors.checkbox}</FormHelperText>
         </Grid>
-
         <Grid item sm={6} xs={12}>
           <FormikMultiSelect
             disabled={noReqsChecked}
@@ -171,10 +159,10 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
             labelStyle={classes.inputLabel}
             formik={formik}
             options={GradeLevel.values()}
+            toString={(item) => GradeLevel.toString(item)}
             placeholder="No grade requirements"
           />
         </Grid>
-
         <Grid item sm={6} xs={12}>
           <FormikTextField
             id="requirements.gpa"
@@ -187,7 +175,6 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
             placeholder="None"
           />
         </Grid>
-
         <Grid item sm={6} xs={12}>
           <FormikAutocomplete
             disabled={noReqsChecked}
@@ -200,7 +187,6 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
             placeholder="No school requirements"
           />
         </Grid>
-
         <Grid item sm={6} xs={12}>
           <FormikAutocomplete
             disabled={noReqsChecked}
@@ -212,7 +198,6 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
             placeholder="No state requirements"
           />
         </Grid>
-
         <Grid item sm={6} xs={12}>
           <FormikAutocomplete
             disabled={noReqsChecked}
@@ -225,18 +210,18 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
             placeholder="No major requirements"
           />
         </Grid>
-
-        {/* <Grid item sm={6} xs={12}>
+        <Grid item sm={6} xs={12}>
           <FormikMultiSelect
             disabled={noReqsChecked}
             label="Ethnicity(s)"
             id="ethnicities"
             labelStyle={classes.inputLabel}
             formik={formik}
-            options={ethnicityOptions}
+            options={Ethnicity.values()}
+            toString={(item) => Ethnicity.toString(item)}
             placeholder="No ethnicity requirements"
           />
-        </Grid>*/}
+        </Grid>
       </Grid>
     );
   }

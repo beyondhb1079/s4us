@@ -8,4 +8,25 @@ enum Ethnicity {
   Mixed = 'MIXED',
 }
 
+const toStringMappings = {
+  [Ethnicity.AmericanIndianOrAlaskaNative]: 'American Indian or Alaska Native',
+  [Ethnicity.Asian]: 'Asian',
+  [Ethnicity.BlackOrAfricanAmerican]: 'Black or African American',
+  [Ethnicity.HispanicOrLatino]: 'Hispanic or Latino',
+  [Ethnicity.NativeHawaiianOrOtherPacificIslander]:
+    'Native Hawaiian or Orhter Pacific Islander',
+  [Ethnicity.White]: 'White',
+  [Ethnicity.Mixed]: 'Mixed',
+};
+
+namespace Ethnicity {
+  export function values(): any {
+    return Object.values(Ethnicity);
+  }
+
+  export function toString(ethnicity: Ethnicity): string {
+    return toStringMappings[ethnicity];
+  }
+}
+
 export default Ethnicity;
