@@ -17,15 +17,23 @@ import AmountType from '../types/AmountType';
 import { ReactComponent as BackgroundImg } from '../img/img3.svg';
 
 const useStyles = makeStyles((theme) => ({
+  container: {
+    [theme.breakpoints.down('md')]: {
+      textAlign: 'center',
+    },
+  },
   img: {
     width: '120%',
     overflow: 'hidden',
+    [theme.breakpoints.down('md')]: {
+      width: '60%',
+    },
   },
   formSection: {
-    zIndex: 5,
+    zIndex: 1,
     position: 'relative',
     padding: theme.spacing(1),
-    bottom: theme.spacing(4),
+    bottom: theme.spacing(5),
   },
 }));
 
@@ -56,8 +64,8 @@ function AddScholarship() {
         <title>Add a Scholarship</title>
       </Helmet>
 
-      <Grid container>
-        <Grid item xs={12} sm={6}>
+      <Grid container className={classes.container} spacing={2}>
+        <Grid item sm={12} md={6}>
           <Typography gutterBottom>Submit a Scholarship</Typography>
           <Typography variant="h4" gutterBottom>
             Additional information
@@ -69,7 +77,7 @@ function AddScholarship() {
           </Typography>
         </Grid>
 
-        <Grid item xs={12} sm={6}>
+        <Grid item sm={12} md={6}>
           <BackgroundImg className={classes.img} />
         </Grid>
       </Grid>
@@ -95,9 +103,8 @@ function AddScholarship() {
             )
           }
         />
-
-        {submissionAlert}
       </Container>
+      {submissionAlert}
     </Container>
   );
 }
