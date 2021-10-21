@@ -55,6 +55,7 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
    */
   list(opts: {
     authorId?: string;
+    hideExpired?: boolean;
     minAmount?: number;
     maxAmount?: number;
     sortDir?: 'asc' | 'desc';
@@ -84,10 +85,22 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
       query = query.where('author.id', '==', opts.authorId);
     }
 
+    const now = new Date();
+    const today = new Date(now.toDateString());
+    if (opts.hideExpired && opts.sortField == 'deadline') {
+      query = query.where('deadline', '>=', today);
+    }
+
     // Filter to apply *on* the results. This allows us to apply complex
     // filters Firestore doesn't support.
+    //
+    // Returning false filters out non-matches.
     const postProcessFilter = (s: FirestoreModel<ScholarshipData>) =>
-      s.data.amount.intersectsRange(opts.minAmount, opts.maxAmount);
+      s.data.amount.intersectsRange(opts.minAmount, opts.maxAmount) &&
+      // if opts.sortField is set then the where clause was added
+      // otherwise we need to check afterwards
+      // TODO(#692): Add a `status` field so we don't need to do this.
+      (opts.sortField == 'deadline' || s.data.deadline >= today);
 
     // TODO: Fix .get() and .list() to work with ScholarshipModel's .save() method
     return FirestoreCollection.list(query, postProcessFilter);
