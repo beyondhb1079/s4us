@@ -59,7 +59,13 @@ function ListScholarships() {
   }
 
   const listScholarships = () =>
-    Scholarships.list({ sortField, sortDir, minAmount, maxAmount });
+    Scholarships.list({
+      sortField,
+      sortDir,
+      minAmount,
+      maxAmount,
+      hideExpired: true,
+    });
 
   return (
     <Container>
