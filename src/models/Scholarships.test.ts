@@ -60,8 +60,11 @@ const [expired, today, tomorrow] = [
 beforeEach(() => clearFirestoreData(app.options as { projectId: string }));
 afterAll(() => app.delete());
 
-test('converter.toFirestore', () => {
-  const deadline = new Date('2019-02-20');
+test('converter.toFirestore stores scholarship data', () => {
+  // TODO: Mock firebase.auth().currentUser for these tests.
+  const currentUser = { uid: '123', email: 'bobross37@gmail.com' };
+
+  const deadline = new Date('2029-02-20');
   const data = {
     name: 'scholarship',
     amount: ScholarshipAmount.fixed(2500),
@@ -76,19 +79,70 @@ test('converter.toFirestore', () => {
       schools: ['MIT'],
       grades: ['College Freshman'],
     },
-    author: {
-      id: '123',
-      email: 'bobross37@gmail.com',
-    },
   };
   const got = converter.toFirestore(data);
 
-  expect(got).toEqual({
+  expect(got).toMatchObject({
     ...data,
     deadline: firebase.firestore.Timestamp.fromDate(deadline),
-    dateAdded: null,
-    lastModified: null,
   });
+});
+
+test('converter.toFirestore sets author, dateAdded, and lastModified for new scholarship', () => {
+  // TODO: Mock firebase.auth().currentUser for these tests.
+  const currentUser = { uid: '123', email: 'bobross37@gmail.com' };
+
+  const deadline = new Date('2029-02-20');
+  const data = {
+    name: 'scholarship',
+    amount: ScholarshipAmount.fixed(2500),
+    description: 'description',
+    deadline,
+    website: 'mit.com',
+  };
+  const got = converter.toFirestore(data);
+
+  expect(got).toMatchObject({
+    ...data,
+    deadline: firebase.firestore.Timestamp.fromDate(deadline),
+    dateAdded: expect.any(firebase.firestore.Timestamp),
+    lastModified: expect.any(firebase.firestore.Timestamp),
+    author: {
+      id: currentUser.uid,
+      email: currentUser.email,
+    },
+  });
+  expect(got.dateAdded).toEqual(got.lastModified);
+});
+
+test('converter.toFirestore only updates lastModified for existing scholarship', () => {
+  // TODO: Mock firebase.auth().currentUser for these tests.
+  const currentUser = { uid: '123', email: 'bobross37@gmail.com' };
+
+  const deadline = new Date('2029-02-20');
+  const dateAdded = new Date('2019-12-21');
+  const data = {
+    name: 'scholarship',
+    amount: ScholarshipAmount.fixed(2500),
+    description: 'description',
+    deadline,
+    website: 'mit.com',
+    author: {
+      id: 'original author id',
+      email: 'original author email',
+    },
+    dateAdded,
+    lastModified: dateAdded,
+  };
+  const got = converter.toFirestore(data);
+
+  expect(got).toMatchObject({
+    ...data,
+    deadline: firebase.firestore.Timestamp.fromDate(deadline),
+    dateAdded: firebase.firestore.Timestamp.fromDate(dateAdded),
+    lastModified: expect.any(firebase.firestore.Timestamp),
+  });
+  expect(got.dateAdded).not.toEqual(got.lastModified);
 });
 
 test('converter.fromFirestore', () => {

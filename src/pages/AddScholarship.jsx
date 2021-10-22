@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import firebase from 'firebase';
 import { Alert, AlertTitle, Container, Typography } from '@mui/material';
 import ScholarshipForm from '../components/ScholarshipForm';
 import Scholarships from '../models/Scholarships';
@@ -9,7 +8,6 @@ import AmountType from '../types/AmountType';
 
 function AddScholarship() {
   const [submissionAlert, setSubmissionAlert] = useState(null);
-  const user = firebase.auth().currentUser;
 
   const scholarship = Scholarships.new({
     name: '',
