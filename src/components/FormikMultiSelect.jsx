@@ -38,11 +38,13 @@ function FormikMultiSelect(props) {
         onChange={(e) =>
           formik.setFieldValue(`requirements.${id}`, e.target.value)
         }
-        renderValue={(selected) => selected.join(', ') || placeholder}
+        renderValue={(selected) =>
+          selected.map((val) => options[val]).join(', ') || placeholder
+        }
         MenuProps={MenuProps}>
-        {Object.entries(options).map(([name, value]) => (
-          <MenuItem key={value} value={value}>
-            {name}
+        {Object.entries(options).map(([val, stringRep]) => (
+          <MenuItem key={val} value={val}>
+            {stringRep}
           </MenuItem>
         ))}
       </Select>
