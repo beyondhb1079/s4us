@@ -5,11 +5,13 @@ import FirestoreModelList from './base/FiretoreModelList';
 import FirestoreModel from './base/FirestoreModel';
 import ScholarshipModel from './ScholarshipModel';
 import ScholarshipData from '../types/ScholarshipData';
+import AmountType from '../types/AmountType';
 
 export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipData> =
   {
     toFirestore: (data: ScholarshipData) => ({
       ...data,
+      amount: ScholarshipAmount.fromStorage(data.amount),
       deadline: firebase.firestore.Timestamp.fromDate(data.deadline),
       dateAdded: data.dateAdded
         ? firebase.firestore.Timestamp.fromDate(data.dateAdded)
@@ -30,6 +32,7 @@ export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipDat
 
       return {
         ...data,
+        amount: ScholarshipAmount.toStorage(data.amount),
         deadline,
         dateAdded,
         lastModified,
@@ -89,10 +92,11 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
     //
     // Returning false filters out non-matches.
     const postProcessFilter = (s: FirestoreModel<ScholarshipData>) =>
-      ScholarshipAmount.amountsIntersect(
-        s.data.amount,
-        ScholarshipAmount.range(opts.minAmount, opts.maxAmount)
-      ) &&
+      ScholarshipAmount.amountsIntersect(s.data.amount, {
+        type: AmountType.Varies,
+        min: opts.minAmount ?? 0,
+        max: opts.maxAmount ?? 0,
+      }) &&
       // if opts.sortField is set then the where clause was added
       // otherwise we need to check afterwards
       // TODO(#692): Add a `status` field so we don't need to do this.

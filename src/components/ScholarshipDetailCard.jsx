@@ -232,7 +232,7 @@ ScholarshipDetailCard.propTypes = {
     data: PropTypes.shape({
       name: PropTypes.string,
       organization: PropTypes.string,
-      amount: PropTypes.instanceOf(ScholarshipAmount),
+      amount: PropTypes.shape({}),
       description: PropTypes.string,
       deadline: PropTypes.instanceOf(Date),
       website: PropTypes.string,

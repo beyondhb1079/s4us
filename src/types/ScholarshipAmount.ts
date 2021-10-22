@@ -30,11 +30,18 @@ namespace ScholarshipAmount {
   export const range = (
     min: number | undefined,
     max: number | undefined
-  ): ScholarshipAmount => ({
-    min: min || 0,
-    max: max || RANGE_MAX,
-    type: AmountType.Varies,
-  });
+  ): ScholarshipAmount =>
+    min || max
+      ? {
+          min: min || 0,
+          max: max || RANGE_MAX,
+          type: AmountType.Varies,
+        }
+      : {
+          min: UNKNOWN_MIN,
+          max: UNKNOWN_MAX,
+          type: AmountType.Unknown,
+        };
 
   export const fullTuition = (): ScholarshipAmount => ({
     min: FULL_TUITION,
@@ -42,39 +49,77 @@ namespace ScholarshipAmount {
     type: AmountType.FullTuition,
   });
 
-  export const unknown = (): ScholarshipAmount => ({
-    min: UNKNOWN_MIN,
-    max: UNKNOWN_MAX,
-    type: AmountType.Varies,
-  });
+  export const unknown = (): ScholarshipAmount => range(undefined, undefined);
 
-  export function validate(amount: ScholarshipAmount): void {
+  export function validate(
+    amount: ScholarshipAmount,
+    throwError: boolean = true
+  ): void {
     const { min, max, type } = amount;
 
-    const realtype =
-      type === AmountType.Varies && !min && !max ? AmountType.Unknown : type;
-
-    switch (realtype) {
+    const errors: Error[] = [];
+    switch (type) {
       case AmountType.Fixed:
         if (!min || min <= 0) {
-          throw new Error(`Fixed amount min(${min}) is not a positive number.`);
+          errors.push(
+            new Error(`Fixed amount min(${min}) is not a positive number.`)
+          );
         }
         if (min !== max) {
-          throw new Error(`Fixed amount min(${min}) != max(${max}).`);
+          errors.push(new Error(`Fixed amount min(${min}) != max(${max}).`));
         }
         break;
       case AmountType.Varies:
         if (min && min < 0) {
-          throw new Error(`Invalid min amount: ${min}.`);
+          errors.push(new Error(`Invalid min amount: ${min}.`));
         }
         if (max && max < 0) {
-          throw new Error(`Invalid max amount: ${max}.`);
+          errors.push(new Error(`Invalid max amount: ${max}.`));
         }
         if (max && min && min >= max) {
-          throw new Error(`Invalid range ${min}-${max}`);
+          errors.push(new Error(`Invalid range ${min}-${max}`));
         }
         break;
     }
+
+    if (errors.length !== 0) {
+      const message = errors.map((e) => e.message).join('\n\n');
+      if (throwError) {
+        // eslint-disable-next-line @typescript-eslint/no-throw-literal
+        throw new Error(message);
+      } else {
+        console.error(message);
+      }
+    }
+  }
+
+  export function fromStorage(amount: ScholarshipAmount): ScholarshipAmount {
+    validate(amount, /* throwError= */ false);
+    return amount;
+  }
+
+  export function toStorage(amount: ScholarshipAmount): ScholarshipAmount {
+    validate(amount);
+    let { min, max, type } = amount;
+    if (type === AmountType.Varies && !min && !max) {
+      type = AmountType.Unknown;
+    }
+    switch (type) {
+      case AmountType.Fixed:
+        break;
+      case AmountType.Varies:
+        min = min || 0;
+        max = max || RANGE_MAX;
+        break;
+      case AmountType.FullTuition:
+        min = FULL_TUITION;
+        max = FULL_TUITION;
+        break;
+      default:
+        min = UNKNOWN_MIN;
+        max = UNKNOWN_MAX;
+    }
+    return { min, max, type };
   }
 
   export function toString(amount?: ScholarshipAmount): string {
@@ -84,24 +129,31 @@ namespace ScholarshipAmount {
       case AmountType.Fixed:
         return `$${amount.min}`;
       case AmountType.Varies:
-        if (!amount.min && !amount.max) return '(Unknown amount)';
+        if (
+          (!amount.min && !amount.max) ||
+          (amount.min === UNKNOWN_MIN && amount.max === UNKNOWN_MAX)
+        )
+          return 'Varies';
         if (amount.min && amount.max !== RANGE_MAX) {
           return `$${amount.min}-$${amount.max}`;
         }
         return amount.min ? `$${amount.min}+` : `Up to $${amount.max}`;
       default:
-        return '(Unknown amount)';
+        return 'Varies';
     }
   }
 
+  /**
+   * Returns whether or not amount a is in range r.
+   */
   export function amountsIntersect(
-    a1: ScholarshipAmount,
-    a2: ScholarshipAmount
+    a: ScholarshipAmount,
+    r: ScholarshipAmount
   ): boolean {
     return (
-      a1.type === AmountType.Unknown ||
-      a2.type === AmountType.Unknown ||
-      ((!a1.min || a2.max >= a1.min) && (!a1.max || a2.min <= a1.max))
+      a.type === AmountType.Unknown ||
+      r.type === AmountType.Unknown ||
+      ((!r.min || a.max >= r.min) && (!r.max || a.min <= r.max))
     );
   }
 }
