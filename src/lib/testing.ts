@@ -1,6 +1,5 @@
 import firebase from 'firebase';
 import { loadFirestoreRules } from '@firebase/rules-unit-testing';
-import { EmojiObjectsTwoTone } from '@mui/icons-material';
 
 if (process.env.NODE_ENV !== 'test') {
   throw Error('this file should only be imported in tests');
