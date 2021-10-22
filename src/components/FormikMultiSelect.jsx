@@ -19,16 +19,8 @@ const MenuProps = {
 };
 
 function FormikMultiSelect(props) {
-  const {
-    label,
-    id,
-    labelStyle,
-    formik,
-    options,
-    disabled,
-    placeholder,
-    toString,
-  } = props;
+  const { label, id, labelStyle, formik, options, disabled, placeholder } =
+    props;
   const classes = useStyles();
 
   return (
@@ -47,12 +39,12 @@ function FormikMultiSelect(props) {
           formik.setFieldValue(`requirements.${id}`, e.target.value)
         }
         renderValue={(selected) =>
-          selected.map((val) => toString(val)).join(', ') || placeholder
+          selected.map((val) => options[val]).join(', ') || placeholder
         }
         MenuProps={MenuProps}>
-        {options.map((option) => (
-          <MenuItem key={option} value={option}>
-            {toString(option)}
+        {Object.entries(options).map(([val, stringRep]) => (
+          <MenuItem key={val} value={val}>
+            {stringRep}
           </MenuItem>
         ))}
       </Select>
@@ -70,7 +62,6 @@ FormikMultiSelect.propTypes = {
   options: PropTypes.objectOf(PropTypes.string).isRequired,
   disabled: PropTypes.bool,
   placeholder: PropTypes.string,
-  toString: PropTypes.func.isRequired,
 };
 
 FormikMultiSelect.defaultProps = {

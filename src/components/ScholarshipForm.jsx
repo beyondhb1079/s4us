@@ -159,7 +159,6 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
             labelStyle={classes.inputLabel}
             formik={formik}
             options={GradeLevel.values()}
-            toString={(item) => GradeLevel.toString(item)}
             placeholder="No grade requirements"
           />
         </Grid>
@@ -218,7 +217,6 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
             labelStyle={classes.inputLabel}
             formik={formik}
             options={Ethnicity.values()}
-            toString={(item) => Ethnicity.toString(item)}
             placeholder="No ethnicity requirements"
           />
         </Grid>

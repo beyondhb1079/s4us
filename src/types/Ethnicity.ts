@@ -5,7 +5,6 @@ enum Ethnicity {
   HispanicOrLatino = 'HISPANIC_OR_LATINO',
   NativeHawaiianOrOtherPacificIslander = 'NATIVE_HAWAIIAN_OR_OTHER_PACIFIC_ISLANDER',
   White = 'WHITE',
-  Mixed = 'MIXED',
 }
 
 const toStringMappings = {
@@ -14,14 +13,13 @@ const toStringMappings = {
   [Ethnicity.BlackOrAfricanAmerican]: 'Black or African American',
   [Ethnicity.HispanicOrLatino]: 'Hispanic or Latino',
   [Ethnicity.NativeHawaiianOrOtherPacificIslander]:
-    'Native Hawaiian or Orhter Pacific Islander',
+    'Native Hawaiian or Other Pacific Islander',
   [Ethnicity.White]: 'White',
-  [Ethnicity.Mixed]: 'Mixed',
 };
 
 namespace Ethnicity {
   export function values(): any {
-    return Object.values(Ethnicity).filter((v) => typeof v === 'string');
+    return toStringMappings;
   }
 
   export function toString(ethnicity: Ethnicity): string {
