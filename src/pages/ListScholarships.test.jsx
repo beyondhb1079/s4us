@@ -6,7 +6,6 @@ import { clearFirestoreData, initializeTestApp } from '../lib/testing';
 import ListScholarships from './ListScholarships';
 import Scholarships from '../models/Scholarships';
 import ScholarshipAmount from '../types/ScholarshipAmount';
-import AmountType from '../types/AmountType';
 
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.
@@ -22,7 +21,7 @@ function renderAtRoute(route) {
   );
 }
 
-const app = initializeTestApp({ projectId: 'scholarships-test' });
+const app = initializeTestApp({ projectId: 'list-scholarships-test' });
 
 beforeAll(() => clearFirestoreData(app.options));
 afterAll(() => app.delete());
@@ -61,5 +60,5 @@ test('does not render expired scholarships by default', async () => {
   renderAtRoute('/scholarships');
 
   await screen.findByText('End of results');
-  expect(screen.queryText(data.name)).not.toBeInTheDocument();
+  expect(screen.queryByText(data.name)).not.toBeInTheDocument();
 });

@@ -7,7 +7,6 @@ import { clearFirestoreData, initializeTestApp } from '../lib/testing';
 import ViewScholarship from './ViewScholarship';
 import Scholarships from '../models/Scholarships';
 import ScholarshipAmount from '../types/ScholarshipAmount';
-import AmountType from '../types/AmountType';
 
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.

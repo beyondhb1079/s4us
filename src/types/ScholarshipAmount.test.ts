@@ -9,7 +9,7 @@ import ScholarshipAmount, {
 test('constructor defaults', () => {
   const amount = ScholarshipAmount.unknown();
 
-  expect(amount.type).toBe(AmountType.Unknown);
+  expect(amount.type).toBe(AmountType.Varies);
   expect(amount.min).toBe(UNKNOWN_MIN);
   expect(amount.max).toBe(UNKNOWN_MAX);
 });
