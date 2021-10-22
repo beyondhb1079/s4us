@@ -11,21 +11,13 @@ const app = initializeTestApp({ projectId: 'scholarship-test' });
 
 // Creates a scholarship to be stored with the given data.
 function create(data: {
-  amount?: {
-    type?: AmountType | undefined;
-    min?: number | undefined;
-    max?: number | undefined;
-  };
+  amount?: ScholarshipAmount;
   name?: string;
   deadline?: Date;
 }) {
-  const amount = new ScholarshipAmount(data.amount?.type ?? AmountType.Varies, {
-    min: data.amount?.min,
-    max: data.amount?.max,
-  });
   return Scholarships.new({
-    name: data.name ?? ScholarshipAmount.toString(amount),
-    amount,
+    name: data.name ?? ScholarshipAmount.toString(data.amount),
+    amount: data.amount ?? ScholarshipAmount.unknown(),
     deadline: data.deadline ?? new Date(),
     website: 'foo.com',
     description: 'some description',
@@ -34,13 +26,13 @@ function create(data: {
 
 // All scholarships, sorted by deadline
 const scholarships = [
-  create({ amount: { type: AmountType.Fixed, min: 500, max: 500 } }),
-  create({ amount: { type: AmountType.Fixed, min: 5000, max: 5000 } }),
-  create({ amount: { type: AmountType.Varies, min: 250, max: 2000 } }),
-  create({ amount: { type: AmountType.Varies, max: 500 } }),
-  create({ amount: { type: AmountType.Varies, min: 500 } }),
-  create({ amount: { type: AmountType.FullTuition } }),
-  create({ amount: { type: AmountType.Varies } }),
+  create({ amount: ScholarshipAmount.fixed(500) }),
+  create({ amount: ScholarshipAmount.fixed(5000) }),
+  create({ amount: ScholarshipAmount.range(250, 2000) }),
+  create({ amount: ScholarshipAmount.range(undefined, 500) }),
+  create({ amount: ScholarshipAmount.range(500, undefined) }),
+  create({ amount: ScholarshipAmount.fullTuition() }),
+  create({ amount: ScholarshipAmount.unknown() }),
 ];
 
 // Readable names for all the scholarships.
@@ -68,10 +60,7 @@ const lastModified = new Date('2019-01-23');
 test('converter.toFirestore', () => {
   const data = {
     name: 'scholarship',
-    amount: new ScholarshipAmount(AmountType.Fixed, {
-      min: 2500,
-      max: 2500,
-    }),
+    amount: ScholarshipAmount.fixed(2500),
     description: 'description',
     deadline,
     website: 'mit.com',
@@ -101,10 +90,7 @@ test('converter.toFirestore', () => {
 test('converter.fromFirestore', () => {
   const snapdata: firebase.firestore.DocumentData = {
     name: 'scholarship',
-    amount: new ScholarshipAmount(AmountType.Fixed, {
-      min: 2500,
-      max: 2500,
-    }),
+    amount: ScholarshipAmount.fixed(2500),
     description: 'description',
     deadline: firebase.firestore.Timestamp.fromDate(deadline),
     website: 'mit.com',
@@ -276,11 +262,11 @@ test('scholarships.list - hides expired sort by amount', async () => {
       deadline: new Date(todayDate.getDate() - 1),
     }),
     create({
-      amount: { type: AmountType.Fixed, min: 5000, max: 5000 },
+      amount: ScholarshipAmount.fixed(5000),
       deadline: todayDate,
     }),
     create({
-      amount: { type: AmountType.Fixed, min: 500, max: 500 },
+      amount: ScholarshipAmount.fixed(500),
       deadline: new Date(todayDate.getDate() + 1),
     }),
   ];

@@ -13,7 +13,7 @@ test('renders ScholarshipListCard', () => {
       name: 'test scholarship',
       description: 'desc',
       organization: 'City of Seattle',
-      amount: new ScholarshipAmount(),
+      amount: ScholarshipAmount.unknown(),
     },
   };
 

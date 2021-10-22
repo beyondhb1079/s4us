@@ -58,11 +58,7 @@ test('renders something when scholarship data corrupt', () => {
 test('renders passed in scholarship details', () => {
   const data = {
     name: 'Foo scholarship',
-    amount: new ScholarshipAmount({
-      type: AmountType.Fixed,
-      min: 1000,
-      max: 1000,
-    }),
+    amount: ScholarshipAmount.fixed(1000),
     description: 'description',
     deadline: new Date('2020-12-17'),
     website: 'http://foo.com/',
@@ -87,11 +83,7 @@ test('renders passed in scholarship details', () => {
 test('renders scholarship details', async () => {
   const data = {
     name: 'Foo scholarship',
-    amount: new ScholarshipAmount({
-      type: AmountType.Fixed,
-      min: 1000,
-      max: 1000,
-    }),
+    amount: ScholarshipAmount.fixed(1000),
     description: 'description',
     deadline: new Date('2020-12-17'),
     website: 'http://foo.com/',

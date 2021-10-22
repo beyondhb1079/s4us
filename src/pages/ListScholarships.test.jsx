@@ -30,11 +30,7 @@ afterAll(() => app.delete());
 test('renders a list of scholarships', async () => {
   const data = {
     name: 'Foo scholarship',
-    amount: new ScholarshipAmount({
-      min: 1000,
-      max: 1000,
-      type: AmountType.Fixed,
-    }),
+    amount: ScholarshipAmount.fixed(1000),
     description: 'Foo description',
     deadline: new Date('3020-12-17'),
     website: 'foo.com',
@@ -54,11 +50,7 @@ test('renders a list of scholarships', async () => {
 test('does not render expired scholarships by default', async () => {
   const data = {
     name: 'Expired scholarship',
-    amount: new ScholarshipAmount({
-      min: 1000,
-      max: 1000,
-      type: AmountType.Fixed,
-    }),
+    amount: ScholarshipAmount.fixed(1000),
     description: 'Expired description',
     deadline: new Date('2020-12-17'),
     website: 'expired.com',

@@ -10,11 +10,6 @@ export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipDat
   {
     toFirestore: (data: ScholarshipData) => ({
       ...data,
-      amount: {
-        type: data.amount.type,
-        min: data.amount.min,
-        max: data.amount.max,
-      },
       deadline: firebase.firestore.Timestamp.fromDate(data.deadline),
       dateAdded: data.dateAdded
         ? firebase.firestore.Timestamp.fromDate(data.dateAdded)
@@ -32,11 +27,9 @@ export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipDat
       const lastModified = data.lastModified
         ? (data.lastModified as firebase.firestore.Timestamp).toDate()
         : null;
-      const amount = new ScholarshipAmount(data.amount.type, data.amount);
 
       return {
         ...data,
-        amount,
         deadline,
         dateAdded,
         lastModified,
@@ -96,7 +89,10 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
     //
     // Returning false filters out non-matches.
     const postProcessFilter = (s: FirestoreModel<ScholarshipData>) =>
-      s.data.amount.intersectsRange(opts.minAmount, opts.maxAmount) &&
+      ScholarshipAmount.amountsIntersect(
+        s.data.amount,
+        ScholarshipAmount.range(opts.minAmount, opts.maxAmount)
+      ) &&
       // if opts.sortField is set then the where clause was added
       // otherwise we need to check afterwards
       // TODO(#692): Add a `status` field so we don't need to do this.
