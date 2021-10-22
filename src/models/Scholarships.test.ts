@@ -57,9 +57,7 @@ const [expired, today, tomorrow] = [
   create({ deadline: tomorrowDate }),
 ];
 
-beforeEach(() =>
-  clearFirestoreData(app.options as { projectId: string }).then()
-);
+beforeEach(() => clearFirestoreData(app.options as { projectId: string }));
 afterAll(() => app.delete());
 
 test('converter.toFirestore', () => {

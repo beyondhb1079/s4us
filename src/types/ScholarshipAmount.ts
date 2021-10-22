@@ -51,53 +51,39 @@ namespace ScholarshipAmount {
 
   export const unknown = (): ScholarshipAmount => range(undefined, undefined);
 
-  export function validate(
-    amount: ScholarshipAmount,
-    throwError: boolean = true
-  ): void {
+  /** Validates that `amount` meets per-type constraints. */
+  export function validate(amount: ScholarshipAmount): void {
     const { min, max, type } = amount;
 
-    const errors: Error[] = [];
+    const errors: string[] = [];
     switch (type) {
       case AmountType.Fixed:
         if (!min || min <= 0) {
-          errors.push(
-            new Error(`Fixed amount min(${min}) is not a positive number.`)
-          );
+          errors.push(`Fixed amount min(${min}) is not a positive number.`);
         }
         if (min !== max) {
-          errors.push(new Error(`Fixed amount min(${min}) != max(${max}).`));
+          errors.push(`Fixed amount min(${min}) != max(${max}).`);
         }
         break;
       case AmountType.Varies:
         if (min && min < 0) {
-          errors.push(new Error(`Invalid min amount: ${min}.`));
+          errors.push(`Invalid min amount: ${min}.`);
         }
         if (max && max < 0) {
-          errors.push(new Error(`Invalid max amount: ${max}.`));
+          errors.push(`Invalid max amount: ${max}.`);
         }
         if (max && min && min >= max) {
-          errors.push(new Error(`Invalid range ${min}-${max}`));
+          errors.push(`Invalid range ${min}-${max}`);
         }
         break;
     }
 
     if (errors.length !== 0) {
-      const message = errors.map((e) => e.message).join('\n\n');
-      if (throwError) {
-        // eslint-disable-next-line @typescript-eslint/no-throw-literal
-        throw new Error(message);
-      } else {
-        console.error(message);
-      }
+      throw new Error(errors.join('\n\n'));
     }
   }
 
-  export function fromStorage(amount: ScholarshipAmount): ScholarshipAmount {
-    validate(amount, /* throwError= */ false);
-    return amount;
-  }
-
+  /** Translates `amount` to the format it should be stored as. */
   export function toStorage(amount: ScholarshipAmount): ScholarshipAmount {
     validate(amount);
     let { min, max, type } = amount;
@@ -122,6 +108,7 @@ namespace ScholarshipAmount {
     return { min, max, type };
   }
 
+  /** Returns a string representation of the given `amount`. */
   export function toString(amount?: ScholarshipAmount): string {
     switch (amount?.type) {
       case AmountType.FullTuition:
@@ -129,11 +116,7 @@ namespace ScholarshipAmount {
       case AmountType.Fixed:
         return `$${amount.min}`;
       case AmountType.Varies:
-        if (
-          (!amount.min && !amount.max) ||
-          (amount.min === UNKNOWN_MIN && amount.max === UNKNOWN_MAX)
-        )
-          return 'Varies';
+        if (!amount.min && !amount.max) return 'Varies';
         if (amount.min && amount.max !== RANGE_MAX) {
           return `$${amount.min}-$${amount.max}`;
         }
@@ -143,9 +126,7 @@ namespace ScholarshipAmount {
     }
   }
 
-  /**
-   * Returns whether or not amount a is in range r.
-   */
+  /** Returns whether or not amount `a` is in range `r`. */
   export function amountsIntersect(
     a: ScholarshipAmount,
     r: ScholarshipAmount

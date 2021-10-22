@@ -11,7 +11,7 @@ export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipDat
   {
     toFirestore: (data: ScholarshipData) => ({
       ...data,
-      amount: ScholarshipAmount.fromStorage(data.amount),
+      amount: ScholarshipAmount.toStorage(data.amount),
       deadline: firebase.firestore.Timestamp.fromDate(data.deadline),
       dateAdded: data.dateAdded
         ? firebase.firestore.Timestamp.fromDate(data.dateAdded)
@@ -32,7 +32,6 @@ export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipDat
 
       return {
         ...data,
-        amount: ScholarshipAmount.toStorage(data.amount),
         deadline,
         dateAdded,
         lastModified,
