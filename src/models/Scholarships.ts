@@ -4,21 +4,23 @@ import FirestoreCollection from './base/FirestoreCollection';
 import FirestoreModelList from './base/FiretoreModelList';
 import FirestoreModel from './base/FirestoreModel';
 import ScholarshipData from '../types/ScholarshipData';
+import AmountType from '../types/AmountType';
 
 export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipData> =
   {
     toFirestore: (data: ScholarshipData) => {
-      const user = firebase.auth().currentUser;
+      const user = firebase.app().auth().currentUser;
       const lastModified = new Date();
       const dateAdded = data.dateAdded ?? lastModified;
-      const author = data.author ?? { id: user?.uid, email: user?.email };
+      const author =
+        data.author ?? (user ? { id: user?.uid, email: user?.email } : {});
       return {
         ...data,
         author,
         amount: ScholarshipAmount.toStorage(data.amount),
         deadline: firebase.firestore.Timestamp.fromDate(data.deadline),
         dateAdded: firebase.firestore.Timestamp.fromDate(dateAdded),
-        lastModified: firebase.firestore.Timestamp.fromDate(data.lastModified),
+        lastModified: firebase.firestore.Timestamp.fromDate(lastModified),
       };
     },
     fromFirestore: (snapshot, options) => {
@@ -33,7 +35,6 @@ export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipDat
 
       return {
         ...data,
-        amount,
         deadline,
         dateAdded,
         lastModified,
@@ -93,7 +94,11 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
     //
     // Returning false filters out non-matches.
     const postProcessFilter = (s: FirestoreModel<ScholarshipData>) =>
-      s.data.amount.intersectsRange(opts.minAmount, opts.maxAmount) &&
+      ScholarshipAmount.amountsIntersect(s.data.amount, {
+        type: AmountType.Varies,
+        min: opts.minAmount ?? 0,
+        max: opts.maxAmount ?? 0,
+      }) &&
       // if opts.sortField is set then the where clause was added
       // otherwise we need to check afterwards
       // TODO(#692): Add a `status` field so we don't need to do this.

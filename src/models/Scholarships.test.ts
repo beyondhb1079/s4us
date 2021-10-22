@@ -6,7 +6,12 @@ import { clearFirestoreData, initializeTestApp } from '../lib/testing';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import Scholarships, { converter } from './Scholarships';
 
-const app = initializeTestApp({ projectId: 'scholarship-test' });
+const user = { uid: '123', email: 'bobross37@gmail.com' };
+const app = initializeTestApp({
+  projectId: 'scholarship-test',
+  apiKey: 'something',
+  auth: user,
+});
 
 // Creates and saves a scholarship with the given data.
 function create(data: {
@@ -31,8 +36,8 @@ function create(data: {
 const fixed500 = create({ amount: ScholarshipAmount.fixed(500) });
 const fixed5000 = create({ amount: ScholarshipAmount.fixed(5000) });
 const range250to1000 = create({ amount: ScholarshipAmount.range(250, 2000) });
-const rangeTo500 = create({ amount: ScholarshipAmount.range(undefined, 500) });
-const rangeMin500 = create({ amount: ScholarshipAmount.range(500, undefined) });
+const rangeTo501 = create({ amount: ScholarshipAmount.range(undefined, 501) });
+const rangeMin499 = create({ amount: ScholarshipAmount.range(499, undefined) });
 const fullTuition = create({ amount: ScholarshipAmount.fullTuition() });
 const unknown = create({ amount: ScholarshipAmount.unknown() });
 
@@ -40,8 +45,8 @@ const amountScholarships = [
   fixed500,
   fixed5000,
   range250to1000,
-  rangeTo500,
-  rangeMin500,
+  rangeTo501,
+  rangeMin499,
   fullTuition,
   unknown,
 ];
@@ -61,9 +66,6 @@ beforeEach(() => clearFirestoreData(app.options as { projectId: string }));
 afterAll(() => app.delete());
 
 test('converter.toFirestore stores scholarship data', () => {
-  // TODO: Mock firebase.auth().currentUser for these tests.
-  const currentUser = { uid: '123', email: 'bobross37@gmail.com' };
-
   const deadline = new Date('2029-02-20');
   const data = {
     name: 'scholarship',
@@ -89,9 +91,6 @@ test('converter.toFirestore stores scholarship data', () => {
 });
 
 test('converter.toFirestore sets author, dateAdded, and lastModified for new scholarship', () => {
-  // TODO: Mock firebase.auth().currentUser for these tests.
-  const currentUser = { uid: '123', email: 'bobross37@gmail.com' };
-
   const deadline = new Date('2029-02-20');
   const data = {
     name: 'scholarship',
@@ -108,17 +107,14 @@ test('converter.toFirestore sets author, dateAdded, and lastModified for new sch
     dateAdded: expect.any(firebase.firestore.Timestamp),
     lastModified: expect.any(firebase.firestore.Timestamp),
     author: {
-      id: currentUser.uid,
-      email: currentUser.email,
+      id: user.uid,
+      email: user.email,
     },
   });
   expect(got.dateAdded).toEqual(got.lastModified);
 });
 
 test('converter.toFirestore only updates lastModified for existing scholarship', () => {
-  // TODO: Mock firebase.auth().currentUser for these tests.
-  const currentUser = { uid: '123', email: 'bobross37@gmail.com' };
-
   const deadline = new Date('2029-02-20');
   const dateAdded = new Date('2019-12-21');
   const data = {
@@ -222,10 +218,10 @@ test('scholarships.list - sort by amount.min asc', async () => {
   });
 
   const want = [
-    rangeTo500,
+    rangeTo501,
     range250to1000,
+    rangeMin499,
     fixed500,
-    rangeMin500,
     fixed5000,
     fullTuition,
     unknown,
@@ -243,11 +239,11 @@ test('scholarships.list - sort by amount.max desc', async () => {
 
   const want = [
     fullTuition,
-    rangeMin500,
+    rangeMin499,
     fixed5000,
     range250to1000,
+    rangeTo501,
     fixed500,
-    rangeTo500,
     unknown,
   ];
   expect(got.results.map(extractName)).toEqual(want.map(extractName));
@@ -260,7 +256,7 @@ test('scholarships.list - filters by minAmount', async () => {
     minAmount: 1000,
   });
 
-  const want = [fullTuition, fixed5000, range250to1000, rangeMin500, unknown];
+  const want = [fullTuition, fixed5000, range250to1000, rangeMin499, unknown];
   expect(got.results.map(extractName).sort()).toEqual(
     want.map(extractName).sort()
   );
@@ -273,7 +269,7 @@ test('scholarships.list - filters by maxAmount', async () => {
     maxAmount: 500,
   });
 
-  const want = [rangeMin500, range250to1000, fixed500, rangeTo500, unknown];
+  const want = [rangeMin499, range250to1000, fixed500, rangeTo501, unknown];
   expect(got.results.map(extractName).sort()).toEqual(
     want.map(extractName).sort()
   );
