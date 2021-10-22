@@ -21,7 +21,6 @@ function AddScholarship() {
     website: '',
     organization: '',
     tags: [],
-    author: { id: user?.uid, email: user?.email },
     requirements: {},
   });
 
