@@ -31,7 +31,6 @@ namespace ScholarshipAmount {
   const _MAX_FIXED_VALUE = 1000000000;
   
   // Next, we need to set range max to be greater than max possible fixed value.
-  const _RANGE_MIN = _MIN_FIXED_VALUE;
   /** The `max` value stored for a {@link ScholarshipAmount} of type {@link AmountType.Varies} with no max set. */
   export const _RANGE_MAX = _MAX_FIXED_VALUE + 1;
   
