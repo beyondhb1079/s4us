@@ -8,10 +8,10 @@ const {
   unknown,
   validate,
   toString,
-  _FULL_TUITION,
-  _RANGE_MAX,
-  _UNKNOWN_MAX,
-  _UNKNOWN_MIN,
+  FULL_TUITION,
+  RANGE_MAX,
+  UNKNOWN_MAX,
+  UNKNOWN_MIN,
 } = ScholarshipAmount;
 
 test('fixed()', () => {
@@ -43,8 +43,8 @@ test('range() - unbounded', () => {
 
   expect(amount).toEqual({
     type: AmountType.Unknown,
-    min: _UNKNOWN_MIN,
-    max: _UNKNOWN_MAX,
+    min: UNKNOWN_MIN,
+    max: UNKNOWN_MAX,
   });
 });
 
@@ -53,8 +53,8 @@ test('fullTuition()', () => {
 
   expect(amount).toEqual({
     type: AmountType.FullTuition,
-    min: _FULL_TUITION,
-    max: _FULL_TUITION,
+    min: FULL_TUITION,
+    max: FULL_TUITION,
   });
 });
 
@@ -63,8 +63,8 @@ test('unknown()', () => {
 
   expect(amount).toEqual({
     type: AmountType.Unknown,
-    min: _UNKNOWN_MIN,
-    max: _UNKNOWN_MAX,
+    min: UNKNOWN_MIN,
+    max: UNKNOWN_MAX,
   });
 });
 

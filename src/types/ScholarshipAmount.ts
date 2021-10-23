@@ -7,7 +7,6 @@ interface ScholarshipAmount {
   readonly max: number;
 }
 
-// eslint-disable @typescript-eslint/naming-convention
 namespace ScholarshipAmount {
   /**
    * PER-TYPE CONSTANTS
@@ -28,23 +27,23 @@ namespace ScholarshipAmount {
    */
 
   // First, we need to limit the range of possible fixed values.
-  const _MIN_FIXED_VALUE = 0;
-  const _MAX_FIXED_VALUE = 1000000000;
+  const MIN_FIXED_VALUE = 0;
+  const MAX_FIXED_VALUE = 1000000000;
 
   // Next, we need to set range max to be greater than max possible fixed value.
   /** The `max` value stored for a {@link ScholarshipAmount} of type {@link AmountType.Varies} with no max set. */
-  export const _RANGE_MAX = _MAX_FIXED_VALUE + 1;
+  export const RANGE_MAX = _MAX_FIXED_VALUE + 1;
 
   // Next, we need to set the full tuition value to be greater than range maxes.
   /** The `min` and `max` values stored for a {@link ScholarshipAmount} of type {@link AmountType.FullTuition}.*/
-  export const _FULL_TUITION = _RANGE_MAX + 1;
+  export const FULL_TUITION = _RANGE_MAX + 1;
 
   // Finally, we need to set unknown values such that they appear last when
   // sorting.
   /** The `min` value stored for a {@link ScholarshipAmount} of type {@link AmountType.Unknown}.*/
-  export const _UNKNOWN_MIN = _FULL_TUITION + 1;
+  export const UNKNOWN_MIN = _FULL_TUITION + 1;
   /** The `max` value stored for a {@link ScholarshipAmount} of type {@link AmountType.Unknown}.*/
-  export const _UNKNOWN_MAX = -1;
+  export const UNKNOWN_MAX = -1;
 
   export const fixed = (val: number): ScholarshipAmount => ({
     min: val,
