@@ -1,13 +1,18 @@
 import AmountType from './AmountType';
-import ScholarshipAmount, {
-  FULL_TUITION,
-  RANGE_MAX,
-  UNKNOWN_MAX,
-  UNKNOWN_MIN,
-} from './ScholarshipAmount';
+import ScholarshipAmount from './ScholarshipAmount';
 
-const { range, fixed, unknown, validate, fullTuition, toString } =
-  ScholarshipAmount;
+const {
+  range,
+  fixed,
+  fullTuition,
+  unknown,
+  validate,
+  toString,
+  _FULL_TUITION,
+  _RANGE_MAX,
+  _UNKNOWN_MAX,
+  _UNKNOWN_MIN,
+} = ScholarshipAmount;
 
 test('fixed()', () => {
   const amount = fixed(20);
@@ -38,8 +43,8 @@ test('range() - unbounded', () => {
 
   expect(amount).toEqual({
     type: AmountType.Unknown,
-    min: UNKNOWN_MIN,
-    max: UNKNOWN_MAX,
+    min: _UNKNOWN_MIN,
+    max: _UNKNOWN_MAX,
   });
 });
 
@@ -48,8 +53,8 @@ test('fullTuition()', () => {
 
   expect(amount).toEqual({
     type: AmountType.FullTuition,
-    min: FULL_TUITION,
-    max: FULL_TUITION,
+    min: _FULL_TUITION,
+    max: _FULL_TUITION,
   });
 });
 
@@ -58,8 +63,8 @@ test('unknown()', () => {
 
   expect(amount).toEqual({
     type: AmountType.Unknown,
-    min: UNKNOWN_MIN,
-    max: UNKNOWN_MAX,
+    min: _UNKNOWN_MIN,
+    max: _UNKNOWN_MAX,
   });
 });
 
