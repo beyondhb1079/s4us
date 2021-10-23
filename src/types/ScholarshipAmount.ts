@@ -7,10 +7,11 @@ interface ScholarshipAmount {
   readonly max: number;
 }
 
+// eslint-disable @typescript-eslint/naming-convention
 namespace ScholarshipAmount {
-  /** 
-   * PER-TYPE CONSTANTS 
-   * 
+  /**
+   * PER-TYPE CONSTANTS
+   *
    * These constants exist to make sorting by amount.min and amount.max
    * possible for open ended scholarships (no range max, full tuition, unknown).
    * Our constraints are:
@@ -22,22 +23,22 @@ namespace ScholarshipAmount {
    *   - Full Tuition scholarships appear first
    *   - Unknown scholarships appear last
    *   - Everything else is sorted by amount.max
-   * 
+   *
    * With these constraints in mind these values have been derived.
-   */ 
+   */
 
   // First, we need to limit the range of possible fixed values.
   const _MIN_FIXED_VALUE = 0;
   const _MAX_FIXED_VALUE = 1000000000;
-  
+
   // Next, we need to set range max to be greater than max possible fixed value.
   /** The `max` value stored for a {@link ScholarshipAmount} of type {@link AmountType.Varies} with no max set. */
   export const _RANGE_MAX = _MAX_FIXED_VALUE + 1;
-  
+
   // Next, we need to set the full tuition value to be greater than range maxes.
   /** The `min` and `max` values stored for a {@link ScholarshipAmount} of type {@link AmountType.FullTuition}.*/
   export const _FULL_TUITION = _RANGE_MAX + 1;
-  
+
   // Finally, we need to set unknown values such that they appear last when
   // sorting.
   /** The `min` value stored for a {@link ScholarshipAmount} of type {@link AmountType.Unknown}.*/
