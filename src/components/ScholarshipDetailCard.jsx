@@ -20,6 +20,8 @@ import {
 import { genMailToLink, withDeviceInfo } from '../lib/mail';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import { BRAND_NAME } from '../config/constants';
+import Ethnicity from '../types/Ethnicity';
+import GradeLevel from '../types/GradeLevel';
 
 const useStyles = makeStyles((theme) => ({
   detailSection: {
@@ -180,8 +182,21 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
           bottom
         />
         <DetailCardCell
+          label="Grades"
+          text={
+            requirements?.grades
+              ?.map((grade) => GradeLevel.toString(grade))
+              .join(', ') || 'All'
+          }
+          bottom
+        />
+        <DetailCardCell
           label="Demographic"
-          text={requirements?.ethnicities?.join(', ') || 'All'}
+          text={
+            requirements?.ethnicities
+              ?.map((eth) => Ethnicity.toString(eth))
+              .join(', ') || 'All'
+          }
           bottom
         />
         <DetailCardCell
