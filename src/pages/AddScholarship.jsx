@@ -42,11 +42,12 @@ function AddScholarship() {
         <title>Add a Scholarship</title>
       </Helmet>
 
-      <Grid
-        container
-        spacing={2}
-        sx={{ textAlign: { xs: 'center', md: 'left' } }}>
-        <Grid item sm={12} md={6}>
+      <Grid container spacing={2}>
+        <Grid
+          item
+          sm={12}
+          md={6}
+          sx={{ textAlign: { xs: 'center', md: 'left' } }}>
           <Typography gutterBottom>Submit a Scholarship</Typography>
           <Typography variant="h4" gutterBottom>
             Additional information
@@ -58,7 +59,7 @@ function AddScholarship() {
           </Typography>
         </Grid>
 
-        <Grid item sm={12} md={6} sx={{ m: 'auto' }}>
+        <Grid item sm={12} md={6} sx={{ m: 'auto', textAlign: 'center' }}>
           <Box
             component="img"
             src={backgroundImg}
