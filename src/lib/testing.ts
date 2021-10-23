@@ -20,6 +20,9 @@ service cloud.firestore {
 
  * @param options See {@link firebase.initializeApp} for details.
  * @param rules Firestore rules or {@link openRules} by default.
+ * @param auth A fake user to initialize the app with.
+ *   Use the resulting app.auth() to interact with it from testing environments.
+ *   E.g. you can call {@link firebase.auth.Auth.updateCurrentUser} or {@link firebase.auth.Auth.signOut}.
  */
 export function initializeTestApp(
   options: {
