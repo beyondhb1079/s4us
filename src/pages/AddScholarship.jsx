@@ -58,12 +58,13 @@ function AddScholarship() {
           </Typography>
         </Grid>
 
-        <Grid item sm={12} md={6}>
+        <Grid item sm={12} md={6} sx={{ m: 'auto' }}>
           <Box
             component="img"
             src={backgroundImg}
             sx={{
               overflow: 'hidden',
+              minWidth: 300,
               width: { xs: '60%', md: '120%' },
             }}
           />
