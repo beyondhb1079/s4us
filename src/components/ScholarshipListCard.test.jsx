@@ -13,7 +13,7 @@ test('renders ScholarshipListCard', () => {
       name: 'test scholarship',
       description: 'desc',
       organization: 'City of Seattle',
-      amount: new ScholarshipAmount(),
+      amount: ScholarshipAmount.unknown(),
     },
   };
 
@@ -28,13 +28,13 @@ test('renders ScholarshipListCard', () => {
     }
   );
 
-  Object.values(want.data).forEach((v) => {
+  Object.entries(want.data).forEach(([k, v]) => {
     let value = v;
-    if (v instanceof Date) {
+    if (k === 'deadline') {
       value = v.toLocaleDateString();
     }
 
-    if (v instanceof ScholarshipAmount) {
+    if (k === 'amount') {
       value = ScholarshipAmount.toString(v);
     }
 

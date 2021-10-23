@@ -19,7 +19,7 @@ const data = {
   deadline: new Date('December 17, 2021'),
   description: 'this is a test',
   website: 'http://test.com',
-  amount: new ScholarshipAmount(),
+  amount: ScholarshipAmount.unknown(),
 };
 
 test('save new scholarship - dateAdded and lastModified get set', async () => {
