@@ -4,7 +4,9 @@ import AmountType from './AmountType';
 // possible for unbound scholarships (no range max, full tuition, unknown).
 
 // First, we need to limit the range of possible real values.
+/** The minimum allowed real value. */
 export const MIN_REAL_VALUE = 0;
+/** The maximum allowed real value. */
 export const MAX_REAL_VALUE = 1000000000;
 
 // Next, we need to set range max to be greater than max possible real value:
