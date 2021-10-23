@@ -16,10 +16,11 @@ namespace ScholarshipAmount {
    * Our constraints are:
    * - When sorting by amount from small to big:
    *   - Unknown scholarships appear last
-   *   - Full Tuition scholarships appear last but before Unknown ones
+   *   - Full Tuition scholarships appear next to last
    *   - Everything else is sorted by amount.min
    * - When sorting by amount from big to small:
    *   - Full Tuition scholarships appear first
+   *   - Scholarships with no max appear next
    *   - Unknown scholarships appear last
    *   - Everything else is sorted by amount.max
    *
