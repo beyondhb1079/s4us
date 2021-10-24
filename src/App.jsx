@@ -42,7 +42,7 @@ function App() {
                 path="/scholarships/new"
                 component={AddScholarship}
               />
-              <Route
+              <ProtectedRoute
                 path="/scholarships/:id/edit"
                 component={EditScholarship}
               />

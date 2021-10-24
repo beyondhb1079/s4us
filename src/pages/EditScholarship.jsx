@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import firebase from 'firebase';
 import { Container, Typography, Alert, AlertTitle } from '@mui/material';
 import ScholarshipForm from '../components/ScholarshipForm';
 import SubmissionAlert from '../components/SubmissionAlert';
@@ -32,9 +31,6 @@ function EditScholarship({ history, location, match }) {
       mounted = false;
     };
   }, [id, loading]);
-
-  if (firebase.auth().currentUser?.uid != scholarship.data?.author?.id)
-    return <p>You don't have permission to edit this scholarship.</p>;
 
   if (error || loading) {
     return (
