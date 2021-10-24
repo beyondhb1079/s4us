@@ -10,12 +10,14 @@ import {
   Grid,
   Link,
   Typography,
+  IconButton,
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import {
   Info as InfoIcon,
   Send as SendIcon,
   Share as ShareIcon,
+  Edit as EditIcon,
 } from '@mui/icons-material';
 import { genMailToLink, withDeviceInfo } from '../lib/mail';
 import ScholarshipAmount from '../types/ScholarshipAmount';
@@ -150,6 +152,9 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
           disabled={scholarship.id === undefined}>
           Share
         </Button>
+        <IconButton onClick={() => console.log('clicked')}>
+          <EditIcon />
+        </IconButton>
       </Box>
 
       <Typography paragraph>{description}</Typography>
