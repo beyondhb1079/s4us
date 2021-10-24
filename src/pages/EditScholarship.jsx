@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { Container, Typography, Alert, AlertTitle } from '@mui/material';
 import ScholarshipForm from '../components/ScholarshipForm';
-// import SubmissionAlert from '../components/SubmissionAlert';
+import SubmissionAlert from '../components/SubmissionAlert';
 import Scholarships from '../models/Scholarships';
-import { Container, Typography } from '@mui/material';
 
 function EditScholarship({ history, location, match }) {
   const { id } = match.params;
   const [scholarship, setScholarship] = useState(location.state?.scholarship);
   const [error, setError] = useState();
   const loading = !error && (!scholarship || !scholarship.data);
-  // const [submissionAlert, setSubmissionAlert] = useState(null);
+  const [submissionAlert, setSubmissionAlert] = useState(null);
 
   // Clear location state in case of refresh/navigation to other pages.
   useEffect(() => {
@@ -43,11 +43,29 @@ function EditScholarship({ history, location, match }) {
   }
 
   return (
-    <ScholarshipForm
-      scholarship={scholarship}
-      submitFn={() => {}}
-      onSubmitError={() => {}}
-    />
+    <Container maxWidth="md">
+      <ScholarshipForm
+        scholarship={scholarship}
+        submitFn={() =>
+          setSubmissionAlert(
+            <SubmissionAlert
+              id={id}
+              name={scholarship.data.name}
+              onClose={() => setSubmissionAlert(null)}
+            />
+          )
+        }
+        onSubmitError={(err) =>
+          setSubmissionAlert(
+            <Alert severity="error" onClose={() => setSubmissionAlert(null)}>
+              <AlertTitle>Error</AlertTitle>
+              {err.toString()}
+            </Alert>
+          )
+        }
+      />
+      {submissionAlert}
+    </Container>
   );
 }
 
