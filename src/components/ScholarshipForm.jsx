@@ -57,6 +57,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
         .save()
         .then(submitFn)
         .then(() => setActiveStep(0))
+        .then(() => setNoReqsChecked(false))
         .then(resetForm)
         .catch(onSubmitError)
         .finally(() => setSubmitting(false));
