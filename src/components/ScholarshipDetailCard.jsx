@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   Box,
@@ -8,7 +8,7 @@ import {
   Chip,
   Divider,
   Grid,
-  Link,
+  Link as MuiLink,
   Typography,
   IconButton,
 } from '@mui/material';
@@ -129,14 +129,17 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
         {organization}
       </Typography>
       {preview && (
-        <Link href="#" underline="always" onClick={(e) => e.preventDefault()}>
+        <MuiLink
+          href="#"
+          underline="always"
+          onClick={(e) => e.preventDefault()}>
           {website}
-        </Link>
+        </MuiLink>
       )}
 
       <Box className={classes.actionSection}>
         <Button
-          component={Link}
+          component={MuiLink}
           href={website}
           target="_blank"
           variant="contained"
@@ -152,7 +155,7 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
           disabled={scholarship.id === undefined}>
           Share
         </Button>
-        <IconButton onClick={() => console.log('clicked')}>
+        <IconButton component={Link} to="/edit">
           <EditIcon />
         </IconButton>
       </Box>
@@ -215,7 +218,7 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
         </Grid>
       </Box>
       <Chip
-        component={Link}
+        component={MuiLink}
         href={genMailToLink({
           subject: `Report Issue for ${name}`,
           bcc: author?.email,
