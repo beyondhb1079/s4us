@@ -1,5 +1,6 @@
 import React from 'react';
 import { useHistory, Link } from 'react-router-dom';
+import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import {
   Box,
@@ -155,14 +156,17 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
           disabled={scholarship.id === undefined}>
           Share
         </Button>
-        <IconButton
-          component={Link}
-          to={{
-            pathname: `/scholarships/${scholarship.id}/edit`,
-            state: { scholarship },
-          }}>
-          <EditIcon />
-        </IconButton>
+
+        {!preview && firebase.auth().currentUser?.uid == author.id && (
+          <IconButton
+            component={Link}
+            to={{
+              pathname: `/scholarships/${scholarship.id}/edit`,
+              state: { scholarship },
+            }}>
+            <EditIcon />
+          </IconButton>
+        )}
       </Box>
 
       <Typography paragraph>{description}</Typography>
