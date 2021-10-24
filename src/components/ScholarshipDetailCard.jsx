@@ -155,7 +155,12 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
           disabled={scholarship.id === undefined}>
           Share
         </Button>
-        <IconButton component={Link} to="/edit">
+        <IconButton
+          component={Link}
+          to={{
+            pathname: `/scholarships/${scholarship.id}/edit`,
+            state: { scholarship },
+          }}>
           <EditIcon />
         </IconButton>
       </Box>

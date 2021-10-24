@@ -42,8 +42,11 @@ function App() {
                 path="/scholarships/new"
                 component={AddScholarship}
               />
+              <Route
+                path="/scholarships/:id/edit"
+                component={EditScholarship}
+              />
               <Route path="/scholarships/:id" component={ViewScholarship} />
-              <Route path="/edit" component={EditScholarship} />
               <Route path="/scholarships" component={ListScholarships} />
               <Route path="/about" component={About} />
               <Route path="/contact" component={Contact} />
