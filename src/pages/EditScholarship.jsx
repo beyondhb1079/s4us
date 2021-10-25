@@ -52,7 +52,7 @@ function EditScholarship({ history, location, match }) {
   return (
     <Container maxWidth="md">
       <ScholarshipForm
-        scholarship={scholarship}
+        scholarship={Scholarships.new({ ...scholarship.data })}
         submitFn={() =>
           setSubmissionAlert(
             <SubmissionAlert
