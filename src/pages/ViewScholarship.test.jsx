@@ -22,7 +22,7 @@ function renderAtRoute(pathname, state = {}) {
   );
 }
 
-const app = initializeTestApp({ projectId: 'scholarship-details-test' });
+const app = initializeTestApp({ projectId: 'view-scholarships-test' });
 
 beforeAll(() => clearFirestoreData(app.options));
 afterAll(() => app.delete());

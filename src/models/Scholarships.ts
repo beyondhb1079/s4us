@@ -3,32 +3,35 @@ import ScholarshipAmount from '../types/ScholarshipAmount';
 import FirestoreCollection from './base/FirestoreCollection';
 import FirestoreModelList from './base/FiretoreModelList';
 import FirestoreModel from './base/FirestoreModel';
-import ScholarshipModel from './ScholarshipModel';
 import ScholarshipData from '../types/ScholarshipData';
 import AmountType from '../types/AmountType';
 
 export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipData> =
   {
-    toFirestore: (data: ScholarshipData) => ({
-      ...data,
-      amount: ScholarshipAmount.toStorage(data.amount),
-      deadline: firebase.firestore.Timestamp.fromDate(data.deadline),
-      dateAdded: data.dateAdded
-        ? firebase.firestore.Timestamp.fromDate(data.dateAdded)
-        : null,
-      lastModified: data.lastModified
-        ? firebase.firestore.Timestamp.fromDate(data.lastModified)
-        : null,
-    }),
+    toFirestore: (data: ScholarshipData) => {
+      const user = firebase.app().auth().currentUser;
+      const lastModified = new Date();
+      const dateAdded = data.dateAdded ?? lastModified;
+      const author =
+        data.author ?? (user ? { id: user?.uid, email: user?.email } : {});
+      return {
+        ...data,
+        author,
+        amount: ScholarshipAmount.toStorage(data.amount),
+        deadline: firebase.firestore.Timestamp.fromDate(data.deadline),
+        dateAdded: firebase.firestore.Timestamp.fromDate(dateAdded),
+        lastModified: firebase.firestore.Timestamp.fromDate(lastModified),
+      };
+    },
     fromFirestore: (snapshot, options) => {
       const data = snapshot.data(options);
       const deadline = (data.deadline as firebase.firestore.Timestamp).toDate();
-      const dateAdded = data.dateAdded
-        ? (data.dateAdded as firebase.firestore.Timestamp).toDate()
-        : null;
-      const lastModified = data.lastModified
-        ? (data.lastModified as firebase.firestore.Timestamp).toDate()
-        : null;
+      const dateAdded = (
+        data.dateAdded as firebase.firestore.Timestamp
+      )?.toDate();
+      const lastModified = (
+        data.lastModified as firebase.firestore.Timestamp
+      )?.toDate();
 
       return {
         ...data,
@@ -101,15 +104,7 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
       // TODO(#692): Add a `status` field so we don't need to do this.
       (opts.sortField == 'deadline' || s.data.deadline >= today);
 
-    // TODO: Fix .get() and .list() to work with ScholarshipModel's .save() method
     return FirestoreCollection.list(query, postProcessFilter);
-  }
-
-  new(data?: ScholarshipData): ScholarshipModel {
-    return new ScholarshipModel(
-      this.collection.doc(),
-      data ?? ({} as ScholarshipData)
-    );
   }
 }
 
