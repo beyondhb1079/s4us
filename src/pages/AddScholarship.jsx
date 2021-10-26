@@ -56,13 +56,14 @@ function AddScholarship() {
           </Typography>
         </Grid>
 
-        <Grid item sm={12} md={6} sx={{ m: 'auto', textAlign: 'center' }}>
+        <Grid item sm={12} md={6} sx={{ width: '100%' }}>
           <Box
             component="img"
             src={backgroundImg}
             sx={{
               overflow: 'hidden',
-              minWidth: 300,
+              display: 'block',
+              m: 'auto',
               width: { xs: '60%', md: '120%' },
             }}
           />
@@ -74,8 +75,8 @@ function AddScholarship() {
         sx={{
           zIndex: 1,
           position: 'relative',
-          p: 1,
-          bottom: { md: 5 },
+          p: 2,
+          bottom: { md: 40 },
         }}>
         <ScholarshipForm
           scholarship={scholarship}
