@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import firebase from 'firebase';
 import {
   Alert,
   AlertTitle,
@@ -18,7 +17,6 @@ import backgroundImg from '../img/img3.svg';
 
 function AddScholarship() {
   const [submissionAlert, setSubmissionAlert] = useState(null);
-  const user = firebase.auth().currentUser;
 
   const scholarship = Scholarships.new({
     name: '',
@@ -32,7 +30,6 @@ function AddScholarship() {
     website: '',
     organization: '',
     tags: [],
-    author: { id: user?.uid, email: user?.email },
     requirements: {},
   });
 
