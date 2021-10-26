@@ -27,7 +27,9 @@ function FormikMultiSelect(props) {
     <>
       <InputLabel className={labelStyle}>{label}</InputLabel>
       <Select
-        className={formik.values.requirements[id] ? '' : classes.textColor}
+        className={
+          formik.values.requirements[id]?.length > 0 ? '' : classes.textColor
+        }
         disabled={disabled}
         multiple
         fullWidth
