@@ -21,7 +21,9 @@ function FormikAutocomplete(props) {
             {...params}
             variant="outlined"
             fullWidth
-            placeholder={formik.values.requirements[id] ? '' : placeholder}
+            placeholder={
+              formik.values.requirements[id]?.length > 0 ? '' : placeholder
+            }
           />
         )}
         {...otherProps}
