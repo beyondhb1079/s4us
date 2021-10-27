@@ -11,56 +11,11 @@ import {
   Paper,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
-
-const useStyles = makeStyles((theme) => ({
-  browseGrid: {
-    padding: theme.spacing(3),
-    [theme.breakpoints.down('sm')]: {
-      padding: theme.spacing(2),
-    },
-  },
-  browseButton: {
-    marginBottom: theme.spacing(2),
-    marginTop: theme.spacing(2),
-    [theme.breakpoints.down('sm')]: {
-      marginBottom: theme.spacing(1),
-      marginTop: theme.spacing(1),
-    },
-  },
-  scholarshipsAddedBar: {
-    justifyContent: 'space-between',
-    marginBottom: theme.spacing(2),
-    marginTop: theme.spacing(2),
-    [theme.breakpoints.down('sm')]: {
-      marginBottom: theme.spacing(1),
-      marginTop: theme.spacing(1),
-    },
-  },
-  noneAddedGrid: {
-    alignItems: 'center',
-    padding: theme.spacing(3),
-    [theme.breakpoints.down('sm')]: {
-      justifyContent: 'center',
-      padding: theme.spacing(2),
-      textAlign: 'center',
-    },
-  },
-  inboxIcon: {
-    fontSize: theme.spacing(25),
-  },
-  progress: {
-    display: 'block',
-  },
-  loadMoreButton: {
-    margin: theme.spacing(3, 0),
-  },
-}));
+import img5 from '../img/img5.svg';
 
 export default function UserHome() {
-  const classes = useStyles();
   const user = firebase.auth().currentUser;
 
   const listScholarshipsFn = () => Scholarships.list({ authorId: user.uid });
@@ -77,7 +32,7 @@ export default function UserHome() {
         container
         component={Paper}
         variant="outlined"
-        className={classes.browseGrid}>
+        sx={{ p: { xs: 2, md: 3 } }}>
         <Grid item sm={6} xs={12}>
           <Typography variant="h5" gutterBottom>
             Looking for scholarships?
@@ -87,15 +42,19 @@ export default function UserHome() {
             color="primary"
             component={Link}
             to="/scholarships"
-            className={classes.browseButton}>
+            sx={{ my: { xs: 1, md: 2 } }}>
             Browse Scholarships
           </Button>
         </Grid>
         <Grid item sm={6} xs={12}>
-          {/* TODO: Image here with certain height */}
+          <img src={img5} />
         </Grid>
       </Grid>
-      <Grid container spacing={2} className={classes.scholarshipsAddedBar}>
+      <Grid
+        container
+        spacing={2}
+        justifyContent="space-between"
+        sx={{ my: { xs: 1, md: 2 } }}>
         <Grid item>
           <Typography variant="h5" component="h2">
             Scholarships You Have Added
@@ -119,9 +78,12 @@ export default function UserHome() {
             container
             component={Paper}
             variant="outlined"
-            className={classes.noneAddedGrid}>
+            // alignItems="center"
+            justifyContent="center"
+            spacing={5}
+            sx={{ p: { xs: 2, md: 3 } }}>
             <Grid item>
-              <InboxIcon className={classes.inboxIcon} />
+              <InboxIcon sx={{ fontSize: 256 }} />
             </Grid>
             <Grid item>
               <Typography variant="h5" gutterButtom>
