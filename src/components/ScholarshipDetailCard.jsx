@@ -145,6 +145,7 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
           component={MuiLink}
           href={website}
           target="_blank"
+          rel="noreferrer"
           variant="contained"
           color="primary"
           className={classes.applyBtn}

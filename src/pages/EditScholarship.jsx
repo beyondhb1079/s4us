@@ -4,6 +4,7 @@ import { Container, Typography, Alert, AlertTitle } from '@mui/material';
 import ScholarshipForm from '../components/ScholarshipForm';
 import SubmissionAlert from '../components/SubmissionAlert';
 import Scholarships from '../models/Scholarships';
+import { Helmet } from 'react-helmet';
 
 function EditScholarship({ history, location, match }) {
   const { id } = match.params;
@@ -51,8 +52,12 @@ function EditScholarship({ history, location, match }) {
 
   return (
     <Container maxWidth="md">
+      <Helmet>
+        <title>Edit a scholarship</title>
+      </Helmet>
+
       <ScholarshipForm
-        scholarship={Scholarships.new({ ...scholarship.data })}
+        scholarship={scholarship}
         submitFn={() =>
           setSubmissionAlert(
             <SubmissionAlert
