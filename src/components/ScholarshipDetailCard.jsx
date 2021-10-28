@@ -165,7 +165,6 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
             component={Link}
             to={{
               pathname: `/scholarships/${scholarship.id}/edit`,
-              state: { scholarship },
             }}>
             <EditIcon />
           </IconButton>

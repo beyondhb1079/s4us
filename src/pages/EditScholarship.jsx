@@ -6,19 +6,12 @@ import SubmissionAlert from '../components/SubmissionAlert';
 import Scholarships from '../models/Scholarships';
 import { Helmet } from 'react-helmet';
 
-function EditScholarship({ history, location, match }) {
+function EditScholarship({ match }) {
   const { id } = match.params;
-  const [scholarship, setScholarship] = useState(location.state?.scholarship);
+  const [scholarship, setScholarship] = useState(undefined);
   const [error, setError] = useState();
   const loading = !error && (!scholarship || !scholarship.data);
   const [submissionAlert, setSubmissionAlert] = useState(null);
-
-  // Clear location state in case of refresh/navigation to other pages.
-  useEffect(() => {
-    if (location.state?.scholarship) {
-      history.replace({ state: {} });
-    }
-  }, [history, location]);
 
   // Fetch the scholarship if we need to load it
   useEffect(() => {

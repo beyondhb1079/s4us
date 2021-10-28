@@ -23,7 +23,6 @@ export default class FirestoreModel<T> implements Model<T> {
   }
 
   save(): Promise<FirestoreModel<T>> {
-    // if (this.data.author) return this.ref.update(this.data).then(() => this);
     return this.ref.set(this.data).then(() => this);
   }
 
