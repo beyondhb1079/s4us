@@ -11,6 +11,21 @@ on:
 
 # This workflow just consists of deploying the application
 jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+      - name: Setup node.js
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: '12'
+          check-latest: true
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Audit for vulnerabilities
+        run: yarn audit
+
   deploy:
     runs-on: ubuntu-latest
     steps:
@@ -18,7 +33,7 @@ jobs:
       - uses: actions/setup-node@v2-beta
         with:
           node-version: '12'
-      - run: yarn install --frozen-lockfile --production
+      - run: yarn install --frozen-lockfile
       - run: yarn build --frozen-lockfile
       - uses: w9jds/firebase-action@master
         name: Deploy app and firestore rules/indices

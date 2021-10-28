@@ -6,10 +6,9 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
 
-# This workflow is made up of three jobs: build, lint, and test
 jobs:
+  # Ensure builds succeed
   build:
     runs-on: ubuntu-latest
     steps:
@@ -28,6 +27,7 @@ jobs:
       - name: Build app
         run: yarn build --frozen-lockfile
 
+  # Ensure lint checks pass
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -46,16 +46,18 @@ jobs:
       - name: Lint
         run: yarn lint
 
+  # Ensure Prettier was used
   style:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
       - name: Install Prettier
-        run: yarn global add prettier
+        run: yarn global add prettier@~2.4.0
       - name: Style
         run: $(yarn global bin)/prettier --check . || $(yarn global bin)/prettier --write . && git diff --exit-code
 
+  # Ensure tests pass
   test:
     runs-on: ubuntu-latest
     steps:

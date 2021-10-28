@@ -2,12 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Route, Redirect, useLocation } from 'react-router-dom';
 import firebase from 'firebase';
 import PropTypes from 'prop-types';
-import {
-  Container,
-  Typography,
-  CircularProgress,
-  makeStyles,
-} from '@material-ui/core';
+import { Container, Typography, CircularProgress } from '@mui/material';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 const useStyles = makeStyles(() => ({
   progress: {

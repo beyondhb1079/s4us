@@ -1,0 +1,46 @@
+root: true
+env:
+  browser: true
+  jest: true
+extends:
+  - airbnb-typescript
+  - airbnb/hooks
+  - prettier
+parser: '@typescript-eslint/parser'
+parserOptions:
+  ecmaFeatures:
+    jsx: true
+  ecmaVersion: 2020
+  sourceType: module
+  project: './tsconfig.json'
+plugins:
+  - import
+  - jsx-a11y
+  - react
+  - react-hooks
+  - '@typescript-eslint'
+settings:
+  react:
+    version: detect
+rules:
+  '@typescript-eslint/explicit-module-boundary-types': 'off'
+  '@typescript-eslint/lines-between-class-members':
+    - error
+    - always
+    - exceptAfterSingleLine: 'true'
+  react/jsx-one-expression-per-line: 'off'
+  react/jsx-props-no-spreading:
+    - error
+    - explicitSpread: ignore
+  react/jsx-filename-extension:
+    - error
+    - extensions:
+        - '.jsx'
+        - '.tsx'
+overrides:
+  - files:
+      - '*.ts'
+      - '*.tsx'
+    rules:
+      '@typescript-eslint/explicit-module-boundary-types':
+        - error

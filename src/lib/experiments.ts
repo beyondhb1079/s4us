@@ -1,7 +1,11 @@
 // Add your experiment below
 const experiments: { [k: string]: boolean } = {
-  enableDummyDisabledByDefault: false,
-  enableDummyEnabledByDefault: true,
+  expDummyDisabledByDefault: false,
+  expDummyEnabledByDefault: true,
+  expShowFullProfileMenu: false,
+  expShowMajorFilter: false,
+  expShowGradeFilter: false,
+  expShowRequirementsSection: false,
 };
 
 export function loadExperiments(query = window.location.search): void {
@@ -23,5 +27,6 @@ export function loadExperiments(query = window.location.search): void {
     experiments[k] = state;
   });
 }
+loadExperiments();
 
 export default experiments;

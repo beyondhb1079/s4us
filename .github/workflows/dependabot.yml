@@ -1,20 +1,23 @@
-name: 'Dependabot Autoapprove - Action'
+name: 'Dependabot'
 
 on:
-  pull_request:
+  pull_request_target:
     branches: [main]
-    paths: ['yarn.lock']
+
+permissions:
+  contents: read
+  pull-requests: write
 
 jobs:
-  automerge:
+  autoapprove:
     runs-on: ubuntu-latest
     if: github.actor == 'dependabot[bot]'
-    name: Autoapprove changes
+    name: Autoapprove
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
       - name: Autoapprove
-        uses: actions/github-script@v3
+        uses: actions/github-script@v4
         with:
           script: |
             const owner = context.payload.repository.owner.login;
@@ -25,8 +28,8 @@ jobs:
               .listReviews({ owner, repo, pull_number })
               .then((response) =>
                 response.data
-                  .filter((r) => r.state == 'APPROVED')
-                  .filter((r) => r.user.login = 'github-actions[bot]')
+                  .filter(r => r.state == 'APPROVED')
+                  .filter(r => r.user.login = 'github-actions[bot]')
               )
               .then((approvals) => {
                 if (approvals.length !== 0) {
@@ -39,7 +42,7 @@ jobs:
                   'Dear human reviewer, copy and paste this to auto merge: \n' +
                   '@dependabot squash and merge';
                 const event = 'APPROVE';
-                github.pulls.createReview({
+                return github.pulls.createReview({
                   owner,
                   repo,
                   pull_number,
@@ -47,5 +50,3 @@ jobs:
                   event,
                 });
               });
-
-          github-token: ${{github.token}}

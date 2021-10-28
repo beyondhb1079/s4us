@@ -1,23 +1,22 @@
 import React from 'react';
-import { TextField, InputAdornment } from '@material-ui/core';
+import { TextField, InputAdornment } from '@mui/material';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   amountField: {
-    margin: theme.spacing(1),
-    maxWidth: 120,
+    maxWidth: 130,
   },
 }));
 
 function AmountTextField(props) {
   const classes = useStyles();
-  const { value, onChange, disabled, error, variation } = props;
+  const { value, onChange, disabled, error } = props;
 
   return (
     <TextField
       className={classes.amountField}
-      variant={variation}
+      variant="outlined"
       placeholder="Unknown"
       InputProps={{
         inputProps: { min: 0, max: 100000, step: 50 },
@@ -32,11 +31,9 @@ AmountTextField.propTypes = {
   onChange: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
   error: PropTypes.bool,
-  variation: PropTypes.string,
 };
 AmountTextField.defaultProps = {
   disabled: false,
   error: false,
-  variation: 'standard',
 };
 export default AmountTextField;

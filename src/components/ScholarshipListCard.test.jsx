@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ScholarshipListCard from './ScholarshipListCard';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 
@@ -12,24 +13,29 @@ test('renders ScholarshipListCard', () => {
       name: 'test scholarship',
       description: 'desc',
       organization: 'City of Seattle',
-      amount: new ScholarshipAmount(),
+      amount: ScholarshipAmount.unknown(),
     },
   };
 
   const want = mockScholarship;
 
-  render(<ScholarshipListCard scholarship={mockScholarship} />, {
-    wrapper: MemoryRouter,
-  });
+  render(
+    <ThemeProvider theme={createTheme()}>
+      <ScholarshipListCard scholarship={mockScholarship} />
+    </ThemeProvider>,
+    {
+      wrapper: MemoryRouter,
+    }
+  );
 
-  Object.values(want.data).forEach((v) => {
+  Object.entries(want.data).forEach(([k, v]) => {
     let value = v;
-    if (v instanceof Date) {
+    if (k === 'deadline') {
       value = v.toLocaleDateString();
     }
 
-    if (v instanceof ScholarshipAmount) {
-      value = v.toString();
+    if (k === 'amount') {
+      value = ScholarshipAmount.toString(v);
     }
 
     expect(screen.getByText(value)).toBeInTheDocument();

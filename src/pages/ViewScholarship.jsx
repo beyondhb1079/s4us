@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
 import ReactRouterPropTypes from 'react-router-prop-types';
-import { Container } from '@material-ui/core';
+import { Container, Typography } from '@mui/material';
 import Scholarships from '../models/Scholarships';
-import { BRAND_NAME } from '../config/constants';
 import ScholarshipDetailCard from '../components/ScholarshipDetailCard';
 
-export default function ScholarshipDetails({ history, location, match }) {
+export default function ViewScholarship({ history, location, match }) {
   const { id } = match.params;
   const [scholarship, setScholarship] = useState(location.state?.scholarship);
   const [error, setError] = useState();
@@ -35,21 +35,24 @@ export default function ScholarshipDetails({ history, location, match }) {
   if (error || loading) {
     return (
       <Container>
-        <h1>{error?.toString() || 'Loading...'}</h1>
+        <Typography variant="h4" gutterBottom align="center">
+          {error?.toString() || 'Loading...'}
+        </Typography>
       </Container>
     );
   }
 
-  document.title = `${BRAND_NAME} | ${scholarship.data.name}`;
-
   return (
     <Container>
+      <Helmet>
+        <title>{scholarship.data.name}</title>
+      </Helmet>
       <ScholarshipDetailCard scholarship={scholarship} />
     </Container>
   );
 }
 
-ScholarshipDetails.propTypes = {
+ViewScholarship.propTypes = {
   history: ReactRouterPropTypes.history.isRequired,
   location: ReactRouterPropTypes.location.isRequired,
   match: ReactRouterPropTypes.match.isRequired,

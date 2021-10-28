@@ -1,9 +1,7 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import { Container } from '@material-ui/core';
+import makeStyles from '@mui/styles/makeStyles';
+import { Container, Grid, Typography } from '@mui/material';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,6 +59,7 @@ HomeSection.defaultProps = {
   alignItems: 'flex-start',
   direction: 'row',
   tab: '',
+  buttons: [],
 };
 
 HomeSection.propTypes = {
@@ -69,6 +68,6 @@ HomeSection.propTypes = {
   tab: PropTypes.string,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  buttons: PropTypes.arrayOf(PropTypes.element).isRequired,
+  buttons: PropTypes.arrayOf(PropTypes.element),
   pic: PropTypes.string.isRequired,
 };

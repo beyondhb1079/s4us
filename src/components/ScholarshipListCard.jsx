@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import {
+  Box,
   Card,
   CardActionArea,
   CardContent,
-  Box,
-  Typography,
   Chip,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+  Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 
 const useStyles = makeStyles((theme) => ({
@@ -74,7 +74,7 @@ function ScholarshipListCard({ scholarship }) {
             variant="subtitle1"
             className={classes.subtitle}
             gutterBottom>
-            {amount?.toString()}
+            {ScholarshipAmount.toString(amount)}
           </Typography>
           <Typography
             variant="body1"
@@ -104,7 +104,7 @@ ScholarshipListCard.propTypes = {
     data: PropTypes.shape({
       name: PropTypes.string,
       organization: PropTypes.string,
-      amount: PropTypes.instanceOf(ScholarshipAmount),
+      amount: PropTypes.shape({}),
       description: PropTypes.string,
       deadline: PropTypes.instanceOf(Date),
       website: PropTypes.string,

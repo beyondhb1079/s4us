@@ -12,29 +12,84 @@ jobs:
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
-      - name: Skip checking merge commits
-        shell: bash
-        run: |
-          git fetch --all
-          if (($(git show --no-patch --format="%P" ${{ github.event.pull_request.head.sha }} | wc -l) > 1)); then
-            echo "merge_commit=true" >> $GITHUB_ENV;
-          fi
-      - name: Auto dismiss on major changes
-        if: ${{ env.merge_commit != 'true' }}
-        uses: actions/github-script@v3
+      - name: Get hash of last approved commit
+        uses: actions/github-script@v4
         with:
           script: |
-            // Get all the approvals
-            const reviews = await github.pulls.listReviews({
-              owner: context.payload.repository.owner.login,
-              repo: context.payload.repository.name,
-              pull_number: context.payload.pull_request.number
-            });
+            const owner = context.payload.repository.owner.login;
+            const repo = context.payload.repository.name;
+            const pull_number = context.payload.pull_request.number;
 
-            const approvals = reviews.data
-              .filter(r => r.user.type == 'User')
-              .filter(r => r.state == 'APPROVED')
-              .sort((a, b) => a.id - b.id);
+            const approvals = await github.pulls
+              .listReviews({ owner, repo, pull_number })
+              .then((response) =>
+                response.data
+                  .filter(r => r.user.type == 'User' && r.state == 'APPROVED')
+                  .sort((a, b) => a.id - b.id)
+              );
+
+            if (approvals.length == 0) {
+              console.log('No approvals given.');
+              return;
+            }
+
+            const approval = approvals[0];
+            const commitHash = approval.commit_id;
+            console.log(`Last approved at commit ${commitHash} by ${approval.user.login}.`);
+
+            // Set APPROVED_SHA environment variable
+            const fs = require('fs');
+            fs.appendFileSync(process.env.GITHUB_ENV, `APPROVED_SHA=${commitHash}\n`);
+      - name: Check if there are only clean merges since the last approval
+        shell: bash
+        run: |
+          set -v -x
+          git fetch --all
+          HEAD_SHA=${{ github.event.pull_request.head.sha }}
+          APPROVED_SHA=${{ env.APPROVED_SHA }}
+          BASE_SHA=${{ github.event.pull_request.base.sha }}
+
+          if [ -z "$APPROVED_SHA" ] || git merge-base --is-ancestor $BASE_SHA $APPROVED_SHA
+          then
+            echo "No merges happened";
+          else
+            echo "MERGE_HAPPENED=true" >> $GITHUB_ENV;
+            ANCESTOR_SHA=$(git merge-base $BASE_SHA $HEAD_SHA)
+            if git merge-tree $ANCESTOR_SHA $APPROVED_SHA $BASE_SHA | grep -q '^+<*\.our$'
+            then
+              echo "An unclean merge happened";
+            else
+              echo "No unclean merges";
+              MERGE_COMMIT_MSG="Merge branch 'main' into ${GITHUB_HEAD_REF}";
+              PATH_LENGTH=$(git log --oneline --ancestry-path $APPROVED_SHA...$HEAD_SHA | wc -l);
+              NUM_MERGES=$(git log --oneline --ancestry-path $APPROVED_SHA...$HEAD_SHA | grep "$MERGE_COMMIT_MSG" | wc -l);
+              echo reached here
+              echo $PATH_LENGTH == $NUM_MERGES
+              if (( $PATH_LENGTH == $NUM_MERGES ));
+              then
+                echo "Only clean merges have happened.";
+                echo "ONLY_CLEAN_MERGES=true" >> $GITHUB_ENV;
+              else
+                echo "Some non-merge commits have happened.";
+              fi
+            fi
+          fi
+      - name: Auto dismiss on major changes
+        if: ${{ env.ONLY_CLEAN_MERGES != 'true' }}
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const owner = context.payload.repository.owner.login;
+            const repo = context.payload.repository.name;
+            const pull_number = context.payload.pull_request.number;
+
+            const approvals = await github.pulls
+              .listReviews({ owner, repo, pull_number })
+              .then((response) =>
+                response.data
+                  .filter(r => r.user.type == 'User' && r.state == 'APPROVED')
+                  .sort((a, b) => a.id - b.id)
+              );
 
             if (approvals.length == 0) {
               console.log('No approvals given.');
@@ -50,11 +105,17 @@ jobs:
 
             // Get the diff between the current commit and the last approved one.
             //
-            // Note: this doesn't show which files are added/deleted. If we
-            // want to take that into consideration, we should look into: 
+            // Note: this doesn't show which files are added/deleted.
+            // If we want to take that into consideration, we should look into:
             // git diff --name-status
             const { spawnSync } = require('child_process');
-            const args = ['diff', '--numstat', approvedCommit, currentCommit];
+            const args = [
+              'diff',
+              '--ignore-all-space',
+              '--numstat',
+              approvedCommit,
+              currentCommit
+            ];
             console.log('git ' + args.join(' '));
 
             const child = spawnSync('git', args);
@@ -88,9 +149,9 @@ jobs:
             console.log(summary);
 
             // Dismiss the approval if there are too many changes.
-            const insertionsLimit = 7;
-            const deletionsLimit = 10;
-            const totalLimit = 12;
+            const insertionsLimit = 10;
+            const deletionsLimit = 20;
+            const totalLimit = 25;
 
             if (total <= totalLimit
               && insertions <= insertionsLimit
@@ -101,23 +162,26 @@ jobs:
 
             const message = `Hi @${context.actor},
 
-            I dismissed your review because it looks like you've introduced a significant number of changes to this pull request since it was last approved by @${approver}:
+            I dismissed your review because it looks like you've introduced a significant
+            number of changes to this pull request since it was last approved by
+            @${approver}:
 
             \`\`\`
             ${summary}
             \`\`\`
 
-            If either of you believe my dismissal was premature or a mistake, consider updating [autoapprove.yaml](../blob/main/.github/workflows/autoapprove.yaml) in a separate pull request.
+            If either of you believe my dismissal was a mistake, consider updating
+            [approvals.yml](../blob/main/.github/workflows/approvals.yml)
+            in a separate pull request.
 
             Thank you for your contributions!`;
 
             console.log(message);
 
-            github.pulls.dismissReview({
-              owner: context.payload.repository.owner.login,
-              repo: context.payload.repository.name,
-              pull_number: context.payload.pull_request.number,
+            await github.pulls.dismissReview({
+              owner,
+              repo,
+              pull_number,
               review_id: approval.id,
               message
             });
-          github-token: ${{github.token}}

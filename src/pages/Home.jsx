@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import firebase from 'firebase';
-import { CircularProgress, makeStyles } from '@material-ui/core';
+import { CircularProgress } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import PublicHome from './PublicHome';
 import UserHome from './UserHome';
 

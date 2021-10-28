@@ -1,99 +1,58 @@
 import './App.css';
+import React from 'react';
+import { Helmet } from 'react-helmet';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { CssBaseline, ThemeProvider } from '@material-ui/core';
+import {
+  CssBaseline,
+  StyledEngineProvider,
+  ThemeProvider,
+} from '@mui/material';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import Home from './pages/Home';
-import ScholarshipDetails from './pages/ScholarshipDetails';
-import Scholarships from './pages/Scholarships';
+import ViewScholarship from './pages/ViewScholarship';
+import ListScholarships from './pages/ListScholarships';
 import About from './pages/About';
 import Contact from './pages/Contact';
-import ScholarshipForm from './pages/ScholarshipForm';
+import AddScholarship from './pages/AddScholarship';
 import theme from './theme';
 import { BRAND_NAME } from './config/constants';
 import FirebaseProvider from './lib/FirebaseProvider';
 import ProtectedRoute from './components/ProtectedRoute';
 import LoginDialog from './components/LoginDialog';
-
-function RouteWithTitle({ path, component, title, guard }) {
-  useEffect(() => {
-    document.title = `${BRAND_NAME} | ${title}`;
-  }, [title]);
-  return guard ? (
-    <ProtectedRoute {...{ path, component }} />
-  ) : (
-    <Route {...{ path, component }} />
-  );
-}
-RouteWithTitle.propTypes = {
-  component: PropTypes.elementType.isRequired,
-  path: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  guard: PropTypes.bool,
-};
-RouteWithTitle.defaultProps = {
-  guard: false,
-};
-
-const routes = [
-  {
-    path: '/scholarships/new',
-    title: 'Add a scholarship',
-    component: ScholarshipForm,
-    guard: true,
-  },
-  {
-    path: '/scholarships/:id',
-    title: 'Details',
-    component: ScholarshipDetails,
-  },
-  {
-    path: '/scholarships',
-    title: 'Scholarships',
-    component: Scholarships,
-  },
-  {
-    path: '/about',
-    title: 'About',
-    component: About,
-  },
-  {
-    path: '/contact',
-    title: 'Contact',
-    component: Contact,
-  },
-  {
-    path: '/',
-    title: 'Home',
-    component: Home,
-  },
-];
+import ShareDialog from './components/ShareDialog';
 
 function App() {
-  useEffect(() => {
-    document.title = `${BRAND_NAME} | Scholarships for Undocumented Students`;
-  }, []);
-
   return (
     <FirebaseProvider>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Router>
-          <Header />
-          <Switch>
-            {routes.map(({ path, component, title, guard }) => (
-              <RouteWithTitle
-                key={path}
-                {...{ path, component, title, guard }}
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Helmet
+            titleTemplate={`%s | ${BRAND_NAME}`}
+            defaultTitle={
+              BRAND_NAME + ' | Scholarships for Undocumented Students'
+            }
+          />
+          <Router>
+            <Header />
+            <Switch>
+              <ProtectedRoute
+                path="/scholarships/new"
+                component={AddScholarship}
               />
-            ))}
-          </Switch>
-          <LoginDialog />
-          <Footer />
-        </Router>
-      </ThemeProvider>
+              <Route path="/scholarships/:id" component={ViewScholarship} />
+              <Route path="/scholarships" component={ListScholarships} />
+              <Route path="/about" component={About} />
+              <Route path="/contact" component={Contact} />
+              <Route path="/" component={Home} />
+            </Switch>
+            <LoginDialog />
+            <ShareDialog />
+            <Footer />
+          </Router>
+        </ThemeProvider>
+      </StyledEngineProvider>
     </FirebaseProvider>
   );
 }

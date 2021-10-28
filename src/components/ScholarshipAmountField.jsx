@@ -1,113 +1,103 @@
 import React from 'react';
 import {
-  FormLabel,
-  Radio,
-  RadioGroup,
-  FormControl,
-  FormControlLabel,
+  Grid,
   FormHelperText,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+  InputLabel,
+  MenuItem,
+  Select,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import RemoveIcon from '@mui/icons-material/Remove';
 import PropTypes from 'prop-types';
 import AmountType from '../types/AmountType';
 import AmountTextField from './AmountTextField';
+import { getIn } from 'formik';
 
-const useStyles = makeStyles({
-  amountFieldStyle: {
-    display: 'flex',
-    alignItems: 'center',
+const useStyles = makeStyles(() => ({
+  amountSelect: {
+    minWidth: 150,
   },
-});
+  dash: {
+    height: '100%',
+    textAlign: 'center',
+  },
+}));
 
 function ScholarshipAmountField(props) {
   const classes = useStyles();
-  const {
-    className,
-    helperText,
-    amountType,
-    minAmount,
-    maxAmount,
-    onTypeChange,
-    updateAmount,
-  } = props;
+  const { labelStyle, formik } = props;
 
-  const isRange = amountType === AmountType.Range;
-  const isFixed = amountType === AmountType.Fixed;
-  const error = !!helperText; // no error if helperText empty
+  const amountType = formik.values.amount.type;
+  const minError = getIn(formik.errors, 'amount.min');
+  const maxError = getIn(formik.errors, 'amount.max');
 
-  const labels = {};
-  labels[AmountType.Range] = (
-    <div className={classes.amountFieldStyle}>
-      Range:
+  let helperText = minError || maxError || '';
+
+  const inputFields = {};
+  inputFields[AmountType.Varies] = (
+    <>
       <AmountTextField
-        error={isRange && error && (!!maxAmount || minAmount >= maxAmount)}
-        value={minAmount || ''}
+        error={Boolean(minError)}
+        value={formik.values.amount.min || ''}
         onChange={(e) => {
           const val = parseInt(e.target.value, 10);
-          updateAmount(val || 0, maxAmount);
+          formik.setFieldValue('amount.min', val || 0);
         }}
-        disabled={!isRange}
       />
-      to
+
+      <RemoveIcon className={classes.dash} />
+
       <AmountTextField
-        error={isRange && error && !minAmount && !maxAmount}
-        value={maxAmount || ''}
+        error={Boolean(maxError)}
+        value={formik.values.amount.max || ''}
         onChange={(e) => {
           const val = parseInt(e.target.value, 10);
-          updateAmount(minAmount, val || 0);
+          formik.setFieldValue('amount.max', val || 0);
         }}
-        disabled={!isRange}
       />
-    </div>
+    </>
   );
-  labels[AmountType.Fixed] = (
-    <div className={classes.amountFieldStyle}>
-      Fixed Amount:
-      <AmountTextField
-        error={isFixed && error}
-        value={minAmount || ''}
-        onChange={(e) => {
-          const val = parseInt(e.target.value, 10);
-          updateAmount(val || 0, val || 0);
-        }}
-        disabled={!isFixed}
-      />
-    </div>
+  inputFields[AmountType.Fixed] = (
+    <AmountTextField
+      error={Boolean(minError)}
+      value={formik.values.amount.min || ''}
+      onChange={(e) => {
+        const val = parseInt(e.target.value, 10);
+        formik.setFieldValue('amount.min', val || 0);
+        formik.setFieldValue('amount.max', val || 0);
+      }}
+    />
   );
-  labels[AmountType.FullTuition] = 'Full Tuition';
 
   return (
-    <FormControl error={error} className={className}>
-      <FormLabel>Amount Type *</FormLabel>
-      <RadioGroup value={amountType} onChange={onTypeChange}>
-        {Object.values(AmountType).map((type) => (
-          <FormControlLabel
-            key={type}
-            value={type}
-            control={<Radio />}
-            label={labels[type] || 'Unknown'}
-          />
-        ))}
-      </RadioGroup>
-      <FormHelperText error>{helperText || ' '}</FormHelperText>
-    </FormControl>
+    <>
+      <InputLabel className={labelStyle}>Award Amount *</InputLabel>
+      <Grid container spacing={3}>
+        <Grid item>
+          <Select
+            name="amount.type"
+            className={classes.amountSelect}
+            variant="outlined"
+            value={amountType}
+            onChange={formik.handleChange}>
+            <MenuItem value={AmountType.Fixed}>Fixed</MenuItem>
+            <MenuItem value={AmountType.Varies}>Varies</MenuItem>
+            <MenuItem value={AmountType.FullTuition}>Full Tuition</MenuItem>
+          </Select>
+        </Grid>
+
+        <Grid item>{amountType && inputFields[amountType]}</Grid>
+      </Grid>
+      <FormHelperText error>{helperText}</FormHelperText>
+    </>
   );
 }
 
 ScholarshipAmountField.propTypes = {
-  className: PropTypes.string,
-  amountType: PropTypes.oneOf(Object.values(AmountType)),
-  minAmount: PropTypes.number,
-  maxAmount: PropTypes.number,
-  onTypeChange: PropTypes.func.isRequired,
-  updateAmount: PropTypes.func.isRequired,
-  helperText: PropTypes.string,
+  labelStyle: PropTypes.string,
+  formik: PropTypes.object.isRequired,
 };
 ScholarshipAmountField.defaultProps = {
-  className: null,
-  amountType: null,
-  helperText: '',
-  minAmount: 0,
-  maxAmount: 0,
+  labelStyle: '',
 };
 export default ScholarshipAmountField;

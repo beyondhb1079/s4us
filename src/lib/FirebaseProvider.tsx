@@ -7,7 +7,7 @@ const config = {
   // TODO (issues/213): Configure a separate staging project.
   // These values should really be read from the environment.
   apiKey: 'AIzaSyAXDqsWK4quNVaf9-YV2e28NsxkfA9rzJA',
-  authDomain: 'dreamerscholars.firebaseapp.com',
+  authDomain: 'auth.dreamscholars.org',
   projectId: 'dreamerscholars',
 };
 
@@ -27,7 +27,7 @@ export default function FirebaseProvider(props: {
         authDomain: 'dreamscholars.org',
         projectId: 'dreamerscholars',
       });
-      firebase.firestore().settings({ host: 'localhost:8080', ssl: false });
+      firebase.firestore().useEmulator('localhost', 8080);
       firebase.auth().useEmulator('http://localhost:9099/');
     }
   }

@@ -1,31 +1,31 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { AddCircle as AddIcon, Inbox as InboxIcon } from '@material-ui/icons';
+import React from 'react';
+import Helmet from 'react-helmet';
+import { AddCircle as AddIcon, Inbox as InboxIcon } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 import {
-  CircularProgress,
   Button,
   Container,
   Grid,
   Link as MuiLink,
-  makeStyles,
   Paper,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 
 const useStyles = makeStyles((theme) => ({
   browseGrid: {
     padding: theme.spacing(3),
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(2),
     },
   },
   browseButton: {
     marginBottom: theme.spacing(2),
     marginTop: theme.spacing(2),
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       marginBottom: theme.spacing(1),
       marginTop: theme.spacing(1),
     },
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     marginBottom: theme.spacing(2),
     marginTop: theme.spacing(2),
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       marginBottom: theme.spacing(1),
       marginTop: theme.spacing(1),
     },
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   noneAddedGrid: {
     alignItems: 'center',
     padding: theme.spacing(3),
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       justifyContent: 'center',
       padding: theme.spacing(2),
       textAlign: 'center',
@@ -61,41 +61,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UserHome() {
   const classes = useStyles();
-  const [scholarships, setScholarships] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState();
   const user = firebase.auth().currentUser;
 
-  const [loadMoreFn, setLoadMoreFn] = useState(() =>
-    Scholarships.list({ authorId: user.uid })
-  );
-  const [canLoadMore, setCanLoadMore] = useState(false);
-
-  const loadMoreScholarships = useCallback((scholarshipsList) => {
-    let mounted = true;
-    scholarshipsList
-      .then(({ results, next, hasNext }) => {
-        if (!mounted) return;
-        setScholarships((prev) => [...prev, ...results]);
-
-        setLoadMoreFn(next);
-        setCanLoadMore(hasNext);
-      })
-      .then(() => mounted && setError(null))
-      .catch((e) => mounted && setError(e))
-      .finally(() => mounted && setLoading(false));
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  useEffect(
-    () => loadMoreScholarships(Scholarships.list({ authorId: user.uid })),
-    [user.uid, loadMoreScholarships]
-  );
+  const listScholarshipsFn = () => Scholarships.list({ authorId: user.uid });
 
   return (
     <Container>
+      <Helmet>
+        <title>Dashboard</title>
+      </Helmet>
       <Typography variant="h4" gutterBottom>
         Welcome {user.displayName}
       </Typography>
@@ -138,43 +112,28 @@ export default function UserHome() {
           </Button>
         </Grid>
       </Grid>
-      {error?.toString() || loading ? (
-        <CircularProgress className={classes.progress} />
-      ) : (
-        [
-          scholarships.length === 0 ? (
-            <Grid
-              container
-              component={Paper}
-              variant="outlined"
-              className={classes.noneAddedGrid}>
-              <Grid item>
-                <InboxIcon className={classes.inboxIcon} />
-              </Grid>
-              <Grid item>
-                <Typography variant="h5" gutterButtom>
-                  No Scholarships Added Yet
-                </Typography>
-                <MuiLink component={Link} to="/scholarships/new">
-                  Add Scholarship
-                </MuiLink>
-              </Grid>
+      <ScholarshipList
+        listFn={listScholarshipsFn}
+        noResultsNode={
+          <Grid
+            container
+            component={Paper}
+            variant="outlined"
+            className={classes.noneAddedGrid}>
+            <Grid item>
+              <InboxIcon className={classes.inboxIcon} />
             </Grid>
-          ) : (
-            <>
-              <ScholarshipList scholarships={scholarships} />
-              {canLoadMore && (
-                <Button
-                  className={classes.loadMoreButton}
-                  color="primary"
-                  onClick={() => loadMoreScholarships(loadMoreFn)}>
-                  Load More
-                </Button>
-              )}
-            </>
-          ),
-        ]
-      )}
+            <Grid item>
+              <Typography variant="h5" gutterButtom>
+                No Scholarships Added Yet
+              </Typography>
+              <MuiLink component={Link} to="/scholarships/new">
+                Add Scholarship
+              </MuiLink>
+            </Grid>
+          </Grid>
+        }
+      />
     </Container>
   );
 }

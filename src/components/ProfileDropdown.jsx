@@ -1,17 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import firebase from 'firebase';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
-import { Avatar, Divider, Grid, Typography } from '@material-ui/core';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import NewIcon from '@material-ui/icons/NewReleases';
-import BookmarkIcon from '@material-ui/icons/Bookmark';
-import DoneIcon from '@material-ui/icons/Done';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { EXPERIMENT_SHOW_FULL_PROFILE_MENU } from '../config/constants';
+import { makeStyles, withStyles } from '@mui/styles';
+import {
+  Avatar,
+  Divider,
+  Grid,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  Typography,
+} from '@mui/material';
+import {
+  Bookmark as BookmarkIcon,
+  Done as DoneIcon,
+  ExitToApp as ExitToAppIcon,
+  NewReleases as NewIcon,
+} from '@mui/icons-material';
+import experiments from '../lib/experiments';
 
 // hacky way to override Menu style
 const StyledMenu = withStyles((theme) => ({
@@ -95,13 +102,13 @@ export default function ProfileDropdown(props) {
           <Typography component="h6" gutterBottom>
             {user.email}
           </Typography>
-          {EXPERIMENT_SHOW_FULL_PROFILE_MENU && (
+          {experiments.expShowFullProfileMenu && (
             <a href={manageProfileLink}>Manage Your Profile</a>
           )}
         </Grid>
       </Grid>
       <Divider className={classes.dividerSpacing} />
-      {EXPERIMENT_SHOW_FULL_PROFILE_MENU && (
+      {experiments.expShowFullProfileMenu && (
         <>
           {createMenuItem('New', <NewIcon fontSize="medium" />)}
           {createMenuItem('Saved', <BookmarkIcon fontSize="medium" />)}

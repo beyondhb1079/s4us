@@ -6,6 +6,8 @@
 # Firebase
 .firebase/
 *-debug.log
+.firebase-emulator.lock
+firebase-export-*/
 
 # because we use yarn
 package-lock.json
@@ -36,3 +38,7 @@ src/react-app-env.d.ts
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Emacs
+*~
+*#

@@ -1,13 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Tab from '@material-ui/core/Tab';
-import TabPanel from '@material-ui/lab/TabPanel';
-import TabContext from '@material-ui/lab/TabContext';
-import TabList from '@material-ui/lab/TabList';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import makeStyles from '@mui/styles/makeStyles';
+import { AppBar, Button, Tab, Typography } from '@mui/material';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
 import HomeSection from './HomeSection';
 import student from '../img/student.png';
 import contributor from '../img/contributor.png';
@@ -48,7 +43,7 @@ const tabs = [
     tab: 'students',
     title: 'Stress-free scholarships',
     description:
-      'We intend to provide tools and resources for all students in High School, Community College and University. Our goal is to provide you with access to scholarships to allow you to pursue your career path. We understand that finding scholarships that match your attributes is the most difficult and time consuming task to do as a college student. Our purpose is to connect you with our database to ensure the time you spend finding scholarships is minimize and effectively provide you with scholarships that are right for you.',
+      'DreamScholars helps anyone find scholarships, regardless of status. Our community does the heavy lifting to make your scholarship search easy and stress-free.',
     buttons: [
       <Button
         variant="contained"

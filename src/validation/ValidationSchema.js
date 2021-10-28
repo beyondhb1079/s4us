@@ -23,28 +23,35 @@ const validationSchema = yup.object({
         then: yup
           .number()
           .required()
-          .moreThan(0, 'Please enter the scholarship amount'),
+          .moreThan(
+            0,
+            "Please enter a valid amount. If the amount is unknown, select 'Varies' from above"
+          ),
       })
       .when('type', {
-        is: AmountType.Range,
+        is: AmountType.Varies,
         then: yup
           .number()
+          .min(0, 'Please enter a valid amount')
           .test(
             'min < max test',
             'Minimum must be less than the maximum',
             (min, { parent }) =>
               min === 0 || parent.max === 0 || min < parent.max
-          )
-          .test(
-            'min max both empty test',
-            'Range amount must have a minimum and/or a maximum',
-            (min, { parent }) => min > 0 || parent.max > 0
           ),
       }),
-    max: yup
+    max: yup.number().min(0, 'Please enter a valid amount').notRequired(),
+  }),
+  requirements: yup.object().shape({
+    gpa: yup
       .number()
-      .min(0, 'Please input an amount greater than 0')
-      .notRequired(),
+      .test(
+        'valid GPA',
+        'Please enter a valid GPA, rounded to one decimal place',
+        (gpa) =>
+          gpa === undefined ||
+          (gpa > 0 && gpa <= 4 && gpa.toString().match(/^[0-4](\.\d)?$/))
+      ),
   }),
 });
 

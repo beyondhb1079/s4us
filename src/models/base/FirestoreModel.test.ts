@@ -1,3 +1,6 @@
+/**
+ * @jest-environment node
+ */
 import firebase from 'firebase/app';
 import { clearFirestoreData, initializeTestApp } from '../../lib/testing';
 import FirestoreModel from './FirestoreModel';

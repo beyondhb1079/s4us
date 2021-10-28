@@ -2,47 +2,45 @@ import firebase from 'firebase/app';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import FirestoreCollection from './base/FirestoreCollection';
 import FirestoreModelList from './base/FiretoreModelList';
-import ScholarshipEligibility from '../types/ScholarshipEligibility';
-
-interface ScholarshipData {
-  // TODO(https://github.com/beyondhb1079/s4us/issues/56):
-  // Update this to reflect the schema
-  name: string;
-  amount: ScholarshipAmount;
-  description: string;
-  deadline: Date;
-  website: string;
-  school?: string;
-  year?: string;
-  authorId?: string;
-  authorEmail?: string;
-  states?: String[];
-  eligibility?: ScholarshipEligibility;
-  organization?: string;
-  tags?: string[];
-}
-// tags: PropTypes.arrayOf({ title: PropTypes.string })
+import FirestoreModel from './base/FirestoreModel';
+import ScholarshipData from '../types/ScholarshipData';
+import AmountType from '../types/AmountType';
 
 export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipData> =
   {
-    toFirestore: (data: ScholarshipData) => ({
-      ...data,
-      amount: {
-        type: data.amount.type,
-        min: data.amount.min,
-        max: data.amount.max,
-      },
-      deadline: firebase.firestore.Timestamp.fromDate(data.deadline),
-    }),
+    toFirestore: (data: ScholarshipData) => {
+      const user = firebase.app().auth().currentUser;
+      const lastModified = new Date();
+      const dateAdded = data.dateAdded ?? lastModified;
+      const author =
+        data.author ?? (user ? { id: user?.uid, email: user?.email } : {});
+      return {
+        ...data,
+        author,
+        amount: ScholarshipAmount.toStorage(data.amount),
+        deadline: firebase.firestore.Timestamp.fromDate(data.deadline),
+        dateAdded: firebase.firestore.Timestamp.fromDate(dateAdded),
+        lastModified: firebase.firestore.Timestamp.fromDate(lastModified),
+      };
+    },
     fromFirestore: (snapshot, options) => {
       const data = snapshot.data(options);
       const deadline = (data.deadline as firebase.firestore.Timestamp).toDate();
-      const amount = new ScholarshipAmount(data.amount.type, data.amount);
-      return { ...data, amount, deadline } as ScholarshipData;
+      const dateAdded = (
+        data.dateAdded as firebase.firestore.Timestamp
+      )?.toDate();
+      const lastModified = (
+        data.lastModified as firebase.firestore.Timestamp
+      )?.toDate();
+
+      return {
+        ...data,
+        deadline,
+        dateAdded,
+        lastModified,
+      } as ScholarshipData;
     },
   };
-
-type SortDirection = 'asc' | 'desc';
 
 class Scholarships extends FirestoreCollection<ScholarshipData> {
   name = 'scholarships';
@@ -51,29 +49,62 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
   /**
    * Lists all items in this collection.
    *
-   * @param opts list options.
+   * @param opts filter and sorting options.
    */
   list(opts: {
-    sortDir?: SortDirection;
-    sortField?: string;
     authorId?: string;
+    hideExpired?: boolean;
+    minAmount?: number;
+    maxAmount?: number;
+    sortDir?: 'asc' | 'desc';
+    sortField?: string;
   }): Promise<FirestoreModelList<ScholarshipData>> {
     let query: firebase.firestore.Query<ScholarshipData> = this.collection;
-    // TODO(issues/93, issues/94): Support filters and pagination
+
+    // Set default sorting field and direction if they're not set
+    if (!opts.sortField) opts.sortField = 'deadline';
+    if (!opts.sortDir) opts.sortDir = 'asc';
 
     // Sort by requested field + direction
-    if (opts.sortField) {
-      query = query.orderBy(opts.sortField, opts.sortDir ?? 'asc');
-    }
-    // Sort ties by deadline earliest to earliest
+    query = query.orderBy(opts.sortField, opts.sortDir);
+
+    // Sort ties by earliest deadline first
     if (opts.sortField !== 'deadline') {
       query = query.orderBy('deadline', 'asc');
     }
+
+    // Apply filter(s)
+    //
+    // Note: Firestore currently has limitations on how filters can be combined
+    // so we cannot apply a range filter operator (e.g. '>') unless the sorting
+    // field is the same.
+    // https://firebase.google.com/docs/firestore/query-data/order-limit-data#limitations
     if (opts.authorId) {
-      query = query.where('authorId', '==', opts.authorId);
+      query = query.where('author.id', '==', opts.authorId);
     }
 
-    return FirestoreCollection.list(query);
+    const now = new Date();
+    const today = new Date(now.toDateString());
+    if (opts.hideExpired && opts.sortField == 'deadline') {
+      query = query.where('deadline', '>=', today);
+    }
+
+    // Filter to apply *on* the results. This allows us to apply complex
+    // filters Firestore doesn't support.
+    //
+    // Returning false filters out non-matches.
+    const postProcessFilter = (s: FirestoreModel<ScholarshipData>) =>
+      ScholarshipAmount.amountsIntersect(s.data.amount, {
+        type: AmountType.Varies,
+        min: opts.minAmount ?? 0,
+        max: opts.maxAmount ?? 0,
+      }) &&
+      // if opts.sortField is set then the where clause was added
+      // otherwise we need to check afterwards
+      // TODO(#692): Add a `status` field so we don't need to do this.
+      (opts.sortField == 'deadline' || s.data.deadline >= today);
+
+    return FirestoreCollection.list(query, postProcessFilter);
   }
 }
 
