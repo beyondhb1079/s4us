@@ -1,15 +1,16 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter, Route } from 'react-router-dom';
-import { clearFirestoreData, initializeTestApp } from '../lib/testing';
-import ScholarshipForm from '../pages/ScholarshipForm';
+import { MemoryRouter } from 'react-router-dom';
+import { initializeTestApp } from '../lib/testing';
+import ProtectedRoute from './ProtectedRoute';
 
 window.MutationObserver = require('mutation-observer');
+const component = () => <h1>Protected Header</h1>;
 
 function renderAtRoute(route) {
   return render(
     <MemoryRouter initialEntries={[route]}>
-      <Route path="/scholarships/new" component={ScholarshipForm} />
+      <ProtectedRoute path={route} component={component} />
     </MemoryRouter>
   );
 }
@@ -17,24 +18,21 @@ function renderAtRoute(route) {
 const app = initializeTestApp({
   projectId: 'protected-route-test',
   apiKey: 'fake-api-key',
+  auth: { uid: '123', email: 'michaelmeyers@gmail.com' },
 });
 
-beforeAll(() => clearFirestoreData(app.options));
 afterAll(() => app.delete());
 
 test('athenticated user can accesss page', () => {
-  renderAtRoute('/scholarships/new');
+  renderAtRoute('/authenticated');
 
-  expect(screen.getByText(/Submit a Scholarship/i)).toBeInTheDocument();
-  expect(screen.getByLabelText('Scholarship Name *')).toBeInTheDocument();
-  expect(screen.getByLabelText('Deadline *')).toBeInTheDocument();
-  expect(screen.getByLabelText('Description *')).toBeInTheDocument();
-  expect(screen.getByLabelText('Website *')).toBeInTheDocument();
+  expect(screen.getByText('Protected Header')).toBeInTheDocument();
+});
 
-  expect(screen.getByText('Amount Type *')).toBeInTheDocument();
-  expect(screen.getByText('Unknown')).toBeInTheDocument();
-  expect(screen.getByText('Fixed Amount:')).toBeInTheDocument();
-  // expect(screen.getByText('Range:')).toBeInTheDocument();
-  expect(screen.getByText('Full Tuition')).toBeInTheDocument();
-  expect(screen.getByRole('button', { name: /SUBMIT/i }));
+test("unathenticated user can't access page", () => {
+  app.auth().signOut();
+
+  renderAtRoute('/unauthenticated');
+
+  expect(screen.getByText('Protected Header')).toBeInTheDocument();
 });
