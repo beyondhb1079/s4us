@@ -29,11 +29,11 @@ function ProtectedRoute({ component: Component, path }) {
     () => firebase.auth().onAuthStateChanged((user) => setIsSignedIn(!!user)),
     []
   );
-  /* eslint-disable react/jsx-props-no-spreading */
+
   return (
     <Route
       path={path}
-      render={(props) => {
+      render={() => {
         if (isSignedIn === undefined) {
           return (
             <Container className={classes.progress}>
@@ -42,7 +42,7 @@ function ProtectedRoute({ component: Component, path }) {
           );
         }
         if (isSignedIn === true) {
-          return <Component {...props} />;
+          return <Component />;
         }
         return (
           <Container>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import firebase from 'firebase';
 import { Container, Typography, Alert, AlertTitle } from '@mui/material';
 import ScholarshipForm from '../components/ScholarshipForm';
@@ -6,8 +7,8 @@ import SubmissionAlert from '../components/SubmissionAlert';
 import Scholarships from '../models/Scholarships';
 import { Helmet } from 'react-helmet';
 
-function EditScholarship({ match }) {
-  const { id } = match.params;
+function EditScholarship() {
+  const { id } = useParams();
   const [scholarship, setScholarship] = useState(undefined);
   const [error, setError] = useState();
   const loading = !error && (!scholarship || !scholarship.data);
