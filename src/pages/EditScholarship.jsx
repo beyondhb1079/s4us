@@ -13,7 +13,7 @@ function EditScholarship() {
   const [error, setError] = useState();
   const [submissionAlert, setSubmissionAlert] = useState(null);
 
-  // Fetch the scholarship if we need to load it
+  // Fetch the scholarship
   useEffect(() => {
     let mounted = true;
 
