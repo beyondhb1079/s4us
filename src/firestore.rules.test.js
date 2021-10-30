@@ -78,21 +78,6 @@ test('allows edit when you are author of scholarship', () => {
   return assertSucceeds(updatedDoc);
 });
 
-test('does not update scholarship when signed out', () => {
-  const testDoc = authedApp
-    .firestore()
-    .collection('scholarships')
-    .doc('KLJASDQW')
-    .set(newScholarship);
-
-  const updatedDoc = unauthedApp
-    .firestore()
-    .collection('scholarships')
-    .doc('KLJASDQW')
-    .set({ ...testDoc, name: 'updated name' });
-
-  return assertFails(updatedDoc);
-});
 /*
 test('does not update scholarship when different user', () => {
   const testDoc = authedApp
