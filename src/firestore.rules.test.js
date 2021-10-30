@@ -18,6 +18,10 @@ const newScholarship = {
     min: 0,
     max: 0,
   },
+  author: {
+    id: 'alice',
+    email: 'alice@gmail.com',
+  },
 };
 const authedApp = initializeTestApp({
   projectId: MY_PROJECT_ID,
@@ -55,4 +59,36 @@ test('allows write to scholarships doc when signed in', () => {
     .doc('KJ019JSD')
     .set(newScholarship);
   return assertSucceeds(testDoc);
+});
+
+test('allows edit when you are author of scholarship', () => {
+  const testDoc = authedApp
+    .firestore()
+    .collection('scholarships')
+    .doc('KLJASDQW')
+    .set(newScholarship);
+
+  const updatedDoc = authedApp
+    .firestore()
+    .collection('scholarships')
+    .doc('KLJASDQW')
+    .set({ ...testDoc, name: 'updated name' });
+
+  return assertSucceeds(updatedDoc);
+});
+
+test('does not update scholarship when different author', () => {
+  const testDoc = authedApp
+    .firestore()
+    .collection('scholarships')
+    .doc('KLJASDQW')
+    .set(newScholarship);
+
+  const updatedDoc = unauthedApp
+    .firestore()
+    .collection('scholarships')
+    .doc('KLJASDQW')
+    .set({ ...testDoc, name: 'updated name' });
+
+  return assertFails(updatedDoc);
 });

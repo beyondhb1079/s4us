@@ -11,22 +11,21 @@ function EditScholarship() {
   const { id } = useParams();
   const [scholarship, setScholarship] = useState(undefined);
   const [error, setError] = useState();
-  const loading = !error && (!scholarship || !scholarship.data);
   const [submissionAlert, setSubmissionAlert] = useState(null);
 
   // Fetch the scholarship if we need to load it
   useEffect(() => {
     let mounted = true;
-    if (loading) {
-      Scholarships.id(id)
-        .get()
-        .then((s) => mounted && setScholarship(s))
-        .catch((e) => mounted && setError(e));
-    }
+
+    Scholarships.id(id)
+      .get()
+      .then((s) => mounted && setScholarship(s))
+      .catch((e) => mounted && setError(e));
+
     return () => {
       mounted = false;
     };
-  }, [id, loading]);
+  }, [id]);
 
   useEffect(() => {
     const authorId = scholarship?.data?.author?.id;
@@ -34,7 +33,7 @@ function EditScholarship() {
       setError("You don't have permission to edit this scholarship.");
   }, [scholarship]);
 
-  if (error || loading) {
+  if (error || !scholarship) {
     return (
       <Container>
         <Typography variant="h4" gutterBottom align="center">
