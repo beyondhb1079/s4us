@@ -23,16 +23,16 @@ const app = initializeTestApp({
 
 afterAll(() => app.delete());
 
-test('athenticated user can accesss page', () => {
+test('authenticated user can accesss page', () => {
   renderAtRoute('/authenticated');
 
   expect(screen.getByText('Protected Header')).toBeInTheDocument();
 });
 
-test("unathenticated user can't access page", () => {
+test("unauthenticated user can't access page", () => {
   app.auth().signOut();
 
   renderAtRoute('/unauthenticated');
 
-  expect(screen.getByText('Protected Header')).toBeInTheDocument();
+  expect(screen.getByText('Protected Header')).not.toBeInTheDocument();
 });
