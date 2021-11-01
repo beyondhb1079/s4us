@@ -7107,9 +7107,9 @@ find-up@^3.0.0:
     locate-path "^3.0.0"
 
 firebase-tools@^9.12.1:
-  version "9.19.0"
-  resolved "https://registry.yarnpkg.com/firebase-tools/-/firebase-tools-9.19.0.tgz#f2684ba19cb1fb0a8d44de6554e96ab2178afc9c"
-  integrity sha512-jo9IhtddYBXEwO5m99oPZ53H4KInfhyYWD5+j6LD1bCsT9M95u+hNx+oXnRBVNTJjbwvlv/stF+zDy1WrpU1FA==
+  version "9.21.0"
+  resolved "https://registry.yarnpkg.com/firebase-tools/-/firebase-tools-9.21.0.tgz#1895563f67f16d505541a0933cd48c27fc776f6e"
+  integrity sha512-/Zp9dHhofgKhCSfeLmlecNQ7YX1//db80sFHDHonBxJMqThju8LVpeppHvszJF2WmlkyV3PWeikmB2zB8jvdmg==
   dependencies:
     "@google-cloud/pubsub" "^2.7.0"
     "@types/archiver" "^5.1.0"
@@ -14658,22 +14658,10 @@ tar@^4.3.0:
     safe-buffer "^5.1.2"
     yallist "^3.0.3"
 
-tar@^6.0.2:
+tar@^6.0.2, tar@^6.1.0:
   version "6.1.11"
   resolved "https://registry.yarnpkg.com/tar/-/tar-6.1.11.tgz#6760a38f003afa1b2ffd0ffe9e9abbd0eab3d621"
   integrity sha512-an/KZQzQUkZCkuoAA64hM92X0Urb6VpRhAFllDzz44U2mcD5scmT3zBc4VgVpkugF580+DQn8eAFSyoQt0tznA==
-  dependencies:
-    chownr "^2.0.0"
-    fs-minipass "^2.0.0"
-    minipass "^3.0.0"
-    minizlib "^2.1.1"
-    mkdirp "^1.0.3"
-    yallist "^4.0.0"
-
-tar@^6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/tar/-/tar-6.1.0.tgz#d1724e9bcc04b977b18d5c573b333a2207229a83"
-  integrity sha512-DUCttfhsnLCjwoDoFcI+B2iJgYa93vBnDUATYEeRx6sntCTdN01VnqsIuTlALXla/LWooNg0yEGeB+Y8WdFxGA==
   dependencies:
     chownr "^2.0.0"
     fs-minipass "^2.0.0"
@@ -15971,15 +15959,10 @@ ws@^6.2.1:
   dependencies:
     async-limiter "~1.0.0"
 
-ws@^7.0.0:
+ws@^7.0.0, ws@^7.2.3:
   version "7.5.5"
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.5.5.tgz#8b4bc4af518cfabd0473ae4f99144287b33eb881"
   integrity sha512-BAkMFcAzl8as1G/hArkxOxq3G7pjUqQ3gzYbLL0/5zNkph70e+lCoxBGnm6AW1+/aiNeV4fnKqZ8m4GZewmH2w==
-
-ws@^7.2.3:
-  version "7.5.2"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-7.5.2.tgz#09cc8fea3bec1bc5ed44ef51b42f945be36900f6"
-  integrity sha512-lkF7AWRicoB9mAgjeKbGqVUekLnSNO4VjKVnuPHpQeOxZOErX6BPXwJk70nFslRCEEA8EVW7ZjKwXaP9N+1sKQ==
 
 xdg-basedir@^4.0.0:
   version "4.0.0"
