@@ -26,6 +26,7 @@ const authedApp = initializeTestApp({
 const unauthedApp = initializeTestApp({
   projectId: MY_PROJECT_ID,
 });
+/*
 const authedApp2 = initializeTestApp({
   projectId: MY_PROJECT_ID,
   auth: { uid: 'john-doe' },
@@ -40,7 +41,7 @@ const converter = {
     console.log({ ...data, author });
     return { ...data, author };
   },
-};
+};*/
 
 beforeEach(() => clearFirestoreData({ projectId: MY_PROJECT_ID }));
 afterAll(() => Promise.all([authedApp.delete(), unauthedApp.delete()]));
@@ -72,22 +73,25 @@ test('allows write to scholarships doc when signed in', () => {
   return assertSucceeds(testDoc);
 });
 
-test('allows edit when you are author of scholarship', () => {
-  const testDoc = authedApp
-    .firestore()
-    .collection('scholarships')
-    .doc('KLJASDQW')
-    .set(newScholarship);
+test('allows edit when you are author of scholarship', async () => {
+  await assertSucceeds(
+    authedApp
+      .firestore()
+      .collection('scholarships')
+      .doc('KLJASDQW')
+      .set(newScholarship)
+  );
 
-  const updatedDoc = authedApp
-    .firestore()
-    .collection('scholarships')
-    .doc('KLJASDQW')
-    .set({ ...testDoc, name: 'updated name' });
-
-  return assertSucceeds(updatedDoc);
+  return assertSucceeds(
+    authedApp
+      .firestore()
+      .collection('scholarships')
+      .doc('KLJASDQW')
+      .set({ name: 'update name' })
+  );
 });
 
+/*
 test('does not update scholarship when different user', async () => {
   await assertSucceeds(
     authedApp
@@ -106,4 +110,4 @@ test('does not update scholarship when different user', async () => {
       .doc('KLJASDQW')
       .set({ name: 'updated name' })
   );
-});
+}); */
