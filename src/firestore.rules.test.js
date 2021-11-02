@@ -26,11 +26,21 @@ const authedApp = initializeTestApp({
 const unauthedApp = initializeTestApp({
   projectId: MY_PROJECT_ID,
 });
-/*
 const authedApp2 = initializeTestApp({
   projectId: MY_PROJECT_ID,
   auth: { uid: 'john-doe' },
-}); */
+});
+
+const converter = {
+  toFirestore: (data) => {
+    const user = { uid: 'alice', email: 'test' };
+    const author =
+      data.author ?? (user ? { id: user?.uid, email: user?.email } : {});
+
+    console.log({ ...data, author });
+    return { ...data, author };
+  },
+};
 
 beforeEach(() => clearFirestoreData({ projectId: MY_PROJECT_ID }));
 afterAll(() => Promise.all([authedApp.delete(), unauthedApp.delete()]));
@@ -78,21 +88,22 @@ test('allows edit when you are author of scholarship', () => {
   return assertSucceeds(updatedDoc);
 });
 
-/*
-test('does not update scholarship when different user', () => {
-  const testDoc = authedApp
-    .firestore()
-    .collection('scholarships')
-    .doc('KLJASDQW')
-    .set(newScholarship);
+test('does not update scholarship when different user', async () => {
+  await assertSucceeds(
+    authedApp
+      .firestore()
+      .collection('scholarships')
+      .withConverter(converter)
+      .doc('KLJASDQW')
+      .set(newScholarship)
+  );
 
-  testDoc.then((s) => console.log(s));
-
-  const updatedDoc = authedApp2
-    .firestore()
-    .collection('scholarships')
-    .doc('KLJASDQW')
-    .set({ ...testDoc, name: 'updated name' });
-
-  return assertFails(updatedDoc);
-});*/
+  return assertFails(
+    authedApp2
+      .firestore()
+      .collection('scholarships')
+      .withConverter(converter)
+      .doc('KLJASDQW')
+      .set({ name: 'updated name' })
+  );
+});
