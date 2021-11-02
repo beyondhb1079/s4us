@@ -3,6 +3,7 @@
  */
 import firebase from 'firebase/app';
 import { clearFirestoreData, initializeTestApp } from '../lib/testing';
+import AmountType from '../types/AmountType';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import Scholarships, { converter } from './Scholarships';
 
@@ -312,4 +313,21 @@ test('scholarships.list - hideExpired sorting by amount', async () => {
   expect(got.results.map(extractName).sort()).toEqual(
     want.map(extractName).sort()
   );
+});
+
+test('scholarships.new - default values', async () => {
+  const got = Scholarships.new().data;
+  const want = {
+    name: '',
+    description: '',
+    amount: {
+      type: AmountType.Fixed,
+      min: 0,
+      max: 0,
+    },
+    deadline: new Date(),
+    website: '',
+  };
+
+  expect(got).toMatchObject(want);
 });

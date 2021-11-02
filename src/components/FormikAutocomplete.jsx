@@ -14,7 +14,7 @@ function FormikAutocomplete(props) {
         id={id}
         multiple
         value={values}
-        onChange={formik.handleChange}
+        onChange={(e, val) => formik.setFieldValue(id, val)}
         renderInput={(params) => (
           <TextField
             {...params}

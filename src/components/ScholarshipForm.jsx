@@ -231,9 +231,11 @@ function ScholarshipForm({ scholarship, onSubmit }) {
   );
 
   function validationCheck() {
-    const noReqsGiven = Object.values(formik.values.requirements).every(
-      (val) => val == [] || val == ''
-    );
+    const noReqsGiven =
+      !formik.values.requirements ||
+      Object.values(formik.values.requirements).every(
+        (val) => val == [] || val == ''
+      );
     // no requirements & no checkbox fails
     if (activeStep == 1 && !noReqsChecked && noReqsGiven)
       return 'Check this box if there are no requirements for this scholarship.';

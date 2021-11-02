@@ -37,7 +37,7 @@ function FormikMultiSelect(props) {
         id={id}
         variant="outlined"
         value={values}
-        onChange={formik.handleChange}
+        onChange={(e) => formik.setFieldValue(id, e.target.value)}
         renderValue={(selected) =>
           selected.map((val) => options[val]).join(', ') || placeholder
         }
