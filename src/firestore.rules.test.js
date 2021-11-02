@@ -87,11 +87,11 @@ test('allows edit when you are author of scholarship', async () => {
       .firestore()
       .collection('scholarships')
       .doc('KLJASDQW')
-      .set({ name: 'update name' })
+      .set({ ...newScholarship, name: 'update name' })
   );
 });
 
-/*
+/* TODO: specify the Firestore connection for our Firestore collections
 test('does not update scholarship when different user', async () => {
   await assertSucceeds(
     authedApp
