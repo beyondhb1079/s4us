@@ -1,4 +1,5 @@
 import React from 'react';
+import { getIn } from 'formik';
 import { InputLabel, Select, MenuItem } from '@mui/material';
 import PropTypes from 'prop-types';
 import makeStyles from '@mui/styles/makeStyles';
@@ -22,24 +23,21 @@ function FormikMultiSelect(props) {
   const { label, id, labelStyle, formik, options, disabled, placeholder } =
     props;
   const classes = useStyles();
+  const values = getIn(formik.values, id, []);
 
   return (
     <>
       <InputLabel className={labelStyle}>{label}</InputLabel>
       <Select
-        className={
-          formik.values.requirements[id]?.length > 0 ? '' : classes.textColor
-        }
+        className={values.length > 0 ? '' : classes.textColor}
         disabled={disabled}
         multiple
         fullWidth
         displayEmpty
         id={id}
         variant="outlined"
-        value={formik.values.requirements[id] ?? []}
-        onChange={(e) =>
-          formik.setFieldValue(`requirements.${id}`, e.target.value)
-        }
+        value={values}
+        onChange={formik.handleChange}
         renderValue={(selected) =>
           selected.map((val) => options[val]).join(', ') || placeholder
         }

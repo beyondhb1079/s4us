@@ -154,7 +154,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
         <FormikMultiSelect
           disabled={noReqsChecked}
           label="Grade(s)"
-          id="grades"
+          id="requirements.grades"
           labelStyle={classes.inputLabel}
           formik={formik}
           options={GradeLevel.values()}
@@ -167,7 +167,6 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
           type="number"
           disabled={noReqsChecked}
           formik={formik}
-          value={formik.values.requirements.gpa ?? ''}
           label="Minimum GPA"
           labelStyle={classes.inputLabel}
           placeholder="None"
@@ -177,7 +176,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
         <FormikAutocomplete
           disabled={noReqsChecked}
           label="School(s)"
-          id="schools"
+          id="requirements.schools"
           labelStyle={classes.inputLabel}
           options={[...SCHOOLS]}
           freeSolo
@@ -189,7 +188,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
         <FormikAutocomplete
           disabled={noReqsChecked}
           label="State(s)"
-          id="states"
+          id="requirements.states"
           labelStyle={classes.inputLabel}
           options={STATES}
           formik={formik}
@@ -200,7 +199,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
         <FormikAutocomplete
           disabled={noReqsChecked}
           label="Major(s)"
-          id="majors"
+          id="requirements.majors"
           labelStyle={classes.inputLabel}
           options={[...MAJORS]}
           freeSolo
@@ -212,7 +211,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
         <FormikMultiSelect
           disabled={noReqsChecked}
           label="Ethnicity(s)"
-          id="ethnicities"
+          id="requirements.ethnicities"
           labelStyle={classes.inputLabel}
           formik={formik}
           options={Ethnicity.values()}
