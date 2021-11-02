@@ -1,18 +1,9 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import {
-  Alert,
-  AlertTitle,
-  Container,
-  Typography,
-  Grid,
-  Paper,
-  Box,
-} from '@mui/material';
+import { Container, Typography, Grid, Paper, Box } from '@mui/material';
 import ScholarshipForm from '../components/ScholarshipForm';
 import Scholarships from '../models/Scholarships';
 import SubmissionAlert from '../components/SubmissionAlert';
-import AmountType from '../types/AmountType';
 import backgroundImg from '../img/img3.svg';
 
 function AddScholarship() {
@@ -66,12 +57,12 @@ function AddScholarship() {
         }}>
         <ScholarshipForm
           scholarship={scholarship}
-          onSubmit={(scholarship) => {
+          onSubmit={(s) => {
             setScholarship(Scholarships.new());
             setSubmissionAlert(
               <SubmissionAlert
-                id={scholarship.id}
-                name={scholarship.data.name}
+                id={s.id}
+                name={s.data.name}
                 onClose={() => setSubmissionAlert(null)}
               />
             );

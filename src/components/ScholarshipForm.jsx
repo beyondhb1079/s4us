@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import {
+  Alert,
+  AlertTitle,
   Box,
   Button,
   Checkbox,
@@ -50,7 +52,7 @@ function ScholarshipForm({ scholarship, onSubmit }) {
     initialValues: scholarship.data,
     validationSchema,
     validateOnChange: false,
-    onSubmit: (values, { setSubmitting, resetForm }) => {
+    onSubmit: (values, { setSubmitting }) => {
       setSubmitting(true);
       scholarship.data = { ...values };
       scholarship
@@ -138,7 +140,7 @@ function ScholarshipForm({ scholarship, onSubmit }) {
           control={
             <Checkbox
               checked={noReqsChecked}
-              onChange={(e) =>
+              onChange={() =>
                 formik.setFieldValue(
                   'requirements',
                   noReqsChecked ? undefined : {}
