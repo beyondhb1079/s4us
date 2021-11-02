@@ -16,22 +16,8 @@ import AmountType from '../types/AmountType';
 import backgroundImg from '../img/img3.svg';
 
 function AddScholarship() {
-  const [submissionAlert, setSubmissionAlert] = useState(null);
-
-  const scholarship = Scholarships.new({
-    name: '',
-    deadline: null,
-    description: '',
-    amount: {
-      type: AmountType.Fixed,
-      min: 0,
-      max: 0,
-    },
-    website: '',
-    organization: '',
-    tags: [],
-    requirements: {},
-  });
+  const [submissionAlert, setSubmissionAlert] = useState(false);
+  const [scholarship, setScholarship] = useState(Scholarships.new());
 
   return (
     <Container maxWidth="md">
@@ -80,26 +66,20 @@ function AddScholarship() {
         }}>
         <ScholarshipForm
           scholarship={scholarship}
-          submitFn={() =>
+          onSubmit={(scholarship) => {
+            setScholarship(Scholarships.new());
             setSubmissionAlert(
               <SubmissionAlert
                 id={scholarship.id}
                 name={scholarship.data.name}
                 onClose={() => setSubmissionAlert(null)}
               />
-            )
-          }
-          onSubmitError={(error) =>
-            setSubmissionAlert(
-              <Alert severity="error" onClose={() => setSubmissionAlert(null)}>
-                <AlertTitle>Error</AlertTitle>
-                {error.toString()}
-              </Alert>
-            )
-          }
+            );
+          }}
         />
+
+        {submissionAlert}
       </Paper>
-      {submissionAlert}
     </Container>
   );
 }

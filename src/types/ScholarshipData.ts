@@ -7,6 +7,7 @@ export default interface ScholarshipData {
   description: string;
   deadline: Date;
   website: string;
+  
   organization?: string;
   tags?: string[];
   dateAdded?: Date;

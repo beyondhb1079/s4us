@@ -41,10 +41,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
+function ScholarshipForm({ scholarship, onSubmit }) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
-  const [noReqsChecked, setNoReqsChecked] = useState(false);
+  const [submissionError, setSubmissionError] = useState(null);
 
   const formik = useFormik({
     initialValues: scholarship.data,
@@ -55,14 +55,13 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
       scholarship.data = { ...values };
       scholarship
         .save()
-        .then(submitFn)
-        .then(() => setActiveStep(0))
-        .then(() => setNoReqsChecked(false))
-        .then(resetForm)
-        .catch(onSubmitError)
+        .then(onSubmit)
+        .catch(setSubmissionError)
         .finally(() => setSubmitting(false));
     },
   });
+
+  const noReqsChecked = JSON.stringify(formik.values.requirements) === '{}';
 
   const stepperItems = {};
   stepperItems.General = (
@@ -139,10 +138,12 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
           control={
             <Checkbox
               checked={noReqsChecked}
-              onChange={(event) => {
-                formik.values.requirements = {};
-                return setNoReqsChecked(event.target.checked);
-              }}
+              onChange={(e) =>
+                formik.setFieldValue(
+                  'requirements',
+                  noReqsChecked ? undefined : {}
+                )
+              }
               color="primary"
             />
           }
@@ -276,6 +277,16 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
                   }}>
                   {onLastStep ? 'Submit' : 'Next'}
                 </Button>
+                {submissionError && (
+                  <Alert
+                    severity="error"
+                    onClose={() => setSubmissionError(null)}>
+                    <AlertTitle>
+                      There was an error submitting your changes:
+                    </AlertTitle>
+                    {submissionError.toString()}
+                  </Alert>
+                )}
               </div>
             </StepContent>
           </Step>
@@ -286,9 +297,8 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 }
 
 ScholarshipForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
   scholarship: PropTypes.object.isRequired,
-  submitFn: PropTypes.func.isRequired,
-  onSubmitError: PropTypes.func.isRequired,
 };
 
 export default ScholarshipForm;
