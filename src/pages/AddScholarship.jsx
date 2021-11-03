@@ -7,8 +7,8 @@ import SubmissionAlert from '../components/SubmissionAlert';
 import backgroundImg from '../img/img3.svg';
 
 function AddScholarship() {
-  const [submissionAlert, setSubmissionAlert] = useState(false);
   const [scholarship, setScholarship] = useState(Scholarships.new());
+  const [submissionAlert, setSubmissionAlert] = useState(false);
 
   return (
     <Container maxWidth="md">
@@ -52,7 +52,7 @@ function AddScholarship() {
         sx={{
           zIndex: 1,
           position: 'relative',
-          p: 2,
+          p: { xs: 2, sm: 3 },
           bottom: { md: 40 },
         }}>
         <ScholarshipForm
@@ -68,7 +68,6 @@ function AddScholarship() {
             );
           }}
         />
-
         {submissionAlert}
       </Paper>
     </Container>
