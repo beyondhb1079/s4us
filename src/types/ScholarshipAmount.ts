@@ -135,7 +135,7 @@ namespace ScholarshipAmount {
         return `$${amount.min}`;
       case AmountType.Varies:
         if (!amount.min && !amount.max) return 'Varies';
-        if (amount.min && amount.max !== RANGE_MAX) {
+        if (amount.min && amount.max && amount.max !== RANGE_MAX) {
           return `$${amount.min}-$${amount.max}`;
         }
         return amount.min ? `$${amount.min}+` : `Up to $${amount.max}`;
