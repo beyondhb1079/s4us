@@ -108,6 +108,24 @@ namespace ScholarshipAmount {
     return { min, max, type };
   }
 
+  // Translates 'amount' to the format it should be displayed as
+  export function fromStorage(amount: ScholarshipAmount): ScholarshipAmount {
+    let { type, min, max } = amount;
+    switch (type) {
+      case AmountType.Unknown:
+        min = 0;
+        max = 0;
+        type = AmountType.Varies;
+        break;
+      case AmountType.Varies:
+        max = max === RANGE_MAX ? 0 : max;
+        break;
+      default:
+        break;
+    }
+    return { type, min, max };
+  }
+
   /** Returns a string representation of the given `amount`. */
   export function toString(amount?: ScholarshipAmount): string {
     switch (amount?.type) {
