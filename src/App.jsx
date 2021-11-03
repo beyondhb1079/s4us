@@ -15,6 +15,7 @@ import ListScholarships from './pages/ListScholarships';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import AddScholarship from './pages/AddScholarship';
+import EditScholarship from './pages/EditScholarship';
 import theme from './theme';
 import { BRAND_NAME } from './config/constants';
 import FirebaseProvider from './lib/FirebaseProvider';
@@ -40,6 +41,10 @@ function App() {
               <ProtectedRoute
                 path="/scholarships/new"
                 component={AddScholarship}
+              />
+              <ProtectedRoute
+                path="/scholarships/:id/edit"
+                component={EditScholarship}
               />
               <Route path="/scholarships/:id" component={ViewScholarship} />
               <Route path="/scholarships" component={ListScholarships} />

@@ -1,5 +1,6 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
+import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import {
   Box,
@@ -8,14 +9,16 @@ import {
   Chip,
   Divider,
   Grid,
-  Link,
+  Link as MuiLink,
   Typography,
+  IconButton,
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import {
   Info as InfoIcon,
   Send as SendIcon,
   Share as ShareIcon,
+  Edit as EditIcon,
 } from '@mui/icons-material';
 import { genMailToLink, withDeviceInfo } from '../lib/mail';
 import ScholarshipAmount from '../types/ScholarshipAmount';
@@ -129,16 +132,20 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
         {organization}
       </Typography>
       {preview && (
-        <Link href="#" underline="always" onClick={(e) => e.preventDefault()}>
+        <MuiLink
+          href="#"
+          underline="always"
+          onClick={(e) => e.preventDefault()}>
           {website}
-        </Link>
+        </MuiLink>
       )}
 
       <Box className={classes.actionSection}>
         <Button
-          component={Link}
+          component={MuiLink}
           href={website}
           target="_blank"
+          rel="noreferrer"
           variant="contained"
           color="primary"
           className={classes.applyBtn}
@@ -152,6 +159,16 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
           disabled={scholarship.id === undefined}>
           Share
         </Button>
+
+        {!preview && firebase.auth().currentUser?.uid == author.id && (
+          <IconButton
+            component={Link}
+            to={{
+              pathname: `/scholarships/${scholarship.id}/edit`,
+            }}>
+            <EditIcon />
+          </IconButton>
+        )}
       </Box>
 
       <Typography paragraph>{description}</Typography>
@@ -222,7 +239,7 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
         </Grid>
       </Box>
       <Chip
-        component={Link}
+        component={MuiLink}
         href={genMailToLink({
           subject: `Report Issue for ${name}`,
           bcc: author?.email,
