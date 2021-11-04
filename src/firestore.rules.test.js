@@ -96,6 +96,6 @@ test('allows scholarships update when user is author', async () => {
       .firestore()
       .collection('scholarships')
       .doc('KLJASDQW')
-      .set({ ...newScholarship, name: 'update name' })
+      .set({ name: 'updated name' })
   );
 });
