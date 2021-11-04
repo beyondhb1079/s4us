@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import {
+  Alert,
+  AlertTitle,
   Box,
   Button,
   Checkbox,
@@ -41,28 +43,30 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
+function ScholarshipForm({ scholarship, onSubmit }) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
-  const [noReqsChecked, setNoReqsChecked] = useState(false);
+  const [submissionError, setSubmissionError] = useState(null);
 
   const formik = useFormik({
     initialValues: scholarship.data,
     validationSchema,
     validateOnChange: false,
-    onSubmit: (values, { setSubmitting, resetForm }) => {
+    onSubmit: (values, { setSubmitting }) => {
       setSubmitting(true);
       scholarship.data = { ...values };
       scholarship
         .save()
-        .then(submitFn)
+        .then(onSubmit)
         .then(() => setActiveStep(0))
-        .then(() => setNoReqsChecked(false))
-        .then(resetForm)
-        .catch(onSubmitError)
+        .catch(setSubmissionError)
         .finally(() => setSubmitting(false));
     },
   });
+
+  // Initially requirements is null but is set to {} when the "no requirements"
+  // checkbox is explicitly set.
+  const noReqsChecked = JSON.stringify(formik.values.requirements) === '{}';
 
   const stepperItems = {};
   stepperItems.General = (
@@ -139,10 +143,12 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
           control={
             <Checkbox
               checked={noReqsChecked}
-              onChange={(event) => {
-                formik.values.requirements = {};
-                return setNoReqsChecked(event.target.checked);
-              }}
+              onChange={() =>
+                formik.setFieldValue(
+                  'requirements',
+                  noReqsChecked ? undefined : {}
+                )
+              }
               color="primary"
             />
           }
@@ -154,7 +160,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
         <FormikMultiSelect
           disabled={noReqsChecked}
           label="Grade(s)"
-          id="grades"
+          id="requirements.grades"
           labelStyle={classes.inputLabel}
           formik={formik}
           options={GradeLevel.values()}
@@ -167,7 +173,6 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
           type="number"
           disabled={noReqsChecked}
           formik={formik}
-          value={formik.values.requirements.gpa ?? ''}
           label="Minimum GPA"
           labelStyle={classes.inputLabel}
           placeholder="None"
@@ -177,7 +182,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
         <FormikAutocomplete
           disabled={noReqsChecked}
           label="School(s)"
-          id="schools"
+          id="requirements.schools"
           labelStyle={classes.inputLabel}
           options={[...SCHOOLS]}
           freeSolo
@@ -189,7 +194,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
         <FormikAutocomplete
           disabled={noReqsChecked}
           label="State(s)"
-          id="states"
+          id="requirements.states"
           labelStyle={classes.inputLabel}
           options={STATES}
           formik={formik}
@@ -200,7 +205,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
         <FormikAutocomplete
           disabled={noReqsChecked}
           label="Major(s)"
-          id="majors"
+          id="requirements.majors"
           labelStyle={classes.inputLabel}
           options={[...MAJORS]}
           freeSolo
@@ -212,7 +217,7 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
         <FormikMultiSelect
           disabled={noReqsChecked}
           label="Ethnicity(s)"
-          id="ethnicities"
+          id="requirements.ethnicities"
           labelStyle={classes.inputLabel}
           formik={formik}
           options={Ethnicity.values()}
@@ -229,9 +234,11 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
   );
 
   function validationCheck() {
-    const noReqsGiven = Object.values(formik.values.requirements).every(
-      (val) => val == [] || val == ''
-    );
+    const noReqsGiven =
+      !formik.values.requirements ||
+      Object.values(formik.values.requirements).every(
+        (val) => val == [] || val == ''
+      );
     // no requirements & no checkbox fails
     if (activeStep == 1 && !noReqsChecked && noReqsGiven)
       return 'Check this box if there are no requirements for this scholarship.';
@@ -277,6 +284,16 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
                   }}>
                   {onLastStep ? 'Submit' : 'Next'}
                 </Button>
+                {submissionError && (
+                  <Alert
+                    severity="error"
+                    onClose={() => setSubmissionError(null)}>
+                    <AlertTitle>
+                      There was an error submitting your changes:
+                    </AlertTitle>
+                    {submissionError.toString()}
+                  </Alert>
+                )}
               </div>
             </StepContent>
           </Step>
@@ -287,9 +304,8 @@ function ScholarshipForm({ scholarship, submitFn, onSubmitError }) {
 }
 
 ScholarshipForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
   scholarship: PropTypes.object.isRequired,
-  submitFn: PropTypes.func.isRequired,
-  onSubmitError: PropTypes.func.isRequired,
 };
 
 export default ScholarshipForm;
