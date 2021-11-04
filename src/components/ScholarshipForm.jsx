@@ -58,11 +58,14 @@ function ScholarshipForm({ scholarship, onSubmit }) {
       scholarship
         .save()
         .then(onSubmit)
+        .then(() => setActiveStep(0))
         .catch(setSubmissionError)
         .finally(() => setSubmitting(false));
     },
   });
 
+  // Initially requirements is null but is set to {} when the "no requirements"
+  // checkbox is explicitly set.
   const noReqsChecked = JSON.stringify(formik.values.requirements) === '{}';
 
   const stepperItems = {};
