@@ -108,7 +108,7 @@ namespace ScholarshipAmount {
     return { min, max, type };
   }
 
-  // Translates 'amount' to the format it should be displayed as
+  /** Translates 'amount' to the format it should be displayed as */
   export function fromStorage(amount: ScholarshipAmount): ScholarshipAmount {
     let { type, min, max } = amount;
     switch (type) {
