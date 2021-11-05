@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import firebase from 'firebase';
-import { Container, Typography, Alert, AlertTitle } from '@mui/material';
+import { Container, Paper, Typography } from '@mui/material';
 import ScholarshipForm from '../components/ScholarshipForm';
 import SubmissionAlert from '../components/SubmissionAlert';
 import Scholarships from '../models/Scholarships';
@@ -48,28 +48,22 @@ function EditScholarship() {
       <Helmet>
         <title>Edit a scholarship</title>
       </Helmet>
-
-      <ScholarshipForm
-        scholarship={scholarship}
-        submitFn={() =>
-          setSubmissionAlert(
-            <SubmissionAlert
-              id={id}
-              name={scholarship.data.name}
-              onClose={() => setSubmissionAlert(null)}
-            />
-          )
-        }
-        onSubmitError={(err) =>
-          setSubmissionAlert(
-            <Alert severity="error" onClose={() => setSubmissionAlert(null)}>
-              <AlertTitle>Error</AlertTitle>
-              {err.toString()}
-            </Alert>
-          )
-        }
-      />
-      {submissionAlert}
+      <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 } }}>
+        <ScholarshipForm
+          scholarship={scholarship}
+          onSubmit={(s) => {
+            setScholarship(s);
+            setSubmissionAlert(
+              <SubmissionAlert
+                id={s.id}
+                name={s.data.name}
+                onClose={() => setSubmissionAlert(null)}
+              />
+            );
+          }}
+        />
+        {submissionAlert}
+      </Paper>
     </Container>
   );
 }

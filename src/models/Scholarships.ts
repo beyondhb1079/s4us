@@ -106,6 +106,22 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
 
     return FirestoreCollection.list(query, postProcessFilter);
   }
+
+  new(
+    data: ScholarshipData = {
+      name: '',
+      description: '',
+      amount: {
+        type: AmountType.Fixed,
+        min: 0,
+        max: 0,
+      },
+      deadline: new Date(),
+      website: '',
+    }
+  ): FirestoreModel<ScholarshipData> {
+    return new FirestoreModel<ScholarshipData>(this.collection.doc(), data);
+  }
 }
 
 const scholarships = new Scholarships();
