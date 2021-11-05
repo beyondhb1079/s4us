@@ -12,8 +12,8 @@
       "webRoot": "${workspaceFolder}/src"
     },
     {
-      "command": "Debug tests",
-      "name": "Run tests",
+      "name": "Debug tests",
+      "command": "yarn test",
       "request": "launch",
       "type": "node-terminal"
     }
