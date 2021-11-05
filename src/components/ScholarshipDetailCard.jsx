@@ -171,7 +171,9 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
         )}
       </Box>
 
-      <Typography paragraph>{description}</Typography>
+      <Typography paragraph sx={{ whiteSpace: 'pre-line' }}>
+        {description}
+      </Typography>
       <Box>
         <DetailCardCell
           label="Deadline"
@@ -218,6 +220,11 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
           text={requirements?.majors?.join(', ') || 'All'}
           bottom
         />
+        <DetailCardCell
+          label="Schools"
+          text={requirements?.schools?.join(', ') || 'All'}
+          bottom
+        />
       </Box>
       <Box className={classes.propertySection}>
         <Typography variant="h5" component="h4" gutterBottom>
@@ -227,13 +234,13 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
         <Grid container>
           {!tags
             ? 'None'
-            : tags.map(({ title, id }) => (
+            : tags.map((tag) => (
                 <Chip
-                  label={title}
+                  label={tag}
                   variant="outlined"
                   color="primary"
                   className={classes.tag}
-                  key={id}
+                  key={tag}
                 />
               ))}
         </Grid>
@@ -265,12 +272,7 @@ ScholarshipDetailCard.propTypes = {
       description: PropTypes.string,
       deadline: PropTypes.instanceOf(Date),
       website: PropTypes.string,
-      tags: PropTypes.arrayOf(
-        PropTypes.shape({
-          id: PropTypes.string,
-          title: PropTypes.string,
-        })
-      ),
+      tags: PropTypes.arrayOf(PropTypes.string),
       author: PropTypes.shape({
         email: PropTypes.string,
         id: PropTypes.string,
