@@ -9,6 +9,7 @@ import {
   Popover,
 } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import GradeLevel from '../types/GradeLevel';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -19,16 +20,6 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
   },
 }));
-
-const gradeItems = [
-  '12th - High School',
-  'College Freshman',
-  'College Sophomore',
-  'College Junior',
-  'College Senior',
-  '5th Year',
-  'Post Grad',
-];
 
 export default function GradeLevelFilter() {
   const classes = useStyles();
@@ -63,18 +54,18 @@ export default function GradeLevelFilter() {
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
         <FormControl component="fieldset" className={classes.popover}>
           <FormGroup>
-            {Array.from(gradeItems).map((grade) => (
+            {Object.entries(GradeLevel.values()).map(([val, stringRep]) => (
               <FormControlLabel
-                key={grade}
+                key={val}
                 control={
                   <Checkbox
                     color="primary"
-                    checked={selectedGrades.has(grade)}
-                    onChange={() => toggleSelection(grade)}
+                    checked={selectedGrades.has(val)}
+                    onChange={() => toggleSelection(val)}
                     name="grade"
                   />
                 }
-                label={grade}
+                label={stringRep}
               />
             ))}
           </FormGroup>
