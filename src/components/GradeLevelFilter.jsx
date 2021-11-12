@@ -21,20 +21,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function GradeLevelFilter() {
+export default function GradeLevelFilter(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const openPopover = (event) => setAnchorEl(event.currentTarget);
-  const [selectedGrades, setSelectedGrades] = useState(new Set());
+
+  const { grades, changeFn } = props;
 
   function toggleSelection(grade) {
-    const newSet = new Set(selectedGrades);
-    if (selectedGrades.has(grade)) {
+    grade = parseInt(grade);
+    const newSet = new Set(grades);
+
+    if (grades.indexOf(grade) > -1) {
       newSet.delete(grade);
     } else {
       newSet.add(grade);
     }
-    setSelectedGrades(newSet);
+    changeFn(Array.from(newSet));
   }
 
   return (
@@ -60,7 +63,7 @@ export default function GradeLevelFilter() {
                 control={
                   <Checkbox
                     color="primary"
-                    checked={selectedGrades.has(val)}
+                    checked={grades.indexOf(parseInt(val)) > -1}
                     onChange={() => toggleSelection(val)}
                     name="grade"
                   />

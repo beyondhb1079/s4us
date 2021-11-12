@@ -17,14 +17,21 @@ function ListScholarships() {
   const history = useHistory();
   const location = useLocation();
 
-  const params = queryString.parse(location.search, { parseNumbers: true });
+  const params = queryString.parse(location.search, {
+    parseNumbers: true,
+    arrayFormat: 'bracket-separator',
+    arrayFormatSeparator: ',',
+  });
 
   const setQueryParam = (index, val) => {
     history.push({
-      search: queryString.stringify({
-        ...params,
-        [index]: val,
-      }),
+      search: queryString.stringify(
+        {
+          ...params,
+          [index]: val,
+        },
+        { arrayFormat: 'bracket-separator', arrayFormatSeparator: ',' }
+      ),
     });
   };
 
