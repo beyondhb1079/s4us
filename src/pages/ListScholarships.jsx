@@ -12,6 +12,7 @@ import sortOptions, {
   getDir,
   getField,
 } from '../lib/sortOptions';
+import GradeLevel from '../types/GradeLevel';
 
 function ListScholarships() {
   const history = useHistory();
@@ -49,7 +50,8 @@ function ListScholarships() {
   const sortField = getField(sortBy);
   const sortDir = getDir(sortBy);
 
-  const { minAmount, maxAmount } = params;
+  const { minAmount, maxAmount, grades } = params;
+  console.log(grades);
 
   if (
     minAmount !== undefined &&
@@ -63,6 +65,26 @@ function ListScholarships() {
     !(Number.isInteger(maxAmount) && maxAmount > 0)
   ) {
     pruneQueryParam(qParams.MAX_AMOUNT);
+  }
+
+  /**
+   * prunes invalid grade values not respresented by GradeLevel enum
+   */
+  if (
+    grades !== undefined &&
+    Array.isArray(grades) &&
+    JSON.stringify(grades) !== '[]'
+  ) {
+    const prunedInvalid = grades.filter((g) => GradeLevel.keys().includes(g));
+    if (prunedInvalid.length !== grades.length) {
+      params.grades = prunedInvalid;
+      history.replace({
+        search: queryString.stringify(params, {
+          arrayFormat: 'bracket-separator',
+          arrayFormatSeparator: ',',
+        }),
+      });
+    }
   }
 
   const listScholarships = () =>
