@@ -64,7 +64,6 @@ function ListScholarships() {
   const sortDir = getDir(sortBy);
 
   const { minAmount, maxAmount, grades } = params;
-  console.log(grades);
 
   if (
     minAmount !== undefined &&
