@@ -43,7 +43,7 @@ function FormikMultiSelect(props) {
         }
         MenuProps={MenuProps}>
         {Object.entries(options).map(([val, stringRep]) => (
-          <MenuItem key={val} value={val}>
+          <MenuItem key={val} value={parseInt(val) || val}>
             {stringRep}
           </MenuItem>
         ))}
