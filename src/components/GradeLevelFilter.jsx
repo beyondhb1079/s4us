@@ -36,7 +36,7 @@ export default function GradeLevelFilter(props) {
     } else {
       newSet.add(grade);
     }
-    changeFn(Array.from(newSet));
+    changeFn([...newSet]);
   }
 
   return (

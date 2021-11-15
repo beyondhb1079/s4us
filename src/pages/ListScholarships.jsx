@@ -83,7 +83,9 @@ function ListScholarships() {
    * prunes invalid grade values not respresented by GradeLevel enum
    */
   if (Array.isArray(grades) && JSON.stringify(grades) !== '[]') {
-    const prunedInvalid = grades.filter((g) => GradeLevel.keys().includes(g));
+    const prunedInvalid = [...new Set(grades)].filter((g) =>
+      GradeLevel.keys().includes(g)
+    );
     if (prunedInvalid.length !== grades.length) {
       replaceQueryParam(qParams.GRADES, prunedInvalid);
     }
