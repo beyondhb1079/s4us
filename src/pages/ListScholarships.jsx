@@ -83,16 +83,17 @@ function ListScholarships() {
   /**
    * prunes invalid grade values not respresented by GradeLevel enum
    */
-  if (
-    grades !== undefined &&
-    Array.isArray(grades) &&
-    JSON.stringify(grades) !== '[]'
-  ) {
+  if (Array.isArray(grades) && JSON.stringify(grades) !== '[]') {
     const prunedInvalid = grades.filter((g) => GradeLevel.keys().includes(g));
     if (prunedInvalid.length !== grades.length) {
       replaceQueryParam(qParams.GRADES, prunedInvalid);
     }
   }
+  if (
+    (grades !== undefined && !Array.isArray(grades)) ||
+    JSON.stringify(grades) === '[]'
+  )
+    pruneQueryParam(qParams.GRADES);
 
   const listScholarships = () =>
     Scholarships.list({
