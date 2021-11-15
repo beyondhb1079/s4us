@@ -29,7 +29,6 @@ export default function GradeLevelFilter(props) {
   const { grades, changeFn } = props;
 
   function toggleSelection(grade) {
-    grade = parseInt(grade);
     const newSet = new Set(grades);
 
     if (grades.indexOf(grade) > -1) {
@@ -57,20 +56,23 @@ export default function GradeLevelFilter(props) {
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
         <FormControl component="fieldset" className={classes.popover}>
           <FormGroup>
-            {Object.entries(GradeLevel.values()).map(([val, stringRep]) => (
-              <FormControlLabel
-                key={val}
-                control={
-                  <Checkbox
-                    color="primary"
-                    checked={grades.indexOf(parseInt(val)) > -1}
-                    onChange={() => toggleSelection(val)}
-                    name="grade"
-                  />
-                }
-                label={stringRep}
-              />
-            ))}
+            {Object.entries(GradeLevel.values()).map(([val, stringRep]) => {
+              val = parseInt(val);
+              return (
+                <FormControlLabel
+                  key={val}
+                  control={
+                    <Checkbox
+                      color="primary"
+                      checked={grades.indexOf(val) > -1}
+                      onChange={() => toggleSelection(val)}
+                      name="grade"
+                    />
+                  }
+                  label={stringRep}
+                />
+              );
+            })}
           </FormGroup>
         </FormControl>
       </Popover>
