@@ -14,14 +14,18 @@ import sortOptions, {
 } from '../lib/sortOptions';
 import GradeLevel from '../types/GradeLevel';
 
+const queryOptions = {
+  arrayFormat: 'bracket-separator',
+  arrayFormatSeparator: ',',
+};
+
 function ListScholarships() {
   const history = useHistory();
   const location = useLocation();
 
   const params = queryString.parse(location.search, {
     parseNumbers: true,
-    arrayFormat: 'bracket-separator',
-    arrayFormatSeparator: ',',
+    ...queryOptions,
   });
 
   const setQueryParam = (index, val) => {
@@ -31,7 +35,7 @@ function ListScholarships() {
           ...params,
           [index]: val,
         },
-        { arrayFormat: 'bracket-separator', arrayFormatSeparator: ',' }
+        queryOptions
       ),
     });
   };
@@ -39,6 +43,15 @@ function ListScholarships() {
   const pruneQueryParam = (index) => {
     delete params[index];
     history.replace({ search: queryString.stringify(params) });
+  };
+
+  /**
+   * when dealing with invalid values in an array
+   * rather than pruning the entire param, we can prune out the invalid values
+   */
+  const replaceQueryParam = (index, newVal) => {
+    params.grades = newVal;
+    history.replace({ search: queryString.stringify(params, queryOptions) });
   };
 
   if (params.sortBy && !(params.sortBy in sortOptions)) {
@@ -77,13 +90,7 @@ function ListScholarships() {
   ) {
     const prunedInvalid = grades.filter((g) => GradeLevel.keys().includes(g));
     if (prunedInvalid.length !== grades.length) {
-      params.grades = prunedInvalid;
-      history.replace({
-        search: queryString.stringify(params, {
-          arrayFormat: 'bracket-separator',
-          arrayFormatSeparator: ',',
-        }),
-      });
+      replaceQueryParam(qParams.GRADES, prunedInvalid);
     }
   }
 

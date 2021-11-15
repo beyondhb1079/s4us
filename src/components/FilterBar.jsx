@@ -40,7 +40,7 @@ export default function FilterBar(props) {
         {experiments.expShowGradeFilter && (
           <GradeLevelFilter
             grades={grades ?? []}
-            changeFn={(e) => setQueryParam('grades', e)}
+            changeFn={(e) => setQueryParam(qParams.GRADES, e)}
           />
         )}
         <AmountFilter
