@@ -203,15 +203,18 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
         <DetailCardCell
           label="Grades"
           text={
-            requirements?.grades?.map(GradeLevel.toString).join(', ') || 'All'
+            requirements?.grades
+              ?.map((g) => GradeLevel.toString(g))
+              .join(', ') || 'All'
           }
           bottom
         />
         <DetailCardCell
           label="Demographic"
           text={
-            requirements?.ethnicities?.map(Ethnicity.toString).join(', ') ||
-            'All'
+            requirements?.ethnicities
+              ?.map((e) => Ethnicity.toString(e))
+              .join(', ') || 'All'
           }
           bottom
         />
