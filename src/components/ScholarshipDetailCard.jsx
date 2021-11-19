@@ -265,12 +265,7 @@ ScholarshipDetailCard.propTypes = {
       description: PropTypes.string,
       deadline: PropTypes.instanceOf(Date),
       website: PropTypes.string,
-      tags: PropTypes.arrayOf(
-        PropTypes.shape({
-          id: PropTypes.string,
-          title: PropTypes.string,
-        })
-      ),
+      tags: PropTypes.arrayOf(PropTypes.string),
       author: PropTypes.shape({
         email: PropTypes.string,
         id: PropTypes.string,
@@ -287,6 +282,5 @@ ScholarshipDetailCard.propTypes = {
 };
 
 ScholarshipDetailCard.defaultProps = {
-  id: undefined,
   preview: false,
 };

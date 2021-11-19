@@ -42,6 +42,17 @@ export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipDat
     },
   };
 
+interface FilterOptions {
+  authorId?: string;
+  hideExpired?: boolean;
+  minAmount?: number;
+  maxAmount?: number;
+  sortDir?: 'asc' | 'desc';
+  sortField?: string;
+}
+
+const queryLimit = 10;
+
 class Scholarships extends FirestoreCollection<ScholarshipData> {
   name = 'scholarships';
   converter = converter;
@@ -51,14 +62,7 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
    *
    * @param opts filter and sorting options.
    */
-  list(opts: {
-    authorId?: string;
-    hideExpired?: boolean;
-    minAmount?: number;
-    maxAmount?: number;
-    sortDir?: 'asc' | 'desc';
-    sortField?: string;
-  }): Promise<FirestoreModelList<ScholarshipData>> {
+  list(opts: FilterOptions): Promise<FirestoreModelList<ScholarshipData>> {
     let query: firebase.firestore.Query<ScholarshipData> = this.collection;
 
     // Set default sorting field and direction if they're not set
@@ -73,38 +77,66 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
       query = query.orderBy('deadline', 'asc');
     }
 
-    // Apply filter(s)
-    //
-    // Note: Firestore currently has limitations on how filters can be combined
-    // so we cannot apply a range filter operator (e.g. '>') unless the sorting
-    // field is the same.
-    // https://firebase.google.com/docs/firestore/query-data/order-limit-data#limitations
+    // Apply basic filters. Post-processing filters belong in _list().
     if (opts.authorId) {
       query = query.where('author.id', '==', opts.authorId);
     }
 
+    // Why the sortField check? Firestore limitations. We can't apply a range filter operator (e.g. '>') unless the sorting
+    // field is the same.
+    // https://firebase.google.com/docs/firestore/query-data/order-limit-data#limitations
     const now = new Date();
     const today = new Date(now.toDateString());
+
     if (opts.hideExpired && opts.sortField == 'deadline') {
       query = query.where('deadline', '>=', today);
     }
 
-    // Filter to apply *on* the results. This allows us to apply complex
-    // filters Firestore doesn't support.
-    //
-    // Returning false filters out non-matches.
-    const postProcessFilter = (s: FirestoreModel<ScholarshipData>) =>
-      ScholarshipAmount.amountsIntersect(s.data.amount, {
-        type: AmountType.Varies,
-        min: opts.minAmount ?? 0,
-        max: opts.maxAmount ?? 0,
-      }) &&
-      // if opts.sortField is set then the where clause was added
-      // otherwise we need to check afterwards
-      // TODO(#692): Add a `status` field so we don't need to do this.
-      (opts.sortField == 'deadline' || s.data.deadline >= today);
+    return this._list(opts, query.limit(queryLimit));
+  }
 
-    return FirestoreCollection.list(query, postProcessFilter);
+  private _list(
+    opts: FilterOptions,
+    query: firebase.firestore.Query<ScholarshipData>,
+    lastDoc?: firebase.firestore.QueryDocumentSnapshot<ScholarshipData>
+  ): Promise<FirestoreModelList<ScholarshipData>> {
+    const now = new Date();
+    const today = new Date(now.toDateString());
+    if (lastDoc) query = query.startAfter(lastDoc);
+    return query
+      .get()
+      .then((qSnap: firebase.firestore.QuerySnapshot<ScholarshipData>) => ({
+        hasNext: qSnap.size == queryLimit,
+        next:
+          qSnap.size === queryLimit
+            ? () => this._list(opts, query, qSnap.docs[qSnap.docs.length - 1])
+            : () => Promise.resolve({} as FirestoreModelList<ScholarshipData>),
+        results: qSnap.docs
+          .map(
+            (doc) => new FirestoreModel<ScholarshipData>(doc.ref, doc.data())
+          )
+          // Post-processing filters
+          // These filters are applied *on* the query results.
+          // This allows us work around Firestore query limitations and apply
+          // complex filters.
+          .filter(
+            ({ data }) =>
+              // Amount Filter.
+              ScholarshipAmount.amountsIntersect(data.amount, {
+                type: AmountType.Varies,
+                min: opts.minAmount ?? 0,
+                max: opts.maxAmount ?? 0,
+              }) &&
+              // Deadline Filter.
+              // This is needed  in case list() above couldn't apply it.
+              // TODO(#692): Add a daily updated `status` field so we don't need to do this.
+              (opts.sortField == 'deadline' || data.deadline >= today)
+          ),
+      }))
+      .then(({ results, next, hasNext }) => {
+        if (results.length === 0 && hasNext) return next();
+        return { results, next, hasNext };
+      });
   }
 
   new(

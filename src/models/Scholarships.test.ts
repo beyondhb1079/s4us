@@ -316,8 +316,11 @@ test('scholarships.list - hideExpired sorting by amount', async () => {
 });
 
 test('scholarships.new - default values', async () => {
+  const spy = jest.spyOn(global, 'Date'); // spy on Date
+
   const got = Scholarships.new().data;
-  const want = {
+
+  expect(got).toMatchObject({
     name: '',
     description: '',
     amount: {
@@ -325,9 +328,7 @@ test('scholarships.new - default values', async () => {
       min: 0,
       max: 0,
     },
-    deadline: new Date(),
+    deadline: spy.mock.instances[0],
     website: '',
-  };
-
-  expect(got).toMatchObject(want);
+  });
 });
