@@ -54,7 +54,7 @@ export default function ProfileDropdown(props) {
 
   function createMenuItem(text, icon, task) {
     return (
-      <MenuItem onClick={task} sx={{ py: 1 }}>
+      <MenuItem onClick={task} sx={{ paddingY: 1 }}>
         <ListItemIcon>{icon}</ListItemIcon>
         <ListItemText primary={text} />
       </MenuItem>
@@ -69,7 +69,7 @@ export default function ProfileDropdown(props) {
       keepMounted
       open={Boolean(anchorEl)}
       onClose={handleClose}>
-      <Grid container spacing={2} sx={{ p: 1 }}>
+      <Grid container spacing={2} sx={{ padding: 1 }}>
         <Grid item sx={{ alignSelf: 'center' }}>
           <Avatar src={user.photoURL} sx={{ height: 48, width: 48 }} />
         </Grid>

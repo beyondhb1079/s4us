@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const AmountTextField = (props) => (
   <TextField
-    sx={{ maxWidth: '130px' }}
+    sx={{ maxWidth: 130 }}
     variant="outlined"
     placeholder="Unknown"
     InputProps={{
