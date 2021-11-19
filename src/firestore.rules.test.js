@@ -1,7 +1,6 @@
 /**
  * @jest-environment node
  */
-import firebase from 'firebase';
 import {
   assertFails,
   assertSucceeds,
