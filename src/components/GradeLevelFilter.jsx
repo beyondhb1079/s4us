@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import GradeLevel from '../types/GradeLevel';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -77,3 +78,11 @@ export default function GradeLevelFilter(props) {
     </>
   );
 }
+
+GradeLevelFilter.propTypes = {
+  grades: PropTypes.instanceOf(Set),
+  changeFn: PropTypes.func.isRequired,
+};
+GradeLevelFilter.defaultProps = {
+  grades: undefined,
+};
