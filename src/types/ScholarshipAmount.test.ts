@@ -6,8 +6,16 @@ import ScholarshipAmount, {
   UNKNOWN_MIN,
 } from './ScholarshipAmount';
 
-const { range, fixed, unknown, validate, fullTuition, toString } =
-  ScholarshipAmount;
+const {
+  range,
+  fixed,
+  unknown,
+  validate,
+  fullTuition,
+  toString,
+  toStorage,
+  fromStorage,
+} = ScholarshipAmount;
 
 test('fixed()', () => {
   const amount = fixed(20);
@@ -111,6 +119,14 @@ test('toString() - Range - min only', () => {
   expect(res).toBe('$1000+');
 });
 
+test('toString() - Range - min set with max 0', () => {
+  const amount = range(1000, 0);
+
+  const res = toString(amount);
+
+  expect(res).toBe('$1000+');
+});
+
 test('toString() - Range - max only', () => {
   const amount = range(undefined, 1000);
 
@@ -133,4 +149,111 @@ test('toString() - Range - unbounded', () => {
   const res = toString(amount);
 
   expect(res).toBe('Varies');
+});
+
+test('toStorage() - Fixed', () => {
+  const amount = fixed(1000);
+  const res = toStorage(amount);
+
+  expect(res).toEqual({ type: AmountType.Fixed, min: 1000, max: 1000 });
+});
+
+test('toStorage() - Range - bounded', () => {
+  const amount = range(2, 20);
+  const res = toStorage(amount);
+
+  expect(res).toEqual({ type: AmountType.Varies, min: 2, max: 20 });
+});
+
+test('toStorage() - Range - no min', () => {
+  const amount = range(undefined, 20);
+  const res = toStorage(amount);
+
+  expect(res).toEqual({ type: AmountType.Varies, min: 0, max: 20 });
+});
+
+test('toStorage() - Range - no max', () => {
+  const amount = range(2, undefined);
+  const res = toStorage(amount);
+
+  expect(res).toEqual({ type: AmountType.Varies, min: 2, max: RANGE_MAX });
+});
+
+test('toStorage() - Range - unbounded', () => {
+  const amount = range(undefined, undefined);
+  const res = toStorage(amount);
+
+  expect(res).toEqual({
+    type: AmountType.Unknown,
+    min: UNKNOWN_MIN,
+    max: UNKNOWN_MAX,
+  });
+});
+
+test('toStorage() - FullTuition', () => {
+  const amount = fullTuition();
+  const res = toStorage(amount);
+
+  expect(res).toEqual({
+    type: AmountType.FullTuition,
+    min: FULL_TUITION,
+    max: FULL_TUITION,
+  });
+});
+
+test('toStorage() - Unknown', () => {
+  const amount = unknown();
+  const res = toStorage(amount);
+
+  expect(res).toEqual({
+    type: AmountType.Unknown,
+    min: UNKNOWN_MIN,
+    max: UNKNOWN_MAX,
+  });
+});
+
+test('fromStorage() - Fixed', () => {
+  const amount = fixed(1000);
+  const res = fromStorage(toStorage(amount));
+
+  expect(res).toEqual({ type: AmountType.Fixed, min: 1000, max: 1000 });
+});
+
+test('fromStorage() - Range - bounded', () => {
+  const amount = range(2, 20);
+  const res = fromStorage(toStorage(amount));
+
+  expect(res).toEqual({ type: AmountType.Varies, min: 2, max: 20 });
+});
+
+test('fromStorage() - Range - min 0', () => {
+  const amount = range(0, 1000);
+  const res = fromStorage(toStorage(amount));
+
+  expect(res).toEqual({ type: AmountType.Varies, min: 0, max: 1000 });
+});
+
+test('fromStorage() - Range - range max', () => {
+  const amount = range(1000, RANGE_MAX);
+  const res = fromStorage(toStorage(amount));
+
+  expect(res).toEqual({ type: AmountType.Varies, min: 1000, max: 0 });
+});
+
+test('fromStorage() - FullTuition', () => {
+  const amount = fullTuition();
+  const res = fromStorage(toStorage(amount));
+
+  expect(res).toEqual({
+    type: AmountType.FullTuition,
+    min: FULL_TUITION,
+    max: FULL_TUITION,
+  });
+});
+
+test('fromStorage() - Unknown', () => {
+  const amount = unknown();
+  const res = fromStorage(toStorage(amount));
+
+  expect(res).toEqual({ type: AmountType.Varies, min: 0, max: 0 });
 });

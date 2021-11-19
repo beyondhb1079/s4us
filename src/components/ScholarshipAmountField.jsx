@@ -65,7 +65,11 @@ function ScholarshipAmountField({ labelStyle, formik }) {
             sx={{ minWidth: 150 }}
             variant="outlined"
             value={amountType}
-            onChange={formik.handleChange}>
+            onChange={(e) => {
+              formik.setFieldValue('amount.min', 0);
+              formik.setFieldValue('amount.max', 0);
+              formik.handleChange('amount.type')(e);
+            }}>
             <MenuItem value={AmountType.Fixed}>Fixed</MenuItem>
             <MenuItem value={AmountType.Varies}>Varies</MenuItem>
             <MenuItem value={AmountType.FullTuition}>Full Tuition</MenuItem>
