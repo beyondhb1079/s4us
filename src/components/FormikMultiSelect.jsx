@@ -7,6 +7,9 @@ import makeStyles from '@mui/styles/makeStyles';
 const useStyles = makeStyles((theme) => ({
   textColor: {
     color: theme.palette.grey[500],
+    '& .Mui-disabled': {
+      WebkitTextFillColor: theme.palette.grey[300],
+    },
   },
 }));
 
