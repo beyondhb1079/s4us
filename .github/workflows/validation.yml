@@ -60,7 +60,8 @@ jobs:
   # Ensure tests pass
   test:
     runs-on: ubuntu-latest
-    env: FIREBASE_EMULATORS_PATH: ${{ github.workspace }}/emulator-cache
+    env:
+      FIREBASE_EMULATORS_PATH: ${{ github.workspace }}/emulator-cache
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
@@ -78,8 +79,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ env.FIREBASE_EMULATORS_PATH }}
-          key:
-            ${{ runner.os }}-firebase-emulators-${{
+          key: ${{ runner.os }}-firebase-emulators-${{
             hashFiles('emulator-cache/**') }}
         continue-on-error: true
       - name: Run tests
