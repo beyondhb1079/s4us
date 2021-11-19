@@ -232,7 +232,7 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
         </Typography>
 
         <Grid container>
-          {!tags
+          {!tags || !tags.length
             ? 'None'
             : tags.map((tag) => (
                 <Chip
