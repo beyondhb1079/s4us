@@ -38,6 +38,7 @@ export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipDat
         deadline,
         dateAdded,
         lastModified,
+        amount: ScholarshipAmount.fromStorage(data.amount),
       } as ScholarshipData;
     },
   };
