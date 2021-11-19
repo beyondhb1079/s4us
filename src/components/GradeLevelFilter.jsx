@@ -55,16 +55,16 @@ export default function GradeLevelFilter(props) {
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
         <FormControl component="fieldset" className={classes.popover}>
           <FormGroup>
-            {Object.entries(GradeLevel.values()).map(([val, stringRep]) => {
-              val = parseInt(val);
+            {Object.entries(GradeLevel.values()).map(([grade, stringRep]) => {
+              grade = parseInt(grade);
               return (
                 <FormControlLabel
-                  key={val}
+                  key={grade}
                   control={
                     <Checkbox
                       color="primary"
-                      checked={grades.has(val)}
-                      onChange={() => toggleSelection(val)}
+                      checked={grades.has(grade)}
+                      onChange={() => toggleSelection(grade)}
                       name="grade"
                     />
                   }
@@ -84,5 +84,5 @@ GradeLevelFilter.propTypes = {
   changeFn: PropTypes.func.isRequired,
 };
 GradeLevelFilter.defaultProps = {
-  grades: undefined,
+  grades: new Set(),
 };
