@@ -63,7 +63,10 @@ test('denies scholarships update when user is not author', async () => {
       .firestore()
       .collection('scholarships')
       .doc('KLJASDQW')
-      .set({ ...newScholarship, author: { id: authApp.currentUser.uid } })
+      .set({
+        ...newScholarship,
+        author: { id: authApp.auth().currentUser.uid },
+      })
   );
 
   authApp.auth.setCurrentUser({ uid: 'john-doe' });
@@ -83,7 +86,10 @@ test('allows scholarships update when user is author', async () => {
       .firestore()
       .collection('scholarships')
       .doc('KLJASDQW')
-      .set({ ...newScholarship, author: { id: authApp.currentUser.uid } })
+      .set({
+        ...newScholarship,
+        author: { id: authApp.auth().currentUser.uid },
+      })
   );
 
   return assertSucceeds(
