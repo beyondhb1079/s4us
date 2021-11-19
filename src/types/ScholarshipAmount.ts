@@ -1,19 +1,6 @@
 import AmountType from './AmountType';
 
-// To make sorting by amount.max make sense for range amounts
-// with no upper bound.
-export const RANGE_MAX = 1000000001;
-
-// To make sorting by amount.min/max make sense for full tuition amounts.
-export const FULL_TUITION = RANGE_MAX + 1;
-
-// To make sorting by amount.min/max make sense for unknown amounts.
-// In order to make unknown amounts appear last we purposefully make:
-// - min > FULL_TUITION (for low->high amount.min sorting)
-// - max < 0            (for high->low amount.max sorting)
-export const UNKNOWN_MIN = FULL_TUITION + 1;
-export const UNKNOWN_MAX = -1;
-
+/** Represents a scholarship amount. */
 interface ScholarshipAmount {
   readonly type: AmountType;
   readonly min: number;
@@ -21,6 +8,43 @@ interface ScholarshipAmount {
 }
 
 namespace ScholarshipAmount {
+  /**
+   * PER-TYPE CONSTANTS
+   *
+   * These constants exist to make sorting by amount.min and amount.max
+   * possible for open ended scholarships (no range max, full tuition, unknown).
+   * Our constraints are:
+   * - When sorting by amount from small to big:
+   *   - Unknown scholarships appear last
+   *   - Full Tuition scholarships appear next to last
+   *   - Everything else is sorted by amount.min
+   * - When sorting by amount from big to small:
+   *   - Full Tuition scholarships appear first
+   *   - Scholarships with no max appear next
+   *   - Unknown scholarships appear last
+   *   - Everything else is sorted by amount.max
+   *
+   * With these constraints in mind these values have been derived.
+   */
+
+  // First, we need to limit the max possible fixed value.
+  const MAX_FIXED_VALUE = 1000000000;
+
+  // Next, we need to set range max to be greater than max possible fixed value.
+  /** The `max` value stored for a {@link ScholarshipAmount} of type {@link AmountType.Varies} with no max set. */
+  export const RANGE_MAX = MAX_FIXED_VALUE + 1;
+
+  // Next, we need to set the full tuition value to be greater than range maxes.
+  /** The `min` and `max` values stored for a {@link ScholarshipAmount} of type {@link AmountType.FullTuition}.*/
+  export const FULL_TUITION = RANGE_MAX + 1;
+
+  // Finally, we need to set unknown values such that they appear last when
+  // sorting.
+  /** The `min` value stored for a {@link ScholarshipAmount} of type {@link AmountType.Unknown}.*/
+  export const UNKNOWN_MIN = FULL_TUITION + 1;
+  /** The `max` value stored for a {@link ScholarshipAmount} of type {@link AmountType.Unknown}.*/
+  export const UNKNOWN_MAX = -1;
+
   export const fixed = (val: number): ScholarshipAmount => ({
     min: val,
     max: val,
@@ -34,18 +58,18 @@ namespace ScholarshipAmount {
     min || max
       ? {
           min: min || 0,
-          max: max || RANGE_MAX,
+          max: max || _RANGE_MAX,
           type: AmountType.Varies,
         }
       : {
-          min: UNKNOWN_MIN,
-          max: UNKNOWN_MAX,
+          min: _UNKNOWN_MIN,
+          max: _UNKNOWN_MAX,
           type: AmountType.Unknown,
         };
 
   export const fullTuition = (): ScholarshipAmount => ({
-    min: FULL_TUITION,
-    max: FULL_TUITION,
+    min: _FULL_TUITION,
+    max: _FULL_TUITION,
     type: AmountType.FullTuition,
   });
 
@@ -54,8 +78,8 @@ namespace ScholarshipAmount {
   /** Validates that `amount` meets per-type constraints. */
   export function validate(amount: ScholarshipAmount): void {
     const { min, max, type } = amount;
-
     const errors: string[] = [];
+
     switch (type) {
       case AmountType.Fixed:
         if (!min || min <= 0) {
@@ -95,15 +119,15 @@ namespace ScholarshipAmount {
         break;
       case AmountType.Varies:
         min = min || 0;
-        max = max || RANGE_MAX;
+        max = max || _RANGE_MAX;
         break;
       case AmountType.FullTuition:
-        min = FULL_TUITION;
-        max = FULL_TUITION;
+        min = _FULL_TUITION;
+        max = _FULL_TUITION;
         break;
       default:
-        min = UNKNOWN_MIN;
-        max = UNKNOWN_MAX;
+        min = _UNKNOWN_MIN;
+        max = _UNKNOWN_MAX;
     }
     return { min, max, type };
   }
@@ -117,7 +141,7 @@ namespace ScholarshipAmount {
         return `$${amount.min}`;
       case AmountType.Varies:
         if (!amount.min && !amount.max) return 'Varies';
-        if (amount.min && amount.max !== RANGE_MAX) {
+        if (amount.min && amount.max !== _RANGE_MAX) {
           return `$${amount.min}-$${amount.max}`;
         }
         return amount.min ? `$${amount.min}+` : `Up to $${amount.max}`;
