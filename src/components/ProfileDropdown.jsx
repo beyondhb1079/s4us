@@ -85,13 +85,13 @@ export default function ProfileDropdown(props) {
           )}
         </Grid>
       </Grid>
-      <Divider sx={{ my: 1 }} />
+      <Divider sx={{ marginY: 1 }} />
       {experiments.expShowFullProfileMenu && (
         <>
           {createMenuItem('New', <NewIcon fontSize="medium" />)}
           {createMenuItem('Saved', <BookmarkIcon fontSize="medium" />)}
           {createMenuItem('Applied', <DoneIcon fontSize="medium" />)}
-          <Divider sx={{ my: 1 }} />
+          <Divider sx={{ marginY: 1 }} />
         </>
       )}
       {createMenuItem(

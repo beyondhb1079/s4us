@@ -23,7 +23,7 @@ export default function FilterBar({ setQueryParam, queryParams }) {
       spacing={2}
       justifyContent="space-between"
       sx={{ flexGrow: 1 }}>
-      <Grid item alignItems="center" sx={{ display: 'flex' }}>
+      <Grid item>
         {experiments.expShowMajorFilter && (
           <FilterDropDown label="Major" items={majors} />
         )}
@@ -36,7 +36,7 @@ export default function FilterBar({ setQueryParam, queryParams }) {
         />
       </Grid>
 
-      <Grid item className={classes.alignText}>
+      <Grid item sx={{ display: 'flex', alignItems: 'center' }}>
         Sort by
         <FilterDropDown
           label="Sorting"

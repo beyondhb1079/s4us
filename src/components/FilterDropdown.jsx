@@ -3,12 +3,12 @@ import { MenuItem, FormControl, Select } from '@mui/material';
 import PropTypes from 'prop-types';
 
 const FilterDropdown = ({ label, items, value, removeNone, onChange }) => (
-  <FormControl variant="outlined" sx={{ m: theme.spacing(1), minWidth: 120 }}>
+  <FormControl variant="outlined" sx={{ margin: 1, minWidth: 120 }}>
     <Select
       value={value}
       onChange={(e) => onChange(e.target.value)}
       displayEmpty
-      sx={{ height: theme.spacing(4) }}>
+      sx={{ height: (theme) => theme.spacing(4) }}>
       {!removeNone && (
         <MenuItem value="">
           <em>{label}</em>

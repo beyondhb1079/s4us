@@ -1,24 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, CircularProgress, Grid, Typography } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import PropTypes from 'prop-types';
 
 import ScholarshipListCard from './ScholarshipListCard';
 
-const useStyles = makeStyles(() => ({
-  centered: {
-    margin: 'auto',
-    textAlign: 'center',
-  },
-  progress: {
-    display: 'block',
-    margin: 'auto',
-  },
-}));
-
 function ScholarshipList({ noResultsNode, listFn }) {
-  const classes = useStyles();
-
   const [error, setError] = useState();
   const [scholarships, setScholarships] = useState([]);
   const [loadState, setLoadState] = useState({
@@ -70,14 +56,14 @@ function ScholarshipList({ noResultsNode, listFn }) {
         </Grid>
       ))}
       <Grid item xs={12}>
-        <Box className={classes.centered}>
+        <Box sx={{ margin: 'auto', textAlign: 'center' }}>
           {(() => {
             if (error) return <Typography>{error.toString()}</Typography>;
             if (loading)
               return (
                 <CircularProgress
                   data-testid="progress"
-                  className={classes.progress}
+                  sx={{ display: 'block', margin: 'auto' }}
                 />
               );
             if (canLoadMore)

@@ -32,7 +32,7 @@ export default function UserHome() {
         container
         component={Paper}
         variant="outlined"
-        sx={{ p: { xs: 2, md: 3 } }}>
+        sx={{ padding: { xs: 2, md: 3 } }}>
         <Grid item sm={6} xs={12}>
           <Typography variant="h5" gutterBottom>
             Looking for scholarships?
@@ -42,19 +42,19 @@ export default function UserHome() {
             color="primary"
             component={Link}
             to="/scholarships"
-            sx={{ my: { xs: 1, md: 2 } }}>
+            sx={{ marginY: { xs: 1, md: 2 } }}>
             Browse Scholarships
           </Button>
         </Grid>
         <Grid item sm={6} xs={12}>
-          <img src={img5} />
+          <img src={img5} style={{ maxHeight: '192px' }} />
         </Grid>
       </Grid>
       <Grid
         container
         spacing={2}
         justifyContent="space-between"
-        sx={{ my: { xs: 1, md: 2 } }}>
+        sx={{ marginY: { xs: 1, md: 2 } }}>
         <Grid item>
           <Typography variant="h5" component="h2">
             Scholarships You Have Added
@@ -78,12 +78,11 @@ export default function UserHome() {
             container
             component={Paper}
             variant="outlined"
-            // alignItems="center"
-            justifyContent="center"
-            spacing={5}
-            sx={{ p: { xs: 2, md: 3 } }}>
+            alignItems="center"
+            justifyContent="space-around"
+            sx={{ padding: 3, marginY: 1 }}>
             <Grid item>
-              <InboxIcon sx={{ fontSize: 256 }} />
+              <InboxIcon sx={{ fontSize: (theme) => theme.spacing(25) }} />
             </Grid>
             <Grid item>
               <Typography variant="h5" gutterButtom>

@@ -4,20 +4,8 @@ import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import { Container, Typography, CircularProgress } from '@mui/material';
 
-import makeStyles from '@mui/styles/makeStyles';
-
-const useStyles = makeStyles(() => ({
-  progress: {
-    display: 'flex',
-    flexGrow: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-}));
-
 function ProtectedRoute({ component: Component, path }) {
   const location = useLocation();
-  const classes = useStyles();
   const { showLoginDialog } = location.state || {
     showLoginDialog: undefined,
   };
@@ -36,9 +24,14 @@ function ProtectedRoute({ component: Component, path }) {
       render={() => {
         if (isSignedIn === undefined) {
           return (
-            <Container className={classes.progress}>
-              <CircularProgress />
-            </Container>
+            <CircularProgress
+              sx={{
+                display: 'flex',
+                flexGrow: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            />
           );
         }
         if (isSignedIn === true) {

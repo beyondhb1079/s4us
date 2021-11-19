@@ -38,7 +38,7 @@ export default function GradeLevelFilter() {
     <>
       <Button
         variant="outlined"
-        sx={{ margin: 1, height: 4 }}
+        sx={{ margin: 1, height: (theme) => theme.spacing(4) }}
         onClick={openPopover}
         endIcon={<ArrowDropDownIcon color="primary" />}>
         Grade

@@ -31,7 +31,7 @@ function ScholarshipAmountField({ labelStyle, formik }) {
         }}
       />
 
-      <RemoveIcon sx={{ height: 1, textAlign: 'center' }} />
+      <RemoveIcon sx={{ height: 1.0, textAlign: 'center' }} />
 
       <AmountTextField
         error={Boolean(maxError)}
