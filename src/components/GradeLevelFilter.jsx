@@ -29,14 +29,12 @@ export default function GradeLevelFilter(props) {
   const { grades, changeFn } = props;
 
   function toggleSelection(grade) {
-    const newSet = new Set(grades);
-
-    if (grades.indexOf(grade) > -1) {
-      newSet.delete(grade);
+    if (grades.has(grade)) {
+      grades.delete(grade);
     } else {
-      newSet.add(grade);
+      grades.add(grade);
     }
-    changeFn([...newSet]);
+    changeFn([...grades]);
   }
 
   return (
@@ -64,7 +62,7 @@ export default function GradeLevelFilter(props) {
                   control={
                     <Checkbox
                       color="primary"
-                      checked={grades.indexOf(val) > -1}
+                      checked={grades.has(val)}
                       onChange={() => toggleSelection(val)}
                       name="grade"
                     />
