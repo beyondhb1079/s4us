@@ -15,6 +15,6 @@ if [ -f "${LOCK_FILE}" ]; then
   warn "Firestore emulators may still be running!"
 else
   touch "${LOCK_FILE}"
-  firebase emulators:exec --ui --import=tmp/ --export-on-exit=tmp/ "$@" || exit 1
+  firebase emulators:exec --only firestore,auth --ui --import=tmp/ --export-on-exit=tmp/ "$@" || exit 1
   rm "${LOCK_FILE}"
 fi
