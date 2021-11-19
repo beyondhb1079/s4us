@@ -1,6 +1,7 @@
 /**
  * @jest-environment node
  */
+import firebase from 'firebase';
 import {
   assertFails,
   assertSucceeds,
@@ -24,21 +25,13 @@ const unauthedApp = initializeTestApp({
   projectId: MY_PROJECT_ID,
 });
 
-const aliceId = 'alice';
-const aliceApp = initializeTestApp({
+const authApp = initializeTestApp({
   projectId: MY_PROJECT_ID,
-  auth: { uid: aliceId },
-});
-
-const johnApp = initializeTestApp({
-  projectId: MY_PROJECT_ID,
-  auth: { uid: 'john-doe' },
+  auth: { uid: 'alice' },
 });
 
 beforeEach(() => clearFirestoreData({ projectId: MY_PROJECT_ID }));
-afterAll(() =>
-  Promise.all([unauthedApp, aliceApp, johnApp].map((c) => c.delete()))
-);
+afterAll(() => Promise.all([unauthedApp, authApp].map((c) => c.delete())));
 
 test('allows scholarships read when signed out', () => {
   return assertSucceeds(
@@ -48,7 +41,7 @@ test('allows scholarships read when signed out', () => {
 
 test('allows scholarships read when signed in', () => {
   return assertSucceeds(
-    aliceApp.firestore().collection('scholarships').doc('ASDK91023JUS').get()
+    authApp.firestore().collection('scholarships').doc('ASDK91023JUS').get()
   );
 });
 
@@ -60,21 +53,23 @@ test('denies scholarships write when signed out', () => {
 
 test('allows scholarships write when signed in', () => {
   return assertSucceeds(
-    aliceApp.firestore().collection('scholarships').doc().set(newScholarship)
+    authApp.firestore().collection('scholarships').doc().set(newScholarship)
   );
 });
 
 test('denies scholarships update when user is not author', async () => {
   await assertSucceeds(
-    aliceApp
+    authApp
       .firestore()
       .collection('scholarships')
       .doc('KLJASDQW')
-      .set({ ...newScholarship, author: { id: aliceId } })
+      .set({ ...newScholarship, author: { id: authApp.currentUser.uid } })
   );
 
+  authApp.auth.setCurrentUser({ uid: 'john-doe' });
+
   return assertFails(
-    johnApp
+    authApp
       .firestore()
       .collection('scholarships')
       .doc('KLJASDQW')
@@ -84,15 +79,15 @@ test('denies scholarships update when user is not author', async () => {
 
 test('allows scholarships update when user is author', async () => {
   await assertSucceeds(
-    aliceApp
+    authApp
       .firestore()
       .collection('scholarships')
       .doc('KLJASDQW')
-      .set({ ...newScholarship, author: { id: aliceId } })
+      .set({ ...newScholarship, author: { id: authApp.currentUser.uid } })
   );
 
   return assertSucceeds(
-    aliceApp
+    authApp
       .firestore()
       .collection('scholarships')
       .doc('KLJASDQW')
