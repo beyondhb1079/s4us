@@ -60,6 +60,7 @@ jobs:
   # Ensure tests pass
   test:
     runs-on: ubuntu-latest
+    env: FIREBASE_EMULATORS_PATH: ${{ github.workspace }}/emulator-cache
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
@@ -73,5 +74,13 @@ jobs:
       - name: Install dependencies
         if: steps.modules-cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile --prefer-offline
+      - name: Cache firebase emulators
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.FIREBASE_EMULATORS_PATH }}
+          key:
+            ${{ runner.os }}-firebase-emulators-${{
+            hashFiles('emulator-cache/**') }}
+        continue-on-error: true
       - name: Run tests
         run: yarn test
