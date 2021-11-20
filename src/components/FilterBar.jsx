@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import FilterDropDown from './FilterDropdown';
 import AmountFilter from './AmountFilter';
 import GradeLevelFilter from './GradeLevelFilter';
@@ -9,31 +8,22 @@ import qParams from '../lib/QueryParams';
 import sortOptions, { DEADLINE_ASC } from '../lib/sortOptions';
 import experiments from '../lib/experiments';
 
-const useStyles = makeStyles(() => ({
-  root: {
-    flexGrow: 1,
-    justifyContent: 'space-between',
-  },
-  alignText: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-}));
-
 const majors = {
   che: 'Chemical Eng.',
   cs: 'Computer Science',
   ds: 'Data Science',
 };
 
-export default function FilterBar(props) {
-  const { setQueryParam, queryParams } = props;
-  const classes = useStyles();
+export default function FilterBar({ setQueryParam, queryParams }) {
   const { minAmount, maxAmount, grades } = queryParams;
 
   return (
-    <Grid container spacing={2} className={classes.root}>
-      <Grid item className={classes.alignText}>
+    <Grid
+      container
+      spacing={2}
+      justifyContent="space-between"
+      sx={{ flexGrow: 1 }}>
+      <Grid item>
         {experiments.expShowMajorFilter && (
           <FilterDropDown label="Major" items={majors} />
         )}
@@ -51,7 +41,7 @@ export default function FilterBar(props) {
         />
       </Grid>
 
-      <Grid item className={classes.alignText}>
+      <Grid item sx={{ display: 'flex', alignItems: 'center' }}>
         Sort by
         <FilterDropDown
           label="Sorting"

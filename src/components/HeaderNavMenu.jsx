@@ -3,21 +3,7 @@ import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 import { Tab, Tabs } from '@mui/material';
 
-import makeStyles from '@mui/styles/makeStyles';
-
-const useStyles = makeStyles((theme) => ({
-  tab: {
-    minWidth: 72,
-    [theme.breakpoints.down('md')]: {
-      minWidth: 64,
-    },
-    padding: theme.spacing(0),
-    textTransform: 'none',
-  },
-}));
-
 function HeaderNavMenu({ links }) {
-  const classes = useStyles();
   const location = useLocation();
   let currentTab = false;
   Object.entries(links).map(([title, link]) => {
@@ -35,7 +21,11 @@ function HeaderNavMenu({ links }) {
       variant="scrollable">
       {Object.entries(links).map(([title, link]) => (
         <Tab
-          className={classes.tab}
+          sx={{
+            minWidth: { xs: 64, md: 72 },
+            padding: 0,
+            textTransform: 'none',
+          }}
           component={Link}
           key={title}
           label={title}
