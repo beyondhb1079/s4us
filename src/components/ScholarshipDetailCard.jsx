@@ -160,7 +160,7 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
           Share
         </Button>
 
-        {!preview && firebase.auth().currentUser?.uid == author.id && (
+        {!preview && firebase.auth().currentUser?.uid == author?.id && (
           <IconButton
             component={Link}
             to={{

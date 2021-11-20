@@ -152,7 +152,7 @@ namespace ScholarshipAmount {
     return (
       a.type === AmountType.Unknown ||
       r.type === AmountType.Unknown ||
-      ((!r.min || a.max >= r.min) && (!r.max || a.min <= r.max))
+      ((!r.min || a.max === 0 || a.max >= r.min) && (!r.max || a.min <= r.max))
     );
   }
 }
