@@ -7,6 +7,8 @@ import { clearFirestoreData, initializeTestApp } from '../lib/testing';
 import ViewScholarship from './ViewScholarship';
 import Scholarships from '../models/Scholarships';
 import ScholarshipAmount from '../types/ScholarshipAmount';
+import GradeLevel from '../types/GradeLevel';
+import Ethnicity from '../types/Ethnicity';
 
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.
@@ -87,9 +89,13 @@ test('renders scholarship details', async () => {
     deadline: new Date('2020-12-17'),
     website: 'http://foo.com/',
     requirements: {
-      states: ['California', 'Washington'],
+      states: ['CA', 'WA'],
       gpa: 4.0,
-      ethnicities: ['Latino', 'African American'],
+      grades: [GradeLevel.HsFreshman, GradeLevel.HsSophomore],
+      ethnicities: [
+        Ethnicity.HispanicOrLatino,
+        Ethnicity.BlackOrAfricanAmerican,
+      ],
       majors: ['Computer Science', 'Software Engineering'],
     },
   };
@@ -113,7 +119,14 @@ test('renders scholarship details', async () => {
   ).toBeInTheDocument();
   expect(screen.getByText(data.requirements.gpa + '.0')).toBeInTheDocument();
   expect(
-    screen.getByText(data.requirements.ethnicities.join(', '))
+    screen.getByText(
+      data.requirements.grades.map(GradeLevel.toString).join(', ')
+    )
+  ).toBeInTheDocument();
+  expect(
+    screen.getByText(
+      data.requirements.ethnicities.map(Ethnicity.toString).join(', ')
+    )
   ).toBeInTheDocument();
   expect(
     screen.getByText(data.requirements.majors.join(', '))

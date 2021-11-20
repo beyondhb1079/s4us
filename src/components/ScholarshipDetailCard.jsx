@@ -160,7 +160,7 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
           Share
         </Button>
 
-        {!preview && firebase.auth().currentUser?.uid == author.id && (
+        {!preview && firebase.auth().currentUser?.uid == author?.id && (
           <IconButton
             component={Link}
             to={{
@@ -171,7 +171,9 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
         )}
       </Box>
 
-      <Typography paragraph>{description}</Typography>
+      <Typography paragraph sx={{ whiteSpace: 'pre-line' }}>
+        {description}
+      </Typography>
       <Box>
         <DetailCardCell
           label="Deadline"
@@ -218,6 +220,11 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
           text={requirements?.majors?.join(', ') || 'All'}
           bottom
         />
+        <DetailCardCell
+          label="Schools"
+          text={requirements?.schools?.join(', ') || 'All'}
+          bottom
+        />
       </Box>
       <Box className={classes.propertySection}>
         <Typography variant="h5" component="h4" gutterBottom>
@@ -225,15 +232,15 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
         </Typography>
 
         <Grid container>
-          {!tags
+          {!tags || !tags.length
             ? 'None'
-            : tags.map(({ title, id }) => (
+            : tags.map((tag) => (
                 <Chip
-                  label={title}
+                  label={tag}
                   variant="outlined"
                   color="primary"
                   className={classes.tag}
-                  key={id}
+                  key={tag}
                 />
               ))}
         </Grid>

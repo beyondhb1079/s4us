@@ -12,25 +12,46 @@ import sortOptions, {
   getDir,
   getField,
 } from '../lib/sortOptions';
+import GradeLevel from '../types/GradeLevel';
+
+const queryOptions = {
+  arrayFormat: 'bracket-separator',
+  arrayFormatSeparator: ',',
+};
 
 function ListScholarships() {
   const history = useHistory();
   const location = useLocation();
 
-  const params = queryString.parse(location.search, { parseNumbers: true });
+  const params = queryString.parse(location.search, {
+    parseNumbers: true,
+    ...queryOptions,
+  });
 
   const setQueryParam = (index, val) => {
     history.push({
-      search: queryString.stringify({
-        ...params,
-        [index]: val,
-      }),
+      search: queryString.stringify(
+        {
+          ...params,
+          [index]: val,
+        },
+        queryOptions
+      ),
     });
   };
 
   const pruneQueryParam = (index) => {
     delete params[index];
     history.replace({ search: queryString.stringify(params) });
+  };
+
+  /**
+   * when dealing with invalid values in an array
+   * rather than pruning the entire param, we can prune out the invalid values
+   */
+  const replaceQueryParam = (index, newVal) => {
+    params.grades = newVal;
+    history.replace({ search: queryString.stringify(params, queryOptions) });
   };
 
   if (params.sortBy && !(params.sortBy in sortOptions)) {
@@ -42,7 +63,7 @@ function ListScholarships() {
   const sortField = getField(sortBy);
   const sortDir = getDir(sortBy);
 
-  const { minAmount, maxAmount } = params;
+  const { minAmount, maxAmount, grades } = params;
 
   if (
     minAmount !== undefined &&
@@ -56,6 +77,21 @@ function ListScholarships() {
     !(Number.isInteger(maxAmount) && maxAmount > 0)
   ) {
     pruneQueryParam(qParams.MAX_AMOUNT);
+  }
+
+  /**
+   * prunes invalid grade values not respresented by GradeLevel enum
+   */
+  if (grades !== undefined) {
+    if (Array.isArray(grades) && grades.length > 0) {
+      const prunedInvalid = [...new Set(grades)].filter((g) =>
+        GradeLevel.keys().includes(g)
+      );
+
+      if (prunedInvalid.length !== grades.length) {
+        replaceQueryParam(qParams.GRADES, prunedInvalid);
+      }
+    } else pruneQueryParam(qParams.GRADES);
   }
 
   const listScholarships = () =>
