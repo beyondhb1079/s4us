@@ -35,6 +35,10 @@ const toStringMappings = {
 };
 
 namespace GradeLevel {
+  export function keys(): any {
+    return Object.keys(toStringMappings).map((k) => parseInt(k));
+  }
+
   export function values(): any {
     return toStringMappings;
   }

@@ -15,7 +15,7 @@ const majors = {
 };
 
 export default function FilterBar({ setQueryParam, queryParams }) {
-  const { minAmount, maxAmount } = queryParams;
+  const { minAmount, maxAmount, grades } = queryParams;
 
   return (
     <Grid
@@ -27,7 +27,12 @@ export default function FilterBar({ setQueryParam, queryParams }) {
         {experiments.expShowMajorFilter && (
           <FilterDropDown label="Major" items={majors} />
         )}
-        {experiments.expShowGradeFilter && <GradeLevelFilter />}
+        {experiments.expShowGradeFilter && (
+          <GradeLevelFilter
+            grades={new Set(grades)}
+            changeFn={(e) => setQueryParam(qParams.GRADES, e)}
+          />
+        )}
         <AmountFilter
           min={minAmount ?? 0}
           max={maxAmount ?? 0}
