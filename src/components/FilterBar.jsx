@@ -29,7 +29,7 @@ const majors = {
 export default function FilterBar(props) {
   const { setQueryParam, queryParams } = props;
   const classes = useStyles();
-  const { minAmount, maxAmount } = queryParams;
+  const { minAmount, maxAmount, grades } = queryParams;
 
   return (
     <Grid container spacing={2} className={classes.root}>
@@ -37,7 +37,12 @@ export default function FilterBar(props) {
         {experiments.expShowMajorFilter && (
           <FilterDropDown label="Major" items={majors} />
         )}
-        {experiments.expShowGradeFilter && <GradeLevelFilter />}
+        {experiments.expShowGradeFilter && (
+          <GradeLevelFilter
+            grades={new Set(grades)}
+            changeFn={(e) => setQueryParam(qParams.GRADES, e)}
+          />
+        )}
         <AmountFilter
           min={minAmount ?? 0}
           max={maxAmount ?? 0}
