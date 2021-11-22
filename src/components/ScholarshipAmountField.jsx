@@ -6,27 +6,13 @@ import {
   MenuItem,
   Select,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import RemoveIcon from '@mui/icons-material/Remove';
 import PropTypes from 'prop-types';
 import AmountType from '../types/AmountType';
 import AmountTextField from './AmountTextField';
 import { getIn } from 'formik';
 
-const useStyles = makeStyles(() => ({
-  amountSelect: {
-    minWidth: 150,
-  },
-  dash: {
-    height: '100%',
-    textAlign: 'center',
-  },
-}));
-
-function ScholarshipAmountField(props) {
-  const classes = useStyles();
-  const { labelStyle, formik } = props;
-
+function ScholarshipAmountField({ labelStyle, formik }) {
   const amountType = formik.values.amount.type;
   const minError = getIn(formik.errors, 'amount.min');
   const maxError = getIn(formik.errors, 'amount.max');
@@ -45,7 +31,7 @@ function ScholarshipAmountField(props) {
         }}
       />
 
-      <RemoveIcon className={classes.dash} />
+      <RemoveIcon sx={{ height: 1.0, textAlign: 'center' }} />
 
       <AmountTextField
         error={Boolean(maxError)}
@@ -76,7 +62,7 @@ function ScholarshipAmountField(props) {
         <Grid item>
           <Select
             name="amount.type"
-            className={classes.amountSelect}
+            sx={{ minWidth: 150 }}
             variant="outlined"
             value={amountType}
             onChange={(e) => {

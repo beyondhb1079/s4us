@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import makeStyles from '@mui/styles/makeStyles';
 import {
   Button,
   Checkbox,
@@ -12,18 +11,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import GradeLevel from '../types/GradeLevel';
 import PropTypes from 'prop-types';
 
-const useStyles = makeStyles((theme) => ({
-  button: {
-    margin: theme.spacing(1),
-    height: theme.spacing(4),
-  },
-  popover: {
-    padding: theme.spacing(2),
-  },
-}));
-
 export default function GradeLevelFilter(props) {
-  const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const openPopover = (event) => setAnchorEl(event.currentTarget);
 
@@ -42,7 +30,7 @@ export default function GradeLevelFilter(props) {
     <>
       <Button
         variant="outlined"
-        className={classes.button}
+        sx={{ margin: 1, height: (theme) => theme.spacing(4) }}
         onClick={openPopover}
         endIcon={<ArrowDropDownIcon color="primary" />}>
         Grade
@@ -53,7 +41,7 @@ export default function GradeLevelFilter(props) {
         onClose={() => setAnchorEl(null)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
-        <FormControl component="fieldset" className={classes.popover}>
+        <FormControl component="fieldset" sx={{ padding: 2 }}>
           <FormGroup>
             {Object.entries(GradeLevel.values()).map(([grade, stringRep]) => {
               grade = parseInt(grade);

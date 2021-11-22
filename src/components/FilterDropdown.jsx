@@ -1,43 +1,27 @@
 import React from 'react';
-import makeStyles from '@mui/styles/makeStyles';
 import { MenuItem, FormControl, Select } from '@mui/material';
 import PropTypes from 'prop-types';
 
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  selectStyle: {
-    height: theme.spacing(4),
-  },
-}));
-
-function FilterDropdown(props) {
-  const { label, items, value, removeNone, onChange } = props;
-  const classes = useStyles();
-
-  return (
-    <FormControl variant="outlined" className={classes.formControl}>
-      <Select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        displayEmpty
-        className={classes.selectStyle}>
-        {!removeNone && (
-          <MenuItem value="">
-            <em>{label}</em>
-          </MenuItem>
-        )}
-        {Object.keys(items).map((key) => (
-          <MenuItem key={key} value={key}>
-            {items[key]}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
-  );
-}
+const FilterDropdown = ({ label, items, value, removeNone, onChange }) => (
+  <FormControl variant="outlined" sx={{ margin: 1, minWidth: 120 }}>
+    <Select
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      displayEmpty
+      sx={{ height: (theme) => theme.spacing(4) }}>
+      {!removeNone && (
+        <MenuItem value="">
+          <em>{label}</em>
+        </MenuItem>
+      )}
+      {Object.keys(items).map((key) => (
+        <MenuItem key={key} value={key}>
+          {items[key]}
+        </MenuItem>
+      ))}
+    </Select>
+  </FormControl>
+);
 
 FilterDropdown.propTypes = {
   label: PropTypes.string.isRequired,
