@@ -30,7 +30,7 @@
     "react-firebaseui": "^5.0.1",
     "react-helmet": "^6.1.0",
     "react-modal": "^3.11.2",
-    "react-paginate": "^7.0.0",
+    "react-paginate": "^8.0.0",
     "react-router-dom": "^5.2.0",
     "react-router-prop-types": "^1.0.5",
     "react-scripts": "4.0.3",
