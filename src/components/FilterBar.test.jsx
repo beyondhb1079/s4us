@@ -1,12 +1,10 @@
 import { render, screen } from '@testing-library/react';
-import queryString from 'query-string';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import FilterBar from './FilterBar';
 
 const renderWithTheme = (ui) =>
   render(<ThemeProvider theme={createTheme()}>{ui}</ThemeProvider>);
 
-const params = { sortBy: 'amount.asc' };
 const setQueryParam = () => {};
 
 describe('FilterBar', () => {
@@ -36,11 +34,13 @@ describe('FilterBar', () => {
   });
 
   test('checks the number of buttons', () => {
+    const params = { sortBy: 'amount.asc' };
     renderWithTheme(<FilterBar queryParams={params} {...{ setQueryParam }} />);
     const buttons = screen.queryAllByRole('button');
     expect(buttons).toHaveLength(2);
   });
   test('Amount filter rendered', () => {
+    const params = { sortBy: 'amount.asc' };
     renderWithTheme(<FilterBar queryParams={params} {...{ setQueryParam }} />);
     expect(screen.getByText('Amount')).toBeInTheDocument();
   });
