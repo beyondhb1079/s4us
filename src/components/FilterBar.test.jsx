@@ -6,31 +6,41 @@ import FilterBar from './FilterBar';
 const renderWithTheme = (ui) =>
   render(<ThemeProvider theme={createTheme()}>{ui}</ThemeProvider>);
 
-const queryOptions = {
-  arrayFormat: 'bracket-separator',
-  arrayFormatSeparator: ',',
-};
-
-const params = queryString.parse(
-  { sortBy: 'amount.asc' },
-  {
-    parseNumbers: true,
-    ...queryOptions,
-  }
-);
-
+const params = { sortBy: 'amount.asc' };
 const setQueryParam = () => {};
 
-describe('HomeSection', () => {
-  test('renders the component', () => {
+describe('FilterBar', () => {
+  test('SortBy filter (deadline.asc) rendered', () => {
+    const params = { sortBy: 'deadline.asc' };
     renderWithTheme(<FilterBar queryParams={params} {...{ setQueryParam }} />);
+    expect(
+      screen.getByText('Deadline (Earliest to Latest)')
+    ).toBeInTheDocument();
   });
+  test('SortBy filter (deadline.desc) rendered', () => {
+    const params = { sortBy: 'deadline.desc' };
+    renderWithTheme(<FilterBar queryParams={params} {...{ setQueryParam }} />);
+    expect(
+      screen.getByText('Deadline (Latest to Earliest)')
+    ).toBeInTheDocument();
+  });
+  test('SortBy filter (amount.desc) rendered', () => {
+    const params = { sortBy: 'amount.desc' };
+    renderWithTheme(<FilterBar queryParams={params} {...{ setQueryParam }} />);
+    expect(screen.getByText('Amount (High to Low)')).toBeInTheDocument();
+  });
+  test('SortBy filter (amount.asc) rendered', () => {
+    const params = { sortBy: 'amount.asc' };
+    renderWithTheme(<FilterBar queryParams={params} {...{ setQueryParam }} />);
+    expect(screen.getByText('Amount (Low to High)')).toBeInTheDocument();
+  });
+
   test('checks the number of buttons', () => {
     renderWithTheme(<FilterBar queryParams={params} {...{ setQueryParam }} />);
     const buttons = screen.queryAllByRole('button');
     expect(buttons).toHaveLength(2);
   });
-  test('check the name of the button', () => {
+  test('Amount filter rendered', () => {
     renderWithTheme(<FilterBar queryParams={params} {...{ setQueryParam }} />);
     expect(screen.getByText('Amount')).toBeInTheDocument();
   });
