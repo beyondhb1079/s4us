@@ -289,6 +289,5 @@ ScholarshipDetailCard.propTypes = {
 };
 
 ScholarshipDetailCard.defaultProps = {
-  id: undefined,
   preview: false,
 };
