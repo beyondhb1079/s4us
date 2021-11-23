@@ -5,6 +5,7 @@ import FirestoreModelList from './base/FiretoreModelList';
 import FirestoreModel from './base/FirestoreModel';
 import ScholarshipData from '../types/ScholarshipData';
 import AmountType from '../types/AmountType';
+import GradeLevel from '../types/GradeLevel';
 
 export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipData> =
   {
@@ -48,6 +49,7 @@ interface FilterOptions {
   hideExpired?: boolean;
   minAmount?: number;
   maxAmount?: number;
+  grades?: number[];
   sortDir?: 'asc' | 'desc';
   sortField?: string;
 }
@@ -128,6 +130,11 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
                 min: opts.minAmount ?? 0,
                 max: opts.maxAmount ?? 0,
               }) &&
+              // grade filter
+              GradeLevel.includesGrade(
+                data.requirements?.grades,
+                opts.grades
+              ) &&
               // Deadline Filter.
               // This is needed  in case list() above couldn't apply it.
               // TODO(#692): Add a daily updated `status` field so we don't need to do this.

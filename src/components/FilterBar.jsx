@@ -27,12 +27,12 @@ export default function FilterBar({ setQueryParam, queryParams }) {
         {experiments.expShowMajorFilter && (
           <FilterDropDown label="Major" items={majors} />
         )}
-        {experiments.expShowGradeFilter && (
-          <GradeLevelFilter
-            grades={new Set(grades)}
-            changeFn={(e) => setQueryParam(qParams.GRADES, e)}
-          />
-        )}
+
+        <GradeLevelFilter
+          grades={new Set(grades)}
+          changeFn={(e) => setQueryParam(qParams.GRADES, e)}
+        />
+
         <AmountFilter
           min={minAmount ?? 0}
           max={maxAmount ?? 0}
