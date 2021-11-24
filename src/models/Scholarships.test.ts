@@ -19,6 +19,7 @@ function create(data: {
   amount?: ScholarshipAmount | undefined;
   name?: string;
   deadline?: Date;
+  grades?: number[];
 }) {
   const amount = data.amount ?? ScholarshipAmount.unknown();
   const amountString = ScholarshipAmount.toString(amount);
@@ -30,6 +31,7 @@ function create(data: {
     deadline,
     website: 'foo.com',
     description: 'something',
+    requirements: { grades: data.grades ?? [] },
   });
 }
 
@@ -80,7 +82,7 @@ test('converter.toFirestore stores scholarship data', () => {
       majors: ['Computer Science', 'Software Engineering'],
       states: ['California', 'Washington'],
       schools: ['MIT'],
-      grades: ['College Freshman'],
+      grades: [8],
     },
   };
   const got = converter.toFirestore(data);
@@ -271,6 +273,38 @@ test('scholarships.list - filters by maxAmount', async () => {
   });
 
   const want = [rangeMin499, range250to1000, fixed500, rangeTo501, unknown];
+  expect(got.results.map(extractName).sort()).toEqual(
+    want.map(extractName).sort()
+  );
+});
+
+const middleSchool = create({ grades: [8] });
+const highSchool = create({ grades: [9, 10, 11, 12] });
+const college = create({ grades: [13, 14, 15, 16, 17] });
+const graduate = create({ grades: [18, 19, 20, 21, 22] });
+const gradeScholarships = [middleSchool, highSchool, college, graduate];
+
+test('scholarships.list - filters by grades (middle & high school)', async () => {
+  await Promise.all(gradeScholarships.map((s) => s.save()));
+
+  const got = await Scholarships.list({
+    grades: [8, 9, 10],
+  });
+
+  const want = [middleSchool, highSchool];
+  expect(got.results.map(extractName).sort()).toEqual(
+    want.map(extractName).sort()
+  );
+});
+
+test('scholarships.list - filters by grades (all grades)', async () => {
+  await Promise.all(gradeScholarships.map((s) => s.save()));
+
+  const got = await Scholarships.list({
+    grades: [8, 11, 17, 20],
+  });
+
+  const want = [middleSchool, highSchool, college, graduate];
   expect(got.results.map(extractName).sort()).toEqual(
     want.map(extractName).sort()
   );
