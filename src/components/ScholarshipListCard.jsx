@@ -9,48 +9,9 @@ import {
   Chip,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 
-const useStyles = makeStyles((theme) => ({
-  actions: {
-    padding: theme.spacing(2),
-    paddingTop: theme.spacing(1),
-  },
-  content: {
-    padding: theme.spacing(3),
-  },
-  subtitle: {
-    fontWeight: '500',
-  },
-  deadline: {
-    fontWeight: 'bold',
-    marginBottom: theme.spacing(1),
-  },
-  description: {
-    display: '-webkit-box',
-    '-webkit-line-clamp': 5,
-    lineClamp: 5,
-    '-webkit-box-orient': 'vertical',
-    overflow: 'hidden',
-    whiteSpace: 'pre-line',
-    marginBottom: theme.spacing(3),
-  },
-  tagWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  tag: {
-    marginRight: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-    color: '#000',
-    borderColor: '#3FB1B5',
-  },
-}));
-
 function ScholarshipListCard({ scholarship }) {
-  const classes = useStyles();
   const { name, amount, deadline, description, organization, tags } =
     scholarship.data;
 
@@ -62,27 +23,35 @@ function ScholarshipListCard({ scholarship }) {
           pathname: `/scholarships/${scholarship.id}`,
           state: { scholarship },
         }}>
-        <CardContent className={classes.content}>
-          <Typography variant="body1" className={classes.deadline}>
+        <CardContent sx={{ p: 3 }}>
+          <Typography variant="body1" sx={{ fontWeight: 'bold', mb: 1 }}>
             {deadline?.toLocaleDateString()}
           </Typography>
           <Typography variant="h5">{name}</Typography>
-          <Typography variant="subtitle1" className={classes.subtitle}>
+          <Typography variant="subtitle1" sx={{ fontWeight: '500' }}>
             {organization}
           </Typography>
           <Typography
             variant="subtitle1"
-            className={classes.subtitle}
+            sx={{ fontWeight: '500' }}
             gutterBottom>
             {ScholarshipAmount.toString(amount)}
           </Typography>
           <Typography
             variant="body1"
             color="textSecondary"
-            className={classes.description}>
+            sx={{
+              display: '-webkit-box',
+              '-webkit-line-clamp': 5,
+              lineClamp: 5,
+              '-webkit-box-orient': 'vertical',
+              overflow: 'hidden',
+              whiteSpace: 'pre-line',
+              mb: 3,
+            }}>
             {description}
           </Typography>
-          <Box className={classes.tagWrapper}>
+          <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
             {!tags || !tags.length
               ? 'None'
               : tags.map((tag) => (
@@ -90,7 +59,7 @@ function ScholarshipListCard({ scholarship }) {
                     label={tag}
                     variant="outlined"
                     color="primary"
-                    className={classes.tag}
+                    sx={{ mr: 2, mb: 2, color: '#000', borderColor: '#3FB1B5' }}
                     key={tag}
                   />
                 ))}
