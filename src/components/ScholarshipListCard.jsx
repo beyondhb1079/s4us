@@ -42,9 +42,9 @@ function ScholarshipListCard({ scholarship }) {
             color="textSecondary"
             sx={{
               display: '-webkit-box',
-              '-webkit-line-clamp': 5,
+              WebkitLineClamp: 5,
               lineClamp: 5,
-              '-webkit-box-orient': 'vertical',
+              WebkitBoxOrient: 'vertical',
               overflow: 'hidden',
               whiteSpace: 'pre-line',
               mb: 3,
