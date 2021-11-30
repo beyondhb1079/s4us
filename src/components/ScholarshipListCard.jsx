@@ -83,14 +83,17 @@ function ScholarshipListCard({ scholarship }) {
             {description}
           </Typography>
           <Box className={classes.tagWrapper}>
-            {tags?.map(({ title, id }) => (
-              <Chip
-                key={id}
-                label={title}
-                variant="outlined"
-                className={classes.tag}
-              />
-            ))}
+            {!tags || !tags.length
+              ? 'None'
+              : tags.map((tag) => (
+                  <Chip
+                    label={tag}
+                    variant="outlined"
+                    color="primary"
+                    className={classes.tag}
+                    key={tag}
+                  />
+                ))}
           </Box>
         </CardContent>
       </CardActionArea>
