@@ -11,6 +11,7 @@ import {
 import AboutCard from '../components/AboutCard';
 import testPic from '../logo.svg';
 import { BRAND_NAME } from '../config/constants';
+import backgroundImg from '../img/img1.svg';
 
 const team = [
   {
@@ -84,27 +85,32 @@ function About() {
       <Helmet>
         <title>About</title>
       </Helmet>
-      <Typography component="h2" variant="button" gutterBottom>
-        MEET THE TEAM
-      </Typography>
-      <Typography variant="h4" gutterBottom>
-        For and by the undocu community.
-      </Typography>
-      <Typography paragraph>
-        DreamScholars aims to make it easier for undocumented students to pay
-        for school. Our mission is to remove the financial barriers that prevent
-        and discourage undocumented students from pursuing higher education due
-        to the difficulties of finding scholarships they qualify for.
-      </Typography>
-      <Typography paragraph>
-        Meet the team behind DreamScholars. We are a group of lifelong learners
-        who are passionate about technology and community upliftment. The
-        project arose from our own struggles as students and the lack of
-        resources for our community.
-      </Typography>
-      <Typography paragraph>
-        Want to get involved? Shoot us an email!
-      </Typography>
+
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6}>
+          <Typography component="h2" variant="button" gutterBottom>
+            MEET THE TEAM
+          </Typography>
+          <Typography variant="h4" gutterBottom>
+            For and by the undocu community.
+          </Typography>
+          <Typography paragraph>
+            Meet the team behind DreamScholars. We are a group of lifelong
+            learners who are passionate about technology and community
+            upliftment. The project arose from our own struggles as students and
+            the lack of resources for our community.
+          </Typography>
+        </Grid>
+
+        <Grid container item xs={12} sm={6} justifyContent="flex-end">
+          <img
+            src={backgroundImg}
+            alt="grad picture"
+            style={{ width: '70%' }}
+          />
+        </Grid>
+      </Grid>
+
       <Grid
         container
         justifyContent="flex-start"
