@@ -12800,9 +12800,9 @@ react-modal@^3.11.2:
     warning "^4.0.3"
 
 react-paginate@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/react-paginate/-/react-paginate-8.0.0.tgz#b03b4ec221bffd8ecb16dd4c1295c33f8c6fd3df"
-  integrity sha512-l5uNYWqVIhFBljQoyLuMnZ8ykCdoTz6aYfg9+fUdtWy/H9rELBgVBPEA99jVpTsBxqAxXKBZ/sdDrdN4b0hsvg==
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/react-paginate/-/react-paginate-8.0.1.tgz#e256b6f9de25215ef681cffe4cb2309f9cc2c2bd"
+  integrity sha512-8BB/uGfrG9Jy47RXi0WRjPh86PzMUsFbd2HnNt/LSDUYDZZDrh7KkDO4Rtv5cOhiLolTerFmecXhkFzeOOjUsw==
   dependencies:
     prop-types "^15.6.1"
 
