@@ -52,17 +52,17 @@ function ScholarshipListCard({ scholarship }) {
             {description}
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
-            {!tags || !tags.length
-              ? 'None'
-              : tags.map((tag) => (
-                  <Chip
-                    label={tag}
-                    variant="outlined"
-                    color="primary"
-                    sx={{ mr: 2, mb: 2, color: '#000', borderColor: '#3FB1B5' }}
-                    key={tag}
-                  />
-                ))}
+            {tags &&
+              tags.length &&
+              tags.map((tag) => (
+                <Chip
+                  label={tag}
+                  variant="outlined"
+                  color="primary"
+                  sx={{ mr: 2, mb: 2, color: '#000', borderColor: '#3FB1B5' }}
+                  key={tag}
+                />
+              ))}
           </Box>
         </CardContent>
       </CardActionArea>
