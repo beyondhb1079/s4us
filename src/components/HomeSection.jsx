@@ -5,18 +5,14 @@ import { Container, Grid, Typography } from '@mui/material';
 const HomeSection = ({
   alignItems,
   direction,
-  tab,
   title,
   description,
   buttons,
   pic,
 }) => (
   <Container sx={{ padding: 4 }}>
-    <Grid container spacing={2} direction={direction} alignItems={alignItems}>
+    <Grid container spacing={3} direction={direction} alignItems={alignItems}>
       <Grid item xs={12} sm={6}>
-        <Typography variant="overline" component="h6" gutterBottom>
-          {tab}
-        </Typography>
         <Typography variant="h2" component="h2" gutterBottom>
           {title}
         </Typography>
@@ -50,14 +46,12 @@ const HomeSection = ({
 HomeSection.defaultProps = {
   alignItems: 'flex-start',
   direction: 'row',
-  tab: '',
   buttons: [],
 };
 
 HomeSection.propTypes = {
   alignItems: PropTypes.string,
   direction: PropTypes.string,
-  tab: PropTypes.string,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   buttons: PropTypes.arrayOf(PropTypes.element),

@@ -4,8 +4,8 @@ import makeStyles from '@mui/styles/makeStyles';
 import { AppBar, Button, Tab, Typography } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import HomeSection from './HomeSection';
-import student from '../img/student.png';
-import contributor from '../img/contributor.png';
+import student from '../img/img5.svg';
+import contributor from '../img/img1.svg';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 function OutlineButton(user) {
   return (
     <Button
-      variant="outlined"
+      variant="contained"
       color="primary"
       component={Link}
       to={user === 'students' ? '/scholarships' : '/scholarships/new'}>
@@ -44,18 +44,9 @@ const tabs = [
     title: 'Stress-free scholarships',
     description:
       'DreamScholars helps anyone find scholarships, regardless of status. Our community does the heavy lifting to make your scholarship search easy and stress-free.',
-    buttons: [
-      <Button
-        variant="contained"
-        color="primary"
-        component={Link}
-        to={{ state: { showLoginDialog: true } }}
-        replace>
-        Login
-      </Button>,
-      OutlineButton('students'),
-    ],
+    buttons: [OutlineButton('students')],
     pic: student,
+    direction: 'row-reverse',
   },
   {
     tab: 'community contributor',
@@ -89,12 +80,9 @@ export default function ScholarshipsMadeSimpleSection() {
             <Tab value={tabs[1].tab} label="community contributors" />
           </TabList>
         </AppBar>
-        {tabs.map(({ tab, title, description, buttons, pic }) => (
+        {tabs.map(({ tab, title, description, buttons, pic, direction }) => (
           <TabPanel key={tab} value={tab}>
-            <HomeSection
-              direction="row"
-              {...{ tab, title, description, buttons, pic }}
-            />
+            <HomeSection {...{ title, description, buttons, pic, direction }} />
           </TabPanel>
         ))}
       </TabContext>

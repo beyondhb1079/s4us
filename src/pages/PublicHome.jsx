@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Typography, Button } from '@mui/material';
+import { Button } from '@mui/material';
 import ScholarshipsMadeSimple from '../components/ScholarshipsMadeSimple';
 import HomeSection from '../components/HomeSection';
 import community from '../img/community.png';
@@ -8,9 +8,6 @@ import community from '../img/community.png';
 function PublicHome() {
   return (
     <>
-      <Typography variant="h2" align="center" gutterBottom>
-        Find Scholarships Today
-      </Typography>
       <ScholarshipsMadeSimple />
       <HomeSection
         alignItems="center"
