@@ -7,11 +7,13 @@ import {
   Grid,
   Link as MuiLink,
   Typography,
+  Paper,
 } from '@mui/material';
 import AboutCard from '../components/AboutCard';
 import testPic from '../logo.svg';
 import { BRAND_NAME } from '../config/constants';
 import backgroundImg from '../img/img1.svg';
+import img5 from '../img/img5.svg';
 
 const team = [
   {
@@ -123,16 +125,28 @@ function About() {
         ))}
       </Grid>
 
-      <Typography variant="h5" gutterBottom>
-        Looking for scholarships?
-      </Typography>
-      <Button
-        component={Link}
-        to="/scholarships"
-        variant="contained"
-        color="primary">
-        Browse Scholarships
-      </Button>
+      <Grid
+        container
+        component={Paper}
+        variant="outlined"
+        sx={{ padding: { xs: 2, md: 3 }, mt: 3 }}>
+        <Grid item sm={6} xs={12}>
+          <Typography variant="h5" gutterBottom>
+            Looking for scholarships?
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            component={Link}
+            to="/scholarships"
+            sx={{ marginY: { xs: 1, md: 2 } }}>
+            Browse Scholarships
+          </Button>
+        </Grid>
+        <Grid item sm={6} xs={12}>
+          <img src={img5} style={{ maxHeight: '192px' }} />
+        </Grid>
+      </Grid>
     </Container>
   );
 }
