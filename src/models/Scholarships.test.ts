@@ -4,6 +4,7 @@
 import firebase from 'firebase/app';
 import { clearFirestoreData, initializeTestApp } from '../lib/testing';
 import AmountType from '../types/AmountType';
+import GradeLevel from '../types/GradeLevel';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import Scholarships, { converter } from './Scholarships';
 
@@ -19,7 +20,7 @@ function create(data: {
   amount?: ScholarshipAmount | undefined;
   name?: string;
   deadline?: Date;
-  grades?: number[];
+  grades?: GradeLevel[];
 }) {
   const amount = data.amount ?? ScholarshipAmount.unknown();
   const amountString = ScholarshipAmount.toString(amount);
@@ -365,4 +366,26 @@ test('scholarships.new - default values', async () => {
     deadline: spy.mock.instances[0],
     website: '',
   });
+});
+
+test('includesFilter() - no requirements', () => {
+  const paramGrades = [8, 10, 15];
+  expect(Scholarships.includesFilter(undefined, paramGrades)).toBe(true);
+});
+
+test('includesFilter() - no param filters', () => {
+  const grades = [8, 10, 15];
+  expect(Scholarships.includesFilter(grades, undefined)).toBe(true);
+});
+
+test('includesFilter() - requirement in param filters', () => {
+  const grades = [9, 10, 20];
+  const paramGrades = [8, 10, 15];
+  expect(Scholarships.includesFilter(grades, paramGrades)).toBe(true);
+});
+
+test('includesFilter() - requirement not in param filters', () => {
+  const grades = [7, 13, 14];
+  const paramGrades = [8, 10, 15];
+  expect(Scholarships.includesFilter(grades, paramGrades)).toBe(false);
 });

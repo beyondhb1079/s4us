@@ -46,14 +46,6 @@ namespace GradeLevel {
   export function toString(level: GradeLevel): string {
     return toStringMappings[level];
   }
-
-  export function includesGrade(
-    grades?: number[],
-    paramGrades?: number[]
-  ): boolean {
-    if (!paramGrades || !grades) return true;
-    return grades.some((g) => paramGrades.includes(g));
-  }
 }
 
 export default GradeLevel;

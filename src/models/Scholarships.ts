@@ -49,7 +49,7 @@ interface FilterOptions {
   hideExpired?: boolean;
   minAmount?: number;
   maxAmount?: number;
-  grades?: number[];
+  grades?: GradeLevel[];
   sortDir?: 'asc' | 'desc';
   sortField?: string;
 }
@@ -131,10 +131,7 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
                 max: opts.maxAmount ?? 0,
               }) &&
               // grade filter
-              GradeLevel.includesGrade(
-                data.requirements?.grades,
-                opts.grades
-              ) &&
+              this.includesFilter(data.requirements?.grades, opts.grades) &&
               // Deadline Filter.
               // This is needed  in case list() above couldn't apply it.
               // TODO(#692): Add a daily updated `status` field so we don't need to do this.
@@ -161,6 +158,16 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
     }
   ): FirestoreModel<ScholarshipData> {
     return new FirestoreModel<ScholarshipData>(this.collection.doc(), data);
+  }
+
+  /**
+   *
+   * @param reqs is the scholarship requirements e.g. (grades, states, etc.)
+   * @param paramFilters
+   * @returns whether a scholarship's requirements are included in the given filters
+   */
+  includesFilter(reqs?: any[], paramFilters?: any[]): boolean {
+    return !paramFilters || !reqs || reqs.some((r) => paramFilters.includes(r));
   }
 }
 
