@@ -11,7 +11,7 @@ import GradeLevel from '../types/GradeLevel';
  *
  * @param reqs is the scholarship requirements e.g. (grades, states, etc.)
  * @param paramFilters
- * @returns whether the given requirement list matches the given filter list. True is returned when any of the following conditions are met:
+ * @returns true when any of the following conditions are met:
  * - there are no requirements
  * - there are no filters
  * - the requirement list intersects with the filter list
