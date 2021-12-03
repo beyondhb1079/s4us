@@ -7,6 +7,26 @@ import ScholarshipData from '../types/ScholarshipData';
 import AmountType from '../types/AmountType';
 import GradeLevel from '../types/GradeLevel';
 
+/**
+ *
+ * @param reqs is the scholarship requirements e.g. (grades, states, etc.)
+ * @param paramFilters
+ * @returns whether the given requirement list matches the given filter list. True is returned when any of the following conditions are met:
+ * - there are no requirements
+ * - there are no filters
+ * - the requirement list intersects with the filter list
+ */
+export function requirementMatchesFilter(
+  reqs?: any[],
+  paramFilters?: any[]
+): boolean {
+  return (
+    !paramFilters?.length ||
+    !reqs?.length ||
+    reqs.some((r) => paramFilters.includes(r))
+  );
+}
+
 export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipData> =
   {
     toFirestore: (data: ScholarshipData) => {
@@ -131,7 +151,10 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
                 max: opts.maxAmount ?? 0,
               }) &&
               // grade filter
-              this.includesFilter(data.requirements?.grades, opts.grades) &&
+              requirementMatchesFilter(
+                data.requirements?.grades,
+                opts.grades
+              ) &&
               // Deadline Filter.
               // This is needed  in case list() above couldn't apply it.
               // TODO(#692): Add a daily updated `status` field so we don't need to do this.
@@ -158,16 +181,6 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
     }
   ): FirestoreModel<ScholarshipData> {
     return new FirestoreModel<ScholarshipData>(this.collection.doc(), data);
-  }
-
-  /**
-   *
-   * @param reqs is the scholarship requirements e.g. (grades, states, etc.)
-   * @param paramFilters
-   * @returns whether a scholarship's requirements are included in the given filters
-   */
-  includesFilter(reqs?: any[], paramFilters?: any[]): boolean {
-    return !paramFilters || !reqs || reqs.some((r) => paramFilters.includes(r));
   }
 }
 
