@@ -24,7 +24,7 @@ function ScholarshipListCard({ scholarship }) {
           state: { scholarship },
         }}>
         <CardContent sx={{ p: 3 }}>
-          <Typography variant="body1" sx={{ fontWeight: 'bold', mb: 1 }}>
+          <Typography variant="body1" gutterBottom sx={{ fontWeight: 'bold' }}>
             {deadline?.toLocaleDateString()}
           </Typography>
           <Typography variant="h5">{name}</Typography>
@@ -40,6 +40,7 @@ function ScholarshipListCard({ scholarship }) {
           <Typography
             variant="body1"
             color="textSecondary"
+            paragraph
             sx={{
               display: '-webkit-box',
               WebkitLineClamp: 5,
@@ -47,7 +48,6 @@ function ScholarshipListCard({ scholarship }) {
               WebkitBoxOrient: 'vertical',
               overflow: 'hidden',
               whiteSpace: 'pre-line',
-              mb: 3,
             }}>
             {description}
           </Typography>
