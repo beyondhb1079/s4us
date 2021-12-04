@@ -3,28 +3,35 @@ import { Link } from 'react-router-dom';
 import { Button } from '@mui/material';
 import ScholarshipsMadeSimple from '../components/ScholarshipsMadeSimple';
 import HomeSection from '../components/HomeSection';
-import community from '../img/community.png';
+import graduation from '../img/img2.svg';
 
 function PublicHome() {
   return (
     <>
-      <ScholarshipsMadeSimple />
       <HomeSection
         alignItems="center"
-        direction="row-reverse"
-        title="For and by the Community"
-        description="Interested in helping students find scholarships? Join the family of community contributors, help find scholarships that are open to anyone regardless of citizen status."
+        direction="row"
+        title="Scholarships for everyone."
+        description="Find your dream scholarship together."
         buttons={[
           <Button
             component={Link}
-            to="/about"
+            to="/scholarships"
+            variant="contained"
+            color="primary">
+            Find Scholarships
+          </Button>,
+          <Button
+            component={Link}
+            to="/scholarships/new"
             variant="outlined"
             color="primary">
-            Learn More
+            Add a Scholarship
           </Button>,
         ]}
-        pic={community}
+        pic={graduation}
       />
+      <ScholarshipsMadeSimple />
     </>
   );
 }
