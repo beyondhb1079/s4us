@@ -10,7 +10,7 @@ const team = [
   {
     name: 'Job Hernandez',
     img: testPic,
-    description: <>I love math and science and technology.</>,
+    description: 'I love math and science and technology.',
   },
 ];
 
@@ -19,26 +19,16 @@ const img = team[0].img;
 const description = team[0].description;
 
 describe('AboutCard', () => {
-  test('renders the given name', () => {
+  test('renders props', () => {
     renderWithTheme(<AboutCard {...{ name, img, description }} />);
-    screen.debug();
-    expect(screen.getByText('Job Hernandez')).toBeInTheDocument();
-  });
 
-  test('renders the description', () => {
-    const { container } = renderWithTheme(
-      <AboutCard {...{ name, img, description }} />
-    );
-    container.querySelector(
-      'MuiTypography-root MuiTypography-body2 css-e784if-MuiTypography-root'
-    );
-    expect(container.firstChild).toBeInTheDocument();
-    screen.debug();
-  });
+    expect(screen.getByText(name)).toBeInTheDocument();
 
-  test('renders the image', () => {
-    renderWithTheme(<AboutCard {...{ name, img, description }} />);
-    const imageTitle = screen.getByTitle('picture of Job Hernandez');
-    expect(imageTitle).toBeInTheDocument();
+    const image = screen.getByRole('image', {
+      name: 'picture of Job Hernandez',
+    });
+    expect(image).toBeInTheDocument();
+
+    expect(screen.getByText(description)).toBeInTheDocument();
   });
 });
