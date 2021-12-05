@@ -100,6 +100,7 @@ function ListScholarships() {
       sortDir,
       minAmount,
       maxAmount,
+      grades,
       hideExpired: true,
     });
 
