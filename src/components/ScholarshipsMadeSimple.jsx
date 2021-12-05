@@ -1,28 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import makeStyles from '@mui/styles/makeStyles';
-import { AppBar, Button, Tab, Typography } from '@mui/material';
+import { AppBar, Button, Tab, Typography, Box } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import HomeSection from './HomeSection';
 import student from '../img/img5.svg';
 import contributor from '../img/img1.svg';
-
-const useStyles = makeStyles((theme) => ({
-  root: {},
-  img: {
-    width: '100%',
-    height: '100%',
-    objectFit: 'contain',
-  },
-  appBar: {
-    background: 'inherit',
-    color: theme.palette.text.primary,
-  },
-  description: {
-    textAlign: 'center',
-    paddingTop: theme.spacing(4),
-  },
-}));
 
 function OutlineButton(user) {
   return (
@@ -57,22 +39,27 @@ const tabs = [
 ];
 
 export default function ScholarshipsMadeSimpleSection() {
-  const classes = useStyles();
   const [user, setUser] = React.useState(tabs[0].tab);
 
   const handleChange = (event, newUser) => setUser(newUser);
 
   return (
-    <div className={classes.root}>
+    <Box>
       <Typography
         variant="h4"
         component="h4"
-        className={classes.description}
+        sx={{ textAlign: 'center', pt: 4 }}
         gutterBottom>
         Scholarships Made Simple
       </Typography>
       <TabContext value={user}>
-        <AppBar position="static" elevation={0} className={classes.appBar}>
+        <AppBar
+          position="static"
+          elevation={0}
+          sx={{
+            background: 'inherit',
+            color: (theme) => theme.palette.text.primary,
+          }}>
           <TabList centered onChange={handleChange} indicatorColor="primary">
             <Tab value={tabs[0].tab} label="students" />
             <Tab value={tabs[1].tab} label="community contributors" />
@@ -84,6 +71,6 @@ export default function ScholarshipsMadeSimpleSection() {
           </TabPanel>
         ))}
       </TabContext>
-    </div>
+    </Box>
   );
 }
