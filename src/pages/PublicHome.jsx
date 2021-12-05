@@ -10,9 +10,9 @@ function PublicHome() {
   return (
     <>
       <HomeSection
-        alignItems="center"
         direction="row"
         title="Scholarships for everyone."
+        main
         description="Find your dream scholarship together."
         buttons={[
           <Button
@@ -36,7 +36,7 @@ function PublicHome() {
       <Box sx={{ background: (theme) => theme.palette.background.paper }}>
         <HomeSection
           alignItems="center"
-          direction="row-reverse"
+          direction="row"
           title="Lets start searching!"
           buttons={[
             <Button
