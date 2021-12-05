@@ -8,16 +8,14 @@ import student from '../img/img5.svg';
 import contributor from '../img/img1.svg';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    background: theme.palette.background.paper,
-  },
+  root: {},
   img: {
     width: '100%',
     height: '100%',
     objectFit: 'contain',
   },
   appBar: {
-    background: theme.palette.background.paper,
+    background: 'inherit',
     color: theme.palette.text.primary,
   },
   description: {

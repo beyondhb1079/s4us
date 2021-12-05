@@ -33,8 +33,8 @@ const HomeSection = ({
           src={pic}
           alt=""
           style={{
-            width: '100%',
-            height: '100%',
+            width: '90%',
+            height: '90%',
             objectFit: 'contain',
           }}
         />
@@ -47,13 +47,14 @@ HomeSection.defaultProps = {
   alignItems: 'flex-start',
   direction: 'row',
   buttons: [],
+  description: undefined,
 };
 
 HomeSection.propTypes = {
   alignItems: PropTypes.string,
   direction: PropTypes.string,
   title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  description: PropTypes.string,
   buttons: PropTypes.arrayOf(PropTypes.element),
   pic: PropTypes.string.isRequired,
 };
