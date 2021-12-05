@@ -404,23 +404,23 @@ test('scholarships.new - default values', async () => {
 });
 
 test('requirementMatchesFilter() - no requirements', () => {
-  const paramGrades = [8, 10, 15];
-  expect(requirementMatchesFilter(undefined, paramGrades)).toBe(true);
+  const filter = [8, 10, 15];
+  expect(requirementMatchesFilter(undefined, filter)).toBe(true);
 });
 
 test('requirementMatchesFilter() - no param filters', () => {
-  const grades = [8, 10, 15];
-  expect(requirementMatchesFilter(grades, undefined)).toBe(true);
+  const reqs = [8, 10, 15];
+  expect(requirementMatchesFilter(reqs, undefined)).toBe(true);
 });
 
 test('requirementMatchesFilter() - requirement in param filters', () => {
-  const grades = [9, 10, 20];
-  const paramGrades = [8, 10, 15];
-  expect(requirementMatchesFilter(grades, paramGrades)).toBe(true);
+  const reqs = [9, 10, 20];
+  const filter = [8, 10, 15];
+  expect(requirementMatchesFilter(reqs, filter)).toBe(true);
 });
 
 test('requirementMatchesFilter() - requirement not in param filters', () => {
-  const grades = [7, 13, 14];
-  const paramGrades = [8, 10, 15];
-  expect(requirementMatchesFilter(grades, paramGrades)).toBe(false);
+  const reqs = [7, 13, 14];
+  const filter = [8, 10, 15];
+  expect(requirementMatchesFilter(reqs, filter)).toBe(false);
 });
