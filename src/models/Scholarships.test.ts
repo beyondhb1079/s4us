@@ -403,44 +403,24 @@ test('scholarships.new - default values', async () => {
   });
 });
 
-test('includesFilter() - no requirements', () => {
-  const paramGrades = [
-    GradeLevel.MiddleSchool,
-    GradeLevel.HsSophomore,
-    GradeLevel.CollegeJunior,
-  ];
+test('requirementMatchesFilter() - no requirements', () => {
+  const paramGrades = [8, 10, 15];
   expect(requirementMatchesFilter(undefined, paramGrades)).toBe(true);
 });
 
-test('includesFilter() - no param filters', () => {
-  const grades = [
-    GradeLevel.MiddleSchool,
-    GradeLevel.HsSophomore,
-    GradeLevel.CollegeJunior,
-  ];
+test('requirementMatchesFilter() - no param filters', () => {
+  const grades = [8, 10, 15];
   expect(requirementMatchesFilter(grades, undefined)).toBe(true);
 });
 
-test('includesFilter() - requirement in param filters', () => {
-  const grades = [
-    GradeLevel.HsFreshman,
-    GradeLevel.HsSophomore,
-    GradeLevel.GraduateThirdYear,
-  ];
-  const paramGrades = [
-    GradeLevel.MiddleSchool,
-    GradeLevel.HsSophomore,
-    GradeLevel.CollegeJunior,
-  ];
+test('requirementMatchesFilter() - requirement in param filters', () => {
+  const grades = [9, 10, 20];
+  const paramGrades = [8, 10, 15];
   expect(requirementMatchesFilter(grades, paramGrades)).toBe(true);
 });
 
-test('includesFilter() - requirement not in param filters', () => {
-  const grades = [7, GradeLevel.CollegeFreshman, GradeLevel.CollegeSophomore];
-  const paramGrades = [
-    GradeLevel.MiddleSchool,
-    GradeLevel.HsSophomore,
-    GradeLevel.CollegeJunior,
-  ];
+test('requirementMatchesFilter() - requirement not in param filters', () => {
+  const grades = [7, 13, 14];
+  const paramGrades = [8, 10, 15];
   expect(requirementMatchesFilter(grades, paramGrades)).toBe(false);
 });
