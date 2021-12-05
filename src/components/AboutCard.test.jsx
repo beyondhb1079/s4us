@@ -6,17 +6,9 @@ import testPic from '../logo.svg';
 const renderWithTheme = (ui) =>
   render(<ThemeProvider theme={createTheme()}>{ui}</ThemeProvider>);
 
-const team = [
-  {
-    name: 'Job Hernandez',
-    img: testPic,
-    description: 'I love math and science and technology.',
-  },
-];
-
-const name = team[0].name;
-const img = team[0].img;
-const description = team[0].description;
+const name = 'Job Hernandez';
+const img = testPic;
+const description = 'I love math and science and technology.';
 
 describe('AboutCard', () => {
   test('renders props', () => {
