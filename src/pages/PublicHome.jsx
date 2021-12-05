@@ -48,7 +48,6 @@ function PublicHome() {
             </Button>,
           ]}
           pic={searching}
-          bg
         />
       </Box>
     </>
