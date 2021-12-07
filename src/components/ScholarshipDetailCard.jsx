@@ -13,7 +13,7 @@ import {
   Typography,
   IconButton,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+// import makeStyles from '@mui/styles/makeStyles';
 import {
   Report as ReportIcon,
   Send as SendIcon,
@@ -28,41 +28,14 @@ import { BRAND_NAME } from '../config/constants';
 import Ethnicity from '../types/Ethnicity';
 import GradeLevel from '../types/GradeLevel';
 
+/*
 const useStyles = makeStyles((theme) => ({
-  detailSection: {
-    padding: theme.spacing(3),
-  },
-  actionSection: {
-    margin: `${theme.spacing(3)} 0`,
-    padding: `${theme.spacing(1)} 0`,
-  },
-  cardDetailText: {
-    [theme.breakpoints.up('sm')]: {
-      textAlign: 'right',
-    },
-  },
-  applyBtn: {
-    marginRight: theme.spacing(1),
-  },
-  propertySection: {
-    marginTop: theme.spacing(6),
-  },
-  tag: {
-    marginRight: theme.spacing(2),
-    color: '#000',
-  },
-  reportBtn: {
-    margin: `${theme.spacing(5)} 0`,
-  },
-  divider: {
-    margin: `${theme.spacing(1.5)} 0`,
-  },
-}));
+}));*/
 
 export default function ScholarshipDetailCard({ scholarship, preview }) {
   const history = useHistory();
 
-  const classes = useStyles();
+  // const classes = useStyles();
   const {
     name,
     organization,
@@ -99,19 +72,18 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
     }
   };
 
-  function DetailCardCell({ label, text, bottom, top }) {
+  function DetailCardCell({ label, text }) {
     return (
       <>
-        {top && <Divider light className={classes.divider} />}
         <Grid container justifyContent="space-between">
           <Grid item xs={12} sm>
             <Typography>{label}</Typography>
           </Grid>
-          <Grid item className={classes.cardDetailText} xs={12} sm>
+          <Grid item sx={{ textAlign: { sm: 'right' } }} xs={12} sm>
             <Typography>{text}</Typography>
           </Grid>
         </Grid>
-        {bottom && <Divider light className={classes.divider} />}
+        <Divider light sx={{ m: 1.5 }} />
       </>
     );
   }
@@ -119,16 +91,10 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
   DetailCardCell.propTypes = {
     label: PropTypes.string.isRequired,
     text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    bottom: PropTypes.bool,
-    top: PropTypes.bool,
-  };
-  DetailCardCell.defaultProps = {
-    bottom: false,
-    top: false,
   };
 
   return (
-    <Card className={classes.detailSection}>
+    <Card sx={{ p: 3 }}>
       <Typography variant="h6" gutterBottom>
         {organization}
       </Typography>
@@ -162,7 +128,7 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
         </Grid>
       </Grid>
 
-      <Box className={classes.actionSection}>
+      <Box sx={{ my: 3, py: 1 }}>
         <Button
           component={MuiLink}
           href={website}
@@ -170,7 +136,7 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
           rel="noreferrer"
           variant="contained"
           color="primary"
-          className={classes.applyBtn}
+          sx={{ mr: 1 }}
           startIcon={<SendIcon />}>
           Apply
         </Button>
@@ -196,26 +162,23 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
       <Typography paragraph sx={{ whiteSpace: 'pre-line' }}>
         {description}
       </Typography>
-      <Box className={classes.propertySection}>
+      <Box sx={{ mt: 6 }}>
         <Typography variant="h5" component="h4" gutterBottom>
           Eligibility Requirements
         </Typography>
         <DetailCardCell
           label="State"
           text={requirements?.states?.join(', ') || 'All'}
-          bottom
         />
         <DetailCardCell
           label="GPA"
           text={requirements?.gpa?.toFixed(1) || 'All'}
-          bottom
         />
         <DetailCardCell
           label="Grades"
           text={
             requirements?.grades?.map(GradeLevel.toString).join(', ') || 'All'
           }
-          bottom
         />
         <DetailCardCell
           label="Demographic"
@@ -223,20 +186,17 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
             requirements?.ethnicities?.map(Ethnicity.toString).join(', ') ||
             'All'
           }
-          bottom
         />
         <DetailCardCell
           label="Majors"
           text={requirements?.majors?.join(', ') || 'All'}
-          bottom
         />
         <DetailCardCell
           label="Schools"
           text={requirements?.schools?.join(', ') || 'All'}
-          bottom
         />
       </Box>
-      <Box className={classes.propertySection}>
+      <Box sx={{ mt: 6 }}>
         <Typography variant="h5" component="h4" gutterBottom>
           Tags
         </Typography>
@@ -249,7 +209,7 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
                   label={tag}
                   variant="outlined"
                   color="primary"
-                  className={classes.tag}
+                  sx={{ mr: 2, color: '#000' }}
                   key={tag}
                 />
               ))}
@@ -265,7 +225,7 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
           ),
         })}
         icon={<ReportIcon />}
-        className={classes.reportBtn}
+        sx={{ my: 5 }}
         label="Report Issue"
       />
     </Card>
