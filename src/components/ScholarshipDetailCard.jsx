@@ -105,22 +105,23 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
         <MuiLink
           href="#"
           underline="always"
-          onClick={(e) => e.preventDefault()}>
+          onClick={(e) => e.preventDefault()}
+          sx={{ display: 'block', mb: 2 }}>
           {website}
         </MuiLink>
       )}
 
       <Grid container spacing={3}>
         <Grid item>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex' }}>
             <AttachMoneyIcon color="primary" />
             <Typography>{ScholarshipAmount.toString(amount)}</Typography>
           </Box>
         </Grid>
 
         <Grid item>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <EventIcon color="primary" />
+          <Box sx={{ display: 'flex' }}>
+            <EventIcon color="primary" sx={{ mr: 0.5 }} />
             <Typography>
               {deadline?.toLocaleDateString() || 'Unknown'}
             </Typography>
@@ -196,25 +197,21 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
           text={requirements?.schools?.join(', ') || 'All'}
         />
       </Box>
-      <Box sx={{ mt: 6 }}>
-        <Typography variant="h5" component="h4" gutterBottom>
-          Tags
-        </Typography>
 
-        <Grid container>
-          {!tags || !tags.length
-            ? 'None'
-            : tags.map((tag) => (
-                <Chip
-                  label={tag}
-                  variant="outlined"
-                  color="primary"
-                  sx={{ mr: 2, color: '#000' }}
-                  key={tag}
-                />
-              ))}
-        </Grid>
-      </Box>
+      <Grid container sx={{ mt: 6 }}>
+        {!tags || !tags.length
+          ? 'None'
+          : tags.map((tag) => (
+              <Chip
+                label={tag}
+                variant="outlined"
+                color="primary"
+                sx={{ mr: 2, color: '#000' }}
+                key={tag}
+              />
+            ))}
+      </Grid>
+
       <Chip
         component={MuiLink}
         href={genMailToLink({
