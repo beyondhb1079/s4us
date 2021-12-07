@@ -76,7 +76,7 @@
     "firebase-tools": "^9.12.1",
     "history": "^5.0.0",
     "husky": "^7.0.0",
-    "lint-staged": "^11.1.1",
+    "lint-staged": "^12.1.2",
     "mutation-observer": "^1.0.3",
     "prettier": "^2.3.0"
   },
