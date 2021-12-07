@@ -15,10 +15,12 @@ import {
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import {
-  Info as InfoIcon,
+  Report as ReportIcon,
   Send as SendIcon,
   Share as ShareIcon,
   Edit as EditIcon,
+  AttachMoney as AttachMoneyIcon,
+  Event as EventIcon,
 } from '@mui/icons-material';
 import { genMailToLink, withDeviceInfo } from '../lib/mail';
 import ScholarshipAmount from '../types/ScholarshipAmount';
@@ -127,9 +129,11 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
 
   return (
     <Card className={classes.detailSection}>
-      <Typography variant="h4">{name}</Typography>
-      <Typography variant="h5" gutterBottom>
+      <Typography variant="h6" gutterBottom>
         {organization}
+      </Typography>
+      <Typography variant="h4" gutterBottom>
+        {name}
       </Typography>
       {preview && (
         <MuiLink
@@ -139,6 +143,24 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
           {website}
         </MuiLink>
       )}
+
+      <Grid container spacing={3}>
+        <Grid item>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <AttachMoneyIcon color="primary" />
+            <Typography>{ScholarshipAmount.toString(amount)}</Typography>
+          </Box>
+        </Grid>
+
+        <Grid item>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <EventIcon color="primary" />
+            <Typography>
+              {deadline?.toLocaleDateString() || 'Unknown'}
+            </Typography>
+          </Box>
+        </Grid>
+      </Grid>
 
       <Box className={classes.actionSection}>
         <Button
@@ -174,27 +196,15 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
       <Typography paragraph sx={{ whiteSpace: 'pre-line' }}>
         {description}
       </Typography>
-      <Box>
-        <DetailCardCell
-          label="Deadline"
-          text={deadline?.toLocaleDateString() || 'Unknown'}
-          bottom
-        />
-        <DetailCardCell
-          label="Award Amount"
-          text={ScholarshipAmount.toString(amount)}
-          bottom
-        />
+      <Box className={classes.propertySection}>
+        <Typography variant="h5" component="h4" gutterBottom>
+          Eligibility Requirements
+        </Typography>
         <DetailCardCell
           label="State"
           text={requirements?.states?.join(', ') || 'All'}
           bottom
         />
-      </Box>
-      <Box className={classes.propertySection}>
-        <Typography variant="h5" component="h4" gutterBottom>
-          Eligibility Requirements
-        </Typography>
         <DetailCardCell
           label="GPA"
           text={requirements?.gpa?.toFixed(1) || 'All'}
@@ -254,7 +264,7 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
             `Please describe the issue for the scholarship located at ${URL}.`
           ),
         })}
-        icon={<InfoIcon />}
+        icon={<ReportIcon />}
         className={classes.reportBtn}
         label="Report Issue"
       />
