@@ -65,21 +65,19 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
     }
   };
 
-  function DetailCardCell({ label, text }) {
-    return (
-      <>
-        <Grid container justifyContent="space-between">
-          <Grid item xs={12} sm>
-            <Typography>{label}</Typography>
-          </Grid>
-          <Grid item sx={{ textAlign: { sm: 'right' } }} xs={12} sm>
-            <Typography>{text}</Typography>
-          </Grid>
+  const DetailCardCell = ({ label, text }) => (
+    <>
+      <Grid container justifyContent="space-between">
+        <Grid item xs={12} sm>
+          <Typography>{label}</Typography>
         </Grid>
-        <Divider light sx={{ m: 1.5 }} />
-      </>
-    );
-  }
+        <Grid item sx={{ textAlign: { sm: 'right' } }} xs={12} sm>
+          <Typography>{text}</Typography>
+        </Grid>
+      </Grid>
+      <Divider light sx={{ m: 1.5 }} />
+    </>
+  );
 
   DetailCardCell.propTypes = {
     label: PropTypes.string.isRequired,
