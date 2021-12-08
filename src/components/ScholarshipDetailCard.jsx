@@ -155,7 +155,7 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
         {description}
       </Typography>
       <Box sx={{ mt: 6 }}>
-        <Typography variant="h5" component="h4" gutterBottom>
+        <Typography variant="h5" component="h4" paragraph>
           Eligibility Requirements
         </Typography>
         <DetailCardCell
