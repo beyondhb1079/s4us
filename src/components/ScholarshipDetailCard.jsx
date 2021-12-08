@@ -13,7 +13,6 @@ import {
   Typography,
   IconButton,
 } from '@mui/material';
-// import makeStyles from '@mui/styles/makeStyles';
 import {
   Report as ReportIcon,
   Send as SendIcon,
@@ -28,14 +27,8 @@ import { BRAND_NAME } from '../config/constants';
 import Ethnicity from '../types/Ethnicity';
 import GradeLevel from '../types/GradeLevel';
 
-/*
-const useStyles = makeStyles((theme) => ({
-}));*/
-
 export default function ScholarshipDetailCard({ scholarship, preview }) {
   const history = useHistory();
-
-  // const classes = useStyles();
   const {
     name,
     organization,
