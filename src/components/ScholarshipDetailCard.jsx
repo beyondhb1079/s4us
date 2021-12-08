@@ -120,7 +120,7 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
         </Grid>
       </Grid>
 
-      <Box sx={{ my: 3, py: 1 }}>
+      <Box sx={{ my: 2, py: 1 }}>
         <Button
           component={MuiLink}
           href={website}
