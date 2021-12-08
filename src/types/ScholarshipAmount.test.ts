@@ -108,7 +108,7 @@ test('toString() - Fixed', () => {
 
   const res = toString(amount);
 
-  expect(res).toBe('$1000');
+  expect(res).toBe('1000');
 });
 
 test('toString() - Range - min only', () => {
@@ -116,7 +116,7 @@ test('toString() - Range - min only', () => {
 
   const res = toString(amount);
 
-  expect(res).toBe('$1000+');
+  expect(res).toBe('1000+');
 });
 
 test('toString() - Range - min set with max 0', () => {
@@ -124,7 +124,7 @@ test('toString() - Range - min set with max 0', () => {
 
   const res = toString(amount);
 
-  expect(res).toBe('$1000+');
+  expect(res).toBe('1000+');
 });
 
 test('toString() - Range - max only', () => {
@@ -132,7 +132,7 @@ test('toString() - Range - max only', () => {
 
   const res = toString(amount);
 
-  expect(res).toBe('Up to $1000');
+  expect(res).toBe('Up to 1000');
 });
 
 test('toString() - Range - bounded', () => {
@@ -140,7 +140,7 @@ test('toString() - Range - bounded', () => {
 
   const res = toString(amount);
 
-  expect(res).toBe('$1000-$2500');
+  expect(res).toBe('1000-2500');
 });
 
 test('toString() - Range - unbounded', () => {
