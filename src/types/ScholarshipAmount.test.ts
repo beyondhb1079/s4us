@@ -132,7 +132,7 @@ test('toString() - Range - max only', () => {
 
   const res = toString(amount);
 
-  expect(res).toBe('Up to 1000');
+  expect(res).toBe('1000 max');
 });
 
 test('toString() - Range - bounded', () => {

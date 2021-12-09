@@ -138,7 +138,7 @@ namespace ScholarshipAmount {
         if (amount.min && amount.max && amount.max !== RANGE_MAX) {
           return `${amount.min}-${amount.max}`;
         }
-        return amount.min ? `${amount.min}+` : `Up to ${amount.max}`;
+        return amount.min ? `${amount.min}+` : `${amount.max} max`;
       default:
         return 'Varies';
     }
