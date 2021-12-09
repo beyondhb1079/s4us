@@ -8,7 +8,12 @@ import {
   CardContent,
   Chip,
   Typography,
+  Grid,
 } from '@mui/material';
+import {
+  AttachMoney as AttachMoneyIcon,
+  Event as EventIcon,
+} from '@mui/icons-material';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 
 function ScholarshipListCard({ scholarship }) {
@@ -24,19 +29,31 @@ function ScholarshipListCard({ scholarship }) {
           state: { scholarship },
         }}>
         <CardContent sx={{ p: 3 }}>
-          <Typography variant="body1" gutterBottom sx={{ fontWeight: 'bold' }}>
-            {deadline?.toLocaleDateString()}
-          </Typography>
-          <Typography variant="h5">{name}</Typography>
           <Typography variant="subtitle1" sx={{ fontWeight: '500' }}>
             {organization}
           </Typography>
-          <Typography
-            variant="subtitle1"
-            sx={{ fontWeight: '500' }}
-            gutterBottom>
-            {ScholarshipAmount.toString(amount)}
+          <Typography variant="h5" gutterBottom>
+            {name}
           </Typography>
+
+          <Grid container spacing={3} sx={{ mb: 2, ml: -4 }}>
+            <Grid item>
+              <Box sx={{ display: 'flex' }}>
+                <AttachMoneyIcon color="primary" />
+                <Typography>{ScholarshipAmount.toString(amount)}</Typography>
+              </Box>
+            </Grid>
+
+            <Grid item>
+              <Box sx={{ display: 'flex' }}>
+                <EventIcon color="primary" sx={{ mr: 0.5 }} />
+                <Typography>
+                  {deadline?.toLocaleDateString() || 'Unknown'}
+                </Typography>
+              </Box>
+            </Grid>
+          </Grid>
+
           <Typography
             variant="body1"
             color="textSecondary"
