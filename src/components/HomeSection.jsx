@@ -19,7 +19,7 @@ const HomeSection = ({
           <Typography variant={main ? 'h2' : 'h3'} component="h2" gutterBottom>
             {title}
           </Typography>
-          <Typography variant="body2" paragraph>
+          <Typography variant="body1" paragraph>
             {description}
           </Typography>
           <Grid container spacing={2}>
@@ -52,7 +52,7 @@ HomeSection.defaultProps = {
   main: false,
   direction: 'row',
   buttons: [],
-  description: undefined,
+  description: '',
 };
 
 HomeSection.propTypes = {

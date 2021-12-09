@@ -13,7 +13,7 @@ function OutlineButton(user) {
       color="primary"
       component={Link}
       to={user === 'students' ? '/scholarships' : '/scholarships/new'}>
-      {user === 'students' ? 'Find Scholarships' : 'Submit A Scholarship'}
+      {user === 'students' ? 'Browse Scholarships' : 'Submit A Scholarship'}
     </Button>
   );
 }
@@ -21,9 +21,9 @@ function OutlineButton(user) {
 const tabs = [
   {
     tab: 'students',
-    title: 'Stress-free scholarships',
+    title: 'No citizenship requirements',
     description:
-      'DreamScholars helps anyone find scholarships, regardless of status. Our community does the heavy lifting to make your scholarship search easy and stress-free.',
+      'Browse our database at ease knowing that none of our scholarships require you to be a U.S. citizen or permanent resident.',
     buttons: [OutlineButton('students')],
     pic: student,
     direction: 'row-reverse',
@@ -32,7 +32,7 @@ const tabs = [
     tab: 'community contributor',
     title: 'Join and Support the Community',
     description:
-      'As members of the community we are passionate about contributing to opening opportunites too as many people possible. Our college experience has lead us to initialize a web platform for connecting students with scholarships. We would be beyond thrilled if we recieved support from the community to keep the scholarships up to date and fully functioning by becoming part of the team.',
+      'Know a scholarship available for undocumented students not yet in our database? Sign up and add them to our database so students can find them!',
     buttons: [OutlineButton('community contributor')],
     pic: contributor,
   },
@@ -50,7 +50,7 @@ export default function ScholarshipsMadeSimpleSection() {
         component="h4"
         sx={{ textAlign: 'center', pt: 4 }}
         gutterBottom>
-        Scholarships Made Simple
+        Scholarship Search Made Simple
       </Typography>
       <TabContext value={user}>
         <AppBar

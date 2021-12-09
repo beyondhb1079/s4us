@@ -11,16 +11,16 @@ function PublicHome() {
     <>
       <HomeSection
         direction="row"
-        title="Scholarships for everyone."
+        title="Scholarships for undocumented students."
         main
-        description="Find your dream scholarship together."
+        description="A collection of scholarships collected by and for the community."
         buttons={[
           <Button
             component={Link}
             to="/scholarships"
             variant="contained"
             color="primary">
-            Find Scholarships
+            Browse Scholarships
           </Button>,
           <Button
             component={Link}
@@ -44,7 +44,7 @@ function PublicHome() {
               to="/scholarships"
               variant="contained"
               color="primary">
-              Search Scholarships
+              Browse Scholarships
             </Button>,
           ]}
           pic={searching}
