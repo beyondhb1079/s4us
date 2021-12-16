@@ -17,6 +17,12 @@
         "description": "As members of the community we are passionate about contributing to opening opportunites too as many people possible. Our college experience has lead us to initialize a web platform for connecting students with scholarships. We would be beyond thrilled if we recieved support from the community to keep the scholarships up to date and fully functioning by becoming part of the team."
       },
       "startSearch": "Let's start searching!"
+    },
+    "user": {
+      "welcome": "welcome",
+      "looking": "looking for scholarships?",
+      "added": "Scholarships You've Added",
+      "noAdded": "No Scholarships Added Yet"
     }
   },
   "btn": {

@@ -14,8 +14,10 @@ import {
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import img5 from '../img/img5.svg';
+import { useTranslation } from 'react-i18next';
 
 export default function UserHome() {
+  const { t } = useTranslation();
   const user = firebase.auth().currentUser;
 
   const listScholarshipsFn = () => Scholarships.list({ authorId: user.uid });
@@ -26,7 +28,7 @@ export default function UserHome() {
         <title>Dashboard</title>
       </Helmet>
       <Typography variant="h4" gutterBottom>
-        Welcome {user.displayName}
+        {t('home.user.welcome')} {user.displayName}
       </Typography>
       <Grid
         container
@@ -35,7 +37,7 @@ export default function UserHome() {
         sx={{ padding: { xs: 2, md: 3 } }}>
         <Grid item sm={6} xs={12}>
           <Typography variant="h5" gutterBottom>
-            Looking for scholarships?
+            {t('home.user.looking')}
           </Typography>
           <Button
             variant="contained"
@@ -43,7 +45,7 @@ export default function UserHome() {
             component={Link}
             to="/scholarships"
             sx={{ marginY: { xs: 1, md: 2 } }}>
-            Browse Scholarships
+            {t('btn.browse')}
           </Button>
         </Grid>
         <Grid item sm={6} xs={12}>
@@ -57,7 +59,7 @@ export default function UserHome() {
         sx={{ marginY: { xs: 1, md: 2 } }}>
         <Grid item>
           <Typography variant="h5" component="h2">
-            Scholarships You Have Added
+            {t('home.user.added')}
           </Typography>
         </Grid>
         <Grid item>
@@ -67,7 +69,7 @@ export default function UserHome() {
             startIcon={<AddIcon />}
             component={Link}
             to="/scholarships/new">
-            Add Scholarship
+            {t('btn.add')}
           </Button>
         </Grid>
       </Grid>
@@ -86,10 +88,10 @@ export default function UserHome() {
             </Grid>
             <Grid item>
               <Typography variant="h5" gutterButtom>
-                No Scholarships Added Yet
+                {t('home.user.noAdded')}
               </Typography>
               <MuiLink component={Link} to="/scholarships/new">
-                Add Scholarship
+                {t('btn.add')}
               </MuiLink>
             </Grid>
           </Grid>
