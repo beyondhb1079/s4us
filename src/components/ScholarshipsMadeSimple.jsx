@@ -6,6 +6,7 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 import HomeSection from './HomeSection';
 import student from '../img/student.png';
 import contributor from '../img/contributor.png';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,48 +27,47 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function OutlineButton(user) {
+function OutlineButton(user, t) {
   return (
     <Button
       variant="outlined"
       color="primary"
       component={Link}
       to={user === 'students' ? '/scholarships' : '/scholarships/new'}>
-      {user === 'students' ? 'Find Scholarships' : 'Submit A Scholarship'}
+      {user === 'students' ? t('btn.browse') : t('btn.add')}
     </Button>
   );
 }
 
-const tabs = [
-  {
-    tab: 'students',
-    title: 'Stress-free scholarships',
-    description:
-      'DreamScholars helps anyone find scholarships, regardless of status. Our community does the heavy lifting to make your scholarship search easy and stress-free.',
-    buttons: [
-      <Button
-        variant="contained"
-        color="primary"
-        component={Link}
-        to={{ state: { showLoginDialog: true } }}
-        replace>
-        Login
-      </Button>,
-      OutlineButton('students'),
-    ],
-    pic: student,
-  },
-  {
-    tab: 'community contributor',
-    title: 'Join and Support the Community',
-    description:
-      'As members of the community we are passionate about contributing to opening opportunites too as many people possible. Our college experience has lead us to initialize a web platform for connecting students with scholarships. We would be beyond thrilled if we recieved support from the community to keep the scholarships up to date and fully functioning by becoming part of the team.',
-    buttons: [OutlineButton('community contributor')],
-    pic: contributor,
-  },
-];
-
 export default function ScholarshipsMadeSimpleSection() {
+  const { t } = useTranslation();
+  const tabs = [
+    {
+      tab: t('home.public.studentTab.tab'),
+      title: t('home.public.studentTab.title'),
+      description: t('home.public.studentTab.description'),
+      buttons: [
+        <Button
+          variant="contained"
+          color="primary"
+          component={Link}
+          to={{ state: { showLoginDialog: true } }}
+          replace>
+          {t('btn.login')}
+        </Button>,
+        OutlineButton('students', t),
+      ],
+      pic: student,
+    },
+    {
+      tab: t('home.public.communityTab.tab'),
+      title: t('home.public.communityTab.title'),
+      description: t('home.public.communityTab.description'),
+      buttons: [OutlineButton('community contributor', t)],
+      pic: contributor,
+    },
+  ];
+
   const classes = useStyles();
   const [user, setUser] = React.useState(tabs[0].tab);
 
@@ -80,7 +80,7 @@ export default function ScholarshipsMadeSimpleSection() {
         component="h4"
         className={classes.description}
         gutterBottom>
-        Scholarships Made Simple
+        {t('home.public.madeSimple')}
       </Typography>
       <TabContext value={user}>
         <AppBar position="static" elevation={0} className={classes.appBar}>

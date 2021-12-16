@@ -1,0 +1,27 @@
+{
+  "home": {
+    "public": {
+      "landing": {
+        "title": "Scholarships for undocumented students.",
+        "subTitle": "A resource list of scholarships by and for the community."
+      },
+      "madeSimple": "Scholarship search made simple",
+      "studentTab": {
+        "tab": "students",
+        "title": "Stress-free scholarships",
+        "description": "DreamScholars helps anyone find scholarships, regardless of status. Our community does the heavy lifting to make your scholarship search easy and stress-free."
+      },
+      "communityTab": {
+        "tab": "community contributor",
+        "title": "Join and Support the Community",
+        "description": "As members of the community we are passionate about contributing to opening opportunites too as many people possible. Our college experience has lead us to initialize a web platform for connecting students with scholarships. We would be beyond thrilled if we recieved support from the community to keep the scholarships up to date and fully functioning by becoming part of the team."
+      },
+      "startSearch": "Let's start searching!"
+    }
+  },
+  "btn": {
+    "browse": "Browse Scholarships",
+    "add": "Add a Scholarship",
+    "login": "Log In"
+  }
+}
