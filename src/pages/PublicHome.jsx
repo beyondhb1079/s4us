@@ -4,8 +4,11 @@ import { Typography, Button } from '@mui/material';
 import ScholarshipsMadeSimple from '../components/ScholarshipsMadeSimple';
 import HomeSection from '../components/HomeSection';
 import community from '../img/community.png';
+import { useTranslation } from 'react-i18next';
 
 function PublicHome() {
+  const { t } = useTranslation();
+
   return (
     <>
       <Typography variant="h2" align="center" gutterBottom>
@@ -15,15 +18,14 @@ function PublicHome() {
       <HomeSection
         alignItems="center"
         direction="row-reverse"
-        title="For and by the Community"
-        description="Interested in helping students find scholarships? Join the family of community contributors, help find scholarships that are open to anyone regardless of citizen status."
+        title={t('home.public.startSearch')}
         buttons={[
           <Button
             component={Link}
             to="/about"
             variant="outlined"
             color="primary">
-            Learn More
+            {t('btn.browse')}
           </Button>,
         ]}
         pic={community}
