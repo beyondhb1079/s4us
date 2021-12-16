@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import firebase from 'firebase';
-import { Container, Paper, Typography } from '@mui/material';
+import { Container, Paper, Typography, Button, Box } from '@mui/material';
 import ScholarshipForm from '../components/ScholarshipForm';
 import SubmissionAlert from '../components/SubmissionAlert';
 import Scholarships from '../models/Scholarships';
@@ -63,6 +63,11 @@ function EditScholarship() {
           }}
         />
         {submissionAlert}
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', m: 1 }}>
+          <Button variant="contained" color="error">
+            Delete Scholarship
+          </Button>
+        </Box>
       </Paper>
     </Container>
   );
