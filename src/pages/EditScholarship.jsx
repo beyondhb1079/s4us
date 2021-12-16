@@ -33,6 +33,10 @@ function EditScholarship() {
       setError("You don't have permission to edit this scholarship.");
   }, [scholarship]);
 
+  function handleDelete() {
+    Scholarships.id(id).delete();
+  }
+
   if (error || !scholarship) {
     return (
       <Container>
@@ -64,7 +68,7 @@ function EditScholarship() {
         />
         {submissionAlert}
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', m: 1 }}>
-          <Button variant="contained" color="error">
+          <Button variant="contained" color="error" onClick={handleDelete}>
             Delete Scholarship
           </Button>
         </Box>
