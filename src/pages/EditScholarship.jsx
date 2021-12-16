@@ -49,8 +49,13 @@ function EditScholarship() {
   function handleDelete() {
     Scholarships.id(id)
       .delete()
-      .then(() => history.push('/'))
-      .catch((e) => console.log(e));
+      .then(() => history.push('/', { name: scholarship.data.name }))
+      .catch(() =>
+        history.push('/', {
+          name: scholarship.data.name,
+          url: `/scholarships/${id}/edit`,
+        })
+      );
   }
 
   if (error || !scholarship) {
@@ -92,6 +97,7 @@ function EditScholarship() {
           </Button>
         </Box>
       </Paper>
+
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
         <DialogTitle>Delete Scholarship?</DialogTitle>
         <DialogContent>

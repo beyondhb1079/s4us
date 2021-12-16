@@ -1,7 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { AddCircle as AddIcon, Inbox as InboxIcon } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import firebase from 'firebase';
 import {
   Button,
@@ -10,13 +10,19 @@ import {
   Link as MuiLink,
   Paper,
   Typography,
+  Alert,
+  IconButton,
 } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import img5 from '../img/img5.svg';
 
 export default function UserHome() {
   const user = firebase.auth().currentUser;
+  const location = useLocation();
+  const history = useHistory();
+  const URL = location?.state?.url;
 
   const listScholarshipsFn = () => Scholarships.list({ authorId: user.uid });
 
@@ -25,6 +31,26 @@ export default function UserHome() {
       <Helmet>
         <title>Dashboard</title>
       </Helmet>
+
+      {location?.state && (
+        <Alert
+          severity={URL ? 'error' : 'success'}
+          onClose={() => history.replace('/')}
+          action={
+            URL && (
+              <>
+                <Button onClick={() => history.push(URL)}>Try again</Button>
+                <IconButton onClick={() => history.replace('/')} size="small">
+                  <CloseIcon />
+                </IconButton>
+              </>
+            )
+          }>
+          {URL ? 'There was an error deleting' : 'Successfully deleted'}{' '}
+          {location?.state?.name}
+        </Alert>
+      )}
+
       <Typography variant="h4" gutterBottom>
         Welcome {user.displayName}
       </Typography>
