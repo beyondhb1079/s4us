@@ -1,7 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import firebase from 'firebase';
-import { Container, Paper, Typography, Button, Box } from '@mui/material';
+import {
+  Container,
+  Paper,
+  Typography,
+  Button,
+  Box,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from '@mui/material';
 import ScholarshipForm from '../components/ScholarshipForm';
 import SubmissionAlert from '../components/SubmissionAlert';
 import Scholarships from '../models/Scholarships';
@@ -12,6 +23,8 @@ function EditScholarship() {
   const [scholarship, setScholarship] = useState(undefined);
   const [error, setError] = useState();
   const [submissionAlert, setSubmissionAlert] = useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const history = useHistory();
 
   // Fetch the scholarship
   useEffect(() => {
@@ -34,7 +47,10 @@ function EditScholarship() {
   }, [scholarship]);
 
   function handleDelete() {
-    Scholarships.id(id).delete();
+    Scholarships.id(id)
+      .delete()
+      .then(() => history.push('/'))
+      .catch((e) => console.log(e));
   }
 
   if (error || !scholarship) {
@@ -68,11 +84,27 @@ function EditScholarship() {
         />
         {submissionAlert}
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', m: 1 }}>
-          <Button variant="contained" color="error" onClick={handleDelete}>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => setDialogOpen(true)}>
             Delete Scholarship
           </Button>
         </Box>
       </Paper>
+      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+        <DialogTitle>Delete Scholarship?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            This action will permanently delete the scholarship and cannot be
+            undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
+          <Button onClick={handleDelete}>Agree</Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 }
