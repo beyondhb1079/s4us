@@ -99,3 +99,31 @@ test('allows scholarships update when user is author', async () => {
       .set({ name: 'updated name' })
   );
 });
+
+test('allow scholarship delete when user is author', async () => {
+  await assertSucceeds(
+    aliceApp
+      .firestore()
+      .collection('scholarships')
+      .doc('KLJASDQW')
+      .set({ ...newScholarship, author: { id: aliceId } })
+  );
+
+  return assertSucceeds(
+    aliceApp.firestore().collection('scholarships').doc('KLJASDQW').delete()
+  );
+});
+
+test('denies scholarship delete when user is not author', async () => {
+  await assertSucceeds(
+    aliceApp
+      .firestore()
+      .collection('scholarships')
+      .doc('KLJASDQW')
+      .set({ ...newScholarship, author: { id: aliceId } })
+  );
+
+  return assertFails(
+    johnApp.firestore().collection('scholarships').doc('KLJASDQW').delete()
+  );
+});
