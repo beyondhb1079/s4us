@@ -46,8 +46,9 @@ export default function UserHome() {
               </>
             )
           }>
-          {URL ? 'There was an error deleting' : 'Successfully deleted'}{' '}
-          {location?.state?.name}
+          {`${URL ? 'There was an error deleting' : 'Successfully deleted'} ${
+            location?.state?.name
+          }`}
         </Alert>
       )}
 
