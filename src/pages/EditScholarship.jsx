@@ -49,11 +49,16 @@ function EditScholarship() {
   function handleDelete() {
     Scholarships.id(id)
       .delete()
-      .then(() => history.push('/', { name: scholarship.data.name }))
+      .then(() =>
+        history.push({ pathname: '/', state: { name: scholarship.data.name } })
+      )
       .catch(() =>
-        history.push('/', {
-          name: scholarship.data.name,
-          url: `/scholarships/${id}/edit`,
+        history.push({
+          pathname: '/',
+          state: {
+            name: scholarship.data.name,
+            url: `/scholarships/${id}/edit`,
+          },
         })
       );
   }

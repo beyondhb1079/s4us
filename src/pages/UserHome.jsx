@@ -32,7 +32,7 @@ export default function UserHome() {
         <title>Dashboard</title>
       </Helmet>
 
-      {location?.state && (
+      {location?.state?.name && (
         <Alert
           severity={URL ? 'error' : 'success'}
           onClose={() => history.replace('/')}
