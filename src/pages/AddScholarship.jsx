@@ -6,8 +6,6 @@ import Scholarships from '../models/Scholarships';
 import backgroundImg from '../img/img3.svg';
 
 function AddScholarship() {
-  const scholarship = Scholarships.new();
-
   return (
     <Container maxWidth="md">
       <Helmet>
@@ -53,7 +51,7 @@ function AddScholarship() {
           p: { xs: 2, sm: 3 },
           bottom: { md: 40 },
         }}>
-        <ScholarshipForm scholarship={scholarship} />
+        <ScholarshipForm scholarship={Scholarships.new()} />
       </Paper>
     </Container>
   );
