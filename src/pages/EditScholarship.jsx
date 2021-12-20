@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import firebase from 'firebase';
 import { Container, Paper, Typography } from '@mui/material';
 import ScholarshipForm from '../components/ScholarshipForm';
-import SubmissionAlert from '../components/SubmissionAlert';
 import Scholarships from '../models/Scholarships';
 import { Helmet } from 'react-helmet';
 
@@ -11,7 +10,6 @@ function EditScholarship() {
   const { id } = useParams();
   const [scholarship, setScholarship] = useState(undefined);
   const [error, setError] = useState();
-  const [submissionAlert, setSubmissionAlert] = useState(null);
 
   // Fetch the scholarship
   useEffect(() => {
@@ -49,20 +47,7 @@ function EditScholarship() {
         <title>Edit a scholarship</title>
       </Helmet>
       <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 } }}>
-        <ScholarshipForm
-          scholarship={scholarship}
-          onSubmit={(s) => {
-            setScholarship(s);
-            setSubmissionAlert(
-              <SubmissionAlert
-                id={s.id}
-                name={s.data.name}
-                onClose={() => setSubmissionAlert(null)}
-              />
-            );
-          }}
-        />
-        {submissionAlert}
+        <ScholarshipForm scholarship={scholarship} status="edit" />
       </Paper>
     </Container>
   );

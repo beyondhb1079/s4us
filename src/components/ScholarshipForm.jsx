@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
 import {
   Alert,
@@ -43,10 +44,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ScholarshipForm({ scholarship, onSubmit }) {
+function ScholarshipForm({ scholarship, status }) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const [submissionError, setSubmissionError] = useState(null);
+  const history = useHistory();
 
   const formik = useFormik({
     initialValues: scholarship.data,
@@ -57,10 +59,13 @@ function ScholarshipForm({ scholarship, onSubmit }) {
       scholarship.data = { ...values };
       scholarship
         .save()
-        .then(onSubmit)
-        .then(() => setActiveStep(0))
-        .catch(setSubmissionError)
-        .finally(() => setSubmitting(false));
+        .then((s) =>
+          history.push({
+            pathname: `/scholarships/${s.id}`,
+            state: { status },
+          })
+        )
+        .catch(setSubmissionError);
     },
   });
 
@@ -304,8 +309,11 @@ function ScholarshipForm({ scholarship, onSubmit }) {
 }
 
 ScholarshipForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
   scholarship: PropTypes.object.isRequired,
+  status: PropTypes.string,
+};
+ScholarshipForm.defaultProps = {
+  status: 'add',
 };
 
 export default ScholarshipForm;
