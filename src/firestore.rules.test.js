@@ -100,7 +100,7 @@ test('allows scholarships update when user is author', async () => {
   );
 });
 
-test('allow scholarship delete when user is author', async () => {
+test('allows scholarship delete when user is author', async () => {
   await assertSucceeds(
     aliceApp
       .firestore()

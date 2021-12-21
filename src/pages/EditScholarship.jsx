@@ -46,7 +46,7 @@ function EditScholarship() {
       setError("You don't have permission to edit this scholarship.");
   }, [scholarship]);
 
-  function handleDelete() {
+  const handleDelete = () => {
     Scholarships.id(id)
       .delete()
       .then(() =>
@@ -61,7 +61,7 @@ function EditScholarship() {
           },
         })
       );
-  }
+  };
 
   if (error || !scholarship) {
     return (
@@ -94,17 +94,14 @@ function EditScholarship() {
         />
         {submissionAlert}
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', m: 1 }}>
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => setDialogOpen(true)}>
+          <Button color="error" onClick={() => setDialogOpen(true)}>
             Delete Scholarship
           </Button>
         </Box>
       </Paper>
 
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
-        <DialogTitle>Delete Scholarship?</DialogTitle>
+        <DialogTitle>Delete {scholarship.data.name}?</DialogTitle>
         <DialogContent>
           <DialogContentText>
             This action will permanently delete the scholarship and cannot be
@@ -113,7 +110,9 @@ function EditScholarship() {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
-          <Button onClick={handleDelete}>Agree</Button>
+          <Button color="error" onClick={handleDelete}>
+            Agree
+          </Button>
         </DialogActions>
       </Dialog>
     </Container>
