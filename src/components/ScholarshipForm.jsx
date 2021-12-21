@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ScholarshipForm({ scholarship, status }) {
+function ScholarshipForm({ scholarship }) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const [submissionError, setSubmissionError] = useState(null);
@@ -62,10 +62,11 @@ function ScholarshipForm({ scholarship, status }) {
         .then((s) =>
           history.push({
             pathname: `/scholarships/${s.id}`,
-            state: { status },
+            state: { alert: { name: scholarship.data.name } },
           })
         )
-        .catch(setSubmissionError);
+        .catch(setSubmissionError)
+        .finally(() => setSubmitting(false));
     },
   });
 
@@ -310,10 +311,6 @@ function ScholarshipForm({ scholarship, status }) {
 
 ScholarshipForm.propTypes = {
   scholarship: PropTypes.object.isRequired,
-  status: PropTypes.string,
-};
-ScholarshipForm.defaultProps = {
-  status: 'add',
 };
 
 export default ScholarshipForm;

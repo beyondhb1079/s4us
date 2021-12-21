@@ -4,8 +4,7 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 import { Container, Typography } from '@mui/material';
 import Scholarships from '../models/Scholarships';
 import ScholarshipDetailCard from '../components/ScholarshipDetailCard';
-import { Alert, AlertTitle, IconButton } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import { Alert, AlertTitle } from '@mui/material';
 
 export default function ViewScholarship({ history, location, match }) {
   const { id } = match.params;
@@ -50,25 +49,17 @@ export default function ViewScholarship({ history, location, match }) {
         <title>{scholarship.data.name}</title>
       </Helmet>
 
-      {location?.state?.status && (
+      {location?.state?.alert && (
         <Alert
           color="primary"
           variant="filled"
-          action={
-            <>
-              <IconButton
-                size="medium"
-                color="inherit"
-                onClick={() =>
-                  history.replace(`/scholarships/${scholarship.id}`)
-                }>
-                <CloseIcon fontSize="small" />
-              </IconButton>
-            </>
-          }>
+          onClose={() => history.replace(`/scholarships/${scholarship.id}`)}>
           <AlertTitle sx={{ color: '#fff' }}>Success</AlertTitle>
-          {`Scholarship successfully ${
-            location?.state?.status === 'add' ? 'submitted.' : 'updated.'
+          {`"${location?.state?.alert.name}" successfully ${
+            scholarship.data.dateAdded.getTime() ===
+            scholarship.data.lastModified.getTime()
+              ? 'submitted.'
+              : 'updated.'
           }`}
         </Alert>
       )}
