@@ -11,9 +11,7 @@ import {
   Paper,
   Typography,
   Alert,
-  IconButton,
 } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import img5 from '../img/img5.svg';
@@ -22,7 +20,6 @@ export default function UserHome() {
   const user = firebase.auth().currentUser;
   const location = useLocation();
   const history = useHistory();
-  const URL = location?.state?.url;
 
   const listScholarshipsFn = () => Scholarships.list({ authorId: user.uid });
 
@@ -32,23 +29,9 @@ export default function UserHome() {
         <title>Dashboard</title>
       </Helmet>
 
-      {location?.state?.name && (
-        <Alert
-          severity={URL ? 'error' : 'success'}
-          onClose={() => history.replace('/')}
-          action={
-            URL && (
-              <>
-                <Button onClick={() => history.push(URL)}>Try again</Button>
-                <IconButton onClick={() => history.replace('/')} size="small">
-                  <CloseIcon />
-                </IconButton>
-              </>
-            )
-          }>
-          {`${URL ? 'There was an error deleting' : 'Successfully deleted'} ${
-            location?.state?.name
-          }`}
+      {location?.state?.alert && (
+        <Alert severity="success" onClose={() => history.replace('/')}>
+          {location?.state?.alert.message}
         </Alert>
       )}
 
