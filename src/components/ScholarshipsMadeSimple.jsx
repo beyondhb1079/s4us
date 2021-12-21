@@ -21,18 +21,18 @@ function OutlineButton(user) {
 const tabs = [
   {
     tab: 'students',
-    title: 'No citizenship requirements',
+    title: 'Fewer barriers, more scholarships.',
     description:
-      'Browse our database at ease knowing that none of our scholarships require you to be a U.S. citizen or permanent resident.',
+      'Browse our database at ease, knowing that none of our scholarships require U.S. citizenship or permanent residency.',
     buttons: [OutlineButton('students')],
     pic: student,
     direction: 'row-reverse',
   },
   {
     tab: 'community contributor',
-    title: 'Join and Support the Community',
+    title: 'Join and Support the Community.',
     description:
-      'Know a scholarship available for undocumented students not yet in our database? Sign up and add them to our database so students can find them!',
+      'Know a scholarship available for undocumented students not yet in our database? Sign up and add them, become part of our community of scholarship contributors.',
     buttons: [OutlineButton('community contributor')],
     pic: contributor,
   },
@@ -62,7 +62,7 @@ export default function ScholarshipsMadeSimpleSection() {
           }}>
           <TabList centered onChange={handleChange} indicatorColor="primary">
             <Tab value={tabs[0].tab} label="students" />
-            <Tab value={tabs[1].tab} label="community contributors" />
+            <Tab value={tabs[1].tab} label="community" />
           </TabList>
         </AppBar>
         {tabs.map(({ tab, title, description, buttons, pic, direction }) => (

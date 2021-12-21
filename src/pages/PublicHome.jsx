@@ -13,7 +13,7 @@ function PublicHome() {
         direction="row"
         title="Scholarships for undocumented students."
         main
-        description="A collection of scholarships collected by and for the community."
+        description="A resource list of scholarships by and for the community."
         buttons={[
           <Button
             component={Link}
