@@ -47,7 +47,7 @@ function EditScholarship() {
         <title>Edit a scholarship</title>
       </Helmet>
       <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 } }}>
-        <ScholarshipForm scholarship={scholarship} status="edit" />
+        <ScholarshipForm scholarship={scholarship} />
       </Paper>
     </Container>
   );
