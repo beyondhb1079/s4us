@@ -108,10 +108,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const links = {
-  Scholarships: '/scholarships',
-  Add: '/scholarships/new',
-  About: '/about',
-  Contact: '/contact',
+  'navbar.scholarships': '/scholarships',
+  'navbar.add': '/scholarships/new',
+  'navbar.about': '/about',
+  'navbar.contact': '/contact',
 };
 
 function Header() {

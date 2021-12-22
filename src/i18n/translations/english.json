@@ -64,5 +64,14 @@
     "login": "Log In"
   },
 
+  "navbar": {
+    "scholarships": "Scholarships",
+    "add": "Add",
+    "about": "About",
+    "contact": "Contact"
+  },
+
+  "listScholarships": { "title": "Scholarships" },
+
   "looking": "Looking for scholarships?"
 }
