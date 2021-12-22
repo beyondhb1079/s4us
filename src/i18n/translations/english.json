@@ -52,6 +52,12 @@
     "reachDesc": "We are happy to answer any of your questions. You can email us <1>here</1> and we'll be in touch as soon as possible."
   },
 
+  "addScholarship": {
+    "sub": "Submit a Scholarship",
+    "title": "Additional Information",
+    "desc": "Help our team provide the best search results for students and community members looking for scholarships by contributing as much detail information possible."
+  },
+
   "btn": {
     "browse": "Browse Scholarships",
     "add": "Add a Scholarship",

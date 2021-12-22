@@ -5,10 +5,12 @@ import ScholarshipForm from '../components/ScholarshipForm';
 import Scholarships from '../models/Scholarships';
 import SubmissionAlert from '../components/SubmissionAlert';
 import backgroundImg from '../img/img3.svg';
+import { useTranslation } from 'react-i18next';
 
 function AddScholarship() {
   const [scholarship, setScholarship] = useState(Scholarships.new());
   const [submissionAlert, setSubmissionAlert] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <Container maxWidth="md">
@@ -22,15 +24,11 @@ function AddScholarship() {
           sm={12}
           md={6}
           sx={{ textAlign: { xs: 'center', md: 'left' } }}>
-          <Typography gutterBottom>Submit a Scholarship</Typography>
+          <Typography gutterBottom>{t('addScholarship.sub')}</Typography>
           <Typography variant="h4" gutterBottom>
-            Additional information
+            {t('addScholarship.title')}
           </Typography>
-          <Typography>
-            Help our team provide the best search results for students and
-            community members looking for scholarships by contributing as much
-            detailed information possible.
-          </Typography>
+          <Typography>{t('addScholarship.desc')}</Typography>
         </Grid>
 
         <Grid item sm={12} md={6} sx={{ width: '100%' }}>
