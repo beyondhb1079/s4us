@@ -9,8 +9,11 @@ import {
 } from '../lib/mail';
 import { BRAND_NAME, SUBSCRIPTION_FORM_URL } from '../config/constants';
 import { Container, Link as MuiLink, Typography } from '@mui/material';
+import { useTranslation, Trans } from 'react-i18next';
 
 function Contact() {
+  const { t } = useTranslation();
+
   return (
     <Container>
       <Helmet>
@@ -22,67 +25,74 @@ function Contact() {
       </Typography>
 
       <Typography variant="h5" gutterBottom>
-        Found a bug?
+        {t('contact.bugTitle')}
       </Typography>
       <Typography paragraph>
-        You can file it{' '}
-        <MuiLink
-          href={genMailToLink({
-            subject: 'Bug Report',
-            body: withDeviceInfo(reportIssue),
-          })}>
-          here
-        </MuiLink>
-        .
+        <Trans i18nKey="contact.bugDesc">
+          You can file it
+          <MuiLink
+            href={genMailToLink({
+              subject: 'Bug Report',
+              body: withDeviceInfo(reportIssue),
+            })}>
+            here
+          </MuiLink>
+        </Trans>
       </Typography>
 
       <Typography variant="h5" gutterBottom>
-        Feature Requests
+        {t('contact.featureTitle')}
       </Typography>
       <Typography paragraph>
-        You can suggest an idea for this project{' '}
-        <MuiLink
-          href={genMailToLink({
-            subject: 'Feature Request',
-            body: withDeviceInfo(featureRequest),
-          })}>
-          here
-        </MuiLink>
-        .
+        <Trans i18nKey="contact.featureDesc">
+          You can suggest an idea for this project
+          <MuiLink
+            href={genMailToLink({
+              subject: 'Feature Request',
+              body: withDeviceInfo(featureRequest),
+            })}>
+            here
+          </MuiLink>
+        </Trans>
       </Typography>
 
       <Typography variant="h5" gutterBottom>
-        Learn About Us
+        {t('contact.learnTitle')}
       </Typography>
       <Typography paragraph>
-        You can learn more about {BRAND_NAME} and the developers{' '}
-        <MuiLink component={Link} to="/about">
-          here
-        </MuiLink>
-        .
+        <Trans i18nKey="contact.learnDesc" values={{ brand: BRAND_NAME }}>
+          You can learn more about and the developers
+          <MuiLink component={Link} to="/about">
+            here
+          </MuiLink>
+        </Trans>
       </Typography>
 
       <Typography variant="h5" gutterBottom>
-        Subscribe
+        {t('contact.subTitle')}
       </Typography>
       <Typography paragraph>
-        You can subscribe for updates{' '}
-        <MuiLink href={SUBSCRIPTION_FORM_URL}>here</MuiLink>.
+        <Trans i18nKey="contact.subDesc">
+          You can subscribe for updates
+          <MuiLink href={SUBSCRIPTION_FORM_URL}>here</MuiLink>
+        </Trans>
       </Typography>
 
       <Typography variant="h5" gutterBottom>
-        Reach Out
+        {t('contact.reachTitle')}
       </Typography>
       <Typography paragraph>
-        We are happy to answer any of your questions. You can email us{' '}
-        <MuiLink
-          href={genMailToLink({
-            subject: 'Outreach',
-            body: 'Please describe the purpose of your outreach below.\n',
-          })}>
-          here
-        </MuiLink>{' '}
-        and we&apos;ll be in touch as soon as possible.
+        <Trans i18nKey="contact.reachDesc">
+          We are happy to answer any of your questions. You can email us
+          <MuiLink
+            href={genMailToLink({
+              subject: 'Outreach',
+              body: 'Please describe the purpose of your outreach below.\n',
+            })}>
+            here
+          </MuiLink>
+          and we&apos;ll be in touch as soon as possible.
+        </Trans>
       </Typography>
     </Container>
   );

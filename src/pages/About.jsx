@@ -1,7 +1,13 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-import { Button, Container, Grid, Typography } from '@mui/material';
+import {
+  Button,
+  Container,
+  Grid,
+  Link as MuiLink,
+  Typography,
+} from '@mui/material';
 import AboutCard from '../components/AboutCard';
 import testPic from '../logo.svg';
 import { BRAND_NAME } from '../config/constants';
@@ -16,7 +22,8 @@ function About() {
       img: testPic,
       description: (
         <Trans i18nKey="about.team.josue">
-          start <a href="http://beyondhb1079.org/">Beyond HB 1079</a> ending
+          start
+          <MuiLink href="http://beyondhb1079.org/">Beyond HB 1079</MuiLink> end
         </Trans>
       ),
     },
