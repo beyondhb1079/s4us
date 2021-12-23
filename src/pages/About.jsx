@@ -66,7 +66,9 @@ function About() {
         and discourage undocumented students from pursuing higher education due
         to the difficulties of finding scholarships they qualify for.
       </Typography>
-      <Typography paragraph>{t('about.description')}</Typography>
+      <Typography paragraph>
+        {t('about.description', { brand: BRAND_NAME })}
+      </Typography>
       <Typography paragraph>
         Want to get involved? Shoot us an email!
       </Typography>

@@ -7,6 +7,7 @@ import HomeSection from './HomeSection';
 import student from '../img/student.png';
 import contributor from '../img/contributor.png';
 import { useTranslation } from 'react-i18next';
+import { BRAND_NAME } from '../config/constants';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,7 +46,9 @@ export default function ScholarshipsMadeSimpleSection() {
     {
       tab: t('home.public.studentTab.tab'),
       title: t('home.public.studentTab.title'),
-      description: t('home.public.studentTab.description'),
+      description: t('home.public.studentTab.description', {
+        brand: BRAND_NAME,
+      }),
       buttons: [
         <Button
           variant="contained"

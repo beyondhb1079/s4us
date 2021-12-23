@@ -9,7 +9,7 @@
       "studentTab": {
         "tab": "estudiantes",
         "title": "becas sin estrés",
-        "description": "DreamScholars ayuda a cualquier persona a encontrar becas, independientemente de su estatus. Nuestra comunidad hace el trabajo pesado para que su búsqueda de becas sea fácil y sin estrés."
+        "description": "{{brand}} ayuda a cualquier persona a encontrar becas, independientemente de su estatus. Nuestra comunidad hace el trabajo pesado para que su búsqueda de becas sea fácil y sin estrés."
       },
       "communityTab": {
         "tab": "colaborador comunitario",
@@ -29,7 +29,7 @@
   "about": {
     "meet": "CONOZCA AL EQUIPO",
     "title": "Por la comunidad indocumentada.",
-    "description": "Conozca al equipo detrás de DreamScholars. Somos un grupo de aprendices de por vida apasionados por la tecnología y la mejora de la comunidad. El proyecto surgió de nuestras propias luchas como estudiantes y la falta de recursos para nuestra comunidad.",
+    "description": "Conozca al equipo detrás de {{brand}}. Somos un grupo de aprendices de por vida apasionados por la tecnología y la mejora de la comunidad. El proyecto surgió de nuestras propias luchas como estudiantes y la falta de recursos para nuestra comunidad.",
     "team": {
       "josue": "Soy un beneficiario de DACA y actualmente trabajo como ingeniero de software. Se me ocurrió la idea de este proyecto después de participar en el equipo <1> Beyond HB 1079 </1> y notar lo doloroso que es encontrar becas y compilar una lista para estudiantes indocumentados. Mi esperanza es hacer de este el recurso de referencia para becas para estudiantes indocumentados.",
       "edwin": "Soy un ingeniero de software de la Universidad de California en Irvine. Disfruto aprendiendo y usando mis habilidades para crear software que tenga un impacto en las comunidades. Ser un beneficiario de DACA me ha llevado a tener una conexión emocional con {{brand}}.",
