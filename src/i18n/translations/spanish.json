@@ -1,0 +1,77 @@
+{
+  "home": {
+    "public": {
+      "landing": {
+        "title": "Becas para estudiantes indocumentados.",
+        "subTitle": "Una lista de recursos de becas por y para la comunidad."
+      },
+      "madeSimple": "Búsqueda de becas simplificada",
+      "studentTab": {
+        "tab": "estudiantes",
+        "title": "becas sin estrés",
+        "description": "DreamScholars ayuda a cualquier persona a encontrar becas, independientemente de su estatus. Nuestra comunidad hace el trabajo pesado para que su búsqueda de becas sea fácil y sin estrés."
+      },
+      "communityTab": {
+        "tab": "colaborador comunitario",
+        "title": "Únase y apoye a la comunidad",
+        "description": "Como miembros de la comunidad, nos apasiona contribuir y abrir oportunidades al mayor número de personas posible. Nuestra experiencia universitaria nos ha llevado a inicializar una plataforma web para conectar a los estudiantes con becas. Estaríamos más que emocionados si recibiéramos el apoyo de la comunidad para mantener las becas actualizadas y en pleno funcionamiento al convertirse en parte del equipo."
+      },
+      "startSearch": "¡Empecemos a buscar!"
+    },
+    "user": {
+      "welcome": "bienvenido",
+      "looking": "¿buscando becas?",
+      "added": "Becas que ha agregado",
+      "noAdded": "Aún no a agregado becas"
+    }
+  },
+
+  "about": {
+    "meet": "CONOZCA AL EQUIPO",
+    "title": "Por la comunidad indocumentada.",
+    "description": "Conozca al equipo detrás de DreamScholars. Somos un grupo de aprendices de por vida apasionados por la tecnología y la mejora de la comunidad. El proyecto surgió de nuestras propias luchas como estudiantes y la falta de recursos para nuestra comunidad.",
+    "team": {
+      "josue": "Soy un beneficiario de DACA y actualmente trabajo como ingeniero de software. Se me ocurrió la idea de este proyecto después de participar en el equipo <1> Beyond HB 1079 </1> y notar lo doloroso que es encontrar becas y compilar una lista para estudiantes indocumentados. Mi esperanza es hacer de este el recurso de referencia para becas para estudiantes indocumentados.",
+      "edwin": "Soy un ingeniero de software de la Universidad de California en Irvine. Disfruto aprendiendo y usando mis habilidades para crear software que tenga un impacto en las comunidades. Ser un beneficiario de DACA me ha llevado a tener una conexión emocional con {{brand}}.",
+      "gonzalo": "Mi pasión por las computadoras me ha llevado a seguir una carrera en Ingeniería de Software. Actualmente soy un estudiante de UWB CSS que completa mi último año en el programa de Ciencias de la Computación e Ingeniería de Software. Tengo 24 años, soy bilingüe y actualmente soy parte del programa DACA. Tengo la intención de contribuir tanto como sea posible a construir un mañana mejor.",
+      "sergio": "Soy un diseñador de UX que está interesado en usar la tecnología como un medio para resolver problemas. Mis experiencias personales han inspirado mi enfoque en la empatía y el diseño universal. Encuentro alegría en la capacidad de explorar ideas con el objetivo central de crear soluciones que ayuden a las personas a resolver problemas significativos.",
+      "job": "Me impulsa a resolver problemas con el software; el software tiene un poder tremendo para hacer avanzar a la sociedad. Entonces, me gustaría contribuir y tener un impacto."
+    }
+  },
+
+  "contact": {
+    "bugTitle": "¿Encontro un error?",
+    "bugDesc": "Puede archivarlo <1>aquí</1>.",
+    "featureTitle": "Peticiones de Características",
+    "featureDesc": "Puede sugerir una idea para este proyecto <1>aquí</1>.",
+    "learnTitle": "Aprenda Sobre Nosotros",
+    "learnDesc": "Puede obtener más información sobre {{brand}} y los desarrolladores <1>aquí</1>.",
+    "subTitle": "Suscríbase",
+    "subDesc": "Puede suscribirse para recibir actualizaciones <1>aquí</1>.",
+    "reachTitle": "Contacta con nosotros",
+    "reachDesc": "Estaremos encantados de responder a cualquiera de sus preguntas. Puede enviarnos un correo electrónico <1>aquí</1> y nos pondremos en contacto lo antes posible."
+  },
+
+  "addScholarship": {
+    "sub": "Submitir una beca",
+    "title": "Información Adicional",
+    "desc": "Ayude a nuestro equipo a proporcionar los mejores resultados de búsqueda para estudiantes y miembros de la comunidad que buscan becas contribuyendo con la mayor cantidad de información detallada posible."
+  },
+
+  "btn": {
+    "browse": "Buscar Becas",
+    "add": "Agregar una Beca",
+    "login": "Iniciar sesión"
+  },
+
+  "navbar": {
+    "scholarships": "Explorar",
+    "add": "Agregar",
+    "about": "Acerca de",
+    "contact": "Contacto"
+  },
+
+  "listScholarships": "Becas",
+
+  "looking": "¿Buscando becas?"
+}

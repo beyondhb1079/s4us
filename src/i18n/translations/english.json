@@ -71,7 +71,7 @@
     "contact": "Contact"
   },
 
-  "listScholarships": { "title": "Scholarships" },
+  "listScholarships": "Scholarships",
 
   "looking": "Looking for scholarships?"
 }

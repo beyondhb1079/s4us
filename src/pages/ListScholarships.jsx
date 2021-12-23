@@ -112,7 +112,7 @@ function ListScholarships() {
         <title>Search Scholarships</title>
       </Helmet>
       <Typography variant="h3" component="h1" align="center">
-        {t('listScholarships.title')}
+        {t('listScholarships')}
       </Typography>
       <FilterBar queryParams={params} {...{ setQueryParam }} />
       <ScholarshipList listFn={listScholarships} />
