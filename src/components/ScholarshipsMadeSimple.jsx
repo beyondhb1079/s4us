@@ -88,8 +88,11 @@ export default function ScholarshipsMadeSimpleSection() {
       <TabContext value={user}>
         <AppBar position="static" elevation={0} className={classes.appBar}>
           <TabList centered onChange={handleChange} indicatorColor="primary">
-            <Tab value={tabs[0].tab} label="students" />
-            <Tab value={tabs[1].tab} label="community contributors" />
+            <Tab value={tabs[0].tab} label={t('home.public.studentTab.tab')} />
+            <Tab
+              value={tabs[1].tab}
+              label={t('home.public.communityTab.tab')}
+            />
           </TabList>
         </AppBar>
         {tabs.map(({ tab, title, description, buttons, pic }) => (

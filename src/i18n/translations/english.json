@@ -12,7 +12,7 @@
         "description": "{{brand}} helps anyone find scholarships, regardless of status. Our community does the heavy lifting to make your scholarship search easy and stress-free."
       },
       "communityTab": {
-        "tab": "community contributor",
+        "tab": "community",
         "title": "Join and Support the Community",
         "description": "As members of the community we are passionate about contributing to opening opportunites too as many people possible. Our college experience has lead us to initialize a web platform for connecting students with scholarships. We would be beyond thrilled if we recieved support from the community to keep the scholarships up to date and fully functioning by becoming part of the team."
       },
@@ -61,7 +61,9 @@
   "btn": {
     "browse": "Browse Scholarships",
     "add": "Add a Scholarship",
-    "login": "Log In"
+    "login": "Log In",
+    "load": "Load More",
+    "subscribe": "SUBSCRIBE FOR UPDATES"
   },
 
   "navbar": {
@@ -71,7 +73,16 @@
     "contact": "Contact"
   },
 
-  "listScholarships": "Scholarships",
+  "listScholarships": {
+    "title": "Scholarships",
+    "end": "End of results",
+    "none": "No Scholarships found"
+  },
+
+  "constructAlert": {
+    "title": "Warning",
+    "description": "🚧 Website Actively Under-Construction! 🚧"
+  },
 
   "looking": "Looking for scholarships?"
 }

@@ -61,7 +61,9 @@
   "btn": {
     "browse": "Buscar Becas",
     "add": "Agregar una Beca",
-    "login": "Iniciar sesión"
+    "login": "Iniciar sesión",
+    "load": "carga más",
+    "subscribe": "SUSCRÍBETE PARA ACTUALIZACIONES"
   },
 
   "navbar": {
@@ -71,7 +73,16 @@
     "contact": "Contacto"
   },
 
-  "listScholarships": "Becas",
+  "listScholarships": {
+    "title": "Becas",
+    "end": "Final de Resultados",
+    "none": "No se encontraron Becas"
+  },
+
+  "constructAlert": {
+    "title": "Advertencia",
+    "description": "🚧 ¡Sitio web bajo construcción! 🚧"
+  },
 
   "looking": "¿Buscando becas?"
 }

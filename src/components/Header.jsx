@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import ProfileMenu from './ProfileDropdown';
+import { useTranslation } from 'react-i18next';
 
 import { BRAND_NAME, SUBSCRIPTION_FORM_URL } from '../config/constants';
 import HeaderNavMenu from './HeaderNavMenu';
@@ -35,18 +36,21 @@ const OnRenderSnackbar = () => {
   );
 };
 
-const UnderConstructionAlert = () => (
-  <Alert
-    severity="warning"
-    action={
-      <Button component={MuiLink} href={SUBSCRIPTION_FORM_URL}>
-        SUBSCRIBE FOR UPDATES
-      </Button>
-    }>
-    <AlertTitle>Warning</AlertTitle>
-    🚧 Website Actively Under-Construction! 🚧
-  </Alert>
-);
+const UnderConstructionAlert = () => {
+  const { t } = useTranslation();
+  return (
+    <Alert
+      severity="warning"
+      action={
+        <Button component={MuiLink} href={SUBSCRIPTION_FORM_URL}>
+          {t('btn.subscribe')}
+        </Button>
+      }>
+      <AlertTitle>{t('constructAlert.title')}</AlertTitle>
+      {t('constructAlert.description')}
+    </Alert>
+  );
+};
 
 const AuthZoomButton = () => {
   const { currentUser } = firebase.auth();
@@ -58,7 +62,7 @@ const AuthZoomButton = () => {
     () => firebase.auth().onAuthStateChanged((user) => setIsSignedIn(!!user)),
     []
   );
-
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState(null);
   return (
     <>
@@ -78,7 +82,7 @@ const AuthZoomButton = () => {
             color="inherit"
             component={Link}
             to={{ state: { showLoginDialog: true } }}>
-            Login
+            {t('btn.login')}
           </Button>
         )}
       </Zoom>
