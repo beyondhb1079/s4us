@@ -8,11 +8,12 @@ import {
   Link as MuiLink,
   Typography,
   Paper,
+  Box,
 } from '@mui/material';
 import AboutCard from '../components/AboutCard';
 import testPic from '../logo.svg';
 import { BRAND_NAME } from '../config/constants';
-import backgroundImg from '../img/img1.svg';
+import backgroundImg from '../img/img6.svg';
 import img5 from '../img/img5.svg';
 
 const team = [
@@ -89,7 +90,7 @@ function About() {
       </Helmet>
 
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} md={6}>
           <Typography component="h2" variant="button" gutterBottom>
             MEET THE TEAM
           </Typography>
@@ -104,12 +105,10 @@ function About() {
           </Typography>
         </Grid>
 
-        <Grid container item xs={12} sm={6} justifyContent="flex-end">
-          <img
-            src={backgroundImg}
-            alt="grad picture"
-            style={{ width: '70%' }}
-          />
+        <Grid item xs={12} md={6}>
+          <Box sx={{ width: { xs: '60%', md: '100%' }, m: 'auto' }}>
+            <img src={backgroundImg} alt="grad picture" />
+          </Box>
         </Grid>
       </Grid>
 
@@ -144,7 +143,7 @@ function About() {
           </Button>
         </Grid>
         <Grid item sm={6} xs={12}>
-          <img src={img5} style={{ maxHeight: '192px' }} />
+          <img src={img5} style={{ maxHeight: '200px' }} />
         </Grid>
       </Grid>
     </Container>
