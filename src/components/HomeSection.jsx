@@ -11,9 +11,9 @@ const HomeSection = ({
   buttons,
   pic,
 }) => {
-  const picSize = main ? '90%' : '80%';
+  const picSize = main ? '95%' : '85%';
   return (
-    <Container sx={{ padding: 4, height: picSize }}>
+    <Container sx={{ padding: 4 }}>
       <Grid container spacing={3} direction={direction} alignItems={alignItems}>
         <Grid item xs={12} sm={6}>
           <Typography variant={main ? 'h2' : 'h3'} component="h2" gutterBottom>
@@ -31,11 +31,11 @@ const HomeSection = ({
             ))}
           </Grid>
         </Grid>
-        <Grid item xs={12} sm={6}>
+
+        <Grid item xs={12} sm={6} sx={{ height: 400 }}>
           <img
             src={pic}
             alt=""
-            height="500"
             style={{
               width: picSize,
               height: picSize,
