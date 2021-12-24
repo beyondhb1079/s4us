@@ -13,7 +13,7 @@ const HomeSection = ({
 }) => {
   const picSize = main ? '90%' : '80%';
   return (
-    <Container sx={{ padding: 4 }}>
+    <Container sx={{ padding: 4, height: picSize }}>
       <Grid container spacing={3} direction={direction} alignItems={alignItems}>
         <Grid item xs={12} sm={6}>
           <Typography variant={main ? 'h2' : 'h3'} component="h2" gutterBottom>
@@ -37,7 +37,7 @@ const HomeSection = ({
             alt=""
             style={{
               width: picSize,
-              minHeight: picSize,
+              height: picSize,
               objectFit: 'contain',
             }}
           />
