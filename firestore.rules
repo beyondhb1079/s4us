@@ -7,6 +7,7 @@ service cloud.firestore {
     match /scholarships/{scholarshipId} {
       allow create: if request.auth != null;
       allow update: if request.auth.uid == resource.data.author.id;
+      allow delete: if request.auth.uid == resource.data.author.id;
     }
   }
 }

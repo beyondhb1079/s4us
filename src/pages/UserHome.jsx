@@ -1,7 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { AddCircle as AddIcon, Inbox as InboxIcon } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import firebase from 'firebase';
 import {
   Button,
@@ -10,6 +10,7 @@ import {
   Link as MuiLink,
   Paper,
   Typography,
+  Alert,
 } from '@mui/material';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
@@ -17,6 +18,8 @@ import img5 from '../img/img5.svg';
 
 export default function UserHome() {
   const user = firebase.auth().currentUser;
+  const location = useLocation();
+  const history = useHistory();
 
   const listScholarshipsFn = () => Scholarships.list({ authorId: user.uid });
 
@@ -25,6 +28,13 @@ export default function UserHome() {
       <Helmet>
         <title>Dashboard</title>
       </Helmet>
+
+      {location?.state?.alert && (
+        <Alert severity="success" onClose={() => history.replace('/')}>
+          {location?.state?.alert.message}
+        </Alert>
+      )}
+
       <Typography variant="h4" gutterBottom>
         Welcome {user.displayName}
       </Typography>
