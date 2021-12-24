@@ -35,6 +35,7 @@ const HomeSection = ({
           <img
             src={pic}
             alt=""
+            height="500"
             style={{
               width: picSize,
               height: picSize,
