@@ -37,7 +37,7 @@ const HomeSection = ({
             alt=""
             style={{
               width: picSize,
-              height: picSize,
+              maxHeight: picSize,
               objectFit: 'contain',
             }}
           />
