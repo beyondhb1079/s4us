@@ -126,7 +126,7 @@ function EditScholarship() {
         <DialogActions>
           <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
           <Button color="error" onClick={handleDelete}>
-            Agree
+            Yes, Delete
           </Button>
         </DialogActions>
       </Dialog>
