@@ -4,7 +4,7 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 import { Container, Typography } from '@mui/material';
 import Scholarships from '../models/Scholarships';
 import ScholarshipDetailCard from '../components/ScholarshipDetailCard';
-import { Alert, AlertTitle } from '@mui/material';
+import { Alert } from '@mui/material';
 
 export default function ViewScholarship({ history, location, match }) {
   const { id } = match.params;
@@ -54,8 +54,7 @@ export default function ViewScholarship({ history, location, match }) {
           color="primary"
           variant="filled"
           onClose={() => history.replace(`/scholarships/${scholarship.id}`)}>
-          <AlertTitle sx={{ color: '#fff' }}>Success</AlertTitle>
-          {`"${location?.state?.alert.name}" successfully ${
+          {`Scholarship successfully ${
             scholarship.data.dateAdded.getTime() ===
             scholarship.data.lastModified.getTime()
               ? 'submitted.'

@@ -62,7 +62,7 @@ function ScholarshipForm({ scholarship }) {
         .then((s) =>
           history.push({
             pathname: `/scholarships/${s.id}`,
-            state: { alert: { name: scholarship.data.name } },
+            state: { alert: {} },
           })
         )
         .catch(setSubmissionError)
