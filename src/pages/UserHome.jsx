@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
-import img5 from '../img/img5.svg';
+import GridContent from '../components/GridContent';
 
 export default function UserHome() {
   const user = firebase.auth().currentUser;
@@ -38,28 +38,9 @@ export default function UserHome() {
       <Typography variant="h4" gutterBottom>
         Welcome {user.displayName}
       </Typography>
-      <Grid
-        container
-        component={Paper}
-        variant="outlined"
-        sx={{ padding: { xs: 2, md: 3 } }}>
-        <Grid item sm={6} xs={12}>
-          <Typography variant="h5" gutterBottom>
-            Looking for scholarships?
-          </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            component={Link}
-            to="/scholarships"
-            sx={{ marginY: { xs: 1, md: 2 } }}>
-            Browse Scholarships
-          </Button>
-        </Grid>
-        <Grid item sm={6} xs={12}>
-          <img src={img5} style={{ maxHeight: '192px' }} />
-        </Grid>
-      </Grid>
+
+      <GridContent />
+
       <Grid
         container
         spacing={2}

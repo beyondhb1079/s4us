@@ -1,20 +1,17 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Link } from 'react-router-dom';
 import {
-  Button,
   Container,
   Grid,
   Link as MuiLink,
   Typography,
-  Paper,
   Box,
 } from '@mui/material';
 import AboutCard from '../components/AboutCard';
 import testPic from '../logo.svg';
 import { BRAND_NAME } from '../config/constants';
 import backgroundImg from '../img/img6.svg';
-import img5 from '../img/img5.svg';
+import GridContent from '../components/GridContent';
 
 const team = [
   {
@@ -124,28 +121,7 @@ function About() {
         ))}
       </Grid>
 
-      <Grid
-        container
-        component={Paper}
-        variant="outlined"
-        sx={{ padding: { xs: 2, md: 3 }, mt: 3 }}>
-        <Grid item sm={6} xs={12}>
-          <Typography variant="h5" gutterBottom>
-            Looking for scholarships?
-          </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            component={Link}
-            to="/scholarships"
-            sx={{ marginY: { xs: 1, md: 2 } }}>
-            Browse Scholarships
-          </Button>
-        </Grid>
-        <Grid item sm={6} xs={12}>
-          <img src={img5} style={{ maxHeight: '200px' }} />
-        </Grid>
-      </Grid>
+      <GridContent />
     </Container>
   );
 }
