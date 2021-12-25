@@ -1,33 +1,55 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Typography, Button } from '@mui/material';
+import { Button, Box } from '@mui/material';
 import ScholarshipsMadeSimple from '../components/ScholarshipsMadeSimple';
 import HomeSection from '../components/HomeSection';
-import community from '../img/community.png';
+import graduation from '../img/img2.svg';
+import searching from '../img/img3.svg';
 
 function PublicHome() {
   return (
     <>
-      <Typography variant="h2" align="center" gutterBottom>
-        Find Scholarships Today
-      </Typography>
-      <ScholarshipsMadeSimple />
       <HomeSection
-        alignItems="center"
-        direction="row-reverse"
-        title="For and by the Community"
-        description="Interested in helping students find scholarships? Join the family of community contributors, help find scholarships that are open to anyone regardless of citizen status."
+        direction="row"
+        title="Scholarships for undocumented students."
+        main
+        description="A resource list of scholarships by and for the community."
         buttons={[
           <Button
             component={Link}
-            to="/about"
+            to="/scholarships"
+            variant="contained"
+            color="primary">
+            Browse Scholarships
+          </Button>,
+          <Button
+            component={Link}
+            to="/scholarships/new"
             variant="outlined"
             color="primary">
-            Learn More
+            Add a Scholarship
           </Button>,
         ]}
-        pic={community}
+        pic={graduation}
       />
+      <ScholarshipsMadeSimple />
+      <Box sx={{ background: (theme) => theme.palette.background.paper }}>
+        <HomeSection
+          alignItems="center"
+          direction="row"
+          title="Lets start searching!"
+          buttons={[
+            <Button
+              component={Link}
+              to="/scholarships"
+              variant="contained"
+              color="primary">
+              Browse Scholarships
+            </Button>,
+          ]}
+          pic={searching}
+        />
+      </Box>
     </>
   );
 }
