@@ -16,7 +16,6 @@ import {
   AlertTitle,
 } from '@mui/material';
 import ScholarshipForm from '../components/ScholarshipForm';
-import SubmissionAlert from '../components/SubmissionAlert';
 import Scholarships from '../models/Scholarships';
 import { Helmet } from 'react-helmet';
 
@@ -25,7 +24,6 @@ function EditScholarship() {
   const [scholarship, setScholarship] = useState(undefined);
   const [error, setError] = useState();
   const [delError, setDelError] = useState();
-  const [submissionAlert, setSubmissionAlert] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const history = useHistory();
 
@@ -83,20 +81,8 @@ function EditScholarship() {
       </Helmet>
 
       <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 } }}>
-        <ScholarshipForm
-          scholarship={scholarship}
-          onSubmit={(s) => {
-            setScholarship(s);
-            setSubmissionAlert(
-              <SubmissionAlert
-                id={s.id}
-                name={s.data.name}
-                onClose={() => setSubmissionAlert(null)}
-              />
-            );
-          }}
-        />
-        {submissionAlert}
+        <ScholarshipForm scholarship={scholarship} />
+
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', m: 1 }}>
           <Button color="error" onClick={() => setDialogOpen(true)}>
             Delete Scholarship
