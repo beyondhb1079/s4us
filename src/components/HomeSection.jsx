@@ -5,61 +5,63 @@ import { Container, Grid, Typography } from '@mui/material';
 const HomeSection = ({
   alignItems,
   direction,
-  tab,
   title,
+  main,
   description,
   buttons,
   pic,
-}) => (
-  <Container sx={{ padding: 4 }}>
-    <Grid container spacing={2} direction={direction} alignItems={alignItems}>
-      <Grid item xs={12} sm={6}>
-        <Typography variant="overline" component="h6" gutterBottom>
-          {tab}
-        </Typography>
-        <Typography variant="h2" component="h2" gutterBottom>
-          {title}
-        </Typography>
-        <Typography variant="body2" paragraph>
-          {description}
-        </Typography>
-        <Grid container spacing={2}>
-          {buttons.map((button, i) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <Grid item key={i}>
-              {button}
-            </Grid>
-          ))}
+}) => {
+  const picSize = main ? '95%' : '85%';
+  return (
+    <Container sx={{ padding: 4 }}>
+      <Grid container spacing={3} direction={direction} alignItems={alignItems}>
+        <Grid item xs={12} sm={6}>
+          <Typography variant={main ? 'h2' : 'h3'} component="h2" gutterBottom>
+            {title}
+          </Typography>
+          <Typography variant="body1" paragraph>
+            {description}
+          </Typography>
+          <Grid container spacing={2}>
+            {buttons.map((button, i) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <Grid item key={i}>
+                {button}
+              </Grid>
+            ))}
+          </Grid>
+        </Grid>
+
+        <Grid item xs={12} sm={6} sx={{ height: 400 }}>
+          <img
+            src={pic}
+            alt=""
+            style={{
+              width: picSize,
+              height: picSize,
+              objectFit: 'contain',
+            }}
+          />
         </Grid>
       </Grid>
-      <Grid item xs={12} sm={6}>
-        <img
-          src={pic}
-          alt=""
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'contain',
-          }}
-        />
-      </Grid>
-    </Grid>
-  </Container>
-);
+    </Container>
+  );
+};
 
 HomeSection.defaultProps = {
   alignItems: 'flex-start',
+  main: false,
   direction: 'row',
-  tab: '',
   buttons: [],
+  description: '',
 };
 
 HomeSection.propTypes = {
   alignItems: PropTypes.string,
   direction: PropTypes.string,
-  tab: PropTypes.string,
   title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  main: PropTypes.bool,
+  description: PropTypes.string,
   buttons: PropTypes.arrayOf(PropTypes.element),
   pic: PropTypes.string.isRequired,
 };
