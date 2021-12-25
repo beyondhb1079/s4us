@@ -9,13 +9,13 @@ import {
   Typography,
 } from '@mui/material';
 import AboutCard from '../components/AboutCard';
-import testPic from '../logo.svg';
 import { BRAND_NAME } from '../config/constants';
 
+// TODO()
 const team = [
   {
     name: 'Josue Rios',
-    img: testPic,
+    img: 'https://avatars.githubusercontent.com/u/8023233?v=4',
     description: (
       <>
         I am a DACA recipient currently working as a software engineer. I came
@@ -29,7 +29,7 @@ const team = [
   },
   {
     name: 'Edwin Lopez',
-    img: testPic,
+    img: 'https://avatars.githubusercontent.com/u/40483569?v=4',
     description: (
       <>
         I am a software engineer from the University of California Irvine. I
@@ -41,7 +41,7 @@ const team = [
   },
   {
     name: 'Gonzalo Lara',
-    img: testPic,
+    img: 'https://avatars.githubusercontent.com/u/64123425?v=4',
     description: (
       <>
         My passion for computers has lead me to pursue a career in Software
@@ -54,7 +54,7 @@ const team = [
   },
   {
     name: 'Sergio Mejia',
-    img: testPic,
+    img: 'https://avatars.githubusercontent.com/u/15769145?v=4',
     description: (
       <>
         I’m a UX Designer that is interested in using technology as a means to
@@ -67,7 +67,7 @@ const team = [
   },
   {
     name: 'Job Hernandez',
-    img: testPic,
+    img: 'https://avatars.githubusercontent.com/u/69167740?v=4',
     description: (
       <>
         I am driven to solve problems with software; software has tremendous
