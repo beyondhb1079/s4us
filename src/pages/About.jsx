@@ -8,7 +8,6 @@ import {
   Box,
 } from '@mui/material';
 import AboutCard from '../components/AboutCard';
-import testPic from '../logo.svg';
 import { BRAND_NAME } from '../config/constants';
 import { useTranslation, Trans } from 'react-i18next';
 import backgroundImg from '../img/img6.svg';
@@ -20,7 +19,7 @@ function About() {
   const team = [
     {
       name: 'Josue Rios',
-      img: testPic,
+      img: 'https://avatars.githubusercontent.com/u/8023233?v=4',
       description: (
         <Trans i18nKey="about.team.josue">
           start
@@ -30,22 +29,22 @@ function About() {
     },
     {
       name: 'Edwin Lopez',
-      img: testPic,
+      img: 'https://avatars.githubusercontent.com/u/40483569?v=4',
       description: t('about.team.edwin', { brand: BRAND_NAME }),
     },
     {
       name: 'Gonzalo Lara',
-      img: testPic,
+      img: 'https://avatars.githubusercontent.com/u/64123425?v=4',
       description: t('about.team.gonzalo'),
     },
     {
       name: 'Sergio Mejia',
-      img: testPic,
+      img: 'https://avatars.githubusercontent.com/u/15769145?v=4',
       description: t('about.team.sergio'),
     },
     {
       name: 'Job Hernandez',
-      img: testPic,
+      img: 'https://avatars.githubusercontent.com/u/69167740?v=4',
       description: t('about.team.job'),
     },
   ];
