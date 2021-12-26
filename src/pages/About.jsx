@@ -11,7 +11,6 @@ import {
 import AboutCard from '../components/AboutCard';
 import { BRAND_NAME } from '../config/constants';
 
-// TODO()
 const team = [
   {
     name: 'Josue Rios',
