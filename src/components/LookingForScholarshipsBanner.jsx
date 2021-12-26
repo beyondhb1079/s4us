@@ -9,7 +9,7 @@ function LookingForScholarshipsBanner() {
       container
       component={Paper}
       variant="outlined"
-      sx={{ padding: { xs: 2, md: 3 }, mt: 3 }}>
+      sx={{ padding: { xs: 2, md: 3 } }}>
       <Grid item sm={6} xs={12}>
         <Typography variant="h5" gutterBottom>
           Looking for scholarships?
