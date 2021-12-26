@@ -1,35 +1,60 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Typography, Button } from '@mui/material';
+import { Button, Box } from '@mui/material';
 import ScholarshipsMadeSimple from '../components/ScholarshipsMadeSimple';
 import HomeSection from '../components/HomeSection';
-import community from '../img/community.png';
 import { useTranslation } from 'react-i18next';
+import graduation from '../img/img2.svg';
+import searching from '../img/img3.svg';
 
 function PublicHome() {
   const { t } = useTranslation();
 
   return (
     <>
-      <Typography variant="h2" align="center" gutterBottom>
-        Find Scholarships Today
-      </Typography>
-      <ScholarshipsMadeSimple />
       <HomeSection
-        alignItems="center"
-        direction="row-reverse"
-        title={t('home.public.startSearch')}
+        direction="row"
+        title={t('home.public.landing.title')}
+        main
+        description={t('home.public.landing.subTitle')}
         buttons={[
           <Button
             component={Link}
-            to="/about"
-            variant="outlined"
+            to="/scholarships"
+            variant="contained"
             color="primary">
             {t('btn.browse')}
           </Button>,
+          <Button
+            component={Link}
+            to="/scholarships/new"
+            variant="outlined"
+            color="primary">
+            {t('btn.add')}
+          </Button>,
         ]}
-        pic={community}
+        pic={graduation}
       />
+
+      <ScholarshipsMadeSimple />
+
+      <Box sx={{ background: (theme) => theme.palette.background.paper }}>
+        <HomeSection
+          alignItems="center"
+          direction="row"
+          title={t('home.public.startSearch')}
+          buttons={[
+            <Button
+              component={Link}
+              to="/scholarships"
+              variant="contained"
+              color="primary">
+              {t('btn.browse')}
+            </Button>,
+          ]}
+          pic={searching}
+        />
+      </Box>
     </>
   );
 }

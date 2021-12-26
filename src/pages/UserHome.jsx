@@ -1,7 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { AddCircle as AddIcon, Inbox as InboxIcon } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import firebase from 'firebase';
 import {
   Button,
@@ -10,15 +10,18 @@ import {
   Link as MuiLink,
   Paper,
   Typography,
+  Alert,
 } from '@mui/material';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
-import img5 from '../img/img5.svg';
 import { useTranslation } from 'react-i18next';
+import LookingForScholarshipsBanner from '../components/LookingForScholarshipsBanner';
 
 export default function UserHome() {
   const { t } = useTranslation();
   const user = firebase.auth().currentUser;
+  const location = useLocation();
+  const history = useHistory();
 
   const listScholarshipsFn = () => Scholarships.list({ authorId: user.uid });
 
@@ -27,31 +30,19 @@ export default function UserHome() {
       <Helmet>
         <title>Dashboard</title>
       </Helmet>
+
+      {location?.state?.alert && (
+        <Alert severity="success" onClose={() => history.replace('/')}>
+          {location?.state?.alert.message}
+        </Alert>
+      )}
+
       <Typography variant="h4" gutterBottom>
         {t('home.user.welcome')} {user.displayName}
       </Typography>
-      <Grid
-        container
-        component={Paper}
-        variant="outlined"
-        sx={{ padding: { xs: 2, md: 3 } }}>
-        <Grid item sm={6} xs={12}>
-          <Typography variant="h5" gutterBottom>
-            {t('home.user.looking')}
-          </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            component={Link}
-            to="/scholarships"
-            sx={{ marginY: { xs: 1, md: 2 } }}>
-            {t('btn.browse')}
-          </Button>
-        </Grid>
-        <Grid item sm={6} xs={12}>
-          <img src={img5} style={{ maxHeight: '192px' }} />
-        </Grid>
-      </Grid>
+
+      <LookingForScholarshipsBanner />
+
       <Grid
         container
         spacing={2}

@@ -1,15 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Container, Typography, Grid, Paper, Box } from '@mui/material';
 import ScholarshipForm from '../components/ScholarshipForm';
 import Scholarships from '../models/Scholarships';
-import SubmissionAlert from '../components/SubmissionAlert';
 import backgroundImg from '../img/img3.svg';
 import { useTranslation } from 'react-i18next';
 
 function AddScholarship() {
-  const [scholarship, setScholarship] = useState(Scholarships.new());
-  const [submissionAlert, setSubmissionAlert] = useState(false);
   const { t } = useTranslation();
 
   return (
@@ -53,20 +50,7 @@ function AddScholarship() {
           p: { xs: 2, sm: 3 },
           bottom: { md: 40 },
         }}>
-        <ScholarshipForm
-          scholarship={scholarship}
-          onSubmit={(s) => {
-            setScholarship(Scholarships.new());
-            setSubmissionAlert(
-              <SubmissionAlert
-                id={s.id}
-                name={s.data.name}
-                onClose={() => setSubmissionAlert(null)}
-              />
-            );
-          }}
-        />
-        {submissionAlert}
+        <ScholarshipForm scholarship={Scholarships.new()} />
       </Paper>
     </Container>
   );

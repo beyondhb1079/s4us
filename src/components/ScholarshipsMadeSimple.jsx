@@ -1,37 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import makeStyles from '@mui/styles/makeStyles';
-import { AppBar, Button, Tab, Typography } from '@mui/material';
+import { AppBar, Button, Tab, Typography, Box } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import HomeSection from './HomeSection';
-import student from '../img/student.png';
-import contributor from '../img/contributor.png';
+import student from '../img/img5.svg';
+import contributor from '../img/img1.svg';
 import { useTranslation } from 'react-i18next';
 import { BRAND_NAME } from '../config/constants';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    background: theme.palette.background.paper,
-  },
-  img: {
-    width: '100%',
-    height: '100%',
-    objectFit: 'contain',
-  },
-  appBar: {
-    background: theme.palette.background.paper,
-    color: theme.palette.text.primary,
-  },
-  description: {
-    textAlign: 'center',
-    paddingTop: theme.spacing(4),
-  },
-}));
 
 function OutlineButton(user, t) {
   return (
     <Button
-      variant="outlined"
+      variant="contained"
       color="primary"
       component={Link}
       to={user === 'students' ? '/scholarships' : '/scholarships/new'}>
@@ -49,18 +29,9 @@ export default function ScholarshipsMadeSimpleSection() {
       description: t('home.public.studentTab.description', {
         brand: BRAND_NAME,
       }),
-      buttons: [
-        <Button
-          variant="contained"
-          color="primary"
-          component={Link}
-          to={{ state: { showLoginDialog: true } }}
-          replace>
-          {t('btn.login')}
-        </Button>,
-        OutlineButton('students', t),
-      ],
+      buttons: [OutlineButton('students', t)],
       pic: student,
+      direction: 'row-reverse',
     },
     {
       tab: t('home.public.communityTab.tab'),
@@ -71,22 +42,27 @@ export default function ScholarshipsMadeSimpleSection() {
     },
   ];
 
-  const classes = useStyles();
   const [user, setUser] = React.useState(tabs[0].tab);
 
   const handleChange = (event, newUser) => setUser(newUser);
 
   return (
-    <div className={classes.root}>
+    <Box>
       <Typography
         variant="h4"
         component="h4"
-        className={classes.description}
+        sx={{ textAlign: 'center', pt: 4 }}
         gutterBottom>
         {t('home.public.madeSimple')}
       </Typography>
       <TabContext value={user}>
-        <AppBar position="static" elevation={0} className={classes.appBar}>
+        <AppBar
+          position="static"
+          elevation={0}
+          sx={{
+            background: 'inherit',
+            color: (theme) => theme.palette.text.primary,
+          }}>
           <TabList centered onChange={handleChange} indicatorColor="primary">
             <Tab value={tabs[0].tab} label={t('home.public.studentTab.tab')} />
             <Tab
@@ -95,15 +71,12 @@ export default function ScholarshipsMadeSimpleSection() {
             />
           </TabList>
         </AppBar>
-        {tabs.map(({ tab, title, description, buttons, pic }) => (
+        {tabs.map(({ tab, title, description, buttons, pic, direction }) => (
           <TabPanel key={tab} value={tab}>
-            <HomeSection
-              direction="row"
-              {...{ tab, title, description, buttons, pic }}
-            />
+            <HomeSection {...{ title, description, buttons, pic, direction }} />
           </TabPanel>
         ))}
       </TabContext>
-    </div>
+    </Box>
   );
 }

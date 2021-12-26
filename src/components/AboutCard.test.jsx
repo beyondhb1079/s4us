@@ -16,7 +16,7 @@ describe('AboutCard', () => {
 
     expect(screen.getByText(name)).toBeInTheDocument();
 
-    const image = screen.getByRole('image', {
+    const image = screen.getByRole('img', {
       name: 'picture of Job Hernandez',
     });
     expect(image).toBeInTheDocument();
