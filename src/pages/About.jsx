@@ -113,7 +113,8 @@ function About() {
         container
         justifyContent="flex-start"
         alignItems="stretch"
-        spacing={3}>
+        spacing={3}
+        sx={{ mb: 3 }}>
         {team.map(({ name, img, description }) => (
           <Grid item key={name} xs={12} sm={6} md={4}>
             <AboutCard {...{ name, img, description }} />
