@@ -7,7 +7,7 @@ const AboutCard = ({ img, name, description }) => (
     <CardMedia
       image={img}
       title={`picture of ${name}`}
-      sx={{ backgroundSize: contain, height: 250 }}
+      sx={{ backgroundSize: 'contain', height: 250 }}
     />
     <CardContent>
       <Typography variant="h6">{name}</Typography>
