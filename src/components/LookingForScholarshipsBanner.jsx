@@ -3,7 +3,7 @@ import img5 from '../img/img5.svg';
 import { Link } from 'react-router-dom';
 import { Grid, Paper, Typography, Button } from '@mui/material';
 
-function GridContent() {
+function LookingForScholarshipsBanner() {
   return (
     <Grid
       container
@@ -30,4 +30,4 @@ function GridContent() {
   );
 }
 
-export default GridContent;
+export default LookingForScholarshipsBanner;

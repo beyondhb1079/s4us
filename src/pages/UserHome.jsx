@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
-import GridContent from '../components/GridContent';
+import LookingForScholarshipsBanner from '../components/LookingForScholarshipsBanner';
 
 export default function UserHome() {
   const user = firebase.auth().currentUser;
@@ -39,7 +39,7 @@ export default function UserHome() {
         Welcome {user.displayName}
       </Typography>
 
-      <GridContent />
+      <LookingForScholarshipsBanner />
 
       <Grid
         container

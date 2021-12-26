@@ -11,7 +11,7 @@ import AboutCard from '../components/AboutCard';
 import testPic from '../logo.svg';
 import { BRAND_NAME } from '../config/constants';
 import backgroundImg from '../img/img6.svg';
-import GridContent from '../components/GridContent';
+import LookingForScholarshipsBanner from '../components/LookingForScholarshipsBanner';
 
 const team = [
   {
@@ -121,7 +121,7 @@ function About() {
         ))}
       </Grid>
 
-      <GridContent />
+      <LookingForScholarshipsBanner />
     </Container>
   );
 }
