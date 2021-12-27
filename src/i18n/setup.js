@@ -6,7 +6,7 @@ import TranslationsSp from './translations/spanish.json';
 
 const resources = {
   en: { translation: TranslationsEn },
-  sp: { translation: TranslationsSp },
+  es: { translation: TranslationsSp },
 };
 
 i18n
@@ -14,9 +14,11 @@ i18n
   .use(LanguageDetector)
   .init({
     resources,
-    lng: 'en',
+    supportedLngs: ['en', 'es'],
     fallbackLng: 'en',
-    interpolation: { escapeValue: false },
+    detection: {
+      order: ['htmlTag', 'cookie', 'localStorage', 'path', 'subdomain'],
+    },
   });
 
 export default i18n;
