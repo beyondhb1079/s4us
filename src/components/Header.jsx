@@ -36,23 +36,20 @@ const OnRenderSnackbar = () => {
   );
 };
 
-const UnderConstructionAlert = () => {
-  const { t } = useTranslation();
-  return (
-    <Alert
-      severity="warning"
-      action={
-        <Button component={MuiLink} href={SUBSCRIPTION_FORM_URL}>
-          {t('btn.subscribe')}
-        </Button>
-      }>
-      <AlertTitle>{t('constructAlert.title')}</AlertTitle>
-      {t('constructAlert.description')}
-    </Alert>
-  );
-};
+const UnderConstructionAlert = ({ t }) => (
+  <Alert
+    severity="warning"
+    action={
+      <Button component={MuiLink} href={SUBSCRIPTION_FORM_URL}>
+        {t('btn.subscribe')}
+      </Button>
+    }>
+    <AlertTitle>{t('constructAlert.title')}</AlertTitle>
+    {t('constructAlert.description')}
+  </Alert>
+);
 
-const AuthZoomButton = () => {
+const AuthZoomButton = ({ t }) => {
   const { currentUser } = firebase.auth();
   const [isSignedIn, setIsSignedIn] = useState(
     !!firebase.auth().currentUser || undefined
@@ -62,7 +59,6 @@ const AuthZoomButton = () => {
     () => firebase.auth().onAuthStateChanged((user) => setIsSignedIn(!!user)),
     []
   );
-  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState(null);
   return (
     <>
@@ -120,9 +116,11 @@ const links = {
 
 function Header() {
   const classes = useStyles();
+  const { t } = useTranslation();
+
   return (
     <Container>
-      <UnderConstructionAlert />
+      <UnderConstructionAlert t={t} />
       <OnRenderSnackbar />
       <Grid container className={classes.header} spacing={3}>
         <Grid item>
@@ -135,7 +133,7 @@ function Header() {
         </Grid>
 
         <Grid item className={classes.authItem}>
-          <AuthZoomButton />
+          <AuthZoomButton t={t} />
         </Grid>
       </Grid>
     </Container>
