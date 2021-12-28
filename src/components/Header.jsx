@@ -138,7 +138,10 @@ function Header() {
         </Grid>
 
         <Grid item>
-          <LanguageIcon onClick={(e) => setAnchorEl(e.currentTarget)} />
+          <LanguageIcon
+            onClick={(e) => setAnchorEl(e.currentTarget)}
+            sx={{ ':hover': { cursor: 'pointer' } }}
+          />
         </Grid>
 
         <Grid item className={classes.authItem}>
