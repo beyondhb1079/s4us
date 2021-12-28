@@ -12,10 +12,13 @@ import {
   Link as MuiLink,
   Snackbar,
   Zoom,
+  Menu,
+  MenuItem,
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import ProfileMenu from './ProfileDropdown';
 import { useTranslation } from 'react-i18next';
+import LanguageIcon from '@mui/icons-material/Language';
 
 import { BRAND_NAME, SUBSCRIPTION_FORM_URL } from '../config/constants';
 import HeaderNavMenu from './HeaderNavMenu';
@@ -116,7 +119,9 @@ const links = {
 
 function Header() {
   const classes = useStyles();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   return (
     <Container>
@@ -132,10 +137,34 @@ function Header() {
           <HeaderNavMenu links={links} />
         </Grid>
 
+        <Grid item>
+          <LanguageIcon onClick={(e) => setAnchorEl(e.currentTarget)} />
+        </Grid>
+
         <Grid item className={classes.authItem}>
           <AuthZoomButton t={t} />
         </Grid>
       </Grid>
+
+      <Menu
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClose={() => setAnchorEl(null)}
+        anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
+        transformOrigin={{ horizontal: 'center' }}>
+        {['English', 'Español'].map((option, index) => (
+          <MenuItem
+            key={option}
+            selected={index === selectedIndex}
+            onClick={() => {
+              i18n.changeLanguage('es');
+              setSelectedIndex(index);
+              setAnchorEl(null);
+            }}>
+            {option}
+          </MenuItem>
+        ))}
+      </Menu>
     </Container>
   );
 }
