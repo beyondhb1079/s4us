@@ -117,6 +117,11 @@ const links = {
   'navbar.contact': '/contact',
 };
 
+const languages = {
+  English: 'en',
+  Español: 'es',
+};
+
 function Header() {
   const classes = useStyles();
   const { t, i18n } = useTranslation();
@@ -138,10 +143,9 @@ function Header() {
         </Grid>
 
         <Grid item>
-          <LanguageIcon
-            onClick={(e) => setAnchorEl(e.currentTarget)}
-            sx={{ ':hover': { cursor: 'pointer' } }}
-          />
+          <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
+            <LanguageIcon />
+          </IconButton>
         </Grid>
 
         <Grid item className={classes.authItem}>
@@ -155,16 +159,16 @@ function Header() {
         onClose={() => setAnchorEl(null)}
         anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
         transformOrigin={{ horizontal: 'center', vertical: 'top' }}>
-        {['English', 'Español'].map((option, index) => (
+        {Object.entries(languages).map(([k, v], index) => (
           <MenuItem
-            key={option}
+            key={k}
             selected={index === selectedIndex}
             onClick={() => {
-              i18n.changeLanguage('es');
+              i18n.changeLanguage(v);
               setSelectedIndex(index);
               setAnchorEl(null);
             }}>
-            {option}
+            {k}
           </MenuItem>
         ))}
       </Menu>
