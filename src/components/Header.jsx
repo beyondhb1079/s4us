@@ -154,7 +154,7 @@ function Header() {
         anchorEl={anchorEl}
         onClose={() => setAnchorEl(null)}
         anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
-        transformOrigin={{ horizontal: 'center' }}>
+        transformOrigin={{ horizontal: 'center', vertical: 'top' }}>
         {['English', 'Español'].map((option, index) => (
           <MenuItem
             key={option}
