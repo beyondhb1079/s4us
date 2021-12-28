@@ -1,0 +1,18 @@
+{
+  "navbar": {
+    "scholarships": "Scholarships",
+    "add": "Add",
+    "about": "About",
+    "contact": "Contact"
+  },
+
+  "btn": {
+    "login": "Login",
+    "subscribe": "SUBSCRIBE FOR UPDATES"
+  },
+
+  "constructAlert": {
+    "title": "Warning",
+    "description": "🚧 Website Actively Under-Construction! 🚧"
+  }
+}

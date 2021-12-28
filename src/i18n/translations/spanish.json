@@ -1,0 +1,18 @@
+{
+  "navbar": {
+    "scholarships": "Explorar",
+    "add": "Agregar",
+    "about": "Acerca de",
+    "contact": "Contacto"
+  },
+
+  "btn": {
+    "login": "Iniciar sesión",
+    "subscribe": "SUSCRÍBETE PARA ACTUALIZACIONES"
+  },
+
+  "constructAlert": {
+    "title": "Advertencia",
+    "description": "🚧 ¡Sitio web bajo construcción! 🚧"
+  }
+}

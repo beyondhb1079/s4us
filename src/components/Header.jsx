@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import ProfileMenu from './ProfileDropdown';
+import { useTranslation } from 'react-i18next';
 
 import { BRAND_NAME, SUBSCRIPTION_FORM_URL } from '../config/constants';
 import HeaderNavMenu from './HeaderNavMenu';
@@ -35,20 +36,20 @@ const OnRenderSnackbar = () => {
   );
 };
 
-const UnderConstructionAlert = () => (
+const UnderConstructionAlert = ({ t }) => (
   <Alert
     severity="warning"
     action={
       <Button component={MuiLink} href={SUBSCRIPTION_FORM_URL}>
-        SUBSCRIBE FOR UPDATES
+        {t('btn.subscribe')}
       </Button>
     }>
-    <AlertTitle>Warning</AlertTitle>
-    🚧 Website Actively Under-Construction! 🚧
+    <AlertTitle>{t('constructAlert.title')}</AlertTitle>
+    {t('constructAlert.description')}
   </Alert>
 );
 
-const AuthZoomButton = () => {
+const AuthZoomButton = ({ t }) => {
   const { currentUser } = firebase.auth();
   const [isSignedIn, setIsSignedIn] = useState(
     !!firebase.auth().currentUser || undefined
@@ -58,7 +59,6 @@ const AuthZoomButton = () => {
     () => firebase.auth().onAuthStateChanged((user) => setIsSignedIn(!!user)),
     []
   );
-
   const [anchorEl, setAnchorEl] = useState(null);
   return (
     <>
@@ -78,7 +78,7 @@ const AuthZoomButton = () => {
             color="inherit"
             component={Link}
             to={{ state: { showLoginDialog: true } }}>
-            Login
+            {t('btn.login')}
           </Button>
         )}
       </Zoom>
@@ -108,17 +108,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const links = {
-  Scholarships: '/scholarships',
-  Add: '/scholarships/new',
-  About: '/about',
-  Contact: '/contact',
+  'navbar.scholarships': '/scholarships',
+  'navbar.add': '/scholarships/new',
+  'navbar.about': '/about',
+  'navbar.contact': '/contact',
 };
 
 function Header() {
   const classes = useStyles();
+  const { t } = useTranslation();
+
   return (
     <Container>
-      <UnderConstructionAlert />
+      <UnderConstructionAlert t={t} />
       <OnRenderSnackbar />
       <Grid container className={classes.header} spacing={3}>
         <Grid item>
@@ -131,7 +133,7 @@ function Header() {
         </Grid>
 
         <Grid item className={classes.authItem}>
-          <AuthZoomButton />
+          <AuthZoomButton t={t} />
         </Grid>
       </Grid>
     </Container>
