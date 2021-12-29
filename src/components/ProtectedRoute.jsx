@@ -3,6 +3,7 @@ import { Route, Redirect, useLocation } from 'react-router-dom';
 import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import { Container, Typography, CircularProgress } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 function ProtectedRoute({ component: Component, path }) {
   const location = useLocation();
@@ -17,6 +18,8 @@ function ProtectedRoute({ component: Component, path }) {
     () => firebase.auth().onAuthStateChanged((user) => setIsSignedIn(!!user)),
     []
   );
+
+  const { t } = useTranslation();
 
   return (
     <Route
@@ -39,9 +42,7 @@ function ProtectedRoute({ component: Component, path }) {
         }
         return (
           <Container>
-            <Typography variant="h5">
-              You must log in first to access this page
-            </Typography>
+            <Typography variant="h5">{t('protectedPage')}</Typography>
             {showLoginDialog === undefined && (
               <Redirect
                 push={false}
