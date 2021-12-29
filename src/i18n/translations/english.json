@@ -10,11 +10,18 @@
     "browse": "Browse Scholarships",
     "add": "Add a Scholarship",
     "login": "Login",
+    "load": "Load More",
     "subscribe": "SUBSCRIBE FOR UPDATES"
   },
 
   "constructAlert": {
     "title": "Warning",
     "description": "🚧 Website Actively Under-Construction! 🚧"
+  },
+
+  "listScholarships": {
+    "title": "Scholarships",
+    "end": "End of results",
+    "none": "No Scholarships found"
   }
 }

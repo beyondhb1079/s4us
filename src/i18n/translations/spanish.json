@@ -10,11 +10,18 @@
     "browse": "Buscar Becas",
     "add": "Agregar una Beca",
     "login": "Iniciar sesión",
+    "load": "carga más",
     "subscribe": "SUSCRÍBETE PARA ACTUALIZACIONES"
   },
 
   "constructAlert": {
     "title": "Advertencia",
     "description": "🚧 ¡Sitio web bajo construcción! 🚧"
+  },
+
+  "listScholarships": {
+    "title": "Becas",
+    "end": "Final de Resultados",
+    "none": "No se encontraron Becas"
   }
 }
