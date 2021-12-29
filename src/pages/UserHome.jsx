@@ -14,9 +14,11 @@ import {
 } from '@mui/material';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
+import { useTranslation } from 'react-i18next';
 import LookingForScholarshipsBanner from '../components/LookingForScholarshipsBanner';
 
 export default function UserHome() {
+  const { t } = useTranslation();
   const user = firebase.auth().currentUser;
   const location = useLocation();
   const history = useHistory();
@@ -36,7 +38,7 @@ export default function UserHome() {
       )}
 
       <Typography variant="h4" gutterBottom>
-        Welcome {user.displayName}
+        {t('home.user.welcome')} {user.displayName}
       </Typography>
 
       <LookingForScholarshipsBanner />
@@ -48,7 +50,7 @@ export default function UserHome() {
         sx={{ marginY: { xs: 1, md: 2 } }}>
         <Grid item>
           <Typography variant="h5" component="h2">
-            Scholarships You Have Added
+            {t('home.user.added')}
           </Typography>
         </Grid>
         <Grid item>
@@ -58,7 +60,7 @@ export default function UserHome() {
             startIcon={<AddIcon />}
             component={Link}
             to="/scholarships/new">
-            Add Scholarship
+            {t('btn.add')}
           </Button>
         </Grid>
       </Grid>
@@ -77,10 +79,10 @@ export default function UserHome() {
             </Grid>
             <Grid item>
               <Typography variant="h5" gutterButtom>
-                No Scholarships Added Yet
+                {t('home.user.noneAdded')}
               </Typography>
               <MuiLink component={Link} to="/scholarships/new">
-                Add Scholarship
+                {t('btn.add')}
               </MuiLink>
             </Grid>
           </Grid>
