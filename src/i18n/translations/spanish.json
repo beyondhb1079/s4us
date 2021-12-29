@@ -14,5 +14,19 @@
   "constructAlert": {
     "title": "Advertencia",
     "description": "🚧 ¡Sitio web bajo construcción! 🚧"
+  },
+
+  "contact": {
+    "title": "Contactanos",
+    "bugTitle": "¿Encontro un error?",
+    "bugDesc": "Puede archivarlo <1>aquí</1>.",
+    "featureTitle": "Peticiones de Características",
+    "featureDesc": "Puede sugerir una idea para este proyecto <1>aquí</1>.",
+    "learnTitle": "Aprenda Sobre Nosotros",
+    "learnDesc": "Puede obtener más información sobre {{brand}} y los desarrolladores <1>aquí</1>.",
+    "subTitle": "Suscríbase",
+    "subDesc": "Puede suscribirse para recibir actualizaciones <1>aquí</1>.",
+    "reachTitle": "Contacta con nosotros",
+    "reachDesc": "Estaremos encantados de responder a cualquiera de sus preguntas. Puede enviarnos un correo electrónico <1>aquí</1> y nos pondremos en contacto lo antes posible."
   }
 }

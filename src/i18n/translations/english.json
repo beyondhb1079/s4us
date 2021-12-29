@@ -14,5 +14,19 @@
   "constructAlert": {
     "title": "Warning",
     "description": "🚧 Website Actively Under-Construction! 🚧"
+  },
+
+  "contact": {
+    "title": "Contact Us",
+    "bugTitle": "Found a bug?",
+    "bugDesc": "You can file it <1>here</1>.",
+    "featureTitle": "Feature Requests",
+    "featureDesc": "You can suggest an idea for this project <1>here</1>.",
+    "learnTitle": "Learn About Us",
+    "learnDesc": "You can learn more about {{brand}} and the developers <1>here</1>.",
+    "subTitle": "Subscribe",
+    "subDesc": "You can subscribe for updates <1>here</1>.",
+    "reachTitle": "Reach Out",
+    "reachDesc": "We are happy to answer any of your questions. You can email us <1>here</1> and we'll be in touch as soon as possible."
   }
 }
