@@ -40,7 +40,6 @@
 
     "user": {
       "welcome": "Bienvenido",
-      "looking": "¿buscando becas?",
       "added": "Becas que ha agregado",
       "noneAdded": "Aún no a agregado becas"
     }
