@@ -52,7 +52,7 @@ function About() {
   return (
     <Container>
       <Helmet>
-        <title>About</title>
+        <title>{t('about.titleTag')}</title>
       </Helmet>
 
       <Grid container spacing={2}>

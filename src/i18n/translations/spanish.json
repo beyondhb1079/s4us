@@ -24,6 +24,7 @@
   },
 
   "about": {
+    "titleTag": "Sobre nosotros",
     "meetTheTeam": "conozca al equipo",
     "title": "Por la comunidad indocumentada.",
     "description": "Conozca al equipo detrás de {{brand}}. Somos un grupo de aprendices de por vida apasionados por la tecnología y la mejora de la comunidad. El proyecto surgió de nuestras propias luchas como estudiantes y la falta de recursos para nuestra comunidad.",
