@@ -7,14 +7,13 @@
   },
 
   "btn": {
-    "browse": "Buscar Becas",
-    "add": "Agregar una Beca",
+    "browseScholarships": "Buscar Becas",
+    "addScholarship": "Agregar una Beca",
     "login": "Iniciar sesión",
-    "subscribe": "SUSCRÍBETE PARA ACTUALIZACIONES"
+    "subscribeForUpdates": "Suscríbete para recibir actualizaciones"
   },
 
   "constructAlert": {
-    "title": "Advertencia",
     "description": "🚧 ¡Sitio web bajo construcción! 🚧"
   },
 
@@ -24,5 +23,7 @@
     "desc": "Ayude a nuestro equipo a proporcionar los mejores resultados de búsqueda para estudiantes y miembros de la comunidad que buscan becas contribuyendo con la mayor cantidad de información detallada posible."
   },
 
-  "protectedPage": "Primero debe iniciar una sesión para acceder a esta página"
+  "protectedPage": "Primero debe iniciar una sesión para acceder a esta página",
+
+  "alert": { "warning": "Advertencia" }
 }
