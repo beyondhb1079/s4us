@@ -12,7 +12,7 @@ function AddScholarship() {
   return (
     <Container maxWidth="md">
       <Helmet>
-        <title>Add a Scholarship</title>
+        <title>{t('addScholarship.titleTag')}</title>
       </Helmet>
 
       <Grid container spacing={2}>
