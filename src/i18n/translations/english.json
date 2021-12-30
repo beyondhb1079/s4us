@@ -7,16 +7,17 @@
   },
 
   "btn": {
-    "browse": "Browse Scholarships",
-    "add": "Add a Scholarship",
+    "browseScholarships": "Browse Scholarships",
+    "addScholarship": "Add a Scholarship",
     "login": "Login",
-    "subscribe": "SUBSCRIBE FOR UPDATES"
+    "subscribeForUpdates": "Subscribe for updates"
   },
 
   "constructAlert": {
-    "title": "Warning",
     "description": "🚧 Website Actively Under-Construction! 🚧"
   },
+
+  "alert": { "warning": "Warning" },
 
   "lookingForScholarships": "Looking for scholarships?",
 
