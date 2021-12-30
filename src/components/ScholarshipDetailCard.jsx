@@ -27,6 +27,25 @@ import { BRAND_NAME } from '../config/constants';
 import Ethnicity from '../types/Ethnicity';
 import GradeLevel from '../types/GradeLevel';
 
+const DetailCardCell = ({ label, text }) => (
+  <>
+    <Grid container justifyContent="space-between">
+      <Grid item xs={12} sm>
+        <Typography>{label}</Typography>
+      </Grid>
+      <Grid item sx={{ textAlign: { sm: 'right' } }} xs={12} sm>
+        <Typography>{text}</Typography>
+      </Grid>
+    </Grid>
+    <Divider light sx={{ m: 1.5 }} />
+  </>
+);
+
+DetailCardCell.propTypes = {
+  label: PropTypes.string.isRequired,
+  text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+};
+
 export default function ScholarshipDetailCard({ scholarship, preview }) {
   const history = useHistory();
   const {
@@ -65,24 +84,17 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
     }
   };
 
-  const DetailCardCell = ({ label, text }) => (
-    <>
-      <Grid container justifyContent="space-between">
-        <Grid item xs={12} sm>
-          <Typography>{label}</Typography>
-        </Grid>
-        <Grid item sx={{ textAlign: { sm: 'right' } }} xs={12} sm>
-          <Typography>{text}</Typography>
-        </Grid>
-      </Grid>
-      <Divider light sx={{ m: 1.5 }} />
-    </>
-  );
-
-  DetailCardCell.propTypes = {
-    label: PropTypes.string.isRequired,
-    text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  };
+  const currentUser = firebase.auth().currentUser;
+  const [canEdit, setCanEdit] = useState(currentUser?.uid === author?.id);
+  useEffect(() => {
+    if (!preview && currentUser && currentUser.uid !== author?.id) {
+      currentUser.getIdTokenResult().then((idTokenResult) => {
+        if (idTokenResult.claims.admin) {
+          setCanEdit(true);
+        }
+      });
+    }
+  }, [author, preview]);
 
   return (
     <Card sx={{ p: 3 }}>
@@ -140,7 +152,7 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
           Share
         </Button>
 
-        {!preview && firebase.auth().currentUser?.uid == author?.id && (
+        {!preview && canEdit && (
           <IconButton
             component={Link}
             to={{

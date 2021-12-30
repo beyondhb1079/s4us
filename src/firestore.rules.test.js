@@ -35,9 +35,14 @@ const johnApp = initializeTestApp({
   auth: { uid: 'john-doe' },
 });
 
+const adminApp = initializeTestApp({
+  projectId: MY_PROJECT_ID,
+  auth: { uid: 'admin', admin: true },
+});
+
 beforeEach(() => clearFirestoreData({ projectId: MY_PROJECT_ID }));
 afterAll(() =>
-  Promise.all([unauthedApp, aliceApp, johnApp].map((c) => c.delete()))
+  Promise.all([unauthedApp, aliceApp, adminApp, johnApp].map((c) => c.delete()))
 );
 
 test('allows scholarships read when signed out', () => {
@@ -58,7 +63,7 @@ test('denies scholarships write when signed out', () => {
   );
 });
 
-test('allows scholarships write when signed in', () => {
+test('allows scholarships create when signed in', () => {
   return assertSucceeds(
     aliceApp.firestore().collection('scholarships').doc().set(newScholarship)
   );
@@ -100,7 +105,7 @@ test('allows scholarships update when user is author', async () => {
   );
 });
 
-test('allows scholarship delete when user is author', async () => {
+test('allows scholarships update when user is admin', async () => {
   await assertSucceeds(
     aliceApp
       .firestore()
@@ -110,7 +115,11 @@ test('allows scholarship delete when user is author', async () => {
   );
 
   return assertSucceeds(
-    aliceApp.firestore().collection('scholarships').doc('KLJASDQW').delete()
+    adminApp
+      .firestore()
+      .collection('scholarships')
+      .doc('KLJASDQW')
+      .set({ name: 'updated name' })
   );
 });
 
@@ -125,5 +134,33 @@ test('denies scholarship delete when user is not author', async () => {
 
   return assertFails(
     johnApp.firestore().collection('scholarships').doc('KLJASDQW').delete()
+  );
+});
+
+test('allows scholarship delete when user is author', async () => {
+  await assertSucceeds(
+    aliceApp
+      .firestore()
+      .collection('scholarships')
+      .doc('KLJASDQW')
+      .set({ ...newScholarship, author: { id: aliceId } })
+  );
+
+  return assertSucceeds(
+    aliceApp.firestore().collection('scholarships').doc('KLJASDQW').delete()
+  );
+});
+
+test('allows scholarship delete when user is admin', async () => {
+  await assertSucceeds(
+    aliceApp
+      .firestore()
+      .collection('scholarships')
+      .doc('KLJASDQW')
+      .set({ ...newScholarship, author: { id: aliceId } })
+  );
+
+  return assertSucceeds(
+    aliceApp.firestore().collection('scholarships').doc('KLJASDQW').delete()
   );
 });
