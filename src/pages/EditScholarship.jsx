@@ -43,14 +43,15 @@ function EditScholarship() {
 
   useEffect(() => {
     const authorId = scholarship?.data?.author?.id;
-    if (!firebase.auth()?.currentUser) {
-      setError("You don't have permission to edit this scholarship.");
-    } else if (authorId && firebase.auth().currentUser.uid != authorId) {
+    if (authorId) {
       firebase
         .auth()
         .currentUser.getIdTokenResult()
         .then((idTokenResult) => {
-          if (!idTokenResult.claims.admin) {
+          if (
+            !idTokenResult.claims.admin &&
+            firebase.auth().currentUser.uid !== authorId
+          ) {
             setError("You don't have permission to edit this scholarship.");
           }
         })
