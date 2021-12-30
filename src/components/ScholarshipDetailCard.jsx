@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import firebase from 'firebase';
 import PropTypes from 'prop-types';
@@ -26,6 +26,25 @@ import ScholarshipAmount from '../types/ScholarshipAmount';
 import { BRAND_NAME } from '../config/constants';
 import Ethnicity from '../types/Ethnicity';
 import GradeLevel from '../types/GradeLevel';
+
+const DetailCardCell = ({ label, text }) => (
+  <>
+    <Grid container justifyContent="space-between">
+      <Grid item xs={12} sm>
+        <Typography>{label}</Typography>
+      </Grid>
+      <Grid item sx={{ textAlign: { sm: 'right' } }} xs={12} sm>
+        <Typography>{text}</Typography>
+      </Grid>
+    </Grid>
+    <Divider light sx={{ m: 1.5 }} />
+  </>
+);
+
+DetailCardCell.propTypes = {
+  label: PropTypes.string.isRequired,
+  text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+};
 
 export default function ScholarshipDetailCard({ scholarship, preview }) {
   const history = useHistory();
@@ -65,24 +84,23 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
     }
   };
 
-  const DetailCardCell = ({ label, text }) => (
-    <>
-      <Grid container justifyContent="space-between">
-        <Grid item xs={12} sm>
-          <Typography>{label}</Typography>
-        </Grid>
-        <Grid item sx={{ textAlign: { sm: 'right' } }} xs={12} sm>
-          <Typography>{text}</Typography>
-        </Grid>
-      </Grid>
-      <Divider light sx={{ m: 1.5 }} />
-    </>
+  const [canEdit, setCanEdit] = useState(
+    firebase.auth().currentUser?.uid === author?.id
   );
-
-  DetailCardCell.propTypes = {
-    label: PropTypes.string.isRequired,
-    text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  };
+  useEffect(() => {
+    const currentUser = firebase.auth().currentUser;
+    if (!preview && currentUser && currentUser.uid !== author?.id) {
+      currentUser
+        .getIdTokenResult()
+        .then((idTokenResult) => {
+          if (idTokenResult.claims.admin) {
+            setCanEdit(true);
+          }
+        })
+        // eslint-disable-next-line no-console
+        .catch(console.error);
+    }
+  }, [author, preview]);
 
   return (
     <Card sx={{ p: 3 }}>
@@ -140,7 +158,7 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
           Share
         </Button>
 
-        {!preview && firebase.auth().currentUser?.uid == author?.id && (
+        {!preview && canEdit && (
           <IconButton
             component={Link}
             to={{
