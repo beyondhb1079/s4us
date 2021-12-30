@@ -21,14 +21,14 @@ function Contact() {
       </Helmet>
 
       <Typography variant="h4" align="center" gutterBottom>
-        {t('contact.title')}
+        {t('contact.contactUs')}
       </Typography>
 
       <Typography variant="h5" gutterBottom>
-        {t('contact.bugTitle')}
+        {t('contact.foundBug')}
       </Typography>
       <Typography paragraph>
-        <Trans i18nKey="contact.bugDesc">
+        <Trans i18nKey="contact.fileBug">
           You can file it
           <MuiLink
             href={genMailToLink({
@@ -41,10 +41,10 @@ function Contact() {
       </Typography>
 
       <Typography variant="h5" gutterBottom>
-        {t('contact.featureTitle')}
+        {t('contact.featureReq')}
       </Typography>
       <Typography paragraph>
-        <Trans i18nKey="contact.featureDesc">
+        <Trans i18nKey="contact.featureSuggest">
           You can suggest an idea for this project
           <MuiLink
             href={genMailToLink({
@@ -57,10 +57,10 @@ function Contact() {
       </Typography>
 
       <Typography variant="h5" gutterBottom>
-        {t('contact.learnTitle')}
+        {t('contact.learnAboutUs')}
       </Typography>
       <Typography paragraph>
-        <Trans i18nKey="contact.learnDesc" values={{ brand: BRAND_NAME }}>
+        <Trans i18nKey="contact.learnMore" values={{ brand: BRAND_NAME }}>
           You can learn more about and the developers
           <MuiLink component={Link} to="/about">
             here
@@ -69,20 +69,20 @@ function Contact() {
       </Typography>
 
       <Typography variant="h5" gutterBottom>
-        {t('contact.subTitle')}
+        {t('contact.subscribe')}
       </Typography>
       <Typography paragraph>
-        <Trans i18nKey="contact.subDesc">
+        <Trans i18nKey="contact.subForUpdates">
           You can subscribe for updates
           <MuiLink href={SUBSCRIPTION_FORM_URL}>here</MuiLink>
         </Trans>
       </Typography>
 
       <Typography variant="h5" gutterBottom>
-        {t('contact.reachTitle')}
+        {t('contact.reachOut')}
       </Typography>
       <Typography paragraph>
-        <Trans i18nKey="contact.reachDesc">
+        <Trans i18nKey="contact.emailUs">
           We are happy to answer any of your questions. You can email us
           <MuiLink
             href={genMailToLink({
