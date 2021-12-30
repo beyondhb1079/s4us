@@ -84,15 +84,21 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
     }
   };
 
-  const currentUser = firebase.auth().currentUser;
-  const [canEdit, setCanEdit] = useState(currentUser?.uid === author?.id);
+  const [canEdit, setCanEdit] = useState(
+    firebase.auth().currentUser?.uid === author?.id
+  );
   useEffect(() => {
+    const currentUser = firebase.auth().currentUser;
     if (!preview && currentUser && currentUser.uid !== author?.id) {
-      currentUser.getIdTokenResult().then((idTokenResult) => {
-        if (idTokenResult.claims.admin) {
-          setCanEdit(true);
-        }
-      });
+      currentUser
+        .getIdTokenResult()
+        .then((idTokenResult) => {
+          if (idTokenResult.claims.admin) {
+            setCanEdit(true);
+          }
+        })
+        // eslint-disable-next-line no-console
+        .catch(console.error);
     }
   }, [author, preview]);
 
