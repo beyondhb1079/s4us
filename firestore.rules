@@ -4,10 +4,11 @@ service cloud.firestore {
     match /scholarships/{document=**} {
       allow read: if true;
     }
+
     match /scholarships/{scholarshipId} {
       allow create: if request.auth != null;
-      allow update: if request.auth.uid == resource.data.author.id;
-      allow delete: if request.auth.uid == resource.data.author.id;
+      allow update: if request.auth.uid == resource.data.author.id || request.auth.token.admin;
+      allow delete: if request.auth.uid == resource.data.author.id || request.auth.token.admin;
     }
   }
 }
