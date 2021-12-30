@@ -44,10 +44,10 @@ const UnderConstructionAlert = ({ t }) => (
     severity="warning"
     action={
       <Button component={MuiLink} href={SUBSCRIPTION_FORM_URL}>
-        {t('btn.subscribe')}
+        {t('btn.subscribeForUpdates')}
       </Button>
     }>
-    <AlertTitle>{t('constructAlert.title')}</AlertTitle>
+    <AlertTitle>{t('alert.warning')}</AlertTitle>
     {t('constructAlert.description')}
   </Alert>
 );
@@ -126,7 +126,6 @@ function Header() {
   const classes = useStyles();
   const { t, i18n } = useTranslation();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   return (
     <Container>
@@ -159,13 +158,12 @@ function Header() {
         onClose={() => setAnchorEl(null)}
         anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
         transformOrigin={{ horizontal: 'center', vertical: 'top' }}>
-        {Object.entries(languages).map(([k, v], index) => (
+        {Object.entries(languages).map(([k, v]) => (
           <MenuItem
             key={k}
-            selected={index === selectedIndex}
+            selected={v === i18n.language}
             onClick={() => {
               i18n.changeLanguage(v);
-              setSelectedIndex(index);
               setAnchorEl(null);
             }}>
             {k}
