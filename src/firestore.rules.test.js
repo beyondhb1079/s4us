@@ -161,6 +161,6 @@ test('allows scholarship delete when user is admin', async () => {
   );
 
   return assertSucceeds(
-    aliceApp.firestore().collection('scholarships').doc('KLJASDQW').delete()
+    adminApp.firestore().collection('scholarships').doc('KLJASDQW').delete()
   );
 });
