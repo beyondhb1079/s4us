@@ -58,7 +58,7 @@ function About() {
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
           <Typography component="h2" variant="button" gutterBottom>
-            {t('about.meet')}
+            {t('about.meetTheTeam')}
           </Typography>
           <Typography variant="h4" gutterBottom>
             {t('about.title')}

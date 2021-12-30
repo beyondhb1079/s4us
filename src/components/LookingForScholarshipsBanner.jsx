@@ -15,7 +15,7 @@ function LookingForScholarshipsBanner() {
       sx={{ padding: { xs: 2, md: 3 } }}>
       <Grid item sm={6} xs={12}>
         <Typography variant="h5" gutterBottom>
-          {t('lookingForScholarships')}
+          {t('general.lookingForScholarships')}
         </Typography>
         <Button
           variant="contained"
@@ -23,7 +23,7 @@ function LookingForScholarshipsBanner() {
           component={Link}
           to="/scholarships"
           sx={{ marginY: { xs: 1, md: 2 } }}>
-          {t('btn.browse')}
+          {t('btn.browseScholarships')}
         </Button>
       </Grid>
       <Grid item sm={6} xs={12}>
