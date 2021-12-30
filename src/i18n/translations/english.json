@@ -18,7 +18,7 @@
   },
 
   "addScholarship": {
-    "sub": "Submit a Scholarship",
+    "submit": "Submit a Scholarship",
     "title": "Additional Information",
     "desc": "Help our team provide the best search results for students and community members looking for scholarships by contributing as much detail information possible."
   },

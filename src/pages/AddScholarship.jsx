@@ -21,7 +21,7 @@ function AddScholarship() {
           sm={12}
           md={6}
           sx={{ textAlign: { xs: 'center', md: 'left' } }}>
-          <Typography gutterBottom>{t('addScholarship.sub')}</Typography>
+          <Typography gutterBottom>{t('addScholarship.submit')}</Typography>
           <Typography variant="h4" gutterBottom>
             {t('addScholarship.title')}
           </Typography>
