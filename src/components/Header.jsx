@@ -44,10 +44,10 @@ const UnderConstructionAlert = ({ t }) => (
     severity="warning"
     action={
       <Button component={MuiLink} href={SUBSCRIPTION_FORM_URL}>
-        {t('btn.subscribe')}
+        {t('btn.subscribeForUpdates')}
       </Button>
     }>
-    <AlertTitle>{t('constructAlert.title')}</AlertTitle>
+    <AlertTitle>{t('alert.warning')}</AlertTitle>
     {t('constructAlert.description')}
   </Alert>
 );
