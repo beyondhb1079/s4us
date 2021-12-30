@@ -28,7 +28,7 @@ export default function UserHome() {
   return (
     <Container>
       <Helmet>
-        <title>Dashboard</title>
+        <title>{t('home.user.titleTag')}</title>
       </Helmet>
 
       {location?.state?.alert && (
