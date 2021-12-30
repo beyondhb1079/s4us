@@ -109,16 +109,13 @@ function ListScholarships() {
   return (
     <Container>
       <Helmet>
-        <title>Search Scholarships</title>
+        <title>{t('listScholarships.titleTag')}</title>
       </Helmet>
       <Typography variant="h3" component="h1" align="center">
-        {t('listScholarships.title')}
+        {t('general.scholarships')}
       </Typography>
       <FilterBar queryParams={params} {...{ setQueryParam }} />
-      <ScholarshipList
-        listFn={listScholarships}
-        noResultsNode={<Typography>{t('listScholarships.none')}</Typography>}
-      />
+      <ScholarshipList listFn={listScholarships} />
     </Container>
   );
 }

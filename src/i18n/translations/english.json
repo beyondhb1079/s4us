@@ -10,7 +10,7 @@
     "browseScholarships": "Browse Scholarships",
     "addScholarship": "Add a Scholarship",
     "login": "Login",
-    "load": "Load More",
+    "loadMore": "Load More",
     "subscribeForUpdates": "Subscribe for updates"
   },
 
@@ -18,10 +18,15 @@
     "description": "🚧 Website Actively Under-Construction! 🚧"
   },
 
-  "listScholarships": {
-    "title": "Scholarships",
-    "end": "End of results",
-    "none": "No Scholarships found"
+  "general": {
+    "scholarships": "scholarships"
   },
+
+  "listScholarships": {
+    "titleTag": "Search Scholarships",
+    "endOfResults": "End of results",
+    "noScholarshipsFound": "No scholarships found"
+  },
+
   "alert": { "warning": "Warning" }
 }

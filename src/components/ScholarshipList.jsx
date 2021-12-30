@@ -71,12 +71,20 @@ function ScholarshipList({ noResultsNode, listFn }) {
             if (canLoadMore)
               return (
                 <Button color="primary" onClick={loadMore}>
-                  {t('btn.load')}
+                  {t('btn.loadMore')}
                 </Button>
               );
             if (scholarships?.length)
-              return <Typography>{t('listScholarships.end')}</Typography>;
-            return noResultsNode;
+              return (
+                <Typography>{t('listScholarships.endOfResults')}</Typography>
+              );
+            return (
+              noResultsNode || (
+                <Typography>
+                  {t('listScholarships.noScholarshipsFound')}
+                </Typography>
+              )
+            );
           })()}
         </Box>
       </Grid>
@@ -86,10 +94,11 @@ function ScholarshipList({ noResultsNode, listFn }) {
 
 ScholarshipList.propTypes = {
   listFn: PropTypes.func,
-  noResultsNode: PropTypes.node.isRequired,
+  noResultsNode: PropTypes.node,
 };
 ScholarshipList.defaultProps = {
   listFn: undefined,
+  noResultsNode: undefined,
 };
 
 export default ScholarshipList;
