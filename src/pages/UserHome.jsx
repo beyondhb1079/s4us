@@ -50,7 +50,7 @@ export default function UserHome() {
         sx={{ marginY: { xs: 1, md: 2 } }}>
         <Grid item>
           <Typography variant="h5" component="h2">
-            {t('home.user.added')}
+            {t('home.user.addedScholarships')}
           </Typography>
         </Grid>
         <Grid item>
@@ -60,7 +60,7 @@ export default function UserHome() {
             startIcon={<AddIcon />}
             component={Link}
             to="/scholarships/new">
-            {t('btn.add')}
+            {t('btn.addScholarship')}
           </Button>
         </Grid>
       </Grid>
@@ -82,7 +82,7 @@ export default function UserHome() {
                 {t('home.user.noneAdded')}
               </Typography>
               <MuiLink component={Link} to="/scholarships/new">
-                {t('btn.add')}
+                {t('btn.addScholarship')}
               </MuiLink>
             </Grid>
           </Grid>

@@ -19,7 +19,7 @@
 
   "home": {
     "public": {
-      "landing": {
+      "landingSection": {
         "title": "Becas para estudiantes indocumentados.",
         "subTitle": "Una lista de recursos de becas por y para la comunidad."
       },
@@ -39,7 +39,7 @@
 
     "user": {
       "welcome": "Bienvenido",
-      "added": "Becas que ha agregado",
+      "addedScholarships": "Becas que ha agregado",
       "noneAdded": "Aún no a agregado becas"
     }
   },

@@ -19,7 +19,7 @@
 
   "home": {
     "public": {
-      "landing": {
+      "landingSection": {
         "title": "Scholarships for undocumented students.",
         "subTitle": "A resource list of scholarships by and for the community."
       },
@@ -39,7 +39,7 @@
 
     "user": {
       "welcome": "Welcome",
-      "added": "Scholarships You've Added",
+      "addedScholarships": "Scholarships You've Added",
       "noneAdded": "No Scholarships Added Yet"
     }
   },

@@ -14,23 +14,23 @@ function PublicHome() {
     <>
       <HomeSection
         direction="row"
-        title={t('home.public.landing.title')}
+        title={t('home.public.landingSection.title')}
         main
-        description={t('home.public.landing.subTitle')}
+        description={t('home.public.landingSection.subTitle')}
         buttons={[
           <Button
             component={Link}
             to="/scholarships"
             variant="contained"
             color="primary">
-            {t('btn.browse')}
+            {t('btn.browseScholarships')}
           </Button>,
           <Button
             component={Link}
             to="/scholarships/new"
             variant="outlined"
             color="primary">
-            {t('btn.add')}
+            {t('btn.addScholarship')}
           </Button>,
         ]}
         pic={graduation}
@@ -49,7 +49,7 @@ function PublicHome() {
               to="/scholarships"
               variant="contained"
               color="primary">
-              {t('btn.browse')}
+              {t('btn.browseScholarships')}
             </Button>,
           ]}
           pic={searching}

@@ -14,7 +14,9 @@ function OutlineButton(user, t) {
       color="primary"
       component={Link}
       to={user === 'students' ? '/scholarships' : '/scholarships/new'}>
-      {user === 'students' ? t('btn.browse') : t('btn.add')}
+      {user === 'students'
+        ? t('btn.browseScholarships')
+        : t('btn.addScholarship')}
     </Button>
   );
 }
