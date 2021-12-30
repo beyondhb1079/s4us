@@ -7,14 +7,13 @@
   },
 
   "btn": {
-    "browse": "Buscar Becas",
-    "add": "Agregar una Beca",
+    "browseScholarships": "Buscar Becas",
+    "addScholarship": "Agregar una Beca",
     "login": "Iniciar sesión",
-    "subscribe": "SUSCRÍBETE PARA ACTUALIZACIONES"
+    "subscribeForUpdates": "Suscríbete para recibir actualizaciones"
   },
 
   "constructAlert": {
-    "title": "Advertencia",
     "description": "🚧 ¡Sitio web bajo construcción! 🚧"
   },
 
@@ -43,5 +42,7 @@
       "added": "Becas que ha agregado",
       "noneAdded": "Aún no a agregado becas"
     }
-  }
+  },
+
+  "alert": { "warning": "Advertencia" }
 }
