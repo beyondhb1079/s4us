@@ -18,6 +18,7 @@
   },
 
   "contact": {
+    "titleTag": "Contacto",
     "contactUs": "Contactanos",
     "foundBug": "¿Encontro un error?",
     "fileBug": "Puede archivarlo <1>aquí</1>.",

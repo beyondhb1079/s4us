@@ -17,7 +17,7 @@ function Contact() {
   return (
     <Container>
       <Helmet>
-        <title>Contact</title>
+        <title>{t('contact.titleTag')}</title>
       </Helmet>
 
       <Typography variant="h4" align="center" gutterBottom>
