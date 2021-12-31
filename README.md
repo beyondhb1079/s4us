@@ -10,6 +10,7 @@ The following are required:
 
 - [Git](https://git-scm.com/)
 - [Node.js](https://nodejs.org/)
+- [Java](https://www.oracle.com/java/technologies/downloads/)
 - [Yarn](https://classic.yarnpkg.com/en/)
 
 The following are recommended but optional:
