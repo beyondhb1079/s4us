@@ -7,14 +7,16 @@ warn() {
   echo "${BOLD}${YELLOW}WARNING:${NORMAL} $1"
 }
 
-LOCK_FILE=.firebase-emulator.lock
-if [ -f "${LOCK_FILE}" ]; then
-  warn "Firestore emulators are already running!"
+if lsof -i tcp:8080; then
+  PID=$(lsof -t -i tcp:8080)
+  warn "Firestore emulator may already be running (PID: $PID)!"
   export FIRESTORE_EMULATOR_HOST='localhost:8080'
   $@ # expands and runs the given command args
-  warn "Firestore emulators may still be running!"
 else
-  touch "${LOCK_FILE}"
   firebase emulators:exec --only firestore,auth --ui --import=tmp/ --export-on-exit=tmp/ "$@" || exit 1
-  rm "${LOCK_FILE}"
+fi
+
+if lsof -i tcp:8080; then
+  PID=$(lsof -t -i tcp:8080)
+  warn "Firestore emulators may still be running (PID: $PID)!"
 fi
