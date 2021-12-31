@@ -19,9 +19,9 @@
 
   "addScholarship": {
     "titleTag": "Agrege una beca",
-    "submit": "Submitir una beca",
-    "title": "Información Adicional",
-    "desc": "Ayude a nuestro equipo a proporcionar los mejores resultados de búsqueda para estudiantes y miembros de la comunidad que buscan becas contribuyendo con la mayor cantidad de información detallada posible."
+    "submitAScholarship": "Submitir una beca",
+    "additionalInfo": "Información Adicional",
+    "description": "Ayude a nuestro equipo a proporcionar los mejores resultados de búsqueda para estudiantes y miembros de la comunidad que buscan becas contribuyendo con la mayor cantidad de información detallada posible."
   },
 
   "protectedPage": "Primero debe iniciar una sesión para acceder a esta página",

@@ -21,11 +21,13 @@ function AddScholarship() {
           sm={12}
           md={6}
           sx={{ textAlign: { xs: 'center', md: 'left' } }}>
-          <Typography gutterBottom>{t('addScholarship.submit')}</Typography>
-          <Typography variant="h4" gutterBottom>
-            {t('addScholarship.title')}
+          <Typography gutterBottom>
+            {t('addScholarship.submitAScholarship')}
           </Typography>
-          <Typography>{t('addScholarship.desc')}</Typography>
+          <Typography variant="h4" gutterBottom>
+            {t('addScholarship.additionalInfo')}
+          </Typography>
+          <Typography>{t('addScholarship.description')}</Typography>
         </Grid>
 
         <Grid item sm={12} md={6} sx={{ width: '100%' }}>
