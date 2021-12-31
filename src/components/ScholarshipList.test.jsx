@@ -31,19 +31,13 @@ const fakeFirstPageOfManyResults = new Promise((resolve) => {
 });
 
 test('renders no results', async () => {
-  renderWithTheme(
-    <ScholarshipList
-      listFn={() => fakeNoResults}
-      noResultsNode={'no scholarships found'}
-    />,
-    {
-      wrapper: MemoryRouter,
-    }
-  );
+  renderWithTheme(<ScholarshipList listFn={() => fakeNoResults} />, {
+    wrapper: MemoryRouter,
+  });
 
   expect(screen.getByTestId('progress')).toBeInTheDocument();
 
-  expect(await screen.findByText(/no scholarships found/i)).toBeInTheDocument();
+  expect(await screen.findByText(/No scholarships found/i)).toBeInTheDocument();
 });
 
 test('renders custom no results node', async () => {
@@ -66,10 +60,7 @@ test('renders results with load more', async () => {
   const want = scholarships;
 
   renderWithTheme(
-    <ScholarshipList
-      listFn={() => fakeFirstPageOfManyResults}
-      noResultsNode={'none'}
-    />,
+    <ScholarshipList listFn={() => fakeFirstPageOfManyResults} />,
     {
       wrapper: MemoryRouter,
     }
@@ -84,15 +75,9 @@ test('renders results with load more', async () => {
 test('renders results without load more', async () => {
   const want = scholarships;
 
-  renderWithTheme(
-    <ScholarshipList
-      listFn={() => fakeSinglePageResults}
-      noResultsNode={'none'}
-    />,
-    {
-      wrapper: MemoryRouter,
-    }
-  );
+  renderWithTheme(<ScholarshipList listFn={() => fakeSinglePageResults} />, {
+    wrapper: MemoryRouter,
+  });
 
   expect(await screen.findByText('End of results')).toBeInTheDocument();
   want.forEach(({ data }) =>
