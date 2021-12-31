@@ -17,8 +17,6 @@
     "description": "🚧 ¡Sitio web bajo construcción! 🚧"
   },
 
-  "alert": { "warning": "Advertencia" },
-
   "general": {
     "lookingForScholarships": "¿Buscando becas?"
   },
@@ -35,5 +33,7 @@
       "sergio": "Soy un diseñador de UX que está interesado en usar la tecnología como un medio para resolver problemas. Mis experiencias personales han inspirado mi enfoque en la empatía y el diseño universal. Encuentro alegría en la capacidad de explorar ideas con el objetivo central de crear soluciones que ayuden a las personas a resolver problemas significativos.",
       "job": "Me impulsa a resolver problemas con el software; el software tiene un poder tremendo para hacer avanzar a la sociedad. Entonces, me gustaría contribuir y tener un impacto."
     }
-  }
+  },
+
+  "alert": { "warning": "Advertencia" }
 }
