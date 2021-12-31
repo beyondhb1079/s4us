@@ -2,8 +2,11 @@ import React from 'react';
 import img5 from '../img/img5.svg';
 import { Link } from 'react-router-dom';
 import { Grid, Paper, Typography, Button } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 function LookingForScholarshipsBanner() {
+  const { t } = useTranslation();
+
   return (
     <Grid
       container
@@ -12,7 +15,7 @@ function LookingForScholarshipsBanner() {
       sx={{ padding: { xs: 2, md: 3 } }}>
       <Grid item sm={6} xs={12}>
         <Typography variant="h5" gutterBottom>
-          Looking for scholarships?
+          {t('general.lookingForScholarships')}
         </Typography>
         <Button
           variant="contained"
@@ -20,7 +23,7 @@ function LookingForScholarshipsBanner() {
           component={Link}
           to="/scholarships"
           sx={{ marginY: { xs: 1, md: 2 } }}>
-          Browse Scholarships
+          {t('btn.browseScholarships')}
         </Button>
       </Grid>
       <Grid item sm={6} xs={12}>
