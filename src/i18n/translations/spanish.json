@@ -32,5 +32,23 @@
     "emailUs": "Estaremos encantados de responder a cualquiera de sus preguntas. Puede enviarnos un correo electrónico <1>aquí</1> y nos pondremos en contacto lo antes posible."
   },
 
+  "general": {
+    "lookingForScholarships": "¿Buscando becas?"
+  },
+
+  "about": {
+    "titleTag": "Sobre nosotros",
+    "meetTheTeam": "Conozca al equipo",
+    "title": "Por la comunidad indocumentada.",
+    "description": "Conozca al equipo detrás de {{brand}}. Somos un grupo de aprendices de por vida apasionados por la tecnología y la mejora de la comunidad. El proyecto surgió de nuestras propias luchas como estudiantes y la falta de recursos para nuestra comunidad.",
+    "team": {
+      "josue": "Soy un beneficiario de DACA y actualmente trabajo como ingeniero de software. Se me ocurrió la idea de este proyecto después de participar en el equipo <1> Beyond HB 1079 </1> y notar lo doloroso que es encontrar becas y compilar una lista para estudiantes indocumentados. Mi esperanza es hacer de este el recurso de referencia para becas para estudiantes indocumentados.",
+      "edwin": "Soy un ingeniero de software de la Universidad de California en Irvine. Disfruto aprendiendo y usando mis habilidades para crear software que tenga un impacto en las comunidades. Ser un beneficiario de DACA me ha llevado a tener una conexión emocional con {{brand}}.",
+      "gonzalo": "Mi pasión por las computadoras me ha llevado a seguir una carrera en Ingeniería de Software. Actualmente soy un estudiante de UWB CSS que completa mi último año en el programa de Ciencias de la Computación e Ingeniería de Software. Tengo 24 años, soy bilingüe y actualmente soy parte del programa DACA. Tengo la intención de contribuir tanto como sea posible a construir un mañana mejor.",
+      "sergio": "Soy un diseñador de UX que está interesado en usar la tecnología como un medio para resolver problemas. Mis experiencias personales han inspirado mi enfoque en la empatía y el diseño universal. Encuentro alegría en la capacidad de explorar ideas con el objetivo central de crear soluciones que ayuden a las personas a resolver problemas significativos.",
+      "job": "Me impulsa a resolver problemas con el software; el software tiene un poder tremendo para hacer avanzar a la sociedad. Entonces, me gustaría contribuir y tener un impacto."
+    }
+  },
+
   "alert": { "warning": "Advertencia" }
 }
