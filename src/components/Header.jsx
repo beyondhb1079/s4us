@@ -118,8 +118,8 @@ const links = {
 };
 
 const languages = {
-  English: 'en',
-  Español: 'es',
+  en: 'English',
+  es: 'Español',
 };
 
 function Header() {
@@ -158,15 +158,15 @@ function Header() {
         onClose={() => setAnchorEl(null)}
         anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
         transformOrigin={{ horizontal: 'center', vertical: 'top' }}>
-        {Object.entries(languages).map(([k, v]) => (
+        {Object.entries(languages).map(([abbr, lang]) => (
           <MenuItem
-            key={k}
-            selected={v === i18n.language}
+            key={lang}
+            selected={abbr === i18n.language}
             onClick={() => {
-              i18n.changeLanguage(v);
+              i18n.changeLanguage(abbr);
               setAnchorEl(null);
             }}>
-            {k}
+            {lang}
           </MenuItem>
         ))}
       </Menu>
