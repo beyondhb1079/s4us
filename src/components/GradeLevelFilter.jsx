@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import makeStyles from '@mui/styles/makeStyles';
 import {
   Button,
   Checkbox,
@@ -9,48 +8,29 @@ import {
   Popover,
 } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import GradeLevel from '../types/GradeLevel';
+import PropTypes from 'prop-types';
 
-const useStyles = makeStyles((theme) => ({
-  button: {
-    margin: theme.spacing(1),
-    height: theme.spacing(4),
-  },
-  popover: {
-    padding: theme.spacing(2),
-  },
-}));
-
-const gradeItems = [
-  '12th - High School',
-  'College Freshman',
-  'College Sophomore',
-  'College Junior',
-  'College Senior',
-  '5th Year',
-  'Post Grad',
-];
-
-export default function GradeLevelFilter() {
-  const classes = useStyles();
+export default function GradeLevelFilter(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const openPopover = (event) => setAnchorEl(event.currentTarget);
-  const [selectedGrades, setSelectedGrades] = useState(new Set());
+
+  const { grades, changeFn } = props;
 
   function toggleSelection(grade) {
-    const newSet = new Set(selectedGrades);
-    if (selectedGrades.has(grade)) {
-      newSet.delete(grade);
+    if (grades.has(grade)) {
+      grades.delete(grade);
     } else {
-      newSet.add(grade);
+      grades.add(grade);
     }
-    setSelectedGrades(newSet);
+    changeFn([...grades]);
   }
 
   return (
     <>
       <Button
         variant="outlined"
-        className={classes.button}
+        sx={{ margin: 1, height: (theme) => theme.spacing(4) }}
         onClick={openPopover}
         endIcon={<ArrowDropDownIcon color="primary" />}>
         Grade
@@ -61,25 +41,36 @@ export default function GradeLevelFilter() {
         onClose={() => setAnchorEl(null)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
-        <FormControl component="fieldset" className={classes.popover}>
+        <FormControl component="fieldset" sx={{ padding: 2 }}>
           <FormGroup>
-            {Array.from(gradeItems).map((grade) => (
-              <FormControlLabel
-                key={grade}
-                control={
-                  <Checkbox
-                    color="primary"
-                    checked={selectedGrades.has(grade)}
-                    onChange={() => toggleSelection(grade)}
-                    name="grade"
-                  />
-                }
-                label={grade}
-              />
-            ))}
+            {Object.entries(GradeLevel.values()).map(([grade, stringRep]) => {
+              grade = parseInt(grade);
+              return (
+                <FormControlLabel
+                  key={grade}
+                  control={
+                    <Checkbox
+                      color="primary"
+                      checked={grades.has(grade)}
+                      onChange={() => toggleSelection(grade)}
+                      name="grade"
+                    />
+                  }
+                  label={stringRep}
+                />
+              );
+            })}
           </FormGroup>
         </FormControl>
       </Popover>
     </>
   );
 }
+
+GradeLevelFilter.propTypes = {
+  grades: PropTypes.instanceOf(Set),
+  changeFn: PropTypes.func.isRequired,
+};
+GradeLevelFilter.defaultProps = {
+  grades: new Set(),
+};

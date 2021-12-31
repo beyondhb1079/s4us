@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import firebase from 'firebase';
 import PropTypes from 'prop-types';
@@ -13,12 +13,13 @@ import {
   Typography,
   IconButton,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import {
-  Info as InfoIcon,
+  Report as ReportIcon,
   Send as SendIcon,
   Share as ShareIcon,
   Edit as EditIcon,
+  AttachMoney as AttachMoneyIcon,
+  Event as EventIcon,
 } from '@mui/icons-material';
 import { genMailToLink, withDeviceInfo } from '../lib/mail';
 import ScholarshipAmount from '../types/ScholarshipAmount';
@@ -26,41 +27,27 @@ import { BRAND_NAME } from '../config/constants';
 import Ethnicity from '../types/Ethnicity';
 import GradeLevel from '../types/GradeLevel';
 
-const useStyles = makeStyles((theme) => ({
-  detailSection: {
-    padding: theme.spacing(3),
-  },
-  actionSection: {
-    margin: `${theme.spacing(3)} 0`,
-    padding: `${theme.spacing(1)} 0`,
-  },
-  cardDetailText: {
-    [theme.breakpoints.up('sm')]: {
-      textAlign: 'right',
-    },
-  },
-  applyBtn: {
-    marginRight: theme.spacing(1),
-  },
-  propertySection: {
-    marginTop: theme.spacing(6),
-  },
-  tag: {
-    marginRight: theme.spacing(2),
-    color: '#000',
-  },
-  reportBtn: {
-    margin: `${theme.spacing(5)} 0`,
-  },
-  divider: {
-    margin: `${theme.spacing(1.5)} 0`,
-  },
-}));
+const DetailCardCell = ({ label, text }) => (
+  <>
+    <Grid container justifyContent="space-between">
+      <Grid item xs={12} sm>
+        <Typography>{label}</Typography>
+      </Grid>
+      <Grid item sx={{ textAlign: { sm: 'right' } }} xs={12} sm>
+        <Typography>{text}</Typography>
+      </Grid>
+    </Grid>
+    <Divider light sx={{ m: 1.5 }} />
+  </>
+);
+
+DetailCardCell.propTypes = {
+  label: PropTypes.string.isRequired,
+  text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+};
 
 export default function ScholarshipDetailCard({ scholarship, preview }) {
   const history = useHistory();
-
-  const classes = useStyles();
   const {
     name,
     organization,
@@ -97,50 +84,61 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
     }
   };
 
-  function DetailCardCell({ label, text, bottom, top }) {
-    return (
-      <>
-        {top && <Divider light className={classes.divider} />}
-        <Grid container justifyContent="space-between">
-          <Grid item xs={12} sm>
-            <Typography>{label}</Typography>
-          </Grid>
-          <Grid item className={classes.cardDetailText} xs={12} sm>
-            <Typography>{text}</Typography>
-          </Grid>
-        </Grid>
-        {bottom && <Divider light className={classes.divider} />}
-      </>
-    );
-  }
-
-  DetailCardCell.propTypes = {
-    label: PropTypes.string.isRequired,
-    text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    bottom: PropTypes.bool,
-    top: PropTypes.bool,
-  };
-  DetailCardCell.defaultProps = {
-    bottom: false,
-    top: false,
-  };
+  const [canEdit, setCanEdit] = useState(
+    firebase.auth().currentUser?.uid === author?.id
+  );
+  useEffect(() => {
+    const currentUser = firebase.auth().currentUser;
+    if (!preview && currentUser && currentUser.uid !== author?.id) {
+      currentUser
+        .getIdTokenResult()
+        .then((idTokenResult) => {
+          if (idTokenResult.claims.admin) {
+            setCanEdit(true);
+          }
+        })
+        // eslint-disable-next-line no-console
+        .catch(console.error);
+    }
+  }, [author, preview]);
 
   return (
-    <Card className={classes.detailSection}>
-      <Typography variant="h4">{name}</Typography>
-      <Typography variant="h5" gutterBottom>
+    <Card sx={{ p: 3 }}>
+      <Typography variant="h6" gutterBottom>
         {organization}
+      </Typography>
+      <Typography variant="h4" gutterBottom>
+        {name}
       </Typography>
       {preview && (
         <MuiLink
           href="#"
           underline="always"
-          onClick={(e) => e.preventDefault()}>
+          onClick={(e) => e.preventDefault()}
+          sx={{ display: 'block', mb: 2 }}>
           {website}
         </MuiLink>
       )}
 
-      <Box className={classes.actionSection}>
+      <Grid container spacing={3}>
+        <Grid item>
+          <Box sx={{ display: 'flex' }}>
+            <AttachMoneyIcon color="primary" />
+            <Typography>{ScholarshipAmount.toString(amount)}</Typography>
+          </Box>
+        </Grid>
+
+        <Grid item>
+          <Box sx={{ display: 'flex' }}>
+            <EventIcon color="primary" sx={{ mr: 0.5 }} />
+            <Typography>
+              {deadline?.toLocaleDateString() || 'Unknown'}
+            </Typography>
+          </Box>
+        </Grid>
+      </Grid>
+
+      <Box sx={{ my: 2, py: 1 }}>
         <Button
           component={MuiLink}
           href={website}
@@ -148,7 +146,7 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
           rel="noreferrer"
           variant="contained"
           color="primary"
-          className={classes.applyBtn}
+          sx={{ mr: 1 }}
           startIcon={<SendIcon />}>
           Apply
         </Button>
@@ -160,7 +158,7 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
           Share
         </Button>
 
-        {!preview && firebase.auth().currentUser?.uid == author.id && (
+        {!preview && canEdit && (
           <IconButton
             component={Link}
             to={{
@@ -171,39 +169,26 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
         )}
       </Box>
 
-      <Typography paragraph>{description}</Typography>
-      <Box>
-        <DetailCardCell
-          label="Deadline"
-          text={deadline?.toLocaleDateString() || 'Unknown'}
-          bottom
-        />
-        <DetailCardCell
-          label="Award Amount"
-          text={ScholarshipAmount.toString(amount)}
-          bottom
-        />
-        <DetailCardCell
-          label="State"
-          text={requirements?.states?.join(', ') || 'All'}
-          bottom
-        />
-      </Box>
-      <Box className={classes.propertySection}>
-        <Typography variant="h5" component="h4" gutterBottom>
+      <Typography paragraph sx={{ whiteSpace: 'pre-line' }}>
+        {description}
+      </Typography>
+      <Box sx={{ mt: 6 }}>
+        <Typography variant="h5" component="h4" paragraph>
           Eligibility Requirements
         </Typography>
         <DetailCardCell
+          label="State"
+          text={requirements?.states?.join(', ') || 'All'}
+        />
+        <DetailCardCell
           label="GPA"
           text={requirements?.gpa?.toFixed(1) || 'All'}
-          bottom
         />
         <DetailCardCell
           label="Grades"
           text={
             requirements?.grades?.map(GradeLevel.toString).join(', ') || 'All'
           }
-          bottom
         />
         <DetailCardCell
           label="Demographic"
@@ -211,33 +196,31 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
             requirements?.ethnicities?.map(Ethnicity.toString).join(', ') ||
             'All'
           }
-          bottom
         />
         <DetailCardCell
           label="Majors"
           text={requirements?.majors?.join(', ') || 'All'}
-          bottom
+        />
+        <DetailCardCell
+          label="Schools"
+          text={requirements?.schools?.join(', ') || 'All'}
         />
       </Box>
-      <Box className={classes.propertySection}>
-        <Typography variant="h5" component="h4" gutterBottom>
-          Tags
-        </Typography>
 
-        <Grid container>
-          {!tags
-            ? 'None'
-            : tags.map(({ title, id }) => (
-                <Chip
-                  label={title}
-                  variant="outlined"
-                  color="primary"
-                  className={classes.tag}
-                  key={id}
-                />
-              ))}
-        </Grid>
-      </Box>
+      <Grid container sx={{ mt: 6 }}>
+        {!tags || !tags.length
+          ? 'None'
+          : tags.map((tag) => (
+              <Chip
+                label={tag}
+                variant="outlined"
+                color="primary"
+                sx={{ mr: 2, color: '#000' }}
+                key={tag}
+              />
+            ))}
+      </Grid>
+
       <Chip
         component={MuiLink}
         href={genMailToLink({
@@ -247,8 +230,8 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
             `Please describe the issue for the scholarship located at ${URL}.`
           ),
         })}
-        icon={<InfoIcon />}
-        className={classes.reportBtn}
+        icon={<ReportIcon />}
+        sx={{ my: 5 }}
         label="Report Issue"
       />
     </Card>
@@ -265,12 +248,7 @@ ScholarshipDetailCard.propTypes = {
       description: PropTypes.string,
       deadline: PropTypes.instanceOf(Date),
       website: PropTypes.string,
-      tags: PropTypes.arrayOf(
-        PropTypes.shape({
-          id: PropTypes.string,
-          title: PropTypes.string,
-        })
-      ),
+      tags: PropTypes.arrayOf(PropTypes.string),
       author: PropTypes.shape({
         email: PropTypes.string,
         id: PropTypes.string,
@@ -287,6 +265,5 @@ ScholarshipDetailCard.propTypes = {
 };
 
 ScholarshipDetailCard.defaultProps = {
-  id: undefined,
   preview: false,
 };

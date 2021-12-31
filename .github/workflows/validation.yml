@@ -73,5 +73,11 @@ jobs:
       - name: Install dependencies
         if: steps.modules-cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile --prefer-offline
+      - name: Cache firebase emulators
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/firebase/emulators
+          key: ${{ runner.os }}-firebase-emulators-${{ hashFiles('~/.cache/firebase/emulators/**') }}
+        continue-on-error: true
       - name: Run tests
         run: yarn test

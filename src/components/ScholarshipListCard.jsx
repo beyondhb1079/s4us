@@ -8,49 +8,15 @@ import {
   CardContent,
   Chip,
   Typography,
+  Grid,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import {
+  AttachMoney as AttachMoneyIcon,
+  Event as EventIcon,
+} from '@mui/icons-material';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 
-const useStyles = makeStyles((theme) => ({
-  actions: {
-    padding: theme.spacing(2),
-    paddingTop: theme.spacing(1),
-  },
-  content: {
-    padding: theme.spacing(3),
-  },
-  subtitle: {
-    fontWeight: '500',
-  },
-  deadline: {
-    fontWeight: 'bold',
-    marginBottom: theme.spacing(1),
-  },
-  description: {
-    display: '-webkit-box',
-    '-webkit-line-clamp': 5,
-    lineClamp: 5,
-    '-webkit-box-orient': 'vertical',
-    overflow: 'hidden',
-    whiteSpace: 'pre-line',
-    marginBottom: theme.spacing(3),
-  },
-  tagWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  tag: {
-    marginRight: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-    color: '#000',
-    borderColor: '#3FB1B5',
-  },
-}));
-
 function ScholarshipListCard({ scholarship }) {
-  const classes = useStyles();
   const { name, amount, deadline, description, organization, tags } =
     scholarship.data;
 
@@ -62,35 +28,58 @@ function ScholarshipListCard({ scholarship }) {
           pathname: `/scholarships/${scholarship.id}`,
           state: { scholarship },
         }}>
-        <CardContent className={classes.content}>
-          <Typography variant="body1" className={classes.deadline}>
-            {deadline?.toLocaleDateString()}
-          </Typography>
-          <Typography variant="h5">{name}</Typography>
-          <Typography variant="subtitle1" className={classes.subtitle}>
+        <CardContent sx={{ p: 3 }}>
+          <Typography variant="subtitle1" sx={{ fontWeight: '500' }}>
             {organization}
           </Typography>
-          <Typography
-            variant="subtitle1"
-            className={classes.subtitle}
-            gutterBottom>
-            {ScholarshipAmount.toString(amount)}
+          <Typography variant="h5" gutterBottom>
+            {name}
           </Typography>
+
+          <Grid container spacing={3} sx={{ mb: 2, ml: -4 }}>
+            <Grid item>
+              <Box sx={{ display: 'flex' }}>
+                <AttachMoneyIcon color="primary" />
+                <Typography>{ScholarshipAmount.toString(amount)}</Typography>
+              </Box>
+            </Grid>
+
+            <Grid item>
+              <Box sx={{ display: 'flex' }}>
+                <EventIcon color="primary" sx={{ mr: 0.5 }} />
+                <Typography>
+                  {deadline?.toLocaleDateString() || 'Unknown'}
+                </Typography>
+              </Box>
+            </Grid>
+          </Grid>
+
           <Typography
             variant="body1"
             color="textSecondary"
-            className={classes.description}>
+            paragraph
+            sx={{
+              display: '-webkit-box',
+              WebkitLineClamp: 5,
+              lineClamp: 5,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+              whiteSpace: 'pre-line',
+            }}>
             {description}
           </Typography>
-          <Box className={classes.tagWrapper}>
-            {tags?.map(({ title, id }) => (
-              <Chip
-                key={id}
-                label={title}
-                variant="outlined"
-                className={classes.tag}
-              />
-            ))}
+          <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
+            {tags &&
+              tags.length &&
+              tags.map((tag) => (
+                <Chip
+                  label={tag}
+                  variant="outlined"
+                  color="primary"
+                  sx={{ mr: 2, mb: 2, color: '#000', borderColor: '#3FB1B5' }}
+                  key={tag}
+                />
+              ))}
           </Box>
         </CardContent>
       </CardActionArea>

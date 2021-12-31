@@ -1,7 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { AddCircle as AddIcon, Inbox as InboxIcon } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import firebase from 'firebase';
 import {
   Button,
@@ -10,58 +10,16 @@ import {
   Link as MuiLink,
   Paper,
   Typography,
+  Alert,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
-
-const useStyles = makeStyles((theme) => ({
-  browseGrid: {
-    padding: theme.spacing(3),
-    [theme.breakpoints.down('sm')]: {
-      padding: theme.spacing(2),
-    },
-  },
-  browseButton: {
-    marginBottom: theme.spacing(2),
-    marginTop: theme.spacing(2),
-    [theme.breakpoints.down('sm')]: {
-      marginBottom: theme.spacing(1),
-      marginTop: theme.spacing(1),
-    },
-  },
-  scholarshipsAddedBar: {
-    justifyContent: 'space-between',
-    marginBottom: theme.spacing(2),
-    marginTop: theme.spacing(2),
-    [theme.breakpoints.down('sm')]: {
-      marginBottom: theme.spacing(1),
-      marginTop: theme.spacing(1),
-    },
-  },
-  noneAddedGrid: {
-    alignItems: 'center',
-    padding: theme.spacing(3),
-    [theme.breakpoints.down('sm')]: {
-      justifyContent: 'center',
-      padding: theme.spacing(2),
-      textAlign: 'center',
-    },
-  },
-  inboxIcon: {
-    fontSize: theme.spacing(25),
-  },
-  progress: {
-    display: 'block',
-  },
-  loadMoreButton: {
-    margin: theme.spacing(3, 0),
-  },
-}));
+import LookingForScholarshipsBanner from '../components/LookingForScholarshipsBanner';
 
 export default function UserHome() {
-  const classes = useStyles();
   const user = firebase.auth().currentUser;
+  const location = useLocation();
+  const history = useHistory();
 
   const listScholarshipsFn = () => Scholarships.list({ authorId: user.uid });
 
@@ -70,32 +28,24 @@ export default function UserHome() {
       <Helmet>
         <title>Dashboard</title>
       </Helmet>
+
+      {location?.state?.alert && (
+        <Alert severity="success" onClose={() => history.replace('/')}>
+          {location?.state?.alert.message}
+        </Alert>
+      )}
+
       <Typography variant="h4" gutterBottom>
         Welcome {user.displayName}
       </Typography>
+
+      <LookingForScholarshipsBanner />
+
       <Grid
         container
-        component={Paper}
-        variant="outlined"
-        className={classes.browseGrid}>
-        <Grid item sm={6} xs={12}>
-          <Typography variant="h5" gutterBottom>
-            Looking for scholarships?
-          </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            component={Link}
-            to="/scholarships"
-            className={classes.browseButton}>
-            Browse Scholarships
-          </Button>
-        </Grid>
-        <Grid item sm={6} xs={12}>
-          {/* TODO: Image here with certain height */}
-        </Grid>
-      </Grid>
-      <Grid container spacing={2} className={classes.scholarshipsAddedBar}>
+        spacing={2}
+        justifyContent="space-between"
+        sx={{ marginY: { xs: 1, md: 2 } }}>
         <Grid item>
           <Typography variant="h5" component="h2">
             Scholarships You Have Added
@@ -119,9 +69,11 @@ export default function UserHome() {
             container
             component={Paper}
             variant="outlined"
-            className={classes.noneAddedGrid}>
+            alignItems="center"
+            justifyContent="space-around"
+            sx={{ padding: 3, marginY: 1 }}>
             <Grid item>
-              <InboxIcon className={classes.inboxIcon} />
+              <InboxIcon sx={{ fontSize: (theme) => theme.spacing(25) }} />
             </Grid>
             <Grid item>
               <Typography variant="h5" gutterButtom>

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import firebase from 'firebase';
-import { makeStyles, withStyles } from '@mui/styles';
+import { withStyles } from '@mui/styles';
 import {
   Avatar,
   Divider,
@@ -45,30 +45,8 @@ const StyledMenu = withStyles((theme) => ({
   />
 ));
 
-const useStyles = makeStyles((theme) => ({
-  gridRoot: {
-    padding: theme.spacing(1),
-  },
-  menuListItem: {
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-  },
-  dividerSpacing: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-  },
-  profilePic: {
-    alignSelf: 'center',
-  },
-  medium: {
-    width: theme.spacing(6),
-    height: theme.spacing(6),
-  },
-}));
-
 export default function ProfileDropdown(props) {
   const { anchorEl, handleClose } = props;
-  const classes = useStyles();
   const user = firebase.auth().currentUser;
 
   // needs to be updated once there is a working manage profile page
@@ -76,7 +54,7 @@ export default function ProfileDropdown(props) {
 
   function createMenuItem(text, icon, task) {
     return (
-      <MenuItem onClick={task} className={classes.menuListItem}>
+      <MenuItem onClick={task} sx={{ paddingY: 1 }}>
         <ListItemIcon>{icon}</ListItemIcon>
         <ListItemText primary={text} />
       </MenuItem>
@@ -91,9 +69,9 @@ export default function ProfileDropdown(props) {
       keepMounted
       open={Boolean(anchorEl)}
       onClose={handleClose}>
-      <Grid container spacing={2} className={classes.gridRoot}>
-        <Grid item className={classes.profilePic}>
-          <Avatar src={user.photoURL} className={classes.medium} />
+      <Grid container spacing={2} sx={{ padding: 1 }}>
+        <Grid item sx={{ alignSelf: 'center' }}>
+          <Avatar src={user.photoURL} sx={{ height: 48, width: 48 }} />
         </Grid>
         <Grid>
           <Typography variant="h6" component="h4">
@@ -107,13 +85,13 @@ export default function ProfileDropdown(props) {
           )}
         </Grid>
       </Grid>
-      <Divider className={classes.dividerSpacing} />
+      <Divider sx={{ marginY: 1 }} />
       {experiments.expShowFullProfileMenu && (
         <>
           {createMenuItem('New', <NewIcon fontSize="medium" />)}
           {createMenuItem('Saved', <BookmarkIcon fontSize="medium" />)}
           {createMenuItem('Applied', <DoneIcon fontSize="medium" />)}
-          <Divider className={classes.dividerSpacing} />
+          <Divider sx={{ marginY: 1 }} />
         </>
       )}
       {createMenuItem(

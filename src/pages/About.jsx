@@ -1,21 +1,21 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Link } from 'react-router-dom';
 import {
-  Button,
   Container,
   Grid,
   Link as MuiLink,
   Typography,
+  Box,
 } from '@mui/material';
 import AboutCard from '../components/AboutCard';
-import testPic from '../logo.svg';
 import { BRAND_NAME } from '../config/constants';
+import backgroundImg from '../img/img6.svg';
+import LookingForScholarshipsBanner from '../components/LookingForScholarshipsBanner';
 
 const team = [
   {
     name: 'Josue Rios',
-    img: testPic,
+    img: 'https://avatars.githubusercontent.com/u/8023233?v=4',
     description: (
       <>
         I am a DACA recipient currently working as a software engineer. I came
@@ -29,7 +29,7 @@ const team = [
   },
   {
     name: 'Edwin Lopez',
-    img: testPic,
+    img: 'https://avatars.githubusercontent.com/u/40483569?v=4',
     description: (
       <>
         I am a software engineer from the University of California Irvine. I
@@ -41,7 +41,7 @@ const team = [
   },
   {
     name: 'Gonzalo Lara',
-    img: testPic,
+    img: 'https://avatars.githubusercontent.com/u/64123425?v=4',
     description: (
       <>
         My passion for computers has lead me to pursue a career in Software
@@ -54,7 +54,7 @@ const team = [
   },
   {
     name: 'Sergio Mejia',
-    img: testPic,
+    img: 'https://avatars.githubusercontent.com/u/15769145?v=4',
     description: (
       <>
         I’m a UX Designer that is interested in using technology as a means to
@@ -67,7 +67,7 @@ const team = [
   },
   {
     name: 'Job Hernandez',
-    img: testPic,
+    img: 'https://avatars.githubusercontent.com/u/69167740?v=4',
     description: (
       <>
         I am driven to solve problems with software; software has tremendous
@@ -84,32 +84,36 @@ function About() {
       <Helmet>
         <title>About</title>
       </Helmet>
-      <Typography component="h2" variant="button" gutterBottom>
-        MEET THE TEAM
-      </Typography>
-      <Typography variant="h4" gutterBottom>
-        For and by the undocu community.
-      </Typography>
-      <Typography paragraph>
-        DreamScholars aims to make it easier for undocumented students to pay
-        for school. Our mission is to remove the financial barriers that prevent
-        and discourage undocumented students from pursuing higher education due
-        to the difficulties of finding scholarships they qualify for.
-      </Typography>
-      <Typography paragraph>
-        Meet the team behind DreamScholars. We are a group of lifelong learners
-        who are passionate about technology and community upliftment. The
-        project arose from our own struggles as students and the lack of
-        resources for our community.
-      </Typography>
-      <Typography paragraph>
-        Want to get involved? Shoot us an email!
-      </Typography>
+
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={6}>
+          <Typography component="h2" variant="button" gutterBottom>
+            MEET THE TEAM
+          </Typography>
+          <Typography variant="h4" gutterBottom>
+            For and by the undocu community.
+          </Typography>
+          <Typography paragraph>
+            Meet the team behind DreamScholars. We are a group of lifelong
+            learners who are passionate about technology and community
+            upliftment. The project arose from our own struggles as students and
+            the lack of resources for our community.
+          </Typography>
+        </Grid>
+
+        <Grid item xs={12} md={6}>
+          <Box sx={{ width: { xs: '60%', md: '90%' }, m: 'auto' }}>
+            <img src={backgroundImg} alt="grad picture" />
+          </Box>
+        </Grid>
+      </Grid>
+
       <Grid
         container
         justifyContent="flex-start"
         alignItems="stretch"
-        spacing={3}>
+        spacing={3}
+        sx={{ mb: 3 }}>
         {team.map(({ name, img, description }) => (
           <Grid item key={name} xs={12} sm={6} md={4}>
             <AboutCard {...{ name, img, description }} />
@@ -117,16 +121,7 @@ function About() {
         ))}
       </Grid>
 
-      <Typography variant="h5" gutterBottom>
-        Looking for scholarships?
-      </Typography>
-      <Button
-        component={Link}
-        to="/scholarships"
-        variant="contained"
-        color="primary">
-        Browse Scholarships
-      </Button>
+      <LookingForScholarshipsBanner />
     </Container>
   );
 }

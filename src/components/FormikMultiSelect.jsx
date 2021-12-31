@@ -7,6 +7,9 @@ import makeStyles from '@mui/styles/makeStyles';
 const useStyles = makeStyles((theme) => ({
   textColor: {
     color: theme.palette.grey[500],
+    '& .Mui-disabled': {
+      WebkitTextFillColor: theme.palette.grey[300],
+    },
   },
 }));
 
@@ -43,7 +46,7 @@ function FormikMultiSelect(props) {
         }
         MenuProps={MenuProps}>
         {Object.entries(options).map(([val, stringRep]) => (
-          <MenuItem key={val} value={val}>
+          <MenuItem key={val} value={parseInt(val) || val}>
             {stringRep}
           </MenuItem>
         ))}

@@ -4,8 +4,12 @@
 import firebase from 'firebase/app';
 import { clearFirestoreData, initializeTestApp } from '../lib/testing';
 import AmountType from '../types/AmountType';
+import GradeLevel from '../types/GradeLevel';
 import ScholarshipAmount from '../types/ScholarshipAmount';
-import Scholarships, { converter } from './Scholarships';
+import Scholarships, {
+  converter,
+  requirementMatchesFilter,
+} from './Scholarships';
 
 const user = { uid: '123', email: 'bobross37@gmail.com' };
 const app = initializeTestApp({
@@ -19,6 +23,7 @@ function create(data: {
   amount?: ScholarshipAmount | undefined;
   name?: string;
   deadline?: Date;
+  grades?: GradeLevel[];
 }) {
   const amount = data.amount ?? ScholarshipAmount.unknown();
   const amountString = ScholarshipAmount.toString(amount);
@@ -30,6 +35,7 @@ function create(data: {
     deadline,
     website: 'foo.com',
     description: 'something',
+    requirements: { grades: data.grades ?? [] },
   });
 }
 
@@ -80,7 +86,7 @@ test('converter.toFirestore stores scholarship data', () => {
       majors: ['Computer Science', 'Software Engineering'],
       states: ['California', 'Washington'],
       schools: ['MIT'],
-      grades: ['College Freshman'],
+      grades: [GradeLevel.MiddleSchool],
     },
   };
   const got = converter.toFirestore(data);
@@ -276,6 +282,70 @@ test('scholarships.list - filters by maxAmount', async () => {
   );
 });
 
+const middleSchool = create({ grades: [GradeLevel.MiddleSchool] });
+const highSchool = create({
+  grades: [
+    GradeLevel.HsFreshman,
+    GradeLevel.HsSophomore,
+    GradeLevel.HsJunior,
+    GradeLevel.HsSenior,
+  ],
+});
+const college = create({
+  grades: [
+    GradeLevel.CollegeFreshman,
+    GradeLevel.CollegeSophomore,
+    GradeLevel.CollegeJunior,
+    GradeLevel.CollegeSenior,
+    GradeLevel.CollegeFifthYear,
+  ],
+});
+const graduate = create({
+  grades: [
+    GradeLevel.GraduateFirstYear,
+    GradeLevel.GraduateSecondYear,
+    GradeLevel.GraduateThirdYear,
+    GradeLevel.GraduateFourthYear,
+    GradeLevel.GraduateFifthYear,
+  ],
+});
+const gradeScholarships = [middleSchool, highSchool, college, graduate];
+
+test('scholarships.list - filters by grades (middle & high school)', async () => {
+  await Promise.all(gradeScholarships.map((s) => s.save()));
+
+  const got = await Scholarships.list({
+    grades: [
+      GradeLevel.MiddleSchool,
+      GradeLevel.HsFreshman,
+      GradeLevel.HsSophomore,
+    ],
+  });
+
+  const want = [middleSchool, highSchool];
+  expect(got.results.map(extractName).sort()).toEqual(
+    want.map(extractName).sort()
+  );
+});
+
+test('scholarships.list - filters by grades (all grades)', async () => {
+  await Promise.all(gradeScholarships.map((s) => s.save()));
+
+  const got = await Scholarships.list({
+    grades: [
+      GradeLevel.MiddleSchool,
+      GradeLevel.HsJunior,
+      GradeLevel.CollegeFifthYear,
+      GradeLevel.GraduateThirdYear,
+    ],
+  });
+
+  const want = [middleSchool, highSchool, college, graduate];
+  expect(got.results.map(extractName).sort()).toEqual(
+    want.map(extractName).sort()
+  );
+});
+
 test('scholarships.list - shows expired by default', async () => {
   await Promise.all([expired.save(), today.save(), tomorrow.save()]);
 
@@ -316,8 +386,11 @@ test('scholarships.list - hideExpired sorting by amount', async () => {
 });
 
 test('scholarships.new - default values', async () => {
+  const spy = jest.spyOn(global, 'Date'); // spy on Date
+
   const got = Scholarships.new().data;
-  const want = {
+
+  expect(got).toMatchObject({
     name: '',
     description: '',
     amount: {
@@ -325,9 +398,29 @@ test('scholarships.new - default values', async () => {
       min: 0,
       max: 0,
     },
-    deadline: new Date(),
+    deadline: spy.mock.instances[0],
     website: '',
-  };
+  });
+});
 
-  expect(got).toMatchObject(want);
+test('requirementMatchesFilter() - no requirements', () => {
+  const filter = [8, 10, 15];
+  expect(requirementMatchesFilter(undefined, filter)).toBe(true);
+});
+
+test('requirementMatchesFilter() - no param filters', () => {
+  const reqs = [8, 10, 15];
+  expect(requirementMatchesFilter(reqs, undefined)).toBe(true);
+});
+
+test('requirementMatchesFilter() - requirement in param filters', () => {
+  const reqs = [9, 10, 20];
+  const filter = [8, 10, 15];
+  expect(requirementMatchesFilter(reqs, filter)).toBe(true);
+});
+
+test('requirementMatchesFilter() - requirement not in param filters', () => {
+  const reqs = [7, 13, 14];
+  const filter = [8, 10, 15];
+  expect(requirementMatchesFilter(reqs, filter)).toBe(false);
 });

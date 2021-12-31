@@ -1,41 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import makeStyles from '@mui/styles/makeStyles';
 import { Container, Grid, Typography } from '@mui/material';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(4),
-  },
-  img: {
-    width: '100%',
-    height: '100%',
-    objectFit: 'contain',
-  },
-  description: {
-    marginBottom: theme.spacing(3),
-  },
-}));
-
-export default function HomeSection(props) {
-  const classes = useStyles();
-  const { alignItems, direction, tab, title, description, buttons, pic } =
-    props;
-
+const HomeSection = ({
+  alignItems,
+  direction,
+  title,
+  main,
+  description,
+  buttons,
+  pic,
+}) => {
+  const picSize = main ? '95%' : '85%';
   return (
-    <Container className={classes.root}>
-      <Grid container spacing={2} direction={direction} alignItems={alignItems}>
+    <Container sx={{ padding: 4 }}>
+      <Grid container spacing={3} direction={direction} alignItems={alignItems}>
         <Grid item xs={12} sm={6}>
-          <Typography variant="overline" component="h6" gutterBottom>
-            {tab}
-          </Typography>
-          <Typography variant="h2" component="h2" gutterBottom>
+          <Typography variant={main ? 'h2' : 'h3'} component="h2" gutterBottom>
             {title}
           </Typography>
-          <Typography
-            variant="body2"
-            gutterBottom
-            className={classes.description}>
+          <Typography variant="body1" paragraph>
             {description}
           </Typography>
           <Grid container spacing={2}>
@@ -47,27 +31,39 @@ export default function HomeSection(props) {
             ))}
           </Grid>
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <img className={classes.img} src={pic} alt="" />
+
+        <Grid item xs={12} sm={6} sx={{ height: 400 }}>
+          <img
+            src={pic}
+            alt=""
+            style={{
+              width: picSize,
+              height: picSize,
+              objectFit: 'contain',
+            }}
+          />
         </Grid>
       </Grid>
     </Container>
   );
-}
+};
 
 HomeSection.defaultProps = {
   alignItems: 'flex-start',
+  main: false,
   direction: 'row',
-  tab: '',
   buttons: [],
+  description: '',
 };
 
 HomeSection.propTypes = {
   alignItems: PropTypes.string,
   direction: PropTypes.string,
-  tab: PropTypes.string,
   title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  main: PropTypes.bool,
+  description: PropTypes.string,
   buttons: PropTypes.arrayOf(PropTypes.element),
   pic: PropTypes.string.isRequired,
 };
+
+export default HomeSection;

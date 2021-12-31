@@ -1,0 +1,21 @@
+{
+  "navbar": {
+    "scholarships": "Explorar",
+    "add": "Agregar",
+    "about": "Acerca de",
+    "contact": "Contacto"
+  },
+
+  "btn": {
+    "browseScholarships": "Buscar Becas",
+    "addScholarship": "Agregar una Beca",
+    "login": "Iniciar sesión",
+    "subscribeForUpdates": "Suscríbete para recibir actualizaciones"
+  },
+
+  "constructAlert": {
+    "description": "🚧 ¡Sitio web bajo construcción! 🚧"
+  },
+
+  "alert": { "warning": "Advertencia" }
+}
