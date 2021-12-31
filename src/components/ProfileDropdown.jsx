@@ -73,7 +73,7 @@ export default function ProfileDropdown(props) {
         <Grid item sx={{ alignSelf: 'center' }}>
           <Avatar src={user.photoURL} sx={{ height: 48, width: 48 }} />
         </Grid>
-        <Grid>
+        <Grid item>
           <Typography variant="h6" component="h4">
             {user.displayName}
           </Typography>
