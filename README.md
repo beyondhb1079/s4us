@@ -43,6 +43,13 @@ npx npm-merge-driver install \
 yarn install
 ```
 
+4. Setup your Firebase emulator:
+
+```sh
+yarn firebase login
+yarn firebase init emulators
+```
+
 ## Common development actions
 
 ### Updating dependencies
