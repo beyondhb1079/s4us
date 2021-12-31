@@ -61,9 +61,9 @@ function Contact() {
       </Typography>
       <Typography paragraph>
         <Trans i18nKey="contact.learnMore" values={{ brand: BRAND_NAME }}>
-          You can learn more about and the developers
+          You can learn more about DreamScholars and the developers
           <MuiLink component={Link} to="/about">
-            here
+            here.
           </MuiLink>
         </Trans>
       </Typography>
