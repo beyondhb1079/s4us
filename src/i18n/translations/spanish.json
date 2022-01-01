@@ -10,6 +10,7 @@
     "browseScholarships": "Buscar Becas",
     "addScholarship": "Agregar una Beca",
     "login": "Iniciar sesión",
+    "loadMore": "carga más",
     "subscribeForUpdates": "Suscríbete para recibir actualizaciones"
   },
 
@@ -70,7 +71,14 @@
   },
 
   "general": {
+    "scholarships": "Becas",
     "lookingForScholarships": "¿Buscando becas?"
+  },
+
+  "listScholarships": {
+    "titleTag": "Buscar Becas",
+    "endOfResults": "Final de Resultados",
+    "noScholarshipsFound": "No se encontraron becas"
   },
 
   "about": {

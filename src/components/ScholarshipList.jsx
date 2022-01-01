@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, CircularProgress, Grid, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
 import ScholarshipListCard from './ScholarshipListCard';
 
@@ -13,6 +14,7 @@ function ScholarshipList({ noResultsNode, listFn }) {
     loadMoreFn: listFn,
   });
   const { loading, canLoadMore, loadMoreFn } = loadState;
+  const { t } = useTranslation();
 
   // Reset scholarships and loading state when listFn changes
   useEffect(() => {
@@ -69,12 +71,20 @@ function ScholarshipList({ noResultsNode, listFn }) {
             if (canLoadMore)
               return (
                 <Button color="primary" onClick={loadMore}>
-                  Load More
+                  {t('btn.loadMore')}
                 </Button>
               );
             if (scholarships?.length)
-              return <Typography>End of results</Typography>;
-            return noResultsNode;
+              return (
+                <Typography>{t('listScholarships.endOfResults')}</Typography>
+              );
+            return (
+              noResultsNode || (
+                <Typography>
+                  {t('listScholarships.noScholarshipsFound')}
+                </Typography>
+              )
+            );
           })()}
         </Box>
       </Grid>
@@ -88,7 +98,7 @@ ScholarshipList.propTypes = {
 };
 ScholarshipList.defaultProps = {
   listFn: undefined,
-  noResultsNode: <Typography>No scholarships found</Typography>,
+  noResultsNode: undefined,
 };
 
 export default ScholarshipList;

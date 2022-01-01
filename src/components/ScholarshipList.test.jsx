@@ -5,13 +5,20 @@ import Button from '@mui/material/Button';
 import { MemoryRouter } from 'react-router-dom';
 import ScholarshipList from './ScholarshipList';
 import scholarships from '../testdata/scholarships';
+import { I18nextProvider } from 'react-i18next';
+import i18n from '../i18n/setup';
 
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.
 window.MutationObserver = require('mutation-observer');
 
 const renderWithTheme = (ui, options) =>
-  render(<ThemeProvider theme={createTheme()}>{ui}</ThemeProvider>, options);
+  render(
+    <I18nextProvider i18n={i18n}>
+      <ThemeProvider theme={createTheme()}>{ui}</ThemeProvider>
+    </I18nextProvider>,
+    options
+  );
 
 const fakeNoResults = new Promise((resolve) => {
   resolve({ results: [], next: undefined, hasNext: false });
@@ -30,7 +37,7 @@ test('renders no results', async () => {
 
   expect(screen.getByTestId('progress')).toBeInTheDocument();
 
-  expect(await screen.findByText(/no scholarships found/i)).toBeInTheDocument();
+  expect(await screen.findByText(/No scholarships found/i)).toBeInTheDocument();
 });
 
 test('renders custom no results node', async () => {

@@ -13,6 +13,7 @@ import sortOptions, {
   getField,
 } from '../lib/sortOptions';
 import GradeLevel from '../types/GradeLevel';
+import { useTranslation } from 'react-i18next';
 
 const queryOptions = {
   arrayFormat: 'bracket-separator',
@@ -22,6 +23,7 @@ const queryOptions = {
 function ListScholarships() {
   const history = useHistory();
   const location = useLocation();
+  const { t } = useTranslation();
 
   const params = queryString.parse(location.search, {
     parseNumbers: true,
@@ -107,10 +109,10 @@ function ListScholarships() {
   return (
     <Container>
       <Helmet>
-        <title>Search Scholarships</title>
+        <title>{t('listScholarships.titleTag')}</title>
       </Helmet>
       <Typography variant="h3" component="h1" align="center">
-        Scholarships
+        {t('general.scholarships')}
       </Typography>
       <FilterBar queryParams={params} {...{ setQueryParam }} />
       <ScholarshipList listFn={listScholarships} />

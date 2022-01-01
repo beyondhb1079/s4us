@@ -10,6 +10,7 @@
     "browseScholarships": "Browse Scholarships",
     "addScholarship": "Add a Scholarship",
     "login": "Login",
+    "loadMore": "Load More",
     "subscribeForUpdates": "Subscribe for updates"
   },
 
@@ -70,7 +71,14 @@
   },
 
   "general": {
+    "scholarships": "scholarships",
     "lookingForScholarships": "Looking for scholarships?"
+  },
+
+  "listScholarships": {
+    "titleTag": "Search Scholarships",
+    "endOfResults": "End of results",
+    "noScholarshipsFound": "No scholarships found"
   },
 
   "about": {
