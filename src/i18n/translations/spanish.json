@@ -17,6 +17,34 @@
     "description": "🚧 ¡Sitio web bajo construcción! 🚧"
   },
 
+  "home": {
+    "public": {
+      "landingSection": {
+        "title": "Becas para estudiantes indocumentados.",
+        "subTitle": "Una lista de recursos de becas por y para la comunidad."
+      },
+      "madeSimple": "Búsqueda de becas simplificada",
+      "studentTab": {
+        "tab": "estudiantes",
+        "title": "Menos barreras, más becas.",
+        "description": "Explore nuestra base de datos cómodamente, sabiendo que ninguna de nuestras becas requiere la ciudadanía estadounidense o la residencia permanente."
+      },
+      "communityTab": {
+        "tab": "colaborador comunitario",
+        "title": "Únase y apoye a la comunidad",
+        "description": "¿Conoce una beca disponible para estudiantes indocumentados que aún no está en nuestra base de datos? Regístrate y agrégalos, conviértete en parte de nuestra comunidad de becarios."
+      },
+      "startSearch": "¡Empecemos a buscar!"
+    },
+
+    "user": {
+      "titleTag": "Tablero de control",
+      "welcome": "Bienvenido",
+      "addedScholarships": "Becas que ha agregado",
+      "noneAdded": "Aún no a agregado becas"
+    }
+  },
+
   "general": {
     "lookingForScholarships": "¿Buscando becas?"
   },
