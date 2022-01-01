@@ -4,12 +4,15 @@ import { Container, Typography, Grid, Paper, Box } from '@mui/material';
 import ScholarshipForm from '../components/ScholarshipForm';
 import Scholarships from '../models/Scholarships';
 import backgroundImg from '../img/img3.svg';
+import { useTranslation } from 'react-i18next';
 
 function AddScholarship() {
+  const { t } = useTranslation();
+
   return (
     <Container maxWidth="md">
       <Helmet>
-        <title>Add a Scholarship</title>
+        <title>{t('addScholarship.titleTag')}</title>
       </Helmet>
 
       <Grid container spacing={2}>
@@ -18,15 +21,13 @@ function AddScholarship() {
           sm={12}
           md={6}
           sx={{ textAlign: { xs: 'center', md: 'left' } }}>
-          <Typography gutterBottom>Submit a Scholarship</Typography>
+          <Typography gutterBottom>
+            {t('addScholarship.submitAScholarship')}
+          </Typography>
           <Typography variant="h4" gutterBottom>
-            Additional information
+            {t('addScholarship.additionalInfo')}
           </Typography>
-          <Typography>
-            Help our team provide the best search results for students and
-            community members looking for scholarships by contributing as much
-            detailed information possible.
-          </Typography>
+          <Typography>{t('addScholarship.description')}</Typography>
         </Grid>
 
         <Grid item sm={12} md={6} sx={{ width: '100%' }}>

@@ -32,6 +32,15 @@
     "emailUs": "Estaremos encantados de responder a cualquiera de sus preguntas. Puede enviarnos un correo electrónico <1>aquí</1> y nos pondremos en contacto lo antes posible."
   },
 
+  "addScholarship": {
+    "titleTag": "Agrege una beca",
+    "submitAScholarship": "Submitir una beca",
+    "additionalInfo": "Información Adicional",
+    "description": "Ayude a nuestro equipo a proporcionar los mejores resultados de búsqueda para estudiantes y miembros de la comunidad que buscan becas contribuyendo con la mayor cantidad de información detallada posible."
+  },
+
+  "protectedPage": "Primero debe iniciar una sesión para acceder a esta página",
+
   "home": {
     "public": {
       "landingSection": {

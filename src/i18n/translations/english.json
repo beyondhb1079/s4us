@@ -32,6 +32,15 @@
     "emailUs": "We are happy to answer any of your questions. You can email us <1>here</1> and we'll be in touch as soon as possible."
   },
 
+  "addScholarship": {
+    "titleTag": "Add a Scholarship",
+    "submitAScholarship": "Submit a Scholarship",
+    "additionalInfo": "Additional Information",
+    "description": "Help our team provide the best search results for students and community members looking for scholarships by contributing as much detail information possible."
+  },
+
+  "protectedPage": "You must log in first to access this page",
+
   "home": {
     "public": {
       "landingSection": {
