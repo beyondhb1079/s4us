@@ -3,12 +3,17 @@ import firebase from 'firebase';
 
 const FirebaseContext = createContext(null);
 
-const config = {
-  // TODO (issues/213): Configure a separate staging project.
-  // These values should really be read from the environment.
+// TODO: Extract config into environment variables.
+const prodConfig = {
   apiKey: 'AIzaSyAXDqsWK4quNVaf9-YV2e28NsxkfA9rzJA',
   authDomain: 'auth.dreamscholars.org',
   projectId: 'dreamerscholars',
+};
+
+const stagingConfig = {
+  apiKey: 'AIzaSyA7VN9KOGqUZFE4Z0tVYBjvc1fDF_t__VU',
+  authDomain: 'dreamerscholars-staging.firebaseapp.com',
+  projectId: 'dreamerscholars-staging',
 };
 
 export default function FirebaseProvider(props: {
@@ -20,7 +25,8 @@ export default function FirebaseProvider(props: {
     // eslint-disable-next-line no-console
     console.log(`Environment: ${JSON.stringify(process.env.NODE_ENV)}`);
     if (process.env.NODE_ENV === 'production') {
-      firebase.initializeApp(config);
+      const prod = window.location.hostname.endsWith('dreamscholars.org');
+      firebase.initializeApp(prod ? prodConfig : stagingConfig);
     } else {
       firebase.initializeApp({
         apiKey: 'fake-api-key',
