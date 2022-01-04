@@ -7,12 +7,7 @@ import GradeLevelFilter from './GradeLevelFilter';
 import qParams from '../lib/QueryParams';
 import sortOptions, { DEADLINE_ASC } from '../lib/sortOptions';
 import experiments from '../lib/experiments';
-
-const majors = {
-  che: 'Chemical Eng.',
-  cs: 'Computer Science',
-  ds: 'Data Science',
-};
+import MajorFilter from './MajorFilter';
 
 export default function FilterBar({ setQueryParam, queryParams }) {
   const { minAmount, maxAmount, grades } = queryParams;
@@ -24,9 +19,7 @@ export default function FilterBar({ setQueryParam, queryParams }) {
       justifyContent="space-between"
       sx={{ flexGrow: 1 }}>
       <Grid item>
-        {experiments.expShowMajorFilter && (
-          <FilterDropDown label="Major" items={majors} />
-        )}
+        {experiments.expShowMajorFilter && <MajorFilter />}
 
         <GradeLevelFilter
           grades={new Set(grades)}
