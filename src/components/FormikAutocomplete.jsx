@@ -38,7 +38,7 @@ FormikAutocomplete.propTypes = {
 };
 FormikAutocomplete.defaultProps = {
   label: '',
-  labelStyle: '',
+  labelStyle: {},
   placeholder: '',
 };
 export default FormikAutocomplete;

@@ -43,7 +43,7 @@ FormikTextField.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 FormikTextField.defaultProps = {
-  labelStyle: null,
+  labelStyle: {},
   minRows: 0,
   value: undefined,
 };

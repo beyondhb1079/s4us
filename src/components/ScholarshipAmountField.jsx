@@ -88,6 +88,6 @@ ScholarshipAmountField.propTypes = {
   formik: PropTypes.object.isRequired,
 };
 ScholarshipAmountField.defaultProps = {
-  labelStyle: '',
+  labelStyle: {},
 };
 export default ScholarshipAmountField;

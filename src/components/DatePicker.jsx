@@ -39,7 +39,7 @@ DatePicker.propTypes = exact({
 });
 
 DatePicker.defaultProps = {
-  labelStyle: null,
+  labelStyle: {},
 };
 
 export default DatePicker;
