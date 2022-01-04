@@ -1,25 +1,7 @@
 import React, { useState } from 'react';
-import { Button, Autocomplete, InputBase, Popover } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Button, Autocomplete, Popover, Chip, TextField } from '@mui/material';
 import { MAJORS } from '../types/options';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-
-const StyledInput = styled(InputBase)(({ theme }) => ({
-  padding: 10,
-
-  '& input': {
-    borderRadius: 2,
-    padding: 8,
-
-    '&:focus': {
-      boxShadow: `0px 0px 0px 3px ${
-        theme.palette.mode === 'light'
-          ? 'rgba(3, 102, 214, 0.3)'
-          : 'rgb(12, 45, 107)'
-      }`,
-    },
-  },
-}));
 
 function MajorFilter() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -39,7 +21,17 @@ function MajorFilter() {
         anchorEl={anchorEl}
         onClose={() => setAnchorEl(null)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
+        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+        sx={{ maxWidth: 400, flexWrap: 'wrap' }}>
+        {majors.map((major) => (
+          <Chip
+            label={major}
+            variant="outlined"
+            color="primary"
+            key={major}
+            sx={{ mx: 1, mt: 1, color: '#000' }}
+          />
+        ))}
         <Autocomplete
           multiple
           value={majors}
@@ -50,11 +42,13 @@ function MajorFilter() {
           renderInput={(params) => {
             delete params.inputProps.onMouseDown;
             return (
-              <StyledInput
+              <TextField
                 ref={params.InputProps.ref}
                 inputProps={params.inputProps}
                 autoFocus
                 placeholder="Filter Majors"
+                size="small"
+                sx={{ mx: 1, my: 1 }}
               />
             );
           }}
