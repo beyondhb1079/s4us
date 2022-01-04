@@ -23,7 +23,7 @@ function MajorFilter() {
         onClose={() => setAnchorEl(null)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-        sx={{ maxWidth: 400, flexWrap: 'wrap' }}>
+        sx={{ maxWidth: 400 }}>
         {majors.map((major) => (
           <Chip
             label={major}
