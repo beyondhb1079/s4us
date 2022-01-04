@@ -16,7 +16,6 @@ import {
   Typography,
   FormHelperText,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import PropTypes from 'prop-types';
 import validationSchema from '../validation/ValidationSchema';
 import ScholarshipAmountField from './ScholarshipAmountField';
@@ -29,23 +28,9 @@ import { SCHOOLS, STATES, MAJORS } from '../types/options';
 import GradeLevel from '../types/GradeLevel';
 import Ethnicity from '../types/Ethnicity';
 
-const useStyles = makeStyles((theme) => ({
-  stepperDescription: {
-    marginBottom: theme.spacing(2),
-  },
-  inputLabel: {
-    marginBottom: theme.spacing(2),
-  },
-  stepperBtns: {
-    marginTop: theme.spacing(4),
-  },
-  reviewSection: {
-    marginTop: theme.spacing(2),
-  },
-}));
+const labelStyle = { marginBottom: 2 };
 
 function ScholarshipForm({ scholarship }) {
-  const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const [submissionError, setSubmissionError] = useState(null);
   const history = useHistory();
@@ -74,170 +59,163 @@ function ScholarshipForm({ scholarship }) {
   // checkbox is explicitly set.
   const noReqsChecked = JSON.stringify(formik.values.requirements) === '{}';
 
-  const stepperItems = {};
-  stepperItems.General = (
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
-        <Typography className={classes.stepperDescription}>
-          Please add the general information about the scholarship.
-        </Typography>
-      </Grid>
-
-      <Grid item sm={6} xs={12}>
-        <FormikTextField
-          label="Scholarship Name *"
-          id="name"
-          formik={formik}
-          labelStyle={classes.inputLabel}
-        />
-      </Grid>
-
-      <Grid item sm={6} xs={12}>
-        <FormikTextField
-          label="Organization"
-          id="organization"
-          formik={formik}
-          labelStyle={classes.inputLabel}
-        />
-      </Grid>
-
-      <Grid item sm={6} xs={12}>
-        <FormikTextField
-          label="Scholarship Link *"
-          id="website"
-          formik={formik}
-          labelStyle={classes.inputLabel}
-        />
-      </Grid>
-
-      <Grid item sm={6}>
-        <DatePicker
-          label="Deadline *"
-          labelStyle={classes.inputLabel}
-          formik={formik}
-        />
-      </Grid>
-
-      <Grid item>
-        <ScholarshipAmountField
-          formik={formik}
-          labelStyle={classes.inputLabel}
-        />
-      </Grid>
-
-      <Grid item xs={12}>
-        <FormikTextField
-          label="Description *"
-          id="description"
-          labelStyle={classes.inputLabel}
-          formik={formik}
-          minRows={8}
-        />
-      </Grid>
-    </Grid>
-  );
-
-  stepperItems['Eligibility Requirements'] = (
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
-        <Typography className={classes.stepperDescription}>
-          Include information that is required for applicants to have.
-        </Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={noReqsChecked}
-              onChange={() =>
-                formik.setFieldValue(
-                  'requirements',
-                  noReqsChecked ? undefined : {}
-                )
-              }
-              color="primary"
+  const stepperItems = {
+    General: {
+      description: 'Please add the general information about the scholarship.',
+      content: (
+        <Grid container spacing={3}>
+          <Grid item sm={6} xs={12}>
+            <FormikTextField
+              label="Scholarship Name *"
+              id="name"
+              formik={formik}
+              labelStyle={labelStyle}
             />
-          }
-          label="NO ELIGIBILITY REQUIREMENTS"
-        />
-        <FormHelperText error>{formik.errors.checkbox}</FormHelperText>
-      </Grid>
-      <Grid item sm={6} xs={12}>
-        <FormikMultiSelect
-          disabled={noReqsChecked}
-          label="Grade(s)"
-          id="requirements.grades"
-          labelStyle={classes.inputLabel}
-          formik={formik}
-          options={GradeLevel.values()}
-          placeholder="No grade requirements"
-        />
-      </Grid>
-      <Grid item sm={6} xs={12}>
-        <FormikTextField
-          id="requirements.gpa"
-          type="number"
-          disabled={noReqsChecked}
-          formik={formik}
-          label="Minimum GPA"
-          labelStyle={classes.inputLabel}
-          placeholder="None"
-        />
-      </Grid>
-      <Grid item sm={6} xs={12}>
-        <FormikAutocomplete
-          disabled={noReqsChecked}
-          label="School(s)"
-          id="requirements.schools"
-          labelStyle={classes.inputLabel}
-          options={[...SCHOOLS]}
-          freeSolo
-          formik={formik}
-          placeholder="No school requirements"
-        />
-      </Grid>
-      <Grid item sm={6} xs={12}>
-        <FormikAutocomplete
-          disabled={noReqsChecked}
-          label="State(s)"
-          id="requirements.states"
-          labelStyle={classes.inputLabel}
-          options={STATES}
-          formik={formik}
-          placeholder="No state requirements"
-        />
-      </Grid>
-      <Grid item sm={6} xs={12}>
-        <FormikAutocomplete
-          disabled={noReqsChecked}
-          label="Major(s)"
-          id="requirements.majors"
-          labelStyle={classes.inputLabel}
-          options={[...MAJORS]}
-          freeSolo
-          formik={formik}
-          placeholder="No major requirements"
-        />
-      </Grid>
-      <Grid item sm={6} xs={12}>
-        <FormikMultiSelect
-          disabled={noReqsChecked}
-          label="Ethnicity(s)"
-          id="requirements.ethnicities"
-          labelStyle={classes.inputLabel}
-          formik={formik}
-          options={Ethnicity.values()}
-          placeholder="No ethnicity requirements"
-        />
-      </Grid>
-    </Grid>
-  );
+          </Grid>
 
-  stepperItems.Review = (
-    <Box className={classes.reviewSection}>
-      <ScholarshipDetailCard scholarship={{ data: formik.values }} preview />
-    </Box>
-  );
+          <Grid item sm={6} xs={12}>
+            <FormikTextField
+              label="Organization"
+              id="organization"
+              formik={formik}
+              labelStyle={labelStyle}
+            />
+          </Grid>
+
+          <Grid item sm={6} xs={12}>
+            <FormikTextField
+              label="Scholarship Link *"
+              id="website"
+              formik={formik}
+              labelStyle={labelStyle}
+            />
+          </Grid>
+
+          <Grid item sm={6}>
+            <DatePicker
+              label="Deadline *"
+              labelStyle={labelStyle}
+              formik={formik}
+            />
+          </Grid>
+
+          <Grid item>
+            <ScholarshipAmountField formik={formik} labelStyle={labelStyle} />
+          </Grid>
+
+          <Grid item xs={12}>
+            <FormikTextField
+              label="Description *"
+              id="description"
+              labelStyle={labelStyle}
+              formik={formik}
+              minRows={8}
+            />
+          </Grid>
+        </Grid>
+      ),
+    },
+    'Eligibility Requirements': {
+      description:
+        'Include information that is required for applicants to have.',
+      content: (
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={noReqsChecked}
+                  onChange={() =>
+                    formik.setFieldValue(
+                      'requirements',
+                      noReqsChecked ? undefined : {}
+                    )
+                  }
+                  color="primary"
+                />
+              }
+              label="NO ELIGIBILITY REQUIREMENTS"
+            />
+            <FormHelperText error>{formik.errors.checkbox}</FormHelperText>
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <FormikMultiSelect
+              disabled={noReqsChecked}
+              label="Grade(s)"
+              id="requirements.grades"
+              labelStyle={labelStyle}
+              formik={formik}
+              options={GradeLevel.values()}
+              placeholder="No grade requirements"
+            />
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <FormikTextField
+              id="requirements.gpa"
+              type="number"
+              disabled={noReqsChecked}
+              formik={formik}
+              label="Minimum GPA"
+              labelStyle={labelStyle}
+              placeholder="None"
+            />
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <FormikAutocomplete
+              disabled={noReqsChecked}
+              label="School(s)"
+              id="requirements.schools"
+              labelStyle={labelStyle}
+              options={[...SCHOOLS]}
+              freeSolo
+              formik={formik}
+              placeholder="No school requirements"
+            />
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <FormikAutocomplete
+              disabled={noReqsChecked}
+              label="State(s)"
+              id="requirements.states"
+              labelStyle={labelStyle}
+              options={STATES}
+              formik={formik}
+              placeholder="No state requirements"
+            />
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <FormikAutocomplete
+              disabled={noReqsChecked}
+              label="Major(s)"
+              id="requirements.majors"
+              labelStyle={labelStyle}
+              options={[...MAJORS]}
+              freeSolo
+              formik={formik}
+              placeholder="No major requirements"
+            />
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <FormikMultiSelect
+              disabled={noReqsChecked}
+              label="Ethnicity(s)"
+              id="requirements.ethnicities"
+              labelStyle={labelStyle}
+              formik={formik}
+              options={Ethnicity.values()}
+              placeholder="No ethnicity requirements"
+            />
+          </Grid>
+        </Grid>
+      ),
+    },
+    Review: {
+      description: 'Please review the information below.',
+      content: (
+        <ScholarshipDetailCard scholarship={{ data: formik.values }} preview />
+      ),
+    },
+  };
 
   function validationCheck() {
     const noReqsGiven =
@@ -257,18 +235,18 @@ function ScholarshipForm({ scholarship }) {
   return (
     <form onSubmit={formik.handleSubmit}>
       <Stepper activeStep={activeStep} orientation="vertical">
-        {Object.keys(stepperItems).map((key) => (
-          <Step key={key}>
-            <StepLabel>{key}</StepLabel>
-            <StepContent>
-              {stepperItems[key]}
-              <div className={classes.stepperBtns}>
+        {Object.entries(stepperItems).map(
+          ([label, { description, content }]) => (
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+              <StepContent>
+                <Typography>{description}</Typography>
+                <Box marginY={3}>{content}</Box>
                 <Button
                   disabled={activeStep === 0}
                   onClick={() => setActiveStep((prevStep) => prevStep - 1)}>
                   BACK
                 </Button>
-
                 <Button
                   key={activeStep}
                   variant="contained"
@@ -300,10 +278,10 @@ function ScholarshipForm({ scholarship }) {
                     {submissionError.toString()}
                   </Alert>
                 )}
-              </div>
-            </StepContent>
-          </Step>
-        ))}
+              </StepContent>
+            </Step>
+          )
+        )}
       </Stepper>
     </form>
   );

@@ -2,16 +2,6 @@ import React from 'react';
 import { getIn } from 'formik';
 import { InputLabel, Select, MenuItem } from '@mui/material';
 import PropTypes from 'prop-types';
-import makeStyles from '@mui/styles/makeStyles';
-
-const useStyles = makeStyles((theme) => ({
-  textColor: {
-    color: theme.palette.grey[500],
-    '& .Mui-disabled': {
-      WebkitTextFillColor: theme.palette.grey[300],
-    },
-  },
-}));
 
 const MenuProps = {
   PaperProps: {
@@ -25,14 +15,24 @@ const MenuProps = {
 function FormikMultiSelect(props) {
   const { label, id, labelStyle, formik, options, disabled, placeholder } =
     props;
-  const classes = useStyles();
   const values = getIn(formik.values, id, []);
 
   return (
     <>
-      <InputLabel className={labelStyle}>{label}</InputLabel>
+      <InputLabel sx={labelStyle}>{label}</InputLabel>
       <Select
-        className={values.length > 0 ? '' : classes.textColor}
+        sx={
+          values.length > 0
+            ? {}
+            : {
+                textColor: {
+                  color: (theme) => theme.palette.grey[500],
+                  '& .Mui-disabled': {
+                    WebkitTextFillColor: (theme) => theme.palette.grey[300],
+                  },
+                },
+              }
+        }
         disabled={disabled}
         multiple
         fullWidth
@@ -60,7 +60,7 @@ export default FormikMultiSelect;
 FormikMultiSelect.propTypes = {
   label: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
-  labelStyle: PropTypes.string.isRequired,
+  labelStyle: PropTypes.object.isRequired,
   formik: PropTypes.object.isRequired,
   options: PropTypes.objectOf(PropTypes.string).isRequired,
   disabled: PropTypes.bool,
