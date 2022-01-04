@@ -6,6 +6,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 function MajorFilter() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [majors, setMajors] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
@@ -34,9 +35,14 @@ function MajorFilter() {
         ))}
         <Autocomplete
           multiple
+          open={isOpen}
           value={majors}
           onClose={() => setAnchorEl(null)}
           onChange={(e, val) => setMajors(val)}
+          onInputChange={(e, val) => {
+            if (val.length > 0) setIsOpen(true);
+            else setIsOpen(false);
+          }}
           options={[...MAJORS]}
           renderTags={() => null}
           renderInput={(params) => {
