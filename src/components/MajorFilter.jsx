@@ -37,7 +37,6 @@ function MajorFilter() {
           multiple
           open={isOpen}
           value={majors}
-          onClose={() => setAnchorEl(null)}
           onChange={(e, val) => setMajors(val)}
           onInputChange={(e, val) => {
             if (val.length > 0) setIsOpen(true);
@@ -45,19 +44,16 @@ function MajorFilter() {
           }}
           options={[...MAJORS]}
           renderTags={() => null}
-          renderInput={(params) => {
-            delete params.inputProps.onMouseDown;
-            return (
-              <TextField
-                ref={params.InputProps.ref}
-                inputProps={params.inputProps}
-                autoFocus
-                placeholder="Filter Majors"
-                size="small"
-                sx={{ mx: 1, my: 1 }}
-              />
-            );
-          }}
+          renderInput={(params) => (
+            <TextField
+              ref={params.InputProps.ref}
+              inputProps={params.inputProps}
+              autoFocus
+              placeholder="Filter Majors"
+              size="small"
+              sx={{ mx: 1, my: 1 }}
+            />
+          )}
         />
       </Popover>
     </>
