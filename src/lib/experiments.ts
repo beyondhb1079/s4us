@@ -3,7 +3,7 @@ const experiments: { [k: string]: boolean } = {
   expDummyDisabledByDefault: false,
   expDummyEnabledByDefault: true,
   expShowFullProfileMenu: false,
-  expShowMajorFilter: true,
+  expShowMajorFilter: false,
 };
 
 export function loadExperiments(query = window.location.search): void {
