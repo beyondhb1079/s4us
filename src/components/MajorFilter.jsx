@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Autocomplete, Popover, Chip, TextField } from '@mui/material';
 import { MAJORS } from '../types/options';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import PropTypes from 'prop-types';
 
 function MajorFilter(props) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -61,3 +62,12 @@ function MajorFilter(props) {
 }
 
 export default MajorFilter;
+
+MajorFilter.propTypes = {
+  majors: PropTypes.arrayOf(PropTypes.string),
+  changeFn: PropTypes.func.isRequired,
+};
+
+MajorFilter.defaultProps = {
+  majors: [],
+};

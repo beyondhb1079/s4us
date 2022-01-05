@@ -19,7 +19,7 @@ export default function FilterBar({ setQueryParam, queryParams }) {
       sx={{ flexGrow: 1 }}>
       <Grid item>
         <MajorFilter
-          majors={majors ?? []}
+          majors={majors}
           changeFn={(e) => setQueryParam(qParams.MAJORS, e)}
         />
 
