@@ -3,10 +3,10 @@ import { Button, Autocomplete, Popover, Chip, TextField } from '@mui/material';
 import { MAJORS } from '../types/options';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-function MajorFilter() {
+function MajorFilter(props) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [majors, setMajors] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const { majors, changeFn } = props;
 
   return (
     <>
@@ -37,7 +37,7 @@ function MajorFilter() {
           multiple
           open={isOpen}
           value={majors}
-          onChange={(e, val) => setMajors(val)}
+          onChange={(e, val) => changeFn(val)}
           onInputChange={(e, val) => {
             if (val.length > 0) setIsOpen(true);
             else setIsOpen(false);

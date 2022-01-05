@@ -6,11 +6,10 @@ import AmountFilter from './AmountFilter';
 import GradeLevelFilter from './GradeLevelFilter';
 import qParams from '../lib/QueryParams';
 import sortOptions, { DEADLINE_ASC } from '../lib/sortOptions';
-import experiments from '../lib/experiments';
 import MajorFilter from './MajorFilter';
 
 export default function FilterBar({ setQueryParam, queryParams }) {
-  const { minAmount, maxAmount, grades } = queryParams;
+  const { minAmount, maxAmount, grades, majors } = queryParams;
 
   return (
     <Grid
@@ -19,7 +18,10 @@ export default function FilterBar({ setQueryParam, queryParams }) {
       justifyContent="space-between"
       sx={{ flexGrow: 1 }}>
       <Grid item>
-        {experiments.expShowMajorFilter && <MajorFilter />}
+        <MajorFilter
+          majors={majors ?? []}
+          changeFn={(e) => setQueryParam(qParams.MAJORS, e)}
+        />
 
         <GradeLevelFilter
           grades={new Set(grades)}
