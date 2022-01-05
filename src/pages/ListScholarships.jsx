@@ -109,7 +109,6 @@ function ListScholarships() {
       }
     } else pruneQueryParam(qParams.MAJORS);
   }
-  // console.log(majors.length);
 
   const listScholarships = () =>
     Scholarships.list({
