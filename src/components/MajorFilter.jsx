@@ -30,6 +30,9 @@ function MajorFilter() {
             variant="outlined"
             color="primary"
             key={major}
+            onDelete={() =>
+              setMajors((chips) => chips.filter((chip) => chip !== major))
+            }
             sx={{ mx: 1, mt: 1, color: '#000' }}
           />
         ))}
