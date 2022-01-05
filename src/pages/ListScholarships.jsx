@@ -65,7 +65,7 @@ function ListScholarships() {
   const sortField = getField(sortBy);
   const sortDir = getDir(sortBy);
 
-  const { minAmount, maxAmount, grades } = params;
+  const { minAmount, maxAmount, grades, majors } = params;
 
   if (
     minAmount !== undefined &&
@@ -103,6 +103,7 @@ function ListScholarships() {
       minAmount,
       maxAmount,
       grades,
+      majors,
       hideExpired: true,
     });
 
