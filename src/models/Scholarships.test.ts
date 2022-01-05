@@ -348,9 +348,11 @@ test('scholarships.list - filters by grades (all grades)', async () => {
 });
 
 const arts = create({
+  name: 'arts',
   majors: ['Culinary Arts', 'Drama and Theater Arts', 'Liberal Arts'],
 });
 const engineering = create({
+  name: 'engineering',
   majors: [
     'Biomedical Engineering',
     'Chemical Engineering',
@@ -358,6 +360,7 @@ const engineering = create({
   ],
 });
 const socialSciences = create({
+  name: 'political science',
   majors: ['History', 'Political Science', 'Sociology'],
 });
 const majorScholarships = [arts, engineering, socialSciences];
