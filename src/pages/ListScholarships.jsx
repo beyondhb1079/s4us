@@ -45,7 +45,7 @@ function ListScholarships() {
 
   const pruneQueryParam = (index) => {
     delete params[index];
-    history.replace({ search: queryString.stringify(params) });
+    history.replace({ search: queryString.stringify(params, queryOptions) });
   };
 
   /**
