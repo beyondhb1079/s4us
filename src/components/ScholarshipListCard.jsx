@@ -29,7 +29,11 @@ function ScholarshipListCard({ scholarship }) {
           state: { scholarship },
         }}>
         <CardContent sx={{ p: 3 }}>
-          <Typography variant="subtitle1" sx={{ fontWeight: '500' }}>
+          <Typography
+            variant="subtitle1"
+            sx={{
+              fontWeight: (theme) => theme.typography.fontWeightMedium,
+            }}>
             {organization}
           </Typography>
           <Typography variant="h5" gutterBottom>
