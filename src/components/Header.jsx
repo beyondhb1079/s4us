@@ -98,7 +98,7 @@ const AuthZoomButton = ({ t }) => {
 const useStyles = makeStyles((theme) => ({
   header: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: `${theme.spacing(3)} 0`,
     justifyContent: 'space-between',
     alignItems: 'center',
     [theme.breakpoints.down('md')]: {
@@ -137,17 +137,13 @@ function Header() {
             {BRAND_NAME.toUpperCase()}
           </MuiLink>
         </Grid>
-        <Grid item>
-          <HeaderNavMenu links={links} />
-        </Grid>
 
         <Grid item>
+          <HeaderNavMenu links={links} />
           <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
             <LanguageIcon />
           </IconButton>
-        </Grid>
 
-        <Grid item className={classes.authItem}>
           <AuthZoomButton t={t} />
         </Grid>
       </Grid>
