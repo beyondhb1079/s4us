@@ -76,7 +76,12 @@ function ScholarshipListCard({ scholarship }) {
                   label={tag}
                   variant="outlined"
                   color="primary"
-                  sx={{ mr: 2, mb: 2, color: '#000', borderColor: '#3FB1B5' }}
+                  sx={{
+                    mr: 2,
+                    mb: 2,
+                    color: (theme) => theme.palette.text.primary,
+                    borderColor: (theme) => theme.palette.primary,
+                  }}
                   key={tag}
                 />
               ))}

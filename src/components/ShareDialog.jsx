@@ -25,14 +25,14 @@ import {
 const useStyles = makeStyles((theme) => ({
   root: {
     background: theme.palette.background.secondary,
-    color: 'white',
+    color: theme.palette.background.paper,
     textAlign: 'center',
   },
   shareIcon: {
     marginRight: theme.spacing(1),
   },
   copyText: {
-    color: '#808080',
+    color: theme.palette.grey[600],
   },
 }));
 
