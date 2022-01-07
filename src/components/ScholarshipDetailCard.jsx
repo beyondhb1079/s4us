@@ -215,7 +215,7 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
                 label={tag}
                 variant="outlined"
                 color="primary"
-                sx={{ mr: 2, color: '#000' }}
+                sx={{ mr: 2, color: 'text.primary' }}
                 key={tag}
               />
             ))}

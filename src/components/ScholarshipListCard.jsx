@@ -29,7 +29,11 @@ function ScholarshipListCard({ scholarship }) {
           state: { scholarship },
         }}>
         <CardContent sx={{ p: 3 }}>
-          <Typography variant="subtitle1" sx={{ fontWeight: '500' }}>
+          <Typography
+            variant="subtitle1"
+            sx={{
+              fontWeight: 'medium',
+            }}>
             {organization}
           </Typography>
           <Typography variant="h5" gutterBottom>
@@ -76,7 +80,12 @@ function ScholarshipListCard({ scholarship }) {
                   label={tag}
                   variant="outlined"
                   color="primary"
-                  sx={{ mr: 2, mb: 2, color: '#000', borderColor: '#3FB1B5' }}
+                  sx={{
+                    mr: 2,
+                    mb: 2,
+                    color: 'text.primary',
+                    borderColor: 'primary',
+                  }}
                   key={tag}
                 />
               ))}
