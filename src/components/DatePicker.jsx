@@ -11,7 +11,7 @@ function DatePicker(props) {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <InputLabel className={labelStyle}>{label}</InputLabel>
+      <InputLabel sx={labelStyle}>{label}</InputLabel>
       <MuiDatePicker
         inputFormat="MM/dd/yyyy"
         value={formik.values.deadline}
@@ -34,12 +34,12 @@ function DatePicker(props) {
 
 DatePicker.propTypes = exact({
   label: PropTypes.string.isRequired,
-  labelStyle: PropTypes.string,
+  labelStyle: PropTypes.object,
   formik: PropTypes.object.isRequired,
 });
 
 DatePicker.defaultProps = {
-  labelStyle: null,
+  labelStyle: {},
 };
 
 export default DatePicker;

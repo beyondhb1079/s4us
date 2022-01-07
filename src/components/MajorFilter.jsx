@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
-import { Button, Autocomplete, Popover, Chip, TextField } from '@mui/material';
+import {
+  Button,
+  Autocomplete,
+  Popover,
+  Chip,
+  OutlinedInput,
+  IconButton,
+} from '@mui/material';
 import { MAJORS } from '../types/options';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import PropTypes from 'prop-types';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 
 function MajorFilter(props) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -21,10 +29,13 @@ function MajorFilter(props) {
       <Popover
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
-        onClose={() => setAnchorEl(null)}
+        onClose={() => {
+          setAnchorEl(null);
+          setIsOpen(false);
+        }}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-        sx={{ maxWidth: 400 }}>
+        PaperProps={{ style: { width: 280 } }}>
         {majors.map((major) => (
           <Chip
             label={major}
@@ -37,25 +48,33 @@ function MajorFilter(props) {
         ))}
         <Autocomplete
           multiple
+          freeSolo
           open={isOpen}
           value={majors}
           onChange={(e, val) => changeFn(val)}
-          onInputChange={(e, val) => {
-            if (val.length > 0) setIsOpen(true);
-            else setIsOpen(false);
-          }}
+          disabled={majors.length >= 10}
           options={[...MAJORS]}
           renderTags={() => null}
           renderInput={(params) => (
-            <TextField
+            <OutlinedInput
               ref={params.InputProps.ref}
               inputProps={params.inputProps}
               autoFocus
-              placeholder="Filter Majors"
+              placeholder={
+                majors.length < 10
+                  ? 'Enter a major to filter by...'
+                  : 'Limit reached'
+              }
               size="small"
-              sx={{ mx: 1, my: 1 }}
+              fullWidth
+              endAdornment={
+                <IconButton onClick={() => setIsOpen(!isOpen)}>
+                  {isOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
+                </IconButton>
+              }
             />
           )}
+          sx={{ mx: 1, my: 1 }}
         />
       </Popover>
     </>

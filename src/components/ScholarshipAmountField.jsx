@@ -57,7 +57,7 @@ function ScholarshipAmountField({ labelStyle, formik }) {
 
   return (
     <>
-      <InputLabel className={labelStyle}>Award Amount *</InputLabel>
+      <InputLabel sx={labelStyle}>Award Amount *</InputLabel>
       <Grid container spacing={3}>
         <Grid item>
           <Select
@@ -84,10 +84,10 @@ function ScholarshipAmountField({ labelStyle, formik }) {
 }
 
 ScholarshipAmountField.propTypes = {
-  labelStyle: PropTypes.string,
+  labelStyle: PropTypes.object,
   formik: PropTypes.object.isRequired,
 };
 ScholarshipAmountField.defaultProps = {
-  labelStyle: '',
+  labelStyle: {},
 };
 export default ScholarshipAmountField;
