@@ -36,11 +36,12 @@ export default function ShareDialog() {
       open={showShareDialog}
       onClose={closeDialog}
       sx={{ textAlign: 'center' }}>
-      <DialogTitle sx={{ color: 'white', bgcolor: 'background.secondary' }}>
+      <DialogTitle
+        sx={{ color: 'background.paper', bgcolor: 'background.secondary' }}>
         SHARE
       </DialogTitle>
       <DialogContent sx={{ bgcolor: 'background.secondary' }}>
-        <DialogContentText sx={{ color: 'white' }}>
+        <DialogContentText sx={{ color: 'background.paper' }}>
           Currently Sharing: {title}
         </DialogContentText>
         <EmailShareButton url={url} style={{ m: '4px' }}>
@@ -58,7 +59,10 @@ export default function ShareDialog() {
         <RedditShareButton url={url} style={{ m: '4px' }}>
           <RedditIcon round />
         </RedditShareButton>
-        <Typography variant="overline" component="p" sx={{ color: '#808080' }}>
+        <Typography
+          variant="overline"
+          component="p"
+          sx={{ color: (theme) => theme.palette.grey[600] }}>
           {url}
         </Typography>
         <Button
