@@ -32,7 +32,7 @@ function ScholarshipListCard({ scholarship }) {
           <Typography
             variant="subtitle1"
             sx={{
-              fontWeight: (theme) => theme.typography.fontWeightMedium,
+              fontWeight: 'medium',
             }}>
             {organization}
           </Typography>
@@ -83,8 +83,8 @@ function ScholarshipListCard({ scholarship }) {
                   sx={{
                     mr: 2,
                     mb: 2,
-                    color: (theme) => theme.palette.text.primary,
-                    borderColor: (theme) => theme.palette.primary,
+                    color: 'text.primary',
+                    borderColor: 'primary',
                   }}
                   key={tag}
                 />
