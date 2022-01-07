@@ -100,7 +100,7 @@ function ListScholarships() {
     if (!Array.isArray(majors) || majors.length === 0 || majors[0] === '')
       pruneQueryParam(qParams.MAJORS);
   }
-  console.log(majors);
+
   const listScholarships = () =>
     Scholarships.list({
       sortField,
