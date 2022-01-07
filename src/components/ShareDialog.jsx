@@ -41,7 +41,7 @@ export default function ShareDialog() {
         SHARE
       </DialogTitle>
       <DialogContent sx={{ bgcolor: 'background.secondary' }}>
-        <DialogContentText sx={{ color: 'white' }}>
+        <DialogContentText sx={{ color: 'background.paper' }}>
           Currently Sharing: {title}
         </DialogContentText>
         <EmailShareButton url={url} style={{ m: '4px' }}>
