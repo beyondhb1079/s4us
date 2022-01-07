@@ -18,7 +18,7 @@ function FormikTextField(props) {
 
   return (
     <>
-      <InputLabel className={labelStyle}>{label}</InputLabel>
+      <InputLabel sx={labelStyle}>{label}</InputLabel>
       <TextField
         id={id}
         error={Boolean(getIn(formik.errors, id))}
@@ -36,14 +36,14 @@ function FormikTextField(props) {
 
 FormikTextField.propTypes = {
   label: PropTypes.string.isRequired,
-  labelStyle: PropTypes.string,
+  labelStyle: PropTypes.object,
   id: PropTypes.string.isRequired,
   formik: PropTypes.object.isRequired,
   minRows: PropTypes.number,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 FormikTextField.defaultProps = {
-  labelStyle: null,
+  labelStyle: {},
   minRows: 0,
   value: undefined,
 };

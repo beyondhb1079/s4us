@@ -15,7 +15,6 @@ import {
   Menu,
   MenuItem,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import ProfileMenu from './ProfileDropdown';
 import { useTranslation } from 'react-i18next';
 import LanguageIcon from '@mui/icons-material/Language';
@@ -95,21 +94,6 @@ const AuthZoomButton = ({ t }) => {
   );
 };
 
-const useStyles = makeStyles((theme) => ({
-  header: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    [theme.breakpoints.down('md')]: {
-      justifyContent: 'space-around',
-    },
-  },
-  authItem: {
-    minWidth: '100px',
-  },
-}));
-
 const links = {
   'navbar.scholarships': '/scholarships',
   'navbar.add': '/scholarships/new',
@@ -123,7 +107,6 @@ const languages = {
 };
 
 function Header() {
-  const classes = useStyles();
   const { t, i18n } = useTranslation();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -131,7 +114,15 @@ function Header() {
     <Container>
       <UnderConstructionAlert t={t} />
       <OnRenderSnackbar />
-      <Grid container className={classes.header} spacing={3}>
+      <Grid
+        container
+        sx={{
+          flexGrow: 1,
+          padding: 3,
+          justifyContent: { xs: 'space-around', md: 'space-between' },
+          alignItems: 'center',
+        }}
+        spacing={3}>
         <Grid item>
           <MuiLink component={Link} to="/" variant="h4" underline="none">
             {BRAND_NAME.toUpperCase()}
@@ -147,7 +138,7 @@ function Header() {
           </IconButton>
         </Grid>
 
-        <Grid item className={classes.authItem}>
+        <Grid item sx={{ minWidth: '100px' }}>
           <AuthZoomButton t={t} />
         </Grid>
       </Grid>

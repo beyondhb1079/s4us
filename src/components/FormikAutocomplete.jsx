@@ -9,7 +9,7 @@ function FormikAutocomplete(props) {
   const values = getIn(formik.values, id, []);
   return (
     <>
-      <InputLabel className={labelStyle}>{label}</InputLabel>
+      <InputLabel sx={labelStyle}>{label}</InputLabel>
       <Autocomplete
         id={id}
         multiple
@@ -32,13 +32,13 @@ function FormikAutocomplete(props) {
 FormikAutocomplete.propTypes = {
   label: PropTypes.string,
   id: PropTypes.string.isRequired,
-  labelStyle: PropTypes.string,
+  labelStyle: PropTypes.object,
   formik: PropTypes.object.isRequired,
   placeholder: PropTypes.string,
 };
 FormikAutocomplete.defaultProps = {
   label: '',
-  labelStyle: '',
+  labelStyle: {},
   placeholder: '',
 };
 export default FormikAutocomplete;
