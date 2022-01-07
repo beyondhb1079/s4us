@@ -14,7 +14,6 @@ import sortOptions, {
 } from '../lib/sortOptions';
 import GradeLevel from '../types/GradeLevel';
 import { useTranslation } from 'react-i18next';
-import { MAJORS } from '../types/options';
 
 const queryOptions = {
   arrayFormat: 'bracket-separator',
@@ -52,8 +51,8 @@ function ListScholarships() {
    * when dealing with invalid values in an array
    * rather than pruning the entire param, we can prune out the invalid values
    */
-  const replaceQueryParam = (index, newVal) => {
-    params[index] = newVal;
+  const replaceQueryParam = (key, newVal) => {
+    params[key] = newVal;
     history.replace({ search: queryString.stringify(params, queryOptions) });
   };
 
@@ -97,19 +96,11 @@ function ListScholarships() {
     } else pruneQueryParam(qParams.GRADES);
   }
 
-  /**
-   * prunes inalid major values not present in the MAJORS set
-   */
   if (majors !== undefined) {
-    if (Array.isArray(majors) && majors.length > 0) {
-      const prunedInvalid = [...new Set(majors)].filter((m) => MAJORS.has(m));
-
-      if (prunedInvalid.length !== majors.length) {
-        replaceQueryParam(qParams.MAJORS, prunedInvalid);
-      }
-    } else pruneQueryParam(qParams.MAJORS);
+    if (!Array.isArray(majors) || majors.length === 0 || majors[0] === '')
+      pruneQueryParam(qParams.MAJORS);
   }
-
+  console.log(majors);
   const listScholarships = () =>
     Scholarships.list({
       sortField,

@@ -12,10 +12,9 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import PropTypes from 'prop-types';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 
-function MajorFilter(props) {
+function MajorFilter({ majors, onSelect, onDelete }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-  const { majors, changeFn } = props;
 
   return (
     <>
@@ -42,16 +41,17 @@ function MajorFilter(props) {
             variant="outlined"
             color="primary"
             key={major}
-            onDelete={() => changeFn(majors.filter((m) => m !== major))}
+            onDelete={() => onDelete(major)}
             sx={{ mx: 1, mt: 1, color: '#000' }}
           />
         ))}
         <Autocomplete
           multiple
           freeSolo
+          filterSelectedOptions
           open={isOpen}
           value={majors}
-          onChange={(e, val) => changeFn(val)}
+          onChange={(e, val) => onSelect(val)}
           disabled={majors.length >= 10}
           options={[...MAJORS]}
           renderTags={() => null}
@@ -85,7 +85,8 @@ export default MajorFilter;
 
 MajorFilter.propTypes = {
   majors: PropTypes.arrayOf(PropTypes.string),
-  changeFn: PropTypes.func.isRequired,
+  onSelect: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
 
 MajorFilter.defaultProps = {

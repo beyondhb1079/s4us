@@ -158,8 +158,8 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
               ) &&
               // major filter
               requirementMatchesFilter(
-                data.requirements?.majors,
-                opts.majors
+                data.requirements?.majors?.map((s) => s.toLowerCase()),
+                opts.majors?.map((s) => s.toLowerCase())
               ) &&
               // Deadline Filter.
               // This is needed  in case list() above couldn't apply it.

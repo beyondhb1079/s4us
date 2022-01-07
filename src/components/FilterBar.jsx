@@ -19,7 +19,13 @@ export default function FilterBar({ setQueryParam, queryParams }) {
       <Grid item>
         <MajorFilter
           majors={majors}
-          changeFn={(e) => setQueryParam(qParams.MAJORS, e)}
+          onSelect={(e) => setQueryParam(qParams.MAJORS, e)}
+          onDelete={(e) =>
+            setQueryParam(
+              qParams.MAJORS,
+              majors.filter((major) => major !== e)
+            )
+          }
         />
 
         <GradeLevelFilter
