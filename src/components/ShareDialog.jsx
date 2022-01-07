@@ -43,19 +43,19 @@ export default function ShareDialog() {
         <DialogContentText sx={{ color: 'white' }}>
           Currently Sharing: {title}
         </DialogContentText>
-        <EmailShareButton url={url} style={{ margin: '4px' }}>
+        <EmailShareButton url={url} style={{ m: '4px' }}>
           <EmailIcon round />
         </EmailShareButton>
-        <FacebookShareButton url={url} style={{ margin: '4px' }}>
+        <FacebookShareButton url={url} style={{ m: '4px' }}>
           <FacebookIcon round />
         </FacebookShareButton>
-        <TwitterShareButton url={url} style={{ margin: '4px' }}>
+        <TwitterShareButton url={url} style={{ m: '4px' }}>
           <TwitterIcon round />
         </TwitterShareButton>
-        <LinkedinShareButton url={url} style={{ margin: '4px' }}>
+        <LinkedinShareButton url={url} style={{ m: '4px' }}>
           <LinkedinIcon round />
         </LinkedinShareButton>
-        <RedditShareButton url={url} style={{ margin: '4px' }}>
+        <RedditShareButton url={url} style={{ m: '4px' }}>
           <RedditIcon round />
         </RedditShareButton>
         <Typography variant="overline" component="p" sx={{ color: '#808080' }}>

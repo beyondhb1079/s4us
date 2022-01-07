@@ -18,7 +18,7 @@ export default function AmountFilter(props) {
     <>
       <Button
         variant="outlined"
-        sx={{ margin: 1, height: (theme) => theme.spacing(4) }}
+        sx={{ m: 1, height: (theme) => theme.spacing(4) }}
         onClick={handleClick}
         endIcon={<ArrowDropDownIcon color="primary" />}>
         Amount
@@ -31,25 +31,19 @@ export default function AmountFilter(props) {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
         <Grid container>
-          <Grid item sx={{ margin: 1 }}>
-            <InputLabel sx={{ paddingLeft: 1 }}>Min Amount</InputLabel>
+          <Grid item sx={{ m: 1 }}>
+            <InputLabel sx={{ pl: 1 }}>Min Amount</InputLabel>
             <AmountTextField
               error={error}
               value={min || ''}
               onChange={onMinChange}
             />
           </Grid>
-          <Grid
-            item
-            sx={{
-              paddingTop: 2,
-              display: 'flex',
-              alignItems: 'center',
-            }}>
+          <Grid item sx={{ pt: 2, display: 'flex', alignItems: 'center' }}>
             <RemoveIcon />
           </Grid>
-          <Grid item sx={{ margin: 1 }}>
-            <InputLabel sx={{ paddingLeft: 1 }}>Max Amount</InputLabel>
+          <Grid item sx={{ m: 1 }}>
+            <InputLabel sx={{ pl: 1 }}>Max Amount</InputLabel>
             <AmountTextField value={max || ''} onChange={onMaxChange} />
           </Grid>
         </Grid>
