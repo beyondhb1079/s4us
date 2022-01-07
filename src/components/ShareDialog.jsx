@@ -1,6 +1,5 @@
 import React from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import makeStyles from '@mui/styles/makeStyles';
 import {
   Button,
   Dialog,
@@ -22,20 +21,6 @@ import {
   TwitterShareButton,
 } from 'react-share';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    background: theme.palette.background.secondary,
-    color: theme.palette.background.paper,
-    textAlign: 'center',
-  },
-  shareIcon: {
-    marginRight: theme.spacing(1),
-  },
-  copyText: {
-    color: theme.palette.grey[600],
-  },
-}));
-
 export default function ShareDialog() {
   const location = useLocation();
 
@@ -44,39 +29,40 @@ export default function ShareDialog() {
   const { title, url } = shareData;
 
   const history = useHistory();
-  const closeDialog = () =>
-    history.replace({
-      state: { shareData },
-    });
-
-  const classes = useStyles();
+  const closeDialog = () => history.replace({ state: { shareData } });
 
   return (
-    <Dialog open={showShareDialog} onClose={closeDialog}>
-      <DialogTitle className={classes.root}>SHARE</DialogTitle>
-      <DialogContent className={classes.root}>
-        <DialogContentText className={classes.root}>
+    <Dialog
+      open={showShareDialog}
+      onClose={closeDialog}
+      sx={{ textAlign: 'center' }}>
+      <DialogTitle
+        sx={{ color: 'background.paper', bgcolor: 'background.secondary' }}>
+        SHARE
+      </DialogTitle>
+      <DialogContent sx={{ bgcolor: 'background.secondary' }}>
+        <DialogContentText sx={{ color: 'white' }}>
           Currently Sharing: {title}
         </DialogContentText>
-        <EmailShareButton url={url} className={classes.shareIcon}>
+        <EmailShareButton url={url} style={{ m: '4px' }}>
           <EmailIcon round />
         </EmailShareButton>
-        <FacebookShareButton url={url} className={classes.shareIcon}>
+        <FacebookShareButton url={url} style={{ m: '4px' }}>
           <FacebookIcon round />
         </FacebookShareButton>
-        <TwitterShareButton url={url} className={classes.shareIcon}>
+        <TwitterShareButton url={url} style={{ m: '4px' }}>
           <TwitterIcon round />
         </TwitterShareButton>
-        <LinkedinShareButton url={url} className={classes.shareIcon}>
+        <LinkedinShareButton url={url} style={{ m: '4px' }}>
           <LinkedinIcon round />
         </LinkedinShareButton>
-        <RedditShareButton url={url} className={classes.shareIcon}>
+        <RedditShareButton url={url} style={{ m: '4px' }}>
           <RedditIcon round />
         </RedditShareButton>
         <Typography
           variant="overline"
           component="p"
-          className={classes.copyText}>
+          sx={{ color: (theme) => theme.palette.grey[600] }}>
           {url}
         </Typography>
         <Button
