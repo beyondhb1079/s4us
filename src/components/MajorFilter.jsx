@@ -38,13 +38,11 @@ function MajorFilter() {
         ))}
         <Autocomplete
           multiple
+          freeSolo
           open={isOpen}
           value={majors}
           onChange={(e, val) => setMajors(val)}
-          onInputChange={(e, val) => {
-            if (val.length > 0) setIsOpen(true);
-            else setIsOpen(false);
-          }}
+          onInputChange={(e, val) => setIsOpen(val.length > 0)}
           options={[...MAJORS]}
           renderTags={() => null}
           renderInput={(params) => (
@@ -52,11 +50,12 @@ function MajorFilter() {
               ref={params.InputProps.ref}
               inputProps={params.inputProps}
               autoFocus
-              placeholder="Filter Majors"
+              placeholder="Enter a major to filter by..."
               size="small"
-              sx={{ mx: 1, my: 1 }}
+              fullWidth
             />
           )}
+          sx={{ mx: 1, my: 1 }}
         />
       </Popover>
     </>
