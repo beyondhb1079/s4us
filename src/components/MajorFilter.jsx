@@ -65,7 +65,7 @@ function MajorFilter() {
               placeholder={
                 majors.length < 10
                   ? 'Enter a major to filter by...'
-                  : 'Limit reached, remove some majors'
+                  : 'Limit reached'
               }
               size="small"
               fullWidth
