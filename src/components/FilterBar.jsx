@@ -19,11 +19,11 @@ export default function FilterBar({ setQueryParam, queryParams }) {
       <Grid item>
         <MajorFilter
           majors={majors}
-          onSelect={(e) => setQueryParam(qParams.MAJORS, e)}
-          onDelete={(e) =>
+          onSelect={(m) => setQueryParam(qParams.MAJORS, m)}
+          onDelete={(m) =>
             setQueryParam(
               qParams.MAJORS,
-              majors.filter((major) => major !== e)
+              majors.filter((major) => major !== m)
             )
           }
         />
