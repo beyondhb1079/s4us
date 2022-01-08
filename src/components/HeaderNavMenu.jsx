@@ -21,7 +21,8 @@ function HeaderNavMenu({ links }) {
       indicatorColor="primary"
       scrollButtons="auto"
       value={currentTab}
-      variant="scrollable">
+      variant="scrollable"
+      sx={{ display: 'inline-flex' }}>
       {Object.entries(links).map(([title, link]) => (
         <Tab
           sx={{
