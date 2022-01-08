@@ -106,15 +106,16 @@ export default function ScholarshipCard({ scholarship, style }) {
     }
   }, [author, preview]);
 
+  const CardAreaComponent = detailed ? Box : CardActionArea;
   return (
     <Card variant="outlined">
-      <CardActionArea
-        component={Link}
+      <CardAreaComponent
+        component={detailed ? Box : Link}
         to={{
           pathname: `/scholarships/${scholarship.id}`,
           state: { scholarship },
         }}
-        disabled={detailed}>
+        sx={{ p: 3 }}>
         <CardContent sx={{ p: 3 }}>
           <Typography
             variant={detailed ? 'h6' : 'subtitle1'}
@@ -275,7 +276,7 @@ export default function ScholarshipCard({ scholarship, style }) {
             />
           )}
         </CardContent>
-      </CardActionArea>
+      </CardAreaComponent>
     </Card>
   );
 }
