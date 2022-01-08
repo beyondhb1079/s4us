@@ -53,6 +53,7 @@ function MajorFilter() {
           open={isOpen}
           value={majors}
           disabled={majors.length >= 10}
+          onInputChange={(e, val) => setIsOpen(val.length > 0)}
           onChange={(e, val) => setMajors(val)}
           options={[...MAJORS]}
           renderTags={() => null}
