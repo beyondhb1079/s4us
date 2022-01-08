@@ -12,6 +12,8 @@ import {
   Link as MuiLink,
   Typography,
   IconButton,
+  CardActionArea,
+  CardContent,
 } from '@mui/material';
 import {
   Report as ReportIcon,
@@ -46,7 +48,7 @@ DetailCardCell.propTypes = {
   text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 };
 
-export default function ScholarshipDetailCard({ scholarship, preview }) {
+export default function ScholarshipCard({ scholarship, style }) {
   const history = useHistory();
   const {
     name,
@@ -59,6 +61,8 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
     requirements,
     author,
   } = scholarship.data;
+  const detailed = style !== 'result';
+  const preview = style === 'preview';
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
   const shareFn = () => {
@@ -103,142 +107,180 @@ export default function ScholarshipDetailCard({ scholarship, preview }) {
   }, [author, preview]);
 
   return (
-    <Card sx={{ p: 3 }}>
-      <Typography variant="h6" gutterBottom>
-        {organization}
-      </Typography>
-      <Typography variant="h4" gutterBottom>
-        {name}
-      </Typography>
-      {preview && (
-        <MuiLink
-          href="#"
-          underline="always"
-          onClick={(e) => e.preventDefault()}
-          sx={{ display: 'block', mb: 2 }}>
-          {website}
-        </MuiLink>
-      )}
-
-      <Grid container spacing={3}>
-        <Grid item>
-          <Box sx={{ display: 'flex' }}>
-            <AttachMoneyIcon color="primary" />
-            <Typography>{ScholarshipAmount.toString(amount)}</Typography>
-          </Box>
-        </Grid>
-
-        <Grid item>
-          <Box sx={{ display: 'flex' }}>
-            <EventIcon color="primary" sx={{ mr: 0.5 }} />
-            <Typography>
-              {deadline?.toLocaleDateString() || 'Unknown'}
-            </Typography>
-          </Box>
-        </Grid>
-      </Grid>
-
-      <Box sx={{ my: 2, py: 1 }}>
-        <Button
-          component={MuiLink}
-          href={website}
-          target="_blank"
-          rel="noreferrer"
-          variant="contained"
-          color="primary"
-          sx={{ mr: 1 }}
-          startIcon={<SendIcon />}>
-          Apply
-        </Button>
-        <Button
-          variant="outlined"
-          startIcon={<ShareIcon />}
-          onClick={shareFn}
-          disabled={scholarship.id === undefined}>
-          Share
-        </Button>
-
-        {!preview && canEdit && (
-          <IconButton
-            component={Link}
-            to={{
-              pathname: `/scholarships/${scholarship.id}/edit`,
+    <Card variant="outlined">
+      <CardActionArea
+        component={Link}
+        to={{
+          pathname: `/scholarships/${scholarship.id}`,
+          state: { scholarship },
+        }}
+        disabled={detailed}>
+        <CardContent sx={{ p: 3 }}>
+          <Typography
+            variant={detailed ? 'h6' : 'subtitle1'}
+            sx={{
+              fontWeight: 'medium',
             }}>
-            <EditIcon />
-          </IconButton>
-        )}
-      </Box>
+            {organization}
+          </Typography>
+          <Typography variant={detailed ? 'h4' : 'h5'} gutterBottom>
+            {name}
+          </Typography>
+          {preview && (
+            <MuiLink
+              href="#"
+              underline="always"
+              onClick={(e) => e.preventDefault()}
+              sx={{ display: 'block', mb: 2 }}>
+              {website}
+            </MuiLink>
+          )}
 
-      <Typography paragraph sx={{ whiteSpace: 'pre-line' }}>
-        {description}
-      </Typography>
-      <Box sx={{ mt: 6 }}>
-        <Typography variant="h5" component="h4" paragraph>
-          Eligibility Requirements
-        </Typography>
-        <DetailCardCell
-          label="State"
-          text={requirements?.states?.join(', ') || 'All'}
-        />
-        <DetailCardCell
-          label="GPA"
-          text={requirements?.gpa?.toFixed(1) || 'All'}
-        />
-        <DetailCardCell
-          label="Grades"
-          text={
-            requirements?.grades?.map(GradeLevel.toString).join(', ') || 'All'
-          }
-        />
-        <DetailCardCell
-          label="Demographic"
-          text={
-            requirements?.ethnicities?.map(Ethnicity.toString).join(', ') ||
-            'All'
-          }
-        />
-        <DetailCardCell
-          label="Majors"
-          text={requirements?.majors?.join(', ') || 'All'}
-        />
-        <DetailCardCell
-          label="Schools"
-          text={requirements?.schools?.join(', ') || 'All'}
-        />
-      </Box>
+          <Grid container spacing={3}>
+            <Grid item>
+              <Box sx={{ display: 'flex' }}>
+                <AttachMoneyIcon color="primary" />
+                <Typography>{ScholarshipAmount.toString(amount)}</Typography>
+              </Box>
+            </Grid>
 
-      <Grid container sx={{ mt: 6 }}>
-        {!tags || !tags.length
-          ? 'None'
-          : tags.map((tag) => (
-              <Chip
-                label={tag}
-                variant="outlined"
+            <Grid item>
+              <Box sx={{ display: 'flex' }}>
+                <EventIcon color="primary" sx={{ mr: 0.5 }} />
+                <Typography>
+                  {deadline?.toLocaleDateString() || 'Unknown'}
+                </Typography>
+              </Box>
+            </Grid>
+          </Grid>
+
+          {detailed && (
+            <Box sx={{ my: 2, py: 1 }}>
+              <Button
+                component={MuiLink}
+                href={website}
+                target="_blank"
+                rel="noreferrer"
+                variant="contained"
                 color="primary"
-                sx={{ mr: 2, color: 'text.primary' }}
-                key={tag}
-              />
-            ))}
-      </Grid>
+                sx={{ mr: 1 }}
+                startIcon={<SendIcon />}>
+                Apply
+              </Button>
+              <Button
+                variant="outlined"
+                startIcon={<ShareIcon />}
+                onClick={shareFn}
+                disabled={scholarship.id === undefined}>
+                Share
+              </Button>
 
-      <Chip
-        component={MuiLink}
-        href={genMailToLink({
-          subject: `Report Issue for ${name}`,
-          bcc: author?.email,
-          body: withDeviceInfo(
-            `Please describe the issue for the scholarship located at ${URL}.`
-          ),
-        })}
-        icon={<ReportIcon />}
-        sx={{ my: 5 }}
-        label="Report Issue"
-      />
+              {!preview && canEdit && (
+                <IconButton
+                  component={Link}
+                  to={{
+                    pathname: `/scholarships/${scholarship.id}/edit`,
+                  }}>
+                  <EditIcon />
+                </IconButton>
+              )}
+            </Box>
+          )}
+
+          <Typography
+            paragraph
+            sx={{
+              display: detailed ? '-webkit-box' : undefined,
+              WebkitLineClamp: detailed ? 5 : undefined,
+              lineClamp: detailed ? 5 : undefined,
+              WebkitBoxOrient: detailed ? 'vertical' : undefined,
+              overflow: 'hidden',
+              whiteSpace: 'pre-line',
+              my: 2,
+            }}>
+            {description}
+          </Typography>
+          {detailed && (
+            <Box sx={{ my: 4 }}>
+              <Typography variant="h5" component="h4" paragraph>
+                Eligibility Requirements
+              </Typography>
+              <DetailCardCell
+                label="State"
+                text={requirements?.states?.join(', ') || 'All'}
+              />
+              <DetailCardCell
+                label="GPA"
+                text={requirements?.gpa?.toFixed(1) || 'All'}
+              />
+              <DetailCardCell
+                label="Grades"
+                text={
+                  requirements?.grades?.map(GradeLevel.toString).join(', ') ||
+                  'All'
+                }
+              />
+              <DetailCardCell
+                label="Demographic"
+                text={
+                  requirements?.ethnicities
+                    ?.map(Ethnicity.toString)
+                    .join(', ') || 'All'
+                }
+              />
+              <DetailCardCell
+                label="Majors"
+                text={requirements?.majors?.join(', ') || 'All'}
+              />
+              <DetailCardCell
+                label="Schools"
+                text={requirements?.schools?.join(', ') || 'All'}
+              />
+            </Box>
+          )}
+
+          <Grid container sx={{ mt: 2 }}>
+            <Chip
+              label="DACA"
+              variant="outlined"
+              color="primary"
+              sx={{ mr: 2, color: 'text.primary' }}
+            />
+            {tags &&
+              tags.length &&
+              tags.map((tag) => (
+                <Chip
+                  label={tag}
+                  variant="outlined"
+                  color="primary"
+                  sx={{ mr: 2, color: 'text.primary' }}
+                  key={tag}
+                />
+              ))}
+          </Grid>
+
+          {detailed && (
+            <Chip
+              component={MuiLink}
+              href={genMailToLink({
+                subject: `Report Issue for ${name}`,
+                bcc: author?.email,
+                body: withDeviceInfo(
+                  `Please describe the issue for the scholarship located at ${URL}.`
+                ),
+              })}
+              icon={<ReportIcon />}
+              sx={{ my: 5 }}
+              label="Report Issue"
+            />
+          )}
+        </CardContent>
+      </CardActionArea>
     </Card>
   );
 }
 
-ScholarshipDetailCard.propTypes = {
+ScholarshipCard.propTypes = {
   scholarship: PropTypes.shape({
     id: PropTypes.string,
     data: PropTypes.shape({
@@ -254,16 +296,18 @@ ScholarshipDetailCard.propTypes = {
         id: PropTypes.string,
       }),
       requirements: PropTypes.shape({
-        gpa: PropTypes.number,
         ethnicities: PropTypes.arrayOf(PropTypes.string),
+        gpa: PropTypes.number,
+        grades: PropTypes.arrayOf(PropTypes.number),
         majors: PropTypes.arrayOf(PropTypes.string),
+        schools: PropTypes.arrayOf(PropTypes.string),
         states: PropTypes.arrayOf(PropTypes.string),
       }),
     }).isRequired,
   }).isRequired,
-  preview: PropTypes.bool,
+  style: PropTypes.oneOf(['result', 'detail', 'preview']),
 };
 
-ScholarshipDetailCard.defaultProps = {
-  preview: false,
+ScholarshipCard.defaultProps = {
+  style: 'result',
 };

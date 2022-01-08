@@ -21,7 +21,7 @@ import validationSchema from '../validation/ValidationSchema';
 import ScholarshipAmountField from './ScholarshipAmountField';
 import DatePicker from './DatePicker';
 import FormikTextField from './FormikTextField';
-import ScholarshipDetailCard from './ScholarshipDetailCard';
+import ScholarshipCard from './ScholarshipCard';
 import FormikMultiSelect from './FormikMultiSelect';
 import FormikAutocomplete from './FormikAutocomplete';
 import { SCHOOLS, STATES, MAJORS } from '../types/options';
@@ -212,7 +212,7 @@ function ScholarshipForm({ scholarship }) {
     Review: {
       description: 'Please review the information below.',
       content: (
-        <ScholarshipDetailCard scholarship={{ data: formik.values }} preview />
+        <ScholarshipCard scholarship={{ data: formik.values }} style="result" />
       ),
     },
   };

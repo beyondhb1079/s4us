@@ -2,10 +2,10 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import ScholarshipListCard from './ScholarshipListCard';
+import ScholarshipCard from './ScholarshipCard';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 
-test('renders ScholarshipListCard', () => {
+test('renders basics', () => {
   const mockScholarship = {
     id: '0',
     data: {
@@ -21,7 +21,7 @@ test('renders ScholarshipListCard', () => {
 
   render(
     <ThemeProvider theme={createTheme()}>
-      <ScholarshipListCard scholarship={mockScholarship} />
+      <ScholarshipCard scholarship={mockScholarship} />
     </ThemeProvider>,
     {
       wrapper: MemoryRouter,

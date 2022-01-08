@@ -3,7 +3,7 @@ import { Box, Button, CircularProgress, Grid, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
-import ScholarshipListCard from './ScholarshipListCard';
+import ScholarshipCard from './ScholarshipCard';
 
 function ScholarshipList({ noResultsNode, listFn }) {
   const [error, setError] = useState();
@@ -54,7 +54,7 @@ function ScholarshipList({ noResultsNode, listFn }) {
     <Grid container spacing={3}>
       {scholarships.map(({ id, data }) => (
         <Grid item xs={12} key={id}>
-          <ScholarshipListCard scholarship={{ id, data }} />
+          <ScholarshipCard scholarship={{ id, data }} style="result" />
         </Grid>
       ))}
       <Grid item xs={12}>
