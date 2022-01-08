@@ -1,18 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid } from '@mui/material';
-import FilterDropDown from './FilterDropdown';
+import { Grid, FormControl, Select, MenuItem } from '@mui/material';
 import AmountFilter from './AmountFilter';
 import GradeLevelFilter from './GradeLevelFilter';
 import qParams from '../lib/QueryParams';
 import sortOptions, { DEADLINE_ASC } from '../lib/sortOptions';
 import experiments from '../lib/experiments';
-
-const majors = {
-  che: 'Chemical Eng.',
-  cs: 'Computer Science',
-  ds: 'Data Science',
-};
+import MajorFilter from './MajorFilter';
 
 export default function FilterBar({ setQueryParam, queryParams }) {
   const { minAmount, maxAmount, grades } = queryParams;
@@ -24,9 +18,7 @@ export default function FilterBar({ setQueryParam, queryParams }) {
       justifyContent="space-between"
       sx={{ flexGrow: 1 }}>
       <Grid item>
-        {experiments.expShowMajorFilter && (
-          <FilterDropDown label="Major" items={majors} />
-        )}
+        {experiments.expShowMajorFilter && <MajorFilter />}
 
         <GradeLevelFilter
           grades={new Set(grades)}
@@ -43,13 +35,19 @@ export default function FilterBar({ setQueryParam, queryParams }) {
 
       <Grid item sx={{ display: 'flex', alignItems: 'center' }}>
         Sort by
-        <FilterDropDown
-          label="Sorting"
-          items={sortOptions}
-          value={queryParams.sortBy ?? DEADLINE_ASC}
-          removeNone
-          onChange={(option) => setQueryParam('sortBy', option)}
-        />
+        <FormControl variant="outlined" sx={{ margin: 1, minWidth: 120 }}>
+          <Select
+            value={queryParams.sortBy ?? DEADLINE_ASC}
+            onChange={(e) => setQueryParam('sortBy', e.target.value)}
+            displayEmpty
+            sx={{ height: (theme) => theme.spacing(4) }}>
+            {Object.keys(sortOptions).map((key) => (
+              <MenuItem key={key} value={key}>
+                {sortOptions[key]}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </Grid>
     </Grid>
   );
