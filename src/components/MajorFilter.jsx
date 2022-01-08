@@ -9,11 +9,11 @@ import {
 } from '@mui/material';
 import { MAJORS } from '../types/options';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import PropTypes from 'prop-types';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 
-function MajorFilter() {
+function MajorFilter({ majors, onSelect, onDelete }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [majors, setMajors] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -41,20 +41,19 @@ function MajorFilter() {
             variant="outlined"
             color="primary"
             key={major}
-            onDelete={() =>
-              setMajors((chips) => chips.filter((chip) => chip !== major))
-            }
+            onDelete={() => onDelete(major)}
             sx={{ mx: 1, mt: 1, color: '#000' }}
           />
         ))}
         <Autocomplete
           multiple
           freeSolo
+          filterSelectedOptions
           open={isOpen}
           value={majors}
+          onChange={(e, val) => onSelect(val)}
           disabled={majors.length >= 10}
           onInputChange={(e, val) => setIsOpen(val.length > 0)}
-          onChange={(e, val) => setMajors(val)}
           options={[...MAJORS]}
           renderTags={() => null}
           renderInput={(params) => (
@@ -84,3 +83,13 @@ function MajorFilter() {
 }
 
 export default MajorFilter;
+
+MajorFilter.propTypes = {
+  majors: PropTypes.arrayOf(PropTypes.string),
+  onSelect: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+};
+
+MajorFilter.defaultProps = {
+  majors: [],
+};
