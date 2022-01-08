@@ -53,6 +53,7 @@ function MajorFilter({ majors, onSelect, onDelete }) {
           value={majors}
           onChange={(e, val) => onSelect(val)}
           disabled={majors.length >= 10}
+          onInputChange={(e, val) => setIsOpen(val.length > 0)}
           options={[...MAJORS]}
           renderTags={() => null}
           renderInput={(params) => (
