@@ -212,7 +212,10 @@ function ScholarshipForm({ scholarship }) {
     Review: {
       description: 'Please review the information below.',
       content: (
-        <ScholarshipCard scholarship={{ data: formik.values }} style="result" />
+        <ScholarshipCard
+          scholarship={{ data: formik.values }}
+          style="preview"
+        />
       ),
     },
   };
