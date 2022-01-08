@@ -24,6 +24,7 @@ function create(data: {
   name?: string;
   deadline?: Date;
   grades?: GradeLevel[];
+  majors?: string[];
 }) {
   const amount = data.amount ?? ScholarshipAmount.unknown();
   const amountString = ScholarshipAmount.toString(amount);
@@ -35,7 +36,7 @@ function create(data: {
     deadline,
     website: 'foo.com',
     description: 'something',
-    requirements: { grades: data.grades ?? [] },
+    requirements: { grades: data.grades ?? [], majors: data.majors ?? [] },
   });
 }
 
@@ -341,6 +342,50 @@ test('scholarships.list - filters by grades (all grades)', async () => {
   });
 
   const want = [middleSchool, highSchool, college, graduate];
+  expect(got.results.map(extractName).sort()).toEqual(
+    want.map(extractName).sort()
+  );
+});
+
+const arts = create({
+  name: 'arts',
+  majors: ['Culinary Arts', 'Drama and Theater Arts', 'Liberal Arts'],
+});
+const engineering = create({
+  name: 'engineering',
+  majors: [
+    'Biomedical Engineering',
+    'Chemical Engineering',
+    'Civil Engineering',
+  ],
+});
+const socialSciences = create({
+  name: 'political science',
+  majors: ['History', 'Political Science', 'Sociology'],
+});
+const majorScholarships = [arts, engineering, socialSciences];
+
+test('scholarships.list - filters by majors (art & social science majors)', async () => {
+  await Promise.all(majorScholarships.map((s) => s.save()));
+
+  const got = await Scholarships.list({
+    majors: ['Liberal Arts', 'History'],
+  });
+
+  const want = [arts, socialSciences];
+  expect(got.results.map(extractName).sort()).toEqual(
+    want.map(extractName).sort()
+  );
+});
+
+test('scholarships.list - filters by majors (engineering major)', async () => {
+  await Promise.all(majorScholarships.map((s) => s.save()));
+
+  const got = await Scholarships.list({
+    majors: ['Civil Engineering'],
+  });
+
+  const want = [engineering];
   expect(got.results.map(extractName).sort()).toEqual(
     want.map(extractName).sort()
   );

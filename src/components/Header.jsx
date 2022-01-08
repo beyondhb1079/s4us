@@ -72,14 +72,16 @@ const AuthZoomButton = ({ t }) => {
             aria-controls="menu-appbar"
             aria-haspopup="true"
             onClick={(e) => setAnchorEl(e.currentTarget)}
-            color="inherit">
+            color="inherit"
+            sx={{ height: '100%', width: 64 }}>
             <Avatar src={currentUser.photoURL} />
           </IconButton>
         ) : (
           <Button
             color="inherit"
             component={Link}
-            to={{ state: { showLoginDialog: true } }}>
+            to={{ state: { showLoginDialog: true } }}
+            sx={{ height: '100%', width: 64 }}>
             {t('btn.login')}
           </Button>
         )}
@@ -128,17 +130,15 @@ function Header() {
             {BRAND_NAME.toUpperCase()}
           </MuiLink>
         </Grid>
-        <Grid item>
-          <HeaderNavMenu links={links} />
-        </Grid>
 
-        <Grid item>
-          <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
+        <Grid item sx={{ height: 80 }}>
+          <HeaderNavMenu links={links} />
+          <IconButton
+            onClick={(e) => setAnchorEl(e.currentTarget)}
+            sx={{ px: 2 }}>
             <LanguageIcon />
           </IconButton>
-        </Grid>
 
-        <Grid item sx={{ minWidth: '100px' }}>
           <AuthZoomButton t={t} />
         </Grid>
       </Grid>

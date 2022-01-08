@@ -44,15 +44,15 @@ function ListScholarships() {
 
   const pruneQueryParam = (index) => {
     delete params[index];
-    history.replace({ search: queryString.stringify(params) });
+    history.replace({ search: queryString.stringify(params, queryOptions) });
   };
 
   /**
    * when dealing with invalid values in an array
    * rather than pruning the entire param, we can prune out the invalid values
    */
-  const replaceQueryParam = (index, newVal) => {
-    params.grades = newVal;
+  const replaceQueryParam = (key, newVal) => {
+    params[key] = newVal;
     history.replace({ search: queryString.stringify(params, queryOptions) });
   };
 
@@ -65,7 +65,7 @@ function ListScholarships() {
   const sortField = getField(sortBy);
   const sortDir = getDir(sortBy);
 
-  const { minAmount, maxAmount, grades } = params;
+  const { minAmount, maxAmount, grades, majors } = params;
 
   if (
     minAmount !== undefined &&
@@ -96,6 +96,11 @@ function ListScholarships() {
     } else pruneQueryParam(qParams.GRADES);
   }
 
+  if (majors !== undefined) {
+    if (!Array.isArray(majors) || majors.length === 0 || majors[0] === '')
+      pruneQueryParam(qParams.MAJORS);
+  }
+
   const listScholarships = () =>
     Scholarships.list({
       sortField,
@@ -103,6 +108,7 @@ function ListScholarships() {
       minAmount,
       maxAmount,
       grades,
+      majors,
       hideExpired: true,
     });
 
