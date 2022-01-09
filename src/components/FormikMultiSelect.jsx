@@ -25,11 +25,9 @@ function FormikMultiSelect(props) {
           values.length > 0
             ? {}
             : {
-                textColor: {
-                  color: (theme) => theme.palette.grey[500],
-                  '& .Mui-disabled': {
-                    WebkitTextFillColor: (theme) => theme.palette.grey[300],
-                  },
+                color: (theme) => theme.palette.grey[500],
+                '& .Mui-disabled': {
+                  WebkitTextFillColor: (theme) => theme.palette.grey[300],
                 },
               }
         }
