@@ -38,7 +38,7 @@
     "react-paginate": "^8.0.0",
     "react-router-dom": "^6.2.1",
     "react-router-prop-types": "^1.0.5",
-    "react-scripts": "4.0.3",
+    "react-scripts": "5.0.0",
     "react-share": "^4.3.1",
     "react-typing-effect": "^2.0.3",
     "reactstrap": "^9.0.1",
@@ -92,7 +92,6 @@
     "**/*": "prettier --write --ignore-unknown"
   },
   "resolutions": {
-    "//": "Temporary mitigation for https://github.com/facebook/jest/issues/7780 and https://github.com/firebase/firebase-js-sdk/issues/3096",
-    "react-scripts/**/jest-environment-jsdom": "^25.0.3"
+    "//": "Temporary mitigation for https://github.com/facebook/jest/issues/7780 and https://github.com/firebase/firebase-js-sdk/issues/3096"
   }
 }
