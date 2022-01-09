@@ -9,6 +9,8 @@ import Scholarships from '../models/Scholarships';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import GradeLevel from '../types/GradeLevel';
 import Ethnicity from '../types/Ethnicity';
+import i18n from '../i18n/setup';
+import { I18nextProvider } from 'react-i18next';
 
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.
@@ -16,11 +18,13 @@ window.MutationObserver = require('mutation-observer');
 
 function renderAtRoute(pathname, state = {}) {
   return render(
-    <ThemeProvider theme={createTheme()}>
-      <MemoryRouter initialEntries={[{ pathname, state }]}>
-        <Route path="/scholarships/:id" component={ViewScholarship} />
-      </MemoryRouter>
-    </ThemeProvider>
+    <I18nextProvider i18n={i18n}>
+      <ThemeProvider theme={createTheme()}>
+        <MemoryRouter initialEntries={[{ pathname, state }]}>
+          <Route path="/scholarships/:id" component={ViewScholarship} />
+        </MemoryRouter>
+      </ThemeProvider>
+    </I18nextProvider>
   );
 }
 
