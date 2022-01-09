@@ -7,6 +7,11 @@ import ScholarshipList from './ScholarshipList';
 import scholarships from '../testdata/scholarships';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n/setup';
+import { clearFirestoreData, initializeTestApp } from '../lib/testing';
+
+beforeAll(() => clearFirestoreData(app.options));
+const app = initializeTestApp({ projectId: 'scholarship-list-test' });
+afterAll(() => app.delete());
 
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.

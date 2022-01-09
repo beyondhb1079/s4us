@@ -88,11 +88,11 @@ export default function ScholarshipCard({ scholarship, style }) {
     }
   };
 
+  const currentUser = firebase.auth().currentUser;
   const [canEdit, setCanEdit] = useState(
-    firebase.auth().currentUser?.uid === author?.id
+    currentUser ? currentUser.uid === author?.id : false
   );
   useEffect(() => {
-    const currentUser = firebase.auth().currentUser;
     if (!preview && currentUser && currentUser.uid !== author?.id) {
       currentUser
         .getIdTokenResult()
@@ -104,7 +104,7 @@ export default function ScholarshipCard({ scholarship, style }) {
         // eslint-disable-next-line no-console
         .catch(console.error);
     }
-  }, [author, preview]);
+  }, [author, currentUser, preview]);
 
   const CardAreaComponent = detailed ? Box : CardActionArea;
   return (
