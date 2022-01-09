@@ -6,8 +6,6 @@ import {
   Avatar,
   Divider,
   Grid,
-  ListItemIcon,
-  ListItemText,
   Menu,
   MenuItem,
   Typography,
@@ -31,7 +29,6 @@ const StyledMenu = withStyles((theme) => ({
 }))((props) => (
   <Menu
     elevation={0}
-    getContentAnchorEl={null}
     anchorOrigin={{
       vertical: 'bottom',
       horizontal: 'center',
@@ -45,65 +42,72 @@ const StyledMenu = withStyles((theme) => ({
   />
 ));
 
+const StyledMenuItem = ({ icon: Icon, text, onClick }) => (
+  <MenuItem onClick={onClick} sx={{ py: 1 }}>
+    <Icon sx={{ mr: 1.5 }} />
+    {text}
+  </MenuItem>
+);
+
+StyledMenuItem.propTypes = {
+  icon: PropTypes.symbol.isRequired,
+  text: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
+};
+
 export default function ProfileDropdown(props) {
-  const { anchorEl, handleClose } = props;
+  const { anchorEl, onClose } = props;
   const user = firebase.auth().currentUser;
 
   // needs to be updated once there is a working manage profile page
   const manageProfileLink = '/home';
 
-  function createMenuItem(text, icon, task) {
-    return (
-      <MenuItem onClick={task} sx={{ paddingY: 1 }}>
-        <ListItemIcon>{icon}</ListItemIcon>
-        <ListItemText primary={text} />
-      </MenuItem>
-    );
-  }
-
-  const signUserOut = () => firebase.auth().signOut();
+  const signUserOut = () => {
+    onClose();
+    firebase.auth().signOut();
+  };
 
   return (
     <StyledMenu
       anchorEl={anchorEl}
       keepMounted
       open={Boolean(anchorEl)}
-      onClose={handleClose}>
+      onClose={onClose}>
       <Grid container spacing={2} sx={{ padding: 1 }}>
         <Grid item sx={{ alignSelf: 'center' }}>
-          <Avatar src={user.photoURL} sx={{ height: 48, width: 48 }} />
+          <Avatar src={user?.photoURL} sx={{ height: 48, width: 48 }} />
         </Grid>
         <Grid item>
           <Typography variant="h6" component="h4">
-            {user.displayName}
+            {user?.displayName}
           </Typography>
           <Typography component="h6" gutterBottom>
-            {user.email}
+            {user?.email}
           </Typography>
           {experiments.expShowFullProfileMenu && (
             <a href={manageProfileLink}>Manage Your Profile</a>
           )}
         </Grid>
       </Grid>
-      <Divider sx={{ marginY: 1 }} />
+      <Divider sx={{ my: 1 }} />
       {experiments.expShowFullProfileMenu && (
         <>
-          {createMenuItem('New', <NewIcon fontSize="medium" />)}
-          {createMenuItem('Saved', <BookmarkIcon fontSize="medium" />)}
-          {createMenuItem('Applied', <DoneIcon fontSize="medium" />)}
-          <Divider sx={{ marginY: 1 }} />
+          <StyledMenuItem icon={NewIcon} text="New" />
+          <StyledMenuItem icon={BookmarkIcon} text="Saved" />
+          <StyledMenuItem icon={DoneIcon} text="Applied" />
+          <Divider sx={{ my: 1 }} />
         </>
       )}
-      {createMenuItem(
-        'Logout',
-        <ExitToAppIcon fontSize="medium" />,
-        signUserOut
-      )}
+      <StyledMenuItem
+        icon={ExitToAppIcon}
+        text="Logout"
+        onClick={signUserOut}
+      />
     </StyledMenu>
   );
 }
 
 ProfileDropdown.propTypes = {
-  anchorEl: PropTypes.bool.isRequired,
-  handleClose: PropTypes.func.isRequired,
+  anchorEl: PropTypes.element,
+  onClose: PropTypes.func.isRequired,
 };

@@ -86,12 +86,7 @@ const AuthZoomButton = ({ t }) => {
           </Button>
         )}
       </Zoom>
-      {isSignedIn && (
-        <ProfileMenu
-          anchorEl={anchorEl}
-          handleClose={() => setAnchorEl(null)}
-        />
-      )}
+      <ProfileMenu anchorEl={anchorEl} onClose={() => setAnchorEl(null)} />
     </>
   );
 };
