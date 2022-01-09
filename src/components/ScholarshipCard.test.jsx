@@ -8,8 +8,8 @@ import { clearFirestoreData, initializeTestApp } from '../lib/testing';
 import i18n from '../i18n/setup';
 import { I18nextProvider } from 'react-i18next';
 
-beforeAll(() => clearFirestoreData(app.options));
 const app = initializeTestApp({ projectId: 'scholarship-card-test' });
+beforeAll(() => clearFirestoreData(app.options));
 afterAll(() => app.delete());
 
 const renderCard = (scholarship, options) =>
