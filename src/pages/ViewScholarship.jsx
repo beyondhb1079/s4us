@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { Container, Typography } from '@mui/material';
 import Scholarships from '../models/Scholarships';
-import ScholarshipDetailCard from '../components/ScholarshipDetailCard';
+import ScholarshipCard from '../components/ScholarshipCard';
 import { Alert } from '@mui/material';
 
 export default function ViewScholarship({ history, location, match }) {
@@ -63,7 +63,7 @@ export default function ViewScholarship({ history, location, match }) {
         </Alert>
       )}
 
-      <ScholarshipDetailCard scholarship={scholarship} />
+      <ScholarshipCard scholarship={scholarship} style="detail" />
     </Container>
   );
 }
