@@ -50,7 +50,7 @@ const StyledMenuItem = ({ icon: Icon, text, onClick }) => (
 );
 
 StyledMenuItem.propTypes = {
-  icon: PropTypes.symbol.isRequired,
+  icon: PropTypes.elementType.isRequired,
   text: PropTypes.string.isRequired,
   onClick: PropTypes.func,
 };
