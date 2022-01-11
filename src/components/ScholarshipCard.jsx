@@ -14,6 +14,8 @@ import {
   IconButton,
   CardActionArea,
   CardContent,
+  Alert,
+  AlertTitle,
 } from '@mui/material';
 import {
   Report as ReportIcon,
@@ -28,6 +30,8 @@ import ScholarshipAmount from '../types/ScholarshipAmount';
 import { BRAND_NAME } from '../config/constants';
 import Ethnicity from '../types/Ethnicity';
 import GradeLevel from '../types/GradeLevel';
+import AmountType from '../types/AmountType';
+import { MAJORS, SCHOOLS, STATES } from '../types/options';
 
 const DetailCardCell = ({ label, text }) => (
   <>
@@ -47,6 +51,111 @@ DetailCardCell.propTypes = {
   label: PropTypes.string.isRequired,
   text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 };
+
+// TODO: Break out this linting into its own separate library
+const dateRe =
+  /((Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w*\.? (\d+)(st|nd|rd|th)?(, \d{4}))|\d{1,2}\/\d{1,2}\/\d{2,4}/gi;
+const thisYear = new Date().getFullYear();
+const gradeLevelKeywords = Object.values(GradeLevel.values())
+  .map((g) => g.toLowerCase())
+  .concat(['freshman', 'freshmen', 'sophmore', 'junior', 'senior']);
+
+function lint(scholarship) {
+  const { amount, deadline, description, requirements } = scholarship.data;
+  const lowerDesc = description.toLowerCase();
+  const issues = [];
+  const schoolYearsFound = description.match(/\d{4}-\d{4}/g);
+  if (
+    schoolYearsFound?.length > 0 &&
+    !schoolYearsFound.includes(`${thisYear - 1}-${thisYear + 1}`) &&
+    !schoolYearsFound.includes(`${thisYear}-${thisYear + 1}`)
+  ) {
+    issues.push(
+      `Description mentions potentially outdated school years: ${schoolYearsFound}.`
+    );
+  }
+  if (!description.includes('\n') && description.match(/ - /g)?.length > 1) {
+    issues.push(
+      'Decription is a single line but contains multiple " - ". Should this be multiple lines?'
+    );
+  }
+  const detectedAmounts = description.match(/\$\d+/g);
+  if (
+    detectedAmounts.length &&
+    (amount.type === AmountType.Fixed || amount.type === AmountType.Varies)
+  ) {
+    if (
+      (amount.min && !description.includes(amount.min)) ||
+      (amount.max && !description.includes(amount.max))
+    ) {
+      issues.push(
+        `Amount specified as $${ScholarshipAmount.toString(
+          amount
+        )} but other amounts appear in description: ${detectedAmounts}.`
+      );
+    }
+  }
+  let datesFound = description
+    .match(dateRe)
+    ?.filter((d) => Date.parse(d) !== Number.NaN);
+  if (datesFound?.length > 0 && !datesFound.includes(deadline)) {
+    issues.push(
+      `Deadline specified is ${deadline.toLocaleDateString()} but other dates were found: ${datesFound}.`
+    );
+  }
+  if (
+    (description.includes('GPA') ||
+      lowerDesc.includes('grade point average')) &&
+    !requirements.gpa
+  ) {
+    issues.push(
+      `No GPA requirement specified but found it mentioned in the description.`
+    );
+  }
+  const detectedGradeLevelKeywords = gradeLevelKeywords.filter((k) =>
+    lowerDesc.includes(k)
+  );
+  if (detectedGradeLevelKeywords.length > 0 && !requirements.grades?.length) {
+    issues.push(
+      `No grade level requirements specified but grade level keywords found: ${detectedGradeLevelKeywords}`
+    );
+  }
+  const detectedMajors = [...MAJORS].filter((k) =>
+    lowerDesc.includes(k.toLowerCase())
+  );
+  if (detectedMajors.length > 0 && !requirements.majors?.length) {
+    issues.push(
+      `No major requirements specified but majors found in description: ${detectedMajors}`
+    );
+  }
+  const detectedSchools = [...SCHOOLS]
+    .map((s) => s.split('(')[0].trim())
+    .filter((k) => lowerDesc.includes(k.toLowerCase()));
+  if (detectedSchools.length > 0 && !requirements.schools?.length) {
+    issues.push(
+      `No school requirements specified but schools found in decription: ${detectedSchools}`
+    );
+  }
+  const detectedStates = [...STATES]
+    .map((s) => s)
+    .filter(
+      (abbr) => description.match('[^a-zA-Z]' + abbr + '[^a-zA-Z]')?.length
+    );
+  if (detectedStates.length > 0 && !requirements.states?.length) {
+    issues.push(
+      `No state requirements specified but states found in decription: ${detectedStates}`
+    );
+  }
+  const detectedEthnicities = [...Object.values(Ethnicity.values())].filter(
+    (k) => lowerDesc.includes(k.toLowerCase())
+  );
+  if (detectedEthnicities.length > 0 && !requirements.ethnicities?.length) {
+    issues.push(
+      `No ethnicity requirements specified but ethnicities found in the description: ${detectedEthnicities}`
+    );
+  }
+  return issues;
+}
 
 export default function ScholarshipCard({ scholarship, style }) {
   const history = useHistory();
@@ -107,6 +216,7 @@ export default function ScholarshipCard({ scholarship, style }) {
   }, [author, currentUser, preview]);
 
   const CardAreaComponent = detailed ? Box : CardActionArea;
+  const issues = canEdit ? lint(scholarship) : [];
   return (
     <Card variant="outlined">
       <CardAreaComponent
@@ -277,6 +387,16 @@ export default function ScholarshipCard({ scholarship, style }) {
           )}
         </CardContent>
       </CardAreaComponent>
+      {issues.length > 0 && (
+        <Alert severity="warning">
+          <AlertTitle>{issues.length} potential issues detected:</AlertTitle>
+          <ul>
+            {issues.map((m) => (
+              <Typography component="li">{m}</Typography>
+            ))}
+          </ul>
+        </Alert>
+      )}
     </Card>
   );
 }
