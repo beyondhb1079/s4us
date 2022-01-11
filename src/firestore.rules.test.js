@@ -204,3 +204,27 @@ describe('scholarship amount rule', () => {
     );
   });
 });
+
+test('fails when no scholarship description', () => {
+  const scholarship = { ...newScholarship };
+  delete scholarship.description;
+  return assertFails(
+    johnApp.firestore().collection('scholarships').doc().set(scholarship)
+  );
+});
+
+test('fails when no scholarship deadline', () => {
+  const scholarship = { ...newScholarship };
+  delete scholarship.deadline;
+  return assertFails(
+    johnApp.firestore().collection('scholarships').doc().set(scholarship)
+  );
+});
+
+test('fails when no scholarship website', () => {
+  const scholarship = { ...newScholarship };
+  delete scholarship.website;
+  return assertFails(
+    johnApp.firestore().collection('scholarships').doc().set(scholarship)
+  );
+});
