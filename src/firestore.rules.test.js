@@ -13,6 +13,7 @@ const newScholarship = {
   name: 'test-scholarship',
   deadline: new Date(),
   description: 'this is a test scholarship',
+  website: 'https://test.com',
   amount: {
     type: 'UNKNOWN',
     min: 0,
@@ -163,4 +164,43 @@ test('allows scholarship delete when user is admin', async () => {
   return assertSucceeds(
     adminApp.firestore().collection('scholarships').doc('KLJASDQW').delete()
   );
+});
+
+test('fails when no scholarship name', () => {
+  const scholarship = { ...newScholarship };
+  delete scholarship.name;
+
+  return assertFails(
+    aliceApp.firestore().collection('scholarships').doc().set(scholarship)
+  );
+});
+
+describe('scholarship amount rule', () => {
+  const scholarship = { ...newScholarship };
+  const collection = aliceApp.firestore().collection('scholarships').doc();
+
+  test('fails when amount not a map', () => {
+    scholarship.amount = 'amount';
+    return assertFails(collection.set(scholarship));
+  });
+
+  test('fails when no amount', () => {
+    delete scholarship.amount;
+    return assertFails(collection.set(scholarship));
+  });
+
+  test('fails when type is not an AmountType key', () => {
+    scholarship.amount = { type: 'random' };
+    return assertFails(collection.set(scholarship));
+  });
+
+  test('fails when min/max is not int', () => {
+    scholarship.amount.min = '0';
+    scholarship.amount.max = '10';
+
+    return (
+      assertFails(collection.set(scholarship)) &&
+      assertFails(collection.set(scholarship))
+    );
+  });
 });

@@ -1,12 +1,52 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    function validAmount(){
+      return request.resource.data.amount is map 
+      && request.resource.data.amount.type in ['UNKNOWN', 'FIXED','VARIES','FULL_TUITION']
+      && request.resource.data.amount.min is int
+      && request.resource.data.amount.max is int
+    }
+
+    function validReqs(){
+      return !('requirements' in request.resource.data) 
+      || request.resource.data.requirements is map 
+      && !('gpa' in request.resource.data.requirements) || request.resource.data.gpa is number
+      && !('ethnicities' in request.resource.data.requirements) || request.resource.data.requirements.ethnicities is list
+      && !('majors' in request.resource.data.requirements) || request.resource.data.requirements.majors is list
+      && !('schools' in request.resource.data.requirements) || request.resource.data.requirements.schools is list
+      && !('grades' in request.resource.data.requirements) || request.resource.data.requirements.grades is list
+      && !('states' in request.resource.data.requirements) || request.resource.data.requirements.states is list
+      && !('genders' in request.resource.data.requirements) || request.resource.data.requirements.genders is list
+    }
+
+    function validAuthor(){
+      return !('author' in request.resource.data) || request.resource.data.author is map
+      && !('id' in request.resource.data.author) || request.resource.data.author.id is string
+      && !('email' in request.resource.data.author) || request.resource.data.author.email is string
+    }
+
+    function validData(){
+      return request.resource.data.name is string 
+      && validAmount()
+      && request.resource.data.deadline is timestamp 
+      && request.resource.data.description is string 
+      && request.resource.data.website is string
+      // OPTIONAL FIELDS
+      && !('organization' in request.resource.data) || request.resource.data.orginaztion is string
+      && !('tags' in request.resource.data) || request.resource.data.tags is list
+      && !('dateAdded' in request.resource.data) || request.resource.data.dateAdded is timestamp
+      && !('lastModified' in request.resource.data) || request.resource.data.lastModified is timestamp
+      && validReqs()
+      && validAuthor()
+    }
+
     match /scholarships/{document=**} {
       allow read: if true;
     }
 
     match /scholarships/{scholarshipId} {
-      allow create: if request.auth != null;
+      allow create: if request.auth != null && validData();
       allow update: if request.auth.uid == resource.data.author.id || request.auth.token.admin;
       allow delete: if request.auth.uid == resource.data.author.id || request.auth.token.admin;
     }
