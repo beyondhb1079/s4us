@@ -166,26 +166,140 @@ test('allows scholarship delete when user is admin', async () => {
   );
 });
 
-test('fails when no scholarship name', () => {
-  const scholarship = { ...newScholarship };
-  delete scholarship.name;
+describe('validation rules - create', () => {
+  const collection = aliceApp.firestore().collection('scholarships').doc();
 
-  return assertFails(
-    aliceApp.firestore().collection('scholarships').doc().set(scholarship)
-  );
+  test('fails when no scholarship name', () => {
+    const scholarship = { ...newScholarship };
+    delete scholarship.name;
+
+    return assertFails(collection.set(scholarship));
+  });
+
+  test('fails when no scholarship amount', () => {
+    const scholarship = { ...newScholarship };
+    delete scholarship.amount;
+    return assertFails(collection.set(scholarship));
+  });
+
+  test('fails when no scholarship description', () => {
+    const scholarship = { ...newScholarship };
+    delete scholarship.description;
+    return assertFails(collection.set(scholarship));
+  });
+
+  test('fails when no scholarship deadline', () => {
+    const scholarship = { ...newScholarship };
+    delete scholarship.deadline;
+    return assertFails(collection.set(scholarship));
+  });
+
+  test('fails when no scholarship website', () => {
+    const scholarship = { ...newScholarship };
+    delete scholarship.website;
+    return assertFails(collection.set(scholarship));
+  });
+
+  test('fails when scholarship organization not a string', () => {
+    return assertFails(collection.set({ ...newScholarship, organization: 23 }));
+  });
+
+  test('fails when scholarship tags not an array', () => {
+    return assertFails(collection.set({ ...newScholarship, tags: 'list' }));
+  });
+
+  test('fails when scholarship dateAdded not a Date', () => {
+    return assertFails(
+      collection.set({ ...newScholarship, dateAdded: '12/23/12' })
+    );
+  });
+
+  test('fails when scholarship lastModified not a Date', () => {
+    return assertFails(
+      collection.set({ ...newScholarship, lastModified: 'today' })
+    );
+  });
+
+  test('fails when scholarship author not an object', () => {
+    return assertFails(collection.set({ ...newScholarship, author: '{}' }));
+  });
+
+  test('fails when author id not a string', () => {
+    return assertFails(
+      collection.set({ ...newScholarship, author: { id: 2 } })
+    );
+  });
+
+  test('fails when author email not a string', () => {
+    return assertFails(
+      collection.set({ ...newScholarship, author: { email: false } })
+    );
+  });
+
+  describe('requirements validation', () => {
+    const scholarship = { ...newScholarship };
+    scholarship.requirements = {};
+
+    test('fails when scholarship requirements not an object', () => {
+      return assertFails(
+        collection.set({ ...newScholarship, requirements: 3.4 })
+      );
+    });
+
+    test('fails when scholarship gpa is not a number', () => {
+      scholarship.requirements.gpa = '3.0';
+      return assertFails(collection.set(scholarship));
+    });
+
+    test('fails when gpa is less than 0', () => {
+      scholarship.requirements.gpa = -3;
+      return assertFails(collection.set(scholarship));
+    });
+
+    test('fails when gpa is greater than 4', () => {
+      scholarship.requirements.gpa = 4.1;
+      return assertFails(collection.set(scholarship));
+    });
+
+    test('fails when scholarship ethnicities is not an array', () => {
+      scholarship.requirements.ethnicities = '[]';
+      return assertFails(collection.set(scholarship));
+    });
+
+    test('fails when scholarship majors is not an array', () => {
+      scholarship.requirements.majors = 'History';
+      return assertFails(collection.set(scholarship));
+    });
+
+    test('fails when scholarship schools is not an array', () => {
+      scholarship.requirements.schools = 'UCI';
+      return assertFails(collection.set(scholarship));
+    });
+
+    test('fails when scholarship grades is not an array', () => {
+      scholarship.requirements.grades = 8;
+      return assertFails(collection.set(scholarship));
+    });
+
+    test('fails when scholarship states is not an array', () => {
+      scholarship.requirements.states = 'WA';
+      return assertFails(collection.set(scholarship));
+    });
+
+    test('fails when scholarship genders is not an array', () => {
+      scholarship.requirements.genders = 'Male';
+      return assertFails(collection.set(scholarship));
+    });
+  });
 });
 
+/*
 describe('scholarship amount rule', () => {
   const scholarship = { ...newScholarship };
   const collection = aliceApp.firestore().collection('scholarships').doc();
 
   test('fails when amount not a map', () => {
     scholarship.amount = 'amount';
-    return assertFails(collection.set(scholarship));
-  });
-
-  test('fails when no amount', () => {
-    delete scholarship.amount;
     return assertFails(collection.set(scholarship));
   });
 
@@ -204,27 +318,4 @@ describe('scholarship amount rule', () => {
     );
   });
 });
-
-test('fails when no scholarship description', () => {
-  const scholarship = { ...newScholarship };
-  delete scholarship.description;
-  return assertFails(
-    johnApp.firestore().collection('scholarships').doc().set(scholarship)
-  );
-});
-
-test('fails when no scholarship deadline', () => {
-  const scholarship = { ...newScholarship };
-  delete scholarship.deadline;
-  return assertFails(
-    johnApp.firestore().collection('scholarships').doc().set(scholarship)
-  );
-});
-
-test('fails when no scholarship website', () => {
-  const scholarship = { ...newScholarship };
-  delete scholarship.website;
-  return assertFails(
-    johnApp.firestore().collection('scholarships').doc().set(scholarship)
-  );
-});
+*/

@@ -10,8 +10,8 @@ service cloud.firestore {
 
     function validReqs(docData){
       return !('requirements' in docData) 
-      || docData.requirements is map 
-      && (!('gpa' in docData.requirements) || docData.requirements.gpa is number)
+      || docData.requirements is map
+      && (!('gpa' in docData.requirements) || docData.requirements.gpa is number && docData.requirements.gpa > 0 && docData.requirements.gpa < 4)
       && (!('ethnicities' in docData.requirements) || docData.requirements.ethnicities is list)
       && (!('majors' in docData.requirements) || docData.requirements.majors is list)
       && (!('schools' in docData.requirements) || docData.requirements.schools is list)
@@ -21,7 +21,7 @@ service cloud.firestore {
     }
 
     function validAuthor(docData){
-      return (!('author' in docData) || docData.author is map)
+      return !('author' in docData) || docData.author is map
       && (!('id' in docData.author) || docData.author.id is string)
       && (!('email' in docData.author) || docData.author.email is string)
     }
@@ -38,7 +38,7 @@ service cloud.firestore {
       && (!('dateAdded' in docData) || docData.dateAdded is timestamp)
       && (!('lastModified' in docData) || docData.lastModified is timestamp)
       && validReqs(docData)
-      // && validAuthor(docData)
+      && validAuthor(docData)
     }
 
     match /scholarships/{document=**} {
