@@ -11,19 +11,19 @@ service cloud.firestore {
     function validReqs(docData){
       return !('requirements' in docData) 
       || docData.requirements is map 
-      && !('gpa' in docData.requirements) || docData.requirements.gpa is number
-      && !('ethnicities' in docData.requirements) || docData.requirements.ethnicities is list
-      && !('majors' in docData.requirements) || docData.requirements.majors is list
-      && !('schools' in docData.requirements) || docData.requirements.schools is list
-      && !('grades' in docData.requirements) || docData.requirements.grades is list
-      && !('states' in docData.requirements) || docData.requirements.states is list
-      && !('genders' in docData.requirements) || docData.requirements.genders is list
+      && (!('gpa' in docData.requirements) || docData.requirements.gpa is number)
+      && (!('ethnicities' in docData.requirements) || docData.requirements.ethnicities is list)
+      && (!('majors' in docData.requirements) || docData.requirements.majors is list)
+      && (!('schools' in docData.requirements) || docData.requirements.schools is list)
+      && (!('grades' in docData.requirements) || docData.requirements.grades is list)
+      && (!('states' in docData.requirements) || docData.requirements.states is list)
+      && (!('genders' in docData.requirements) || docData.requirements.genders is list)
     }
 
     function validAuthor(docData){
-      return !('author' in docData.author) || docData.author is map
-      && !('id' in docData.author) || docData.author.id is string
-      && !('email' in docData.author) || docData.author.email is string
+      return (!('author' in docData) || docData.author is map)
+      && (!('id' in docData.author) || docData.author.id is string)
+      && (!('email' in docData.author) || docData.author.email is string)
     }
 
     function validData(docData){
@@ -33,12 +33,12 @@ service cloud.firestore {
       && docData.description is string 
       && docData.website is string
       // OPTIONAL FIELDS
-      && !('organization' in docData) || docData.orginaztion is string
-      && !('tags' in docData) || docData.tags is list
-      && !('dateAdded' in docData) || docData.dateAdded is timestamp
-      && !('lastModified' in docData) || docData.lastModified is timestamp
+      && (!('organization' in docData) || docData.organization is string)
+      && (!('tags' in docData) || docData.tags is list)
+      && (!('dateAdded' in docData) || docData.dateAdded is timestamp)
+      && (!('lastModified' in docData) || docData.lastModified is timestamp)
       && validReqs(docData)
-      && validAuthor(docData)
+      // && validAuthor(docData)
     }
 
     match /scholarships/{document=**} {
