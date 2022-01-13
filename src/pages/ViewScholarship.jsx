@@ -5,6 +5,7 @@ import { Container, Typography } from '@mui/material';
 import Scholarships from '../models/Scholarships';
 import ScholarshipCard from '../components/ScholarshipCard';
 import { Alert } from '@mui/material';
+import bannerImg from '../img/detail-page-banner.jpg';
 
 export default function ViewScholarship({ history, location, match }) {
   const { id } = match.params;
@@ -62,6 +63,7 @@ export default function ViewScholarship({ history, location, match }) {
           }`}
         </Alert>
       )}
+      <img src={bannerImg} style={{ width: '100%' }} />
 
       <ScholarshipCard scholarship={scholarship} style="detail" />
     </Container>
