@@ -96,26 +96,6 @@ test('denies scholarships update when user is not author', async () => {
 });
 
 test('allows scholarships update when user is author', async () => {
-  const scholarship = { ...newScholarship };
-  await assertSucceeds(
-    aliceApp
-      .firestore()
-      .collection('scholarships')
-      .doc('KLJASDQW')
-      .set(scholarship)
-  );
-  scholarship.name = 'updated name';
-  return assertSucceeds(
-    aliceApp
-      .firestore()
-      .collection('scholarships')
-      .doc('KLJASDQW')
-      .set(scholarship)
-  );
-});
-
-test('allows scholarships update when user is admin', async () => {
-  const scholarship = { ...newScholarship };
   await assertSucceeds(
     aliceApp
       .firestore()
@@ -123,13 +103,29 @@ test('allows scholarships update when user is admin', async () => {
       .doc('KLJASDQW')
       .set({ ...newScholarship })
   );
-  scholarship.name = 'updated name';
+  return assertSucceeds(
+    aliceApp
+      .firestore()
+      .collection('scholarships')
+      .doc('KLJASDQW')
+      .set({ ...newScholarship, name: 'updated name' })
+  );
+});
+
+test('allows scholarships update when user is admin', async () => {
+  await assertSucceeds(
+    aliceApp
+      .firestore()
+      .collection('scholarships')
+      .doc('KLJASDQW')
+      .set({ ...newScholarship })
+  );
   return assertSucceeds(
     adminApp
       .firestore()
       .collection('scholarships')
       .doc('KLJASDQW')
-      .set(scholarship)
+      .set({ ...newScholarship, name: 'updated name' })
   );
 });
 
