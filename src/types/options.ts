@@ -36,7 +36,7 @@ New Mexico	NM
 New York	NY
 North Carolina	NC
 North Dakota	ND
-Northern Mariana Is	MP
+Northern Mariana Islands	MP
 Ohio	OH
 Oklahoma	OK
 Oregon	OR
