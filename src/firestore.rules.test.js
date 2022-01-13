@@ -19,6 +19,8 @@ const newScholarship = {
     min: 0,
     max: 0,
   },
+  dateAdded: new Date(),
+  lastModified: new Date(),
 };
 
 const unauthedApp = initializeTestApp({
@@ -26,6 +28,7 @@ const unauthedApp = initializeTestApp({
 });
 
 const aliceId = 'alice';
+const aliceAuthor = { id: aliceId, email: 'alice@gmail.com' };
 const aliceApp = initializeTestApp({
   projectId: MY_PROJECT_ID,
   auth: { uid: aliceId },
@@ -66,7 +69,14 @@ test('denies scholarships write when signed out', () => {
 
 test('allows scholarships create when signed in', () => {
   return assertSucceeds(
-    aliceApp.firestore().collection('scholarships').doc().set(newScholarship)
+    aliceApp
+      .firestore()
+      .collection('scholarships')
+      .doc()
+      .set({
+        ...newScholarship,
+        author: aliceAuthor,
+      })
   );
 });
 
@@ -76,7 +86,7 @@ test('denies scholarships update when user is not author', async () => {
       .firestore()
       .collection('scholarships')
       .doc('KLJASDQW')
-      .set({ ...newScholarship, author: { id: aliceId } })
+      .set({ ...newScholarship, author: aliceAuthor })
   );
 
   return assertFails(
@@ -94,7 +104,7 @@ test('allows scholarships update when user is author', async () => {
       .firestore()
       .collection('scholarships')
       .doc('KLJASDQW')
-      .set({ ...newScholarship, author: { id: aliceId } })
+      .set({ ...newScholarship, author: aliceAuthor })
   );
 
   return assertSucceeds(
@@ -112,7 +122,7 @@ test('allows scholarships update when user is admin', async () => {
       .firestore()
       .collection('scholarships')
       .doc('KLJASDQW')
-      .set({ ...newScholarship, author: { id: aliceId } })
+      .set({ ...newScholarship, author: aliceAuthor })
   );
 
   return assertSucceeds(
@@ -130,7 +140,7 @@ test('denies scholarship delete when user is not author', async () => {
       .firestore()
       .collection('scholarships')
       .doc('KLJASDQW')
-      .set({ ...newScholarship, author: { id: aliceId } })
+      .set({ ...newScholarship, author: aliceAuthor })
   );
 
   return assertFails(
@@ -144,7 +154,7 @@ test('allows scholarship delete when user is author', async () => {
       .firestore()
       .collection('scholarships')
       .doc('KLJASDQW')
-      .set({ ...newScholarship, author: { id: aliceId } })
+      .set({ ...newScholarship, author: aliceAuthor })
   );
 
   return assertSucceeds(
@@ -158,7 +168,7 @@ test('allows scholarship delete when user is admin', async () => {
       .firestore()
       .collection('scholarships')
       .doc('KLJASDQW')
-      .set({ ...newScholarship, author: { id: aliceId } })
+      .set({ ...newScholarship, author: aliceAuthor })
   );
 
   return assertSucceeds(
@@ -226,13 +236,16 @@ describe('validation rules - create', () => {
 
   test('fails when author id not a string', () => {
     return assertFails(
-      collection.set({ ...newScholarship, author: { id: 2 } })
+      collection.set({
+        ...newScholarship,
+        author: { id: 2, email: 'test@gmail.com' },
+      })
     );
   });
 
   test('fails when author email not a string', () => {
     return assertFails(
-      collection.set({ ...newScholarship, author: { email: false } })
+      collection.set({ ...newScholarship, author: { email: 2, id: aliceId } })
     );
   });
 
