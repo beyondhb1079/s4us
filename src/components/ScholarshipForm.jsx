@@ -166,7 +166,7 @@ function ScholarshipForm({ scholarship }) {
               label="School(s)"
               id="requirements.schools"
               labelStyle={labelStyle}
-              options={[...SCHOOLS]}
+              options={SCHOOLS.map(({ name, state }) => `${name} (${state})`)}
               freeSolo
               formik={formik}
               placeholder="No school requirements"
@@ -178,7 +178,7 @@ function ScholarshipForm({ scholarship }) {
               label="State(s)"
               id="requirements.states"
               labelStyle={labelStyle}
-              options={STATES}
+              options={STATES.map((s) => s.abbr)}
               formik={formik}
               placeholder="No state requirements"
             />
