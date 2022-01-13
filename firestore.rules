@@ -47,7 +47,7 @@ service cloud.firestore {
 
     match /scholarships/{scholarshipId} {
       allow create: if request.auth != null && validData(request.resource.data);
-      allow update: if request.auth.uid == resource.data.author.id || request.auth.token.admin && validData(resource.data);
+      allow update: if (request.auth.uid == resource.data.author.id || request.auth.token.admin) && validData(request.resource.data);
       allow delete: if request.auth.uid == resource.data.author.id || request.auth.token.admin;
     }
   }

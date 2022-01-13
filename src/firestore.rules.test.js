@@ -21,6 +21,7 @@ const newScholarship = {
   },
   dateAdded: new Date(),
   lastModified: new Date(),
+  author: { id: 'alice', email: 'alice@gmail.com' },
 };
 
 const unauthedApp = initializeTestApp({
@@ -28,7 +29,6 @@ const unauthedApp = initializeTestApp({
 });
 
 const aliceId = 'alice';
-const aliceAuthor = { id: aliceId, email: 'alice@gmail.com' };
 const aliceApp = initializeTestApp({
   projectId: MY_PROJECT_ID,
   auth: { uid: aliceId },
@@ -73,10 +73,7 @@ test('allows scholarships create when signed in', () => {
       .firestore()
       .collection('scholarships')
       .doc()
-      .set({
-        ...newScholarship,
-        author: aliceAuthor,
-      })
+      .set({ ...newScholarship })
   );
 });
 
@@ -86,7 +83,7 @@ test('denies scholarships update when user is not author', async () => {
       .firestore()
       .collection('scholarships')
       .doc('KLJASDQW')
-      .set({ ...newScholarship, author: aliceAuthor })
+      .set({ ...newScholarship })
   );
 
   return assertFails(
@@ -99,38 +96,40 @@ test('denies scholarships update when user is not author', async () => {
 });
 
 test('allows scholarships update when user is author', async () => {
+  const scholarship = { ...newScholarship };
   await assertSucceeds(
     aliceApp
       .firestore()
       .collection('scholarships')
       .doc('KLJASDQW')
-      .set({ ...newScholarship, author: aliceAuthor })
+      .set(scholarship)
   );
-
+  scholarship.name = 'updated name';
   return assertSucceeds(
     aliceApp
       .firestore()
       .collection('scholarships')
       .doc('KLJASDQW')
-      .set({ name: 'updated name' })
+      .set(scholarship)
   );
 });
 
 test('allows scholarships update when user is admin', async () => {
+  const scholarship = { ...newScholarship };
   await assertSucceeds(
     aliceApp
       .firestore()
       .collection('scholarships')
       .doc('KLJASDQW')
-      .set({ ...newScholarship, author: aliceAuthor })
+      .set({ ...newScholarship })
   );
-
+  scholarship.name = 'updated name';
   return assertSucceeds(
     adminApp
       .firestore()
       .collection('scholarships')
       .doc('KLJASDQW')
-      .set({ name: 'updated name' })
+      .set(scholarship)
   );
 });
 
@@ -140,7 +139,7 @@ test('denies scholarship delete when user is not author', async () => {
       .firestore()
       .collection('scholarships')
       .doc('KLJASDQW')
-      .set({ ...newScholarship, author: aliceAuthor })
+      .set({ ...newScholarship })
   );
 
   return assertFails(
@@ -154,7 +153,7 @@ test('allows scholarship delete when user is author', async () => {
       .firestore()
       .collection('scholarships')
       .doc('KLJASDQW')
-      .set({ ...newScholarship, author: aliceAuthor })
+      .set({ ...newScholarship })
   );
 
   return assertSucceeds(
@@ -168,7 +167,7 @@ test('allows scholarship delete when user is admin', async () => {
       .firestore()
       .collection('scholarships')
       .doc('KLJASDQW')
-      .set({ ...newScholarship, author: aliceAuthor })
+      .set({ ...newScholarship })
   );
 
   return assertSucceeds(
@@ -218,16 +217,16 @@ describe('validation rules - create', () => {
     return assertFails(collection.set({ ...newScholarship, tags: 'list' }));
   });
 
-  test('fails when scholarship dateAdded not a Date', () => {
-    return assertFails(
-      collection.set({ ...newScholarship, dateAdded: '12/23/12' })
-    );
+  test('fails when no scholarship dateAdded', () => {
+    const scholarship = { ...newScholarship };
+    delete scholarship.dateAdded;
+    return assertFails(collection.set(scholarship));
   });
 
-  test('fails when scholarship lastModified not a Date', () => {
-    return assertFails(
-      collection.set({ ...newScholarship, lastModified: 'today' })
-    );
+  test('fails when no scholarship lastModified', () => {
+    const scholarship = { ...newScholarship };
+    delete scholarship.lastModified;
+    return assertFails(collection.set(scholarship));
   });
 
   test('fails when scholarship author not an object', () => {
@@ -306,29 +305,48 @@ describe('validation rules - create', () => {
   });
 });
 
-/*
-describe('scholarship amount rule', () => {
-  const scholarship = { ...newScholarship };
-  const collection = aliceApp.firestore().collection('scholarships').doc();
+describe('validation rules - update', () => {
+  const collection = aliceApp.firestore().collection('scholarships').doc('abc');
 
-  test('fails when amount not a map', () => {
-    scholarship.amount = 'amount';
-    return assertFails(collection.set(scholarship));
+  test('fails when scholarship name is not a string', async () => {
+    await assertSucceeds(collection.set({ ...newScholarship }));
+    return assertFails(collection.set({ ...newScholarship, name: false }));
   });
 
-  test('fails when type is not an AmountType key', () => {
-    scholarship.amount = { type: 'random' };
-    return assertFails(collection.set(scholarship));
+  test('fails when amount type not in AmountType', async () => {
+    const amount = { type: 'random', min: 0, max: 0 };
+    await assertSucceeds(collection.set({ ...newScholarship }));
+    return assertFails(collection.set({ ...newScholarship, amount: amount }));
   });
 
-  test('fails when min/max is not int', () => {
-    scholarship.amount.min = '0';
-    scholarship.amount.max = '10';
+  test('fails when amount min/max are not an integer', async () => {
+    const amount = { type: 'VARIES', min: false, max: '0' };
+    await assertSucceeds(collection.set({ ...newScholarship }));
+    return assertFails(collection.set({ ...newScholarship, amount }));
+  });
 
-    return (
-      assertFails(collection.set(scholarship)) &&
-      assertFails(collection.set(scholarship))
-    );
+  test('fails when scholarship description not a string', async () => {
+    await assertSucceeds(collection.set({ ...newScholarship }));
+    return assertFails(collection.set({ ...newScholarship, description: 43 }));
+  });
+
+  test('fails when scholarship deadline not a Date', async () => {
+    await assertSucceeds(collection.set({ ...newScholarship }));
+    return assertFails(collection.set({ ...newScholarship, deadline: 43 }));
+  });
+
+  test('fails when scholarship website not a string', async () => {
+    await assertSucceeds(collection.set({ ...newScholarship }));
+    return assertFails(collection.set({ ...newScholarship, website: 43 }));
+  });
+
+  test('fails when scholarship dateAdded not a Date', async () => {
+    await assertSucceeds(collection.set({ ...newScholarship }));
+    return assertFails(collection.set({ ...newScholarship, dateAdded: 43 }));
+  });
+
+  test('fails when scholarship lastModified not a Date', async () => {
+    await assertSucceeds(collection.set({ ...newScholarship }));
+    return assertFails(collection.set({ ...newScholarship, lastModified: 43 }));
   });
 });
-*/
