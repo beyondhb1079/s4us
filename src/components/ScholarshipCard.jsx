@@ -14,6 +14,8 @@ import {
   IconButton,
   CardActionArea,
   CardContent,
+  Alert,
+  AlertTitle,
 } from '@mui/material';
 import {
   Report as ReportIcon,
@@ -28,6 +30,7 @@ import ScholarshipAmount from '../types/ScholarshipAmount';
 import { BRAND_NAME } from '../config/constants';
 import Ethnicity from '../types/Ethnicity';
 import GradeLevel from '../types/GradeLevel';
+import { lint } from '../lib/lint';
 
 const DetailCardCell = ({ label, text }) => (
   <>
@@ -107,6 +110,7 @@ export default function ScholarshipCard({ scholarship, style }) {
   }, [author, currentUser, preview]);
 
   const CardAreaComponent = detailed ? Box : CardActionArea;
+  const lintIssues = canEdit ? lint(scholarship.data) : [];
   return (
     <Card variant="outlined">
       <CardAreaComponent
@@ -277,6 +281,20 @@ export default function ScholarshipCard({ scholarship, style }) {
           )}
         </CardContent>
       </CardAreaComponent>
+      {lintIssues.length > 0 && (
+        <Alert severity="warning">
+          <AlertTitle>
+            <strong>{lintIssues.length} potential issues detected</strong>
+          </AlertTitle>
+          <Box>
+            <ul>
+              {lintIssues.map((m) => (
+                <Typography component="li">{m}</Typography>
+              ))}
+            </ul>
+          </Box>
+        </Alert>
+      )}
     </Card>
   );
 }
