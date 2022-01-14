@@ -110,7 +110,7 @@ export default function ScholarshipCard({ scholarship, style }) {
   }, [author, currentUser, preview]);
 
   const CardAreaComponent = detailed ? Box : CardActionArea;
-  const lintIssues = canEdit ? lint(scholarship.data) : [];
+  const lintIssues = canEdit || preview ? lint(scholarship.data) : [];
   return (
     <Card variant="outlined">
       <CardAreaComponent
