@@ -30,14 +30,6 @@ describe('parseMinGPA()', () => {
       'GPAs of 3.0-3.5 encouraged to apply.',
     ].forEach((d) => expect(parseMinGPA(d)?.value).toBe('3.0')));
 
-  test('matches minimum GPA value', () =>
-    [
-      'Min GPA of 3.0 out of 4.0',
-      'Min GPA: High school 3.5, College 3.0',
-      'Must have a GPA of 3.0 out of 4.0 or 4.0 out of 5.0',
-      'GPAs of 3.0-3.5 encouraged to apply.',
-    ].forEach((d) => expect(parseMinGPA(d)?.value).toBe('3.0')));
-
   test('splits on some special characters', () =>
     [
       ['like multiple, commas, min GPA of 3.0', 'min GPA of 3.0'],
