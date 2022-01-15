@@ -380,17 +380,46 @@ describe('scholarship alidation rules', () => {
       );
     });
 
+    test('fails update when gpa is not a number', async () => {
+      await assertSucceeds(collection('gp').set(newScholarship));
+      return assertFails(
+        collection('gp').set({
+          ...newScholarship,
+          requirements: { gpa: '3.0' },
+        })
+      );
+    });
+
     test('fails create when gpa is less than 0', () => {
       return assertFails(
         collection('gp').set({ ...newScholarship, requirements: { gpa: -3 } })
       );
     });
 
-    test('fails create when gpa is greater than 4', () => {
-      collection('gp').set({ ...newScholarship, requirements: { gpa: 4.1 } });
+    test('fails update when gpa is less than 0', async () => {
+      await assertSucceeds(collection('gp').set(newScholarship));
+      return assertFails(
+        collection('gp').set({
+          ...newScholarship,
+          requirements: { gpa: -3 },
+        })
+      );
     });
 
-    test('fails when scholarship ethnicities is not an array', () => {
+    test('fails create when gpa is greater than 4', () => {
+      return assertFails(
+        collection('gp').set({ ...newScholarship, requirements: { gpa: 4.1 } })
+      );
+    });
+
+    test('fails update when gpa is greater than 4', async () => {
+      await assertSucceeds(collection('gp').set(newScholarship));
+      return assertFails(
+        collection('gp').set({ ...newScholarship, requirements: { gpa: 4.1 } })
+      );
+    });
+
+    test('fails create when ethnicities not an array', () => {
       scholarship.requirements.ethnicities = '[]';
       return assertFails(collection.set(scholarship));
     });
