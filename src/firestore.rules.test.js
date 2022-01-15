@@ -171,23 +171,45 @@ test('allows scholarship delete when user is admin', async () => {
   );
 });
 
-describe('validation rules', () => {
+describe('scholarship alidation rules', () => {
   const collection = (id) =>
     aliceApp.firestore().collection('scholarships').doc(id);
 
-  test('fails when scholarship name not a string', () => {
+  test('fails create when name not a string', () => {
     return assertFails(collection('abc').set({ ...newScholarship, name: 34 }));
   });
 
-  test('fails when scholarship name is not a string', async () => {
+  test('fails update when name not a string', async () => {
     await assertSucceeds(collection('abc').set({ ...newScholarship }));
     return assertFails(collection('abc').set({ ...newScholarship, name: 34 }));
   });
 
-  test('fails when no scholarship amount', () => {
-    const scholarship = { ...newScholarship };
-    delete scholarship.amount;
-    return assertFails(collection.set(scholarship));
+  test('fails create when amount type not in AmountType', () => {
+    const amount = { type: 'random', min: 0, max: 0 };
+    return assertFails(
+      collection('ab').set({ ...newScholarship, amount: amount })
+    );
+  });
+
+  test('fails update when amount type not in AmountType', async () => {
+    const amount = { type: 'random', min: 0, max: 0 };
+    await assertSucceeds(collection('ab').set({ ...newScholarship }));
+    return assertFails(
+      collection('ab').set({ ...newScholarship, amount: amount })
+    );
+  });
+
+  test('fails create when amount min/max not an integer', () => {
+    const amount = { type: 'VARIES', min: false, max: '0' };
+    return assertFails(
+      collection('ab').set({ ...newScholarship, amount: amount })
+    );
+  });
+
+  test('fails update when amount min/max are not an integer', async () => {
+    const amount = { type: 'VARIES', min: false, max: '0' };
+    await assertSucceeds(collection('ab').set({ ...newScholarship }));
+    return assertFails(collection('ab').set({ ...newScholarship, amount }));
   });
 
   test('fails when no scholarship description', () => {
@@ -306,18 +328,6 @@ describe('validation rules', () => {
 
 describe('validation rules - update', () => {
   const collection = aliceApp.firestore().collection('scholarships').doc('abc');
-
-  test('fails when amount type not in AmountType', async () => {
-    const amount = { type: 'random', min: 0, max: 0 };
-    await assertSucceeds(collection.set({ ...newScholarship }));
-    return assertFails(collection.set({ ...newScholarship, amount: amount }));
-  });
-
-  test('fails when amount min/max are not an integer', async () => {
-    const amount = { type: 'VARIES', min: false, max: '0' };
-    await assertSucceeds(collection.set({ ...newScholarship }));
-    return assertFails(collection.set({ ...newScholarship, amount }));
-  });
 
   test('fails when scholarship description not a string', async () => {
     await assertSucceeds(collection.set({ ...newScholarship }));
