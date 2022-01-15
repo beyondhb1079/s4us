@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import ReactRouterPropTypes from 'react-router-prop-types';
-import { Container, Typography } from '@mui/material';
+import { Container, Typography, Box } from '@mui/material';
 import Scholarships from '../models/Scholarships';
 import ScholarshipCard from '../components/ScholarshipCard';
 import { Alert } from '@mui/material';
+import bannerImg from '../img/detail-page-banner.jpg';
 
 export default function ViewScholarship({ history, location, match }) {
   const { id } = match.params;
@@ -44,7 +45,7 @@ export default function ViewScholarship({ history, location, match }) {
   }
 
   return (
-    <Container>
+    <Container maxWidth="md">
       <Helmet>
         <title>{scholarship.data.name}</title>
       </Helmet>
@@ -62,6 +63,17 @@ export default function ViewScholarship({ history, location, match }) {
           }`}
         </Alert>
       )}
+
+      <Box
+        component="img"
+        src={bannerImg}
+        sx={{
+          width: '100%',
+          objectFit: 'cover',
+          maxHeight: 250,
+          objectPosition: { md: '0px -50px' },
+        }}
+      />
 
       <ScholarshipCard scholarship={scholarship} style="detail" />
     </Container>
