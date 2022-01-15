@@ -225,10 +225,17 @@ describe('scholarship alidation rules', () => {
     );
   });
 
-  test('fails when no scholarship deadline', () => {
-    const scholarship = { ...newScholarship };
-    delete scholarship.deadline;
-    return assertFails(collection.set(scholarship));
+  test('fails create when deadline not a Date', () => {
+    return assertFails(
+      collection('zs').set({ ...newScholarship, deadline: 43 })
+    );
+  });
+
+  test('fails update when deadline not a Date', async () => {
+    await assertSucceeds(collection('zs').set({ ...newScholarship }));
+    return assertFails(
+      collection('zs').set({ ...newScholarship, deadline: 43 })
+    );
   });
 
   test('fails when no scholarship website', () => {
@@ -336,11 +343,6 @@ describe('scholarship alidation rules', () => {
 describe('validation rules - update', () => {
   const collection = aliceApp.firestore().collection('scholarships').doc('abc');
 
-  test('fails when scholarship deadline not a Date', async () => {
-    await assertSucceeds(collection.set({ ...newScholarship }));
-    return assertFails(collection.set({ ...newScholarship, deadline: 43 }));
-  });
-
   test('fails when scholarship website not a string', async () => {
     await assertSucceeds(collection.set({ ...newScholarship }));
     return assertFails(collection.set({ ...newScholarship, website: 43 }));
@@ -352,6 +354,7 @@ describe('validation rules - update', () => {
   });
 
   test('fails when scholarship lastModified not a Date', async () => {
+    g;
     await assertSucceeds(collection.set({ ...newScholarship }));
     return assertFails(collection.set({ ...newScholarship, lastModified: 43 }));
   });
