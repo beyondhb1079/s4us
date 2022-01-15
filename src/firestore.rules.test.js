@@ -492,14 +492,42 @@ describe('scholarship alidation rules', () => {
       );
     });
 
-    test('fails when scholarship states is not an array', () => {
-      scholarship.requirements.states = 'WA';
-      return assertFails(collection.set(scholarship));
+    test('fails create when states not an array', () => {
+      return assertFails(
+        collection('st').set({
+          ...newScholarship,
+          requirements: { states: 'WA' },
+        })
+      );
     });
 
-    test('fails when scholarship genders is not an array', () => {
-      scholarship.requirements.genders = 'Male';
-      return assertFails(collection.set(scholarship));
+    test('fails update when states not an array', async () => {
+      await assertSucceeds(collection('st').set(newScholarship));
+      return assertFails(
+        collection('st').set({
+          ...newScholarship,
+          requirements: { states: 'WA' },
+        })
+      );
+    });
+
+    test('fails when genders not an array', () => {
+      return assertFails(
+        collection('ge').set({
+          ...newScholarship,
+          requirements: { genders: 'Male' },
+        })
+      );
+    });
+
+    test('fails update when genders not an array', async () => {
+      await assertSucceeds(collection('ge').set(newScholarship));
+      return assertFails(
+        collection('ge').set({
+          ...newScholarship,
+          requirements: { genders: 'MALE' },
+        })
+      );
     });
   });
 });
