@@ -251,8 +251,17 @@ describe('scholarship alidation rules', () => {
     );
   });
 
-  test('fails when scholarship organization not a string', () => {
-    return assertFails(collection.set({ ...newScholarship, organization: 23 }));
+  test('fails create when organization not a string', () => {
+    return assertFails(
+      collection('or').set({ ...newScholarship, organization: 23 })
+    );
+  });
+
+  test('fails update when organization not a string', async () => {
+    await assertSucceeds(collection('or').set({ ...newScholarship }));
+    return assertFails(
+      collection('or').set({ ...newScholarship, organization: 23 })
+    );
   });
 
   test('fails when scholarship tags not an array', () => {
