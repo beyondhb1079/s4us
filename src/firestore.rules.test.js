@@ -171,14 +171,17 @@ test('allows scholarship delete when user is admin', async () => {
   );
 });
 
-describe('validation rules - create', () => {
-  const collection = aliceApp.firestore().collection('scholarships').doc();
+describe('validation rules', () => {
+  const collection = (id) =>
+    aliceApp.firestore().collection('scholarships').doc(id);
 
-  test('fails when no scholarship name', () => {
-    const scholarship = { ...newScholarship };
-    delete scholarship.name;
+  test('fails when scholarship name not a string', () => {
+    return assertFails(collection('abc').set({ ...newScholarship, name: 34 }));
+  });
 
-    return assertFails(collection.set(scholarship));
+  test('fails when scholarship name is not a string', async () => {
+    await assertSucceeds(collection('abc').set({ ...newScholarship }));
+    return assertFails(collection('abc').set({ ...newScholarship, name: 34 }));
   });
 
   test('fails when no scholarship amount', () => {
@@ -303,11 +306,6 @@ describe('validation rules - create', () => {
 
 describe('validation rules - update', () => {
   const collection = aliceApp.firestore().collection('scholarships').doc('abc');
-
-  test('fails when scholarship name is not a string', async () => {
-    await assertSucceeds(collection.set({ ...newScholarship }));
-    return assertFails(collection.set({ ...newScholarship, name: false }));
-  });
 
   test('fails when amount type not in AmountType', async () => {
     const amount = { type: 'random', min: 0, max: 0 };
