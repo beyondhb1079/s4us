@@ -1,4 +1,3 @@
-import scholarships from '../models/Scholarships';
 import AmountType from '../types/AmountType';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import { parseMinGPA, lint } from './lint';
