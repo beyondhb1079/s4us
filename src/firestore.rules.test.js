@@ -358,25 +358,36 @@ describe('scholarship alidation rules', () => {
     const scholarship = { ...newScholarship };
     scholarship.requirements = {};
 
-    test('fails when scholarship requirements not an object', () => {
+    test('fails create when requirements not an object', () => {
       return assertFails(
-        collection.set({ ...newScholarship, requirements: 3.4 })
+        collection('re').set({ ...newScholarship, requirements: 3.4 })
       );
     });
 
-    test('fails when scholarship gpa is not a number', () => {
-      scholarship.requirements.gpa = '3.0';
-      return assertFails(collection.set(scholarship));
+    test('fails update when requirements not an object', async () => {
+      await assertSucceeds(collection('re').set(newScholarship));
+      return assertFails(
+        collection('re').set({ ...newScholarship, requirements: 3.4 })
+      );
     });
 
-    test('fails when gpa is less than 0', () => {
-      scholarship.requirements.gpa = -3;
-      return assertFails(collection.set(scholarship));
+    test('fails create when gpa is not a number', () => {
+      return assertFails(
+        collection('gp').set({
+          ...newScholarship,
+          requirements: { gpa: '3.0' },
+        })
+      );
     });
 
-    test('fails when gpa is greater than 4', () => {
-      scholarship.requirements.gpa = 4.1;
-      return assertFails(collection.set(scholarship));
+    test('fails create when gpa is less than 0', () => {
+      return assertFails(
+        collection('gp').set({ ...newScholarship, requirements: { gpa: -3 } })
+      );
+    });
+
+    test('fails create when gpa is greater than 4', () => {
+      collection('gp').set({ ...newScholarship, requirements: { gpa: 4.1 } });
     });
 
     test('fails when scholarship ethnicities is not an array', () => {
