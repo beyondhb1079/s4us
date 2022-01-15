@@ -316,18 +316,41 @@ describe('scholarship alidation rules', () => {
     );
   });
 
-  test('fails when author id not a string', () => {
+  test('fails create when author id not a string', () => {
     return assertFails(
-      collection.set({
+      collection('ai').set({
         ...newScholarship,
         author: { id: 2, email: 'test@gmail.com' },
       })
     );
   });
 
-  test('fails when author email not a string', () => {
+  test('fails update when author id not a string', async () => {
+    await assertSucceeds(collection('ai').set(newScholarship));
     return assertFails(
-      collection.set({ ...newScholarship, author: { email: 2, id: aliceId } })
+      collection('ai').set({
+        ...newScholarship,
+        author: { id: 2, email: 'test@gmail.com' },
+      })
+    );
+  });
+
+  test('fails create when author email not a string', () => {
+    return assertFails(
+      collection('ae').set({
+        ...newScholarship,
+        author: { email: 2, id: aliceId },
+      })
+    );
+  });
+
+  test('fails update when author email not a string', async () => {
+    await assertSucceeds(collection('ae').set(newScholarship));
+    return assertFails(
+      collection('ae').set({
+        ...newScholarship,
+        author: { id: aliceId, email: 2 },
+      })
     );
   });
 
