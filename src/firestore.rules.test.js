@@ -420,13 +420,41 @@ describe('scholarship alidation rules', () => {
     });
 
     test('fails create when ethnicities not an array', () => {
-      scholarship.requirements.ethnicities = '[]';
-      return assertFails(collection.set(scholarship));
+      return assertFails(
+        collection('et').set({
+          ...newScholarship,
+          requirements: { ethnicities: '[]' },
+        })
+      );
     });
 
-    test('fails when scholarship majors is not an array', () => {
-      scholarship.requirements.majors = 'History';
-      return assertFails(collection.set(scholarship));
+    test('fails update when ethnicities not an array', async () => {
+      await assertSucceeds(collection('et').set(newScholarship));
+      return assertFails(
+        collection('et').set({
+          ...newScholarship,
+          requirements: { ethnicities: '[]' },
+        })
+      );
+    });
+
+    test('fails create when majors not an array', () => {
+      return assertFails(
+        collection('ma').set({
+          ...newScholarship,
+          requirements: { majors: 'history' },
+        })
+      );
+    });
+
+    test('fails update when majors not an array', async () => {
+      await assertSucceeds(collection('ma').set(newScholarship));
+      return assertFails(
+        collection('ma').set({
+          ...newScholarship,
+          requirements: { majors: 'history' },
+        })
+      );
     });
 
     test('fails when scholarship schools is not an array', () => {
