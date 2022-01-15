@@ -1,5 +1,7 @@
 /** Utility methods for linting scholarship information and detecting errors. */
 
+import AmountType from '../types/AmountType';
+import ScholarshipAmount from '../types/ScholarshipAmount';
 import ScholarshipData from '../types/ScholarshipData';
 
 interface MatchInfo {
@@ -31,11 +33,43 @@ export function parseMinGPA(desc: string): MatchInfo | null {
   return null;
 }
 
+const THIS_YEAR = new Date().getFullYear();
+
+/** Returns a list of strings that seem to match outdated school periods. */
+export function parseOutdatedSchoolPeriods(desc: string): string[] {
+  return (desc.match(/\d{4}-\d{4}/g) || [])
+    .concat(desc.match(/(fall|winter|spring)( of)? \d{4}/gi) || [])
+    .filter((s) => !s.includes(THIS_YEAR.toString()));
+}
+
 /** Lints the given scholarship for mismatches and returns a list of errors as strings. */
 export function lint(scholarship: ScholarshipData): String[] {
-  const { description: desc, requirements: reqs } = scholarship;
+  const { amount, description: desc, requirements: reqs } = scholarship;
   const issues = [];
   const gpaMatch = parseMinGPA(desc);
+
+  const outdatedSchoolPeriods = parseOutdatedSchoolPeriods(desc);
+  if (outdatedSchoolPeriods.length) {
+    issues.push(
+      `Description mentions outdated school periods: ${JSON.stringify(
+        outdatedSchoolPeriods
+      )}`
+    );
+  }
+  const amountMatches = desc.match(/\$[0-9,]+/g) || [];
+  if (
+    amountMatches.length &&
+    (amount.type === AmountType.Fixed || amount.type === AmountType.Varies) &&
+    ((amount.min && !desc.includes(amount.min.toString())) ||
+      (amount.max && !desc.includes(amount.max.toString())))
+  ) {
+    const want = ScholarshipAmount.toString(amount);
+    issues.push(
+      `Amount specified as ${want} but found other amounts in description: ${JSON.stringify(
+        amountMatches
+      )}.`
+    );
+  }
   if (gpaMatch) {
     const parsedVal = Number.parseFloat(gpaMatch.value);
     if (!reqs?.gpa) {
