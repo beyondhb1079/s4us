@@ -1,13 +1,51 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    function validAmount(amount) {
+      return amount is map 
+      && amount.type in ['UNKNOWN', 'FIXED','VARIES','FULL_TUITION']
+      && amount.min is int && amount.max is int
+    }
+
+    function validReqs(reqs) {
+      return reqs is map
+      && (!('gpa' in reqs) || reqs.gpa is number && reqs.gpa > 0 && reqs.gpa <= 4)
+      && (!('ethnicities' in reqs) || reqs.ethnicities is list)
+      && (!('majors' in reqs) || reqs.majors is list)
+      && (!('schools' in reqs) || reqs.schools is list)
+      && (!('grades' in reqs) || reqs.grades is list)
+      && (!('states' in reqs) || reqs.states is list)
+      && (!('genders' in reqs) || reqs.genders is list)
+    }
+
+    function validAuthor(author) {
+      return author is map
+      && author.id is string
+      && author.email is string
+    }
+
+    function validData(docData) {
+      return docData.name is string 
+      && validAmount(docData.amount)
+      && docData.deadline is timestamp 
+      && docData.description is string 
+      && docData.website is string
+      // OPTIONAL FIELDS
+      && (!('organization' in docData) || docData.organization is string)
+      && (!('tags' in docData) || docData.tags is list)
+      && docData.dateAdded is timestamp
+      && docData.lastModified is timestamp
+      && (!('requirements' in docData) || validReqs(docData.requirements))
+      && validAuthor(docData.author)
+    }
+
     match /scholarships/{document=**} {
       allow read: if true;
     }
 
     match /scholarships/{scholarshipId} {
-      allow create: if request.auth != null;
-      allow update: if request.auth.uid == resource.data.author.id || request.auth.token.admin;
+      allow create: if request.auth != null && validData(request.resource.data);
+      allow update: if (request.auth.uid == resource.data.author.id || request.auth.token.admin) && validData(request.resource.data);
       allow delete: if request.auth.uid == resource.data.author.id || request.auth.token.admin;
     }
   }
