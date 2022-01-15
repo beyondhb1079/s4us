@@ -41,36 +41,6 @@ describe('parseMinGPA()', () => {
       ['and this: • have min GPA 2.5', 'have min GPA 2.5'],
     ].forEach(([d, want]) => expect(parseMinGPA(d)?.phrase).toBe(want)));
 });
-describe('parseOutdatedSchoolPeriods()', () => {
-  test('matches GPA name variations', () =>
-    [
-      'GPA of 3.5',
-      'G.P.A. of 3.5',
-      'Title Cased Grade Point Average of 3.5',
-      'lower case grade point average of 3.5',
-    ].forEach((d) => {
-      expect(parseMinGPA(d)?.phrase).toBe(d.replace('G.P.A.', 'GPA'));
-      expect(parseMinGPA(d)?.value).toBe('3.5');
-    }));
-
-  test('matches minimum GPA value', () =>
-    [
-      'Min GPA of 3.0 out of 4.0',
-      'Min GPA: High school 3.5, College 3.0',
-      'Must have a GPA of 3.0 out of 4.0 or 4.0 out of 5.0',
-      'GPAs of 3.0-3.5 encouraged to apply.',
-    ].forEach((d) => expect(parseMinGPA(d)?.value).toBe('3.0')));
-
-  test('splits on some special characters', () =>
-    [
-      ['like multiple, commas, min GPA of 3.0', 'min GPA of 3.0'],
-      ['but not colons, min GPA: 3.0', 'min GPA: 3.0'],
-      ['and not on G.P.A. E.g., G.P.A. of 3.0', 'GPA of 3.0'],
-      ['but dashes yes - Min GPA: 2.0', 'Min GPA: 2.0'],
-      ['and parentheses, min GPA 2.5 (out of 4.0)', 'min GPA 2.5'],
-      ['and this: • have min GPA 2.5', 'have min GPA 2.5'],
-    ].forEach(([d, want]) => expect(parseMinGPA(d)?.phrase).toBe(want)));
-});
 
 const testScholarship = {
   name: 'test-scholarship',
