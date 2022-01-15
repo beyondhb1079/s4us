@@ -171,7 +171,7 @@ test('allows scholarship delete when user is admin', async () => {
   );
 });
 
-describe('scholarship alidation rules', () => {
+describe('scholarship validation rules', () => {
   const collection = (id) =>
     aliceApp.firestore().collection('scholarships').doc(id);
 
