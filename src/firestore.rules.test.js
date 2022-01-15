@@ -180,7 +180,7 @@ describe('scholarship alidation rules', () => {
   });
 
   test('fails update when name not a string', async () => {
-    await assertSucceeds(collection('abc').set({ ...newScholarship }));
+    await assertSucceeds(collection('abc').set(newScholarship));
     return assertFails(collection('abc').set({ ...newScholarship, name: 34 }));
   });
 
@@ -193,7 +193,7 @@ describe('scholarship alidation rules', () => {
 
   test('fails update when amount type not in AmountType', async () => {
     const amount = { type: 'random', min: 0, max: 0 };
-    await assertSucceeds(collection('ab').set({ ...newScholarship }));
+    await assertSucceeds(collection('ab').set(newScholarship));
     return assertFails(
       collection('ab').set({ ...newScholarship, amount: amount })
     );
@@ -208,7 +208,7 @@ describe('scholarship alidation rules', () => {
 
   test('fails update when amount min/max are not an integer', async () => {
     const amount = { type: 'VARIES', min: false, max: '0' };
-    await assertSucceeds(collection('ab').set({ ...newScholarship }));
+    await assertSucceeds(collection('ab').set(newScholarship));
     return assertFails(collection('ab').set({ ...newScholarship, amount }));
   });
 
@@ -219,7 +219,7 @@ describe('scholarship alidation rules', () => {
   });
 
   test('fails update when description not a string', async () => {
-    await assertSucceeds(collection('qw').set({ ...newScholarship }));
+    await assertSucceeds(collection('qw').set(newScholarship));
     return assertFails(
       collection('qw').set({ ...newScholarship, description: 43 })
     );
@@ -232,7 +232,7 @@ describe('scholarship alidation rules', () => {
   });
 
   test('fails update when deadline not a Date', async () => {
-    await assertSucceeds(collection('zs').set({ ...newScholarship }));
+    await assertSucceeds(collection('zs').set(newScholarship));
     return assertFails(
       collection('zs').set({ ...newScholarship, deadline: 43 })
     );
@@ -245,7 +245,7 @@ describe('scholarship alidation rules', () => {
   });
 
   test('fails update when website not a string', async () => {
-    await assertSucceeds(collection('re').set({ ...newScholarship }));
+    await assertSucceeds(collection('re').set(newScholarship));
     return assertFails(
       collection('re').set({ ...newScholarship, website: 43 })
     );
@@ -258,14 +258,23 @@ describe('scholarship alidation rules', () => {
   });
 
   test('fails update when organization not a string', async () => {
-    await assertSucceeds(collection('or').set({ ...newScholarship }));
+    await assertSucceeds(collection('or').set(newScholarship));
     return assertFails(
       collection('or').set({ ...newScholarship, organization: 23 })
     );
   });
 
-  test('fails when scholarship tags not an array', () => {
-    return assertFails(collection.set({ ...newScholarship, tags: 'list' }));
+  test('fails create when tags not an array', () => {
+    return assertFails(
+      collection('ta').set({ ...newScholarship, tags: 'list' })
+    );
+  });
+
+  test('fails update when tags not an array', async () => {
+    await assertSucceeds(collection('ta').set(newScholarship));
+    return assertFails(
+      collection('ta').set({ ...newScholarship, tags: 'list' })
+    );
   });
 
   test('fails when no scholarship dateAdded', () => {
@@ -365,7 +374,6 @@ describe('validation rules - update', () => {
   });
 
   test('fails when scholarship lastModified not a Date', async () => {
-    g;
     await assertSucceeds(collection.set({ ...newScholarship }));
     return assertFails(collection.set({ ...newScholarship, lastModified: 43 }));
   });
