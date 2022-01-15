@@ -355,9 +355,6 @@ describe('scholarship alidation rules', () => {
   });
 
   describe('requirements validation', () => {
-    const scholarship = { ...newScholarship };
-    scholarship.requirements = {};
-
     test('fails create when requirements not an object', () => {
       return assertFails(
         collection('re').set({ ...newScholarship, requirements: 3.4 })
@@ -457,14 +454,42 @@ describe('scholarship alidation rules', () => {
       );
     });
 
-    test('fails when scholarship schools is not an array', () => {
-      scholarship.requirements.schools = 'UCI';
-      return assertFails(collection.set(scholarship));
+    test('fails create when schools not an array', () => {
+      return assertFails(
+        collection('sc').set({
+          ...newScholarship,
+          requirements: { schools: 'UCI' },
+        })
+      );
     });
 
-    test('fails when scholarship grades is not an array', () => {
-      scholarship.requirements.grades = 8;
-      return assertFails(collection.set(scholarship));
+    test('fails update when schools not an array', async () => {
+      await assertSucceeds(collection('sc').set(newScholarship));
+      return assertFails(
+        collection('sc').set({
+          ...newScholarship,
+          requirements: { schools: 'UCI' },
+        })
+      );
+    });
+
+    test('fails create when grades not an array', () => {
+      return assertFails(
+        collection('gr').set({
+          ...newScholarship,
+          requirements: { grades: 8 },
+        })
+      );
+    });
+
+    test('fails update when grades not an array', async () => {
+      await assertSucceeds(collection('gr').set(newScholarship));
+      return assertFails(
+        collection('gr').set({
+          ...newScholarship,
+          requirements: { grades: 8 },
+        })
+      );
     });
 
     test('fails when scholarship states is not an array', () => {
