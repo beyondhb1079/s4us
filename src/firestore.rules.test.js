@@ -277,10 +277,17 @@ describe('scholarship alidation rules', () => {
     );
   });
 
-  test('fails when no scholarship dateAdded', () => {
-    const scholarship = { ...newScholarship };
-    delete scholarship.dateAdded;
-    return assertFails(collection.set(scholarship));
+  test('fails create when dateAdded not a Date', () => {
+    return assertFails(
+      collection('da').set({ ...newScholarship, dateAdded: 43 })
+    );
+  });
+
+  test('fails update when dateAdded not a Date', async () => {
+    await assertSucceeds(collection('da').set(newScholarship));
+    return assertFails(
+      collection('da').set({ ...newScholarship, dateAdded: 43 })
+    );
   });
 
   test('fails when no scholarship lastModified', () => {
@@ -367,11 +374,6 @@ describe('scholarship alidation rules', () => {
 
 describe('validation rules - update', () => {
   const collection = aliceApp.firestore().collection('scholarships').doc('abc');
-
-  test('fails when scholarship dateAdded not a Date', async () => {
-    await assertSucceeds(collection.set({ ...newScholarship }));
-    return assertFails(collection.set({ ...newScholarship, dateAdded: 43 }));
-  });
 
   test('fails when scholarship lastModified not a Date', async () => {
     await assertSucceeds(collection.set({ ...newScholarship }));
