@@ -238,10 +238,17 @@ describe('scholarship alidation rules', () => {
     );
   });
 
-  test('fails when no scholarship website', () => {
-    const scholarship = { ...newScholarship };
-    delete scholarship.website;
-    return assertFails(collection.set(scholarship));
+  test('fails create when website not a string', () => {
+    return assertFails(
+      collection('re').set({ ...newScholarship, website: 43 })
+    );
+  });
+
+  test('fails update when website not a string', async () => {
+    await assertSucceeds(collection('re').set({ ...newScholarship }));
+    return assertFails(
+      collection('re').set({ ...newScholarship, website: 43 })
+    );
   });
 
   test('fails when scholarship organization not a string', () => {
@@ -342,11 +349,6 @@ describe('scholarship alidation rules', () => {
 
 describe('validation rules - update', () => {
   const collection = aliceApp.firestore().collection('scholarships').doc('abc');
-
-  test('fails when scholarship website not a string', async () => {
-    await assertSucceeds(collection.set({ ...newScholarship }));
-    return assertFails(collection.set({ ...newScholarship, website: 43 }));
-  });
 
   test('fails when scholarship dateAdded not a Date', async () => {
     await assertSucceeds(collection.set({ ...newScholarship }));
