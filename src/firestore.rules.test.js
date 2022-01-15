@@ -290,14 +290,30 @@ describe('scholarship alidation rules', () => {
     );
   });
 
-  test('fails when no scholarship lastModified', () => {
-    const scholarship = { ...newScholarship };
-    delete scholarship.lastModified;
-    return assertFails(collection.set(scholarship));
+  test('fails create when lastModified not a Date', () => {
+    return assertFails(
+      collection('lm').set({ ...newScholarship, lastModified: 43 })
+    );
   });
 
-  test('fails when scholarship author not an object', () => {
-    return assertFails(collection.set({ ...newScholarship, author: '{}' }));
+  test('fails update when lastModified not a Date', async () => {
+    await assertSucceeds(collection('lm').set(newScholarship));
+    return assertFails(
+      collection('lm').set({ ...newScholarship, lastModified: 43 })
+    );
+  });
+
+  test('fails create when author not an object', () => {
+    return assertFails(
+      collection('au').set({ ...newScholarship, author: '{}' })
+    );
+  });
+
+  test('fails update when author not an object', async () => {
+    await assertSucceeds(collection('au').set(newScholarship));
+    return assertFails(
+      collection('au').set({ ...newScholarship, author: '{}' })
+    );
   });
 
   test('fails when author id not a string', () => {
@@ -369,14 +385,5 @@ describe('scholarship alidation rules', () => {
       scholarship.requirements.genders = 'Male';
       return assertFails(collection.set(scholarship));
     });
-  });
-});
-
-describe('validation rules - update', () => {
-  const collection = aliceApp.firestore().collection('scholarships').doc('abc');
-
-  test('fails when scholarship lastModified not a Date', async () => {
-    await assertSucceeds(collection.set({ ...newScholarship }));
-    return assertFails(collection.set({ ...newScholarship, lastModified: 43 }));
   });
 });
