@@ -24,8 +24,8 @@ Fixes #
 
 ## Previewing Changes
 
+<!-- DELETE THIS SECTION IF THERE ARE NO VISIBLE CHANGES. -->
 <!-- DETAIL steps to preview user visible changes on the Render PR server. -->
-<!-- DELETE this section if there are no visible changes. -->
 <!-- Tip: You can replace the first step with a direct link. -->
 
 1. Click the `onrender.com` URL the **render `bot`** posted below.
@@ -33,5 +33,5 @@ Fixes #
 
 ## Screenshots
 
+<!-- DELETE THIS SECTION IF THERE ARE NO VISIBLE CHANGES. -->
 <!-- ATTACH screenshots for user visible changes. -->
-<!-- DELETE this section if there are no visible changes. -->
