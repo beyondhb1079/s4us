@@ -29,8 +29,7 @@ Fixes #
 <!-- Tip: You can replace the first step with a direct link. -->
 
 1. Click the `onrender.com` URL the **render `bot`** posted below.
-
-1. 
+1.
 
 ## Screenshots
 
