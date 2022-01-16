@@ -1,11 +1,13 @@
 <!-- SUMMARIZE your changes in the Title above. Provide more details here. -->
 
 ## Motivation and Context
+
 <!-- EXPLAIN why this change is required. Link issues via "Fixes #" or "Helps with #". -->
 
 Fixes #
 
 ## Types of changes
+
 <!-- CHECK all the boxes that apply, replacing "[ ]" with "[x]". -->
 
 - [ ] Bug fix (non-breaking change which fixes an issue)
@@ -14,12 +16,14 @@ Fixes #
 - [ ] User visible change (users will notice UI or functional changes)
 
 ## How Has This Been Tested?
+
 <!-- CHECK all the boxes that apply, replacing "[ ]" with "[x]". -->
 
 - [ ] Existing or new tests cover my changes.
 - [ ] Manually tested locally or on the Render PR Server.
 
 ## Previewing Changes
+
 <!-- DETAIL steps to preview user visible changes on the Render PR server. -->
 <!-- DELETE this section if there are no visible changes. -->
 <!-- Tip: You can replace the first step with a direct link. -->
@@ -28,5 +32,6 @@ Fixes #
 2. 
 
 ## Screenshots
+
 <!-- ATTACH screenshots for user visible changes. -->
 <!-- DELETE this section if there are no visible changes. -->
