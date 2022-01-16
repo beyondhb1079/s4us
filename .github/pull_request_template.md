@@ -1,4 +1,4 @@
-<!-- SUMMARIZE your changes in the Title above. Provide more details here. -->
+<!-- SUMMARIZE your changes in the Title above. Provide details here. -->
 
 ## Motivation and Context
 
