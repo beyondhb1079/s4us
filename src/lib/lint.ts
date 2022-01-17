@@ -44,7 +44,7 @@ export function parseOutdatedSchoolPeriods(desc: string): string[] {
     .filter((s) => !s.includes(THIS_YEAR.toString()));
 }
 
-/** Parses the given description for ethnicities and returns matches. */
+/** Parses the given description for grade levels and returns matches. */
 export function parseGradeLevels(desc: string): GradeLevel[] {
   const lowerDesc = desc.toLowerCase();
   const keywords = {
