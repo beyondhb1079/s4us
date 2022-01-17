@@ -1,8 +1,10 @@
 /** Utility methods for linting scholarship information and detecting errors. */
 
 import AmountType from '../types/AmountType';
+import Ethnicity from '../types/Ethnicity';
 import GradeLevel from '../types/GradeLevel';
 import ScholarshipAmount from '../types/ScholarshipAmount';
+import { MAJORS, School, SCHOOLS, State, STATES } from '../types/options';
 import ScholarshipData from '../types/ScholarshipData';
 
 /** Custom match object to provide additional context outside of a value. */
@@ -95,10 +97,53 @@ export function parseGradeLevels(desc: string): GradeLevel[] {
   return Array.from(matches);
 }
 
+/** Parses the given description for majors and returns the ones found. */
+export function parseMajors(desc: string): string[] {
+  return Array.from(MAJORS).filter((m) =>
+    desc.toLowerCase().includes(m.toLowerCase())
+  );
+}
+
+/** Parses the given description for schools and returns matches. */
+export function parseSchools(desc: string): School[] {
+  return SCHOOLS.filter(({ name }) => desc.includes(name));
+}
+
+/** Parses the given description for states and returns matches. */
+export function parseStates(desc: string): State[] {
+  return STATES.filter(
+    ({ name, abbr }) =>
+      desc.includes(name) || desc.match(new RegExp('\\W' + abbr + '\\W'))
+  );
+}
+
+/** Parses the given description for ethnicities and returns matches. */
+export function parseEthnicities(desc: string): Ethnicity[] {
+  const keywords = {
+    [Ethnicity.AmericanIndianOrAlaskaNative]: [
+      'Alaskan Native',
+      'American Indian',
+      'Native American',
+    ],
+    [Ethnicity.Asian]: ['Asian'],
+    [Ethnicity.BlackOrAfricanAmerican]: ['African', 'Black'],
+    [Ethnicity.HispanicOrLatino]: ['Hispanic', 'Latino'],
+    [Ethnicity.NativeHawaiianOrOtherPacificIslander]: [
+      'Hawaiian',
+      'Pacific Islander',
+    ],
+    [Ethnicity.White]: ['Caucasian', 'White'],
+  };
+  // "White House" does not correspond to a race lol.
+  return (Object.keys(Ethnicity.values()) as Ethnicity[]).filter((e) =>
+    keywords[e].some((k) => desc.replace('White House', 'WH').includes(k))
+  );
+}
+
 /** Lints the given scholarship for mismatches and returns a list of errors as strings. */
 export function lint(scholarship: ScholarshipData): String[] {
   const { amount, description: desc, requirements: reqs } = scholarship;
-  const { grades } = reqs || {};
+  const { ethnicities, grades, majors, schools, states } = reqs || {};
   const issues = [];
   const gpaMatch = parseMinGPA(desc);
 
@@ -145,6 +190,42 @@ export function lint(scholarship: ScholarshipData): String[] {
     issues.push(
       `Potentially missing grade level requirements: ${JSON.stringify(
         missingGrades.map(GradeLevel.toString)
+      )}`
+    );
+  }
+  const missingMajors = parseMajors(desc).filter((m) => !majors?.includes(m));
+  if (missingMajors.length) {
+    issues.push(
+      `Potentially missing major requirements: ${JSON.stringify(missingMajors)}`
+    );
+  }
+  const missingSchools = parseSchools(desc).filter(
+    ({ name, state }) => !schools?.includes(`${name} (${state})`)
+  );
+  if (missingSchools.length) {
+    issues.push(
+      `Potentially missing school requirements: ${JSON.stringify(
+        missingSchools.map((s) => `${s.name} (${s.state})`)
+      )}`
+    );
+  }
+  const missingStates = parseStates(desc).filter(
+    ({ abbr }) => !states?.includes(abbr)
+  );
+  if (missingStates.length) {
+    issues.push(
+      `Potentially missing state requirements: ${JSON.stringify(
+        missingStates.map((s) => s.abbr)
+      )}`
+    );
+  }
+  const missingEthnicites = parseEthnicities(desc).filter(
+    (e) => !ethnicities?.includes(e)
+  );
+  if (missingEthnicites.length) {
+    issues.push(
+      `Potentially missing ethnicity requirements: ${JSON.stringify(
+        missingEthnicites.map(Ethnicity.toString)
       )}`
     );
   }

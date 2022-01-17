@@ -132,6 +132,7 @@ test('renders scholarship details', async () => {
       data.requirements.ethnicities.map(Ethnicity.toString).join(', ')
     )
   ).toBeInTheDocument();
+  console.log('reached here');
   expect(
     screen.getByText(data.requirements.majors.join(', '))
   ).toBeInTheDocument();

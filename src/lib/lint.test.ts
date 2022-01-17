@@ -1,7 +1,16 @@
 import AmountType from '../types/AmountType';
+import Ethnicity from '../types/Ethnicity';
 import GradeLevel from '../types/GradeLevel';
 import ScholarshipAmount from '../types/ScholarshipAmount';
-import { parseMinGPA, lint, parseGradeLevels } from './lint';
+import {
+  lint,
+  parseEthnicities,
+  parseGradeLevels,
+  parseMajors,
+  parseMinGPA,
+  parseSchools,
+  parseStates,
+} from './lint';
 
 describe('parseMinGPA()', () => {
   test('returns null on no match', () =>
@@ -87,6 +96,60 @@ describe('parseGradeLevels()', () => {
       ],
       'graduate students in their 1st year': [GradeLevel.GraduateFirstYear],
     }).forEach(([d, want]) => expect(parseGradeLevels(d)).toEqual(want));
+  });
+});
+
+describe('parseMajors()', () => {
+  test('detects known majors', () => {
+    expect(
+      parseMajors('Accounting and fashion design majors may apply')
+    ).toEqual(['Accounting', 'Fashion Design']);
+  });
+  test('does not detect unknown major', () => {
+    expect(parseMajors('Welsh majors may apply')).toEqual([]);
+  });
+});
+
+describe('parseSchools()', () => {
+  test('detects known schools', () => {
+    expect(
+      parseSchools(
+        'Student attending Florida State University or Georgia Institute of Technology may apply'
+      ).map((s) => s.name)
+    ).toEqual(['Florida State University', 'Georgia Institute of Technology']);
+  });
+  test('does not detect unknown school', () => {
+    expect(parseSchools('Oxford University students')).toEqual([]);
+  });
+});
+
+describe('parseStates()', () => {
+  test('detects state names', () => {
+    expect(
+      parseStates('Must attend school in Alaska or Arizona').map((s) => s.abbr)
+    ).toEqual(['AK', 'AZ']);
+  });
+  test('detects state abbreviations', () => {
+    expect(
+      parseStates('Students from these states may apply: CA, OR, WA.').map(
+        (s) => s.abbr
+      )
+    ).toEqual(['CA', 'OR', 'WA']);
+  });
+  test('does not detect lowercased state abbrevations', () => {
+    expect(parseStates('bAd abbrevations: Al, ca, wa, oR')).toEqual([]);
+  });
+});
+
+describe('parseEthnicities()', () => {
+  test('detects known ethnicities', () => {
+    expect(parseEthnicities('Must be African American or Latino')).toEqual([
+      Ethnicity.BlackOrAfricanAmerican,
+      Ethnicity.HispanicOrLatino,
+    ]);
+  });
+  test('does not detect unknown ethnicities', () => {
+    expect(parseEthnicities('must be of Korean descent')).toEqual([]);
   });
 });
 
@@ -217,6 +280,78 @@ describe('lint()', () => {
         ...testScholarship,
         description: 'any high school student.',
         requirements: { grades: [GradeLevel.HsSenior] },
+      })
+    ).toHaveLength(1);
+  });
+  test('no missing majors', () => {
+    expect(
+      lint({
+        ...testScholarship,
+        description: 'computer science majors only.',
+        requirements: { majors: ['Computer Science'] },
+      })
+    ).toEqual([]);
+  });
+  test('missing majors', () => {
+    expect(
+      lint({
+        ...testScholarship,
+        description: 'computer science and computer engineering majors only.',
+        requirements: { majors: ['Computer Science'] },
+      })
+    ).toHaveLength(1);
+  });
+  test('no missing schools', () => {
+    expect(
+      lint({
+        ...testScholarship,
+        description: 'Stanford University students.',
+        requirements: { schools: ['Stanford University (CA)'] },
+      })
+    ).toEqual([]);
+  });
+  test('missing schools', () => {
+    expect(
+      lint({
+        ...testScholarship,
+        description: 'Harvard University or Stanford University students.',
+        requirements: { schools: ['Stanford University (CA)'] },
+      })
+    ).toHaveLength(1);
+  });
+  test('no missing states', () => {
+    expect(
+      lint({
+        ...testScholarship,
+        description: 'college in Washington or Oregon.',
+        requirements: { states: ['OR', 'WA'] },
+      })
+    ).toEqual([]);
+  });
+  test('missing state requirements', () => {
+    expect(
+      lint({
+        ...testScholarship,
+        description: 'college in California, Washington or Oregon.',
+        requirements: { states: ['OR', 'WA'] },
+      })
+    ).toHaveLength(1);
+  });
+  test('no missing ethnicities', () => {
+    expect(
+      lint({
+        ...testScholarship,
+        description: 'Asian descent.',
+        requirements: { ethnicities: [Ethnicity.Asian] },
+      })
+    ).toEqual([]);
+  });
+  test('missing ethnicity requirements', () => {
+    expect(
+      lint({
+        ...testScholarship,
+        description: 'Asian or Pacific Islander descent.',
+        requirements: { ethnicities: [Ethnicity.Asian] },
       })
     ).toHaveLength(1);
   });
