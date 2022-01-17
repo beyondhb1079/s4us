@@ -1,6 +1,7 @@
 import AmountType from '../types/AmountType';
+import GradeLevel from '../types/GradeLevel';
 import ScholarshipAmount from '../types/ScholarshipAmount';
-import { parseMinGPA, lint } from './lint';
+import { parseMinGPA, lint, parseGradeLevels } from './lint';
 
 describe('parseMinGPA()', () => {
   test('returns null on no match', () =>
@@ -40,6 +41,53 @@ describe('parseMinGPA()', () => {
       ['and parentheses, min GPA 2.5 (out of 4.0)', 'min GPA 2.5'],
       ['and this: • have min GPA 2.5', 'have min GPA 2.5'],
     ].forEach(([d, want]) => expect(parseMinGPA(d)?.phrase).toBe(want)));
+});
+
+describe('parseGradeLevels()', () => {
+  const { highSchoolers, undergrads, grads } = GradeLevel;
+  test('matches keywords', () => {
+    Object.entries({
+      '7th grade or 8th grade': [GradeLevel.MiddleSchool],
+      'middle school students': [GradeLevel.MiddleSchool],
+      'specific grades - 9th grade, 10th grade, 11th grade, 12th grade':
+        highSchoolers,
+      'HS upperclassmen - high school juniors and seniors': [
+        GradeLevel.HsJunior,
+        GradeLevel.HsSenior,
+      ],
+      'freshmen or sophomores': [
+        GradeLevel.CollegeFreshman,
+        GradeLevel.CollegeSophomore,
+      ],
+      'college seniors. undergraduate juniors': [
+        GradeLevel.CollegeJunior,
+        GradeLevel.CollegeSenior,
+      ],
+      'specific graduate years - graduate students in their 2nd year and 3rd year.':
+        [GradeLevel.GraduateSecondYear, GradeLevel.GraduateThirdYear],
+    }).forEach(([d, want]) => expect(parseGradeLevels(d)).toEqual(want));
+  });
+
+  test('matches range keywords', () => {
+    Object.entries({
+      'any high school senior or undergraduate student can apply': [
+        GradeLevel.HsSenior,
+        ...undergrads,
+      ],
+      'high school students': highSchoolers,
+      'students grade 9-12': highSchoolers,
+      'any graduate students': grads,
+    }).forEach(([d, want]) => expect(parseGradeLevels(d)).toEqual(want));
+  });
+
+  test('ignores range keywords in presence of more specific grade levels', () => {
+    Object.entries({
+      'undergraduate students completing their freshman year': [
+        GradeLevel.CollegeFreshman,
+      ],
+      'graduate students in their 1st year': [GradeLevel.GraduateFirstYear],
+    }).forEach(([d, want]) => expect(parseGradeLevels(d)).toEqual(want));
+  });
 });
 
 const testScholarship = {
@@ -153,5 +201,24 @@ describe('lint()', () => {
     ).toHaveLength(1);
   });
 
+  // Requirements
+  test('no missing grade levels', () => {
+    expect(
+      lint({
+        ...testScholarship,
+        description: 'high school seniors only.',
+        requirements: { grades: [GradeLevel.HsSenior] },
+      })
+    ).toEqual([]);
+  });
+  test('missing grade requirements', () => {
+    expect(
+      lint({
+        ...testScholarship,
+        description: 'any high school student.',
+        requirements: { grades: [GradeLevel.HsSenior] },
+      })
+    ).toHaveLength(1);
+  });
   // TODO(#858): Tests for other errors.
 });
