@@ -8,7 +8,7 @@ enum GradeLevel {
   CollegeSophomore = 14,
   CollegeJunior = 15,
   CollegeSenior = 16,
-  CollegeFifthYear = 17,
+  // DEPRECATED: CollegeFifthYear = 17,
   GraduateFirstYear = 18,
   GraduateSecondYear = 19,
   GraduateThirdYear = 20,
@@ -16,17 +16,17 @@ enum GradeLevel {
   GraduateFifthYear = 22,
 }
 
-const toStringMappings = {
-  [GradeLevel.MiddleSchool]: 'Middle School',
-  [GradeLevel.HsFreshman]: 'High School Freshman',
-  [GradeLevel.HsSophomore]: 'High School Sophomore',
-  [GradeLevel.HsJunior]: 'High School Junior',
-  [GradeLevel.HsSenior]: 'High School Senior',
+const toStringMappings: Readonly<Record<GradeLevel, string>> = {
+  [GradeLevel.MiddleSchool]: '8th Grade or earlier',
+  [GradeLevel.HsFreshman]: '9th Grade',
+  [GradeLevel.HsSophomore]: '10th Grade',
+  [GradeLevel.HsJunior]: '11th Grade',
+  [GradeLevel.HsSenior]: '12th Grade (High School Senior)',
   [GradeLevel.CollegeFreshman]: 'College Freshman',
   [GradeLevel.CollegeSophomore]: 'College Sophomore',
   [GradeLevel.CollegeJunior]: 'College Junior',
   [GradeLevel.CollegeSenior]: 'College Senior',
-  [GradeLevel.CollegeFifthYear]: 'College 5th Year',
+  // DEPRECATED: [GradeLevel.CollegeFifthYear]: 'College 5th Year',
   [GradeLevel.GraduateFirstYear]: 'Graduate 1st Year',
   [GradeLevel.GraduateSecondYear]: 'Graduate 2nd Year',
   [GradeLevel.GraduateThirdYear]: 'Graduate 3rd Year',
@@ -35,17 +35,37 @@ const toStringMappings = {
 };
 
 namespace GradeLevel {
-  export function keys(): any {
-    return Object.keys(toStringMappings).map((k) => parseInt(k));
+  export function keys(): GradeLevel[] {
+    return Object.keys(toStringMappings).map((k) => parseInt(k) as GradeLevel);
   }
-
-  export function values(): any {
+  export function values(): Record<GradeLevel, String> {
     return toStringMappings;
   }
-
   export function toString(level: GradeLevel): string {
     return toStringMappings[level];
   }
+
+  export const highSchoolers = [
+    GradeLevel.HsFreshman,
+    GradeLevel.HsSophomore,
+    GradeLevel.HsJunior,
+    GradeLevel.HsSenior,
+  ];
+
+  export const undergrads = [
+    GradeLevel.CollegeFreshman,
+    GradeLevel.CollegeSophomore,
+    GradeLevel.CollegeJunior,
+    GradeLevel.CollegeSenior,
+  ];
+
+  export const grads = [
+    GradeLevel.GraduateFirstYear,
+    GradeLevel.GraduateSecondYear,
+    GradeLevel.GraduateThirdYear,
+    GradeLevel.GraduateFourthYear,
+    GradeLevel.GraduateFifthYear,
+  ];
 }
 
 export default GradeLevel;

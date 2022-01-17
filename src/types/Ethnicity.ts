@@ -7,8 +7,8 @@ enum Ethnicity {
   White = 'WHITE',
 }
 
-const toStringMappings = {
-  [Ethnicity.AmericanIndianOrAlaskaNative]: 'American Indian or Alaska Native',
+const toStringMappings: Readonly<Record<Ethnicity, string>> = {
+  [Ethnicity.AmericanIndianOrAlaskaNative]: 'American Indian or Alaskan Native',
   [Ethnicity.Asian]: 'Asian',
   [Ethnicity.BlackOrAfricanAmerican]: 'Black or African American',
   [Ethnicity.HispanicOrLatino]: 'Hispanic or Latino',
@@ -18,10 +18,12 @@ const toStringMappings = {
 };
 
 namespace Ethnicity {
-  export function values(): any {
+  export function keys(): Ethnicity[] {
+    return Object.keys(toStringMappings) as Ethnicity[];
+  }
+  export function values(): Record<Ethnicity, String> {
     return toStringMappings;
   }
-
   export function toString(ethnicity: Ethnicity): string {
     return toStringMappings[ethnicity];
   }
