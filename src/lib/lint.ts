@@ -144,7 +144,7 @@ export function lint(scholarship: ScholarshipData): String[] {
   if (missingGrades.length) {
     issues.push(
       `Potentially missing grade level requirements: ${JSON.stringify(
-        missingGrades
+        missingGrades.map(GradeLevel.toString)
       )}`
     );
   }
