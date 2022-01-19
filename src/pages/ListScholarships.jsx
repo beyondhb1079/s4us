@@ -113,7 +113,7 @@ function ListScholarships() {
     });
 
   return (
-    <Container>
+    <Container maxWidth="md">
       <Helmet>
         <title>{t('listScholarships.titleTag')}</title>
       </Helmet>
