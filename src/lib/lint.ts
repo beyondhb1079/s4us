@@ -200,7 +200,9 @@ export function lint(scholarship: ScholarshipData): String[] {
       .includes(deadline.toLocaleDateString())
   ) {
     issues.push(
-      `Deadline specified is ${deadline.toLocaleDateString()} but other dates were found: ${dateMatches}.`
+      `Deadline specified is ${deadline.toLocaleDateString()} but other dates were found: ${JSON.stringify(
+        dateMatches
+      )}.`
     );
   }
   const gpaMatch = parseMinGPA(desc);
