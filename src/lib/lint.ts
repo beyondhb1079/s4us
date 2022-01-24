@@ -140,12 +140,19 @@ export function parseEthnicities(desc: string): Ethnicity[] {
   );
 }
 
+const dateRe =
+  /((Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w*\.? (\d+)(st|nd|rd|th)?(,? \d{4})?)|\d{1,2}\/\d{1,2}\/\d{2,4}/gi;
+
 /** Lints the given scholarship for mismatches and returns a list of errors as strings. */
 export function lint(scholarship: ScholarshipData): String[] {
-  const { amount, description: desc, requirements: reqs } = scholarship;
+  const {
+    amount,
+    deadline,
+    description: desc,
+    requirements: reqs,
+  } = scholarship;
   const { ethnicities, grades, majors, schools, states } = reqs || {};
   const issues = [];
-  const gpaMatch = parseMinGPA(desc);
 
   const outdatedSchoolPeriods = parseOutdatedSchoolPeriods(desc);
   if (outdatedSchoolPeriods.length) {
@@ -153,6 +160,11 @@ export function lint(scholarship: ScholarshipData): String[] {
       `Description mentions outdated school periods: ${JSON.stringify(
         outdatedSchoolPeriods
       )}`
+    );
+  }
+  if (!desc.includes('\n') && (desc.match(/ -/g)?.length ?? 0) > 1) {
+    issues.push(
+      'Decription is a single line but contains several "-" characters. Should those be separate lines?'
     );
   }
   const amountMatches = desc.match(/\$[0-9,]+/g) || [];
@@ -169,6 +181,29 @@ export function lint(scholarship: ScholarshipData): String[] {
       )}.`
     );
   }
+  const dateMatches =
+    desc
+      .match(dateRe)
+      ?.filter((d) => Date.parse(d) !== Number.NaN)
+      .map((d) =>
+        // This logic adds the current year to the end of the string in case it's missing.
+        d.includes(THIS_YEAR.toString()) || d.endsWith(`/${THIS_YEAR - 2000}`)
+          ? d
+          : d.includes('/')
+          ? `${d}/${THIS_YEAR - 2000}`
+          : `${d} ${THIS_YEAR}`
+      ) || [];
+  if (
+    dateMatches?.length > 0 &&
+    !dateMatches
+      .map((d) => new Date(d).toLocaleDateString())
+      .includes(deadline.toLocaleDateString())
+  ) {
+    issues.push(
+      `Deadline specified is ${deadline.toLocaleDateString()} but other dates were found: ${dateMatches}.`
+    );
+  }
+  const gpaMatch = parseMinGPA(desc);
   if (gpaMatch) {
     const parsedVal = Number.parseFloat(gpaMatch.value);
     if (!reqs?.gpa) {
