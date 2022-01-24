@@ -182,20 +182,18 @@ export function lint(scholarship: ScholarshipData): String[] {
     );
   }
   const dateMatches =
-    desc
-      .match(dateRe)
-      ?.filter((d) => Date.parse(d) !== Number.NaN)
-      .map((d) =>
-        // This logic adds the current year to the end of the string in case it's missing.
-        d.includes(THIS_YEAR.toString()) || d.endsWith(`/${THIS_YEAR - 2000}`)
-          ? d
-          : d.includes('/')
-          ? `${d}/${THIS_YEAR - 2000}`
-          : `${d} ${THIS_YEAR}`
-      ) || [];
+    desc.match(dateRe)?.filter((d) => Date.parse(d) !== Number.NaN) || [];
   if (
     dateMatches?.length > 0 &&
     !dateMatches
+      .map((d) =>
+        // For MM/DD matches add the year if missing.
+        d.includes('/') && !d.match(/\d+\/\d+\/\d+/) ? d : `${d}/${THIS_YEAR}`
+      )
+      .map((d) =>
+        // For MM DD matches add the year if missing.
+        !d.includes('/') && !d.match(/(,? \d{4})/) ? d : `${d}, ${THIS_YEAR}`
+      )
       .map((d) => new Date(d).toLocaleDateString())
       .includes(deadline.toLocaleDateString())
   ) {
