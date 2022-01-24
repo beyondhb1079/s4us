@@ -188,11 +188,11 @@ export function lint(scholarship: ScholarshipData): String[] {
     !dateMatches
       .map((d) =>
         // For MM/DD matches add the year if missing.
-        d.includes('/') && !d.match(/\d+\/\d+\/\d+/) ? d : `${d}/${THIS_YEAR}`
+        d.includes('/') && !d.match(/\d+\/\d+\/\d+/) ? `${d}/${THIS_YEAR}` : d
       )
       .map((d) =>
         // For MM DD matches add the year if missing.
-        !d.includes('/') && !d.match(/(,? \d{4})/) ? d : `${d}, ${THIS_YEAR}`
+        !d.includes('/') && !d.match(/(,? \d{4})/) ? `${d}, ${THIS_YEAR}` : d
       )
       .map((d) => new Date(d).toLocaleDateString())
       .includes(deadline.toLocaleDateString())
