@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useLocation, useHistory } from 'react-router-dom';
 import queryString from 'query-string';
-import { Container, Typography } from '@mui/material';
+import { Container, Typography, Box } from '@mui/material';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
+import FilterDrawer from '../components/FilterDrawer';
 import qParams from '../lib/QueryParams';
 import sortOptions, {
   DEADLINE_ASC,
@@ -24,6 +25,7 @@ function ListScholarships() {
   const history = useHistory();
   const location = useLocation();
   const { t } = useTranslation();
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   const params = queryString.parse(location.search, {
     parseNumbers: true,
@@ -113,16 +115,28 @@ function ListScholarships() {
     });
 
   return (
-    <Container maxWidth="md">
-      <Helmet>
-        <title>{t('listScholarships.titleTag')}</title>
-      </Helmet>
-      <Typography variant="h3" component="h1" align="center">
-        {t('general.scholarships')}
-      </Typography>
-      <FilterBar queryParams={params} {...{ setQueryParam }} />
-      <ScholarshipList listFn={listScholarships} />
-    </Container>
+    <Box sx={{ position: 'relative' }}>
+      <FilterDrawer
+        queryParams={params}
+        {...{ setQueryParam }}
+        open={openDrawer}
+      />
+
+      <Container maxWidth="md">
+        <Helmet>
+          <title>{t('listScholarships.titleTag')}</title>
+        </Helmet>
+        <Typography variant="h3" component="h1" align="center">
+          {t('general.scholarships')}
+        </Typography>
+        <FilterBar
+          queryParams={params}
+          {...{ setQueryParam }}
+          openFn={() => setOpenDrawer(true)}
+        />
+        <ScholarshipList listFn={listScholarships} />
+      </Container>
+    </Box>
   );
 }
 
