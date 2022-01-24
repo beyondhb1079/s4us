@@ -56,7 +56,7 @@ West Virginia	WV
 Wisconsin	WI
 Wyoming	WY`;
 
-interface State {
+export interface State {
   /** Full name of the state or territory, e.g. `'Alabama'`. */
   name: string;
   /** State abbreviation, e.g. `'AL'`. */
@@ -108,7 +108,7 @@ Civil Engineering
 Clinical Psychology
 Commercial and Advertising Art
 Communications
-Computer Aided Design (CAD)
+Computer Aided Design
 Computer Networking
 Computer Programming
 Computer Science
@@ -162,7 +162,7 @@ Graphic Design
 Guidance Counselor
 Health Information and Medical Records Technology
 Healthcare Administration
-Heating and Air Conditioning (HVAC)
+Heating and Air Conditioning
 Higher Education Administration
 History
 Hospital and Healthcare Facility Management
@@ -183,7 +183,7 @@ Kinesiology And Exercise Science
 Law
 Law and Justice Administration
 Liberal Arts
-Licensed Practical Nurse (LPN)
+Licensed Practical Nurse
 Logistics and Supply Chain Management
 Machinist
 Management Science
@@ -216,7 +216,7 @@ Nursing Assistant
 Nursing Science
 Nutrition
 Occupational Therapy
-Occupational Therapy Assistant (OTA)
+Occupational Therapy Assistant
 Office Management and Supervision
 Operations Management
 Optometry
@@ -2202,7 +2202,7 @@ Yosemite Community College District	http://yosemite.edu	CA
 Youngstown State University	http://ysu.edu	OH
 Yuba Community College District	http://yccd.edu	CA`;
 
-interface School {
+export interface School {
   /** Name of the college, e.g. `'American University'`. */
   name: string;
   /** State where the college is located, e.g. `'AL'`. */

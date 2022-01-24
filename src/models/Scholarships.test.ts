@@ -284,32 +284,9 @@ test('scholarships.list - filters by maxAmount', async () => {
 });
 
 const middleSchool = create({ grades: [GradeLevel.MiddleSchool] });
-const highSchool = create({
-  grades: [
-    GradeLevel.HsFreshman,
-    GradeLevel.HsSophomore,
-    GradeLevel.HsJunior,
-    GradeLevel.HsSenior,
-  ],
-});
-const college = create({
-  grades: [
-    GradeLevel.CollegeFreshman,
-    GradeLevel.CollegeSophomore,
-    GradeLevel.CollegeJunior,
-    GradeLevel.CollegeSenior,
-    GradeLevel.CollegeFifthYear,
-  ],
-});
-const graduate = create({
-  grades: [
-    GradeLevel.GraduateFirstYear,
-    GradeLevel.GraduateSecondYear,
-    GradeLevel.GraduateThirdYear,
-    GradeLevel.GraduateFourthYear,
-    GradeLevel.GraduateFifthYear,
-  ],
-});
+const highSchool = create({ grades: GradeLevel.highSchoolers });
+const college = create({ grades: GradeLevel.undergrads });
+const graduate = create({ grades: GradeLevel.grads });
 const gradeScholarships = [middleSchool, highSchool, college, graduate];
 
 test('scholarships.list - filters by grades (middle & high school)', async () => {
@@ -336,7 +313,7 @@ test('scholarships.list - filters by grades (all grades)', async () => {
     grades: [
       GradeLevel.MiddleSchool,
       GradeLevel.HsJunior,
-      GradeLevel.CollegeFifthYear,
+      GradeLevel.CollegeSenior,
       GradeLevel.GraduateThirdYear,
     ],
   });
