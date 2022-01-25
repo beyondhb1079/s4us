@@ -189,6 +189,21 @@ describe('lint()', () => {
       expect(lint({ ...testScholarship, description: d })).toHaveLength(1)
     ));
 
+  // Single descriptions with dashes
+  test('no potential list item issues', () =>
+    [
+      'sample single line description',
+      'single line with -single dash',
+      'multiple lines\nwith -multiple -items in a single line',
+    ].forEach((d) =>
+      expect(lint({ ...testScholarship, description: d })).toEqual([])
+    ));
+
+  test('potential missing lines for list items', () =>
+    ['multiple lines: -multiple -items'].forEach((d) =>
+      expect(lint({ ...testScholarship, description: d })).toHaveLength(1)
+    ));
+
   // Amounts
   const fullTuition = ScholarshipAmount.fullTuition();
   const unknown = ScholarshipAmount.unknown();
@@ -229,6 +244,44 @@ describe('lint()', () => {
           ...testScholarship,
           amount: ScholarshipAmount.fromStorage(a as ScholarshipAmount),
           description: d as string,
+        })
+      ).toHaveLength(1)
+    ));
+
+  // GPA tests
+  test('no deadline issue detected when no date found', () => {
+    expect(lint({ ...testScholarship, description: 'foo bar' })).toEqual([]);
+  });
+  test('no deadline issue detected when date found in description', () =>
+    [
+      'the deadline is May 1',
+      `the deadline is May 1, ${THIS_YEAR}`,
+      'applications due 5/1',
+      `deadline is 4/1/${THIS_YEAR}. You will be notified 5/1/${THIS_YEAR}`,
+    ].forEach((d) =>
+      expect(
+        lint({
+          ...testScholarship,
+          deadline: new Date(`May 1 ${THIS_YEAR}`),
+          description: d,
+        })
+      ).toEqual([])
+    ));
+  test('deadline seems mismatched', () =>
+    [
+      'submit by April 1',
+      'due Jun 30',
+      'due Jun 30 1921',
+      'due June 30, 1921',
+      'due May 2',
+      `applications due May 1st, ${THIS_YEAR - 1}`,
+      `applications due 5/1/${THIS_YEAR - 1}`,
+    ].forEach((d) =>
+      expect(
+        lint({
+          ...testScholarship,
+          deadline: new Date(`May 1 ${THIS_YEAR}`),
+          description: d,
         })
       ).toHaveLength(1)
     ));
