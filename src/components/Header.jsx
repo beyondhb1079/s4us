@@ -3,18 +3,22 @@ import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 import {
   AppBar,
+  Alert,
+  AlertTitle,
   Avatar,
   Button,
   Grow,
   Hidden,
   IconButton,
   Link as MuiLink,
-  makeStyles,
+  Menu,
+  MenuItem,
   Snackbar,
   Toolbar,
-} from '@material-ui/core';
-import { Alert, AlertTitle } from '@material-ui/lab';
+} from '@mui/material';
+import LanguageIcon from '@mui/icons-material/Language';
 import ProfileMenu from './ProfileDropdown';
+import { useTranslation } from 'react-i18next';
 import { BRAND_NAME, SUBSCRIPTION_FORM_URL } from '../config/constants';
 import HeaderNavMenu from './HeaderNavMenu';
 
@@ -34,20 +38,20 @@ const OnRenderSnackbar = () => {
   );
 };
 
-const UnderConstructionAlert = () => (
+const UnderConstructionAlert = ({ t }) => (
   <Alert
     severity="warning"
     action={
       <Button component={MuiLink} href={SUBSCRIPTION_FORM_URL}>
-        SUBSCRIBE FOR UPDATES
+        {t('btn.subscribeForUpdates')}
       </Button>
     }>
-    <AlertTitle>Warning</AlertTitle>
-    🚧 Website Actively Under-Construction! 🚧
+    <AlertTitle>{t('alert.warning')}</AlertTitle>
+    {t('constructAlert.description')}
   </Alert>
 );
 
-const AuthGrowButton = () => {
+const AuthGrowButton = ({ t }) => {
   const { currentUser } = firebase.auth();
   const [isSignedIn, setIsSignedIn] = useState(
     !!firebase.auth().currentUser || undefined
@@ -57,60 +61,55 @@ const AuthGrowButton = () => {
     () => firebase.auth().onAuthStateChanged((user) => setIsSignedIn(!!user)),
     []
   );
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const showProfileMenu = (event) => setAnchorEl(event.currentTarget);
-  const closeProfileMenu = () => setAnchorEl(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   return (
-    <Grow in={isSignedIn !== undefined}>
-      {isSignedIn ? (
-        <>
+    <>
+      <Grow in={isSignedIn !== undefined}>
+        {isSignedIn ? (
           <IconButton
             size="medium"
             aria-label="account of current user"
             aria-controls="menu-appbar"
             aria-haspopup="true"
-            onClick={showProfileMenu}
-            color="inherit">
+            onClick={(e) => setAnchorEl(e.currentTarget)}
+            color="inherit"
+            sx={{ height: '100%', width: 64 }}>
             <Avatar src={currentUser.photoURL} />
           </IconButton>
-          <ProfileMenu anchorEl={anchorEl} handleClose={closeProfileMenu} />
-        </>
-      ) : (
-        <Button
-          color="inherit"
-          component={Link}
-          to={{ state: { showLoginDialog: true } }}>
-          Login
-        </Button>
-      )}
-    </Grow>
+        ) : (
+          <Button
+            color="inherit"
+            component={Link}
+            to={{ state: { showLoginDialog: true } }}
+            sx={{ height: '100%', width: 64 }}>
+            {t('btn.login')}
+          </Button>
+        )}
+      </Grow>
+      <ProfileMenu anchorEl={anchorEl} onClose={() => setAnchorEl(null)} />
+    </>
   );
 };
 
-const useStyles = makeStyles(() => ({
-  title: {
-    flexGrow: 1,
-  },
-  authItem: {
-    display: 'flex',
-    flexGrow: 1,
-    justifyContent: 'right',
-  },
-}));
-
 const links = {
-  Scholarships: '/scholarships',
-  Add: '/scholarships/new',
-  About: '/about',
-  Contact: '/contact',
+  'navbar.scholarships': '/scholarships',
+  'navbar.add': '/scholarships/new',
+  'navbar.about': '/about',
+  'navbar.contact': '/contact',
+};
+
+const languages = {
+  en: 'English',
+  es: 'Español',
 };
 
 function Header() {
-  const classes = useStyles();
+  const { t, i18n } = useTranslation();
+  const [anchorEl, setAnchorEl] = useState(null);
+
   return (
     <AppBar position="static">
-      <UnderConstructionAlert />
+      <UnderConstructionAlert t={t} />
       <OnRenderSnackbar />
       <Toolbar>
         <MuiLink
@@ -118,20 +117,45 @@ function Header() {
           to="/"
           variant="h4"
           color="inherit"
-          underline="none"
-          className={classes.title}>
+          underline="none">
+          {/* flexGrow=1 needed? */}
           {BRAND_NAME.toUpperCase()}
         </MuiLink>
         <Hidden xsDown>
           <HeaderNavMenu links={links} />
+          <IconButton
+            onClick={(e) => setAnchorEl(e.currentTarget)}
+            sx={{ px: 2 }}>
+            <LanguageIcon />
+          </IconButton>
         </Hidden>
-        <AuthGrowButton className={classes.authItem} />
+        <AuthGrowButton
+          sx={{ display: 'flex', flexGrow: 1, justifyContent: 'right' }}
+        />
       </Toolbar>
       <Hidden smUp>
         <Toolbar variant="dense">
           <HeaderNavMenu links={links} />
         </Toolbar>
       </Hidden>
+      <Menu
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClose={() => setAnchorEl(null)}
+        anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
+        transformOrigin={{ horizontal: 'center', vertical: 'top' }}>
+        {Object.entries(languages).map(([abbr, lang]) => (
+          <MenuItem
+            key={lang}
+            selected={abbr === i18n.language}
+            onClick={() => {
+              i18n.changeLanguage(abbr);
+              setAnchorEl(null);
+            }}>
+            {lang}
+          </MenuItem>
+        ))}
+      </Menu>
     </AppBar>
   );
 }

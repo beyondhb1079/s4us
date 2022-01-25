@@ -14,75 +14,147 @@ export const FULL_TUITION = RANGE_MAX + 1;
 export const UNKNOWN_MIN = FULL_TUITION + 1;
 export const UNKNOWN_MAX = -1;
 
-export default class ScholarshipAmount {
+interface ScholarshipAmount {
   readonly type: AmountType;
   readonly min: number;
   readonly max: number;
+}
 
-  constructor(
-    type: AmountType = AmountType.Unknown,
-    data?: { min?: number; max?: number }
-  ) {
-    const [min, max] = [data?.min, data?.max];
+namespace ScholarshipAmount {
+  export const fixed = (val: number): ScholarshipAmount => ({
+    min: val,
+    max: val,
+    type: AmountType.Fixed,
+  });
 
-    this.type =
-      type === AmountType.Varies && !min && !max ? AmountType.Unknown : type;
+  export const range = (
+    min: number | undefined,
+    max: number | undefined
+  ): ScholarshipAmount =>
+    min || max
+      ? {
+          min: min || 0,
+          max: max || RANGE_MAX,
+          type: AmountType.Varies,
+        }
+      : {
+          min: UNKNOWN_MIN,
+          max: UNKNOWN_MAX,
+          type: AmountType.Unknown,
+        };
 
-    switch (this.type) {
+  export const fullTuition = (): ScholarshipAmount => ({
+    min: FULL_TUITION,
+    max: FULL_TUITION,
+    type: AmountType.FullTuition,
+  });
+
+  export const unknown = (): ScholarshipAmount => range(undefined, undefined);
+
+  /** Validates that `amount` meets per-type constraints. */
+  export function validate(amount: ScholarshipAmount): void {
+    const { min, max, type } = amount;
+
+    const errors: string[] = [];
+    switch (type) {
       case AmountType.Fixed:
         if (!min || min <= 0) {
-          throw new Error(`Fixed amount min(${min}) is not a positive number.`);
+          errors.push(`Fixed amount min(${min}) is not a positive number.`);
         }
         if (min !== max) {
-          throw new Error(`Fixed amount min(${min}) != max(${max}).`);
+          errors.push(`Fixed amount min(${min}) != max(${max}).`);
         }
-        this.min = min;
-        this.max = max;
         break;
       case AmountType.Varies:
         if (min && min < 0) {
-          throw new Error(`Invalid min amount: ${min}.`);
+          errors.push(`Invalid min amount: ${min}.`);
         }
         if (max && max < 0) {
-          throw new Error(`Invalid max amount: ${max}.`);
+          errors.push(`Invalid max amount: ${max}.`);
         }
         if (max && min && min >= max) {
-          throw new Error(`Invalid range ${min}-${max}`);
+          errors.push(`Invalid range ${min}-${max}`);
         }
-        this.min = min ?? 0;
-        this.max = max || RANGE_MAX;
         break;
-      case AmountType.FullTuition:
-        this.min = FULL_TUITION;
-        this.max = FULL_TUITION;
-        break;
-      default:
-        // amount unknown
-        this.min = UNKNOWN_MIN;
-        this.max = UNKNOWN_MAX;
+    }
+
+    if (errors.length !== 0) {
+      throw new Error(errors.join('\n\n'));
     }
   }
 
-  toString(): string {
-    switch (this.type) {
+  /** Translates `amount` to the format it should be stored as. */
+  export function toStorage(amount: ScholarshipAmount): ScholarshipAmount {
+    validate(amount);
+    let { min, max, type } = amount;
+    if (type === AmountType.Varies && !min && !max) {
+      type = AmountType.Unknown;
+    }
+    switch (type) {
+      case AmountType.Fixed:
+        break;
+      case AmountType.Varies:
+        min = min || 0;
+        max = max || RANGE_MAX;
+        break;
+      case AmountType.FullTuition:
+        min = FULL_TUITION;
+        max = FULL_TUITION;
+        break;
+      default:
+        min = UNKNOWN_MIN;
+        max = UNKNOWN_MAX;
+    }
+    return { min, max, type };
+  }
+
+  /** Translates 'amount' to the format it should be displayed as */
+  export function fromStorage(amount: ScholarshipAmount): ScholarshipAmount {
+    let { type, min, max } = amount;
+    switch (type) {
+      case AmountType.Unknown:
+        min = 0;
+        max = 0;
+        type = AmountType.Varies;
+        break;
+      case AmountType.Varies:
+        max = max === RANGE_MAX ? 0 : max;
+        break;
+      default:
+        break;
+    }
+    return { type, min, max };
+  }
+
+  /** Returns a string representation of the given `amount`. */
+  export function toString(amount?: ScholarshipAmount): string {
+    switch (amount?.type) {
       case AmountType.FullTuition:
         return 'Full Tuition';
       case AmountType.Fixed:
-        return `$${this.min}`;
+        return `${amount.min}`;
       case AmountType.Varies:
-        if (this.min && this.max !== RANGE_MAX) {
-          return `$${this.min}-$${this.max}`;
+        if (!amount.min && !amount.max) return 'Varies';
+        if (amount.min && amount.max && amount.max !== RANGE_MAX) {
+          return `${amount.min}-${amount.max}`;
         }
-        return this.min ? `$${this.min}+` : `Up to $${this.max}`;
+        return amount.min ? `${amount.min}+` : `${amount.max} max`;
       default:
-        return '(Unknown amount)';
+        return 'Varies';
     }
   }
 
-  intersectsRange(min?: number, max?: number): boolean {
+  /** Returns whether or not amount `a` is in range `r`. */
+  export function amountsIntersect(
+    a: ScholarshipAmount,
+    r: ScholarshipAmount
+  ): boolean {
     return (
-      this.type === AmountType.Unknown ||
-      ((!min || this.max >= min) && (!max || this.min <= max))
+      a.type === AmountType.Unknown ||
+      r.type === AmountType.Unknown ||
+      ((!r.min || a.max === 0 || a.max >= r.min) && (!r.max || a.min <= r.max))
     );
   }
 }
+
+export default ScholarshipAmount;

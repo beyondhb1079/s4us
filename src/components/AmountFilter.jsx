@@ -1,27 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Popover, InputLabel, Grid } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import RemoveIcon from '@material-ui/icons/Remove';
+import { Button, Popover, InputLabel, Grid } from '@mui/material';
+import {
+  ArrowDropDown as ArrowDropDownIcon,
+  Remove as RemoveIcon,
+} from '@mui/icons-material';
 import AmountTextField from './AmountTextField';
 
-const useStyles = makeStyles((theme) => ({
-  buttonStyle: {
-    margin: theme.spacing(1),
-    height: theme.spacing(4),
-  },
-  filterStyle: { margin: theme.spacing(1) },
-  labelStyle: { paddingLeft: theme.spacing(1) },
-  dashStyle: {
-    paddingTop: theme.spacing(2),
-    display: 'flex',
-    alignItems: 'center',
-  },
-}));
-
 export default function AmountFilter(props) {
-  const classes = useStyles();
   const { min, max, onMinChange, onMaxChange } = props;
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -32,7 +18,7 @@ export default function AmountFilter(props) {
     <>
       <Button
         variant="outlined"
-        className={classes.buttonStyle}
+        sx={{ m: 1, height: (theme) => theme.spacing(4) }}
         onClick={handleClick}
         endIcon={<ArrowDropDownIcon color="primary" />}>
         Amount
@@ -45,19 +31,19 @@ export default function AmountFilter(props) {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
         <Grid container>
-          <Grid item className={classes.filterStyle}>
-            <InputLabel className={classes.labelStyle}>Min Amount</InputLabel>
+          <Grid item sx={{ m: 1 }}>
+            <InputLabel sx={{ pl: 1 }}>Min Amount</InputLabel>
             <AmountTextField
               error={error}
               value={min || ''}
               onChange={onMinChange}
             />
           </Grid>
-          <Grid item className={classes.dashStyle}>
+          <Grid item sx={{ pt: 2, display: 'flex', alignItems: 'center' }}>
             <RemoveIcon />
           </Grid>
-          <Grid item className={classes.filterStyle}>
-            <InputLabel className={classes.labelStyle}>Max Amount</InputLabel>
+          <Grid item sx={{ m: 1 }}>
+            <InputLabel sx={{ pl: 1 }}>Max Amount</InputLabel>
             <AmountTextField value={max || ''} onChange={onMaxChange} />
           </Grid>
         </Grid>

@@ -1,89 +1,98 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-import Container from '@material-ui/core/Container';
 import {
+  featureRequest,
   genMailToLink,
   reportIssue,
-  featureRequest,
   withDeviceInfo,
 } from '../lib/mail';
 import { BRAND_NAME, SUBSCRIPTION_FORM_URL } from '../config/constants';
-import { Link as MuiLink, Typography } from '@material-ui/core';
+import { Container, Link as MuiLink, Typography } from '@mui/material';
+import { useTranslation, Trans } from 'react-i18next';
 
 function Contact() {
+  const { t } = useTranslation();
+
   return (
     <Container>
       <Helmet>
-        <title>Contact</title>
+        <title>{t('contact.titleTag')}</title>
       </Helmet>
 
       <Typography variant="h4" align="center" gutterBottom>
-        Contact Us
+        {t('contact.contactUs')}
       </Typography>
 
       <Typography variant="h5" gutterBottom>
-        Found a bug?
+        {t('contact.foundBug')}
       </Typography>
       <Typography paragraph>
-        You can file it{' '}
-        <MuiLink
-          href={genMailToLink({
-            subject: 'Bug Report',
-            body: withDeviceInfo(reportIssue),
-          })}>
-          here
-        </MuiLink>
-        .
+        <Trans i18nKey="contact.fileBug">
+          You can file it
+          <MuiLink
+            href={genMailToLink({
+              subject: 'Bug Report',
+              body: withDeviceInfo(reportIssue),
+            })}>
+            here
+          </MuiLink>
+        </Trans>
       </Typography>
 
       <Typography variant="h5" gutterBottom>
-        Feature Requests
+        {t('contact.featureReq')}
       </Typography>
       <Typography paragraph>
-        You can suggest an idea for this project{' '}
-        <MuiLink
-          href={genMailToLink({
-            subject: 'Feature Request',
-            body: withDeviceInfo(featureRequest),
-          })}>
-          here
-        </MuiLink>
-        .
+        <Trans i18nKey="contact.featureSuggest">
+          You can suggest an idea for this project
+          <MuiLink
+            href={genMailToLink({
+              subject: 'Feature Request',
+              body: withDeviceInfo(featureRequest),
+            })}>
+            here
+          </MuiLink>
+        </Trans>
       </Typography>
 
       <Typography variant="h5" gutterBottom>
-        Learn About Us
+        {t('contact.learnAboutUs')}
       </Typography>
       <Typography paragraph>
-        You can learn more about {BRAND_NAME} and the developers{' '}
-        <MuiLink component={Link} to="/about">
-          here
-        </MuiLink>
-        .
+        <Trans i18nKey="contact.learnMore" values={{ brand: BRAND_NAME }}>
+          You can learn more about DreamScholars and the developers
+          <MuiLink component={Link} to="/about">
+            here.
+          </MuiLink>
+        </Trans>
       </Typography>
 
       <Typography variant="h5" gutterBottom>
-        Subscribe
+        {t('contact.subscribe')}
       </Typography>
       <Typography paragraph>
-        You can subscribe for updates{' '}
-        <MuiLink href={SUBSCRIPTION_FORM_URL}>here</MuiLink>.
+        <Trans i18nKey="contact.subForUpdates">
+          You can subscribe for updates
+          <MuiLink href={SUBSCRIPTION_FORM_URL}>here</MuiLink>
+        </Trans>
       </Typography>
 
       <Typography variant="h5" gutterBottom>
-        Reach Out
+        {t('contact.reachOut')}
       </Typography>
       <Typography paragraph>
-        We are happy to answer any of your questions. You can email us{' '}
-        <MuiLink
-          href={genMailToLink({
-            subject: 'Outreach',
-            body: 'Please describe the purpose of your outreach below.\n',
-          })}>
-          here
-        </MuiLink>{' '}
-        and we&apos;ll be in touch as soon as possible.
+        <Trans i18nKey="contact.emailUs">
+          We are happy to answer any of your questions. You can email us
+          <MuiLink
+            href={genMailToLink({
+              subject: 'Outreach',
+              body: 'Please describe the purpose of your outreach below.\n',
+            })}>
+            here
+          </MuiLink>
+          and we&apos;ll be in touch as soon as possible.
+        </Trans>
       </Typography>
     </Container>
   );

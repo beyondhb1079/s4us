@@ -2,25 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Route, Redirect, useLocation } from 'react-router-dom';
 import firebase from 'firebase';
 import PropTypes from 'prop-types';
-import {
-  Container,
-  Typography,
-  CircularProgress,
-  makeStyles,
-} from '@material-ui/core';
-
-const useStyles = makeStyles(() => ({
-  progress: {
-    display: 'flex',
-    flexGrow: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-}));
+import { Container, Typography, CircularProgress } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 function ProtectedRoute({ component: Component, path }) {
   const location = useLocation();
-  const classes = useStyles();
   const { showLoginDialog } = location.state || {
     showLoginDialog: undefined,
   };
@@ -33,15 +19,22 @@ function ProtectedRoute({ component: Component, path }) {
     []
   );
 
+  const { t } = useTranslation();
+
   return (
     <Route
       path={path}
       render={() => {
         if (isSignedIn === undefined) {
           return (
-            <Container className={classes.progress}>
-              <CircularProgress />
-            </Container>
+            <CircularProgress
+              sx={{
+                display: 'flex',
+                flexGrow: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            />
           );
         }
         if (isSignedIn === true) {
@@ -49,9 +42,7 @@ function ProtectedRoute({ component: Component, path }) {
         }
         return (
           <Container>
-            <Typography variant="h5">
-              You must log in first to access this page
-            </Typography>
+            <Typography variant="h5">{t('protectedPage')}</Typography>
             {showLoginDialog === undefined && (
               <Redirect
                 push={false}

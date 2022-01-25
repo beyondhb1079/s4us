@@ -1,23 +1,34 @@
 import React from 'react';
-import { InputLabel, TextField } from '@material-ui/core';
+import { InputLabel, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
+import { getIn } from 'formik';
 
+/* eslint-disable react/jsx-props-no-spreading */
 function FormikTextField(props) {
-  const { label, labelStyle, id, formik, minRows } = props;
+  const {
+    label,
+    labelStyle,
+    id,
+    formik,
+    minRows,
+    nested,
+    value,
+    ...otherProps
+  } = props;
 
   return (
     <>
-      <InputLabel className={labelStyle}>{label}</InputLabel>
+      <InputLabel sx={labelStyle}>{label}</InputLabel>
       <TextField
-        variant="outlined"
         id={id}
-        error={formik.touched[id] && Boolean(formik.errors[id])}
-        helperText={formik.touched[id] && formik.errors[id]}
-        value={formik.values[id]}
+        error={Boolean(getIn(formik.errors, id))}
+        helperText={getIn(formik.errors, id)}
+        value={getIn(formik.values, id)}
         onChange={formik.handleChange}
         fullWidth
         multiline={minRows > 0}
         minRows={minRows}
+        {...otherProps}
       />
     </>
   );
@@ -25,13 +36,15 @@ function FormikTextField(props) {
 
 FormikTextField.propTypes = {
   label: PropTypes.string.isRequired,
-  labelStyle: PropTypes.string,
+  labelStyle: PropTypes.object,
   id: PropTypes.string.isRequired,
   formik: PropTypes.object.isRequired,
   minRows: PropTypes.number,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 FormikTextField.defaultProps = {
-  labelStyle: null,
+  labelStyle: {},
   minRows: 0,
+  value: undefined,
 };
 export default FormikTextField;

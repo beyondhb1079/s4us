@@ -1,24 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
-import { makeStyles, Tab, Tabs } from '@material-ui/core';
-
-const useStyles = makeStyles((theme) => ({
-  tab: {
-    minWidth: 72,
-    marginRight: theme.spacing(0),
-    [theme.breakpoints.down('sm')]: {
-      minWidth: 64,
-    },
-    padding: theme.spacing(0),
-    textTransform: 'none',
-  },
-}));
+import { Tab, Tabs } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 function HeaderNavMenu({ links }) {
-  const classes = useStyles();
   const location = useLocation();
   let currentTab = false;
+  const { t } = useTranslation();
+
   Object.entries(links).map(([title, link]) => {
     if (location.pathname.startsWith(link)) {
       currentTab = title;
@@ -31,13 +21,19 @@ function HeaderNavMenu({ links }) {
       indicatorColor="secondary"
       scrollButtons="auto"
       value={currentTab}
-      variant="scrollable">
+      variant="scrollable"
+      sx={{ display: 'inline-flex' }}>
       {Object.entries(links).map(([title, link]) => (
         <Tab
-          className={classes.tab}
+          sx={{
+            minWidth: { xs: 64, md: 72 },
+            marginRight: 0, // needed?
+            padding: 0,
+            textTransform: 'none',
+          }}
           component={Link}
           key={title}
-          label={title}
+          label={t(title)}
           value={title}
           to={link}
         />

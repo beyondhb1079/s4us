@@ -1,71 +1,59 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
-import firebase from 'firebase';
-import { Container, Typography } from '@material-ui/core';
+import { Container, Typography, Grid, Paper, Box } from '@mui/material';
 import ScholarshipForm from '../components/ScholarshipForm';
 import Scholarships from '../models/Scholarships';
-import SubmissionAlert from '../components/SubmissionAlert';
-import AmountType from '../types/AmountType';
-import { Alert, AlertTitle } from '@material-ui/lab';
+import backgroundImg from '../img/img3.svg';
+import { useTranslation } from 'react-i18next';
 
 function AddScholarship() {
-  const [submissionAlert, setSubmissionAlert] = useState(null);
-  const user = firebase.auth().currentUser;
-
-  const scholarship = Scholarships.new({
-    name: '',
-    deadline: null,
-    description: '',
-    amount: {
-      type: AmountType.Fixed,
-      min: 0,
-      max: 0,
-    },
-    website: '',
-    organization: '',
-    tags: [],
-    author: { id: user?.uid, email: user?.email },
-    requirements: {
-      gpa: 0,
-      ethnicities: [],
-      majors: [],
-      schools: [],
-      grades: [],
-      states: [],
-      genders: [],
-    },
-  });
+  const { t } = useTranslation();
 
   return (
     <Container maxWidth="md">
       <Helmet>
-        <title>Add a Scholarship</title>
+        <title>{t('addScholarship.titleTag')}</title>
       </Helmet>
-      <Typography variant="h4" gutterBottom>
-        Submit a Scholarship
-      </Typography>
-      <ScholarshipForm
-        scholarship={scholarship}
-        submitFn={() =>
-          setSubmissionAlert(
-            <SubmissionAlert
-              id={scholarship.id}
-              name={scholarship.data.name}
-              onClose={() => setSubmissionAlert(null)}
-            />
-          )
-        }
-        onSubmitError={(error) =>
-          setSubmissionAlert(
-            <Alert severity="error" onClose={() => setSubmissionAlert(null)}>
-              <AlertTitle>Error</AlertTitle>
-              {error.toString()}
-            </Alert>
-          )
-        }
-      />
 
-      {submissionAlert}
+      <Grid container spacing={2}>
+        <Grid
+          item
+          sm={12}
+          md={6}
+          sx={{ textAlign: { xs: 'center', md: 'left' } }}>
+          <Typography gutterBottom>
+            {t('addScholarship.submitAScholarship')}
+          </Typography>
+          <Typography variant="h4" gutterBottom>
+            {t('addScholarship.additionalInfo')}
+          </Typography>
+          <Typography>{t('addScholarship.description')}</Typography>
+        </Grid>
+
+        <Grid item sm={12} md={6} sx={{ width: '100%' }}>
+          <Box
+            component="img"
+            src={backgroundImg}
+            sx={{
+              overflow: 'hidden',
+              display: 'block',
+              m: 'auto',
+              width: { xs: '60%', md: '120%' },
+            }}
+          />
+        </Grid>
+      </Grid>
+
+      <Paper
+        elevation={2}
+        sx={{
+          zIndex: 1,
+          position: 'relative',
+          p: { xs: 2, sm: 3 },
+          bottom: { md: 40 },
+        }}>
+        <ScholarshipForm scholarship={Scholarships.new()} />
+      </Paper>
     </Container>
   );
 }

@@ -1,23 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import firebase from 'firebase';
-import { makeStyles } from '@material-ui/core/styles';
-import { Avatar, Divider, Grid, Typography } from '@material-ui/core';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import NewIcon from '@material-ui/icons/NewReleases';
-import BookmarkIcon from '@material-ui/icons/Bookmark';
-import DoneIcon from '@material-ui/icons/Done';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { withStyles } from '@mui/styles';
+import {
+  Avatar,
+  Divider,
+  Grid,
+  Menu,
+  MenuItem,
+  Typography,
+} from '@mui/material';
+import {
+  Bookmark as BookmarkIcon,
+  Done as DoneIcon,
+  ExitToApp as ExitToAppIcon,
+  NewReleases as NewIcon,
+} from '@mui/icons-material';
 import experiments from '../lib/experiments';
 
 // hacky way to override Menu style
 const StyledMenu = (props) => (
   <Menu
     elevation={0}
-    getContentAnchorEl={null}
     anchorOrigin={{
       vertical: 'bottom',
       horizontal: 'right',
@@ -31,67 +35,49 @@ const StyledMenu = (props) => (
   />
 );
 
-const useStyles = makeStyles((theme) => ({
-  gridRoot: {
-    padding: theme.spacing(1),
-  },
-  // menuListItem: {
-  //   paddingTop: theme.spacing(1),
-  //   paddingBottom: theme.spacing(1),
-  // },
-  dividerSpacing: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-  },
-  profilePic: {
-    alignSelf: 'center',
-  },
-  medium: {
-    width: theme.spacing(6),
-    height: theme.spacing(6),
-  },
-}));
+const StyledMenuItem = ({ icon: Icon, text, onClick }) => (
+  <MenuItem onClick={onClick} sx={{ py: 1 }}>
+    <Icon sx={{ mr: 1.5 }} />
+    {text}
+  </MenuItem>
+);
+
+StyledMenuItem.propTypes = {
+  icon: PropTypes.elementType.isRequired,
+  text: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
+};
 
 export default function ProfileDropdown(props) {
-  const { anchorEl, handleClose } = props;
-  const classes = useStyles();
+  const { anchorEl, onClose } = props;
   const user = firebase.auth().currentUser;
 
   // needs to be updated once there is a working manage profile page
   const manageProfileLink = '/home';
 
-  function createMenuItem(text, icon, task) {
-    return (
-      <MenuItem onClick={task} className={classes.menuListItem}>
-        <ListItemIcon>{icon}</ListItemIcon>
-        <ListItemText primary={text} />
-      </MenuItem>
-    );
-  }
-
-  const signUserOut = () => firebase.auth().signOut();
+  const signUserOut = () => {
+    onClose();
+    firebase.auth().signOut();
+  };
 
   return (
     <StyledMenu
       anchorEl={anchorEl}
       keepMounted
       open={Boolean(anchorEl)}
-      onClose={handleClose}>
+      onClose={onClose}>
       <MenuItem>
-        <Grid
-          container
-          spacing={3}
-          alignItems="center"
-          className={classes.gridRoot}>
-          <Grid item className={classes.profilePic}>
-            <Avatar src={user.photoURL} className={classes.medium} />
+        <Grid container spacing={2} sx={{ p: 1 }}>
+          <Grid item sx={{ alignSelf: 'center' }}>
+            {/* or use alignItems? */}
+            <Avatar src={user?.photoURL} sx={{ height: 48, width: 48 }} />
           </Grid>
-          <Grid>
+          <Grid item>
             <Typography variant="h6" component="h4">
-              {user.displayName}
+              {user?.displayName}
             </Typography>
             <Typography component="h6" gutterBottom>
-              {user.email}
+              {user?.email}
             </Typography>
             {experiments.expShowFullProfileMenu && (
               <a href={manageProfileLink}>Manage Your Profile</a>
@@ -99,25 +85,25 @@ export default function ProfileDropdown(props) {
           </Grid>
         </Grid>
       </MenuItem>
-      <Divider className={classes.dividerSpacing} />
+      <Divider sx={{ my: 1 }} />
       {experiments.expShowFullProfileMenu && (
         <>
-          {createMenuItem('New', <NewIcon fontSize="medium" />)}
-          {createMenuItem('Saved', <BookmarkIcon fontSize="medium" />)}
-          {createMenuItem('Applied', <DoneIcon fontSize="medium" />)}
-          <Divider className={classes.dividerSpacing} />
+          <StyledMenuItem icon={NewIcon} text="New" />
+          <StyledMenuItem icon={BookmarkIcon} text="Saved" />
+          <StyledMenuItem icon={DoneIcon} text="Applied" />
+          <Divider sx={{ my: 1 }} />
         </>
       )}
-      {createMenuItem(
-        'Logout',
-        <ExitToAppIcon fontSize="medium" />,
-        signUserOut
-      )}
+      <StyledMenuItem
+        icon={ExitToAppIcon}
+        text="Logout"
+        onClick={signUserOut}
+      />
     </StyledMenu>
   );
 }
 
 ProfileDropdown.propTypes = {
-  anchorEl: PropTypes.bool.isRequired,
-  handleClose: PropTypes.func.isRequired,
+  anchorEl: PropTypes.element,
+  onClose: PropTypes.func.isRequired,
 };

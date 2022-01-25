@@ -1,62 +1,71 @@
 // Source: https://www.ssa.gov/international/coc-docs/states.html
-const RAW_STATES = `ALABAMA	AL
-ALASKA	AK
-AMERICAN SAMOA	AS
-ARIZONA	AZ
-ARKANSAS	AR
-CALIFORNIA	CA
-COLORADO	CO
-CONNECTICUT	CT
-DELAWARE	DE
-DISTRICT OF COLUMBIA	DC
-FLORIDA	FL
-GEORGIA	GA
-GUAM	GU
-HAWAII	HI
-IDAHO	ID
-ILLINOIS	IL
-INDIANA	IN
-IOWA	IA
-KANSAS	KS
-KENTUCKY	KY
-LOUISIANA	LA
-MAINE	ME
-MARYLAND	MD
-MASSACHUSETTS	MA
-MICHIGAN	MI
-MINNESOTA	MN
-MISSISSIPPI	MS
-MISSOURI	MO
-MONTANA	MT
-NEBRASKA	NE
-NEVADA	NV
-NEW HAMPSHIRE	NH
-NEW JERSEY	NJ
-NEW MEXICO	NM
-NEW YORK	NY
-NORTH CAROLINA	NC
-NORTH DAKOTA	ND
-NORTHERN MARIANA IS	MP
-OHIO	OH
-OKLAHOMA	OK
-OREGON	OR
-PENNSYLVANIA	PA
-PUERTO RICO	PR
-RHODE ISLAND	RI
-SOUTH CAROLINA	SC
-SOUTH DAKOTA	SD
-TENNESSEE	TN
-TEXAS	TX
-UTAH	UT
-VERMONT	VT
-VIRGINIA	VA
-VIRGIN ISLANDS	VI
-WASHINGTON	WA
-WEST VIRGINIA	WV
-WISCONSIN	WI
-WYOMING	WY`;
+const RAW_STATES = `Alabama	AL
+Alaska	AK
+American Samoa	AS
+Arizona	AZ
+Arkansas	AR
+California	CA
+Colorado	CO
+Connecticut	CT
+Delaware	DE
+District Of Columbia	DC
+Florida	FL
+Georgia	GA
+Guam	GU
+Hawaii	HI
+Idaho	ID
+Illinois	IL
+Indiana	IN
+Iowa	IA
+Kansas	KS
+Kentucky	KY
+Louisiana	LA
+Maine	ME
+Maryland	MD
+Massachusetts	MA
+Michigan	MI
+Minnesota	MN
+Mississippi	MS
+Missouri	MO
+Montana	MT
+Nebraska	NE
+Nevada	NV
+New Hampshire	NH
+New Jersey	NJ
+New Mexico	NM
+New York	NY
+North Carolina	NC
+North Dakota	ND
+Northern Mariana Islands	MP
+Ohio	OH
+Oklahoma	OK
+Oregon	OR
+Pennsylvania	PA
+Puerto Rico	PR
+Rhode Island	RI
+South Carolina	SC
+South Dakota	SD
+Tennessee	TN
+Texas	TX
+Utah	UT
+Vermont	VT
+Virginia	VA
+Virgin Islands	VI
+Washington	WA
+West Virginia	WV
+Wisconsin	WI
+Wyoming	WY`;
 
-export const STATES = RAW_STATES.split('\n').map((s) => s.split('\t')[1]);
+export interface State {
+  /** Full name of the state or territory, e.g. `'Alabama'`. */
+  name: string;
+  /** State abbreviation, e.g. `'AL'`. */
+  abbr: string;
+}
+
+export const STATES: State[] = RAW_STATES.split('\n')
+  .map((s) => s.split('\t'))
+  .map(([name, abbr]) => ({ name, abbr }));
 
 // Source: https://matchcollege.com/top-majors
 //
@@ -99,7 +108,7 @@ Civil Engineering
 Clinical Psychology
 Commercial and Advertising Art
 Communications
-Computer Aided Design (CAD)
+Computer Aided Design
 Computer Networking
 Computer Programming
 Computer Science
@@ -153,7 +162,7 @@ Graphic Design
 Guidance Counselor
 Health Information and Medical Records Technology
 Healthcare Administration
-Heating and Air Conditioning (HVAC)
+Heating and Air Conditioning
 Higher Education Administration
 History
 Hospital and Healthcare Facility Management
@@ -174,7 +183,7 @@ Kinesiology And Exercise Science
 Law
 Law and Justice Administration
 Liberal Arts
-Licensed Practical Nurse (LPN)
+Licensed Practical Nurse
 Logistics and Supply Chain Management
 Machinist
 Management Science
@@ -207,7 +216,7 @@ Nursing Assistant
 Nursing Science
 Nutrition
 Occupational Therapy
-Occupational Therapy Assistant (OTA)
+Occupational Therapy Assistant
 Office Management and Supervision
 Operations Management
 Optometry
@@ -2193,10 +2202,15 @@ Yosemite Community College District	http://yosemite.edu	CA
 Youngstown State University	http://ysu.edu	OH
 Yuba Community College District	http://yccd.edu	CA`;
 
-export const SCHOOLS = new Set(
-  RAW_SCHOOLS.split('\n').map((s) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [name, site, state] = s.split('\t', 3);
-    return `${name} (${state})`;
-  })
-);
+export interface School {
+  /** Name of the college, e.g. `'American University'`. */
+  name: string;
+  /** State where the college is located, e.g. `'AL'`. */
+  state: string;
+  /** Website of the college e.g. `'http://yccd.edu'`. */
+  website: string;
+}
+
+export const SCHOOLS: School[] = RAW_SCHOOLS.split('\n')
+  .map((s) => s.split('\t'))
+  .map(([name, website, state]) => ({ name, state, website }));

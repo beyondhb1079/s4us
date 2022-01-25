@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import ReactRouterPropTypes from 'react-router-prop-types';
-import { Container, Typography } from '@material-ui/core';
+import { Container, Typography, Box } from '@mui/material';
 import Scholarships from '../models/Scholarships';
-import ScholarshipDetailCard from '../components/ScholarshipDetailCard';
+import ScholarshipCard from '../components/ScholarshipCard';
+import { Alert } from '@mui/material';
+import bannerImg from '../img/detail-page-banner.jpg';
 
 export default function ViewScholarship({ history, location, match }) {
   const { id } = match.params;
@@ -43,11 +45,37 @@ export default function ViewScholarship({ history, location, match }) {
   }
 
   return (
-    <Container>
+    <Container maxWidth="md">
       <Helmet>
         <title>{scholarship.data.name}</title>
       </Helmet>
-      <ScholarshipDetailCard scholarship={scholarship} />
+
+      {location?.state?.alert && (
+        <Alert
+          color="primary"
+          variant="filled"
+          onClose={() => history.replace(`/scholarships/${scholarship.id}`)}>
+          {`Scholarship successfully ${
+            scholarship.data.dateAdded.getTime() ===
+            scholarship.data.lastModified.getTime()
+              ? 'submitted.'
+              : 'updated.'
+          }`}
+        </Alert>
+      )}
+
+      <Box
+        component="img"
+        src={bannerImg}
+        sx={{
+          width: '100%',
+          objectFit: 'cover',
+          maxHeight: 250,
+          objectPosition: { md: '0px -50px' },
+        }}
+      />
+
+      <ScholarshipCard scholarship={scholarship} style="detail" />
     </Container>
   );
 }

@@ -1,42 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, Grid } from '@material-ui/core';
-import FilterDropDown from './FilterDropdown';
+import { Grid, FormControl, Select, MenuItem } from '@mui/material';
 import AmountFilter from './AmountFilter';
 import GradeLevelFilter from './GradeLevelFilter';
 import qParams from '../lib/QueryParams';
 import sortOptions, { DEADLINE_ASC } from '../lib/sortOptions';
-import experiments from '../lib/experiments';
+import MajorFilter from './MajorFilter';
 
-const useStyles = makeStyles(() => ({
-  root: {
-    flexGrow: 1,
-    justifyContent: 'space-between',
-  },
-  alignText: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-}));
-
-const majors = {
-  che: 'Chemical Eng.',
-  cs: 'Computer Science',
-  ds: 'Data Science',
-};
-
-export default function FilterBar(props) {
-  const { setQueryParam, queryParams } = props;
-  const classes = useStyles();
-  const { minAmount, maxAmount } = queryParams;
+export default function FilterBar({ setQueryParam, queryParams }) {
+  const { minAmount, maxAmount, grades, majors } = queryParams;
 
   return (
-    <Grid container spacing={2} className={classes.root}>
-      <Grid item className={classes.alignText}>
-        {experiments.expShowMajorFilter && (
-          <FilterDropDown label="Major" items={majors} />
-        )}
-        {experiments.expShowGradeFilter && <GradeLevelFilter />}
+    <Grid
+      container
+      spacing={2}
+      justifyContent="space-between"
+      sx={{ flexGrow: 1 }}>
+      <Grid item>
+        <MajorFilter
+          majors={majors}
+          onSelect={(m) => setQueryParam(qParams.MAJORS, m)}
+          onDelete={(m) =>
+            setQueryParam(
+              qParams.MAJORS,
+              majors.filter((major) => major !== m)
+            )
+          }
+        />
+
+        <GradeLevelFilter
+          grades={new Set(grades)}
+          changeFn={(e) => setQueryParam(qParams.GRADES, e)}
+        />
+
         <AmountFilter
           min={minAmount ?? 0}
           max={maxAmount ?? 0}
@@ -45,15 +41,21 @@ export default function FilterBar(props) {
         />
       </Grid>
 
-      <Grid item className={classes.alignText}>
+      <Grid item sx={{ display: 'flex', alignItems: 'center' }}>
         Sort by
-        <FilterDropDown
-          label="Sorting"
-          items={sortOptions}
-          value={queryParams.sortBy ?? DEADLINE_ASC}
-          removeNone
-          onChange={(option) => setQueryParam('sortBy', option)}
-        />
+        <FormControl variant="outlined" sx={{ margin: 1, minWidth: 120 }}>
+          <Select
+            value={queryParams.sortBy ?? DEADLINE_ASC}
+            onChange={(e) => setQueryParam('sortBy', e.target.value)}
+            displayEmpty
+            sx={{ height: (theme) => theme.spacing(4) }}>
+            {Object.keys(sortOptions).map((key) => (
+              <MenuItem key={key} value={key}>
+                {sortOptions[key]}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </Grid>
     </Grid>
   );

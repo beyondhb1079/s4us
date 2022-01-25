@@ -1,13 +1,29 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Button from '@material-ui/core/Button';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Button from '@mui/material/Button';
 import { MemoryRouter } from 'react-router-dom';
 import ScholarshipList from './ScholarshipList';
 import scholarships from '../testdata/scholarships';
+import { I18nextProvider } from 'react-i18next';
+import i18n from '../i18n/setup';
+import { clearFirestoreData, initializeTestApp } from '../lib/testing';
+
+const app = initializeTestApp({ projectId: 'scholarship-list-test' });
+beforeAll(() => clearFirestoreData(app.options));
+afterAll(() => app.delete());
 
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.
 window.MutationObserver = require('mutation-observer');
+
+const renderWithTheme = (ui, options) =>
+  render(
+    <I18nextProvider i18n={i18n}>
+      <ThemeProvider theme={createTheme()}>{ui}</ThemeProvider>
+    </I18nextProvider>,
+    options
+  );
 
 const fakeNoResults = new Promise((resolve) => {
   resolve({ results: [], next: undefined, hasNext: false });
@@ -20,17 +36,17 @@ const fakeFirstPageOfManyResults = new Promise((resolve) => {
 });
 
 test('renders no results', async () => {
-  render(<ScholarshipList listFn={() => fakeNoResults} />, {
+  renderWithTheme(<ScholarshipList listFn={() => fakeNoResults} />, {
     wrapper: MemoryRouter,
   });
 
   expect(screen.getByTestId('progress')).toBeInTheDocument();
 
-  expect(await screen.findByText(/no scholarships found/i)).toBeInTheDocument();
+  expect(await screen.findByText(/No scholarships found/i)).toBeInTheDocument();
 });
 
 test('renders custom no results node', async () => {
-  render(
+  renderWithTheme(
     <ScholarshipList
       listFn={() => fakeNoResults}
       noResultsNode={<Button>Oh no</Button>}
@@ -48,9 +64,12 @@ test('renders custom no results node', async () => {
 test('renders results with load more', async () => {
   const want = scholarships;
 
-  render(<ScholarshipList listFn={() => fakeFirstPageOfManyResults} />, {
-    wrapper: MemoryRouter,
-  });
+  renderWithTheme(
+    <ScholarshipList listFn={() => fakeFirstPageOfManyResults} />,
+    {
+      wrapper: MemoryRouter,
+    }
+  );
 
   expect(await screen.findByText('Load More')).toBeInTheDocument();
   want.forEach(({ data }) =>
@@ -61,7 +80,7 @@ test('renders results with load more', async () => {
 test('renders results without load more', async () => {
   const want = scholarships;
 
-  render(<ScholarshipList listFn={() => fakeSinglePageResults} />, {
+  renderWithTheme(<ScholarshipList listFn={() => fakeSinglePageResults} />, {
     wrapper: MemoryRouter,
   });
 

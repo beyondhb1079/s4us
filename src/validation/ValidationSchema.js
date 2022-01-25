@@ -42,6 +42,17 @@ const validationSchema = yup.object({
       }),
     max: yup.number().min(0, 'Please enter a valid amount').notRequired(),
   }),
+  requirements: yup.object().shape({
+    gpa: yup
+      .number()
+      .test(
+        'valid GPA',
+        'Please enter a valid GPA, rounded to one decimal place',
+        (gpa) =>
+          gpa === undefined ||
+          (gpa > 0 && gpa <= 4 && gpa.toString().match(/^[0-4](\.\d)?$/))
+      ),
+  }),
 });
 
 export default validationSchema;

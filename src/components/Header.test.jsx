@@ -1,8 +1,11 @@
 import React from 'react';
-import { MemoryRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { initializeTestApp } from '../lib/testing';
 import Header from './Header';
+import { I18nextProvider } from 'react-i18next';
+import i18n from '../i18n/setup';
 
 initializeTestApp({ apiKey: 'fake-api-key' });
 
@@ -10,11 +13,22 @@ initializeTestApp({ apiKey: 'fake-api-key' });
 // TODO: Figure out a cleaner solution.
 window.MutationObserver = require('mutation-observer');
 
-test('does not render alert by default', async () => {
+function renderAtUrl(url) {
   delete window.location;
-  window.location = new URL('https://www.example.com');
+  window.location = new URL(url);
+  return render(
+    <I18nextProvider i18n={i18n}>
+      <ThemeProvider theme={createTheme()}>
+        <BrowserRouter>
+          <Header />
+        </BrowserRouter>
+      </ThemeProvider>
+    </I18nextProvider>
+  );
+}
 
-  render(<Header />, { wrapper: MemoryRouter });
+test('does not render alert by default', async () => {
+  renderAtUrl('https://www.example.com');
   await screen.findByText('Login');
 
   const alertElement = screen.queryByText(/This is a preview/i);
@@ -22,10 +36,7 @@ test('does not render alert by default', async () => {
 });
 
 test('renders alert on PR preview URL', async () => {
-  delete window.location;
-  window.location = new URL('https://s4us-pr-49.onrender.com/foo');
-
-  render(<Header />, { wrapper: MemoryRouter });
+  renderAtUrl('https://s4us-pr-49.onrender.com/foo');
   await screen.findByText('Login');
 
   const alertElement = screen.getByText(/This is a preview/i);

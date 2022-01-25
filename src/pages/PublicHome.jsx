@@ -1,34 +1,60 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import { Typography } from '@material-ui/core';
+import { Button, Box } from '@mui/material';
 import ScholarshipsMadeSimple from '../components/ScholarshipsMadeSimple';
 import HomeSection from '../components/HomeSection';
-import community from '../img/community.png';
+import { useTranslation } from 'react-i18next';
+import graduation from '../img/img2.svg';
+import searching from '../img/img3.svg';
 
 function PublicHome() {
+  const { t } = useTranslation();
+
   return (
     <>
-      <Typography variant="h2" align="center" gutterBottom>
-        Find Scholarships Today
-      </Typography>
-      <ScholarshipsMadeSimple />
       <HomeSection
-        alignItems="center"
-        direction="row-reverse"
-        title="For and by the Community"
-        description="Interested in helping students find scholarships? Join the family of community contributors, help find scholarships that are open to anyone regardless of citizen status."
+        direction="row"
+        title={t('home.public.landingSection.title')}
+        main
+        description={t('home.public.landingSection.subTitle')}
         buttons={[
           <Button
             component={Link}
-            to="/about"
+            to="/scholarships"
+            variant="contained"
+            color="primary">
+            {t('btn.browseScholarships')}
+          </Button>,
+          <Button
+            component={Link}
+            to="/scholarships/new"
             variant="outlined"
             color="primary">
-            Learn More
+            {t('btn.addScholarship')}
           </Button>,
         ]}
-        pic={community}
+        pic={graduation}
       />
+
+      <ScholarshipsMadeSimple />
+
+      <Box sx={{ background: (theme) => theme.palette.background.paper }}>
+        <HomeSection
+          alignItems="center"
+          direction="row"
+          title={t('home.public.startSearch')}
+          buttons={[
+            <Button
+              component={Link}
+              to="/scholarships"
+              variant="contained"
+              color="primary">
+              {t('btn.browseScholarships')}
+            </Button>,
+          ]}
+          pic={searching}
+        />
+      </Box>
     </>
   );
 }

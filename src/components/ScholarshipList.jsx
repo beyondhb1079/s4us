@@ -1,30 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Grid,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
+import { Box, Button, CircularProgress, Grid, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
-import ScholarshipListCard from './ScholarshipListCard';
-
-const useStyles = makeStyles(() => ({
-  centered: {
-    margin: 'auto',
-    textAlign: 'center',
-  },
-  progress: {
-    display: 'block',
-    margin: 'auto',
-  },
-}));
+import ScholarshipCard from './ScholarshipCard';
 
 function ScholarshipList({ noResultsNode, listFn }) {
-  const classes = useStyles();
-
   const [error, setError] = useState();
   const [scholarships, setScholarships] = useState([]);
   const [loadState, setLoadState] = useState({
@@ -33,6 +14,7 @@ function ScholarshipList({ noResultsNode, listFn }) {
     loadMoreFn: listFn,
   });
   const { loading, canLoadMore, loadMoreFn } = loadState;
+  const { t } = useTranslation();
 
   // Reset scholarships and loading state when listFn changes
   useEffect(() => {
@@ -53,7 +35,8 @@ function ScholarshipList({ noResultsNode, listFn }) {
           setError(null);
           setScholarships((prev) => [...prev, ...results]);
           setLoadState({
-            loading: false,
+            // Load if there were no results but there's more to load.
+            loading: !results.length && hasNext,
             canLoadMore: hasNext,
             loadMoreFn: next,
           });
@@ -71,29 +54,37 @@ function ScholarshipList({ noResultsNode, listFn }) {
     <Grid container spacing={3}>
       {scholarships.map(({ id, data }) => (
         <Grid item xs={12} key={id}>
-          <ScholarshipListCard scholarship={{ id, data }} />
+          <ScholarshipCard scholarship={{ id, data }} style="result" />
         </Grid>
       ))}
       <Grid item xs={12}>
-        <Box className={classes.centered}>
+        <Box sx={{ margin: 'auto', textAlign: 'center' }}>
           {(() => {
             if (error) return <Typography>{error.toString()}</Typography>;
             if (loading)
               return (
                 <CircularProgress
                   data-testid="progress"
-                  className={classes.progress}
+                  sx={{ display: 'block', margin: 'auto' }}
                 />
               );
             if (canLoadMore)
               return (
                 <Button color="primary" onClick={loadMore}>
-                  Load More
+                  {t('btn.loadMore')}
                 </Button>
               );
             if (scholarships?.length)
-              return <Typography>End of results</Typography>;
-            return noResultsNode;
+              return (
+                <Typography>{t('listScholarships.endOfResults')}</Typography>
+              );
+            return (
+              noResultsNode || (
+                <Typography>
+                  {t('listScholarships.noScholarshipsFound')}
+                </Typography>
+              )
+            );
           })()}
         </Box>
       </Grid>
@@ -107,7 +98,7 @@ ScholarshipList.propTypes = {
 };
 ScholarshipList.defaultProps = {
   listFn: undefined,
-  noResultsNode: <Typography>No scholarships found</Typography>,
+  noResultsNode: undefined,
 };
 
 export default ScholarshipList;

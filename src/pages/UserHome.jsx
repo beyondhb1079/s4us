@@ -1,104 +1,60 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import { AddCircle as AddIcon, Inbox as InboxIcon } from '@material-ui/icons';
-import { Link } from 'react-router-dom';
+import { AddCircle as AddIcon, Inbox as InboxIcon } from '@mui/icons-material';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import firebase from 'firebase';
 import {
   Button,
   Container,
   Grid,
   Link as MuiLink,
-  makeStyles,
   Paper,
   Typography,
-} from '@material-ui/core';
+  Alert,
+} from '@mui/material';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
-
-const useStyles = makeStyles((theme) => ({
-  browseGrid: {
-    padding: theme.spacing(3),
-    [theme.breakpoints.down('xs')]: {
-      padding: theme.spacing(2),
-    },
-  },
-  browseButton: {
-    marginBottom: theme.spacing(2),
-    marginTop: theme.spacing(2),
-    [theme.breakpoints.down('xs')]: {
-      marginBottom: theme.spacing(1),
-      marginTop: theme.spacing(1),
-    },
-  },
-  scholarshipsAddedBar: {
-    justifyContent: 'space-between',
-    marginBottom: theme.spacing(2),
-    marginTop: theme.spacing(2),
-    [theme.breakpoints.down('xs')]: {
-      marginBottom: theme.spacing(1),
-      marginTop: theme.spacing(1),
-    },
-  },
-  noneAddedGrid: {
-    alignItems: 'center',
-    padding: theme.spacing(3),
-    [theme.breakpoints.down('xs')]: {
-      justifyContent: 'center',
-      padding: theme.spacing(2),
-      textAlign: 'center',
-    },
-  },
-  inboxIcon: {
-    fontSize: theme.spacing(25),
-  },
-  progress: {
-    display: 'block',
-  },
-  loadMoreButton: {
-    margin: theme.spacing(3, 0),
-  },
-}));
+import { useTranslation } from 'react-i18next';
+import LookingForScholarshipsBanner from '../components/LookingForScholarshipsBanner';
 
 export default function UserHome() {
-  const classes = useStyles();
+  const { t } = useTranslation();
   const user = firebase.auth().currentUser;
+  const location = useLocation();
+  const history = useHistory();
 
   const listScholarshipsFn = () => Scholarships.list({ authorId: user.uid });
 
   return (
     <Container>
       <Helmet>
-        <title>Dashboard</title>
+        <title>{t('home.user.titleTag')}</title>
       </Helmet>
-      <Typography variant="h4" component="h1" style={{ padding: '8px' }} gutterBottom>
-        Welcome {user.displayName}
+
+      {location?.state?.alert && (
+        <Alert severity="success" onClose={() => history.replace('/')}>
+          {location?.state?.alert.message}
+        </Alert>
+      )}
+
+      <Typography
+        variant="h4"
+        component="h1"
+        style={{ padding: '8px' }}
+        gutterBottom>
+        {t('home.user.welcome')} {user.displayName}
       </Typography>
+
+      <LookingForScholarshipsBanner />
+
       <Grid
         container
-        component={Paper}
-        variant="outlined"
-        className={classes.browseGrid}>
-        <Grid item sm={6} xs={12}>
-          <Typography variant="h5" gutterBottom>
-            Looking for scholarships?
-          </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            component={Link}
-            to="/scholarships"
-            className={classes.browseButton}>
-            Browse Scholarships
-          </Button>
-        </Grid>
-        <Grid item sm={6} xs={12}>
-          {/* TODO: Image here with certain height */}
-        </Grid>
-      </Grid>
-      <Grid container spacing={2} className={classes.scholarshipsAddedBar}>
+        spacing={2}
+        justifyContent="space-between"
+        sx={{ marginY: { xs: 1, md: 2 } }}>
         <Grid item>
           <Typography variant="h5" component="h2">
-            Scholarships You Have Added
+            {t('home.user.addedScholarships')}
           </Typography>
         </Grid>
         <Grid item>
@@ -108,7 +64,7 @@ export default function UserHome() {
             startIcon={<AddIcon />}
             component={Link}
             to="/scholarships/new">
-            Add Scholarship
+            {t('btn.addScholarship')}
           </Button>
         </Grid>
       </Grid>
@@ -119,16 +75,18 @@ export default function UserHome() {
             container
             component={Paper}
             variant="outlined"
-            className={classes.noneAddedGrid}>
+            alignItems="center"
+            justifyContent="space-around"
+            sx={{ padding: 3, marginY: 1 }}>
             <Grid item>
-              <InboxIcon className={classes.inboxIcon} />
+              <InboxIcon sx={{ fontSize: (theme) => theme.spacing(25) }} />
             </Grid>
             <Grid item>
               <Typography variant="h5" gutterButtom>
-                No Scholarships Added Yet
+                {t('home.user.noneAdded')}
               </Typography>
               <MuiLink component={Link} to="/scholarships/new">
-                Add Scholarship
+                {t('btn.addScholarship')}
               </MuiLink>
             </Grid>
           </Grid>

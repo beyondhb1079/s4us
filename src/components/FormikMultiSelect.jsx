@@ -1,20 +1,9 @@
 import React from 'react';
-import { InputLabel, Select, MenuItem } from '@material-ui/core';
+import { getIn } from 'formik';
+import { InputLabel, Select, MenuItem } from '@mui/material';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
-  textColor: {
-    color: theme.palette.grey[500],
-  },
-}));
 
 const MenuProps = {
-  getContentAnchorEl: null, //TODO: remove this when material-ui gets updated to version 5
-  anchorOrigin: {
-    vertical: 'bottom',
-    horizontal: 'left',
-  },
   PaperProps: {
     style: {
       maxHeight: 250,
@@ -24,34 +13,39 @@ const MenuProps = {
 };
 
 function FormikMultiSelect(props) {
-  const { label, id, labelStyle, formik, options, placeholder } = props;
-  const classes = useStyles();
+  const { label, id, labelStyle, formik, options, disabled, placeholder } =
+    props;
+  const values = getIn(formik.values, id, []);
 
   return (
     <>
-      <InputLabel className={labelStyle}>{label}</InputLabel>
+      <InputLabel sx={labelStyle}>{label}</InputLabel>
       <Select
-        className={
-          formik.values.requirements[id].length === 0 ? classes.textColor : ''
+        sx={
+          values.length > 0
+            ? {}
+            : {
+                color: (theme) => theme.palette.grey[500],
+                '& .Mui-disabled': {
+                  WebkitTextFillColor: (theme) => theme.palette.grey[300],
+                },
+              }
         }
+        disabled={disabled}
         multiple
         fullWidth
         displayEmpty
         id={id}
         variant="outlined"
-        value={formik.values.requirements[id]}
-        onChange={(e) =>
-          formik.setFieldValue(
-            `requirements.${id}`,
-            e.target.value,
-            /* shouldValidate = */ false
-          )
+        value={values}
+        onChange={(e) => formik.setFieldValue(id, e.target.value)}
+        renderValue={(selected) =>
+          selected.map((val) => options[val]).join(', ') || placeholder
         }
-        renderValue={(selected) => selected.join(', ') || placeholder}
         MenuProps={MenuProps}>
-        {Object.entries(options).map(([name, value]) => (
-          <MenuItem key={value} value={value}>
-            {name}
+        {Object.entries(options).map(([val, stringRep]) => (
+          <MenuItem key={val} value={parseInt(val) || val}>
+            {stringRep}
           </MenuItem>
         ))}
       </Select>
@@ -64,11 +58,14 @@ export default FormikMultiSelect;
 FormikMultiSelect.propTypes = {
   label: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
-  labelStyle: PropTypes.string.isRequired,
+  labelStyle: PropTypes.object.isRequired,
   formik: PropTypes.object.isRequired,
   options: PropTypes.objectOf(PropTypes.string).isRequired,
+  disabled: PropTypes.bool,
   placeholder: PropTypes.string,
 };
+
 FormikMultiSelect.defaultProps = {
+  disabled: false,
   placeholder: '',
 };
