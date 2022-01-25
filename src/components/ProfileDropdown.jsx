@@ -65,25 +65,23 @@ export default function ProfileDropdown(props) {
       keepMounted
       open={Boolean(anchorEl)}
       onClose={onClose}>
-      <MenuItem>
-        <Grid container spacing={2} sx={{ p: 1 }}>
-          <Grid item sx={{ alignSelf: 'center' }}>
-            {/* or use alignItems? */}
-            <Avatar src={user?.photoURL} sx={{ height: 48, width: 48 }} />
-          </Grid>
-          <Grid item>
-            <Typography variant="h6" component="h4">
-              {user?.displayName}
-            </Typography>
-            <Typography component="h6" gutterBottom>
-              {user?.email}
-            </Typography>
-            {experiments.expShowFullProfileMenu && (
-              <a href={manageProfileLink}>Manage Your Profile</a>
-            )}
-          </Grid>
+      <Grid container spacing={2} sx={{ px: 2, py: 1 }}>
+        <Grid item sx={{ alignSelf: 'center' }}>
+          {/* or use alignItems? */}
+          <Avatar src={user?.photoURL} sx={{ height: 48, width: 48 }} />
         </Grid>
-      </MenuItem>
+        <Grid item>
+          <Typography variant="h6" component="h4">
+            {user?.displayName}
+          </Typography>
+          <Typography component="h6" gutterBottom>
+            {user?.email}
+          </Typography>
+          {experiments.expShowFullProfileMenu && (
+            <a href={manageProfileLink}>Manage Your Profile</a>
+          )}
+        </Grid>
+      </Grid>
       <Divider sx={{ my: 1 }} />
       {experiments.expShowFullProfileMenu && (
         <>
