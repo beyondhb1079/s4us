@@ -117,7 +117,7 @@ function ListScholarships() {
       <Helmet>
         <title>{t('listScholarships.titleTag')}</title>
       </Helmet>
-      <Typography variant="h3" component="h1" align="center">
+      <Typography variant="h4" component="h1" align="center" style={{ p: 1 }}>
         {t('general.scholarships')}
       </Typography>
       <FilterBar queryParams={params} {...{ setQueryParam }} />
