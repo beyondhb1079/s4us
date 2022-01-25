@@ -43,7 +43,6 @@ const FilterButton = (props) => {
 
 FilterButton.propTypes = {
   title: PropTypes.string.isRequired,
-  filter: PropTypes.node.isRequired,
 };
 
 export default function FilterBar({ setQueryParam, queryParams }) {
