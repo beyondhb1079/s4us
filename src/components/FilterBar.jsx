@@ -56,19 +56,24 @@ export default function FilterBar({ setQueryParam, queryParams }) {
       justifyContent="space-between"
       sx={{ flexGrow: 1 }}>
       <Grid item>
-        <MajorFilter
-          majors={majors}
-          onSelect={(m) => setQueryParam(qParams.MAJORS, m)}
-          onDelete={(m) =>
-            setQueryParam(
-              qParams.MAJORS,
-              majors.filter((major) => major !== m)
-            )
+        <Filter
+          title="Majors"
+          filter={
+            <MajorFilter
+              majors={majors}
+              onSelect={(m) => setQueryParam(qParams.MAJORS, m)}
+              onDelete={(m) =>
+                setQueryParam(
+                  qParams.MAJORS,
+                  majors.filter((major) => major !== m)
+                )
+              }
+            />
           }
         />
 
         <Filter
-          title="Grade"
+          title="Grades"
           filter={
             <GradeLevelFilter
               grades={new Set(grades)}
