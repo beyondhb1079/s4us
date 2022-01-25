@@ -245,14 +245,7 @@ export default function ScholarshipCard({ scholarship, style }) {
           )}
 
           <Grid container sx={{ mt: 2 }}>
-            <Chip
-              label="DACA"
-              variant="outlined"
-              color="primary"
-              sx={{ mr: 2, color: 'text.primary' }}
-            />
             {tags &&
-              tags.length &&
               tags.map((tag) => (
                 <Chip
                   label={tag}
