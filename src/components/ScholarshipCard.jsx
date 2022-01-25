@@ -52,7 +52,12 @@ DetailCardCell.propTypes = {
   text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 };
 
-export default function ScholarshipCard({ scholarship, style }) {
+export default function ScholarshipCard({
+  scholarship,
+  style,
+  selected,
+  onClick,
+}) {
   const navigate = useNavigate();
   const {
     name,
@@ -114,11 +119,12 @@ export default function ScholarshipCard({ scholarship, style }) {
   const CardAreaComponent = detailed ? Box : CardActionArea;
   const lintIssues = canEdit || preview ? lint(scholarship.data) : [];
   return (
-    <Card variant="outlined">
-      <CardAreaComponent
-        component={detailed ? Box : Link}
-        to={'/scholarships/' + scholarship.id}
-        state={{ scholarship }}>
+    <Card
+      variant="outlined"
+      sx={
+        selected ? { borderColor: 'primary.light', color: 'primary.light' } : {}
+      }>
+      <CardAreaComponent component={Box} onClick={onClick}>
         <CardContent sx={{ p: 3 }}>
           <Typography
             variant={detailed ? 'h6' : 'subtitle1'}
@@ -314,9 +320,13 @@ ScholarshipCard.propTypes = {
       }),
     }).isRequired,
   }).isRequired,
+  onClick: PropTypes.func,
+  selected: PropTypes.bool,
   style: PropTypes.oneOf(['result', 'detail', 'preview']),
 };
 
 ScholarshipCard.defaultProps = {
+  onClick: undefined,
+  selected: false,
   style: 'result',
 };

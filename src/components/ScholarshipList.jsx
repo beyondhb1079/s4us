@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 
 import ScholarshipCard from './ScholarshipCard';
 
-function ScholarshipList({ noResultsNode, listFn }) {
+function ScholarshipList({ noResultsNode, listFn, selectedId, onItemSelect }) {
   const [error, setError] = useState();
   const [scholarships, setScholarships] = useState([]);
   const [loadState, setLoadState] = useState({
@@ -57,9 +57,14 @@ function ScholarshipList({ noResultsNode, listFn }) {
   const loadMore = () => setLoadState({ ...loadState, loading: true });
 
   return (
-    <Stack spacing={3}>
-      {scholarships.map(({ id, data }) => (
-        <ScholarshipCard key={id} scholarship={{ id, data }} style="result" />
+    <Stack spacing={2}>
+      {scholarships.map((scholarship) => (
+        <ScholarshipCard
+          scholarship={scholarship}
+          selected={scholarship.id === selectedId}
+          onClick={() => onItemSelect(scholarship)}
+          style="result"
+        />
       ))}
       <Box sx={{ margin: 'auto', textAlign: 'center' }}>
         {(() => {
@@ -97,10 +102,14 @@ function ScholarshipList({ noResultsNode, listFn }) {
 ScholarshipList.propTypes = {
   listFn: PropTypes.func,
   noResultsNode: PropTypes.node,
+  selectedId: PropTypes.number,
+  onItemSelect: PropTypes.func,
 };
 ScholarshipList.defaultProps = {
   listFn: undefined,
   noResultsNode: undefined,
+  selectedId: undefined,
+  onItemSelect: () => {},
 };
 
 export default ScholarshipList;
