@@ -37,11 +37,7 @@ export default function UserHome() {
         </Alert>
       )}
 
-      <Typography
-        variant="h4"
-        component="h1"
-        style={{ padding: '8px' }}
-        gutterBottom>
+      <Typography variant="h4" component="h1" style={{ p: 1 }} gutterBottom>
         {t('home.user.welcome')} {user.displayName}
       </Typography>
 
