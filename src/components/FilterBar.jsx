@@ -15,8 +15,7 @@ import sortOptions, { DEADLINE_ASC } from '../lib/sortOptions';
 import MajorFilter from './MajorFilter';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-const Filter = (props) => {
-  const { title, filter } = props;
+const Filter = ({ title, filter }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   return (
@@ -42,7 +41,7 @@ const Filter = (props) => {
 };
 
 Filter.propTypes = {
-  title: PropTypes.string.isRequried,
+  title: PropTypes.string.isRequired,
   filter: PropTypes.node.isRequired,
 };
 
