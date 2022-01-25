@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, CircularProgress, Grid, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Stack,
+  Typography,
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
@@ -51,44 +57,40 @@ function ScholarshipList({ noResultsNode, listFn }) {
   const loadMore = () => setLoadState({ ...loadState, loading: true });
 
   return (
-    <Grid container spacing={3}>
+    <Stack spacing={3}>
       {scholarships.map(({ id, data }) => (
-        <Grid item xs={12} key={id}>
-          <ScholarshipCard scholarship={{ id, data }} style="result" />
-        </Grid>
+        <ScholarshipCard key={id} scholarship={{ id, data }} style="result" />
       ))}
-      <Grid item xs={12}>
-        <Box sx={{ margin: 'auto', textAlign: 'center' }}>
-          {(() => {
-            if (error) return <Typography>{error.toString()}</Typography>;
-            if (loading)
-              return (
-                <CircularProgress
-                  data-testid="progress"
-                  sx={{ display: 'block', margin: 'auto' }}
-                />
-              );
-            if (canLoadMore)
-              return (
-                <Button color="primary" onClick={loadMore}>
-                  {t('btn.loadMore')}
-                </Button>
-              );
-            if (scholarships?.length)
-              return (
-                <Typography>{t('listScholarships.endOfResults')}</Typography>
-              );
+      <Box sx={{ margin: 'auto', textAlign: 'center' }}>
+        {(() => {
+          if (error) return <Typography>{error.toString()}</Typography>;
+          if (loading)
             return (
-              noResultsNode || (
-                <Typography>
-                  {t('listScholarships.noScholarshipsFound')}
-                </Typography>
-              )
+              <CircularProgress
+                data-testid="progress"
+                sx={{ display: 'block', margin: 'auto' }}
+              />
             );
-          })()}
-        </Box>
-      </Grid>
-    </Grid>
+          if (canLoadMore)
+            return (
+              <Button color="primary" onClick={loadMore}>
+                {t('btn.loadMore')}
+              </Button>
+            );
+          if (scholarships?.length)
+            return (
+              <Typography>{t('listScholarships.endOfResults')}</Typography>
+            );
+          return (
+            noResultsNode || (
+              <Typography>
+                {t('listScholarships.noScholarshipsFound')}
+              </Typography>
+            )
+          );
+        })()}
+      </Box>
+    </Stack>
   );
 }
 
