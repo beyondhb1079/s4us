@@ -34,7 +34,7 @@ const Filter = (props) => {
         onClose={() => setAnchorEl(null)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-        PaperProps={{ style: { width: 280 } }}>
+        PaperProps={{ style: { minWidth: 280 } }}>
         {filter}
       </Popover>
     </>
@@ -77,11 +77,20 @@ export default function FilterBar({ setQueryParam, queryParams }) {
           }
         />
 
-        <AmountFilter
-          min={minAmount ?? 0}
-          max={maxAmount ?? 0}
-          onMinChange={(e) => setQueryParam(qParams.MIN_AMOUNT, e.target.value)}
-          onMaxChange={(e) => setQueryParam(qParams.MAX_AMOUNT, e.target.value)}
+        <Filter
+          title="Amount"
+          filter={
+            <AmountFilter
+              min={minAmount ?? 0}
+              max={maxAmount ?? 0}
+              onMinChange={(e) =>
+                setQueryParam(qParams.MIN_AMOUNT, e.target.value)
+              }
+              onMaxChange={(e) =>
+                setQueryParam(qParams.MAX_AMOUNT, e.target.value)
+              }
+            />
+          }
         />
       </Grid>
 
