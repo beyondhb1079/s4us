@@ -111,7 +111,7 @@ function Header() {
   const [anchorEl, setAnchorEl] = useState(null);
 
   return (
-    <AppBar position="static" color="secondary">
+    <AppBar position="static" color="secondary" variant="outlined">
       <UnderConstructionAlert t={t} />
       <OnRenderSnackbar />
       <Toolbar>
