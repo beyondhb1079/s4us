@@ -131,10 +131,7 @@ function Header() {
           sx={{ px: 2 }}>
           <LanguageIcon />
         </IconButton>
-        <AuthGrowButton
-          t={t}
-          sx={{ display: 'flex', flexGrow: 1, justifyContent: 'right' }}
-        />
+        <AuthGrowButton t={t} />
       </Toolbar>
       <Hidden smUp>
         <Toolbar variant="dense">
