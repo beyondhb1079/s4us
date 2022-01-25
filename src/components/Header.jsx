@@ -78,7 +78,8 @@ const AuthGrowButton = ({ t }) => {
           </IconButton>
         ) : (
           <Button
-            color="inherit"
+            color="primary"
+            variant="contained"
             component={Link}
             to={{ state: { showLoginDialog: true } }}
             sx={{ height: '100%', width: 64 }}>
@@ -108,28 +109,30 @@ function Header() {
   const [anchorEl, setAnchorEl] = useState(null);
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" color="secondary">
       <UnderConstructionAlert t={t} />
       <OnRenderSnackbar />
       <Toolbar>
         <MuiLink
           component={Link}
           to="/"
-          variant="h4"
-          color="inherit"
-          underline="none">
-          {/* flexGrow=1 needed? */}
+          variant="h5"
+          color="primary"
+          underline="none"
+          sx={{ flexGrow: 1 /** Take up remaining space */ }}>
           {BRAND_NAME.toUpperCase()}
         </MuiLink>
-        <Hidden xsDown>
+        <Hidden smDown>
           <HeaderNavMenu links={links} />
-          <IconButton
-            onClick={(e) => setAnchorEl(e.currentTarget)}
-            sx={{ px: 2 }}>
-            <LanguageIcon />
-          </IconButton>
         </Hidden>
+        <IconButton
+          color="primary"
+          onClick={(e) => setAnchorEl(e.currentTarget)}
+          sx={{ px: 2 }}>
+          <LanguageIcon />
+        </IconButton>
         <AuthGrowButton
+          t={t}
           sx={{ display: 'flex', flexGrow: 1, justifyContent: 'right' }}
         />
       </Toolbar>

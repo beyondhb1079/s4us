@@ -18,7 +18,7 @@ function HeaderNavMenu({ links }) {
   return (
     <Tabs
       aria-label="tabs"
-      indicatorColor="secondary"
+      indicatorColor="primary"
       scrollButtons="auto"
       value={currentTab}
       variant="scrollable"
