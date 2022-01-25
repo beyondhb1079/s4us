@@ -15,7 +15,8 @@ import sortOptions, { DEADLINE_ASC } from '../lib/sortOptions';
 import MajorFilter from './MajorFilter';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-const Filter = ({ title, filter }) => {
+const FilterButton = (props) => {
+  const { title } = props;
   const [anchorEl, setAnchorEl] = useState(null);
 
   return (
@@ -34,13 +35,13 @@ const Filter = ({ title, filter }) => {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}
         PaperProps={{ style: { minWidth: 280 } }}>
-        {filter}
+        {props.children}
       </Popover>
     </>
   );
 };
 
-Filter.propTypes = {
+FilterButton.propTypes = {
   title: PropTypes.string.isRequired,
   filter: PropTypes.node.isRequired,
 };
@@ -55,47 +56,38 @@ export default function FilterBar({ setQueryParam, queryParams }) {
       justifyContent="space-between"
       sx={{ flexGrow: 1 }}>
       <Grid item>
-        <Filter
-          title="Majors"
-          filter={
-            <MajorFilter
-              majors={majors}
-              onSelect={(m) => setQueryParam(qParams.MAJORS, m)}
-              onDelete={(m) =>
-                setQueryParam(
-                  qParams.MAJORS,
-                  majors.filter((major) => major !== m)
-                )
-              }
-            />
-          }
-        />
+        <FilterButton title="Majors">
+          <MajorFilter
+            majors={majors}
+            onSelect={(m) => setQueryParam(qParams.MAJORS, m)}
+            onDelete={(m) =>
+              setQueryParam(
+                qParams.MAJORS,
+                majors.filter((major) => major !== m)
+              )
+            }
+          />
+        </FilterButton>
 
-        <Filter
-          title="Grades"
-          filter={
-            <GradeLevelFilter
-              grades={new Set(grades)}
-              changeFn={(e) => setQueryParam(qParams.GRADES, e)}
-            />
-          }
-        />
+        <FilterButton title="Grades">
+          <GradeLevelFilter
+            grades={new Set(grades)}
+            changeFn={(e) => setQueryParam(qParams.GRADES, e)}
+          />
+        </FilterButton>
 
-        <Filter
-          title="Amount"
-          filter={
-            <AmountFilter
-              min={minAmount ?? 0}
-              max={maxAmount ?? 0}
-              onMinChange={(e) =>
-                setQueryParam(qParams.MIN_AMOUNT, e.target.value)
-              }
-              onMaxChange={(e) =>
-                setQueryParam(qParams.MAX_AMOUNT, e.target.value)
-              }
-            />
-          }
-        />
+        <FilterButton title="Amount">
+          <AmountFilter
+            min={minAmount ?? 0}
+            max={maxAmount ?? 0}
+            onMinChange={(e) =>
+              setQueryParam(qParams.MIN_AMOUNT, e.target.value)
+            }
+            onMaxChange={(e) =>
+              setQueryParam(qParams.MAX_AMOUNT, e.target.value)
+            }
+          />
+        </FilterButton>
       </Grid>
 
       <Grid item sx={{ display: 'flex', alignItems: 'center' }}>
