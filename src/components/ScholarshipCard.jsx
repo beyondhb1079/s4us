@@ -287,8 +287,10 @@ export default function ScholarshipCard({ scholarship, style }) {
             <strong>{lintIssues.length} potential issues detected</strong>
           </AlertTitle>
           <Box component="ul">
-            {lintIssues.map((m) => (
-              <Typography component="li">{m}</Typography>
+            {lintIssues.map((m, i) => (
+              <Typography key={i} component="li">
+                {m}
+              </Typography>
             ))}
           </Box>
         </Alert>

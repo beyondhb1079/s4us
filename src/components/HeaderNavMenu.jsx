@@ -27,6 +27,7 @@ function HeaderNavMenu({ links }) {
         <Tab
           sx={{
             minWidth: { xs: 64, md: 72 },
+            marginRight: 0,
             padding: 0,
             textTransform: 'none',
           }}
