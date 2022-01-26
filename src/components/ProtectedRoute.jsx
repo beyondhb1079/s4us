@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Redirect, useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import { Container, Typography, CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-function ProtectedRoute({ component: Component, path }) {
+function ProtectedRoute({ element }) {
   const location = useLocation();
   const { showLoginDialog } = location.state || {
     showLoginDialog: undefined,
@@ -21,47 +21,31 @@ function ProtectedRoute({ component: Component, path }) {
 
   const { t } = useTranslation();
 
+  if (isSignedIn === undefined) {
+    return (
+      <CircularProgress
+        sx={{
+          display: 'flex',
+          flexGrow: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      />
+    );
+  }
+  if (isSignedIn === true) {
+    return element;
+  }
   return (
-    <Route
-      path={path}
-      render={() => {
-        if (isSignedIn === undefined) {
-          return (
-            <CircularProgress
-              sx={{
-                display: 'flex',
-                flexGrow: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            />
-          );
-        }
-        if (isSignedIn === true) {
-          return <Component />;
-        }
-        return (
-          <Container>
-            <Typography variant="h5">{t('protectedPage')}</Typography>
-            {showLoginDialog === undefined && (
-              <Redirect
-                push={false}
-                to={{
-                  state: {
-                    showLoginDialog: true,
-                  },
-                  pathname: location.pathname,
-                }}
-              />
-            )}
-          </Container>
-        );
-      }}
-    />
+    <Container>
+      <Typography variant="h5">{t('protectedPage')}</Typography>
+      {showLoginDialog === undefined && (
+        <Navigate to="" replace state={{ showLoginDialog: true }} />
+      )}
+    </Container>
   );
 }
 ProtectedRoute.propTypes = {
-  component: PropTypes.elementType.isRequired,
-  path: PropTypes.string.isRequired,
+  element: PropTypes.node.isRequired,
 };
 export default ProtectedRoute;

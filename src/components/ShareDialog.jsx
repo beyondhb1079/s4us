@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Button,
   Dialog,
@@ -28,8 +28,9 @@ export default function ShareDialog() {
   const shareData = location.state?.shareData ?? {};
   const { title, url } = shareData;
 
-  const history = useHistory();
-  const closeDialog = () => history.replace({ state: { shareData } });
+  const navigate = useNavigate();
+  const closeDialog = () =>
+    navigate('', { replace: true, state: { shareData } });
 
   return (
     <Dialog

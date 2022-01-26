@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import firebase from 'firebase';
 import {
   Container,
@@ -25,7 +25,7 @@ function EditScholarship() {
   const [error, setError] = useState();
   const [delError, setDelError] = useState();
   const [dialogOpen, setDialogOpen] = useState(false);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   // Fetch the scholarship
   useEffect(() => {
@@ -63,8 +63,7 @@ function EditScholarship() {
     Scholarships.id(id)
       .delete()
       .then(() =>
-        history.push({
-          pathname: '/',
+        navigate('/', {
           state: {
             alert: {
               message: `Successfully deleted "${scholarship.data.name}"`,

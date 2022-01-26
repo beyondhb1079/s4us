@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import {
   Alert,
@@ -33,7 +33,7 @@ const labelStyle = { marginBottom: 2 };
 function ScholarshipForm({ scholarship }) {
   const [activeStep, setActiveStep] = useState(0);
   const [submissionError, setSubmissionError] = useState(null);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: scholarship.data,
@@ -45,9 +45,11 @@ function ScholarshipForm({ scholarship }) {
       scholarship
         .save()
         .then((s) =>
-          history.push({
-            pathname: `/scholarships/${s.id}`,
-            state: { alert: {} },
+          navigate(`/scholarships/${s.id}`, {
+            state: {
+              prevPath: location.pathname,
+              scholarship: { id: s.id, data: s.data },
+            },
           })
         )
         .catch(setSubmissionError)

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Helmet from 'react-helmet';
 import { AddCircle as AddIcon, Inbox as InboxIcon } from '@mui/icons-material';
-import { Link, useLocation, useHistory } from 'react-router-dom';
+import { Link, useLocation, useNavigationType } from 'react-router-dom';
 import firebase from 'firebase';
 import {
   Button,
@@ -11,6 +11,7 @@ import {
   Paper,
   Typography,
   Alert,
+  Collapse,
 } from '@mui/material';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
@@ -21,20 +22,24 @@ export default function UserHome() {
   const { t } = useTranslation();
   const user = firebase.auth().currentUser;
   const location = useLocation();
-  const history = useHistory();
 
   const listScholarshipsFn = () => Scholarships.list({ authorId: user.uid });
 
+  const navType = useNavigationType();
+  const alertMessage = location?.state?.alert?.message;
+  const [showAlert, setShowAlert] = useState(true);
   return (
     <Container>
       <Helmet>
         <title>{t('home.user.titleTag')}</title>
       </Helmet>
 
-      {location?.state?.alert && (
-        <Alert severity="success" onClose={() => history.replace('/')}>
-          {location?.state?.alert.message}
-        </Alert>
+      {alertMessage && navType === 'PUSH' && (
+        <Collapse in={showAlert}>
+          <Alert severity="success" onClose={() => setShowAlert(false)}>
+            {alertMessage}
+          </Alert>
+        </Collapse>
       )}
 
       <Typography variant="h4" component="h1" style={{ p: 1 }} gutterBottom>
