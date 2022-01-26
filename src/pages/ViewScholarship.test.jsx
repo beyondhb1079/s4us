@@ -2,7 +2,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { render, screen } from '@testing-library/react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { MemoryRouter, Route } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { clearFirestoreData, initializeTestApp } from '../lib/testing';
 import ViewScholarship from './ViewScholarship';
 import Scholarships from '../models/Scholarships';
@@ -21,7 +21,9 @@ function renderAtRoute(pathname, state = {}) {
     <I18nextProvider i18n={i18n}>
       <ThemeProvider theme={createTheme()}>
         <MemoryRouter initialEntries={[{ pathname, state }]}>
-          <Route path="/scholarships/:id" component={ViewScholarship} />
+          <Routes>
+            <Route path="/scholarships/:id" element={<ViewScholarship />} />
+          </Routes>
         </MemoryRouter>
       </ThemeProvider>
     </I18nextProvider>
@@ -46,20 +48,6 @@ test('renders scholarship not found', () => {
   return expect(screen.findByText(/not found/i)).resolves.toBeInTheDocument();
 });
 
-test('renders loading initially with empty scholarship state', () => {
-  renderAtRoute('/scholarships/abc', { scholarship: { id: 'abc' } });
-
-  expect(screen.getByText(/loading/i)).toBeInTheDocument();
-});
-
-test('renders something when scholarship data corrupt', () => {
-  renderAtRoute('/scholarships/abc', {
-    scholarship: { id: 'abc', data: { bad: 'data' } },
-  });
-
-  expect(screen.getByText(/Apply/i)).toBeInTheDocument();
-});
-
 test('renders passed in scholarship details', () => {
   const data = {
     name: 'Foo scholarship',
@@ -69,8 +57,8 @@ test('renders passed in scholarship details', () => {
     website: 'http://foo.com/',
   };
 
-  renderAtRoute('/scholarships/passed-in', {
-    scholarship: { id: 'abc', data },
+  renderAtRoute('/scholarships/passed-it', {
+    scholarship: { id: 'passed-it', data },
   });
 
   expect(screen.getByText(data.name)).toBeInTheDocument();
@@ -103,10 +91,10 @@ test('renders scholarship details', async () => {
       majors: ['Computer Science', 'Software Engineering'],
     },
   };
-  const ref = Scholarships.collection.doc('abc');
+  const ref = Scholarships.collection.doc('load-it');
   await ref.set(data);
 
-  renderAtRoute('/scholarships/abc');
+  renderAtRoute('/scholarships/load-it');
   await screen.findByText(/Scholarship/i);
   expect(screen.getByText(data.name)).toBeInTheDocument();
   expect(

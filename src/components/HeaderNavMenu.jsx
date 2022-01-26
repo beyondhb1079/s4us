@@ -9,7 +9,7 @@ function HeaderNavMenu({ links }) {
   let currentTab = false;
   const { t } = useTranslation();
 
-  Object.entries(links).map(([title, link]) => {
+  Object.entries(links).forEach(([title, link]) => {
     if (location.pathname.startsWith(link)) {
       currentTab = title;
     }

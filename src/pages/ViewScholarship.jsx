@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import ReactRouterPropTypes from 'react-router-prop-types';
-import { Container, Typography, Box } from '@mui/material';
+import { Container, Typography, Box, Collapse } from '@mui/material';
 import Scholarships from '../models/Scholarships';
 import ScholarshipCard from '../components/ScholarshipCard';
 import { Alert } from '@mui/material';
 import bannerImg from '../img/detail-page-banner.jpg';
+import { useLocation, useNavigationType, useParams } from 'react-router-dom';
 
-export default function ViewScholarship({ history, location, match }) {
-  const { id } = match.params;
+export default function ViewScholarship() {
+  const location = useLocation();
+  const { id } = useParams();
   const [scholarship, setScholarship] = useState(location.state?.scholarship);
   const [error, setError] = useState();
-  const loading = !error && (!scholarship || !scholarship.data);
-
-  // Clear location state in case of refresh/navigation to other pages.
-  useEffect(() => {
-    if (location.state?.scholarship) {
-      history.replace({ state: {} });
-    }
-  }, [history, location]);
+  const loading = !error && (!scholarship || scholarship.id !== id);
+  const prevPath = location?.state?.prevPath;
+  const justEdited =
+    location?.state?.scholarship !== undefined &&
+    (prevPath === `${location.pathname}/edit` ||
+      prevPath === `/scholarships/new`);
+  const navType = useNavigationType();
+  const [showAlert, setShowAlert] = useState(true);
 
   // Fetch the scholarship if we need to load it
   useEffect(() => {
@@ -44,24 +45,26 @@ export default function ViewScholarship({ history, location, match }) {
     );
   }
 
+  const { name, dateAdded, lastModified } = scholarship.data;
   return (
     <Container maxWidth="md">
       <Helmet>
-        <title>{scholarship.data.name}</title>
+        <title>{name}</title>
       </Helmet>
 
-      {location?.state?.alert && (
-        <Alert
-          color="primary"
-          variant="filled"
-          onClose={() => history.replace(`/scholarships/${scholarship.id}`)}>
-          {`Scholarship successfully ${
-            scholarship.data.dateAdded.getTime() ===
-            scholarship.data.lastModified.getTime()
-              ? 'submitted.'
-              : 'updated.'
-          }`}
-        </Alert>
+      {justEdited && navType === 'PUSH' && (
+        <Collapse in={showAlert}>
+          <Alert
+            color="primary"
+            variant="filled"
+            onClose={() => setShowAlert(false)}>
+            {`Scholarship successfully ${
+              Date.parse(dateAdded) === Date.parse(lastModified)
+                ? 'submitted.'
+                : 'updated.'
+            }`}
+          </Alert>
+        </Collapse>
       )}
 
       <Box
@@ -79,9 +82,3 @@ export default function ViewScholarship({ history, location, match }) {
     </Container>
   );
 }
-
-ViewScholarship.propTypes = {
-  history: ReactRouterPropTypes.history.isRequired,
-  location: ReactRouterPropTypes.location.isRequired,
-  match: ReactRouterPropTypes.match.isRequired,
-};

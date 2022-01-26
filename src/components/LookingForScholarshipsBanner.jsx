@@ -21,7 +21,7 @@ function LookingForScholarshipsBanner() {
           variant="contained"
           color="primary"
           component={Link}
-          to="/scholarships"
+          to="scholarships"
           sx={{ marginY: { xs: 1, md: 2 } }}>
           {t('btn.browseScholarships')}
         </Button>

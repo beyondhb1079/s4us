@@ -81,7 +81,9 @@ const AuthGrowButton = ({ t }) => {
             color="primary"
             variant="contained"
             component={Link}
-            to={{ state: { showLoginDialog: true } }}
+            replace
+            to=""
+            state={{ showLoginDialog: true }}
             sx={{ height: '100%', width: 64 }}>
             {t('btn.login')}
           </Button>

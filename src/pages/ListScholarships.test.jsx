@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter, Route } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { clearFirestoreData, initializeTestApp } from '../lib/testing';
 import ListScholarships from './ListScholarships';
@@ -18,7 +18,9 @@ function renderAtRoute(route) {
     <I18nextProvider i18n={i18n}>
       <ThemeProvider theme={createTheme()}>
         <MemoryRouter initialEntries={[route]}>
-          <Route path="/scholarships" component={ListScholarships} />
+          <Routes>
+            <Route path="/scholarships" element={<ListScholarships />} />
+          </Routes>
         </MemoryRouter>
       </ThemeProvider>
     </I18nextProvider>
