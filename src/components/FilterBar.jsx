@@ -15,8 +15,7 @@ import sortOptions, { DEADLINE_ASC } from '../lib/sortOptions';
 import MajorFilter from './MajorFilter';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-const FilterButton = (props) => {
-  const { title } = props;
+const FilterButton = ({ title, children, popoverWidth }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   return (
@@ -34,8 +33,8 @@ const FilterButton = (props) => {
         onClose={() => setAnchorEl(null)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-        PaperProps={{ style: { minWidth: 280 } }}>
-        {props.children}
+        PaperProps={{ style: popoverWidth }}>
+        {children}
       </Popover>
     </>
   );
@@ -43,6 +42,12 @@ const FilterButton = (props) => {
 
 FilterButton.propTypes = {
   title: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+  popoverWidth: PropTypes.object,
+};
+
+FilterButton.defaultProps = {
+  popoverWidth: undefined,
 };
 
 export default function FilterBar({ setQueryParam, queryParams }) {
@@ -55,7 +60,7 @@ export default function FilterBar({ setQueryParam, queryParams }) {
       justifyContent="space-between"
       sx={{ flexGrow: 1 }}>
       <Grid item>
-        <FilterButton title="Majors">
+        <FilterButton title="Majors" popoverWidth={{ minWidth: 280 }}>
           <MajorFilter
             majors={majors}
             onSelect={(m) => setQueryParam(qParams.MAJORS, m)}
