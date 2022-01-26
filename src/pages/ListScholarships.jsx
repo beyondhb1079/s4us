@@ -3,12 +3,12 @@ import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import { Box, Container, Drawer, Typography } from '@mui/material';
 import FilterBar from '../components/FilterBar';
-import FilterPanel from '../components/FilterPanel';
 import ScholarshipCard from '../components/ScholarshipCard';
 import ScholarshipList from '../components/ScholarshipList';
 import { DEADLINE_ASC, getDir, getField } from '../lib/sortOptions';
 import useQueryParams from '../lib/useQueryParams';
 import Scholarships from '../models/Scholarships';
+import FilterPanel from '../components/FilterPanel';
 
 const drawerWidth = 360;
 
@@ -62,7 +62,6 @@ function ListScholarships() {
         ) : (
           <FilterPanel />
         )}
-        <FilterPanel />
       </Drawer>
       <Container
         maxWidth="md"
