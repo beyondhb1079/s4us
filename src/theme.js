@@ -1,6 +1,13 @@
 import { createTheme } from '@mui/material';
 
 const theme = createTheme({
+  components: {
+    MuiPaper: {
+      defaultProps: {
+        variant: 'outlined',
+      },
+    },
+  },
   palette: {
     background: {
       default: '#F8F9FA',
