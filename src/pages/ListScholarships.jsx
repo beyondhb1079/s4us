@@ -1,54 +1,14 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Box, Container, Drawer, Typography } from '@mui/material';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Box, Button, Container, Drawer, Typography } from '@mui/material';
 import FilterBar from '../components/FilterBar';
 import FilterPanel from '../components/FilterPanel';
 import ScholarshipCard from '../components/ScholarshipCard';
 import ScholarshipList from '../components/ScholarshipList';
-import { useQueryParams } from '../lib/QueryParams';
-import { DEADLINE_ASC, getDir, getField } from '../lib/sortOptions';
-import Scholarships from '../models/Scholarships';
 
-const drawerWidth = 360;
-
-const FilteredScholarshipList = () => {
-  const navigate = useNavigate();
-  const [{ minAmount, maxAmount, grades, majors, sortBy }] = useQueryParams();
-  const sortField = getField(sortBy ?? DEADLINE_ASC);
-  const sortDir = getDir(sortBy ?? DEADLINE_ASC);
-
-  const scholarshipList = useMemo(
-    () => (
-      <ScholarshipList
-        listFn={() =>
-          Scholarships.list({
-            sortField,
-            sortDir,
-            minAmount,
-            maxAmount,
-            grades,
-            majors,
-            hideExpired: true,
-          })
-        }
-        onItemSelect={(s) =>
-          navigate('', {
-            state:
-              s === undefined
-                ? {}
-                : {
-                    scholarship: { id: s.id, data: s.data },
-                  },
-          })
-        }
-      />
-    ),
-    [navigate, sortField, sortDir, minAmount, maxAmount, grades, majors]
-  );
-  return scholarshipList;
-};
+const drawerWidth = 400;
 
 function ListScholarships() {
   const location = useLocation();
@@ -59,7 +19,22 @@ function ListScholarships() {
   // Users can share a specific scholarship instead.
   const selected = location.state?.scholarship;
 
-  const scholarshipList = useMemo(() => <FilteredScholarshipList />, []);
+  const navigate = useNavigate();
+  useEffect(() => console.log('ListScholarships rerendered from scratch'), []);
+
+  const onItemSelect = useCallback(
+    (s) =>
+      navigate('', {
+        state: {
+          scholarship: { id: s.id, data: s.data },
+        },
+      }),
+    [navigate]
+  );
+  const [scholarshipList] = useState(
+    <ScholarshipList onItemSelect={onItemSelect} />
+  );
+  useEffect(() => console.log('navigate changed'), [navigate]);
 
   return (
     <Box sx={{ display: 'flex', height: '100vh' }}>
@@ -97,6 +72,9 @@ function ListScholarships() {
           <ScholarshipCard scholarship={selected} style="detail" />
         ) : (
           <>
+            <Button component={Link} to="" state={{}} sx={{ mb: 2 }}>
+              Filters
+            </Button>
             <Typography
               variant="h4"
               component="h1"
