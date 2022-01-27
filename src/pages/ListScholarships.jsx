@@ -2,10 +2,11 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useLocation, useNavigate } from 'react-router-dom';
 import queryString from 'query-string';
-import { Container, Typography } from '@mui/material';
+import { Box, Container, Drawer, Hidden, Typography } from '@mui/material';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
+import FilterPanel from '../components/FilterPanel';
 import qParams from '../lib/QueryParams';
 import sortOptions, {
   DEADLINE_ASC,
@@ -19,6 +20,8 @@ const queryOptions = {
   arrayFormat: 'bracket-separator',
   arrayFormatSeparator: ',',
 };
+
+const drawerWidth = 400;
 
 function ListScholarships() {
   const navigate = useNavigate();
@@ -119,16 +122,45 @@ function ListScholarships() {
     });
 
   return (
-    <Container>
+    <Box sx={{ display: 'flex', position: 'relative', height: '100%' }}>
       <Helmet>
         <title>{t('listScholarships.titleTag')}</title>
       </Helmet>
-      <Typography variant="h4" component="h1" align="center" style={{ p: 1 }}>
-        {t('general.scholarships')}
-      </Typography>
-      <FilterBar queryParams={params} {...{ setQueryParam }} />
-      <ScholarshipList listFn={listScholarships} />
-    </Container>
+      <Hidden mdDown>
+        <Drawer
+          sx={{
+            p: 2,
+            width: drawerWidth,
+            flexShrink: 0,
+            '& .MuiDrawer-paper': {
+              maxWidth: drawerWidth,
+              position: 'absolute',
+              height: '100%',
+              width: '100%',
+            },
+            position: 'sticky',
+            overflowY: 'auto',
+          }}
+          variant="permanent"
+          anchor="left">
+          <Box padding={3}>
+            <FilterPanel queryParams={params} {...{ setQueryParam }} />
+          </Box>
+        </Drawer>
+      </Hidden>
+      <Container
+        maxWidth="md"
+        component="main"
+        sx={{ flexGrow: 1, bgcolor: 'background.default', p: 2 }}>
+        <Typography variant="h4" component="h1" align="center" style={{ p: 1 }}>
+          {t('general.scholarships')}
+        </Typography>
+        <Hidden mdUp>
+          <FilterBar queryParams={params} {...{ setQueryParam }} />
+        </Hidden>
+        <ScholarshipList listFn={listScholarships} />
+      </Container>
+    </Box>
   );
 }
 
