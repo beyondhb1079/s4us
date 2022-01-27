@@ -34,7 +34,7 @@ function ListScholarships() {
   });
 
   const setQueryParam = (index, val) => {
-    navigate('', {
+    navigate({
       search: queryString.stringify(
         {
           ...params,
@@ -47,10 +47,14 @@ function ListScholarships() {
 
   const pruneQueryParam = (index) => {
     delete params[index];
-    navigate('', {
-      replace: true,
-      search: queryString.stringify(params, queryOptions),
-    });
+    navigate(
+      {
+        search: queryString.stringify(params, queryOptions),
+      },
+      {
+        replace: true,
+      }
+    );
   };
 
   /**
@@ -59,10 +63,12 @@ function ListScholarships() {
    */
   const replaceQueryParam = (key, newVal) => {
     params[key] = newVal;
-    navigate('', {
-      replace: true,
-      search: queryString.stringify(params, queryOptions),
-    });
+    navigate(
+      { search: queryString.stringify(params, queryOptions) },
+      {
+        replace: true,
+      }
+    );
   };
 
   if (params.sortBy && !(params.sortBy in sortOptions)) {
@@ -151,9 +157,7 @@ function ListScholarships() {
         <Typography variant="h4" component="h1" align="center" style={{ p: 1 }}>
           {t('general.scholarships')}
         </Typography>
-        <Hidden mdUp>
-          <FilterBar queryParams={params} {...{ setQueryParam }} />
-        </Hidden>
+        <FilterBar queryParams={params} {...{ setQueryParam }} />
         <ScholarshipList listFn={listScholarships} />
       </Container>
     </Box>
