@@ -21,7 +21,7 @@ const queryOptions = {
   arrayFormatSeparator: ',',
 };
 
-const drawerWidth = 400;
+const drawerWidth = 360;
 
 function ListScholarships() {
   const navigate = useNavigate();
@@ -129,11 +129,9 @@ function ListScholarships() {
       <Hidden mdDown>
         <Drawer
           sx={{
-            p: 2,
             width: drawerWidth,
             flexShrink: 0,
             '& .MuiDrawer-paper': {
-              maxWidth: drawerWidth,
               position: 'absolute',
               height: '100%',
               width: '100%',
@@ -143,9 +141,7 @@ function ListScholarships() {
           }}
           variant="permanent"
           anchor="left">
-          <Box padding={3}>
-            <FilterPanel queryParams={params} {...{ setQueryParam }} />
-          </Box>
+          <FilterPanel queryParams={params} {...{ setQueryParam }} />
         </Drawer>
       </Hidden>
       <Container

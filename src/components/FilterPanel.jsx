@@ -1,5 +1,12 @@
 import React from 'react';
-import { Stack } from '@mui/material';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Typography,
+} from '@mui/material';
+import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import qParams from '../lib/QueryParams';
 import AmountFilter from './AmountFilter';
@@ -10,8 +17,8 @@ export default function FilterPanel({
   setQueryParam,
   queryParams: { minAmount, maxAmount, grades, majors },
 }) {
-  return (
-    <Stack spacing={2}>
+  const filters = {
+    Major: (
       <MajorFilter
         majors={majors}
         onSelect={(m) => setQueryParam(qParams.MAJORS, m)}
@@ -22,19 +29,37 @@ export default function FilterPanel({
           )
         }
       />
-
-      <GradeLevelFilter
-        grades={new Set(grades)}
-        changeFn={(e) => setQueryParam(qParams.GRADES, e)}
-      />
-
+    ),
+    Amount: (
       <AmountFilter
         min={minAmount ?? 0}
         max={maxAmount ?? 0}
         onMinChange={(e) => setQueryParam(qParams.MIN_AMOUNT, e.target.value)}
         onMaxChange={(e) => setQueryParam(qParams.MAX_AMOUNT, e.target.value)}
       />
-    </Stack>
+    ),
+    Grade: (
+      <GradeLevelFilter
+        grades={new Set(grades)}
+        changeFn={(e) => setQueryParam(qParams.GRADES, e)}
+      />
+    ),
+  };
+  return (
+    <Box>
+      {Object.entries(filters).map(([name, filter]) => (
+        <Accordion disableGutters>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls={name + '-content'}
+            id={name + '-header'}>
+            <Typography>{name}</Typography>
+          </AccordionSummary>
+
+          <AccordionDetails>{filter}</AccordionDetails>
+        </Accordion>
+      ))}
+    </Box>
   );
 }
 
