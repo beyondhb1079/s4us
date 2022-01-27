@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import {
@@ -52,7 +52,7 @@ DetailCardCell.propTypes = {
 };
 
 export default function ScholarshipCard({ scholarship, style }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const {
     name,
     organization,
@@ -85,7 +85,8 @@ export default function ScholarshipCard({ scholarship, style }) {
         // eslint-disable-next-line no-console
         .catch(console.error);
     } else {
-      history.replace({
+      navigate('', {
+        replace: true,
         state: { showShareDialog: true, shareData: data },
       });
     }
@@ -115,10 +116,8 @@ export default function ScholarshipCard({ scholarship, style }) {
     <Card variant="outlined">
       <CardAreaComponent
         component={detailed ? Box : Link}
-        to={{
-          pathname: `/scholarships/${scholarship.id}`,
-          state: { scholarship },
-        }}
+        to={'/scholarships/' + scholarship.id}
+        state={{ scholarship }}
         sx={{ p: 3 }}>
         <CardContent sx={{ p: 3 }}>
           <Typography
@@ -181,11 +180,7 @@ export default function ScholarshipCard({ scholarship, style }) {
               </Button>
 
               {!preview && canEdit && (
-                <IconButton
-                  component={Link}
-                  to={{
-                    pathname: `/scholarships/${scholarship.id}/edit`,
-                  }}>
+                <IconButton component={Link} to="edit">
                   <EditIcon />
                 </IconButton>
               )}
@@ -245,14 +240,7 @@ export default function ScholarshipCard({ scholarship, style }) {
           )}
 
           <Grid container sx={{ mt: 2 }}>
-            <Chip
-              label="DACA"
-              variant="outlined"
-              color="primary"
-              sx={{ mr: 2, color: 'text.primary' }}
-            />
             {tags &&
-              tags.length &&
               tags.map((tag) => (
                 <Chip
                   label={tag}
@@ -287,8 +275,10 @@ export default function ScholarshipCard({ scholarship, style }) {
             <strong>{lintIssues.length} potential issues detected</strong>
           </AlertTitle>
           <Box component="ul">
-            {lintIssues.map((m) => (
-              <Typography component="li">{m}</Typography>
+            {lintIssues.map((m, i) => (
+              <Typography key={i} component="li">
+                {m}
+              </Typography>
             ))}
           </Box>
         </Alert>

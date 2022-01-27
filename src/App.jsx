@@ -1,8 +1,9 @@
 import './App.css';
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
+  Box,
   CssBaseline,
   StyledEngineProvider,
   ThemeProvider,
@@ -36,22 +37,24 @@ function App() {
             }
           />
           <Router>
-            <Header />
-            <Switch>
-              <ProtectedRoute
+            <Box sx={{ mb: 2 }}>
+              <Header />
+            </Box>
+            <Routes>
+              <Route
                 path="/scholarships/new"
-                component={AddScholarship}
+                element={<ProtectedRoute element={<AddScholarship />} />}
               />
-              <ProtectedRoute
+              <Route
                 path="/scholarships/:id/edit"
-                component={EditScholarship}
+                element={<ProtectedRoute element={<EditScholarship />} />}
               />
-              <Route path="/scholarships/:id" component={ViewScholarship} />
-              <Route path="/scholarships" component={ListScholarships} />
-              <Route path="/about" component={About} />
-              <Route path="/contact" component={Contact} />
-              <Route path="/" component={Home} />
-            </Switch>
+              <Route path="/scholarships/:id" element={<ViewScholarship />} />
+              <Route path="/scholarships" element={<ListScholarships />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/" element={<Home />} />
+            </Routes>
             <LoginDialog />
             <ShareDialog />
             <Footer />

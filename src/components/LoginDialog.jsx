@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Dialog,
   DialogContent,
@@ -13,9 +13,12 @@ export default function LoginDialog() {
   const location = useLocation();
   const { showLoginDialog } = location.state || { showLoginDialog: false };
 
-  const history = useHistory();
+  const navigate = useNavigate();
   const closeDialog = () =>
-    history.replace({ state: { showLoginDialog: false } });
+    navigate('', {
+      replace: true,
+      state: {},
+    });
 
   const uiConfig = {
     signInFlow: 'popup',

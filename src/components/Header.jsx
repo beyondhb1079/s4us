@@ -2,23 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 import {
+  AppBar,
   Alert,
   AlertTitle,
   Avatar,
   Button,
-  Container,
-  Grid,
+  Grow,
+  Hidden,
   IconButton,
   Link as MuiLink,
-  Snackbar,
-  Zoom,
   Menu,
   MenuItem,
+  Snackbar,
+  Toolbar,
 } from '@mui/material';
+import LanguageIcon from '@mui/icons-material/Language';
 import ProfileMenu from './ProfileDropdown';
 import { useTranslation } from 'react-i18next';
-import LanguageIcon from '@mui/icons-material/Language';
-
 import { BRAND_NAME, SUBSCRIPTION_FORM_URL } from '../config/constants';
 import HeaderNavMenu from './HeaderNavMenu';
 
@@ -51,7 +51,7 @@ const UnderConstructionAlert = ({ t }) => (
   </Alert>
 );
 
-const AuthZoomButton = ({ t }) => {
+const AuthGrowButton = ({ t }) => {
   const { currentUser } = firebase.auth();
   const [isSignedIn, setIsSignedIn] = useState(
     !!firebase.auth().currentUser || undefined
@@ -64,7 +64,7 @@ const AuthZoomButton = ({ t }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   return (
     <>
-      <Zoom in={isSignedIn !== undefined}>
+      <Grow in={isSignedIn !== undefined}>
         {isSignedIn ? (
           <IconButton
             size="medium"
@@ -78,14 +78,17 @@ const AuthZoomButton = ({ t }) => {
           </IconButton>
         ) : (
           <Button
-            color="inherit"
+            color="primary"
+            variant="contained"
             component={Link}
-            to={{ state: { showLoginDialog: true } }}
+            replace
+            to=""
+            state={{ showLoginDialog: true }}
             sx={{ height: '100%', width: 64 }}>
             {t('btn.login')}
           </Button>
         )}
-      </Zoom>
+      </Grow>
       <ProfileMenu anchorEl={anchorEl} onClose={() => setAnchorEl(null)} />
     </>
   );
@@ -108,36 +111,35 @@ function Header() {
   const [anchorEl, setAnchorEl] = useState(null);
 
   return (
-    <Container>
+    <AppBar position="static" color="secondary">
       <UnderConstructionAlert t={t} />
       <OnRenderSnackbar />
-      <Grid
-        container
-        sx={{
-          flexGrow: 1,
-          padding: 3,
-          justifyContent: { xs: 'space-around', md: 'space-between' },
-          alignItems: 'center',
-        }}
-        spacing={3}>
-        <Grid item>
-          <MuiLink component={Link} to="/" variant="h4" underline="none">
-            {BRAND_NAME.toUpperCase()}
-          </MuiLink>
-        </Grid>
-
-        <Grid item sx={{ height: 80 }}>
+      <Toolbar>
+        <MuiLink
+          component={Link}
+          to="/"
+          variant="h5"
+          color="primary"
+          underline="none"
+          sx={{ flexGrow: 1 /** Take up remaining space */ }}>
+          {BRAND_NAME.toUpperCase()}
+        </MuiLink>
+        <Hidden smDown>
           <HeaderNavMenu links={links} />
-          <IconButton
-            onClick={(e) => setAnchorEl(e.currentTarget)}
-            sx={{ px: 2 }}>
-            <LanguageIcon />
-          </IconButton>
-
-          <AuthZoomButton t={t} />
-        </Grid>
-      </Grid>
-
+        </Hidden>
+        <IconButton
+          color="primary"
+          onClick={(e) => setAnchorEl(e.currentTarget)}
+          sx={{ px: 2 }}>
+          <LanguageIcon />
+        </IconButton>
+        <AuthGrowButton t={t} />
+      </Toolbar>
+      <Hidden smUp>
+        <Toolbar variant="dense">
+          <HeaderNavMenu links={links} />
+        </Toolbar>
+      </Hidden>
       <Menu
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
@@ -156,7 +158,7 @@ function Header() {
           </MenuItem>
         ))}
       </Menu>
-    </Container>
+    </AppBar>
   );
 }
 

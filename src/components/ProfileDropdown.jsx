@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import firebase from 'firebase';
-import { withStyles } from '@mui/styles';
 import {
   Avatar,
   Divider,
@@ -19,28 +18,21 @@ import {
 import experiments from '../lib/experiments';
 
 // hacky way to override Menu style
-const StyledMenu = withStyles((theme) => ({
-  paper: {
-    border: '1px solid black',
-    width: '350px',
-    background: theme.palette.background.default,
-  },
-  // placing dropdown menu below the avatar
-}))((props) => (
+const StyledMenu = (props) => (
   <Menu
     elevation={0}
     anchorOrigin={{
       vertical: 'bottom',
-      horizontal: 'center',
+      horizontal: 'right',
     }}
     transformOrigin={{
       vertical: 'top',
-      horizontal: 'center',
+      horizontal: 'right',
     }}
     // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}
   />
-));
+);
 
 const StyledMenuItem = ({ icon: Icon, text, onClick }) => (
   <MenuItem onClick={onClick} sx={{ py: 1 }}>
@@ -73,8 +65,9 @@ export default function ProfileDropdown(props) {
       keepMounted
       open={Boolean(anchorEl)}
       onClose={onClose}>
-      <Grid container spacing={2} sx={{ padding: 1 }}>
+      <Grid container spacing={2} sx={{ px: 2, py: 1 }}>
         <Grid item sx={{ alignSelf: 'center' }}>
+          {/* or use alignItems? */}
           <Avatar src={user?.photoURL} sx={{ height: 48, width: 48 }} />
         </Grid>
         <Grid item>

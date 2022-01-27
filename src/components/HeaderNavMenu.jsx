@@ -9,7 +9,7 @@ function HeaderNavMenu({ links }) {
   let currentTab = false;
   const { t } = useTranslation();
 
-  Object.entries(links).map(([title, link]) => {
+  Object.entries(links).forEach(([title, link]) => {
     if (location.pathname.startsWith(link)) {
       currentTab = title;
     }
@@ -27,6 +27,7 @@ function HeaderNavMenu({ links }) {
         <Tab
           sx={{
             minWidth: { xs: 64, md: 72 },
+            marginRight: 0,
             padding: 0,
             textTransform: 'none',
           }}

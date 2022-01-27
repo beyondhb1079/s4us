@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import queryString from 'query-string';
 import { Container, Typography, Box } from '@mui/material';
 import Scholarships from '../models/Scholarships';
@@ -22,7 +22,7 @@ const queryOptions = {
 };
 
 function ListScholarships() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -33,7 +33,7 @@ function ListScholarships() {
   });
 
   const setQueryParam = (index, val) => {
-    history.push({
+    navigate('', {
       search: queryString.stringify(
         {
           ...params,
@@ -46,7 +46,10 @@ function ListScholarships() {
 
   const pruneQueryParam = (index) => {
     delete params[index];
-    history.replace({ search: queryString.stringify(params, queryOptions) });
+    navigate('', {
+      replace: true,
+      search: queryString.stringify(params, queryOptions),
+    });
   };
 
   /**
@@ -55,7 +58,10 @@ function ListScholarships() {
    */
   const replaceQueryParam = (key, newVal) => {
     params[key] = newVal;
-    history.replace({ search: queryString.stringify(params, queryOptions) });
+    navigate('', {
+      replace: true,
+      search: queryString.stringify(params, queryOptions),
+    });
   };
 
   if (params.sortBy && !(params.sortBy in sortOptions)) {
