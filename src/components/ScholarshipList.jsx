@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 
 import ScholarshipCard from './ScholarshipCard';
 
-function ScholarshipList({ noResultsNode, listFn, selectedId, onItemSelect }) {
+function ScholarshipList({ noResultsNode, listFn, onItemSelect }) {
   const [error, setError] = useState();
   const [scholarships, setScholarships] = useState([]);
   const [loadState, setLoadState] = useState({
@@ -21,6 +21,7 @@ function ScholarshipList({ noResultsNode, listFn, selectedId, onItemSelect }) {
   });
   const { loading, canLoadMore, loadMoreFn } = loadState;
   const { t } = useTranslation();
+  const [selectedId, setSelectedId] = useState(undefined);
 
   // Reset scholarships and loading state when listFn changes
   useEffect(() => {
@@ -62,7 +63,11 @@ function ScholarshipList({ noResultsNode, listFn, selectedId, onItemSelect }) {
         <ScholarshipCard
           scholarship={scholarship}
           selected={scholarship.id === selectedId}
-          onClick={() => onItemSelect(scholarship)}
+          onClick={() => {
+            const unselect = scholarship.id === selectedId;
+            setSelectedId(unselect ? undefined : scholarship.id);
+            onItemSelect(unselect ? undefined : scholarship);
+          }}
           style="result"
         />
       ))}
