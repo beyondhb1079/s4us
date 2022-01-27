@@ -5,9 +5,12 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Grid,
+  IconButton,
 } from '@mui/material';
 import firebase from 'firebase';
 import StyleFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 export default function LoginDialog() {
   const location = useLocation();
@@ -38,16 +41,79 @@ export default function LoginDialog() {
       open={showLoginDialog}
       onClose={closeDialog}
       aria-labelledby="responsive-dialog-title">
-      <DialogTitle id="responsive-dialog-title">
-        Login using your account or email.
-      </DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          You can login using your existing account to authenticate and log in
-          to our web-app. You can create an account if you do not want to use
-          your existing account to interact with our app.
-        </DialogContentText>
-        <StyleFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+      <DialogContent
+        sx={{
+          padding: '0',
+        }}>
+        <Grid container spacing={2}>
+          <Grid
+            item
+            xs={5}
+            sm={5}
+            sx={{ color: 'white', background: 'rgb(33,58,154)' }}>
+            <DialogTitle
+              id="responsive-dialog-title"
+              sx={{
+                padding: 3,
+                fontSize: '15px',
+                paddingBottom: '21px',
+                fontFamily: 'PlayfairDisplay',
+              }}>
+              DreamScholars
+            </DialogTitle>
+            <DialogTitle
+              id="responsive-dialog-title"
+              sx={{
+                padding: 3,
+                fontSize: '30px',
+                paddingBottom: '15px',
+                fontFamily: 'Roboto',
+              }}>
+              Welcome.
+            </DialogTitle>
+            <DialogContentText
+              sx={{
+                color: 'white',
+                padding: 3,
+                fontSize: '15px',
+                fontFamily: 'Roboto',
+              }}>
+              DreamScholars provides scholarships for all students regardless of
+              status.
+              <br></br>
+              <br></br>
+              Join our community &amp;
+              <br></br>
+              <br></br>Get access to scholarship submissions and other cool
+              features soon.
+            </DialogContentText>
+          </Grid>
+          <Grid item xs={7} sm={7}>
+            <IconButton
+              size="medium"
+              aria-haspopup="true"
+              onClick={() => closeDialog()}
+              color="inherit">
+              <CancelIcon />
+            </IconButton>
+
+            <DialogTitle
+              id="responsive-dialog-title"
+              sx={{
+                fontWeight: 'bold',
+                fontSize: '16px',
+                paddingTop: '45px',
+                paddingBottom: '0',
+                paddingLeft: '125px',
+              }}>
+              Sign In
+            </DialogTitle>
+            <StyleFirebaseAuth
+              uiConfig={uiConfig}
+              firebaseAuth={firebase.auth()}
+            />
+          </Grid>
+        </Grid>
       </DialogContent>
     </Dialog>
   );
