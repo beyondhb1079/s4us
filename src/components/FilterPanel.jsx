@@ -8,7 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import useQueryParams from '../lib/useQueryParams';
-import AmountFilter from 'ß./AmountFilter';
+import AmountFilter from './AmountFilter';
 import GradeLevelFilter from './GradeLevelFilter';
 import MajorFilter from './MajorFilter';
 
