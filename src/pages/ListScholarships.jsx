@@ -128,7 +128,7 @@ function ListScholarships() {
     });
 
   return (
-    <Box sx={{ display: 'flex', height: 'inherit' }}>
+    <Box sx={{ display: 'flex', height: '100vh' }}>
       <Helmet>
         <title>{t('listScholarships.titleTag')}</title>
       </Helmet>
@@ -157,7 +157,7 @@ function ListScholarships() {
           flexGrow: 1,
           padding: 2,
           position: 'sticky',
-          overflowY: 'auto',
+          overflowY: { md: 'auto' },
         }}>
         <Typography variant="h4" component="h1" align="center" style={{ p: 1 }}>
           {t('general.scholarships')}
