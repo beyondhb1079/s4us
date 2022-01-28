@@ -16,6 +16,7 @@ import {
   CardContent,
   Alert,
   AlertTitle,
+  Stack,
 } from '@mui/material';
 import {
   Report as ReportIcon,
@@ -117,8 +118,7 @@ export default function ScholarshipCard({ scholarship, style }) {
       <CardAreaComponent
         component={detailed ? Box : Link}
         to={'/scholarships/' + scholarship.id}
-        state={{ scholarship }}
-        sx={{ p: 3 }}>
+        state={{ scholarship }}>
         <CardContent sx={{ p: 3 }}>
           <Typography
             variant={detailed ? 'h6' : 'subtitle1'}
@@ -239,10 +239,11 @@ export default function ScholarshipCard({ scholarship, style }) {
             </Box>
           )}
 
-          <Grid container sx={{ mt: 2 }}>
-            {tags &&
-              tags.map((tag) => (
+          {tags && (
+            <Stack direction="row" sx={{ mt: 2 }}>
+              {tags.map((tag, i) => (
                 <Chip
+                  id={i}
                   label={tag}
                   variant="outlined"
                   color="primary"
@@ -250,7 +251,8 @@ export default function ScholarshipCard({ scholarship, style }) {
                   key={tag}
                 />
               ))}
-          </Grid>
+            </Stack>
+          )}
 
           {detailed && (
             <Chip

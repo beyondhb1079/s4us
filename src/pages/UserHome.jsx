@@ -29,7 +29,7 @@ export default function UserHome() {
   const alertMessage = location?.state?.alert?.message;
   const [showAlert, setShowAlert] = useState(true);
   return (
-    <Container>
+    <Container sx={{ p: 2 }}>
       <Helmet>
         <title>{t('home.user.titleTag')}</title>
       </Helmet>
@@ -42,7 +42,7 @@ export default function UserHome() {
         </Collapse>
       )}
 
-      <Typography variant="h4" component="h1" style={{ p: 1 }} gutterBottom>
+      <Typography variant="h4" component="h1" gutterBottom>
         {t('home.user.welcome')} {user.displayName}
       </Typography>
 

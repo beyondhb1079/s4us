@@ -119,7 +119,7 @@ function ListScholarships() {
     });
 
   return (
-    <Container>
+    <Container maxWidth="md" sx={{ p: 2 }}>
       <Helmet>
         <title>{t('listScholarships.titleTag')}</title>
       </Helmet>
