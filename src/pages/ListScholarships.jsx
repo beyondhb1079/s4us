@@ -11,6 +11,8 @@ import Scholarships from '../models/Scholarships';
 
 const drawerWidth = 360;
 
+const drawerWidth = 360;
+
 function ListScholarships() {
   const { t } = useTranslation();
 
