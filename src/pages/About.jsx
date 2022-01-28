@@ -50,7 +50,7 @@ function About() {
   ];
 
   return (
-    <Container>
+    <Container sx={{ p: 2 }}>
       <Helmet>
         <title>{t('about.titleTag')}</title>
       </Helmet>

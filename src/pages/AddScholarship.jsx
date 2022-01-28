@@ -10,7 +10,7 @@ function AddScholarship() {
   const { t } = useTranslation();
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md" sx={{ p: 2 }}>
       <Helmet>
         <title>{t('addScholarship.titleTag')}</title>
       </Helmet>

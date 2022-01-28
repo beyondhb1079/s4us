@@ -3,7 +3,6 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
-  Box,
   CssBaseline,
   StyledEngineProvider,
   ThemeProvider,
@@ -37,9 +36,7 @@ function App() {
             }
           />
           <Router>
-            <Box sx={{ mb: 2 }}>
-              <Header />
-            </Box>
+            <Header />
             <Routes>
               <Route
                 path="/scholarships/new"

@@ -12,12 +12,16 @@ export function loadExperiments(query = window.location.search): void {
     if (params.has(k)) {
       if (params.get(k) === '1') {
         state = true;
-        // eslint-disable-next-line no-console
-        console.log(`experiments.${k} explicitly enabled`);
+        if (process.env.NODE_ENV !== 'test') {
+          // eslint-disable-next-line no-console
+          console.log(`experiments.${k} explicitly enabled`);
+        }
       } else if (params.get(k) === '0') {
         state = false;
         // eslint-disable-next-line no-console
-        console.log(`experiments.${k} explicitly disabled`);
+        if (process.env.NODE_ENV !== 'test') {
+          console.log(`experiments.${k} explicitly disabled`);
+        }
       }
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
