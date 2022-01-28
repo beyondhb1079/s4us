@@ -2,10 +2,11 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useLocation, useNavigate } from 'react-router-dom';
 import queryString from 'query-string';
-import { Container, Typography } from '@mui/material';
+import { Box, Container, Drawer, Typography } from '@mui/material';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
+import FilterPanel from '../components/FilterPanel';
 import qParams from '../lib/QueryParams';
 import sortOptions, {
   DEADLINE_ASC,
@@ -19,6 +20,8 @@ const queryOptions = {
   arrayFormat: 'bracket-separator',
   arrayFormatSeparator: ',',
 };
+
+const drawerWidth = 360;
 
 function ListScholarships() {
   const navigate = useNavigate();
@@ -125,16 +128,44 @@ function ListScholarships() {
     });
 
   return (
-    <Container maxWidth="md" sx={{ p: 2 }}>
+    <Box sx={{ display: 'flex', height: '100vh' }}>
       <Helmet>
         <title>{t('listScholarships.titleTag')}</title>
       </Helmet>
-      <Typography variant="h4" component="h1" align="center" style={{ p: 1 }}>
-        {t('general.scholarships')}
-      </Typography>
-      <FilterBar queryParams={params} {...{ setQueryParam }} />
-      <ScholarshipList listFn={listScholarships} />
-    </Container>
+      <Drawer
+        sx={{
+          display: { xs: 'none', md: 'block' },
+          flexShrink: 0,
+          width: drawerWidth,
+          '& .MuiDrawer-paper': {
+            width: drawerWidth,
+            position: 'absolute',
+            boxSizing: 'border-box',
+          },
+          position: 'sticky',
+          overflowY: 'auto',
+        }}
+        variant="permanent"
+        anchor="left">
+        <FilterPanel queryParams={params} {...{ setQueryParam }} />
+      </Drawer>
+      <Container
+        maxWidth="md"
+        component="main"
+        sx={{
+          bgcolor: 'background.default',
+          flexGrow: 1,
+          padding: 2,
+          position: 'sticky',
+          overflowY: { md: 'auto' },
+        }}>
+        <Typography variant="h4" component="h1" align="center" style={{ p: 1 }}>
+          {t('general.scholarships')}
+        </Typography>
+        <FilterBar queryParams={params} {...{ setQueryParam }} />
+        <ScholarshipList listFn={listScholarships} />
+      </Container>
+    </Box>
   );
 }
 
