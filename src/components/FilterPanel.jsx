@@ -1,4 +1,5 @@
 import React from 'react';
+import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import {
   Accordion,
   AccordionDetails,
@@ -6,25 +7,22 @@ import {
   Box,
   Typography,
 } from '@mui/material';
-import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
-import PropTypes from 'prop-types';
-import qParams from '../lib/QueryParams';
+import useQueryParams from '../lib/useQueryParams';
 import AmountFilter from './AmountFilter';
 import GradeLevelFilter from './GradeLevelFilter';
 import MajorFilter from './MajorFilter';
 
-export default function FilterPanel({
-  setQueryParam,
-  queryParams: { minAmount, maxAmount, grades, majors },
-}) {
+export default function FilterPanel() {
+  const [{ minAmount, maxAmount, grades, majors }, setQueryParam] =
+    useQueryParams();
   const filters = {
     Major: (
       <MajorFilter
         majors={majors}
-        onSelect={(m) => setQueryParam(qParams.MAJORS, m)}
+        onSelect={(m) => setQueryParam('majors', m)}
         onDelete={(m) =>
           setQueryParam(
-            qParams.MAJORS,
+            'majors',
             majors.filter((major) => major !== m)
           )
         }
@@ -34,14 +32,14 @@ export default function FilterPanel({
       <AmountFilter
         min={minAmount ?? 0}
         max={maxAmount ?? 0}
-        onMinChange={(e) => setQueryParam(qParams.MIN_AMOUNT, e.target.value)}
-        onMaxChange={(e) => setQueryParam(qParams.MAX_AMOUNT, e.target.value)}
+        onMinChange={(e) => setQueryParam('minAmount', e.target.value)}
+        onMaxChange={(e) => setQueryParam('maxAmount', e.target.value)}
       />
     ),
     Grade: (
       <GradeLevelFilter
         grades={new Set(grades)}
-        changeFn={(e) => setQueryParam(qParams.GRADES, e)}
+        changeFn={(e) => setQueryParam('grades', e)}
       />
     ),
   };
@@ -62,15 +60,3 @@ export default function FilterPanel({
     </Box>
   );
 }
-
-FilterPanel.propTypes = {
-  setQueryParam: PropTypes.func.isRequired,
-  queryParams: PropTypes.shape({
-    minAmount: PropTypes.number,
-    maxAmount: PropTypes.number,
-    sortBy: PropTypes.string,
-  }),
-};
-FilterPanel.defaultProps = {
-  queryParams: {},
-};
