@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useLocation, useNavigate } from 'react-router-dom';
 import queryString from 'query-string';
-import { Box, Container, Drawer, Hidden, Typography } from '@mui/material';
+import { Box, Container, Drawer, Typography } from '@mui/material';
 import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import FilterBar from '../components/FilterBar';
@@ -132,24 +132,23 @@ function ListScholarships() {
       <Helmet>
         <title>{t('listScholarships.titleTag')}</title>
       </Helmet>
-      <Hidden mdDown>
-        <Drawer
-          sx={{
-            width: drawerWidth,
-            flexShrink: 0,
-            '& .MuiDrawer-paper': {
-              position: 'absolute',
-              height: '100%',
-              width: '100%',
-            },
-            position: 'sticky',
-            overflowY: 'auto',
-          }}
-          variant="permanent"
-          anchor="left">
-          <FilterPanel queryParams={params} {...{ setQueryParam }} />
-        </Drawer>
-      </Hidden>
+      <Drawer
+        sx={{
+          display: { xs: 'none', md: 'block' },
+          width: drawerWidth,
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            position: 'absolute',
+            height: '100%',
+            width: '100%',
+          },
+          position: 'sticky',
+          overflowY: 'auto',
+        }}
+        variant="permanent"
+        anchor="left">
+        <FilterPanel queryParams={params} {...{ setQueryParam }} />
+      </Drawer>
       <Container
         maxWidth="md"
         component="main"
