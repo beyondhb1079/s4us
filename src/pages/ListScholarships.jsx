@@ -128,19 +128,19 @@ function ListScholarships() {
     });
 
   return (
-    <Box sx={{ display: 'flex', position: 'relative', height: '100%' }}>
+    <Box sx={{ display: 'flex', height: 'inherit' }}>
       <Helmet>
         <title>{t('listScholarships.titleTag')}</title>
       </Helmet>
       <Drawer
         sx={{
           display: { xs: 'none', md: 'block' },
-          width: drawerWidth,
           flexShrink: 0,
+          width: drawerWidth,
           '& .MuiDrawer-paper': {
+            width: drawerWidth,
             position: 'absolute',
-            height: '100%',
-            width: '100%',
+            boxSizing: 'border-box',
           },
           position: 'sticky',
           overflowY: 'auto',
@@ -152,7 +152,13 @@ function ListScholarships() {
       <Container
         maxWidth="md"
         component="main"
-        sx={{ flexGrow: 1, bgcolor: 'background.default', p: 2 }}>
+        sx={{
+          bgcolor: 'background.default',
+          flexGrow: 1,
+          padding: 2,
+          position: 'sticky',
+          overflowY: 'auto',
+        }}>
         <Typography variant="h4" component="h1" align="center" style={{ p: 1 }}>
           {t('general.scholarships')}
         </Typography>

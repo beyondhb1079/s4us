@@ -48,7 +48,7 @@ export default function FilterPanel({
   return (
     <Box>
       {Object.entries(filters).map(([name, filter]) => (
-        <Accordion disableGutters>
+        <Accordion key={name} disableGutters>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls={name + '-content'}

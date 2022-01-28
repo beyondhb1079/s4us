@@ -15,7 +15,7 @@ function Contact() {
   const { t } = useTranslation();
 
   return (
-    <Container>
+    <Container sx={{ p: 2 }}>
       <Helmet>
         <title>{t('contact.titleTag')}</title>
       </Helmet>
