@@ -31,7 +31,6 @@ export default function ShareDialog({ scholarship, open, onClose }) {
   )} - ${name} | ${BRAND_NAME}`;
   const text = `${title}\n ${deadline?.toLocaleDateString()}\n`;
 
-  console.log('rerendering share');
   useEffect(() => {
     if (open && navigator.share) {
       onClose();
