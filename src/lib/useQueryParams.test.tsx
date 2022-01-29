@@ -34,15 +34,23 @@ test('prunes null or empty known keys', () => {
   });
 });
 
-test('prunes lists of empty string for known keys', () => {
+test('prunes bad types for known keys', () => {
   const { params, setQueryParam } = renderHookWithLocation(
-    'grades[]=,,&majors[]=,'
+    'grades=bar,,&minAmount=2.3&maxAmount=foo&majors=4'
   );
   expect(params).toMatchObject({});
   expect(setQueryParam).toBeInstanceOf(Function);
 });
 
-test('prunes bad amount values', () => {
+test('prunes null or empty list values for known list keys', () => {
+  const { params, setQueryParam } = renderHookWithLocation(
+    'grades[]=,,&majors[]=,foo'
+  );
+  expect(params).toMatchObject({ majors: ['foo'] });
+  expect(setQueryParam).toBeInstanceOf(Function);
+});
+
+test('prunes bad types', () => {
   const { params, setQueryParam } = renderHookWithLocation(
     'minAmount=4.0&maxAmount=-2&'
   );

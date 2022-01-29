@@ -48,63 +48,63 @@ export default function useQueryParams(
 
   const params = JSON.parse(JSON.stringify(origParams));
 
-  useEffect(() => {
-    if (prune) {
-      /** Prune bad query parameter value strings */
-      const { minAmount, maxAmount, grades, majors, sortBy } = params;
+  if (prune) {
+    /** Prune bad query parameter value strings */
+    const { minAmount, maxAmount, grades, majors, sortBy } = params;
 
-      if (
-        sortBy !== undefined &&
-        (typeof sortBy !== 'string' || !(sortBy in sortOptions))
-      ) {
-        delete params.sortBy;
-      }
+    if (
+      sortBy !== undefined &&
+      (typeof sortBy !== 'string' || !(sortBy in sortOptions))
+    ) {
+      delete params.sortBy;
+    }
 
-      if (
-        minAmount !== undefined &&
-        !(Number.isInteger(minAmount) && (minAmount as unknown as number) > 0)
-      ) {
-        delete params.minAmount;
-      }
+    if (
+      minAmount !== undefined &&
+      !(Number.isInteger(minAmount) && (minAmount as unknown as number) > 0)
+    ) {
+      delete params.minAmount;
+    }
 
-      if (
-        maxAmount !== undefined &&
-        !(Number.isInteger(maxAmount) && (maxAmount as unknown as number) > 0)
-      ) {
-        delete params.maxAmount;
-      }
+    if (
+      maxAmount !== undefined &&
+      !(Number.isInteger(maxAmount) && (maxAmount as unknown as number) > 0)
+    ) {
+      delete params.maxAmount;
+    }
 
-      if (grades !== undefined) {
-        // Prune invalid grade values not respresented by GradeLevel enum
-        params.grades = Array.isArray(grades)
-          ? Array.from(
-              new Set(grades.filter((g) => GradeLevel.keys().includes(g)))
-            )
-          : [];
-        if (params.grades.length === 0) delete params.grades;
-      }
+    if (grades !== undefined) {
+      // Prune invalid grade values not respresented by GradeLevel enum
+      params.grades = Array.isArray(grades)
+        ? Array.from(
+            new Set(grades.filter((g) => GradeLevel.keys().includes(g)))
+          )
+        : [];
+      if (params.grades.length === 0) delete params.grades;
+    }
 
-      if (majors !== undefined) {
-        // Prune empty strings
-        params.majors = Array.isArray(majors)
-          ? Array.from(new Set(majors)).filter((s) => s.length > 0)
-          : [];
-        if (params.majors.length === 0) {
-          delete params.majors;
-        }
-      }
-
-      if (JSON.stringify(params) !== JSON.stringify(origParams)) {
-        // Navigate to the current page with the params cleaned up
-        navigate(
-          {
-            search: queryString.stringify(params, options),
-          },
-          { replace: true }
-        );
+    if (majors !== undefined) {
+      // Prune empty strings
+      params.majors = Array.isArray(majors)
+        ? Array.from(new Set(majors)).filter((s) => s.length > 0)
+        : [];
+      if (params.majors.length === 0) {
+        delete params.majors;
       }
     }
-  }, [navigate, params, prune, origParams]);
+  }
+
+  useEffect(() => {
+    if (JSON.stringify(params) !== JSON.stringify(origParams)) {
+      // Navigate to the current page with the params cleaned up
+      navigate(
+        {
+          search: queryString.stringify(params, options),
+        },
+        { replace: true }
+      );
+    }
+  }, [navigate, params, origParams]);
 
   return [{ ...params }, setQueryParam];
 }
