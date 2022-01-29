@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Container, Typography, Box, Collapse } from '@mui/material';
+import { Container, Typography, Collapse } from '@mui/material';
 import Scholarships from '../models/Scholarships';
 import ScholarshipCard from '../components/ScholarshipCard';
 import { Alert } from '@mui/material';
@@ -51,38 +51,38 @@ export default function ViewScholarship() {
 
   const { name, dateAdded, lastModified } = scholarship.data;
   return (
-    <Container maxWidth="md">
+    <Container
+      maxWidth="md"
+      sx={{
+        backgroundImage: `url(${bannerImg})`,
+        pt: { xs: '16vh', sm: '22vh', md: '200px' },
+        backgroundPosition: 'top',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'contain',
+      }}>
       <Helmet>
         <title>{name}</title>
       </Helmet>
 
-      {justEdited && navType === 'PUSH' && (
-        <Collapse in={showAlert}>
-          <Alert
-            color="primary"
-            variant="filled"
-            onClose={() => setShowAlert(false)}>
-            {`Scholarship successfully ${
-              Date.parse(dateAdded) === Date.parse(lastModified)
-                ? 'submitted.'
-                : 'updated.'
-            }`}
-          </Alert>
-        </Collapse>
-      )}
+      <Container>
+        {(true || (justEdited && navType === 'PUSH')) && (
+          <Collapse in={showAlert} sx={{ position: 'relative' }}>
+            <Alert
+              color="primary"
+              variant="filled"
+              sx={{ position: 'absolute', width: '100%' }}
+              onClose={() => setShowAlert(false)}>
+              {`Scholarship successfully ${
+                Date.parse(dateAdded) === Date.parse(lastModified)
+                  ? 'submitted.'
+                  : 'updated.'
+              }`}
+            </Alert>
+          </Collapse>
+        )}
 
-      <Box
-        component="img"
-        src={bannerImg}
-        sx={{
-          width: '100%',
-          objectFit: 'cover',
-          maxHeight: 250,
-          objectPosition: { md: '0px -50px' },
-        }}
-      />
-
-      <ScholarshipCard scholarship={scholarship} style="detail" />
+        <ScholarshipCard scholarship={scholarship} style="detail" />
+      </Container>
     </Container>
   );
 }
