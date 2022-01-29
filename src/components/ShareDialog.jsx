@@ -1,5 +1,4 @@
-import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import {
   Button,
   Dialog,
@@ -20,22 +19,35 @@ import {
   TwitterIcon,
   TwitterShareButton,
 } from 'react-share';
+import { BRAND_NAME } from '../config/constants';
+import ScholarshipAmount from '../types/ScholarshipAmount';
 
-export default function ShareDialog() {
-  const location = useLocation();
+export default function ShareDialog({ scholarship, open, onClose }) {
+  const { amount, deadline, name } = scholarship.data;
 
-  const showShareDialog = location.state?.showShareDialog ?? false;
-  const shareData = location.state?.shareData ?? {};
-  const { title, url } = shareData;
+  const url = `https://${window.location.hostname}/scholarships/${scholarship.id}`;
+  const title = `${ScholarshipAmount.toString(
+    amount
+  )} - ${name} | ${BRAND_NAME}`;
+  const text = `${title}\n ${deadline?.toLocaleDateString()}\n`;
 
-  const navigate = useNavigate();
-  const closeDialog = () =>
-    navigate('', { replace: true, state: { shareData } });
+  console.log('rerendering share');
+  useEffect(() => {
+    if (open && navigator.share) {
+      onClose();
+      navigator
+        .share({ url, title, text })
+        // eslint-disable-next-line no-console
+        .then(() => console.log('Thanks for sharing!'))
+        // eslint-disable-next-line no-console
+        .catch(console.error);
+    }
+  }, [open, onClose, text, title, url]);
 
   return (
     <Dialog
-      open={showShareDialog}
-      onClose={closeDialog}
+      open={open && !navigator.share}
+      onClose={onClose}
       sx={{ textAlign: 'center' }}>
       <DialogTitle
         sx={{ color: 'background.paper', bgcolor: 'background.secondary' }}>

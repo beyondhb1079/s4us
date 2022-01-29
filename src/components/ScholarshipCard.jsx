@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import {
@@ -28,10 +28,10 @@ import {
 } from '@mui/icons-material';
 import { genMailToLink, withDeviceInfo } from '../lib/mail';
 import ScholarshipAmount from '../types/ScholarshipAmount';
-import { BRAND_NAME } from '../config/constants';
 import Ethnicity from '../types/Ethnicity';
 import GradeLevel from '../types/GradeLevel';
 import { lint } from '../lib/lint';
+import ShareDialog from './ShareDialog';
 
 const DetailCardCell = ({ label, text }) => (
   <>
@@ -53,7 +53,6 @@ DetailCardCell.propTypes = {
 };
 
 export default function ScholarshipCard({ scholarship, style }) {
-  const navigate = useNavigate();
   const {
     name,
     organization,
@@ -68,30 +67,7 @@ export default function ScholarshipCard({ scholarship, style }) {
   const detailed = style !== 'result';
   const preview = style === 'preview';
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-  const shareFn = () => {
-    const URL = `https://${window.location.hostname}/scholarships/${scholarship.id}`;
-    const data = {
-      title: `${ScholarshipAmount.toString(amount)} - ${name} | ${BRAND_NAME}`,
-      text: `${ScholarshipAmount.toString(amount)}
-       - ${name} | ${BRAND_NAME} \n ${deadline?.toLocaleDateString()}\n`,
-      url: URL,
-    };
-
-    if (navigator.share) {
-      navigator
-        .share(data)
-        // eslint-disable-next-line no-console
-        .then(() => console.log('Thanks for sharing!'))
-        // eslint-disable-next-line no-console
-        .catch(console.error);
-    } else {
-      navigate('', {
-        replace: true,
-        state: { showShareDialog: true, shareData: data },
-      });
-    }
-  };
+  const [showShare, setShowShare] = useState(false);
 
   const currentUser = firebase.auth().currentUser;
   const [canEdit, setCanEdit] = useState(
@@ -174,7 +150,7 @@ export default function ScholarshipCard({ scholarship, style }) {
               <Button
                 variant="outlined"
                 startIcon={<ShareIcon />}
-                onClick={shareFn}
+                onClick={() => setShowShare(true)}
                 disabled={scholarship.id === undefined}>
                 Share
               </Button>
@@ -284,6 +260,13 @@ export default function ScholarshipCard({ scholarship, style }) {
             ))}
           </Box>
         </Alert>
+      )}
+      {detailed && (
+        <ShareDialog
+          open={showShare}
+          onClose={() => setShowShare(false)}
+          scholarship={scholarship}
+        />
       )}
     </Card>
   );
