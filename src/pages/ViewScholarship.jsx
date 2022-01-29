@@ -65,7 +65,7 @@ export default function ViewScholarship() {
       </Helmet>
 
       <Container>
-        {(true || (justEdited && navType === 'PUSH')) && (
+        {justEdited && navType === 'PUSH' && (
           <Collapse in={showAlert} sx={{ position: 'relative' }}>
             <Alert
               color="primary"
