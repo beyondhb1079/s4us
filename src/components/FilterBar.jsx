@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import AmountFilter from './AmountFilter';
 import GradeLevelFilter from './GradeLevelFilter';
-import qParams from '../lib/QueryParams';
+import useQueryParams from '../lib/useQueryParams';
 import sortOptions, { DEADLINE_ASC } from '../lib/sortOptions';
 import MajorFilter from './MajorFilter';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -50,8 +50,9 @@ FilterButton.defaultProps = {
   popoverWidth: undefined,
 };
 
-export default function FilterBar({ setQueryParam, queryParams }) {
-  const { minAmount, maxAmount, grades, majors } = queryParams;
+export default function FilterBar() {
+  const [{ minAmount, maxAmount, grades, majors, sortBy }, setQueryParam] =
+    useQueryParams();
 
   return (
     <Grid
@@ -63,10 +64,10 @@ export default function FilterBar({ setQueryParam, queryParams }) {
         <FilterButton title="Majors" popoverWidth={{ minWidth: 280 }}>
           <MajorFilter
             majors={majors}
-            onSelect={(m) => setQueryParam(qParams.MAJORS, m)}
+            onSelect={(m) => setQueryParam('majors', m)}
             onDelete={(m) =>
               setQueryParam(
-                qParams.MAJORS,
+                'majors',
                 majors.filter((major) => major !== m)
               )
             }
@@ -76,7 +77,7 @@ export default function FilterBar({ setQueryParam, queryParams }) {
         <FilterButton title="Grades">
           <GradeLevelFilter
             grades={new Set(grades)}
-            changeFn={(e) => setQueryParam(qParams.GRADES, e)}
+            changeFn={(e) => setQueryParam('grades', e)}
           />
         </FilterButton>
 
@@ -84,12 +85,8 @@ export default function FilterBar({ setQueryParam, queryParams }) {
           <AmountFilter
             min={minAmount ?? 0}
             max={maxAmount ?? 0}
-            onMinChange={(e) =>
-              setQueryParam(qParams.MIN_AMOUNT, e.target.value)
-            }
-            onMaxChange={(e) =>
-              setQueryParam(qParams.MAX_AMOUNT, e.target.value)
-            }
+            onMinChange={(e) => setQueryParam('minAmount', e.target.value)}
+            onMaxChange={(e) => setQueryParam('maxAmount', e.target.value)}
           />
         </FilterButton>
       </Grid>
@@ -98,7 +95,7 @@ export default function FilterBar({ setQueryParam, queryParams }) {
         Sort by
         <FormControl variant="outlined" sx={{ margin: 1, minWidth: 120 }}>
           <Select
-            value={queryParams.sortBy ?? DEADLINE_ASC}
+            value={sortBy ?? DEADLINE_ASC}
             onChange={(e) => setQueryParam('sortBy', e.target.value)}
             displayEmpty
             sx={{ height: (theme) => theme.spacing(4) }}>
@@ -113,15 +110,3 @@ export default function FilterBar({ setQueryParam, queryParams }) {
     </Grid>
   );
 }
-
-FilterBar.propTypes = {
-  setQueryParam: PropTypes.func.isRequired,
-  queryParams: PropTypes.shape({
-    minAmount: PropTypes.number,
-    maxAmount: PropTypes.number,
-    sortBy: PropTypes.string,
-  }),
-};
-FilterBar.defaultProps = {
-  queryParams: {},
-};
