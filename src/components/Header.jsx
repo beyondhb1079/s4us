@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 import {
   AppBar,
@@ -62,8 +62,6 @@ const AuthGrowButton = ({ t }) => {
     []
   );
   const [anchorEl, setAnchorEl] = useState(null);
-  const location = useLocation();
-
   return (
     <>
       <Grow in={isSignedIn !== undefined}>
@@ -84,7 +82,7 @@ const AuthGrowButton = ({ t }) => {
             variant="contained"
             component={Link}
             replace
-            to={location.pathname}
+            to=""
             state={{ showLoginDialog: true }}
             sx={{ height: '100%', width: 64 }}>
             {t('btn.login')}
