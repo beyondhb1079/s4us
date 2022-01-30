@@ -21,7 +21,6 @@ import { BRAND_NAME } from './config/constants';
 import FirebaseProvider from './lib/FirebaseProvider';
 import ProtectedRoute from './components/ProtectedRoute';
 import LoginDialog from './components/LoginDialog';
-import ShareDialog from './components/ShareDialog';
 import { AuthProvider } from './lib/useAuth';
 
 function App() {
@@ -55,7 +54,6 @@ function App() {
                 <Route path="/" element={<Home />} />
               </Routes>
               <LoginDialog />
-              <ShareDialog />
               <Footer />
             </Router>
           </AuthProvider>

@@ -32,7 +32,11 @@ function ProtectedRoute({ element }) {
     <Container sx={{ p: 2 }}>
       <Typography variant="h5">{t('protectedPage')}</Typography>
       {showLoginDialog === undefined && (
-        <Navigate to="" replace state={{ showLoginDialog: true }} />
+        <Navigate
+          to={location.pathname}
+          replace
+          state={{ showLoginDialog: true }}
+        />
       )}
     </Container>
   );

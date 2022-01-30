@@ -15,9 +15,9 @@ export default function LoginDialog() {
 
   const navigate = useNavigate();
   const closeDialog = () =>
-    navigate('', {
+    navigate(location.pathname, {
       replace: true,
-      state: {},
+      state: { showLoginDialog: false },
     });
 
   const uiConfig = {
