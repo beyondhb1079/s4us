@@ -17,8 +17,7 @@ interface Auth {
 
 const authContext = createContext({} as Auth);
 
-// Hook for child components to get the auth object ...
-// ... and re-render when it changes.
+/** Hook to get the auth object. Triggers re-renders on changes. */
 export default function useAuth(): Auth {
   return useContext(authContext);
 }
@@ -51,8 +50,7 @@ function useProvideAuth(): Auth {
   return { currentUser, claims };
 }
 
-// Provider component that wraps your app and makes auth object ...
-// ... available to any child component that calls useAuth().
+/** Provider component for the app so that useAuth() can be used in any child component. */
 export function AuthProvider({
   children,
 }: {
