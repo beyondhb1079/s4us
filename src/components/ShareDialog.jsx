@@ -30,7 +30,7 @@ export default function ShareDialog() {
 
   const navigate = useNavigate();
   const closeDialog = () =>
-    navigate('', { replace: true, state: { shareData } });
+    navigate(location.pathname, { replace: true, state: { shareData } });
 
   return (
     <Dialog
