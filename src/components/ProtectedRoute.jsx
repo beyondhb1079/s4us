@@ -10,7 +10,6 @@ function ProtectedRoute({ element }) {
   const { showLoginDialog } = location.state || {
     showLoginDialog: undefined,
   };
-
   const [isSignedIn, setIsSignedIn] = useState(
     !!firebase.auth().currentUser || undefined
   );
@@ -19,7 +18,6 @@ function ProtectedRoute({ element }) {
     () => firebase.auth().onAuthStateChanged((user) => setIsSignedIn(!!user)),
     []
   );
-  console.log(location.state);
 
   const { t } = useTranslation();
 
