@@ -27,11 +27,7 @@ function ProtectedRoute({ element }) {
     );
   }
   return currentUser ? (
-    false && element ? (
-      'hello'
-    ) : (
-      'no'
-    )
+    element
   ) : (
     <Container sx={{ p: 2 }}>
       <Typography variant="h5">{t('protectedPage')}</Typography>

@@ -17,6 +17,7 @@ import {
 import ScholarshipForm from '../components/ScholarshipForm';
 import Scholarships from '../models/Scholarships';
 import { Helmet } from 'react-helmet';
+import useAuth from '../lib/useAuth';
 
 function EditScholarship() {
   const { id } = useParams();
@@ -43,7 +44,7 @@ function EditScholarship() {
   const { claims, currentUser } = useAuth();
   useEffect(() => {
     const authorId = scholarship?.data?.author?.id;
-    if (authorId !== currentUser?.uid && !claims?.admin) {
+    if (authorId && authorId !== currentUser?.uid && !claims?.admin) {
       setError("You don't have permission to edit this scholarship.");
     }
   }, [scholarship, currentUser, claims]);
@@ -66,7 +67,7 @@ function EditScholarship() {
 
   if (error || !scholarship) {
     return (
-      <Container>
+      <Container sx={{ p: 2 }}>
         <Typography variant="h4" gutterBottom align="center">
           {error?.toString() || 'Loading...'}
         </Typography>
