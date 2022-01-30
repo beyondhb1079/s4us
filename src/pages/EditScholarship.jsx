@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import firebase from 'firebase';
 import {
   Container,
   Paper,
@@ -18,6 +17,7 @@ import {
 import ScholarshipForm from '../components/ScholarshipForm';
 import Scholarships from '../models/Scholarships';
 import { Helmet } from 'react-helmet';
+import useAuth from '../lib/useAuth';
 
 function EditScholarship() {
   const { id } = useParams();
@@ -41,23 +41,13 @@ function EditScholarship() {
     };
   }, [id]);
 
+  const { claims, currentUser } = useAuth();
   useEffect(() => {
     const authorId = scholarship?.data?.author?.id;
-    if (authorId) {
-      firebase
-        .auth()
-        .currentUser.getIdTokenResult()
-        .then((idTokenResult) => {
-          if (
-            !idTokenResult.claims.admin &&
-            firebase.auth().currentUser.uid !== authorId
-          ) {
-            setError("You don't have permission to edit this scholarship.");
-          }
-        })
-        .catch(setError);
+    if (authorId && authorId !== currentUser?.uid && !claims?.admin) {
+      setError("You don't have permission to edit this scholarship.");
     }
-  }, [scholarship]);
+  }, [scholarship, currentUser, claims]);
 
   const handleDelete = () => {
     Scholarships.id(id)
@@ -77,7 +67,7 @@ function EditScholarship() {
 
   if (error || !scholarship) {
     return (
-      <Container>
+      <Container sx={{ p: 2 }}>
         <Typography variant="h4" gutterBottom align="center">
           {error?.toString() || 'Loading...'}
         </Typography>

@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import {
   Box,
@@ -32,6 +31,7 @@ import Ethnicity from '../types/Ethnicity';
 import GradeLevel from '../types/GradeLevel';
 import { lint } from '../lib/lint';
 import ShareDialog from './ShareDialog';
+import useAuth from '../lib/useAuth';
 
 const DetailCardCell = ({ label, text }) => (
   <>
@@ -69,23 +69,8 @@ export default function ScholarshipCard({ scholarship, style }) {
 
   const [showShare, setShowShare] = useState(false);
 
-  const currentUser = firebase.auth().currentUser;
-  const [canEdit, setCanEdit] = useState(
-    currentUser ? currentUser.uid === author?.id : false
-  );
-  useEffect(() => {
-    if (!preview && currentUser && currentUser.uid !== author?.id) {
-      currentUser
-        .getIdTokenResult()
-        .then((idTokenResult) => {
-          if (idTokenResult.claims.admin) {
-            setCanEdit(true);
-          }
-        })
-        // eslint-disable-next-line no-console
-        .catch(console.error);
-    }
-  }, [author, currentUser, preview]);
+  const { claims, currentUser } = useAuth();
+  const canEdit = currentUser?.uid === author?.id || claims?.admin;
 
   const CardAreaComponent = detailed ? Box : CardActionArea;
   const lintIssues = canEdit || preview ? lint(scholarship.data) : [];
