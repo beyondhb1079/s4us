@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import firebase from 'firebase';
 import {
   Container,
   Paper,
@@ -41,23 +40,13 @@ function EditScholarship() {
     };
   }, [id]);
 
+  const { claims, currentUser } = useAuth();
   useEffect(() => {
     const authorId = scholarship?.data?.author?.id;
-    if (authorId) {
-      firebase
-        .auth()
-        .currentUser.getIdTokenResult()
-        .then((idTokenResult) => {
-          if (
-            !idTokenResult.claims.admin &&
-            firebase.auth().currentUser.uid !== authorId
-          ) {
-            setError("You don't have permission to edit this scholarship.");
-          }
-        })
-        .catch(setError);
+    if (authorId !== currentUser?.uid && !claims?.admin) {
+      setError("You don't have permission to edit this scholarship.");
     }
-  }, [scholarship]);
+  }, [scholarship, currentUser, claims]);
 
   const handleDelete = () => {
     Scholarships.id(id)

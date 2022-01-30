@@ -16,7 +16,7 @@ import {
   NewReleases as NewIcon,
 } from '@mui/icons-material';
 import experiments from '../lib/experiments';
-import { useAuth } from '../lib/useAuth';
+import useAuth from '../lib/useAuth';
 
 // hacky way to override Menu style
 const StyledMenu = (props) => (
@@ -50,7 +50,7 @@ StyledMenuItem.propTypes = {
 
 export default function ProfileDropdown(props) {
   const { anchorEl, onClose } = props;
-  const user = useAuth();
+  const { currentUser: user } = useAuth();
 
   // needs to be updated once there is a working manage profile page
   const manageProfileLink = '/home';

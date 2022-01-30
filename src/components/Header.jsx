@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-// import firebase from 'firebase';
 import {
   AppBar,
   Alert,
@@ -21,7 +20,7 @@ import ProfileMenu from './ProfileDropdown';
 import { useTranslation } from 'react-i18next';
 import { BRAND_NAME, SUBSCRIPTION_FORM_URL } from '../config/constants';
 import HeaderNavMenu from './HeaderNavMenu';
-import { useAuth } from '../lib/useAuth';
+import useAuth from '../lib/useAuth';
 
 const OnRenderSnackbar = () => {
   const match = window.location.hostname.match(/s4us-pr-(\d+)\.onrender\.com/);
@@ -53,7 +52,7 @@ const UnderConstructionAlert = ({ t }) => (
 );
 
 const AuthGrowButton = ({ t }) => {
-  const currentUser = useAuth();
+  const { currentUser } = useAuth();
   const isSignedIn = !!currentUser;
   const [anchorEl, setAnchorEl] = useState(null);
   return (
