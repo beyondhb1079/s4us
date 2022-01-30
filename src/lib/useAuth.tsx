@@ -11,7 +11,7 @@ import firebase from 'firebase';
 interface Auth {
   /** Claims for the current user, if any. */
   claims?: Record<string, any>;
-  /** The current logged in user. May be `undefined` initially. */
+  /** The currently logged in user. May be `undefined` initially. */
   currentUser?: firebase.User | null;
 }
 
