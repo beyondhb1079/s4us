@@ -18,7 +18,7 @@ export const ResultsProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [scholarships, setScholarships] = useState([]);
   const [filtersJSON, setFiltersJSON] = useState(null);
-  // Probably better to use load state.
+  // Might be better to use load state.
   const [loading, setLoading] = useState(false);
   const [loadMoreFn, setLoadMoreFn] = useState(null);
 
