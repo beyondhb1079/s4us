@@ -12,7 +12,6 @@ import StyleFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 export default function LoginDialog() {
   const location = useLocation();
   const showLoginDialog = location.state?.showLoginDialog || false;
-  console.log(location.state);
 
   const navigate = useNavigate();
   const closeDialog = () =>

@@ -10,7 +10,7 @@ function ProtectedRoute({ element }) {
   const { showLoginDialog } = location.state || {
     showLoginDialog: undefined,
   };
-  console.log(showLoginDialog);
+
   const [isSignedIn, setIsSignedIn] = useState(
     !!firebase.auth().currentUser || undefined
   );
