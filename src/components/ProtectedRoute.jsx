@@ -10,6 +10,7 @@ function ProtectedRoute({ element }) {
   const { showLoginDialog } = location.state || {
     showLoginDialog: undefined,
   };
+  console.log(showLoginDialog);
   const [isSignedIn, setIsSignedIn] = useState(
     !!firebase.auth().currentUser || undefined
   );
@@ -18,6 +19,7 @@ function ProtectedRoute({ element }) {
     () => firebase.auth().onAuthStateChanged((user) => setIsSignedIn(!!user)),
     []
   );
+  console.log(location.state);
 
   const { t } = useTranslation();
 
@@ -40,7 +42,11 @@ function ProtectedRoute({ element }) {
     <Container sx={{ p: 2 }}>
       <Typography variant="h5">{t('protectedPage')}</Typography>
       {showLoginDialog === undefined && (
-        <Navigate to="" replace state={{ showLoginDialog: true }} />
+        <Navigate
+          to={location.pathname}
+          replace
+          state={{ showLoginDialog: true }}
+        />
       )}
     </Container>
   );

@@ -86,7 +86,7 @@ export default function ScholarshipCard({ scholarship, style }) {
         // eslint-disable-next-line no-console
         .catch(console.error);
     } else {
-      navigate('', {
+      navigate(location.pathname, {
         replace: true,
         state: { showShareDialog: true, shareData: data },
       });
