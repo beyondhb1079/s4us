@@ -18,37 +18,38 @@ export const ResultsProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [scholarships, setScholarships] = useState([]);
   const [filtersJSON, setFiltersJSON] = useState(null);
-  // Might be better to use load state.
-  const [loading, setLoading] = useState(false);
-  const [loadMoreFn, setLoadMoreFn] = useState(null);
+  const [{ loading, loadMoreFn }, setLoadState] = useState({});
 
+  // Reset context and fetch scholarships if filters change.
   useEffect(() => {
     if (filtersJSON) {
       console.log('filter options changed', filtersJSON);
       setScholarships([]);
-      setLoadMoreFn(
-        () => () => Scholarships.list({ ...JSON.parse(filtersJSON) })
-      );
-      setLoading(true);
+      setLoadState({
+        loading: true,
+        loadMoreFn: () => Scholarships.list({ ...JSON.parse(filtersJSON) }),
+      });
     }
   }, [filtersJSON]);
 
+  // Load additional scholarships if requested.
   useEffect(() => {
     if (loading && loadMoreFn) {
-      // console.log('in effect load function:', loadMoreFn);
       loadMoreFn()
         .then(({ results, next, hasNext }) => {
           console.log('results received: ', results);
           setError(null);
           setScholarships((prev) => [...prev, ...results]);
-          // Keep loading if there are no results but there's more to load.
-          setLoading(!results.length && hasNext);
-          setLoadMoreFn(hasNext ? () => next : undefined);
+          setLoadState({
+            // Keep loading if no results but there's more to load.
+            // Though I think Scholarships._list already takes care of this.
+            loading: !results.length && hasNext,
+            loadMoreFn: hasNext ? next : undefined,
+          });
         })
         .catch(setError);
     }
   }, [loading, loadMoreFn]);
-  // console.log('canLoadMore', Boolean(loadMoreFn), 'loadMoreFn', loadMoreFn);
 
   return (
     <ResultsContext.Provider
@@ -56,7 +57,7 @@ export const ResultsProvider = ({ children }) => {
         canLoadMore: Boolean(loadMoreFn),
         error,
         loading,
-        loadMore: () => setLoading(true),
+        loadMore: () => setLoadState({ loading: true, loadMoreFn }),
         scholarships,
         setFilters: (filterOptions) =>
           setFiltersJSON(JSON.stringify(filterOptions)),
@@ -73,6 +74,8 @@ export default function ScholarshipList({
   const { t } = useTranslation();
   const { canLoadMore, error, loading, loadMore, scholarships, setFilters } =
     useContext(ResultsContext);
+
+  console.log('rendered');
 
   // Resets result context if listFn changes.
   useEffect(() => setFilters(filters), [filters, setFilters]);
