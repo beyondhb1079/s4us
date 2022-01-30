@@ -11,7 +11,7 @@ export default function AmountFilter(props) {
   return (
     <Grid container>
       <Grid item sx={{ m: 1 }}>
-        <InputLabel sx={{ pl: 1 }}>Min Amount</InputLabel>
+        <InputLabel sx={{ pl: 1 }}>Min</InputLabel>
         <AmountTextField
           error={error}
           value={min || ''}
@@ -22,7 +22,7 @@ export default function AmountFilter(props) {
         <RemoveIcon />
       </Grid>
       <Grid item sx={{ m: 1 }}>
-        <InputLabel sx={{ pl: 1 }}>Max Amount</InputLabel>
+        <InputLabel sx={{ pl: 1 }}>Max</InputLabel>
         <AmountTextField value={max || ''} onChange={onMaxChange} />
       </Grid>
     </Grid>
