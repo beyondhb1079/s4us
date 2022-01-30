@@ -15,6 +15,7 @@ import MajorFilter from './MajorFilter';
 export default function FilterPanel() {
   const [{ minAmount, maxAmount, grades, majors }, setQueryParam] =
     useQueryParams();
+
   const filters = {
     Major: (
       <MajorFilter
@@ -40,13 +41,14 @@ export default function FilterPanel() {
         }}
       />
     ),
-    Grade: (
+    'Grade Level': (
       <GradeLevelFilter
         grades={new Set(grades)}
         changeFn={(e) => setQueryParam('grades', e)}
       />
     ),
   };
+
   return (
     <Box>
       {Object.entries(filters).map(([name, filter]) => (
