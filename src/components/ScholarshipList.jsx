@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { createContext, useEffect, useContext, useState } from 'react';
 import {
   Box,
   Button,
@@ -8,53 +8,74 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import Scholarships from '../models/Scholarships';
 
 import ScholarshipCard from './ScholarshipCard';
 
-function ScholarshipList({ noResultsNode, listFn }) {
-  const [error, setError] = useState();
+const ResultsContext = createContext(null);
+
+export const ResultsProvider = ({ children }) => {
+  const [error, setError] = useState(null);
   const [scholarships, setScholarships] = useState([]);
-  const [loadState, setLoadState] = useState({
-    loading: true,
-    canLoadMore: true,
-    loadMoreFn: listFn,
-  });
-  const { loading, canLoadMore, loadMoreFn } = loadState;
-  const { t } = useTranslation();
-
-  // Reset scholarships and loading state when listFn changes
-  useEffect(() => {
-    setScholarships([]);
-    setLoadState({
-      loading: true,
-      canLoadMore: true,
-      loadMoreFn: listFn,
-    });
-  }, [listFn]);
+  const [filtersJSON, setFiltersJSON] = useState(null);
+  // Probably better to use load state.
+  const [loading, setLoading] = useState(false);
+  const [loadMoreFn, setLoadMoreFn] = useState(null);
 
   useEffect(() => {
-    let mounted = true;
-    if (loading && canLoadMore) {
+    if (filtersJSON) {
+      console.log('filter options changed', filtersJSON);
+      setScholarships([]);
+      setLoadMoreFn(
+        () => () => Scholarships.list({ ...JSON.parse(filtersJSON) })
+      );
+      setLoading(true);
+    }
+  }, [filtersJSON]);
+
+  useEffect(() => {
+    if (loading && loadMoreFn) {
+      // console.log('in effect load function:', loadMoreFn);
       loadMoreFn()
         .then(({ results, next, hasNext }) => {
-          if (!mounted) return;
+          console.log('results received: ', results);
           setError(null);
           setScholarships((prev) => [...prev, ...results]);
-          setLoadState({
-            // Load if there were no results but there's more to load.
-            loading: !results.length && hasNext,
-            canLoadMore: hasNext,
-            loadMoreFn: next,
-          });
+          // Keep loading if there are no results but there's more to load.
+          setLoading(!results.length && hasNext);
+          setLoadMoreFn(hasNext ? () => next : undefined);
         })
-        .catch((e) => mounted && setError(e));
+        .catch(setError);
     }
-    return () => {
-      mounted = false;
-    };
-  }, [loading, canLoadMore, loadMoreFn]);
+  }, [loading, loadMoreFn]);
+  // console.log('canLoadMore', Boolean(loadMoreFn), 'loadMoreFn', loadMoreFn);
 
-  const loadMore = () => setLoadState({ ...loadState, loading: true });
+  return (
+    <ResultsContext.Provider
+      value={{
+        canLoadMore: Boolean(loadMoreFn),
+        error,
+        loading,
+        loadMore: () => setLoading(true),
+        scholarships,
+        setFilters: (filterOptions) =>
+          setFiltersJSON(JSON.stringify(filterOptions)),
+      }}>
+      {children}
+    </ResultsContext.Provider>
+  );
+};
+
+export default function ScholarshipList({
+  noResultsNode,
+  filterOptions: filters,
+}) {
+  const { t } = useTranslation();
+  const { canLoadMore, error, loading, loadMore, scholarships, setFilters } =
+    useContext(ResultsContext);
+
+  // Resets result context if listFn changes.
+  useEffect(() => setFilters(filters), [filters, setFilters]);
 
   return (
     <Stack spacing={3}>
@@ -95,12 +116,10 @@ function ScholarshipList({ noResultsNode, listFn }) {
 }
 
 ScholarshipList.propTypes = {
-  listFn: PropTypes.func,
+  filters: PropTypes.object,
   noResultsNode: PropTypes.node,
 };
 ScholarshipList.defaultProps = {
-  listFn: undefined,
+  filters: {},
   noResultsNode: undefined,
 };
-
-export default ScholarshipList;

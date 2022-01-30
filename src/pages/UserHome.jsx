@@ -13,7 +13,6 @@ import {
   Alert,
   Collapse,
 } from '@mui/material';
-import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import { useTranslation } from 'react-i18next';
 import LookingForScholarshipsBanner from '../components/LookingForScholarshipsBanner';
@@ -22,8 +21,6 @@ export default function UserHome() {
   const { t } = useTranslation();
   const user = firebase.auth().currentUser;
   const location = useLocation();
-
-  const listScholarshipsFn = () => Scholarships.list({ authorId: user.uid });
 
   const navType = useNavigationType();
   const alertMessage = location?.state?.alert?.message;
@@ -70,7 +67,7 @@ export default function UserHome() {
         </Grid>
       </Grid>
       <ScholarshipList
-        listFn={listScholarshipsFn}
+        filterOptions={{ authorId: user.uid }}
         noResultsNode={
           <Grid
             container
