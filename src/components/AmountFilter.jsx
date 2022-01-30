@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { InputLabel, Grid } from '@mui/material';
+import { InputLabel, Grid, Slider } from '@mui/material';
 import { Remove as RemoveIcon } from '@mui/icons-material';
 import AmountTextField from './AmountTextField';
 
 export default function AmountFilter(props) {
-  const { min, max, onMinChange, onMaxChange } = props;
+  const { min, max, onMinChange, onMaxChange, onSliderChange } = props;
   const error = max > 0 && max < min;
 
   return (
@@ -25,6 +25,14 @@ export default function AmountFilter(props) {
         <InputLabel sx={{ pl: 1 }}>Max</InputLabel>
         <AmountTextField value={max || ''} onChange={onMaxChange} />
       </Grid>
+
+      <Slider
+        value={[min, max]}
+        min={0}
+        max={10000}
+        step={100}
+        onChange={onSliderChange}
+      />
     </Grid>
   );
 }
@@ -34,4 +42,5 @@ AmountFilter.propTypes = {
   max: PropTypes.number.isRequired,
   onMinChange: PropTypes.func.isRequired,
   onMaxChange: PropTypes.func.isRequired,
+  onSliderChange: PropTypes.func.isRequired,
 };

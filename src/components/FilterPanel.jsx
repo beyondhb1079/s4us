@@ -34,6 +34,10 @@ export default function FilterPanel() {
         max={maxAmount ?? 0}
         onMinChange={(e) => setQueryParam('minAmount', e.target.value)}
         onMaxChange={(e) => setQueryParam('maxAmount', e.target.value)}
+        onSliderChange={(e) => {
+          setQueryParam('minAmount', e.target.value[0]);
+          setQueryParam('maxAmount', e.target.value[1]);
+        }}
       />
     ),
     Grade: (
