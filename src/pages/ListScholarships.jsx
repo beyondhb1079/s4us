@@ -2,7 +2,6 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import { Box, Container, Drawer, Typography } from '@mui/material';
-import FilterBar from '../components/FilterBar';
 import FilterPanel from '../components/FilterPanel';
 import ScholarshipList from '../components/ScholarshipList';
 import useQueryParams from '../lib/useQueryParams';
