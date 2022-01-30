@@ -5,7 +5,7 @@ import { Remove as RemoveIcon } from '@mui/icons-material';
 import AmountTextField from './AmountTextField';
 
 export default function AmountFilter(props) {
-  const { min, max, onMinChange, onMaxChange, onSliderChange } = props;
+  const { min, max, onMinChange, onMaxChange } = props;
   const error = max > 0 && max < min;
 
   return (
@@ -15,7 +15,7 @@ export default function AmountFilter(props) {
         <AmountTextField
           error={error}
           value={min || ''}
-          onChange={onMinChange}
+          onChange={(e) => onMinChange(e.target.value)}
         />
       </Grid>
       <Grid item sx={{ pt: 2, display: 'flex', alignItems: 'center' }}>
@@ -23,7 +23,10 @@ export default function AmountFilter(props) {
       </Grid>
       <Grid item sx={{ m: 1 }}>
         <InputLabel sx={{ pl: 1 }}>Max</InputLabel>
-        <AmountTextField value={max || ''} onChange={onMaxChange} />
+        <AmountTextField
+          value={max || ''}
+          onChange={(e) => onMaxChange(e.target.value)}
+        />
       </Grid>
 
       <Slider
@@ -31,7 +34,10 @@ export default function AmountFilter(props) {
         min={0}
         max={10000}
         step={100}
-        onChange={onSliderChange}
+        onChange={(e) => {
+          onMinChange(e.target.value[0]);
+          onMaxChange(e.target.value[1]);
+        }}
       />
     </Grid>
   );
@@ -42,5 +48,4 @@ AmountFilter.propTypes = {
   max: PropTypes.number.isRequired,
   onMinChange: PropTypes.func.isRequired,
   onMaxChange: PropTypes.func.isRequired,
-  onSliderChange: PropTypes.func.isRequired,
 };
