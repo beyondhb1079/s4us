@@ -53,14 +53,13 @@ const UnderConstructionAlert = ({ t }) => (
 
 const AuthGrowButton = ({ t }) => {
   const { currentUser } = useAuth();
-  const isSignedIn = !!currentUser;
   const [anchorEl, setAnchorEl] = useState(null);
   const location = useLocation();
 
   return (
     <>
-      <Grow in={isSignedIn !== undefined}>
-        {isSignedIn ? (
+      <Grow in={currentUser !== undefined}>
+        {currentUser ? (
           <IconButton
             size="medium"
             aria-label="account of current user"
