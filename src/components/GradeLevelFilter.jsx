@@ -33,7 +33,7 @@ function GradeGroup({ title, gradeGroup, grades, toggleSelection }) {
 GradeGroup.propTypes = {
   title: PropTypes.string.isRequired,
   gradeGroup: PropTypes.arrayOf(PropTypes.number).isRequired,
-  grades: PropTypes.arrayOf(PropTypes.number).isRequired,
+  grades: PropTypes.instanceOf(Set),
   toggleSelection: PropTypes.func.isRequired,
 };
 

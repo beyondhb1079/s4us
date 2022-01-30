@@ -65,7 +65,7 @@ function ListScholarships() {
         <Typography variant="h4" component="h1" align="center" style={{ p: 1 }}>
           {t('general.scholarships')}
         </Typography>
-        <FilterBar />
+
         <ScholarshipList listFn={listScholarships} />
       </Container>
     </Box>
