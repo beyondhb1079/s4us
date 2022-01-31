@@ -15,6 +15,7 @@ import AmountFilter from './AmountFilter';
 import GradeLevelFilter from './GradeLevelFilter';
 import MajorFilter from './MajorFilter';
 import CloseIcon from '@mui/icons-material/Close';
+import PropTypes from 'prop-types';
 
 export default function FilterPanel({ closePanel }) {
   const [{ minAmount, maxAmount, grades, majors }, setQueryParam] =
@@ -48,6 +49,7 @@ export default function FilterPanel({ closePanel }) {
       />
     ),
   };
+
   return (
     <Box>
       <Stack
@@ -79,3 +81,7 @@ export default function FilterPanel({ closePanel }) {
     </Box>
   );
 }
+
+FilterPanel.propTypes = {
+  closePanel: PropTypes.func.isRequired,
+};

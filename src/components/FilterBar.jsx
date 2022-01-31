@@ -3,6 +3,7 @@ import { Grid, FormControl, Select, MenuItem, IconButton } from '@mui/material';
 import useQueryParams from '../lib/useQueryParams';
 import sortOptions, { DEADLINE_ASC } from '../lib/sortOptions';
 import TuneIcon from '@mui/icons-material/Tune';
+import PropTypes from 'prop-types';
 
 export default function FilterBar({ openFilter }) {
   const [{ sortBy }, setQueryParam] = useQueryParams();
@@ -41,3 +42,7 @@ export default function FilterBar({ openFilter }) {
     </Grid>
   );
 }
+
+FilterBar.propTypes = {
+  openFilter: PropTypes.func.isRequired,
+};
