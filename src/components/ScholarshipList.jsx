@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext } from 'react';
 import {
   Box,
   Button,
@@ -8,64 +8,8 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import Scholarships from '../models/Scholarships';
-
 import ScholarshipCard from './ScholarshipCard';
-
-const ResultsContext = createContext(null);
-
-export const ResultsProvider = ({ children }) => {
-  const [error, setError] = useState(null);
-  const [scholarships, setScholarships] = useState([]);
-  const [filtersJSON, setFiltersJSON] = useState(null);
-  const [{ loading, loadMoreFn }, setLoadState] = useState({});
-
-  // Reset context and fetch scholarships if filters change.
-  useEffect(() => {
-    if (filtersJSON) {
-      console.log('filter options changed', filtersJSON);
-      setScholarships([]);
-      setLoadState({
-        loading: true,
-        loadMoreFn: () => Scholarships.list({ ...JSON.parse(filtersJSON) }),
-      });
-    }
-  }, [filtersJSON]);
-
-  // Load additional scholarships if requested.
-  useEffect(() => {
-    if (loading && loadMoreFn) {
-      loadMoreFn()
-        .then(({ results, next, hasNext }) => {
-          console.log('results received: ', results);
-          setError(null);
-          setScholarships((prev) => [...prev, ...results]);
-          setLoadState({
-            // Keep loading if no results but there's more to load.
-            // Though I think Scholarships._list already takes care of this.
-            loading: !results.length && hasNext,
-            loadMoreFn: hasNext ? next : undefined,
-          });
-        })
-        .catch(setError);
-    }
-  }, [loading, loadMoreFn]);
-
-  return (
-    <ResultsContext.Provider
-      value={{
-        canLoadMore: Boolean(loadMoreFn),
-        error,
-        loading,
-        loadMore: () => setLoadState({ loading: true, loadMoreFn }),
-        scholarships,
-        setFilters: (filterOptions) =>
-          setFiltersJSON(JSON.stringify(filterOptions)),
-      }}>
-      {children}
-    </ResultsContext.Provider>
-  );
-};
+import ScholarshipsContext from '../models/ScholarshipsContext';
 
 export default function ScholarshipList({
   noResultsNode,
@@ -73,9 +17,7 @@ export default function ScholarshipList({
 }) {
   const { t } = useTranslation();
   const { canLoadMore, error, loading, loadMore, scholarships, setFilters } =
-    useContext(ResultsContext);
-
-  console.log('rendered');
+    useContext(ScholarshipsContext);
 
   // Resets result context if listFn changes.
   useEffect(() => setFilters(filters), [filters, setFilters]);

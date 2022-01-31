@@ -21,7 +21,7 @@ import { BRAND_NAME } from './config/constants';
 import FirebaseProvider from './lib/FirebaseProvider';
 import ProtectedRoute from './components/ProtectedRoute';
 import LoginDialog from './components/LoginDialog';
-import { ResultsProvider } from './components/ScholarshipList';
+import { ScholarshipsProvider } from './models/ScholarshipsContext';
 
 function App() {
   return (
@@ -35,7 +35,7 @@ function App() {
               BRAND_NAME + ' | Scholarships for Undocumented Students'
             }
           />
-          <ResultsProvider>
+          <ScholarshipsProvider>
             <Router>
               <Header />
               <Routes>
@@ -56,7 +56,7 @@ function App() {
               <LoginDialog />
               <Footer />
             </Router>
-          </ResultsProvider>
+          </ScholarshipsProvider>
         </ThemeProvider>
       </StyledEngineProvider>
     </FirebaseProvider>
