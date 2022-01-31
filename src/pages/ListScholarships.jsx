@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import { Box, Container, Drawer, Typography } from '@mui/material';
@@ -7,6 +7,7 @@ import FilterPanel from '../components/FilterPanel';
 import ScholarshipList from '../components/ScholarshipList';
 import useQueryParams from '../lib/useQueryParams';
 import { DEADLINE_ASC, getDir, getField } from '../lib/sortOptions';
+import { useNavigationType } from 'react-router-dom';
 
 const drawerWidth = 360;
 
@@ -27,6 +28,29 @@ function ListScholarships() {
     majors,
     hideExpired: true,
   };
+
+  // Keep track of the scholarship list's scroll position.
+  const [scrollTop, setScrollTop] = useState(0);
+  const ref = useRef('main');
+  const handleScroll = () => {
+    const position = ref.current.scrollTop;
+    setScrollTop(position);
+  };
+  const navigationType = useNavigationType();
+  useEffect(() => {
+    ref.current.scrollTop = localStorage.getItem('scholarship-list-scroll-top');
+    console.log(navigationType, ref.current.scrollTop);
+    if (navigationType === 'POP') {
+      // restore the saved position as long as we went back/forwards in history.
+      ref.current.addEventListener('scroll', handleScroll, { passive: true });
+    }
+  }, [ref, navigationType]);
+  useEffect(
+    // store the scroll position for later
+    // though actually this should be cached
+    () => () => localStorage.setItem('scholarship-list-scroll-top', scrollTop),
+    [ref, scrollTop]
+  );
 
   return (
     <Box sx={{ display: 'flex', height: '100vh' }}>
@@ -53,6 +77,7 @@ function ListScholarships() {
       <Container
         maxWidth="md"
         component="main"
+        ref={ref}
         sx={{
           bgcolor: 'background.default',
           flexGrow: 1,
