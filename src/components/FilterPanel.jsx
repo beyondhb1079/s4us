@@ -15,6 +15,7 @@ import MajorFilter from './MajorFilter';
 export default function FilterPanel() {
   const [{ minAmount, maxAmount, grades, majors }, setQueryParam] =
     useQueryParams();
+
   const filters = {
     Major: (
       <MajorFilter

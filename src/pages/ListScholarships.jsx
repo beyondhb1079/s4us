@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
-import { Box, Container, Drawer, Typography } from '@mui/material';
+import {
+  Box,
+  Container,
+  Drawer,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import FilterBar from '../components/FilterBar';
 import FilterPanel from '../components/FilterPanel';
 import ScholarshipList from '../components/ScholarshipList';
@@ -9,10 +15,12 @@ import useQueryParams from '../lib/useQueryParams';
 import { DEADLINE_ASC, getDir, getField } from '../lib/sortOptions';
 import Scholarships from '../models/Scholarships';
 
-const drawerWidth = 360;
-
 function ListScholarships() {
   const { t } = useTranslation();
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
+  const drawerWidth = isDesktop ? 360 : '100%';
 
   const [{ minAmount, maxAmount, grades, majors, sortBy }] = useQueryParams();
 
@@ -37,7 +45,6 @@ function ListScholarships() {
       </Helmet>
       <Drawer
         sx={{
-          display: { xs: 'none', md: 'block' },
           flexShrink: 0,
           width: drawerWidth,
           '& .MuiDrawer-paper': {
@@ -45,13 +52,15 @@ function ListScholarships() {
             position: 'absolute',
             boxSizing: 'border-box',
           },
-          position: 'sticky',
+          position: isDesktop ? 'sticky' : 'static',
           overflowY: 'auto',
         }}
-        variant="permanent"
+        open={drawerOpen || isDesktop}
+        variant={isDesktop ? 'permanent' : 'temporary'}
         anchor="left">
         <FilterPanel />
       </Drawer>
+
       <Container
         maxWidth="md"
         component="main"
@@ -65,7 +74,7 @@ function ListScholarships() {
         <Typography variant="h4" component="h1" align="center" style={{ p: 1 }}>
           {t('general.scholarships')}
         </Typography>
-        <FilterBar />
+        <FilterBar openFilter={() => setDrawerOpen(!drawerOpen)} />
         <ScholarshipList listFn={listScholarships} />
       </Container>
     </Box>
