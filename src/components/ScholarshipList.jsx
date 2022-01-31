@@ -14,11 +14,11 @@ import ScholarshipsContext from '../models/ScholarshipsContext';
 export default function ScholarshipList({ noResultsNode, filters }) {
   const { canLoadMore, error, loading, loadMore, scholarships, setFilters } =
     useContext(ScholarshipsContext);
+  const { t } = useTranslation();
 
   // Resets result context if listFn changes.
   useEffect(() => setFilters(filters), [filters, setFilters]);
 
-  const { t } = useTranslation();
   return (
     <Stack spacing={3}>
       {scholarships.map(({ id, data }) => (
