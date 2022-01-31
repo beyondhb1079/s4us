@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import {
   Box,
   Button,
@@ -32,8 +31,9 @@ import GradeLevel from '../types/GradeLevel';
 import { lint } from '../lib/lint';
 import ShareDialog from './ShareDialog';
 import useAuth from '../lib/useAuth';
+import ScholarshipData from '../types/ScholarshipData';
 
-const DetailCardCell = ({ label, text }) => (
+const DetailCardCell = ({ label, text }: { label: string; text: string }) => (
   <>
     <Grid container justifyContent="space-between">
       <Grid item xs={12} sm>
@@ -47,12 +47,16 @@ const DetailCardCell = ({ label, text }) => (
   </>
 );
 
-DetailCardCell.propTypes = {
-  label: PropTypes.string.isRequired,
-  text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-};
-
-export default function ScholarshipCard({ scholarship, style }) {
+export default function ScholarshipCard({
+  scholarship,
+  style = 'result',
+}: {
+  scholarship: {
+    id: string;
+    data: ScholarshipData;
+  };
+  style: 'result' | 'detail' | 'preview';
+}): ReactNode {
   const {
     name,
     organization,
@@ -72,7 +76,9 @@ export default function ScholarshipCard({ scholarship, style }) {
   const { claims, currentUser } = useAuth();
   const canEdit = currentUser?.uid === author?.id || claims?.admin;
 
-  const CardAreaComponent = detailed ? Box : CardActionArea;
+  const CardAreaComponent: React.FC<{
+    [key: string]: any;
+  }> = detailed ? Box : CardActionArea;
   const lintIssues = canEdit || preview ? lint(scholarship.data) : [];
   return (
     <Card variant="outlined">
@@ -204,7 +210,7 @@ export default function ScholarshipCard({ scholarship, style }) {
             <Stack direction="row" sx={{ mt: 2 }}>
               {tags.map((tag, i) => (
                 <Chip
-                  id={i}
+                  id={i.toString()}
                   label={tag}
                   variant="outlined"
                   color="primary"
@@ -256,35 +262,3 @@ export default function ScholarshipCard({ scholarship, style }) {
     </Card>
   );
 }
-
-ScholarshipCard.propTypes = {
-  scholarship: PropTypes.shape({
-    id: PropTypes.string,
-    data: PropTypes.shape({
-      name: PropTypes.string,
-      organization: PropTypes.string,
-      amount: PropTypes.shape({}),
-      description: PropTypes.string,
-      deadline: PropTypes.instanceOf(Date),
-      website: PropTypes.string,
-      tags: PropTypes.arrayOf(PropTypes.string),
-      author: PropTypes.shape({
-        email: PropTypes.string,
-        id: PropTypes.string,
-      }),
-      requirements: PropTypes.shape({
-        ethnicities: PropTypes.arrayOf(PropTypes.string),
-        gpa: PropTypes.number,
-        grades: PropTypes.arrayOf(PropTypes.number),
-        majors: PropTypes.arrayOf(PropTypes.string),
-        schools: PropTypes.arrayOf(PropTypes.string),
-        states: PropTypes.arrayOf(PropTypes.string),
-      }),
-    }).isRequired,
-  }).isRequired,
-  style: PropTypes.oneOf(['result', 'detail', 'preview']),
-};
-
-ScholarshipCard.defaultProps = {
-  style: 'result',
-};
