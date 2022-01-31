@@ -49,7 +49,7 @@ export default function FilterPanel({ closePanel }) {
     ),
   };
   return (
-    <Box sx={{ color: 'blue' }}>
+    <Box>
       <Stack
         direction="row"
         justifyContent="space-between"

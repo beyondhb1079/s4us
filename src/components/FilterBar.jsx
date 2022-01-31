@@ -10,14 +10,13 @@ export default function FilterBar({ openFilter }) {
   return (
     <Grid
       container
-      spacing={2}
       justifyContent="space-between"
       alignItems="center"
-      sx={{ flexGrow: 1 }}>
+      sx={{ flexGrow: 1, bgcolor: 'primary.main' }}>
       <Grid item>
         <IconButton
           onClick={openFilter}
-          color="inherit"
+          color="secondary"
           sx={{ display: { xs: 'block', md: 'none' } }}>
           <TuneIcon />
         </IconButton>
