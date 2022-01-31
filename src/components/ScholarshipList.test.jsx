@@ -18,7 +18,7 @@ afterAll(() => app.delete());
 // TODO: Figure out a cleaner solution.
 window.MutationObserver = require('mutation-observer');
 
-const renderWithProviders = (ui, contextValue) =>
+const renderWithProviders = (ui) =>
   render(
     <MemoryRouter>
       <I18nextProvider i18n={i18n}>
