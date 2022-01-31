@@ -5,13 +5,10 @@ import Button from '@mui/material/Button';
 import { MemoryRouter } from 'react-router-dom';
 import ScholarshipList from './ScholarshipList';
 import Scholarships from '../models/Scholarships';
-import scholarships from '../testdata/scholarships';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n/setup';
 import { clearFirestoreData, initializeTestApp } from '../lib/testing';
-import ScholarshipsContext, {
-  ScholarshipsProvider,
-} from '../models/ScholarshipsContext';
+import { ScholarshipsProvider } from '../models/ScholarshipsContext';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 
 const app = initializeTestApp({ projectId: 'scholarship-list-test' });
