@@ -58,7 +58,7 @@ function ListScholarships() {
         open={drawerOpen || isDesktop}
         variant={isDesktop ? 'permanent' : 'temporary'}
         anchor="left">
-        <FilterPanel />
+        <FilterPanel closePanel={() => setDrawerOpen(false)} />
       </Drawer>
 
       <Container
@@ -74,7 +74,7 @@ function ListScholarships() {
         <Typography variant="h4" component="h1" align="center" style={{ p: 1 }}>
           {t('general.scholarships')}
         </Typography>
-        <FilterBar openFilter={() => setDrawerOpen(!drawerOpen)} />
+        <FilterBar openFilter={() => setDrawerOpen(true)} />
         <ScholarshipList listFn={listScholarships} />
       </Container>
     </Box>

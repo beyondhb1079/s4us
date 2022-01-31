@@ -5,14 +5,18 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
+  IconButton,
   Typography,
+  Button,
+  Stack,
 } from '@mui/material';
 import useQueryParams from '../lib/useQueryParams';
 import AmountFilter from './AmountFilter';
 import GradeLevelFilter from './GradeLevelFilter';
 import MajorFilter from './MajorFilter';
+import CloseIcon from '@mui/icons-material/Close';
 
-export default function FilterPanel() {
+export default function FilterPanel({ closePanel }) {
   const [{ minAmount, maxAmount, grades, majors }, setQueryParam] =
     useQueryParams();
 
@@ -45,7 +49,21 @@ export default function FilterPanel() {
     ),
   };
   return (
-    <Box>
+    <Box sx={{ color: 'blue' }}>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        sx={{ display: { md: 'none' } }}>
+        <IconButton onClick={closePanel}>
+          <CloseIcon />
+        </IconButton>
+
+        <Typography>Filters</Typography>
+
+        <Button>Reset</Button>
+      </Stack>
+
       {Object.entries(filters).map(([name, filter]) => (
         <Accordion key={name} disableGutters>
           <AccordionSummary
