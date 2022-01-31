@@ -67,7 +67,7 @@ export default function UserHome() {
         </Grid>
       </Grid>
       <ScholarshipList
-        filterOptions={{ authorId: user.uid, hideExpired: false }}
+        filters={{ authorId: user.uid, hideExpired: false }}
         noResultsNode={
           <Grid
             container

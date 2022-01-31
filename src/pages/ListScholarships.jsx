@@ -18,7 +18,7 @@ function ListScholarships() {
   const sortField = getField(sortBy ?? DEADLINE_ASC);
   const sortDir = getDir(sortBy ?? DEADLINE_ASC);
 
-  const filterOptions = {
+  const queryFilters = {
     sortField,
     sortDir,
     minAmount,
@@ -64,7 +64,7 @@ function ListScholarships() {
           {t('general.scholarships')}
         </Typography>
         <FilterBar />
-        <ScholarshipList filterOptions={filterOptions} />
+        <ScholarshipList filters={queryFilters} />
       </Container>
     </Box>
   );

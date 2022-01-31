@@ -11,10 +11,7 @@ import { useTranslation } from 'react-i18next';
 import ScholarshipCard from './ScholarshipCard';
 import ScholarshipsContext from '../models/ScholarshipsContext';
 
-export default function ScholarshipList({
-  noResultsNode,
-  filterOptions: filters,
-}) {
+export default function ScholarshipList({ noResultsNode, filters }) {
   const { t } = useTranslation();
   const { canLoadMore, error, loading, loadMore, scholarships, setFilters } =
     useContext(ScholarshipsContext);
