@@ -20,7 +20,7 @@ function ListScholarships() {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
-  const drawerWidth = isDesktop ? 360 : '100%';
+  const drawerWidth = { xs: '100%', md: 360 };
 
   const [{ minAmount, maxAmount, grades, majors, sortBy }] = useQueryParams();
 
@@ -52,7 +52,7 @@ function ListScholarships() {
             position: 'absolute',
             boxSizing: 'border-box',
           },
-          position: isDesktop ? 'sticky' : 'static',
+          position: { xs: 'static', md: 'sticky' },
           overflowY: 'auto',
         }}
         open={drawerOpen || isDesktop}
