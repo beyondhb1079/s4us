@@ -1,5 +1,12 @@
 import React from 'react';
-import { Grid, FormControl, Select, MenuItem, IconButton } from '@mui/material';
+import {
+  Grid,
+  FormControl,
+  Select,
+  MenuItem,
+  IconButton,
+  Typography,
+} from '@mui/material';
 import useQueryParams from '../lib/useQueryParams';
 import sortOptions, { DEADLINE_ASC } from '../lib/sortOptions';
 import TuneIcon from '@mui/icons-material/Tune';
@@ -13,16 +20,8 @@ export default function FilterBar({ openFilter }) {
       container
       justifyContent="space-between"
       alignItems="center"
+      direction="row-reverse"
       sx={{ flexGrow: 1, bgcolor: 'primary.main' }}>
-      <Grid item>
-        <IconButton
-          onClick={openFilter}
-          color="secondary"
-          sx={{ display: { xs: 'block', md: 'none' } }}>
-          <TuneIcon />
-        </IconButton>
-      </Grid>
-
       <Grid item sx={{ display: 'flex', alignItems: 'center' }}>
         Sort by
         <FormControl variant="outlined" sx={{ margin: 1, minWidth: 120 }}>
@@ -38,6 +37,16 @@ export default function FilterBar({ openFilter }) {
             ))}
           </Select>
         </FormControl>
+      </Grid>
+
+      <Grid
+        item
+        sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}>
+        <IconButton onClick={openFilter} color="secondary">
+          <TuneIcon />
+        </IconButton>
+
+        <Typography color="secondary">Filter</Typography>
       </Grid>
     </Grid>
   );

@@ -56,7 +56,7 @@ export default function FilterPanel({ closePanel }) {
         direction="row"
         justifyContent="space-between"
         alignItems="center"
-        sx={{ display: { md: 'none' } }}>
+        sx={{ display: { md: 'none' }, my: 1 }}>
         <IconButton onClick={closePanel}>
           <CloseIcon />
         </IconButton>
