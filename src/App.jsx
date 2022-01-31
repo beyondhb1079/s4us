@@ -49,7 +49,10 @@ function App() {
                     path="/scholarships/:id/edit"
                     element={<ProtectedRoute element={<EditScholarship />} />}
                   />
-                  <Route path="/scholarships/:id" element={<ViewScholarship />} />
+                  <Route
+                    path="/scholarships/:id"
+                    element={<ViewScholarship />}
+                  />
                   <Route path="/scholarships" element={<ListScholarships />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/contact" element={<Contact />} />
