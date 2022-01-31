@@ -16,7 +16,7 @@ export default function ScholarshipList({ noResultsNode, filters }) {
     useContext(ScholarshipsContext);
   const { t } = useTranslation();
 
-  // Resets result context if listFn changes.
+  // Resets result context if filters change.
   useEffect(() => setFilters(filters), [filters, setFilters]);
 
   return (
