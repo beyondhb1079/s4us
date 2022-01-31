@@ -20,13 +20,11 @@ window.MutationObserver = require('mutation-observer');
 
 const renderWithProviders = (ui) =>
   render(
-    <MemoryRouter>
-      <I18nextProvider i18n={i18n}>
-        <ScholarshipsProvider>
-          <ThemeProvider theme={createTheme()}>{ui}</ThemeProvider>
-        </ScholarshipsProvider>
-      </I18nextProvider>
-    </MemoryRouter>,
+    <I18nextProvider i18n={i18n}>
+      <ScholarshipsProvider>
+        <ThemeProvider theme={createTheme()}>{ui}</ThemeProvider>
+      </ScholarshipsProvider>
+    </I18nextProvider>,
     { wrapper: MemoryRouter }
   );
 
