@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Helmet from 'react-helmet';
 import { AddCircle as AddIcon, Inbox as InboxIcon } from '@mui/icons-material';
 import { Link, useLocation, useNavigationType } from 'react-router-dom';
-import firebase from 'firebase';
 import {
   Button,
   Container,
@@ -16,10 +15,11 @@ import {
 import ScholarshipList from '../components/ScholarshipList';
 import { useTranslation } from 'react-i18next';
 import LookingForScholarshipsBanner from '../components/LookingForScholarshipsBanner';
+import useAuth from '../lib/useAuth';
 
 export default function UserHome() {
   const { t } = useTranslation();
-  const user = firebase.auth().currentUser;
+  const { currentUser: user } = useAuth();
   const location = useLocation();
 
   const navType = useNavigationType();

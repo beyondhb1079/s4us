@@ -1,21 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import firebase from 'firebase';
-import { CircularProgress } from '@mui/material';
+import React from 'react';
 import PublicHome from './PublicHome';
 import UserHome from './UserHome';
+import useAuth from '../lib/useAuth';
 
 export default function Home() {
-  const [isSignedIn, setIsSignedIn] = useState(undefined);
-  const loading = isSignedIn === undefined;
+  const { currentUser: user } = useAuth();
 
-  useEffect(
-    () => firebase.auth().onAuthStateChanged((user) => setIsSignedIn(!!user)),
-    []
-  );
+  if (user === undefined) return '';
 
-  if (loading) {
-    return <CircularProgress sx={{ display: 'block', margin: 'auto' }} />;
-  }
-
-  return isSignedIn ? <UserHome /> : <PublicHome />;
+  return user ? <UserHome /> : <PublicHome />;
 }
