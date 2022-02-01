@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  Container,
-  Drawer,
-  Typography,
-  useMediaQuery,
-} from '@mui/material';
+import { Box, Container, Drawer, useMediaQuery } from '@mui/material';
 import FilterBar from '../components/FilterBar';
 import FilterPanel from '../components/FilterPanel';
 import ScholarshipList from '../components/ScholarshipList';
@@ -71,9 +65,6 @@ function ListScholarships() {
           position: 'sticky',
           overflowY: { md: 'auto' },
         }}>
-        <Typography variant="h4" component="h1" align="center" style={{ p: 1 }}>
-          {t('general.scholarships')}
-        </Typography>
         <FilterBar openFilter={() => setDrawerOpen(true)} />
         <ScholarshipList listFn={listScholarships} />
       </Container>
