@@ -59,7 +59,6 @@ function ListScholarships() {
         sx={{
           bgcolor: 'background.default',
           flexGrow: 1,
-          padding: 2,
           position: 'sticky',
           overflowY: { md: 'auto' },
         }}>

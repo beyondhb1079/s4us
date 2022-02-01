@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { Grid, Menu, MenuItem, IconButton, Typography } from '@mui/material';
+import {
+  Grid,
+  Menu,
+  MenuItem,
+  IconButton,
+  Typography,
+  Box,
+} from '@mui/material';
 import useQueryParams from '../lib/useQueryParams';
 import sortOptions, { DEADLINE_ASC } from '../lib/sortOptions';
 import TuneIcon from '@mui/icons-material/Tune';
@@ -11,7 +18,7 @@ export default function FilterBar({ openFilter }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   return (
-    <>
+    <Box sx={{ pb: 3 }}>
       <Grid
         container
         justifyContent="space-between"
@@ -56,7 +63,7 @@ export default function FilterBar({ openFilter }) {
           </MenuItem>
         ))}
       </Menu>
-    </>
+    </Box>
   );
 }
 
