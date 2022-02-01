@@ -22,6 +22,7 @@ import FirebaseProvider from './lib/FirebaseProvider';
 import ProtectedRoute from './components/ProtectedRoute';
 import LoginDialog from './components/LoginDialog';
 import { AuthProvider } from './lib/useAuth';
+import { ScholarshipsProvider } from './models/ScholarshipsContext';
 
 function App() {
   return (
@@ -36,26 +37,31 @@ function App() {
             }
           />
           <AuthProvider>
-            <Router>
-              <Header />
-              <Routes>
-                <Route
-                  path="/scholarships/new"
-                  element={<ProtectedRoute element={<AddScholarship />} />}
-                />
-                <Route
-                  path="/scholarships/:id/edit"
-                  element={<ProtectedRoute element={<EditScholarship />} />}
-                />
-                <Route path="/scholarships/:id" element={<ViewScholarship />} />
-                <Route path="/scholarships" element={<ListScholarships />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/" element={<Home />} />
-              </Routes>
-              <LoginDialog />
-              <Footer />
-            </Router>
+            <ScholarshipsProvider>
+              <Router>
+                <Header />
+                <Routes>
+                  <Route
+                    path="/scholarships/new"
+                    element={<ProtectedRoute element={<AddScholarship />} />}
+                  />
+                  <Route
+                    path="/scholarships/:id/edit"
+                    element={<ProtectedRoute element={<EditScholarship />} />}
+                  />
+                  <Route
+                    path="/scholarships/:id"
+                    element={<ViewScholarship />}
+                  />
+                  <Route path="/scholarships" element={<ListScholarships />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/" element={<Home />} />
+                </Routes>
+                <LoginDialog />
+                <Footer />
+              </Router>
+            </ScholarshipsProvider>
           </AuthProvider>
         </ThemeProvider>
       </StyledEngineProvider>

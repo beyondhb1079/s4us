@@ -64,7 +64,7 @@ export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipDat
     },
   };
 
-interface FilterOptions {
+export interface FilterOptions {
   authorId?: string;
   hideExpired?: boolean;
   minAmount?: number;
