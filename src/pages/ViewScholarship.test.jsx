@@ -11,6 +11,7 @@ import GradeLevel from '../types/GradeLevel';
 import Ethnicity from '../types/Ethnicity';
 import i18n from '../i18n/setup';
 import { I18nextProvider } from 'react-i18next';
+import { ScholarshipsProvider } from '../models/ScholarshipsContext';
 
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.
@@ -20,11 +21,13 @@ function renderAtRoute(pathname, state = {}) {
   return render(
     <I18nextProvider i18n={i18n}>
       <ThemeProvider theme={createTheme()}>
-        <MemoryRouter initialEntries={[{ pathname, state }]}>
-          <Routes>
-            <Route path="/scholarships/:id" element={<ViewScholarship />} />
-          </Routes>
-        </MemoryRouter>
+        <ScholarshipsProvider>
+          <MemoryRouter initialEntries={[{ pathname, state }]}>
+            <Routes>
+              <Route path="/scholarships/:id" element={<ViewScholarship />} />
+            </Routes>
+          </MemoryRouter>
+        </ScholarshipsProvider>
       </ThemeProvider>
     </I18nextProvider>
   );
