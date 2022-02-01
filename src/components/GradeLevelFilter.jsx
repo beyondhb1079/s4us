@@ -23,7 +23,7 @@ function GradeGroup({ title, gradeGroup, grades, toggleSelection }) {
               onChange={() => toggleSelection(grade)}
             />
           }
-          label={GradeLevel.toString(grade)}
+          label={GradeLevel.toString(grade).replace(/College|Graduate/gi, '')}
         />
       ))}
     </FormGroup>

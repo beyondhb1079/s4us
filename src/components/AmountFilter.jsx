@@ -17,6 +17,7 @@ export default function AmountFilter(props) {
           error={error}
           value={min || ''}
           onChange={(e) => onMinChange(e.target.value)}
+          placeholder="No min"
         />
       </Grid>
       <Grid item sx={{ pt: 2, display: 'flex', alignItems: 'center' }}>
@@ -27,6 +28,7 @@ export default function AmountFilter(props) {
         <AmountTextField
           value={max || ''}
           onChange={(e) => onMaxChange(e.target.value)}
+          placeholder="No max"
         />
       </Grid>
 

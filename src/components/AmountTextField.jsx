@@ -6,7 +6,6 @@ const AmountTextField = (props) => (
   <TextField
     sx={{ maxWidth: 120 }}
     variant="outlined"
-    placeholder="Unknown"
     InputProps={{
       inputProps: { min: 0, max: 100000, step: 100 },
       startAdornment: <InputAdornment position="start">$</InputAdornment>,
@@ -21,11 +20,13 @@ AmountTextField.propTypes = {
   onChange: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
   error: PropTypes.bool,
+  placeholder: PropTypes.string,
 };
 
 AmountTextField.defaultProps = {
   disabled: false,
   error: false,
+  placeholder: 'Unset',
 };
 
 export default AmountTextField;
