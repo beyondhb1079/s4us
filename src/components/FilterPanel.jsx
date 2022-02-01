@@ -56,7 +56,7 @@ export default function FilterPanel() {
             <Typography>{name}</Typography>
           </AccordionSummary>
 
-          <AccordionDetails>{filter}</AccordionDetails>
+          <AccordionDetails sx={{ m: 1 }}>{filter}</AccordionDetails>
         </Accordion>
       ))}
     </Box>

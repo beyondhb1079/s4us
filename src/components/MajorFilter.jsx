@@ -42,7 +42,6 @@ function MajorFilter({ majors, onSelect, onDelete }) {
             }
           />
         )}
-        sx={{ mx: 1, my: 1 }}
       />
 
       {majors.map((major) => (

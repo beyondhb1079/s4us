@@ -51,7 +51,7 @@ export default function GradeLevelFilter(props) {
   }
 
   return (
-    <FormControl component="fieldset" sx={{ px: 2 }}>
+    <FormControl component="fieldset">
       <GradeGroup
         title="Middle School"
         gradeGroup={[GradeLevel.MiddleSchool]}

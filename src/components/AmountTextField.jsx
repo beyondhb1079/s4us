@@ -8,7 +8,7 @@ const AmountTextField = (props) => (
     variant="outlined"
     placeholder="Unknown"
     InputProps={{
-      inputProps: { min: 0, max: 100000, step: 50 },
+      inputProps: { min: 0, max: 100000, step: 100 },
       startAdornment: <InputAdornment position="start">$</InputAdornment>,
     }}
     // eslint-disable-next-line react/jsx-props-no-spreading
