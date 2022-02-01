@@ -157,10 +157,10 @@ export default function ScholarshipCard({
           <Typography
             paragraph
             sx={{
-              display: detailed ? '-webkit-box' : undefined,
-              WebkitLineClamp: detailed ? 5 : undefined,
-              lineClamp: detailed ? 5 : undefined,
-              WebkitBoxOrient: detailed ? 'vertical' : undefined,
+              display: !detailed ? '-webkit-box' : undefined,
+              WebkitLineClamp: !detailed ? 5 : undefined,
+              lineClamp: !detailed ? 5 : undefined,
+              WebkitBoxOrient: !detailed ? 'vertical' : undefined,
               overflow: 'hidden',
               whiteSpace: 'pre-line',
               my: 2,

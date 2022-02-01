@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Container, Typography, Box, Collapse } from '@mui/material';
 import Scholarships from '../models/Scholarships';
@@ -6,16 +6,20 @@ import ScholarshipCard from '../components/ScholarshipCard';
 import { Alert } from '@mui/material';
 import bannerImg from '../img/detail-page-banner.jpg';
 import { useLocation, useNavigationType, useParams } from 'react-router-dom';
+import ScholarshipsContext from '../models/ScholarshipsContext';
 
 export default function ViewScholarship() {
   const location = useLocation();
   const { id } = useParams();
-  const [scholarship, setScholarship] = useState(location.state?.scholarship);
+  const { scholarships } = useContext(ScholarshipsContext);
+  const [scholarship, setScholarship] = useState(
+    scholarships.find((s) => s.id === id) || location?.state?.scholarship
+  );
   const [error, setError] = useState();
   const loading = !error && (!scholarship || scholarship.id !== id);
   const prevPath = location?.state?.prevPath;
   const justEdited =
-    location?.state?.scholarship !== undefined &&
+    scholarship &&
     (prevPath === `${location.pathname}/edit` ||
       prevPath === `/scholarships/new`);
   const navType = useNavigationType();
