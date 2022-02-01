@@ -5,28 +5,11 @@ import { Box, Container, Drawer, Typography } from '@mui/material';
 import FilterBar from '../components/FilterBar';
 import FilterPanel from '../components/FilterPanel';
 import ScholarshipList from '../components/ScholarshipList';
-import useQueryParams from '../lib/useQueryParams';
-import { DEADLINE_ASC, getDir, getField } from '../lib/sortOptions';
 
 const drawerWidth = 360;
 
 function ListScholarships() {
   const { t } = useTranslation();
-
-  const [{ minAmount, maxAmount, grades, majors, sortBy }] = useQueryParams();
-
-  const sortField = getField(sortBy ?? DEADLINE_ASC);
-  const sortDir = getDir(sortBy ?? DEADLINE_ASC);
-
-  const queryFilters = {
-    sortField,
-    sortDir,
-    minAmount,
-    maxAmount,
-    grades,
-    majors,
-    hideExpired: true,
-  };
 
   return (
     <Box sx={{ display: 'flex', height: '100vh' }}>
@@ -64,7 +47,7 @@ function ListScholarships() {
           {t('general.scholarships')}
         </Typography>
         <FilterBar />
-        <ScholarshipList filters={queryFilters} />
+        <ScholarshipList filters={{ hideExpired: true }} />
       </Container>
     </Box>
   );

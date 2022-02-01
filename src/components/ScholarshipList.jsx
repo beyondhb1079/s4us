@@ -10,14 +10,34 @@ import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import ScholarshipCard from './ScholarshipCard';
 import ScholarshipsContext from '../models/ScholarshipsContext';
+import useQueryParams from '../lib/useQueryParams';
 
-export default function ScholarshipList({ noResultsNode, filters }) {
+export default function ScholarshipList({
+  noResultsNode,
+  filters: extraFilters,
+}) {
+  const [queryParams] = useQueryParams();
+
   const { canLoadMore, error, loading, loadMore, scholarships, setFilters } =
     useContext(ScholarshipsContext);
   const { t } = useTranslation();
 
   // Resets result context if filters change.
-  useEffect(() => setFilters(filters), [filters, setFilters]);
+  useEffect(() => {
+    const { minAmount, maxAmount, grades, majors, sortBy } = queryParams;
+    const sortField = getField(sortBy ?? DEADLINE_ASC);
+    const sortDir = getDir(sortBy ?? DEADLINE_ASC);
+
+    setFilters({
+      sortField,
+      sortDir,
+      minAmount,
+      maxAmount,
+      grades,
+      majors,
+      ...extraFilters,
+    });
+  }, [queryParams, extraFilters, setFilters]);
 
   return (
     <Stack spacing={3}>
@@ -58,6 +78,7 @@ export default function ScholarshipList({ noResultsNode, filters }) {
 }
 
 ScholarshipList.propTypes = {
+  /** Additional filters to set apart from ones parseable from the query string. */
   filters: PropTypes.object,
   noResultsNode: PropTypes.node,
 };
