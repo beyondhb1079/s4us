@@ -7,7 +7,6 @@ import FilterPanel from '../components/FilterPanel';
 import ScholarshipList from '../components/ScholarshipList';
 import useQueryParams from '../lib/useQueryParams';
 import { DEADLINE_ASC, getDir, getField } from '../lib/sortOptions';
-import Scholarships from '../models/Scholarships';
 
 function ListScholarships() {
   const { t } = useTranslation();
@@ -21,16 +20,15 @@ function ListScholarships() {
   const sortField = getField(sortBy ?? DEADLINE_ASC);
   const sortDir = getDir(sortBy ?? DEADLINE_ASC);
 
-  const listScholarships = () =>
-    Scholarships.list({
-      sortField,
-      sortDir,
-      minAmount,
-      maxAmount,
-      grades,
-      majors,
-      hideExpired: true,
-    });
+  const queryFilters = {
+    sortField,
+    sortDir,
+    minAmount,
+    maxAmount,
+    grades,
+    majors,
+    hideExpired: true,
+  };
 
   return (
     <Box sx={{ display: 'flex', height: '100vh' }}>
@@ -66,7 +64,7 @@ function ListScholarships() {
           overflowY: { md: 'auto' },
         }}>
         <FilterBar openFilter={() => setDrawerOpen(true)} />
-        <ScholarshipList listFn={listScholarships} />
+        <ScholarshipList filters={queryFilters} />
       </Container>
     </Box>
   );

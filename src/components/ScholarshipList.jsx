@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useContext } from 'react';
 import {
   Box,
   Button,
@@ -8,53 +8,16 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-
 import ScholarshipCard from './ScholarshipCard';
+import ScholarshipsContext from '../models/ScholarshipsContext';
 
-function ScholarshipList({ noResultsNode, listFn }) {
-  const [error, setError] = useState();
-  const [scholarships, setScholarships] = useState([]);
-  const [loadState, setLoadState] = useState({
-    loading: true,
-    canLoadMore: true,
-    loadMoreFn: listFn,
-  });
-  const { loading, canLoadMore, loadMoreFn } = loadState;
+export default function ScholarshipList({ noResultsNode, filters }) {
+  const { canLoadMore, error, loading, loadMore, scholarships, setFilters } =
+    useContext(ScholarshipsContext);
   const { t } = useTranslation();
 
-  // Reset scholarships and loading state when listFn changes
-  useEffect(() => {
-    setScholarships([]);
-    setLoadState({
-      loading: true,
-      canLoadMore: true,
-      loadMoreFn: listFn,
-    });
-  }, [listFn]);
-
-  useEffect(() => {
-    let mounted = true;
-    if (loading && canLoadMore) {
-      loadMoreFn()
-        .then(({ results, next, hasNext }) => {
-          if (!mounted) return;
-          setError(null);
-          setScholarships((prev) => [...prev, ...results]);
-          setLoadState({
-            // Load if there were no results but there's more to load.
-            loading: !results.length && hasNext,
-            canLoadMore: hasNext,
-            loadMoreFn: next,
-          });
-        })
-        .catch((e) => mounted && setError(e));
-    }
-    return () => {
-      mounted = false;
-    };
-  }, [loading, canLoadMore, loadMoreFn]);
-
-  const loadMore = () => setLoadState({ ...loadState, loading: true });
+  // Resets result context if filters change.
+  useEffect(() => setFilters(filters), [filters, setFilters]);
 
   return (
     <Stack spacing={3}>
@@ -95,12 +58,10 @@ function ScholarshipList({ noResultsNode, listFn }) {
 }
 
 ScholarshipList.propTypes = {
-  listFn: PropTypes.func,
+  filters: PropTypes.object,
   noResultsNode: PropTypes.node,
 };
 ScholarshipList.defaultProps = {
-  listFn: undefined,
+  filters: {},
   noResultsNode: undefined,
 };
-
-export default ScholarshipList;
