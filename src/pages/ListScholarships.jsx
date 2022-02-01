@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import { Box, Container, Drawer, Typography } from '@mui/material';
@@ -10,6 +10,8 @@ import { DEADLINE_ASC, getDir, getField } from '../lib/sortOptions';
 import { useNavigationType } from 'react-router-dom';
 
 const drawerWidth = 360;
+
+const SCROLL_KEY = 'scholarship-list-scroll-top';
 
 function ListScholarships() {
   const { t } = useTranslation();
@@ -29,28 +31,23 @@ function ListScholarships() {
     hideExpired: true,
   };
 
-  // Keep track of the scholarship list's scroll position.
-  const [scrollTop, setScrollTop] = useState(0);
   const ref = useRef('main');
-  const handleScroll = () => {
-    const position = ref.current.scrollTop;
-    setScrollTop(position);
-  };
   const navigationType = useNavigationType();
+
+  // This runs when the main component is first rendered.
   useEffect(() => {
-    ref.current.scrollTop = localStorage.getItem('scholarship-list-scroll-top');
-    console.log(navigationType, ref.current.scrollTop);
+    // Restore the saved scroll position if we went backwards/forwards in history.
     if (navigationType === 'POP') {
-      // restore the saved position as long as we went back/forwards in history.
-      ref.current.addEventListener('scroll', handleScroll, { passive: true });
+      ref.current.scrollTop = localStorage.getItem(SCROLL_KEY);
     }
+
+    // Listen for scroll events, saving scroll position for later.
+    ref.current.addEventListener(
+      'scroll',
+      () => localStorage.setItem(SCROLL_KEY, ref.current.scrollTop),
+      { passive: true }
+    );
   }, [ref, navigationType]);
-  useEffect(
-    // store the scroll position for later
-    // though actually this should be cached
-    () => () => localStorage.setItem('scholarship-list-scroll-top', scrollTop),
-    [ref, scrollTop]
-  );
 
   return (
     <Box sx={{ display: 'flex', height: '100vh' }}>
