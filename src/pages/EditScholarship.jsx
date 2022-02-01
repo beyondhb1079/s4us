@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   Container,
@@ -18,6 +18,7 @@ import ScholarshipForm from '../components/ScholarshipForm';
 import Scholarships from '../models/Scholarships';
 import { Helmet } from 'react-helmet';
 import useAuth from '../lib/useAuth';
+import ScholarshipsContext from '../models/ScholarshipsContext';
 
 function EditScholarship() {
   const { id } = useParams();
@@ -49,18 +50,20 @@ function EditScholarship() {
     }
   }, [scholarship, currentUser, claims]);
 
+  const { invalidate } = useContext(ScholarshipsContext);
   const handleDelete = () => {
     Scholarships.id(id)
       .delete()
-      .then(() =>
+      .then(() => {
+        invalidate(id);
         navigate('/', {
           state: {
             alert: {
               message: `Successfully deleted "${scholarship.data.name}"`,
             },
           },
-        })
-      )
+        });
+      })
       .catch(setDelError)
       .finally(() => setDialogOpen(false));
   };
