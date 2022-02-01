@@ -38,13 +38,13 @@ function ListScholarships() {
   useEffect(() => {
     // Restore the saved scroll position if we went backwards/forwards in history.
     if (navigationType === 'POP') {
-      ref.current.scrollTop = localStorage.getItem(SCROLL_KEY);
+      ref.current.scrollTop = sessionStorage.getItem(SCROLL_KEY);
     }
 
     // Listen for scroll events, saving scroll position for later.
     ref.current.addEventListener(
       'scroll',
-      () => localStorage.setItem(SCROLL_KEY, ref.current.scrollTop),
+      () => sessionStorage.setItem(SCROLL_KEY, ref.current.scrollTop),
       { passive: true }
     );
   }, [ref, navigationType]);
