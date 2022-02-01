@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import {
@@ -27,12 +27,14 @@ import FormikAutocomplete from './FormikAutocomplete';
 import { SCHOOLS, STATES, MAJORS } from '../types/options';
 import GradeLevel from '../types/GradeLevel';
 import Ethnicity from '../types/Ethnicity';
+import ScholarshipsContext from '../models/ScholarshipsContext';
 
 const labelStyle = { marginBottom: 2 };
 
 function ScholarshipForm({ scholarship }) {
   const [activeStep, setActiveStep] = useState(0);
   const [submissionError, setSubmissionError] = useState(null);
+  const { invalidate } = useContext(ScholarshipsContext);
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -44,14 +46,15 @@ function ScholarshipForm({ scholarship }) {
       scholarship.data = { ...values };
       scholarship
         .save()
-        .then((s) =>
+        .then((s) => {
+          invalidate(s.id, s.data);
           navigate(`/scholarships/${s.id}`, {
             state: {
               prevPath: location.pathname,
               scholarship: { id: s.id, data: s.data },
             },
-          })
-        )
+          });
+        })
         .catch(setSubmissionError)
         .finally(() => setSubmitting(false));
     },
