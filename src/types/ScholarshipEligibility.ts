@@ -1,9 +1,10 @@
+import Ethnicity from './Ethnicity';
 import Gender from './Gender';
 import GradeLevel from './GradeLevel';
 
 export default interface ScholarshipEligibility {
   gpa?: number;
-  ethnicities?: string[];
+  ethnicities?: Ethnicity[];
   majors?: string[];
   schools?: string[];
   grades?: GradeLevel[];
