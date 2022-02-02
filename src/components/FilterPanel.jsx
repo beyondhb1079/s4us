@@ -15,6 +15,7 @@ import MajorFilter from './MajorFilter';
 export default function FilterPanel() {
   const [{ minAmount, maxAmount, grades, majors }, setQueryParam] =
     useQueryParams();
+
   const filters = {
     Major: (
       <MajorFilter
@@ -32,17 +33,18 @@ export default function FilterPanel() {
       <AmountFilter
         min={minAmount ?? 0}
         max={maxAmount ?? 0}
-        onMinChange={(e) => setQueryParam('minAmount', e.target.value)}
-        onMaxChange={(e) => setQueryParam('maxAmount', e.target.value)}
+        onMinChange={(val) => setQueryParam('minAmount', val)}
+        onMaxChange={(val) => setQueryParam('maxAmount', val)}
       />
     ),
-    Grade: (
+    'Grade Level': (
       <GradeLevelFilter
         grades={new Set(grades)}
         changeFn={(e) => setQueryParam('grades', e)}
       />
     ),
   };
+
   return (
     <Box>
       {Object.entries(filters).map(([name, filter]) => (
@@ -54,7 +56,7 @@ export default function FilterPanel() {
             <Typography>{name}</Typography>
           </AccordionSummary>
 
-          <AccordionDetails>{filter}</AccordionDetails>
+          <AccordionDetails sx={{ m: 1 }}>{filter}</AccordionDetails>
         </Accordion>
       ))}
     </Box>
