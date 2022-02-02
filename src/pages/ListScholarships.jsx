@@ -71,7 +71,7 @@ function ListScholarships() {
         open={drawerOpen || isDesktop}
         variant={isDesktop ? 'permanent' : 'temporary'}
         anchor="left">
-        <FilterPanel closePanel={() => setDrawerOpen(false)} />
+        <FilterPanel onClose={() => setDrawerOpen(false)} />
       </Drawer>
 
       <Container

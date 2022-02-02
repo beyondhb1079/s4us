@@ -8,7 +8,7 @@ import {
   IconButton,
   Typography,
   Button,
-  Stack,
+  Toolbar,
 } from '@mui/material';
 import useQueryParams from '../lib/useQueryParams';
 import AmountFilter from './AmountFilter';
@@ -17,7 +17,7 @@ import MajorFilter from './MajorFilter';
 import CloseIcon from '@mui/icons-material/Close';
 import PropTypes from 'prop-types';
 
-export default function FilterPanel({ closePanel }) {
+export default function FilterPanel({ onClose }) {
   const [{ minAmount, maxAmount, grades, majors }, setQueryParam] =
     useQueryParams();
 
@@ -52,19 +52,17 @@ export default function FilterPanel({ closePanel }) {
 
   return (
     <Box>
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        sx={{ display: { md: 'none' }, my: 1 }}>
-        <IconButton onClick={closePanel}>
+      <Toolbar
+        disableGutters
+        sx={{ display: { md: 'none' }, justifyContent: 'space-between' }}>
+        <IconButton onClick={onClose}>
           <CloseIcon />
         </IconButton>
 
         <Typography>Filters</Typography>
 
         <Button>Reset</Button>
-      </Stack>
+      </Toolbar>
 
       {Object.entries(filters).map(([name, filter]) => (
         <Accordion key={name} disableGutters>
@@ -83,5 +81,5 @@ export default function FilterPanel({ closePanel }) {
 }
 
 FilterPanel.propTypes = {
-  closePanel: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
 };

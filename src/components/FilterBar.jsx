@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Grid,
-  Menu,
-  MenuItem,
-  IconButton,
-  Typography,
-  Box,
-} from '@mui/material';
+import { Menu, MenuItem, Toolbar, Box, Button } from '@mui/material';
 import useQueryParams from '../lib/useQueryParams';
 import sortOptions, { DEADLINE_ASC } from '../lib/sortOptions';
 import TuneIcon from '@mui/icons-material/Tune';
@@ -18,32 +11,21 @@ export default function FilterBar({ openFilter }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   return (
-    <Box sx={{ pb: 3 }}>
-      <Grid
-        container
-        justifyContent="space-between"
-        alignItems="center"
-        direction="row-reverse"
-        sx={{ flexGrow: 1, bgcolor: 'primary.main', p: 2 }}>
-        <Grid item sx={{ display: 'flex', alignItems: 'center' }}>
-          <IconButton
-            onClick={(e) => setAnchorEl(e.currentTarget)}
-            color="secondary">
-            <ImportExportIcon />
-          </IconButton>
-          <Typography color="secondary">Sort</Typography>
-        </Grid>
+    <Toolbar sx={{ bgcolor: 'primary.main', justifyContent: 'space-between' }}>
+      <Button
+        onClick={(e) => setAnchorEl(e.currentTarget)}
+        color="secondary"
+        startIcon={<ImportExportIcon />}>
+        Sort
+      </Button>
 
-        <Grid
-          item
-          sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}>
-          <IconButton onClick={openFilter} color="secondary">
-            <TuneIcon />
-          </IconButton>
-
-          <Typography color="secondary">Filter</Typography>
-        </Grid>
-      </Grid>
+      <Box
+        item
+        sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}>
+        <Button onClick={openFilter} color="secondary" startIcon={<TuneIcon />}>
+          Filter
+        </Button>
+      </Box>
 
       <Menu
         open={Boolean(anchorEl)}
@@ -63,7 +45,7 @@ export default function FilterBar({ openFilter }) {
           </MenuItem>
         ))}
       </Menu>
-    </Box>
+    </Toolbar>
   );
 }
 
