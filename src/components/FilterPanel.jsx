@@ -38,11 +38,11 @@ export default function FilterPanel({ closePanel }) {
       <AmountFilter
         min={minAmount ?? 0}
         max={maxAmount ?? 0}
-        onMinChange={(e) => setQueryParam('minAmount', e.target.value)}
-        onMaxChange={(e) => setQueryParam('maxAmount', e.target.value)}
+        onMinChange={(val) => setQueryParam('minAmount', val)}
+        onMaxChange={(val) => setQueryParam('maxAmount', val)}
       />
     ),
-    Grade: (
+    'Grade Level': (
       <GradeLevelFilter
         grades={new Set(grades)}
         changeFn={(e) => setQueryParam('grades', e)}
@@ -75,7 +75,7 @@ export default function FilterPanel({ closePanel }) {
             <Typography>{name}</Typography>
           </AccordionSummary>
 
-          <AccordionDetails>{filter}</AccordionDetails>
+          <AccordionDetails sx={{ m: 1 }}>{filter}</AccordionDetails>
         </Accordion>
       ))}
     </Box>

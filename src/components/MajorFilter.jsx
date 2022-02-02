@@ -4,22 +4,13 @@ import { MAJORS } from '../types/options';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import PropTypes from 'prop-types';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import SearchIcon from '@mui/icons-material/Search';
 
 function MajorFilter({ majors, onSelect, onDelete }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-      {majors.map((major) => (
-        <Chip
-          label={major}
-          variant="outlined"
-          color="primary"
-          key={major}
-          onDelete={() => onDelete(major)}
-          sx={{ mx: 1, mt: 1, color: '#000' }}
-        />
-      ))}
       <Autocomplete
         multiple
         freeSolo
@@ -43,6 +34,7 @@ function MajorFilter({ majors, onSelect, onDelete }) {
             }
             size="small"
             fullWidth
+            startAdornment={<SearchIcon />}
             endAdornment={
               <IconButton onClick={() => setIsOpen(!isOpen)}>
                 {isOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
@@ -50,8 +42,18 @@ function MajorFilter({ majors, onSelect, onDelete }) {
             }
           />
         )}
-        sx={{ mx: 1, my: 1 }}
       />
+
+      {majors.map((major) => (
+        <Chip
+          label={major}
+          variant="outlined"
+          color="primary"
+          key={major}
+          onDelete={() => onDelete(major)}
+          sx={{ mx: 1, mt: 1, color: '#000' }}
+        />
+      ))}
     </>
   );
 }
