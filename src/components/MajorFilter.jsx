@@ -40,6 +40,7 @@ function MajorFilter({ majors, onSelect, onDelete }) {
                 {isOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
               </IconButton>
             }
+            sx={{ maxWidth: 300 }}
           />
         )}
       />
