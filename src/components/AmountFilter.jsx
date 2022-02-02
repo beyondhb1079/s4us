@@ -36,12 +36,13 @@ export default function AmountFilter(props) {
         <Slider
           defaultValue={[0, 10000]}
           min={0}
-          max={10000}
+          max={50000}
           step={100}
           onChange={(e) => {
             onMinChange(e.target.value[0]);
             onMaxChange(e.target.value[1]);
           }}
+          sx={{ mt: 1 }}
         />
       )}
     </Grid>
