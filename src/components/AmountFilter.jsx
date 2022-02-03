@@ -10,7 +10,7 @@ export default function AmountFilter(props) {
   const error = max > 0 && max < min;
 
   return (
-    <Grid container justifyContent={'space-between'} sx={{ maxWidth: 300 }}>
+    <Grid container justifyContent="space-between" sx={{ maxWidth: 300 }}>
       <Grid item>
         <InputLabel>Min</InputLabel>
         <AmountTextField
