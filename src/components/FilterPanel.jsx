@@ -66,7 +66,7 @@ export default function FilterPanel({ onClose }) {
 
         <Typography>Filters</Typography>
 
-        <Button disabled>Reset</Button>
+        <Button>Reset</Button>
       </Toolbar>
 
       {Object.entries(filters).map(([name, filter]) => (
@@ -81,6 +81,14 @@ export default function FilterPanel({ onClose }) {
           <AccordionDetails sx={{ m: 1 }}>{filter}</AccordionDetails>
         </Accordion>
       ))}
+
+      <Toolbar
+        sx={{ justifyContent: { xs: 'center', md: 'space-between' }, mt: 2 }}>
+        <Button variant="contained">Apply Filters</Button>
+        <Button sx={{ display: { xs: 'none', md: 'block' } }}>
+          Clear Filters
+        </Button>
+      </Toolbar>
     </Box>
   );
 }
