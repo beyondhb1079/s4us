@@ -75,19 +75,15 @@ function ListScholarships() {
       </Drawer>
 
       <Box
+        component="main"
+        ref={ref}
         sx={{
           width: '100%',
           overflowY: 'auto',
         }}>
         <FilterBar openFilter={() => setDrawerOpen(true)} />
 
-        <Container
-          maxWidth="md"
-          component="main"
-          ref={ref}
-          sx={{
-            flexGrow: 1,
-          }}>
+        <Container maxWidth="md" sx={{ flexGrow: 1 }}>
           <ScholarshipList filters={queryFilters} />
         </Container>
       </Box>
