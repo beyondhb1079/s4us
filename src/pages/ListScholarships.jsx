@@ -74,19 +74,25 @@ function ListScholarships() {
         <FilterPanel onClose={() => setDrawerOpen(false)} />
       </Drawer>
 
-      <Container
-        maxWidth="md"
-        component="main"
-        ref={ref}
+      <Box
         sx={{
-          bgcolor: 'background.default',
-          flexGrow: 1,
-          position: 'sticky',
-          overflowY: { md: 'auto' },
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
         }}>
         <FilterBar openFilter={() => setDrawerOpen(true)} />
-        <ScholarshipList filters={queryFilters} />
-      </Container>
+
+        <Container
+          maxWidth="md"
+          component="main"
+          ref={ref}
+          sx={{
+            flexGrow: 1,
+            overflowY: 'auto',
+          }}>
+          <ScholarshipList filters={queryFilters} />
+        </Container>
+      </Box>
     </Box>
   );
 }

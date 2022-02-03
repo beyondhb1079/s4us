@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, MenuItem, Toolbar, Button } from '@mui/material';
+import { Menu, MenuItem, Toolbar, Button, Container } from '@mui/material';
 import useQueryParams from '../lib/useQueryParams';
 import sortOptions, { DEADLINE_ASC } from '../lib/sortOptions';
 import TuneIcon from '@mui/icons-material/Tune';
@@ -11,21 +11,25 @@ export default function FilterBar({ openFilter }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   return (
-    <Toolbar sx={{ bgcolor: 'primary.main', justifyContent: 'space-between' }}>
-      <Button
-        onClick={openFilter}
-        color="secondary"
-        startIcon={<TuneIcon />}
-        sx={{ display: { md: 'none' } }}>
-        Filter
-      </Button>
+    <Toolbar sx={{ bgcolor: 'primary.main' }}>
+      <Container
+        maxWidth="md"
+        sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Button
+          onClick={openFilter}
+          color="secondary"
+          startIcon={<TuneIcon />}
+          sx={{ display: { md: 'none' } }}>
+          Filter
+        </Button>
 
-      <Button
-        onClick={(e) => setAnchorEl(e.currentTarget)}
-        color="secondary"
-        startIcon={<ImportExportIcon />}>
-        Sort
-      </Button>
+        <Button
+          onClick={(e) => setAnchorEl(e.currentTarget)}
+          color="secondary"
+          startIcon={<ImportExportIcon />}>
+          Sort
+        </Button>
+      </Container>
 
       <Menu
         open={Boolean(anchorEl)}
