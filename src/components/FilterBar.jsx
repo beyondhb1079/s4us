@@ -11,7 +11,7 @@ export default function FilterBar({ openFilter }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   return (
-    <Toolbar sx={{ bgcolor: 'primary.main' }}>
+    <Toolbar disableGutters sx={{ bgcolor: 'primary.main' }}>
       <Container
         maxWidth="md"
         sx={{

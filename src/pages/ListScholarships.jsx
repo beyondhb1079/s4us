@@ -77,8 +77,7 @@ function ListScholarships() {
       <Box
         sx={{
           width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
+          overflowY: 'auto',
         }}>
         <FilterBar openFilter={() => setDrawerOpen(true)} />
 
@@ -88,7 +87,6 @@ function ListScholarships() {
           ref={ref}
           sx={{
             flexGrow: 1,
-            overflowY: 'auto',
           }}>
           <ScholarshipList filters={queryFilters} />
         </Container>
