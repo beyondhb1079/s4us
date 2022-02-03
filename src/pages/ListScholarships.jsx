@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
-import { Box, Container, Drawer, Typography } from '@mui/material';
+import { Box, Container, Drawer, useMediaQuery } from '@mui/material';
 import FilterBar from '../components/FilterBar';
 import FilterPanel from '../components/FilterPanel';
 import ScholarshipList from '../components/ScholarshipList';
@@ -9,12 +9,14 @@ import useQueryParams from '../lib/useQueryParams';
 import { DEADLINE_ASC, getDir, getField } from '../lib/sortOptions';
 import { useNavigationType } from 'react-router-dom';
 
-const drawerWidth = 360;
-
+const drawerWidth = { xs: '100%', md: 360 };
 const SCROLL_KEY = 'scholarship-list-scroll-top';
 
 function ListScholarships() {
   const { t } = useTranslation();
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
   const [{ minAmount, maxAmount, grades, majors, sortBy }] = useQueryParams();
 
@@ -56,7 +58,6 @@ function ListScholarships() {
       </Helmet>
       <Drawer
         sx={{
-          display: { xs: 'none', md: 'block' },
           flexShrink: 0,
           width: drawerWidth,
           '& .MuiDrawer-paper': {
@@ -64,30 +65,32 @@ function ListScholarships() {
             position: 'absolute',
             boxSizing: 'border-box',
           },
-          position: 'sticky',
+          position: { xs: 'static', md: 'sticky' },
           overflowY: 'auto',
         }}
-        variant="permanent"
+        open={drawerOpen || isDesktop}
+        variant={isDesktop ? 'permanent' : 'temporary'}
         anchor="left">
-        <FilterPanel />
+        <FilterPanel onClose={() => setDrawerOpen(false)} />
       </Drawer>
-      <Container
-        maxWidth="md"
-        component="main"
-        ref={ref}
+
+      <Box
         sx={{
-          bgcolor: 'background.default',
-          flexGrow: 1,
-          padding: 2,
-          position: 'sticky',
-          overflowY: { md: 'auto' },
+          width: '100%',
+          overflowY: 'auto',
         }}>
-        <Typography variant="h4" component="h1" align="center" style={{ p: 1 }}>
-          {t('general.scholarships')}
-        </Typography>
-        <FilterBar />
-        <ScholarshipList filters={queryFilters} />
-      </Container>
+        <FilterBar openFilter={() => setDrawerOpen(true)} />
+
+        <Container
+          maxWidth="md"
+          component="main"
+          ref={ref}
+          sx={{
+            flexGrow: 1,
+          }}>
+          <ScholarshipList filters={queryFilters} />
+        </Container>
+      </Box>
     </Box>
   );
 }
