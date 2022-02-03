@@ -11,11 +11,11 @@
     "addScholarship": "Agregar una Beca",
     "login": "Iniciar sesión",
     "loadMore": "carga más",
-    "subscribeForUpdates": "Suscríbete para recibir actualizaciones"
+    "subscribeForUpdates": "Suscribir"
   },
 
   "constructAlert": {
-    "description": "🚧 ¡Sitio web bajo construcción! 🚧"
+    "description": "¡Sitio bajo construcción! 🚧"
   },
 
   "contact": {
