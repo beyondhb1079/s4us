@@ -14,7 +14,10 @@ export default function FilterBar({ openFilter }) {
     <Toolbar sx={{ bgcolor: 'primary.main' }}>
       <Container
         maxWidth="md"
-        sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        sx={{
+          display: 'flex',
+          justifyContent: { xs: 'space-between', md: 'flex-end' },
+        }}>
         <Button
           onClick={openFilter}
           color="secondary"

@@ -61,7 +61,7 @@ export default function FilterPanel({ onClose }) {
 
         <Typography>Filters</Typography>
 
-        <Button>Reset</Button>
+        <Button disabled>Reset</Button>
       </Toolbar>
 
       {Object.entries(filters).map(([name, filter]) => (
