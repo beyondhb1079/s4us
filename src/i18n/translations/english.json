@@ -11,11 +11,11 @@
     "addScholarship": "Add a Scholarship",
     "login": "Login",
     "loadMore": "Load More",
-    "subscribeForUpdates": "Subscribe for updates"
+    "subscribeForUpdates": "Subscribe"
   },
 
   "constructAlert": {
-    "description": "🚧 Website Actively Under-Construction! 🚧"
+    "description": "Website under construction! 🚧"
   },
 
   "contact": {

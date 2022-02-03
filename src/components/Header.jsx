@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   AppBar,
   Alert,
-  AlertTitle,
   Avatar,
   Button,
   Grow,
@@ -42,11 +41,10 @@ const UnderConstructionAlert = ({ t }) => (
   <Alert
     severity="warning"
     action={
-      <Button component={MuiLink} href={SUBSCRIPTION_FORM_URL}>
+      <Button component={MuiLink} href={SUBSCRIPTION_FORM_URL} size="small">
         {t('btn.subscribeForUpdates')}
       </Button>
     }>
-    <AlertTitle>{t('alert.warning')}</AlertTitle>
     {t('constructAlert.description')}
   </Alert>
 );
