@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import {
   Accordion,
@@ -18,34 +18,39 @@ import CloseIcon from '@mui/icons-material/Close';
 import PropTypes from 'prop-types';
 
 export default function FilterPanel({ onClose }) {
-  const [{ minAmount, maxAmount, grades, majors }, setQueryParam] =
-    useQueryParams();
+  const [{ minAmount, maxAmount, grades, majors }] = useQueryParams();
+  const [filterVals, setFilterVals] = useState({
+    minAmount,
+    maxAmount,
+    grades,
+    majors,
+  });
 
   const filters = {
     Major: (
       <MajorFilter
-        majors={majors}
-        onSelect={(m) => setQueryParam('majors', m)}
+        majors={filterVals.majors}
+        onSelect={(m) => setFilterVals({ ...filterVals, majors: m })}
         onDelete={(m) =>
-          setQueryParam(
-            'majors',
-            majors.filter((major) => major !== m)
-          )
+          setFilterVals({
+            ...filterVals,
+            majors: filerVals.majors.filter((major) => major !== m),
+          })
         }
       />
     ),
     Amount: (
       <AmountFilter
-        min={minAmount ?? 0}
-        max={maxAmount ?? 0}
-        onMinChange={(val) => setQueryParam('minAmount', val)}
-        onMaxChange={(val) => setQueryParam('maxAmount', val)}
+        min={filterVals.minAmount ?? 0}
+        max={filterVals.maxAmount ?? 0}
+        onMinChange={(val) => setFilterVals({ ...filterVals, minAmount: val })}
+        onMaxChange={(val) => setFilterVals({ ...filterVals, maxAmount: val })}
       />
     ),
     'Grade Level': (
       <GradeLevelFilter
-        grades={new Set(grades)}
-        changeFn={(e) => setQueryParam('grades', e)}
+        grades={new Set(filterVals.grades)}
+        changeFn={(e) => setFilterVals({ ...filterVals, grades: e })}
       />
     ),
   };
