@@ -8,7 +8,7 @@ import {
   ThemeProvider,
 } from '@mui/material';
 import Footer from './components/Footer';
-import Header from './components/Header';
+import Header from './components/ViewController';
 import Home from './pages/Home';
 import ViewScholarship from './pages/ViewScholarship';
 import ListScholarships from './pages/ListScholarships';
