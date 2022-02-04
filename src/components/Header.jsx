@@ -182,7 +182,7 @@ function Header() {
 }
 
 export const HeaderSkeleton = () => (
-  <Box sx={{ width: '100vw' }}>
+  <Box sx={{ width: '100vw', visibility: 'hidden' }}>
     <UnderConstructionAlert />
     <Toolbar />
     <Hidden smUp>

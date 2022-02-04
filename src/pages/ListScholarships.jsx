@@ -17,7 +17,7 @@ import useQueryParams from '../lib/useQueryParams';
 import { DEADLINE_ASC, getDir, getField } from '../lib/sortOptions';
 import { HeaderSkeleton } from '../components/Header';
 
-const drawerWidth = { xs: '100%', md: 360 };
+const drawerWidth = 360;
 
 function ListScholarships() {
   const { t } = useTranslation();
@@ -48,9 +48,9 @@ function ListScholarships() {
       <Drawer
         sx={{
           flexShrink: 0,
-          width: drawerWidth,
+          width: { xs: '100%', md: drawerWidth },
           '& .MuiDrawer-paper': {
-            width: drawerWidth,
+            width: { xs: '100%', md: drawerWidth },
             boxSizing: 'border-box',
           },
         }}
@@ -58,7 +58,6 @@ function ListScholarships() {
         variant={isDesktop ? 'permanent' : 'temporary'}
         anchor="left">
         <Collapse
-          appear={false}
           in={!useScrollTrigger()}
           direction="down"
           sx={{ flexShrink: 0 }}>
@@ -76,7 +75,7 @@ function ListScholarships() {
           sx={{
             position: 'fixed',
             top: 0,
-            width: '100%',
+            width: { xs: '100%', md: `calc(100% - ${drawerWidth}px)` },
             zIndex: 1,
           }}>
           <Box sx={{ width: '100%' }}>
