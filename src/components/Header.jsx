@@ -56,21 +56,17 @@ const OnRenderSnackbar = () => {
   );
 };
 
-function UnderConstructionAlert() {
-  const { t } = useTranslation();
-
-  return (
-    <Alert
-      severity="warning"
-      action={
-        <Button component={MuiLink} href={SUBSCRIPTION_FORM_URL} size="small">
-          {t('btn.subscribeForUpdates')}
-        </Button>
-      }>
-      {t('constructAlert.description')}
-    </Alert>
-  );
-}
+const UnderConstructionAlert = ({ t }) => (
+  <Alert
+    severity="warning"
+    action={
+      <Button component={MuiLink} href={SUBSCRIPTION_FORM_URL} size="small">
+        {t('btn.subscribeForUpdates')}
+      </Button>
+    }>
+    {t('constructAlert.description')}
+  </Alert>
+);
 
 const AuthGrowButton = ({ t }) => {
   const { currentUser } = useAuth();
@@ -130,7 +126,7 @@ function Header() {
       <AppBar
         color="secondary"
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-        <UnderConstructionAlert />
+        <UnderConstructionAlert t={t} />
         <Toolbar>
           <OnRenderSnackbar />
           <MuiLink
@@ -181,14 +177,17 @@ function Header() {
   );
 }
 
-export const HeaderSkeleton = () => (
-  <Box sx={{ width: '100vw', visibility: 'hidden' }}>
-    <UnderConstructionAlert />
-    <Toolbar />
-    <Hidden smUp>
-      <Toolbar variant="dense" />
-    </Hidden>
-  </Box>
-);
+export function HeaderSkeleton() {
+  const { t } = useTranslation();
+  return (
+    <Box sx={{ width: '100vw', visibility: 'hidden' }}>
+      <UnderConstructionAlert t={t} />
+      <Toolbar />
+      <Hidden smUp>
+        <Toolbar variant="dense" />
+      </Hidden>
+    </Box>
+  );
+}
 
 export default Header;

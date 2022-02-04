@@ -40,6 +40,8 @@ function ListScholarships() {
     hideExpired: true,
   };
 
+  const scrollTrigger = useScrollTrigger();
+
   return (
     <Box sx={{ display: 'flex' }}>
       <Helmet>
@@ -57,10 +59,7 @@ function ListScholarships() {
         open={drawerOpen || isDesktop}
         variant={isDesktop ? 'permanent' : 'temporary'}
         anchor="left">
-        <Collapse
-          in={!useScrollTrigger()}
-          direction="down"
-          sx={{ flexShrink: 0 }}>
+        <Collapse in={!scrollTrigger} direction="down" sx={{ flexShrink: 0 }}>
           <HeaderSkeleton />
         </Collapse>
         <Box sx={{ overflowY: 'auto', flexGrow: 1 }}>
@@ -70,7 +69,7 @@ function ListScholarships() {
 
       <Box component="main" sx={{ width: '100%' }}>
         <Slide
-          in={useScrollTrigger()}
+          in={scrollTrigger}
           direction="down"
           sx={{
             position: 'fixed',

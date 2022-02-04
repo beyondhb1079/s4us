@@ -40,8 +40,8 @@ function App() {
           <AuthProvider>
             <ScholarshipsProvider>
               <Router>
-                <Header /> {/* floats and hides */}
-                <HeaderSkeleton fixed /> {/* for pushing content down */}
+                <Header />
+                <HeaderSkeleton />
                 <Routes>
                   <Route
                     path="/scholarships/new"
