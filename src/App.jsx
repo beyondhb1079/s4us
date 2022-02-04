@@ -36,7 +36,6 @@ function App() {
               BRAND_NAME + ' | Scholarships for Undocumented Students'
             }
           />
-
           <AuthProvider>
             <ScholarshipsProvider>
               <Router>
