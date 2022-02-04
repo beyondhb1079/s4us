@@ -6,7 +6,7 @@ import {
   Collapse,
   Container,
   Drawer,
-  Slide,
+  Toolbar,
   useMediaQuery,
   useScrollTrigger,
 } from '@mui/material';
@@ -59,7 +59,7 @@ function ListScholarships() {
         open={drawerOpen || isDesktop}
         variant={isDesktop ? 'permanent' : 'temporary'}
         anchor="left">
-        <Collapse in={!scrollTrigger} direction="down" sx={{ flexShrink: 0 }}>
+        <Collapse in={!scrollTrigger} sx={{ flexShrink: 0 }}>
           <HeaderSkeleton />
         </Collapse>
         <Box sx={{ overflowY: 'auto', flexGrow: 1 }}>
@@ -68,20 +68,19 @@ function ListScholarships() {
       </Drawer>
 
       <Box component="main" sx={{ width: '100%' }}>
-        <Slide
-          in={scrollTrigger}
-          direction="down"
+        <Box
           sx={{
             position: 'fixed',
             top: 0,
             width: { xs: '100%', md: `calc(100% - ${drawerWidth}px)` },
             zIndex: 1,
           }}>
-          <Box sx={{ width: '100%' }}>
-            <FilterBar openFilter={() => setDrawerOpen(true)} />
-          </Box>
-        </Slide>
-        <FilterBar openFilter={() => setDrawerOpen(true)} />
+          <Collapse in={!scrollTrigger} sx={{ flexShrink: 0 }}>
+            <HeaderSkeleton />
+          </Collapse>
+          <FilterBar openFilter={() => setDrawerOpen(true)} />
+        </Box>
+        <Toolbar />
 
         <Container maxWidth="md" sx={{ flexGrow: 1 }}>
           <ScholarshipList filters={queryFilters} />

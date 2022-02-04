@@ -25,9 +25,8 @@ import HeaderNavMenu from './HeaderNavMenu';
 import useAuth from '../lib/useAuth';
 import PropTypes from 'prop-types';
 
-function HideOnScroll(props) {
-  const { children } = props;
-  const trigger = useScrollTrigger({});
+function HideOnScroll({ children }) {
+  const trigger = useScrollTrigger();
 
   return (
     <Slide appear={false} direction="down" in={!trigger}>
