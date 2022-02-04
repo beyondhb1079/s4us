@@ -8,7 +8,7 @@ import {
   ThemeProvider,
 } from '@mui/material';
 import Footer from './components/Footer';
-import Header from './components/Header';
+import Header, { HeaderSkeleton } from './components/Header';
 import Home from './pages/Home';
 import ViewScholarship from './pages/ViewScholarship';
 import ListScholarships from './pages/ListScholarships';
@@ -36,10 +36,12 @@ function App() {
               BRAND_NAME + ' | Scholarships for Undocumented Students'
             }
           />
+
           <AuthProvider>
             <ScholarshipsProvider>
               <Router>
-                <Header />
+                <Header /> {/* floats and hides */}
+                <HeaderSkeleton fixed /> {/* for pushing content down */}
                 <Routes>
                   <Route
                     path="/scholarships/new"
