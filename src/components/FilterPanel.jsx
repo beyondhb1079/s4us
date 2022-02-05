@@ -9,6 +9,8 @@ import {
   Typography,
   Button,
   Toolbar,
+  Badge,
+  Grid,
 } from '@mui/material';
 import useQueryParams from '../lib/useQueryParams';
 import AmountFilter from './AmountFilter';
@@ -28,47 +30,54 @@ export default function FilterPanel({ onClose }) {
   });
 
   const filters = {
-    Major: (
-      <MajorFilter
-        majors={filterVals.majors}
-        onSelect={(m) => setFilterVals({ ...filterVals, majors: m })}
-        onDelete={(m) =>
-          setFilterVals({
-            ...filterVals,
-            majors: filterVals.majors.filter((major) => major !== m),
-          })
-        }
-      />
-    ),
-    Amount: (
-      <AmountFilter
-        min={filterVals.minAmount ?? 0}
-        max={filterVals.maxAmount ?? 0}
-        onMinChange={(val) =>
-          setFilterVals({ ...filterVals, minAmount: parseInt(val) })
-        }
-        onMaxChange={(val) =>
-          setFilterVals({ ...filterVals, maxAmount: parseInt(val) })
-        }
-      />
-    ),
-    'Grade Level': (
-      <GradeLevelFilter
-        grades={new Set(filterVals.grades)}
-        changeFn={(e) => setFilterVals({ ...filterVals, grades: e })}
-      />
-    ),
+    Major: {
+      comp: (
+        <MajorFilter
+          majors={filterVals.majors}
+          onSelect={(m) => setFilterVals({ ...filterVals, majors: m })}
+          onDelete={(m) =>
+            setFilterVals({
+              ...filterVals,
+              majors: filterVals.majors.filter((major) => major !== m),
+            })
+          }
+        />
+      ),
+      badge: majors?.length,
+    },
+    Amount: {
+      comp: (
+        <AmountFilter
+          min={filterVals.minAmount ?? 0}
+          max={filterVals.maxAmount ?? 0}
+          onMinChange={(val) =>
+            setFilterVals({ ...filterVals, minAmount: parseInt(val) })
+          }
+          onMaxChange={(val) =>
+            setFilterVals({ ...filterVals, maxAmount: parseInt(val) })
+          }
+        />
+      ),
+      badge: minAmount && maxAmount ? 2 : minAmount || maxAmount ? 1 : 0,
+    },
+    'Grade Level': {
+      comp: (
+        <GradeLevelFilter
+          grades={new Set(filterVals.grades)}
+          changeFn={(e) => setFilterVals({ ...filterVals, grades: e })}
+        />
+      ),
+      badge: grades?.length,
+    },
   };
 
   function resetFilters() {
-    setQueryParams({
+    setFilterVals({
       minAmount: undefined,
       maxAmount: undefined,
       grades: undefined,
       majors: undefined,
     });
-
-    setFilterVals({});
   }
 
   return (
@@ -91,16 +100,28 @@ export default function FilterPanel({ onClose }) {
             expandIcon={<ExpandMoreIcon />}
             aria-controls={name + '-content'}
             id={name + '-header'}>
-            <Typography>{name}</Typography>
+            <Grid container alignItems="center" justifyContent="space-between">
+              <Typography>{name}</Typography>
+              <Badge
+                badgeContent={filter.badge}
+                color="primary"
+                sx={{ mr: 2 }}
+              />
+            </Grid>
           </AccordionSummary>
 
-          <AccordionDetails sx={{ m: 1 }}>{filter}</AccordionDetails>
+          <AccordionDetails sx={{ m: 1 }}>{filter.comp}</AccordionDetails>
         </Accordion>
       ))}
 
       <Toolbar
         sx={{ justifyContent: { xs: 'center', md: 'space-between' }, mt: 2 }}>
-        <Button variant="contained" onClick={() => setQueryParams(filterVals)}>
+        <Button
+          variant="contained"
+          onClick={() => {
+            setQueryParams(filterVals);
+            onClose();
+          }}>
           Apply Filters
         </Button>
         <Button
