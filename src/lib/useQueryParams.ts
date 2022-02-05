@@ -10,18 +10,14 @@ const options: ParseOptions = {
   parseNumbers: true,
 };
 
-type SetQueryParamFn = (
-  key: 'minAmount' | 'maxAmount' | 'grades' | 'majors' | 'sortBy',
-  value: any,
-  replace: boolean
-) => void;
+type SetQueryParamFn = (params: Record<string, any>, replace: boolean) => void;
 
 /**
- * Returns the query string parsed as an object, and a function to update individual parameters.
+ * Returns the query string parsed as an object, and a function to update parameters.
  * @example
- * const [params, setQueryParam] = useQueryParam();
+ * const [params, setQueryParams] = useQueryParam);
  * const { someKey } = params;
- * setQueryParam(someKey, 'new value');
+ * setQueryParams({someKey: 'new value'});
  *
  * @param prune whether to prune known bad parameter values.
  *
@@ -32,15 +28,17 @@ export default function useQueryParams(
   const location = useLocation();
   const navigate = useNavigate();
   const origParams = queryString.parse(location.search, options);
-  const setQueryParam = (key: string, value: any, replace = false) => {
-    if (value === undefined) {
-      delete origParams[key];
-    } else {
-      origParams[key] = value;
-    }
+
+  const setQueryParams = (params: Record<string, any>, replace = false) => {
+    Object.keys(params).forEach((k) => {
+      if (params[k] === undefined) {
+        delete params[k];
+      }
+    });
+
     navigate(
       {
-        search: queryString.stringify(origParams, options),
+        search: queryString.stringify(params, options),
       },
       { replace }
     );
@@ -106,5 +104,5 @@ export default function useQueryParams(
     }
   }, [navigate, params, origParams]);
 
-  return [{ ...params }, setQueryParam];
+  return [{ ...params }, setQueryParams];
 }

@@ -18,7 +18,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import PropTypes from 'prop-types';
 
 export default function FilterPanel({ onClose }) {
-  const [{ minAmount, maxAmount, grades, majors }] = useQueryParams();
+  const [{ minAmount, maxAmount, grades, majors }, setQueryParams] =
+    useQueryParams();
   const [filterVals, setFilterVals] = useState({
     minAmount,
     maxAmount,
@@ -34,7 +35,7 @@ export default function FilterPanel({ onClose }) {
         onDelete={(m) =>
           setFilterVals({
             ...filterVals,
-            majors: filerVals.majors.filter((major) => major !== m),
+            majors: filterVals.majors.filter((major) => major !== m),
           })
         }
       />
@@ -43,8 +44,12 @@ export default function FilterPanel({ onClose }) {
       <AmountFilter
         min={filterVals.minAmount ?? 0}
         max={filterVals.maxAmount ?? 0}
-        onMinChange={(val) => setFilterVals({ ...filterVals, minAmount: val })}
-        onMaxChange={(val) => setFilterVals({ ...filterVals, maxAmount: val })}
+        onMinChange={(val) =>
+          setFilterVals({ ...filterVals, minAmount: parseInt(val) })
+        }
+        onMaxChange={(val) =>
+          setFilterVals({ ...filterVals, maxAmount: parseInt(val) })
+        }
       />
     ),
     'Grade Level': (
@@ -54,6 +59,17 @@ export default function FilterPanel({ onClose }) {
       />
     ),
   };
+
+  function resetFilters() {
+    setQueryParams({
+      minAmount: undefined,
+      maxAmount: undefined,
+      grades: undefined,
+      majors: undefined,
+    });
+
+    setFilterVals({});
+  }
 
   return (
     <Box>
@@ -66,7 +82,7 @@ export default function FilterPanel({ onClose }) {
 
         <Typography>Filters</Typography>
 
-        <Button>Reset</Button>
+        <Button onClick={resetFilters}>Reset</Button>
       </Toolbar>
 
       {Object.entries(filters).map(([name, filter]) => (
@@ -84,8 +100,12 @@ export default function FilterPanel({ onClose }) {
 
       <Toolbar
         sx={{ justifyContent: { xs: 'center', md: 'space-between' }, mt: 2 }}>
-        <Button variant="contained">Apply Filters</Button>
-        <Button sx={{ display: { xs: 'none', md: 'block' } }}>
+        <Button variant="contained" onClick={() => setQueryParams(filterVals)}>
+          Apply Filters
+        </Button>
+        <Button
+          sx={{ display: { xs: 'none', md: 'block' } }}
+          onClick={resetFilters}>
           Clear Filters
         </Button>
       </Toolbar>
