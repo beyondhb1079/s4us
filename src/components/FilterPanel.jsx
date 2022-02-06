@@ -11,6 +11,7 @@ import {
   Toolbar,
   Badge,
   Grid,
+  Container,
 } from '@mui/material';
 import useQueryParams from '../lib/useQueryParams';
 import AmountFilter from './AmountFilter';
@@ -98,21 +99,28 @@ export default function FilterPanel({ onClose }) {
 
       {Object.entries(filters).map(([name, filter]) => (
         <Accordion key={name} disableGutters>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls={name + '-content'}
-            id={name + '-header'}>
-            <Grid container alignItems="center" justifyContent="space-between">
-              <Typography>{name}</Typography>
-              <Badge
-                badgeContent={filter.badge}
-                color="primary"
-                sx={{ mr: 2 }}
-              />
-            </Grid>
-          </AccordionSummary>
+          <Container maxWidth="sm">
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls={name + '-content'}
+              id={name + '-header'}>
+              <Grid
+                container
+                alignItems="center"
+                justifyContent="space-between">
+                <Typography>{name}</Typography>
+                <Badge
+                  badgeContent={filter.badge}
+                  color="primary"
+                  sx={{ mr: 2 }}
+                />
+              </Grid>
+            </AccordionSummary>
+          </Container>
 
-          <AccordionDetails sx={{ m: 1 }}>{filter.comp}</AccordionDetails>
+          <Container maxWidth="sm">
+            <AccordionDetails>{filter.comp}</AccordionDetails>
+          </Container>
         </Accordion>
       ))}
 
