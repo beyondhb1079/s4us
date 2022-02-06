@@ -84,14 +84,16 @@ export default function FilterPanel({ onClose }) {
     <Box>
       <Toolbar
         disableGutters
-        sx={{ display: { md: 'none' }, justifyContent: 'space-between' }}>
+        sx={{
+          display: { md: 'none' },
+          justifyContent: 'space-between',
+          width: '50%',
+        }}>
         <IconButton onClick={onClose}>
           <CloseIcon />
         </IconButton>
 
         <Typography>Filters</Typography>
-
-        <Button onClick={resetFilters}>Reset</Button>
       </Toolbar>
 
       {Object.entries(filters).map(([name, filter]) => (
@@ -114,8 +116,7 @@ export default function FilterPanel({ onClose }) {
         </Accordion>
       ))}
 
-      <Toolbar
-        sx={{ justifyContent: { xs: 'center', md: 'space-between' }, mt: 2 }}>
+      <Toolbar sx={{ justifyContent: 'space-evenly', mt: 2 }}>
         <Button
           variant="contained"
           onClick={() => {
@@ -124,11 +125,7 @@ export default function FilterPanel({ onClose }) {
           }}>
           Apply Filters
         </Button>
-        <Button
-          sx={{ display: { xs: 'none', md: 'block' } }}
-          onClick={resetFilters}>
-          Clear Filters
-        </Button>
+        <Button onClick={resetFilters}>Clear Filters</Button>
       </Toolbar>
     </Box>
   );
