@@ -44,7 +44,8 @@ export default function FilterPanel({ onClose }) {
           }
         />
       ),
-      badge: majors?.length,
+      badge: filterVals.majors?.length,
+      wasChanged: JSON.stringify(filterVals.majors) !== JSON.stringify(majors),
     },
     Amount: {
       comp: (
@@ -59,7 +60,15 @@ export default function FilterPanel({ onClose }) {
           }
         />
       ),
-      badge: minAmount && maxAmount ? 2 : minAmount || maxAmount ? 1 : 0,
+      badge:
+        filterVals.minAmount && filterVals.maxAmount
+          ? 2
+          : filterVals.minAmount || filterVals.maxAmount
+          ? 1
+          : 0,
+      wasChanged:
+        filterVals.minAmount !== minAmount ||
+        filterVals.maxAmount !== maxAmount,
     },
     'Grade Level': {
       comp: (
@@ -68,7 +77,8 @@ export default function FilterPanel({ onClose }) {
           changeFn={(e) => setFilterVals({ ...filterVals, grades: e })}
         />
       ),
-      badge: grades?.length,
+      badge: filterVals.grades?.length,
+      wasChanged: JSON.stringify(filterVals.grades) !== JSON.stringify(grades),
     },
   };
 
@@ -99,7 +109,7 @@ export default function FilterPanel({ onClose }) {
 
       {Object.entries(filters).map(([name, filter]) => (
         <Accordion key={name} disableGutters>
-          <Container maxWidth="sm">
+          <Container maxWidth="sm" disableGutters>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls={name + '-content'}
@@ -111,14 +121,14 @@ export default function FilterPanel({ onClose }) {
                 <Typography>{name}</Typography>
                 <Badge
                   badgeContent={filter.badge}
-                  color="primary"
+                  color={filter.wasChanged ? 'warning' : 'primary'}
                   sx={{ mr: 2 }}
                 />
               </Grid>
             </AccordionSummary>
           </Container>
 
-          <Container maxWidth="sm">
+          <Container maxWidth="sm" disableGutters>
             <AccordionDetails>{filter.comp}</AccordionDetails>
           </Container>
         </Accordion>
@@ -127,13 +137,26 @@ export default function FilterPanel({ onClose }) {
       <Toolbar sx={{ justifyContent: 'space-evenly', mt: 2 }}>
         <Button
           variant="contained"
+          disabled={
+            !filters.Major.wasChanged &&
+            !filters.Amount.wasChanged &&
+            !filters['Grade Level'].wasChanged
+          }
           onClick={() => {
             setQueryParams(filterVals);
             onClose();
           }}>
           Apply Filters
         </Button>
-        <Button onClick={resetFilters}>Clear Filters</Button>
+        <Button
+          onClick={resetFilters}
+          disabled={
+            !filters.Major.badge &&
+            !filters.Amount.badge &&
+            !filters['Grade Level'].badge
+          }>
+          Clear Filters
+        </Button>
       </Toolbar>
     </Box>
   );
