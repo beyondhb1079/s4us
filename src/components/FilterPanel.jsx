@@ -74,12 +74,12 @@ export default function FilterPanel({ onClose }) {
     },
   };
 
-  // function resetFilters() {
-  //   setMinAmount(undefined);
-  //   setMaxAmount(undefined);
-  //   setGrades(undefined);
-  //   setMajors(undefined);
-  // }
+  function resetFilters() {
+    setMinAmount(undefined);
+    setMaxAmount(undefined);
+    setGrades(undefined);
+    setMajors(undefined);
+  }
 
   function cancelChanges() {
     setMinAmount(params.minAmount);
@@ -93,15 +93,25 @@ export default function FilterPanel({ onClose }) {
       <Toolbar
         disableGutters
         sx={{
-          display: { md: 'none' },
           justifyContent: 'space-between',
-          width: '50%',
+          alignContent: 'flex-end',
         }}>
-        <IconButton onClick={onClose}>
+        <IconButton onClick={onClose} sx={{ visibility: { md: 'hidden' } }}>
           <CloseIcon />
         </IconButton>
 
         <Typography>Filters</Typography>
+
+        <Button
+          disabled={
+            !params.minAmount &&
+            !params.maxAmount &&
+            (!params.grades || params.grades?.length === 0) &&
+            (!params.majors || params.majors?.length === 0)
+          }
+          onClick={resetFilters}>
+          Reset
+        </Button>
       </Toolbar>
 
       {Object.entries(filters).map(([name, filter]) => (
