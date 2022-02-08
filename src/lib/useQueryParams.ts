@@ -15,7 +15,7 @@ type SetQueryParamFn = (params: Record<string, any>, replace: boolean) => void;
 /**
  * Returns the query string parsed as an object, and a function to update parameters.
  * @example
- * const [params, setQueryParams] = useQueryParam);
+ * const [params, setQueryParams] = useQueryParams();
  * const { someKey } = params;
  * setQueryParams({someKey: 'new value'});
  *

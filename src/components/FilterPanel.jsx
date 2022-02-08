@@ -21,74 +21,60 @@ import CloseIcon from '@mui/icons-material/Close';
 import PropTypes from 'prop-types';
 
 export default function FilterPanel({ onClose }) {
-  const [{ minAmount, maxAmount, grades, majors }, setQueryParams] =
-    useQueryParams();
-  const [filterVals, setFilterVals] = useState({
-    minAmount,
-    maxAmount,
-    grades,
-    majors,
-  });
+  const [params, setQueryParams] = useQueryParams();
+
+  const [minAmount, setMinAmount] = useState(params.minAmount);
+  const [maxAmount, setMaxAmount] = useState(params.maxAmount);
+  const [grades, setGrades] = useState(params.grades);
+  const [majors, setMajors] = useState(params.majors);
 
   const filters = {
     Major: {
       comp: (
         <MajorFilter
-          majors={filterVals.majors}
-          onSelect={(m) => setFilterVals({ ...filterVals, majors: m })}
-          onDelete={(m) =>
-            setFilterVals({
-              ...filterVals,
-              majors: filterVals.majors.filter((major) => major !== m),
-            })
-          }
+          majors={majors}
+          onSelect={(m) => setMajors(m)}
+          onDelete={(m) => setMajors(majors.filter((major) => major !== m))}
         />
       ),
-      badge: filterVals.majors?.length,
-      wasChanged: JSON.stringify(filterVals.majors) !== JSON.stringify(majors),
+      badge: majors?.length ?? 0,
+      wasChanged:
+        JSON.stringify(majors?.length > 0 ? majors : undefined) !==
+        JSON.stringify(params.majors),
     },
     Amount: {
       comp: (
         <AmountFilter
-          min={filterVals.minAmount ?? 0}
-          max={filterVals.maxAmount ?? 0}
-          onMinChange={(val) =>
-            setFilterVals({ ...filterVals, minAmount: parseInt(val) })
-          }
-          onMaxChange={(val) =>
-            setFilterVals({ ...filterVals, maxAmount: parseInt(val) })
-          }
+          min={minAmount ?? 0}
+          max={maxAmount ?? 0}
+          onMinChange={(val) => setMinAmount(parseInt(val))}
+          onMaxChange={(val) => setMaxAmount(parseInt(val))}
         />
       ),
-      badge:
-        filterVals.minAmount && filterVals.maxAmount
-          ? 2
-          : filterVals.minAmount || filterVals.maxAmount
-          ? 1
-          : 0,
+      badge: minAmount && maxAmount ? 2 : minAmount || maxAmount ? 1 : 0,
       wasChanged:
-        filterVals.minAmount !== minAmount ||
-        filterVals.maxAmount !== maxAmount,
+        (minAmount || undefined) !== params.minAmount ||
+        (maxAmount || undefined) !== params.maxAmount,
     },
     'Grade Level': {
       comp: (
         <GradeLevelFilter
-          grades={new Set(filterVals.grades)}
-          changeFn={(e) => setFilterVals({ ...filterVals, grades: e })}
+          grades={new Set(grades)}
+          changeFn={(e) => setGrades(e)}
         />
       ),
-      badge: filterVals.grades?.length,
-      wasChanged: JSON.stringify(filterVals.grades) !== JSON.stringify(grades),
+      badge: grades?.length ?? 0,
+      wasChanged:
+        JSON.stringify(grades?.length > 0 ? grades : undefined) !==
+        JSON.stringify(params.grades),
     },
   };
 
   function resetFilters() {
-    setFilterVals({
-      minAmount: undefined,
-      maxAmount: undefined,
-      grades: undefined,
-      majors: undefined,
-    });
+    setMinAmount(undefined);
+    setMaxAmount(undefined);
+    setGrades(undefined);
+    setMajors(undefined);
   }
 
   return (
@@ -122,6 +108,7 @@ export default function FilterPanel({ onClose }) {
                 <Badge
                   badgeContent={filter.badge}
                   color={filter.wasChanged ? 'warning' : 'primary'}
+                  showZero
                   sx={{ mr: 2 }}
                 />
               </Grid>
@@ -143,7 +130,7 @@ export default function FilterPanel({ onClose }) {
             !filters['Grade Level'].wasChanged
           }
           onClick={() => {
-            setQueryParams(filterVals);
+            setQueryParams({ minAmount, maxAmount, grades, majors });
             onClose();
           }}>
           Apply Filters
