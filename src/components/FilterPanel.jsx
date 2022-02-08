@@ -9,8 +9,7 @@ import {
   Typography,
   Button,
   Toolbar,
-  Badge,
-  Grid,
+  Chip,
   Container,
 } from '@mui/material';
 import useQueryParams from '../lib/useQueryParams';
@@ -37,7 +36,7 @@ export default function FilterPanel({ onClose }) {
           onDelete={(m) => setMajors(majors.filter((major) => major !== m))}
         />
       ),
-      badge: majors?.length ?? 0,
+      count: params.majors?.length ?? 0,
       wasChanged:
         JSON.stringify(majors?.length > 0 ? majors : undefined) !==
         JSON.stringify(params.majors),
@@ -51,7 +50,12 @@ export default function FilterPanel({ onClose }) {
           onMaxChange={(val) => setMaxAmount(parseInt(val))}
         />
       ),
-      badge: minAmount && maxAmount ? 2 : minAmount || maxAmount ? 1 : 0,
+      count:
+        params.minAmount && params.maxAmount
+          ? 2
+          : params.minAmount || params.maxAmount
+          ? 1
+          : 0,
       wasChanged:
         (minAmount || undefined) !== params.minAmount ||
         (maxAmount || undefined) !== params.maxAmount,
@@ -63,18 +67,25 @@ export default function FilterPanel({ onClose }) {
           changeFn={(e) => setGrades(e)}
         />
       ),
-      badge: grades?.length ?? 0,
+      count: params.grades?.length ?? 0,
       wasChanged:
         JSON.stringify(grades?.length > 0 ? grades : undefined) !==
         JSON.stringify(params.grades),
     },
   };
 
-  function resetFilters() {
-    setMinAmount(undefined);
-    setMaxAmount(undefined);
-    setGrades(undefined);
-    setMajors(undefined);
+  // function resetFilters() {
+  //   setMinAmount(undefined);
+  //   setMaxAmount(undefined);
+  //   setGrades(undefined);
+  //   setMajors(undefined);
+  // }
+
+  function cancelChanges() {
+    setMinAmount(params.minAmount);
+    setMaxAmount(params.maxAmount);
+    setGrades(params.grades);
+    setMajors(params.majors);
   }
 
   return (
@@ -100,18 +111,15 @@ export default function FilterPanel({ onClose }) {
               expandIcon={<ExpandMoreIcon />}
               aria-controls={name + '-content'}
               id={name + '-header'}>
-              <Grid
-                container
-                alignItems="center"
-                justifyContent="space-between">
-                <Typography>{name}</Typography>
-                <Badge
-                  badgeContent={filter.badge}
-                  color={filter.wasChanged ? 'warning' : 'primary'}
-                  showZero
-                  sx={{ mr: 2 }}
+              <Typography>{name}</Typography>
+              {filter.count > 0 && (
+                <Chip
+                  label={`${filter.count} applied`}
+                  color="primary"
+                  size="small"
+                  sx={{ ml: 2 }}
                 />
-              </Grid>
+              )}
             </AccordionSummary>
           </Container>
 
@@ -133,16 +141,16 @@ export default function FilterPanel({ onClose }) {
             setQueryParams({ minAmount, maxAmount, grades, majors });
             onClose();
           }}>
-          Apply Filters
+          Apply
         </Button>
         <Button
-          onClick={resetFilters}
+          onClick={cancelChanges}
           disabled={
-            !filters.Major.badge &&
-            !filters.Amount.badge &&
-            !filters['Grade Level'].badge
+            !filters.Major.wasChanged &&
+            !filters.Amount.wasChanged &&
+            !filters['Grade Level'].wasChanged
           }>
-          Clear Filters
+          Cancel
         </Button>
       </Toolbar>
     </Box>
