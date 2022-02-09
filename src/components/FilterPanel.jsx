@@ -11,6 +11,7 @@ import {
   Toolbar,
   Chip,
   Container,
+  Alert,
 } from '@mui/material';
 import useQueryParams from '../lib/useQueryParams';
 import AmountFilter from './AmountFilter';
@@ -88,6 +89,11 @@ export default function FilterPanel({ onClose }) {
     setMajors(params.majors);
   }
 
+  const filtersChanged =
+    filters.Major.wasChanged ||
+    filters.Amount.wasChanged ||
+    filters['Grade Level'].wasChanged;
+
   return (
     <Box>
       <Toolbar
@@ -139,27 +145,21 @@ export default function FilterPanel({ onClose }) {
         </Accordion>
       ))}
 
+      {filtersChanged && (
+        <Alert severity="warning">Your changes have not yet been applied</Alert>
+      )}
+
       <Toolbar sx={{ justifyContent: 'space-evenly', mt: 2 }}>
         <Button
           variant="contained"
-          disabled={
-            !filters.Major.wasChanged &&
-            !filters.Amount.wasChanged &&
-            !filters['Grade Level'].wasChanged
-          }
+          disabled={!filtersChanged}
           onClick={() => {
             setQueryParams({ minAmount, maxAmount, grades, majors });
             onClose();
           }}>
           Apply
         </Button>
-        <Button
-          onClick={cancelChanges}
-          disabled={
-            !filters.Major.wasChanged &&
-            !filters.Amount.wasChanged &&
-            !filters['Grade Level'].wasChanged
-          }>
+        <Button onClick={cancelChanges} disabled={!filtersChanged}>
           Cancel
         </Button>
       </Toolbar>
