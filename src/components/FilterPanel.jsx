@@ -19,6 +19,57 @@ import GradeLevelFilter from './GradeLevelFilter';
 import MajorFilter from './MajorFilter';
 import CloseIcon from '@mui/icons-material/Close';
 import PropTypes from 'prop-types';
+import GradeLevel from '../types/GradeLevel';
+
+function AccordionFilter({ name, count, defaultExpanded, children }) {
+  return (
+    <Accordion key={name} disableGutters defaultExpanded={defaultExpanded}>
+      <Container maxWidth="sm" disableGutters>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls={name + '-content'}
+          id={name + '-header'}>
+          <Typography>{name}</Typography>
+          {count > 0 && (
+            <Chip
+              label={`${count} applied`}
+              color="primary"
+              size="small"
+              sx={{ ml: 2 }}
+              ut
+            />
+          )}
+        </AccordionSummary>
+      </Container>
+
+      <Container maxWidth="sm" disableGutters>
+        <AccordionDetails>{children}</AccordionDetails>
+      </Container>
+    </Accordion>
+  );
+}
+
+AccordionFilter.propTypes = {
+  name: PropTypes.string.isRequired,
+  count: PropTypes.number,
+  defaultExpanded: PropTypes.bool,
+  children: PropTypes.element.isRequired,
+};
+
+AccordionFilter.defaultProps = {
+  count: 0,
+  defaultExpanded: false,
+};
+
+function FilterChip({ label }) {
+  return (
+    <Chip label={label} color="primary" size="small" sx={{ mr: 1, mb: 1 }} />
+  );
+}
+
+FilterChip.propTypes = {
+  label: PropTypes.string.isRequired,
+};
 
 export default function FilterPanel({ onClose }) {
   const [params, setQueryParams] = useQueryParams();
@@ -94,6 +145,9 @@ export default function FilterPanel({ onClose }) {
     filters.Amount.wasChanged ||
     filters['Grade Level'].wasChanged;
 
+  const filterCount =
+    filters.Major.count + filters.Amount.count + filters['Grade Level'].count;
+
   return (
     <Box>
       <Toolbar
@@ -120,29 +174,27 @@ export default function FilterPanel({ onClose }) {
         </Button>
       </Toolbar>
 
-      {Object.entries(filters).map(([name, filter]) => (
-        <Accordion key={name} disableGutters>
-          <Container maxWidth="sm" disableGutters>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls={name + '-content'}
-              id={name + '-header'}>
-              <Typography>{name}</Typography>
-              {filter.count > 0 && (
-                <Chip
-                  label={`${filter.count} applied`}
-                  color="primary"
-                  size="small"
-                  sx={{ ml: 2 }}
-                />
-              )}
-            </AccordionSummary>
-          </Container>
+      {filterCount > 0 && (
+        <AccordionFilter name="Active Filters" defaultExpanded>
+          {params.majors?.map((e) => (
+            <FilterChip label={e} />
+          ))}
+          {Number.isInteger(params.minAmount) && (
+            <FilterChip label={`Min $${params.minAmount}`} />
+          )}
+          {Number.isInteger(params.maxAmount) && (
+            <FilterChip label={`Max $${params.maxAmount}`} />
+          )}
+          {params.grades?.map((e) => (
+            <FilterChip label={GradeLevel.toString(e)} />
+          ))}
+        </AccordionFilter>
+      )}
 
-          <Container maxWidth="sm" disableGutters>
-            <AccordionDetails>{filter.comp}</AccordionDetails>
-          </Container>
-        </Accordion>
+      {Object.entries(filters).map(([name, filter]) => (
+        <AccordionFilter name={name} count={filter.count}>
+          {filter.comp}
+        </AccordionFilter>
       ))}
 
       {filtersChanged && (
