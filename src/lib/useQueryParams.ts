@@ -32,13 +32,13 @@ export default function useQueryParams(
   const setQueryParams = (params: Record<string, any>, replace = false) => {
     Object.keys(params).forEach((k) => {
       if (params[k] === undefined) {
-        delete params[k];
-      }
+        delete origParams[k];
+      } else origParams[k] = params[k];
     });
 
     navigate(
       {
-        search: queryString.stringify(params, options),
+        search: queryString.stringify(origParams, options),
       },
       { replace }
     );
