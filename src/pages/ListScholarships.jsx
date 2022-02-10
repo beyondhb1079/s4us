@@ -22,6 +22,7 @@ const drawerWidth = 360;
 function ListScholarships() {
   const { t } = useTranslation();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [filterCount, setFilterCount] = useState(0);
 
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
@@ -63,7 +64,10 @@ function ListScholarships() {
           <HeaderSkeleton />
         </Collapse>
         <Box sx={{ overflowY: 'auto', flexGrow: 1 }}>
-          <FilterPanel onClose={() => setDrawerOpen(false)} />
+          <FilterPanel
+            onClose={() => setDrawerOpen(false)}
+            setFilterCount={setFilterCount}
+          />
         </Box>
       </Drawer>
 
@@ -78,7 +82,10 @@ function ListScholarships() {
           <Collapse in={!scrollTrigger} sx={{ flexShrink: 0 }}>
             <HeaderSkeleton />
           </Collapse>
-          <FilterBar openFilter={() => setDrawerOpen(true)} />
+          <FilterBar
+            openFilter={() => setDrawerOpen(true)}
+            filterCount={filterCount}
+          />
         </Box>
         <Toolbar />
 

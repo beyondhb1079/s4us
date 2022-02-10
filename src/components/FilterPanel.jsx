@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import {
   Accordion,
@@ -71,7 +71,7 @@ FilterChip.propTypes = {
   label: PropTypes.string.isRequired,
 };
 
-export default function FilterPanel({ onClose }) {
+export default function FilterPanel({ onClose, setFilterCount }) {
   const [params, setQueryParams] = useQueryParams();
 
   const [minAmount, setMinAmount] = useState(params.minAmount);
@@ -148,6 +148,10 @@ export default function FilterPanel({ onClose }) {
   const filterCount =
     filters.Major.count + filters.Amount.count + filters['Grade Level'].count;
 
+  useEffect(() => {
+    setFilterCount(filterCount);
+  }, [filterCount, setFilterCount]);
+
   return (
     <Box>
       <Toolbar
@@ -221,4 +225,5 @@ export default function FilterPanel({ onClose }) {
 
 FilterPanel.propTypes = {
   onClose: PropTypes.func.isRequired,
+  setFilterCount: PropTypes.func.isRequired,
 };
