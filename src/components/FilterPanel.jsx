@@ -21,11 +21,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import PropTypes from 'prop-types';
 import GradeLevel from '../types/GradeLevel';
 
-function FilterChip({ label }) {
+function FilterChip({ label, onDelete, variant }) {
   return (
     <Chip
       key={label}
-      label={label}
+      {...{ label, onDelete, variant }}
       color="primary"
       size="small"
       sx={{ mr: 1, mb: 1 }}
@@ -35,6 +35,12 @@ function FilterChip({ label }) {
 
 FilterChip.propTypes = {
   label: PropTypes.string.isRequired,
+  onDelete: PropTypes.func,
+  variant: PropTypes.string,
+};
+FilterChip.defaultProps = {
+  onDelete: undefined,
+  variant: 'standard',
 };
 
 function AccordionFilter({ name, count, defaultExpanded, children }) {
@@ -179,16 +185,49 @@ export default function FilterPanel({ onClose, setFilterCount }) {
       {filterCount > 0 && (
         <AccordionFilter name="Active Filters" defaultExpanded>
           {params.majors?.map((e) => (
-            <FilterChip label={e} />
+            <FilterChip
+              label={e}
+              variant="outlined"
+              onDelete={() => {
+                const newMajors = majors.filter((m) => m !== e);
+                setQueryParams({ majors: newMajors });
+                setMajors(newMajors);
+              }}
+            />
           ))}
+
           {Number.isInteger(params.minAmount) && (
-            <FilterChip label={`Min $${params.minAmount}`} />
+            <FilterChip
+              label={`Min $${params.minAmount}`}
+              variant="outlined"
+              onDelete={() => {
+                setQueryParams({ minAmount: undefined });
+                setMinAmount(undefined);
+              }}
+            />
           )}
+
           {Number.isInteger(params.maxAmount) && (
-            <FilterChip label={`Max $${params.maxAmount}`} />
+            <FilterChip
+              label={`Max $${params.maxAmount}`}
+              variant="outlined"
+              onDelete={() => {
+                setQueryParams({ maxAmount: undefined });
+                setMaxAmount(undefined);
+              }}
+            />
           )}
+
           {params.grades?.map((e) => (
-            <FilterChip label={GradeLevel.toString(e)} />
+            <FilterChip
+              label={GradeLevel.toString(e)}
+              variant="outlined"
+              onDelete={() => {
+                const newGrades = grades.filter((g) => g !== e);
+                setQueryParams({ grades: newGrades });
+                setGrades(newGrades);
+              }}
+            />
           ))}
         </AccordionFilter>
       )}
