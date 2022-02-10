@@ -21,6 +21,22 @@ import CloseIcon from '@mui/icons-material/Close';
 import PropTypes from 'prop-types';
 import GradeLevel from '../types/GradeLevel';
 
+function FilterChip({ label }) {
+  return (
+    <Chip
+      key={label}
+      label={label}
+      color="primary"
+      size="small"
+      sx={{ mr: 1, mb: 1 }}
+    />
+  );
+}
+
+FilterChip.propTypes = {
+  label: PropTypes.string.isRequired,
+};
+
 function AccordionFilter({ name, count, defaultExpanded, children }) {
   return (
     <Accordion key={name} disableGutters defaultExpanded={defaultExpanded}>
@@ -29,16 +45,8 @@ function AccordionFilter({ name, count, defaultExpanded, children }) {
           expandIcon={<ExpandMoreIcon />}
           aria-controls={name + '-content'}
           id={name + '-header'}>
-          <Typography>{name}</Typography>
-          {count > 0 && (
-            <Chip
-              label={`${count} applied`}
-              color="primary"
-              size="small"
-              sx={{ ml: 2 }}
-              ut
-            />
-          )}
+          <Typography sx={{ mr: 2 }}>{name}</Typography>
+          {count > 0 && <FilterChip label={`${count} applied`} />}
         </AccordionSummary>
       </Container>
 
@@ -53,22 +61,12 @@ AccordionFilter.propTypes = {
   name: PropTypes.string.isRequired,
   count: PropTypes.number,
   defaultExpanded: PropTypes.bool,
-  children: PropTypes.element.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 AccordionFilter.defaultProps = {
   count: 0,
   defaultExpanded: false,
-};
-
-function FilterChip({ label }) {
-  return (
-    <Chip label={label} color="primary" size="small" sx={{ mr: 1, mb: 1 }} />
-  );
-}
-
-FilterChip.propTypes = {
-  label: PropTypes.string.isRequired,
 };
 
 export default function FilterPanel({ onClose, setFilterCount }) {
