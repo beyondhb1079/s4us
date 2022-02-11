@@ -179,5 +179,9 @@ export default function FilterPanel({ onClose, setFilterCount }) {
 
 FilterPanel.propTypes = {
   onClose: PropTypes.func.isRequired,
-  setFilterCount: PropTypes.func.isRequired,
+  setFilterCount: PropTypes.func,
+};
+
+FilterPanel.defaultProps = {
+  setFilterCount: undefined,
 };
