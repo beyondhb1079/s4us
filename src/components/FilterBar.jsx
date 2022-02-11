@@ -6,7 +6,7 @@ import TuneIcon from '@mui/icons-material/Tune';
 import PropTypes from 'prop-types';
 import ImportExportIcon from '@mui/icons-material/ImportExport';
 
-export default function FilterBar({ openFilter }) {
+export default function FilterBar({ openFilter, filterCount }) {
   const [{ sortBy }, setQueryParam] = useQueryParams();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -23,7 +23,7 @@ export default function FilterBar({ openFilter }) {
           color="secondary"
           startIcon={<TuneIcon />}
           sx={{ display: { md: 'none' } }}>
-          Filter
+          {filterCount ? `Filters (${filterCount})` : 'Filters'}
         </Button>
 
         <Button
@@ -58,4 +58,9 @@ export default function FilterBar({ openFilter }) {
 
 FilterBar.propTypes = {
   openFilter: PropTypes.func.isRequired,
+  filterCount: PropTypes.number,
+};
+
+FilterBar.defaultProps = {
+  filterCount: 0,
 };

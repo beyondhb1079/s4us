@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import {
   Accordion,
@@ -9,6 +9,11 @@ import {
   Typography,
   Button,
   Toolbar,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from '@mui/material';
 import useQueryParams from '../lib/useQueryParams';
 import AmountFilter from './AmountFilter';
@@ -18,7 +23,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import PropTypes from 'prop-types';
 
-export default function FilterPanel({ onClose }) {
+export default function FilterPanel({ onClose, setFilterCount }) {
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [params, setQueryParams] = useQueryParams();
 
   const [minAmount, setMinAmount] = useState(params.minAmount);
@@ -35,6 +41,7 @@ export default function FilterPanel({ onClose }) {
           onDelete={(m) => setMajors(majors.filter((major) => major !== m))}
         />
       ),
+      count: params.majors?.length ?? 0,
       wasChanged:
         JSON.stringify(majors?.length > 0 ? majors : undefined) !==
         JSON.stringify(params.majors),
@@ -48,6 +55,12 @@ export default function FilterPanel({ onClose }) {
           onMaxChange={(val) => setMaxAmount(parseInt(val))}
         />
       ),
+      count:
+        params.minAmount && params.maxAmount
+          ? 2
+          : params.minAmount || params.maxAmount
+          ? 1
+          : 0,
       wasChanged:
         (minAmount || undefined) !== params.minAmount ||
         (maxAmount || undefined) !== params.maxAmount,
@@ -59,6 +72,7 @@ export default function FilterPanel({ onClose }) {
           changeFn={(e) => setGrades(e)}
         />
       ),
+      count: params.grades?.length ?? 0,
       wasChanged:
         JSON.stringify(grades?.length > 0 ? grades : undefined) !==
         JSON.stringify(params.grades),
@@ -70,18 +84,32 @@ export default function FilterPanel({ onClose }) {
     filters.Amount.wasChanged ||
     filters['Grade Level'].wasChanged;
 
+  const filterCount =
+    filters.Major.count + filters.Amount.count + filters['Grade Level'].count;
+
+  useEffect(() => {
+    setFilterCount(filterCount);
+  }, [filterCount, setFilterCount]);
+
   return (
     <Box>
       <Toolbar
         disableGutters
-        sx={{ display: { md: 'none' }, justifyContent: 'space-between' }}>
-        <IconButton onClick={onClose}>
+        sx={{
+          justifyContent: 'space-between',
+          alignContent: 'flex-end',
+          width: '50%',
+        }}>
+        <IconButton
+          onClick={() => {
+            if (filtersChanged) setDialogOpen(true);
+            else onClose();
+          }}
+          sx={{ visibility: { md: 'hidden' } }}>
           <CloseIcon />
         </IconButton>
 
         <Typography>Filters</Typography>
-
-        <Button disabled>Reset</Button>
       </Toolbar>
 
       {Object.entries(filters).map(([name, filter]) => (
@@ -130,10 +158,26 @@ export default function FilterPanel({ onClose }) {
           Cancel
         </Button>
       </Toolbar>
+
+      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+        <DialogTitle>Close Panel?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            This action will undo your pending changes.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
+          <Button color="error" onClick={onClose}>
+            Yes, Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
 
 FilterPanel.propTypes = {
   onClose: PropTypes.func.isRequired,
+  setFilterCount: PropTypes.func.isRequired,
 };
