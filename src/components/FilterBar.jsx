@@ -45,7 +45,7 @@ export default function FilterBar({ openFilter }) {
             key={key}
             selected={key === (sortBy ?? DEADLINE_ASC)}
             onClick={() => {
-              setQueryParams('sortBy', key);
+              setQueryParams({ sortBy: key });
               setAnchorEl(null);
             }}>
             {sortOptions[key]}
