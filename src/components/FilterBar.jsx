@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import ImportExportIcon from '@mui/icons-material/ImportExport';
 
 export default function FilterBar({ openFilter }) {
-  const [{ sortBy }, setQueryParam] = useQueryParams();
+  const [{ sortBy }, setQueryParams] = useQueryParams();
   const [anchorEl, setAnchorEl] = useState(null);
 
   return (
@@ -45,7 +45,7 @@ export default function FilterBar({ openFilter }) {
             key={key}
             selected={key === (sortBy ?? DEADLINE_ASC)}
             onClick={() => {
-              setQueryParam('sortBy', key);
+              setQueryParams('sortBy', key);
               setAnchorEl(null);
             }}>
             {sortOptions[key]}
