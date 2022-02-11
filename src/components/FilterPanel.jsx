@@ -12,6 +12,11 @@ import {
   Chip,
   Container,
   Alert,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from '@mui/material';
 import useQueryParams from '../lib/useQueryParams';
 import AmountFilter from './AmountFilter';
@@ -76,6 +81,7 @@ AccordionFilter.defaultProps = {
 };
 
 export default function FilterPanel({ onClose, setFilterCount }) {
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [params, setQueryParams] = useQueryParams();
 
   const [minAmount, setMinAmount] = useState(params.minAmount);
@@ -164,7 +170,12 @@ export default function FilterPanel({ onClose, setFilterCount }) {
           justifyContent: 'space-between',
           alignContent: 'flex-end',
         }}>
-        <IconButton onClick={onClose} sx={{ visibility: { md: 'hidden' } }}>
+        <IconButton
+          onClick={() => {
+            if (filtersChanged) setDialogOpen(true);
+            else onClose();
+          }}
+          sx={{ visibility: { md: 'hidden' } }}>
           <CloseIcon />
         </IconButton>
 
@@ -256,6 +267,21 @@ export default function FilterPanel({ onClose, setFilterCount }) {
           Cancel
         </Button>
       </Toolbar>
+
+      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+        <DialogTitle>Close Panel?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            This action will undo your pending changes.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
+          <Button color="error" onClick={onClose}>
+            Yes, Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
