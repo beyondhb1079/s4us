@@ -82,13 +82,23 @@ export default function FilterPanel({ onClose }) {
   const [grades, setGrades] = useState(params.grades);
   const [majors, setMajors] = useState(params.majors);
 
+  function resetFilters() {
+    setMinAmount(undefined);
+    setMaxAmount(undefined);
+    setGrades(undefined);
+    setMajors(undefined);
+  }
+
+  const isAnyFilterActive =
+    minAmount || maxAmount || grades?.length > 0 || majors?.length > 0;
+
   const filters = {
     Major: {
       comp: (
         <MajorFilter
           majors={majors}
           onSelect={(m) => setMajors(m)}
-          onDelete={(m) => setMajors(majors.filter((major) => major !== m))}
+          onDelete={(m) => setMajors(majors?.filter((major) => major !== m))}
         />
       ),
       count: params.majors?.length ?? 0,
@@ -156,11 +166,10 @@ export default function FilterPanel({ onClose }) {
           {params.majors?.map((e) => (
             <FilterChip
               label={e}
-              disabled={!majors.includes(e)}
-              onClick={() => setMajors(majors.filter((m) => m !== e))}
+              disabled={!majors?.includes(e)}
+              onClick={() => setMajors(majors?.filter((m) => m !== e))}
             />
           ))}
-
           {Number.isInteger(params.minAmount) && (
             <FilterChip
               label={`Min $${params.minAmount}`}
@@ -168,7 +177,6 @@ export default function FilterPanel({ onClose }) {
               onClick={() => setMinAmount(undefined)}
             />
           )}
-
           {Number.isInteger(params.maxAmount) && (
             <FilterChip
               label={`Max $${params.maxAmount}`}
@@ -176,14 +184,22 @@ export default function FilterPanel({ onClose }) {
               onClick={() => setMaxAmount(undefined)}
             />
           )}
-
           {params.grades?.map((e) => (
             <FilterChip
               label={GradeLevel.toString(e)}
-              disabled={!grades.includes(e)}
-              onClick={() => setGrades(grades.filter((g) => g !== e))}
+              disabled={!grades?.includes(e)}
+              onClick={() => setGrades(grades?.filter((g) => g !== e))}
             />
           ))}
+
+          {isAnyFilterActive && (
+            <Button
+              size="small"
+              onClick={resetFilters}
+              sx={{ textTransform: 'none' }}>
+              Clear All
+            </Button>
+          )}
         </AccordionFilter>
       )}
 
