@@ -9,6 +9,8 @@ import {
   Typography,
   Button,
   Toolbar,
+  Chip,
+  Container,
 } from '@mui/material';
 import useQueryParams from '../lib/useQueryParams';
 import AmountFilter from './AmountFilter';
@@ -16,7 +18,61 @@ import GradeLevelFilter from './GradeLevelFilter';
 import MajorFilter from './MajorFilter';
 import CloseIcon from '@mui/icons-material/Close';
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import PropTypes from 'prop-types';
+import GradeLevel from '../types/GradeLevel';
+
+function FilterChip({ label, onClick, disabled }) {
+  return (
+    <Chip
+      icon={!disabled && <CheckCircleIcon />}
+      key={label}
+      {...{ label, onClick, disabled }}
+      color={disabled ? 'secondary' : 'primary'}
+      size="small"
+      sx={{ mr: 1, mb: 1 }}
+    />
+  );
+}
+
+FilterChip.propTypes = {
+  label: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
+  disabled: PropTypes.bool,
+};
+FilterChip.defaultProps = {
+  onClick: undefined,
+  disabled: false,
+};
+
+function AccordionFilter({ name, defaultExpanded, children }) {
+  return (
+    <Accordion key={name} disableGutters defaultExpanded={defaultExpanded}>
+      <Container maxWidth="sm" disableGutters>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls={name + '-content'}
+          id={name + '-header'}>
+          <Typography sx={{ mr: 2 }}>{name}</Typography>
+        </AccordionSummary>
+      </Container>
+
+      <Container maxWidth="sm" disableGutters>
+        <AccordionDetails>{children}</AccordionDetails>
+      </Container>
+    </Accordion>
+  );
+}
+
+AccordionFilter.propTypes = {
+  name: PropTypes.string.isRequired,
+  defaultExpanded: PropTypes.bool,
+  children: PropTypes.node.isRequired,
+};
+
+AccordionFilter.defaultProps = {
+  defaultExpanded: false,
+};
 
 export default function FilterPanel({ onClose }) {
   const [params, setQueryParams] = useQueryParams();
@@ -35,6 +91,7 @@ export default function FilterPanel({ onClose }) {
           onDelete={(m) => setMajors(majors.filter((major) => major !== m))}
         />
       ),
+      count: params.majors?.length ?? 0,
       wasChanged:
         JSON.stringify(majors?.length > 0 ? majors : undefined) !==
         JSON.stringify(params.majors),
@@ -48,6 +105,12 @@ export default function FilterPanel({ onClose }) {
           onMaxChange={(val) => setMaxAmount(parseInt(val))}
         />
       ),
+      count:
+        params.minAmount && params.maxAmount
+          ? 2
+          : params.minAmount || params.maxAmount
+          ? 1
+          : 0,
       wasChanged:
         (minAmount || undefined) !== params.minAmount ||
         (maxAmount || undefined) !== params.maxAmount,
@@ -59,6 +122,7 @@ export default function FilterPanel({ onClose }) {
           changeFn={(e) => setGrades(e)}
         />
       ),
+      count: params.grades?.length ?? 0,
       wasChanged:
         JSON.stringify(grades?.length > 0 ? grades : undefined) !==
         JSON.stringify(params.grades),
@@ -69,6 +133,9 @@ export default function FilterPanel({ onClose }) {
     filters.Major.wasChanged ||
     filters.Amount.wasChanged ||
     filters['Grade Level'].wasChanged;
+
+  const filterCount =
+    filters.Major.count + filters.Amount.count + filters['Grade Level'].count;
 
   return (
     <Box>
@@ -84,17 +151,44 @@ export default function FilterPanel({ onClose }) {
         <Button disabled>Reset</Button>
       </Toolbar>
 
-      {Object.entries(filters).map(([name, filter]) => (
-        <Accordion key={name} disableGutters>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls={name + '-content'}
-            id={name + '-header'}>
-            <Typography>{name}</Typography>
-          </AccordionSummary>
+      {filterCount > 0 && (
+        <AccordionFilter name="Active Filters" defaultExpanded>
+          {params.majors?.map((e) => (
+            <FilterChip
+              label={e}
+              disabled={!majors.includes(e)}
+              onClick={() => setMajors(majors.filter((m) => m !== e))}
+            />
+          ))}
 
-          <AccordionDetails sx={{ m: 1 }}>{filter.comp}</AccordionDetails>
-        </Accordion>
+          {Number.isInteger(params.minAmount) && (
+            <FilterChip
+              label={`Min $${params.minAmount}`}
+              disabled={minAmount !== params.minAmount}
+              onClick={() => setMinAmount(undefined)}
+            />
+          )}
+
+          {Number.isInteger(params.maxAmount) && (
+            <FilterChip
+              label={`Max $${params.maxAmount}`}
+              disabled={maxAmount !== params.maxAmount}
+              onClick={() => setMaxAmount(undefined)}
+            />
+          )}
+
+          {params.grades?.map((e) => (
+            <FilterChip
+              label={GradeLevel.toString(e)}
+              disabled={!grades.includes(e)}
+              onClick={() => setGrades(grades.filter((g) => g !== e))}
+            />
+          ))}
+        </AccordionFilter>
+      )}
+
+      {Object.entries(filters).map(([name, filter]) => (
+        <AccordionFilter name={name}>{filter.comp}</AccordionFilter>
       ))}
 
       {filtersChanged && (
