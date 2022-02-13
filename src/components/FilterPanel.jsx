@@ -16,6 +16,7 @@ import AmountFilter from './AmountFilter';
 import GradeLevelFilter from './GradeLevelFilter';
 import MajorFilter from './MajorFilter';
 import CloseIcon from '@mui/icons-material/Close';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import PropTypes from 'prop-types';
 
@@ -84,19 +85,20 @@ export default function FilterPanel({ onClose }) {
         </Accordion>
       ))}
 
-      {filtersChanged && (
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            mt: 2,
-          }}>
+      <Stack direction="row" spacing={1} sx={{ m: 2 }}>
+        {filtersChanged ? (
           <WarningAmberOutlinedIcon color="warning" />
-          <Typography>Your changes have not yet been applied.</Typography>
-        </Box>
-      )}
+        ) : (
+          <CheckCircleOutlineIcon color="success" />
+        )}
+        <Typography>
+          {filtersChanged
+            ? "Your changes haven't yet been applied."
+            : 'Your filters are currently applied.'}
+        </Typography>
+      </Stack>
 
-      <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+      <Stack direction="row" spacing={2} sx={{ m: 2 }}>
         <Button
           variant="contained"
           disabled={!filtersChanged}
