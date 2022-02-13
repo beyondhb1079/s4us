@@ -35,7 +35,7 @@ export default function FilterPanel({ onClose }) {
           onDelete={(m) => setMajors(majors.filter((major) => major !== m))}
         />
       ),
-      wasChanged:
+      changed:
         JSON.stringify(majors?.length > 0 ? majors : undefined) !==
         JSON.stringify(params.majors),
     },
@@ -48,7 +48,7 @@ export default function FilterPanel({ onClose }) {
           onMaxChange={(val) => setMaxAmount(parseInt(val))}
         />
       ),
-      wasChanged:
+      changed:
         (minAmount || undefined) !== params.minAmount ||
         (maxAmount || undefined) !== params.maxAmount,
     },
@@ -59,16 +59,13 @@ export default function FilterPanel({ onClose }) {
           changeFn={(e) => setGrades(e)}
         />
       ),
-      wasChanged:
+      changed:
         JSON.stringify(grades?.length > 0 ? grades : undefined) !==
         JSON.stringify(params.grades),
     },
   };
 
-  const filtersChanged =
-    filters.Major.wasChanged ||
-    filters.Amount.wasChanged ||
-    filters['Grade Level'].wasChanged;
+  const filtersChanged = Object.keys(filters).some((k) => filters[k].changed);
 
   return (
     <Box>
