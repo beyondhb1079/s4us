@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import SearchIcon from '@mui/icons-material/Search';
 
-function MajorFilter({ majors, onSelect, onDelete }) {
+function MajorFilter({ majors, onChange }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -17,7 +17,7 @@ function MajorFilter({ majors, onSelect, onDelete }) {
         filterSelectedOptions
         open={isOpen}
         value={majors}
-        onChange={(e, val) => onSelect(val)}
+        onChange={(e, val) => onChange(val)}
         disabled={majors.length >= 10}
         onInputChange={(e, val) => setIsOpen(val.length > 0)}
         options={[...MAJORS]}
@@ -50,20 +50,18 @@ function MajorFilter({ majors, onSelect, onDelete }) {
           variant="outlined"
           color="primary"
           key={major}
-          onDelete={() => onDelete(major)}
+          onDelete={() => onChange(majors.filter((m) => m !== major))}
           sx={{ mx: 1, mt: 1, color: '#000' }}
         />
       ))}
     </>
   );
 }
-
 export default MajorFilter;
 
 MajorFilter.propTypes = {
   majors: PropTypes.arrayOf(PropTypes.string),
-  onSelect: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 MajorFilter.defaultProps = {

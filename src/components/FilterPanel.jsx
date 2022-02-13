@@ -9,6 +9,7 @@ import {
   Typography,
   Button,
   Toolbar,
+  Stack,
 } from '@mui/material';
 import useQueryParams from '../lib/useQueryParams';
 import AmountFilter from './AmountFilter';
@@ -28,13 +29,7 @@ export default function FilterPanel({ onClose }) {
 
   const filters = {
     Major: {
-      comp: (
-        <MajorFilter
-          majors={majors}
-          onSelect={(m) => setMajors(m)}
-          onDelete={(m) => setMajors(majors.filter((major) => major !== m))}
-        />
-      ),
+      comp: <MajorFilter majors={majors} onChange={setMajors} />,
       changed:
         JSON.stringify(majors?.length > 0 ? majors : undefined) !==
         JSON.stringify(params.majors),
@@ -53,12 +48,7 @@ export default function FilterPanel({ onClose }) {
         (maxAmount || undefined) !== params.maxAmount,
     },
     'Grade Level': {
-      comp: (
-        <GradeLevelFilter
-          grades={new Set(grades)}
-          changeFn={(e) => setGrades(e)}
-        />
-      ),
+      comp: <GradeLevelFilter grades={new Set(grades)} onChange={setGrades} />,
       changed:
         JSON.stringify(grades?.length > 0 ? grades : undefined) !==
         JSON.stringify(params.grades),
@@ -99,15 +89,14 @@ export default function FilterPanel({ onClose }) {
           sx={{
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
             mt: 2,
           }}>
           <WarningAmberOutlinedIcon color="warning" />
-          <Typography>Your changes have not yet been applied</Typography>
+          <Typography>Your changes have not yet been applied.</Typography>
         </Box>
       )}
 
-      <Toolbar sx={{ justifyContent: 'space-evenly', mt: 2 }}>
+      <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
         <Button
           variant="contained"
           disabled={!filtersChanged}
@@ -118,6 +107,7 @@ export default function FilterPanel({ onClose }) {
           Apply
         </Button>
         <Button
+          disabled={!filtersChanged}
           onClick={() => {
             setMinAmount(params.minAmount);
             setMaxAmount(params.maxAmount);
@@ -126,7 +116,7 @@ export default function FilterPanel({ onClose }) {
           }}>
           Cancel
         </Button>
-      </Toolbar>
+      </Stack>
     </Box>
   );
 }
