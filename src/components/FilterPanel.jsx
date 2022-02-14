@@ -37,7 +37,6 @@ export default function FilterPanel({ onClose }) {
   const filters = {
     Major: {
       comp: <MajorFilter majors={majors} onChange={setMajors} />,
-      count: params.majors?.length ?? 0,
       changed:
         JSON.stringify(majors?.length > 0 ? majors : undefined) !==
         JSON.stringify(params.majors),
@@ -51,19 +50,12 @@ export default function FilterPanel({ onClose }) {
           onMaxChange={(val) => setMaxAmount(parseInt(val))}
         />
       ),
-      count:
-        params.minAmount && params.maxAmount
-          ? 2
-          : params.minAmount || params.maxAmount
-          ? 1
-          : 0,
       changed:
         (minAmount || undefined) !== params.minAmount ||
         (maxAmount || undefined) !== params.maxAmount,
     },
     'Grade Level': {
       comp: <GradeLevelFilter grades={new Set(grades)} onChange={setGrades} />,
-      count: params.grades?.length ?? 0,
       changed:
         JSON.stringify(grades?.length > 0 ? grades : undefined) !==
         JSON.stringify(params.grades),
