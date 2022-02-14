@@ -14,12 +14,14 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  Stack,
 } from '@mui/material';
 import useQueryParams from '../lib/useQueryParams';
 import AmountFilter from './AmountFilter';
 import GradeLevelFilter from './GradeLevelFilter';
 import MajorFilter from './MajorFilter';
 import CloseIcon from '@mui/icons-material/Close';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import PropTypes from 'prop-types';
 
@@ -34,15 +36,9 @@ export default function FilterPanel({ onClose, setFilterCount }) {
 
   const filters = {
     Major: {
-      comp: (
-        <MajorFilter
-          majors={majors}
-          onSelect={(m) => setMajors(m)}
-          onDelete={(m) => setMajors(majors.filter((major) => major !== m))}
-        />
-      ),
+      comp: <MajorFilter majors={majors} onChange={setMajors} />,
       count: params.majors?.length ?? 0,
-      wasChanged:
+      changed:
         JSON.stringify(majors?.length > 0 ? majors : undefined) !==
         JSON.stringify(params.majors),
     },
@@ -61,28 +57,20 @@ export default function FilterPanel({ onClose, setFilterCount }) {
           : params.minAmount || params.maxAmount
           ? 1
           : 0,
-      wasChanged:
+      changed:
         (minAmount || undefined) !== params.minAmount ||
         (maxAmount || undefined) !== params.maxAmount,
     },
     'Grade Level': {
-      comp: (
-        <GradeLevelFilter
-          grades={new Set(grades)}
-          changeFn={(e) => setGrades(e)}
-        />
-      ),
+      comp: <GradeLevelFilter grades={new Set(grades)} onChange={setGrades} />,
       count: params.grades?.length ?? 0,
-      wasChanged:
+      changed:
         JSON.stringify(grades?.length > 0 ? grades : undefined) !==
         JSON.stringify(params.grades),
     },
   };
 
-  const filtersChanged =
-    filters.Major.wasChanged ||
-    filters.Amount.wasChanged ||
-    filters['Grade Level'].wasChanged;
+  const filtersChanged = Object.keys(filters).some((k) => filters[k].changed);
 
   const filterCount =
     filters.Major.count + filters.Amount.count + filters['Grade Level'].count;
@@ -125,20 +113,20 @@ export default function FilterPanel({ onClose, setFilterCount }) {
         </Accordion>
       ))}
 
-      {filtersChanged && (
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            mt: 2,
-          }}>
+      <Stack direction="row" spacing={1} sx={{ m: 2 }}>
+        {filtersChanged ? (
           <WarningAmberOutlinedIcon color="warning" />
-          <Typography>Your changes have not yet been applied</Typography>
-        </Box>
-      )}
+        ) : (
+          <CheckCircleOutlineIcon color="success" />
+        )}
+        <Typography>
+          {filtersChanged
+            ? "Your changes haven't yet been applied."
+            : 'Your filters are currently applied.'}
+        </Typography>
+      </Stack>
 
-      <Toolbar sx={{ justifyContent: 'space-evenly', mt: 2 }}>
+      <Stack direction="row" spacing={2} sx={{ m: 2 }}>
         <Button
           variant="contained"
           disabled={!filtersChanged}
@@ -149,6 +137,7 @@ export default function FilterPanel({ onClose, setFilterCount }) {
           Apply
         </Button>
         <Button
+          disabled={!filtersChanged}
           onClick={() => {
             setMinAmount(params.minAmount);
             setMaxAmount(params.maxAmount);
@@ -157,7 +146,7 @@ export default function FilterPanel({ onClose, setFilterCount }) {
           }}>
           Cancel
         </Button>
-      </Toolbar>
+      </Stack>
 
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
         <DialogTitle>Close Panel?</DialogTitle>

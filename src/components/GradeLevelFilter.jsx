@@ -38,7 +38,7 @@ GradeGroup.propTypes = {
 };
 
 export default function GradeLevelFilter(props) {
-  const { grades, changeFn } = props;
+  const { grades, onChange } = props;
   const { highSchoolers, undergrads, grads } = GradeLevel;
 
   function toggleSelection(grade) {
@@ -47,7 +47,7 @@ export default function GradeLevelFilter(props) {
     } else {
       grades.add(grade);
     }
-    changeFn([...grades]);
+    onChange([...grades]);
   }
 
   return (
@@ -81,7 +81,7 @@ export default function GradeLevelFilter(props) {
 
 GradeLevelFilter.propTypes = {
   grades: PropTypes.instanceOf(Set),
-  changeFn: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 GradeLevelFilter.defaultProps = {
   grades: new Set(),
