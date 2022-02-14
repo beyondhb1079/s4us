@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import {
   Accordion,
@@ -25,7 +25,7 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import PropTypes from 'prop-types';
 
-export default function FilterPanel({ onClose, setFilterCount }) {
+export default function FilterPanel({ onClose }) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [params, setQueryParams] = useQueryParams();
 
@@ -71,13 +71,6 @@ export default function FilterPanel({ onClose, setFilterCount }) {
   };
 
   const filtersChanged = Object.keys(filters).some((k) => filters[k].changed);
-
-  const filterCount =
-    filters.Major.count + filters.Amount.count + filters['Grade Level'].count;
-
-  useEffect(() => {
-    setFilterCount(filterCount);
-  }, [filterCount, setFilterCount]);
 
   return (
     <Box>
@@ -149,10 +142,10 @@ export default function FilterPanel({ onClose, setFilterCount }) {
       </Stack>
 
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
-        <DialogTitle>Close Panel?</DialogTitle>
+        <DialogTitle>Unsaved Changes</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            This action will undo your pending changes.
+            Are you sure you want to close? Your changes will not be saved.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -168,9 +161,4 @@ export default function FilterPanel({ onClose, setFilterCount }) {
 
 FilterPanel.propTypes = {
   onClose: PropTypes.func.isRequired,
-  setFilterCount: PropTypes.func,
-};
-
-FilterPanel.defaultProps = {
-  setFilterCount: undefined,
 };

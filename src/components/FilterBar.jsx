@@ -6,9 +6,16 @@ import TuneIcon from '@mui/icons-material/Tune';
 import PropTypes from 'prop-types';
 import ImportExportIcon from '@mui/icons-material/ImportExport';
 
-export default function FilterBar({ openFilter, filterCount }) {
-  const [{ sortBy }, setQueryParams] = useQueryParams();
+export default function FilterBar({ openFilter }) {
+  const [{ sortBy, grades, majors, minAmount, maxAmount }, setQueryParams] =
+    useQueryParams();
   const [anchorEl, setAnchorEl] = useState(null);
+
+  const filterCount =
+    (grades?.length ?? 0) +
+    (majors?.length ?? 0) +
+    (minAmount ? 1 : 0) +
+    (maxAmount ? 1 : 0);
 
   return (
     <Toolbar disableGutters sx={{ bgcolor: 'primary.main' }}>
@@ -23,7 +30,7 @@ export default function FilterBar({ openFilter, filterCount }) {
           color="secondary"
           startIcon={<TuneIcon />}
           sx={{ display: { md: 'none' } }}>
-          {filterCount ? `Filters (${filterCount})` : 'Filters'}
+          Filters {filterCount ? `(${filterCount})` : ''}
         </Button>
 
         <Button
@@ -58,9 +65,4 @@ export default function FilterBar({ openFilter, filterCount }) {
 
 FilterBar.propTypes = {
   openFilter: PropTypes.func.isRequired,
-  filterCount: PropTypes.number,
-};
-
-FilterBar.defaultProps = {
-  filterCount: 0,
 };
