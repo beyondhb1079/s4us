@@ -38,27 +38,23 @@ export default function FilterPanel({ onClose }) {
     Major: {
       comp: <MajorFilter majors={majors} onChange={setMajors} />,
       changed:
-        JSON.stringify(majors?.length > 0 ? majors : undefined) !==
-        JSON.stringify(params.majors),
+        JSON.stringify(majors || []) !== JSON.stringify(params.majors || []),
     },
     Amount: {
       comp: (
         <AmountFilter
           min={minAmount ?? 0}
           max={maxAmount ?? 0}
-          onMinChange={(val) => setMinAmount(parseInt(val))}
-          onMaxChange={(val) => setMaxAmount(parseInt(val))}
+          onMinChange={(val) => setMinAmount(parseInt(val) || undefined)}
+          onMaxChange={(val) => setMaxAmount(parseInt(val) || undefined)}
         />
       ),
-      changed:
-        (minAmount || undefined) !== params.minAmount ||
-        (maxAmount || undefined) !== params.maxAmount,
+      changed: minAmount !== params.minAmount || maxAmount !== params.maxAmount,
     },
     'Grade Level': {
       comp: <GradeLevelFilter grades={new Set(grades)} onChange={setGrades} />,
       changed:
-        JSON.stringify(grades?.length > 0 ? grades : undefined) !==
-        JSON.stringify(params.grades),
+        JSON.stringify(grades || []) !== JSON.stringify(params.grades || []),
     },
   };
 
@@ -106,7 +102,7 @@ export default function FilterPanel({ onClose }) {
         )}
         <Typography>
           {filtersChanged
-            ? "Your changes haven't yet been applied."
+            ? 'Your changes are not yet applied.'
             : 'Your filters are currently applied.'}
         </Typography>
       </Stack>
