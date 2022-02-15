@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { InputLabel, Grid, Slider } from '@mui/material';
 import { Remove as RemoveIcon } from '@mui/icons-material';
 import AmountTextField from './AmountTextField';
-import experiments from '../lib/experiments';
 
 export default function AmountFilter(props) {
   const { min, max, onMinChange, onMaxChange } = props;
@@ -35,19 +34,17 @@ export default function AmountFilter(props) {
         />
       </Grid>
 
-      {experiments.expShowSlider && (
-        <Slider
-          defaultValue={[0, 10000]}
-          min={0}
-          max={50000}
-          step={100}
-          onChange={(e) => {
-            onMinChange(e.target.value[0]);
-            onMaxChange(e.target.value[1]);
-          }}
-          sx={{ mt: 1 }}
-        />
-      )}
+      <Slider
+        value={[min || 0, max || 50000]}
+        min={0}
+        max={50000}
+        step={100}
+        onChange={(e) => {
+          onMinChange(e.target.value[0]);
+          onMaxChange(e.target.value[1]);
+        }}
+        sx={{ mt: 1 }}
+      />
     </Grid>
   );
 }
