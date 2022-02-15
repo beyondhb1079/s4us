@@ -7,8 +7,15 @@ import PropTypes from 'prop-types';
 import ImportExportIcon from '@mui/icons-material/ImportExport';
 
 export default function FilterBar({ openFilter }) {
-  const [{ sortBy }, setQueryParams] = useQueryParams();
+  const [{ sortBy, grades, majors, minAmount, maxAmount }, setQueryParams] =
+    useQueryParams();
   const [anchorEl, setAnchorEl] = useState(null);
+
+  const filterCount =
+    (grades?.length ?? 0) +
+    (majors?.length ?? 0) +
+    (minAmount ? 1 : 0) +
+    (maxAmount ? 1 : 0);
 
   return (
     <Toolbar disableGutters sx={{ bgcolor: 'primary.main' }}>
@@ -23,7 +30,7 @@ export default function FilterBar({ openFilter }) {
           color="secondary"
           startIcon={<TuneIcon />}
           sx={{ display: { md: 'none' } }}>
-          Filter
+          Filters {filterCount ? `(${filterCount})` : ''}
         </Button>
 
         <Button

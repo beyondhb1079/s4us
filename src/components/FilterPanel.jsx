@@ -9,6 +9,11 @@ import {
   Typography,
   Button,
   Toolbar,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
   Stack,
 } from '@mui/material';
 import useQueryParams from '../lib/useQueryParams';
@@ -21,6 +26,7 @@ import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import PropTypes from 'prop-types';
 
 export default function FilterPanel({ onClose }) {
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [params, setQueryParams] = useQueryParams();
 
   const [minAmount, setMinAmount] = useState(params.minAmount);
@@ -58,14 +64,21 @@ export default function FilterPanel({ onClose }) {
     <Box>
       <Toolbar
         disableGutters
-        sx={{ display: { md: 'none' }, justifyContent: 'space-between' }}>
-        <IconButton onClick={onClose}>
+        sx={{
+          justifyContent: 'space-between',
+          alignContent: 'flex-end',
+          width: '50%',
+        }}>
+        <IconButton
+          onClick={() => {
+            if (filtersChanged) setDialogOpen(true);
+            else onClose();
+          }}
+          sx={{ visibility: { md: 'hidden' } }}>
           <CloseIcon />
         </IconButton>
 
         <Typography>Filters</Typography>
-
-        <Button disabled>Reset</Button>
       </Toolbar>
 
       {Object.entries(filters).map(([name, filter]) => (
@@ -115,6 +128,21 @@ export default function FilterPanel({ onClose }) {
           Cancel
         </Button>
       </Stack>
+
+      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+        <DialogTitle>Unsaved Changes</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to close? Your changes will not be saved.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
+          <Button color="error" onClick={onClose}>
+            Yes, Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
