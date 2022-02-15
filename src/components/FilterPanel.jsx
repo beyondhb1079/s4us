@@ -11,6 +11,11 @@ import {
   Toolbar,
   Chip,
   Container,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
   Stack,
 } from '@mui/material';
 import useQueryParams from '../lib/useQueryParams';
@@ -77,6 +82,7 @@ AccordionFilter.defaultProps = {
 };
 
 export default function FilterPanel({ onClose }) {
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [params, setQueryParams] = useQueryParams();
 
   const [minAmount, setMinAmount] = useState(params.minAmount);
@@ -98,27 +104,23 @@ export default function FilterPanel({ onClose }) {
     Major: {
       comp: <MajorFilter majors={majors} onChange={setMajors} />,
       changed:
-        JSON.stringify(majors?.length > 0 ? majors : undefined) !==
-        JSON.stringify(params.majors),
+        JSON.stringify(majors || []) !== JSON.stringify(params.majors || []),
     },
     Amount: {
       comp: (
         <AmountFilter
           min={minAmount ?? 0}
           max={maxAmount ?? 0}
-          onMinChange={(val) => setMinAmount(parseInt(val))}
-          onMaxChange={(val) => setMaxAmount(parseInt(val))}
+          onMinChange={(val) => setMinAmount(parseInt(val) || undefined)}
+          onMaxChange={(val) => setMaxAmount(parseInt(val) || undefined)}
         />
       ),
-      changed:
-        (minAmount || undefined) !== params.minAmount ||
-        (maxAmount || undefined) !== params.maxAmount,
+      changed: minAmount !== params.minAmount || maxAmount !== params.maxAmount,
     },
     'Grade Level': {
       comp: <GradeLevelFilter grades={new Set(grades)} onChange={setGrades} />,
       changed:
-        JSON.stringify(grades?.length > 0 ? grades : undefined) !==
-        JSON.stringify(params.grades),
+        JSON.stringify(grades || []) !== JSON.stringify(params.grades || []),
     },
   };
 
@@ -134,14 +136,21 @@ export default function FilterPanel({ onClose }) {
     <Box>
       <Toolbar
         disableGutters
-        sx={{ display: { md: 'none' }, justifyContent: 'space-between' }}>
-        <IconButton onClick={onClose}>
+        sx={{
+          justifyContent: 'space-between',
+          alignContent: 'flex-end',
+          width: '50%',
+        }}>
+        <IconButton
+          onClick={() => {
+            if (filtersChanged) setDialogOpen(true);
+            else onClose();
+          }}
+          sx={{ visibility: { md: 'hidden' } }}>
           <CloseIcon />
         </IconButton>
 
         <Typography>Filters</Typography>
-
-        <Button disabled>Reset</Button>
       </Toolbar>
 
       {filterCount > 0 && (
@@ -198,7 +207,7 @@ export default function FilterPanel({ onClose }) {
         )}
         <Typography>
           {filtersChanged
-            ? "Your changes haven't yet been applied."
+            ? 'Your changes are not yet applied.'
             : 'Your filters are currently applied.'}
         </Typography>
       </Stack>
@@ -224,6 +233,21 @@ export default function FilterPanel({ onClose }) {
           Cancel
         </Button>
       </Stack>
+
+      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+        <DialogTitle>Unsaved Changes</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to close? Your changes will not be saved.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
+          <Button color="error" onClick={onClose}>
+            Yes, Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
