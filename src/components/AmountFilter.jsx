@@ -35,7 +35,7 @@ export default function AmountFilter(props) {
       </Grid>
 
       <Slider
-        defaultValue={[0, 50000]}
+        value={[min || 0, max || 50000]}
         min={0}
         max={50000}
         step={100}

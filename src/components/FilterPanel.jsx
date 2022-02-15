@@ -11,12 +11,14 @@ import {
   Toolbar,
   Chip,
   Container,
+  Stack,
 } from '@mui/material';
 import useQueryParams from '../lib/useQueryParams';
 import AmountFilter from './AmountFilter';
 import GradeLevelFilter from './GradeLevelFilter';
 import MajorFilter from './MajorFilter';
 import CloseIcon from '@mui/icons-material/Close';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import PropTypes from 'prop-types';
@@ -94,15 +96,8 @@ export default function FilterPanel({ onClose }) {
 
   const filters = {
     Major: {
-      comp: (
-        <MajorFilter
-          majors={majors}
-          onSelect={(m) => setMajors(m)}
-          onDelete={(m) => setMajors(majors?.filter((major) => major !== m))}
-        />
-      ),
-      count: params.majors?.length ?? 0,
-      wasChanged:
+      comp: <MajorFilter majors={majors} onChange={setMajors} />,
+      changed:
         JSON.stringify(majors?.length > 0 ? majors : undefined) !==
         JSON.stringify(params.majors),
     },
@@ -115,37 +110,25 @@ export default function FilterPanel({ onClose }) {
           onMaxChange={(val) => setMaxAmount(parseInt(val))}
         />
       ),
-      count:
-        params.minAmount && params.maxAmount
-          ? 2
-          : params.minAmount || params.maxAmount
-          ? 1
-          : 0,
-      wasChanged:
+      changed:
         (minAmount || undefined) !== params.minAmount ||
         (maxAmount || undefined) !== params.maxAmount,
     },
     'Grade Level': {
-      comp: (
-        <GradeLevelFilter
-          grades={new Set(grades)}
-          changeFn={(e) => setGrades(e)}
-        />
-      ),
-      count: params.grades?.length ?? 0,
-      wasChanged:
+      comp: <GradeLevelFilter grades={new Set(grades)} onChange={setGrades} />,
+      changed:
         JSON.stringify(grades?.length > 0 ? grades : undefined) !==
         JSON.stringify(params.grades),
     },
   };
 
-  const filtersChanged =
-    filters.Major.wasChanged ||
-    filters.Amount.wasChanged ||
-    filters['Grade Level'].wasChanged;
+  const filtersChanged = Object.keys(filters).some((k) => filters[k].changed);
 
   const filterCount =
-    filters.Major.count + filters.Amount.count + filters['Grade Level'].count;
+    (params.grades?.length ?? 0) +
+    (params.majors?.length ?? 0) +
+    (params.minAmount ? 1 : 0) +
+    (params.maxAmount ? 1 : 0);
 
   return (
     <Box>
@@ -207,20 +190,20 @@ export default function FilterPanel({ onClose }) {
         <AccordionFilter name={name}>{filter.comp}</AccordionFilter>
       ))}
 
-      {filtersChanged && (
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            mt: 2,
-          }}>
+      <Stack direction="row" spacing={1} sx={{ m: 2 }}>
+        {filtersChanged ? (
           <WarningAmberOutlinedIcon color="warning" />
-          <Typography>Your changes have not yet been applied</Typography>
-        </Box>
-      )}
+        ) : (
+          <CheckCircleOutlineIcon color="success" />
+        )}
+        <Typography>
+          {filtersChanged
+            ? "Your changes haven't yet been applied."
+            : 'Your filters are currently applied.'}
+        </Typography>
+      </Stack>
 
-      <Toolbar sx={{ justifyContent: 'space-evenly', mt: 2 }}>
+      <Stack direction="row" spacing={2} sx={{ m: 2 }}>
         <Button
           variant="contained"
           disabled={!filtersChanged}
@@ -231,6 +214,7 @@ export default function FilterPanel({ onClose }) {
           Apply
         </Button>
         <Button
+          disabled={!filtersChanged}
           onClick={() => {
             setMinAmount(params.minAmount);
             setMaxAmount(params.maxAmount);
@@ -239,7 +223,7 @@ export default function FilterPanel({ onClose }) {
           }}>
           Cancel
         </Button>
-      </Toolbar>
+      </Stack>
     </Box>
   );
 }

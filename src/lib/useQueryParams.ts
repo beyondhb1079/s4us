@@ -10,7 +10,7 @@ const options: ParseOptions = {
   parseNumbers: true,
 };
 
-type SetQueryParamFn = (params: Record<string, any>, replace: boolean) => void;
+type SetQueryParamsFn = (params: Record<string, any>, replace: boolean) => void;
 
 /**
  * Returns the query string parsed as an object, and a function to update parameters.
@@ -24,7 +24,7 @@ type SetQueryParamFn = (params: Record<string, any>, replace: boolean) => void;
  */
 export default function useQueryParams(
   prune = true
-): [Record<string, any>, SetQueryParamFn] {
+): [Record<string, any>, SetQueryParamsFn] {
   const location = useLocation();
   const navigate = useNavigate();
   const origParams = queryString.parse(location.search, options);
