@@ -95,8 +95,8 @@ function AccordionFilter({ name, defaultExpanded, summary, children }) {
               textOverflow: 'ellipsis',
               overflow: 'hidden',
               whiteSpace: 'nowrap',
-              width: { xs: 220, md: 120 },
-              mr: 2,
+              maxWidth: { xs: 220, md: 120 },
+              mr: 1,
               fontStyle: 'italic',
             }}>
             {summary}
