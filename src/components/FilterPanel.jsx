@@ -29,6 +29,30 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import PropTypes from 'prop-types';
 import GradeLevel from '../types/GradeLevel';
 
+function getSummary(filters) {
+  const { grades, majors, minAmount, maxAmount } = filters;
+
+  if (grades?.length) {
+    if (grades.length >= 2)
+      return `${GradeLevel.toString(grades[0])} & ${
+        grades.length - 1
+      } other(s)`;
+    else return `${GradeLevel.toString(grades[0])}`;
+  }
+
+  if (majors?.length) {
+    if (majors.length >= 2)
+      return `${majors[0]} & ${majors.length - 1} other(s)`;
+    else return `${majors[0]}`;
+  }
+
+  if (minAmount && maxAmount) return 'Min & Max set';
+  if (minAmount && !maxAmount) return 'Min set';
+  if (maxAmount && !minAmount) return 'Max set';
+
+  return '';
+}
+
 function FilterChip({ label, onClick, disabled }) {
   return (
     <Chip
@@ -52,15 +76,31 @@ FilterChip.defaultProps = {
   disabled: false,
 };
 
-function AccordionFilter({ name, defaultExpanded, children }) {
+function AccordionFilter({ name, defaultExpanded, summary, children }) {
   return (
     <Accordion key={name} disableGutters defaultExpanded={defaultExpanded}>
       <Container maxWidth="sm" disableGutters>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls={name + '-content'}
-          id={name + '-header'}>
-          <Typography sx={{ mr: 2 }}>{name}</Typography>
+          id={name + '-header'}
+          sx={{
+            '& .MuiAccordionSummary-content': {
+              justifyContent: 'space-between',
+            },
+          }}>
+          <Typography>{name}</Typography>
+          <Typography
+            sx={{
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              width: { xs: 220, md: 120 },
+              mr: 2,
+              fontStyle: 'italic',
+            }}>
+            {summary}
+          </Typography>
         </AccordionSummary>
       </Container>
 
@@ -74,11 +114,13 @@ function AccordionFilter({ name, defaultExpanded, children }) {
 AccordionFilter.propTypes = {
   name: PropTypes.string.isRequired,
   defaultExpanded: PropTypes.bool,
+  summary: PropTypes.string,
   children: PropTypes.node.isRequired,
 };
 
 AccordionFilter.defaultProps = {
   defaultExpanded: false,
+  summary: undefined,
 };
 
 export default function FilterPanel({ onClose }) {
@@ -105,6 +147,7 @@ export default function FilterPanel({ onClose }) {
       comp: <MajorFilter majors={majors} onChange={setMajors} />,
       changed:
         JSON.stringify(majors || []) !== JSON.stringify(params.majors || []),
+      summary: getSummary({ majors }),
     },
     Amount: {
       comp: (
@@ -116,11 +159,13 @@ export default function FilterPanel({ onClose }) {
         />
       ),
       changed: minAmount !== params.minAmount || maxAmount !== params.maxAmount,
+      summary: getSummary({ minAmount, maxAmount }),
     },
     'Grade Level': {
       comp: <GradeLevelFilter grades={new Set(grades)} onChange={setGrades} />,
       changed:
         JSON.stringify(grades || []) !== JSON.stringify(params.grades || []),
+      summary: getSummary({ grades }),
     },
   };
 
@@ -196,7 +241,9 @@ export default function FilterPanel({ onClose }) {
       )}
 
       {Object.entries(filters).map(([name, filter]) => (
-        <AccordionFilter name={name}>{filter.comp}</AccordionFilter>
+        <AccordionFilter name={name} summary={filter.summary}>
+          {filter.comp}
+        </AccordionFilter>
       ))}
 
       <Stack direction="row" spacing={1} sx={{ m: 2 }}>
