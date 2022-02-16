@@ -139,9 +139,6 @@ export default function FilterPanel({ onClose }) {
     setMajors(undefined);
   }
 
-  const isAnyFilterActive =
-    minAmount || maxAmount || grades?.length > 0 || majors?.length > 0;
-
   const filters = {
     Major: {
       comp: <MajorFilter majors={majors} onChange={setMajors} />,
@@ -169,13 +166,16 @@ export default function FilterPanel({ onClose }) {
     },
   };
 
-  const filtersChanged = Object.keys(filters).some((k) => filters[k].changed);
+  const isAnyFilterActive =
+    minAmount || maxAmount || grades?.length > 0 || majors?.length > 0;
 
-  const filterCount =
-    (params.grades?.length ?? 0) +
-    (params.majors?.length ?? 0) +
-    (params.minAmount ? 1 : 0) +
-    (params.maxAmount ? 1 : 0);
+  const someParamFilters =
+    params.minAmount ||
+    params.maxAmount ||
+    params.grades?.length > 0 ||
+    params.majors?.length > 0;
+
+  const filtersChanged = Object.keys(filters).some((k) => filters[k].changed);
 
   return (
     <Box>
@@ -198,7 +198,7 @@ export default function FilterPanel({ onClose }) {
         <Typography>Filters</Typography>
       </Toolbar>
 
-      {filterCount > 0 && (
+      {someParamFilters && (
         <AccordionFilter name="Active Filters" defaultExpanded>
           {params.majors?.map((e) => (
             <FilterChip
