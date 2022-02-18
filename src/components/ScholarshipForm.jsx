@@ -28,6 +28,7 @@ import { SCHOOLS, STATES, MAJORS } from '../types/options';
 import GradeLevel from '../types/GradeLevel';
 import Ethnicity from '../types/Ethnicity';
 import ScholarshipsContext from '../models/ScholarshipsContext';
+import { detectedReqs } from '../lib/lint';
 
 const labelStyle = { marginBottom: 2 };
 
@@ -59,6 +60,9 @@ function ScholarshipForm({ scholarship }) {
         .finally(() => setSubmitting(false));
     },
   });
+
+  const missingReqs = detectedReqs(formik.values.description);
+  console.log(missingReqs);
 
   // Initially requirements is null but is set to {} when the "no requirements"
   // checkbox is explicitly set.

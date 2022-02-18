@@ -268,3 +268,25 @@ export function lint(scholarship: ScholarshipData): String[] {
   // TODO(#858): Detect more errors.
   return issues;
 }
+
+export function detectedReqs(desc: string): any {
+  const reqs: Record<string, any> = {};
+
+  const missingGPA = parseMinGPA(desc)?.value;
+  const missingGrades = parseGradeLevels(desc);
+  const missingSchools = parseSchools(desc)?.map(
+    ({ name, state }) => `${name} (${state})`
+  );
+  const missingStates = parseStates(desc)?.map((s) => s.abbr);
+  const missingMajors = parseMajors(desc);
+  const missingEthnicites = parseEthnicities(desc);
+
+  if (missingGPA) reqs.gpa = parseFloat(missingGPA);
+  if (missingGrades.length) reqs.grades = missingGrades;
+  if (missingSchools.length) reqs.schools = missingSchools;
+  if (missingStates.length) reqs.states = missingStates;
+  if (missingMajors.length) reqs.majors = missingMajors;
+  if (missingEthnicites.length) reqs.ethnicities = missingEthnicites;
+
+  return reqs;
+}
