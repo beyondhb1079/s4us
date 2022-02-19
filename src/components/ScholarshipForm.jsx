@@ -28,7 +28,7 @@ import { SCHOOLS, STATES, MAJORS } from '../types/options';
 import GradeLevel from '../types/GradeLevel';
 import Ethnicity from '../types/Ethnicity';
 import ScholarshipsContext from '../models/ScholarshipsContext';
-import { detectedReqs } from '../lib/lint';
+import { lint, detectedReqs } from '../lib/lint';
 
 const labelStyle = { marginBottom: 2 };
 
@@ -62,7 +62,7 @@ function ScholarshipForm({ scholarship }) {
   });
 
   const missingReqs = detectedReqs(formik.values.description);
-  console.log(missingReqs);
+  const lintIssues = lint(formik.values);
 
   // Initially requirements is null but is set to {} when the "no requirements"
   // checkbox is explicitly set.
@@ -245,57 +245,74 @@ function ScholarshipForm({ scholarship }) {
   const onLastStep = activeStep == Object.keys(stepperItems).length - 1;
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <Stepper activeStep={activeStep} orientation="vertical">
-        {Object.entries(stepperItems).map(
-          ([label, { description, content }]) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-              <StepContent>
-                <Typography>{description}</Typography>
-                <Box marginY={3}>{content}</Box>
-                <Button
-                  disabled={activeStep === 0}
-                  onClick={() => setActiveStep((prevStep) => prevStep - 1)}>
-                  BACK
-                </Button>
-                <Button
-                  key={activeStep}
-                  variant="contained"
-                  color="primary"
-                  disabled={formik.isSubmitting}
-                  type={onLastStep ? 'submit' : 'button'}
-                  onClick={() => {
-                    if (onLastStep) return;
-                    formik.validateForm().then((errors) => {
-                      const checkboxError = validationCheck();
-                      if (checkboxError)
-                        errors = { ...errors, checkbox: checkboxError };
+    <>
+      <form onSubmit={formik.handleSubmit}>
+        <Stepper activeStep={activeStep} orientation="vertical">
+          {Object.entries(stepperItems).map(
+            ([label, { description, content }]) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+                <StepContent>
+                  <Typography>{description}</Typography>
+                  <Box marginY={3}>{content}</Box>
+                  <Button
+                    disabled={activeStep === 0}
+                    onClick={() => setActiveStep((prevStep) => prevStep - 1)}>
+                    BACK
+                  </Button>
+                  <Button
+                    key={activeStep}
+                    variant="contained"
+                    color="primary"
+                    disabled={formik.isSubmitting}
+                    type={onLastStep ? 'submit' : 'button'}
+                    onClick={() => {
+                      if (onLastStep) return;
+                      formik.validateForm().then((errors) => {
+                        const checkboxError = validationCheck();
+                        if (checkboxError)
+                          errors = { ...errors, checkbox: checkboxError };
 
-                      if (Object.keys(errors).length === 0)
-                        setActiveStep((prevStep) => prevStep + 1);
+                        if (Object.keys(errors).length === 0)
+                          setActiveStep((prevStep) => prevStep + 1);
 
-                      return formik.setErrors(errors);
-                    });
-                  }}>
-                  {onLastStep ? 'Submit' : 'Next'}
-                </Button>
-                {submissionError && (
-                  <Alert
-                    severity="error"
-                    onClose={() => setSubmissionError(null)}>
-                    <AlertTitle>
-                      There was an error submitting your changes:
-                    </AlertTitle>
-                    {submissionError.toString()}
-                  </Alert>
-                )}
-              </StepContent>
-            </Step>
-          )
-        )}
-      </Stepper>
-    </form>
+                        return formik.setErrors(errors);
+                      });
+                    }}>
+                    {onLastStep ? 'Submit' : 'Next'}
+                  </Button>
+                  {submissionError && (
+                    <Alert
+                      severity="error"
+                      onClose={() => setSubmissionError(null)}>
+                      <AlertTitle>
+                        There was an error submitting your changes:
+                      </AlertTitle>
+                      {submissionError.toString()}
+                    </Alert>
+                  )}
+                </StepContent>
+              </Step>
+            )
+          )}
+        </Stepper>
+      </form>
+
+      {lintIssues.length > 0 && (
+        <Alert severity="warning" sx={{ mt: 2 }}>
+          <AlertTitle>
+            <strong>{lintIssues.length} requirements detected</strong>
+          </AlertTitle>
+          <Box component="ul">
+            {missingReqs.messages.map((m, i) => (
+              <Typography key={i} component="li">
+                {m}
+              </Typography>
+            ))}
+          </Box>
+        </Alert>
+      )}
+    </>
   );
 }
 

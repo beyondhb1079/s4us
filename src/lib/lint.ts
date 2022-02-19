@@ -270,23 +270,52 @@ export function lint(scholarship: ScholarshipData): String[] {
 }
 
 export function detectedReqs(desc: string): any {
-  const reqs: Record<string, any> = {};
+  const reqs: Record<string, any> = { requirements: {} };
+  const messages: string[] = [];
 
   const missingGPA = parseMinGPA(desc)?.value;
   const missingGrades = parseGradeLevels(desc);
   const missingSchools = parseSchools(desc)?.map(
     ({ name, state }) => `${name} (${state})`
   );
-  const missingStates = parseStates(desc)?.map((s) => s.abbr);
+  const missingStates = parseStates(desc);
   const missingMajors = parseMajors(desc);
   const missingEthnicites = parseEthnicities(desc);
 
-  if (missingGPA) reqs.gpa = parseFloat(missingGPA);
-  if (missingGrades.length) reqs.grades = missingGrades;
-  if (missingSchools.length) reqs.schools = missingSchools;
-  if (missingStates.length) reqs.states = missingStates;
-  if (missingMajors.length) reqs.majors = missingMajors;
-  if (missingEthnicites.length) reqs.ethnicities = missingEthnicites;
+  if (missingGPA) {
+    reqs.requirements.gpa = parseFloat(missingGPA);
+    messages.push(`Minimum GPA found: ${missingGPA}`);
+  }
+  if (missingGrades.length) {
+    reqs.requirements.grades = missingGrades;
+    messages.push(
+      `Grade levels found: ${missingGrades
+        .map((g) => GradeLevel.toString(g))
+        .join(', ')}`
+    );
+  }
+  if (missingSchools.length) {
+    reqs.requirements.schools = missingSchools;
+    messages.push(`Schools found: ${missingSchools.join(', ')}`);
+  }
+  if (missingStates.length) {
+    reqs.requirements.states = missingStates.map((s) => s.abbr);
+    messages.push(
+      `States found: ${missingStates.map((s) => s.name).join(', ')}`
+    );
+  }
+  if (missingMajors.length) {
+    reqs.requirements.majors = missingMajors;
+    messages.push(`Majors found: ${missingMajors.join(', ')}`);
+  }
+  if (missingEthnicites.length) {
+    reqs.requirements.ethnicities = missingEthnicites;
+    messages.push(
+      `Ethnicities found: ${missingEthnicites
+        .map((e) => Ethnicity.toString(e))
+        .join(', ')}`
+    );
+  }
 
-  return reqs;
+  return { reqs, messages };
 }
