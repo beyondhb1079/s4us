@@ -79,7 +79,7 @@ export default function ScholarshipCard({
   const CardAreaComponent: React.FC<{
     [key: string]: any;
   }> = detailed ? Box : CardActionArea;
-  const lintIssues = canEdit || preview ? lint(scholarship.data) : [];
+  const lintIssues = canEdit || preview ? lint(scholarship.data).issues : [];
   return (
     <Card variant="outlined">
       <CardAreaComponent

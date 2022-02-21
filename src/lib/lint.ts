@@ -144,7 +144,10 @@ const dateRe =
   /((Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w*\.? (\d+)(st|nd|rd|th)?(,? \d{4})?)|\d{1,2}\/\d{1,2}\/\d{2,4}/gi;
 
 /** Lints the given scholarship for mismatches and returns a list of errors as strings. */
-export function lint(scholarship: ScholarshipData): String[] {
+export function lint(scholarship: ScholarshipData): {
+  issues: String[];
+  lintVals: Record<string, any>;
+} {
   const {
     amount,
     deadline,
@@ -153,6 +156,7 @@ export function lint(scholarship: ScholarshipData): String[] {
   } = scholarship;
   const { ethnicities, grades, majors, schools, states } = reqs || {};
   const issues = [];
+  const lintVals: Record<string, any> = {};
 
   const outdatedSchoolPeriods = parseOutdatedSchoolPeriods(desc);
   if (outdatedSchoolPeriods.length) {
@@ -215,6 +219,7 @@ export function lint(scholarship: ScholarshipData): String[] {
         `Min GPA requirement is set to ${reqs.gpa} but seems to be ${parsedVal} per: "${gpaMatch.phrase}"`
       );
     }
+    lintVals.gpa = parsedVal;
   }
 
   // Look for potentially missing requirements
@@ -227,12 +232,14 @@ export function lint(scholarship: ScholarshipData): String[] {
         missingGrades.map(GradeLevel.toString)
       )}`
     );
+    lintVals.grades = missingGrades;
   }
   const missingMajors = parseMajors(desc).filter((m) => !majors?.includes(m));
   if (missingMajors.length) {
     issues.push(
       `Potentially missing major requirements: ${JSON.stringify(missingMajors)}`
     );
+    lintVals.majors = missingMajors;
   }
   const missingSchools = parseSchools(desc).filter(
     ({ name, state }) => !schools?.includes(`${name} (${state})`)
@@ -242,6 +249,9 @@ export function lint(scholarship: ScholarshipData): String[] {
       `Potentially missing school requirements: ${JSON.stringify(
         missingSchools.map((s) => `${s.name} (${s.state})`)
       )}`
+    );
+    lintVals.schools = missingSchools.map(
+      ({ name, state }) => `${name} (${state})`
     );
   }
   const missingStates = parseStates(desc).filter(
@@ -253,6 +263,7 @@ export function lint(scholarship: ScholarshipData): String[] {
         missingStates.map((s) => s.abbr)
       )}`
     );
+    lintVals.states = missingStates.map((s) => s.abbr);
   }
   const missingEthnicites = parseEthnicities(desc).filter(
     (e) => !ethnicities?.includes(e)
@@ -263,59 +274,9 @@ export function lint(scholarship: ScholarshipData): String[] {
         missingEthnicites.map(Ethnicity.toString)
       )}`
     );
+    lintVals.ethnicities = missingEthnicites;
   }
 
   // TODO(#858): Detect more errors.
-  return issues;
-}
-
-export function detectedReqs(desc: string): any {
-  const reqs: Record<string, any> = { requirements: {} };
-  const messages: string[] = [];
-
-  const missingGPA = parseMinGPA(desc)?.value;
-  const missingGrades = parseGradeLevels(desc);
-  const missingSchools = parseSchools(desc)?.map(
-    ({ name, state }) => `${name} (${state})`
-  );
-  const missingStates = parseStates(desc);
-  const missingMajors = parseMajors(desc);
-  const missingEthnicites = parseEthnicities(desc);
-
-  if (missingGPA) {
-    reqs.requirements.gpa = parseFloat(missingGPA);
-    messages.push(`Minimum GPA found: ${missingGPA}`);
-  }
-  if (missingGrades.length) {
-    reqs.requirements.grades = missingGrades;
-    messages.push(
-      `Grade levels found: ${missingGrades
-        .map((g) => GradeLevel.toString(g))
-        .join(', ')}`
-    );
-  }
-  if (missingSchools.length) {
-    reqs.requirements.schools = missingSchools;
-    messages.push(`Schools found: ${missingSchools.join(', ')}`);
-  }
-  if (missingStates.length) {
-    reqs.requirements.states = missingStates.map((s) => s.abbr);
-    messages.push(
-      `States found: ${missingStates.map((s) => s.name).join(', ')}`
-    );
-  }
-  if (missingMajors.length) {
-    reqs.requirements.majors = missingMajors;
-    messages.push(`Majors found: ${missingMajors.join(', ')}`);
-  }
-  if (missingEthnicites.length) {
-    reqs.requirements.ethnicities = missingEthnicites;
-    messages.push(
-      `Ethnicities found: ${missingEthnicites
-        .map((e) => Ethnicity.toString(e))
-        .join(', ')}`
-    );
-  }
-
-  return { reqs, messages };
+  return { issues, lintVals };
 }

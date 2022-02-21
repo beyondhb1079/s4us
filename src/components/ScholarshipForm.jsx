@@ -28,7 +28,7 @@ import { SCHOOLS, STATES, MAJORS } from '../types/options';
 import GradeLevel from '../types/GradeLevel';
 import Ethnicity from '../types/Ethnicity';
 import ScholarshipsContext from '../models/ScholarshipsContext';
-import { lint, detectedReqs } from '../lib/lint';
+import { lint } from '../lib/lint';
 
 const labelStyle = { marginBottom: 2 };
 
@@ -37,6 +37,8 @@ function ScholarshipForm({ scholarship }) {
   const [submissionError, setSubmissionError] = useState(null);
   const { invalidate } = useContext(ScholarshipsContext);
   const navigate = useNavigate();
+
+  const [openAlert, setOpenAlert] = useState(true);
 
   const formik = useFormik({
     initialValues: scholarship.data,
@@ -60,9 +62,6 @@ function ScholarshipForm({ scholarship }) {
         .finally(() => setSubmitting(false));
     },
   });
-
-  const missingReqs = detectedReqs(formik.values.description);
-  const lintIssues = lint(formik.values);
 
   // Initially requirements is null but is set to {} when the "no requirements"
   // checkbox is explicitly set.
@@ -243,6 +242,8 @@ function ScholarshipForm({ scholarship }) {
   }
 
   const onLastStep = activeStep == Object.keys(stepperItems).length - 1;
+  const lintIssues =
+    activeStep === 1 ? lint(formik.values) : { issues: {}, lintVals: {} };
 
   return (
     <>
@@ -298,18 +299,27 @@ function ScholarshipForm({ scholarship }) {
         </Stepper>
       </form>
 
-      {lintIssues.length > 0 && (
-        <Alert severity="warning" sx={{ mt: 2 }}>
+      {openAlert && Object.keys(lintIssues?.lintVals).length > 0 && (
+        <Alert
+          severity="warning"
+          sx={{ mt: 2 }}
+          onClose={() => {
+            setOpenAlert(false);
+          }}>
           <AlertTitle>
-            <strong>{lintIssues.length} requirements detected</strong>
+            <strong>
+              We found the following potential requirements in the description.
+              Would you like to populate these values?
+            </strong>
           </AlertTitle>
           <Box component="ul">
-            {missingReqs.messages.map((m, i) => (
+            {lintIssues.issues.map((m, i) => (
               <Typography key={i} component="li">
                 {m}
               </Typography>
             ))}
           </Box>
+          <Button variant="contained">Autofill</Button>
         </Alert>
       )}
     </>
