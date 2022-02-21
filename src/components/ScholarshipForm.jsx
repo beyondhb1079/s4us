@@ -299,7 +299,7 @@ function ScholarshipForm({ scholarship }) {
         </Stepper>
       </form>
 
-      {openAlert && Object.keys(lintIssues?.lintVals).length > 0 && (
+      {openAlert && Object.keys(lintIssues?.issues).length > 0 && (
         <Alert
           severity="warning"
           sx={{ mt: 2 }}
@@ -319,7 +319,17 @@ function ScholarshipForm({ scholarship }) {
               </Typography>
             ))}
           </Box>
-          <Button variant="contained">Autofill</Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              const vals = formik.values.requirements;
+              formik.setFieldValue('requirements', {
+                ...vals,
+                ...lintIssues.lintVals,
+              });
+            }}>
+            Autofill
+          </Button>
         </Alert>
       )}
     </>
