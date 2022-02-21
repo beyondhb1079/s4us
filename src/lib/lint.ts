@@ -167,12 +167,13 @@ export function lint(scholarship: ScholarshipData): String[] {
       'Decription is a single line but contains several "-" characters. Should those be separate lines?'
     );
   }
-  const amountMatches = desc.match(/\$[0-9,]+/g) || [];
+  const amountMatches =
+    desc.match(/\$[0-9,]+/g)?.map((s) => s.replace(',', '')) || [];
   if (
     amountMatches.length &&
     (amount.type === AmountType.Fixed || amount.type === AmountType.Varies) &&
-    ((amount.min && !desc.includes(amount.min.toString())) ||
-      (amount.max && !desc.includes(amount.max.toString())))
+    ((amount.min && !amountMatches.includes('$' + amount.min.toString())) ||
+      (amount.max && !amountMatches.includes('$' + amount.max.toString())))
   ) {
     const want = ScholarshipAmount.toString(amount);
     issues.push(
