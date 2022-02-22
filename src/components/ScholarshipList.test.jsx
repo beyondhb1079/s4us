@@ -29,6 +29,18 @@ const renderWithProviders = (ui) =>
     { wrapper: MemoryRouter }
   );
 
+// https://stackoverflow.com/a/62148101
+beforeEach(() => {
+  // IntersectionObserver isn't available in test environment
+  const mockIntersectionObserver = jest.fn();
+  mockIntersectionObserver.mockReturnValue({
+    observe: () => null,
+    unobserve: () => null,
+    disconnect: () => null,
+  });
+  window.IntersectionObserver = mockIntersectionObserver;
+});
+
 test('renders no results', async () => {
   renderWithProviders(<ScholarshipList />);
 
@@ -47,28 +59,7 @@ test('renders custom no results node', async () => {
   expect(button).toHaveTextContent('Oh no');
 });
 
-test('renders results with load more', async () => {
-  const want = [];
-  for (var i = 0; i < 10; i++) {
-    want.push({
-      name: `Foo scholarship ${i}`,
-      amount: ScholarshipAmount.fixed(1000),
-      description: 'Foo description',
-      deadline: new Date('3020-12-17'),
-      website: 'foo.com',
-    });
-  }
-  await Promise.all(want.map((s) => Scholarships.new(s).save()));
-
-  renderWithProviders(<ScholarshipList />);
-
-  expect(await screen.findByText('Load More')).toBeInTheDocument();
-  want.forEach(({ name }) =>
-    expect(screen.getByText(name)).toBeInTheDocument()
-  );
-});
-
-test('renders results without load more', async () => {
+test('renders end of results', async () => {
   const data = {
     name: 'Foo scholarship',
     amount: ScholarshipAmount.fixed(1000),
