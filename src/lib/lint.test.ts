@@ -64,6 +64,7 @@ describe('parseGradeLevels()', () => {
         GradeLevel.HsJunior,
         GradeLevel.HsSenior,
       ],
+      'graduating seniors from high school': [GradeLevel.HsSenior],
       'freshmen or sophomores': [
         GradeLevel.CollegeFreshman,
         GradeLevel.CollegeSophomore,

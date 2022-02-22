@@ -54,7 +54,11 @@ export function parseGradeLevels(desc: string): GradeLevel[] {
     [GradeLevel.HsFreshman]: ['9th grade'],
     [GradeLevel.HsSophomore]: ['10th grade'],
     [GradeLevel.HsJunior]: ['11th grade', 'high school[^.]* junior'],
-    [GradeLevel.HsSenior]: ['12th grade', 'high school[^.]* senior'],
+    [GradeLevel.HsSenior]: [
+      '12th grade',
+      'high school[^.]* senior',
+      'graduating senior[^.]* high school',
+    ],
     [GradeLevel.CollegeFreshman]: ['freshm[ae]n'],
     [GradeLevel.CollegeSophomore]: ['sophomore'],
     [GradeLevel.CollegeJunior]: ['(college|undergraduate)[^.]* junior'],
