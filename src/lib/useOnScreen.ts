@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
+// For additional background on this hook:
+// https://usehooks.com/useOnScreen/
+
 /** Hook to detect whether an element is on the screen or not. */
 export default function useOnScreen(
   ref: React.RefObject<HTMLElement>
