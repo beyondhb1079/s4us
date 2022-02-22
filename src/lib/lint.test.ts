@@ -108,6 +108,9 @@ describe('parseMajors()', () => {
   test('does not detect unknown major', () => {
     expect(parseMajors('Welsh majors may apply')).toEqual([]);
   });
+  test('does not mis-detect substrings as majors', () => {
+    expect(parseMajors('Educational institutions')).toEqual([]);
+  });
 });
 
 describe('parseSchools()', () => {
