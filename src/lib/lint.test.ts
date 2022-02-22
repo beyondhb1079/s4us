@@ -222,6 +222,7 @@ describe('lint()', () => {
       [range500to1000, 'nor if range mentions no $ amount'],
       [max1000, 'nor if max only mentions max $1000 amount'],
       [min1000, 'nor if min only mentions min $1000 amount'],
+      [min1000, 'nor if min only mentions $1,000 with a comma'],
     ].forEach(([a, d]) =>
       expect(
         lint({
