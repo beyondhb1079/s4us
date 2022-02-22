@@ -104,7 +104,9 @@ export function parseGradeLevels(desc: string): GradeLevel[] {
 /** Parses the given description for majors and returns the ones found. */
 export function parseMajors(desc: string): string[] {
   return Array.from(MAJORS).filter((m) =>
-    desc.toLowerCase().includes(m.toLowerCase())
+    desc
+      .toLowerCase()
+      .match(new RegExp('(\\W|^)' + m.toLowerCase() + '(\\W|$)'))
   );
 }
 
