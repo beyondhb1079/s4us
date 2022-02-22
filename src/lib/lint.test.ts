@@ -64,6 +64,7 @@ describe('parseGradeLevels()', () => {
         GradeLevel.HsJunior,
         GradeLevel.HsSenior,
       ],
+      'graduating seniors from high school': [GradeLevel.HsSenior],
       'freshmen or sophomores': [
         GradeLevel.CollegeFreshman,
         GradeLevel.CollegeSophomore,
@@ -107,6 +108,9 @@ describe('parseMajors()', () => {
   });
   test('does not detect unknown major', () => {
     expect(parseMajors('Welsh majors may apply')).toEqual([]);
+  });
+  test('does not mis-detect substrings as majors', () => {
+    expect(parseMajors('Educational institutions')).toEqual([]);
   });
 });
 
