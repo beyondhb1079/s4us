@@ -28,7 +28,7 @@ import { SCHOOLS, STATES, MAJORS } from '../types/options';
 import GradeLevel from '../types/GradeLevel';
 import Ethnicity from '../types/Ethnicity';
 import ScholarshipsContext from '../models/ScholarshipsContext';
-import { lint } from '../lib/lint';
+import { lintReqs } from '../lib/lint';
 
 const labelStyle = { marginBottom: 2 };
 
@@ -62,6 +62,9 @@ function ScholarshipForm({ scholarship }) {
         .finally(() => setSubmitting(false));
     },
   });
+
+  let lintIssues = {};
+  if (activeStep === 1) lintIssues = lintReqs(formik.values);
 
   // Initially requirements is null but is set to {} when the "no requirements"
   // checkbox is explicitly set.
@@ -128,6 +131,38 @@ function ScholarshipForm({ scholarship }) {
         'Include information that is required for applicants to have.',
       content: (
         <Grid container spacing={3}>
+          {openAlert && lintIssues?.messages?.length > 0 && (
+            <Alert
+              severity="warning"
+              sx={{ mt: 2 }}
+              onClose={() => {
+                setOpenAlert(false);
+              }}>
+              <AlertTitle>
+                <strong>
+                  We found the following potential requirements in the
+                  description. Would you like to populate these values?
+                </strong>
+              </AlertTitle>
+              <Box component="ul">
+                {lintIssues.messages?.map((m, i) => (
+                  <Typography key={i} component="li">
+                    {m}
+                  </Typography>
+                ))}
+              </Box>
+              <Button
+                onClick={() => {
+                  const vals = formik.values.requirements;
+                  formik.setFieldValue('requirements', {
+                    ...vals,
+                    ...lintIssues.reqs,
+                  });
+                }}>
+                Autofill
+              </Button>
+            </Alert>
+          )}
           <Grid item xs={12}>
             <FormControlLabel
               control={
@@ -242,97 +277,59 @@ function ScholarshipForm({ scholarship }) {
   }
 
   const onLastStep = activeStep == Object.keys(stepperItems).length - 1;
-  const lintIssues =
-    activeStep === 1 ? lint(formik.values) : { issues: {}, lintVals: {} };
 
   return (
-    <>
-      <form onSubmit={formik.handleSubmit}>
-        <Stepper activeStep={activeStep} orientation="vertical">
-          {Object.entries(stepperItems).map(
-            ([label, { description, content }]) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-                <StepContent>
-                  <Typography>{description}</Typography>
-                  <Box marginY={3}>{content}</Box>
-                  <Button
-                    disabled={activeStep === 0}
-                    onClick={() => setActiveStep((prevStep) => prevStep - 1)}>
-                    BACK
-                  </Button>
-                  <Button
-                    key={activeStep}
-                    variant="contained"
-                    color="primary"
-                    disabled={formik.isSubmitting}
-                    type={onLastStep ? 'submit' : 'button'}
-                    onClick={() => {
-                      if (onLastStep) return;
-                      formik.validateForm().then((errors) => {
-                        const checkboxError = validationCheck();
-                        if (checkboxError)
-                          errors = { ...errors, checkbox: checkboxError };
+    <form onSubmit={formik.handleSubmit}>
+      <Stepper activeStep={activeStep} orientation="vertical">
+        {Object.entries(stepperItems).map(
+          ([label, { description, content }]) => (
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+              <StepContent>
+                <Typography>{description}</Typography>
+                <Box marginY={3}>{content}</Box>
+                <Button
+                  disabled={activeStep === 0}
+                  onClick={() => setActiveStep((prevStep) => prevStep - 1)}>
+                  BACK
+                </Button>
+                <Button
+                  key={activeStep}
+                  variant="contained"
+                  color="primary"
+                  disabled={formik.isSubmitting}
+                  type={onLastStep ? 'submit' : 'button'}
+                  onClick={() => {
+                    if (onLastStep) return;
+                    formik.validateForm().then((errors) => {
+                      const checkboxError = validationCheck();
+                      if (checkboxError)
+                        errors = { ...errors, checkbox: checkboxError };
 
-                        if (Object.keys(errors).length === 0)
-                          setActiveStep((prevStep) => prevStep + 1);
+                      if (Object.keys(errors).length === 0)
+                        setActiveStep((prevStep) => prevStep + 1);
 
-                        return formik.setErrors(errors);
-                      });
-                    }}>
-                    {onLastStep ? 'Submit' : 'Next'}
-                  </Button>
-                  {submissionError && (
-                    <Alert
-                      severity="error"
-                      onClose={() => setSubmissionError(null)}>
-                      <AlertTitle>
-                        There was an error submitting your changes:
-                      </AlertTitle>
-                      {submissionError.toString()}
-                    </Alert>
-                  )}
-                </StepContent>
-              </Step>
-            )
-          )}
-        </Stepper>
-      </form>
-
-      {openAlert && Object.keys(lintIssues?.issues).length > 0 && (
-        <Alert
-          severity="warning"
-          sx={{ mt: 2 }}
-          onClose={() => {
-            setOpenAlert(false);
-          }}>
-          <AlertTitle>
-            <strong>
-              We found the following potential requirements in the description.
-              Would you like to populate these values?
-            </strong>
-          </AlertTitle>
-          <Box component="ul">
-            {lintIssues.issues.map((m, i) => (
-              <Typography key={i} component="li">
-                {m}
-              </Typography>
-            ))}
-          </Box>
-          <Button
-            variant="contained"
-            onClick={() => {
-              const vals = formik.values.requirements;
-              formik.setFieldValue('requirements', {
-                ...vals,
-                ...lintIssues.lintVals,
-              });
-            }}>
-            Autofill
-          </Button>
-        </Alert>
-      )}
-    </>
+                      return formik.setErrors(errors);
+                    });
+                  }}>
+                  {onLastStep ? 'Submit' : 'Next'}
+                </Button>
+                {submissionError && (
+                  <Alert
+                    severity="error"
+                    onClose={() => setSubmissionError(null)}>
+                    <AlertTitle>
+                      There was an error submitting your changes:
+                    </AlertTitle>
+                    {submissionError.toString()}
+                  </Alert>
+                )}
+              </StepContent>
+            </Step>
+          )
+        )}
+      </Stepper>
+    </form>
   );
 }
 
