@@ -35,6 +35,18 @@ const app = initializeTestApp({ projectId: 'list-scholarships-test' });
 beforeAll(() => clearFirestoreData(app.options));
 afterAll(() => app.delete());
 
+// https://stackoverflow.com/a/62148101
+beforeEach(() => {
+  // IntersectionObserver isn't available in test environment
+  const mockIntersectionObserver = jest.fn();
+  mockIntersectionObserver.mockReturnValue({
+    observe: () => null,
+    unobserve: () => null,
+    disconnect: () => null,
+  });
+  window.IntersectionObserver = mockIntersectionObserver;
+});
+
 test('renders a list of scholarships', async () => {
   const data = {
     name: 'Foo scholarship',
