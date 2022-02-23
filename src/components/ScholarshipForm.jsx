@@ -131,38 +131,40 @@ function ScholarshipForm({ scholarship }) {
         'Include information that is required for applicants to have.',
       content: (
         <Grid container spacing={3}>
-          {openAlert && lintIssues?.messages?.length > 0 && (
-            <Alert
-              severity="warning"
-              sx={{ mt: 2 }}
-              onClose={() => {
-                setOpenAlert(false);
-              }}>
-              <AlertTitle>
-                <strong>
-                  We found the following potential requirements in the
-                  description. Would you like to populate these values?
-                </strong>
-              </AlertTitle>
-              <Box component="ul">
-                {lintIssues.messages?.map((m, i) => (
-                  <Typography key={i} component="li">
-                    {m}
-                  </Typography>
-                ))}
-              </Box>
-              <Button
-                onClick={() => {
-                  const vals = formik.values.requirements;
-                  formik.setFieldValue('requirements', {
-                    ...vals,
-                    ...lintIssues.reqs,
-                  });
+          <Grid item xs={12}>
+            {openAlert && lintIssues?.messages?.length > 0 && (
+              <Alert
+                severity="warning"
+                sx={{ mt: 2 }}
+                onClose={() => {
+                  setOpenAlert(false);
                 }}>
-                Autofill
-              </Button>
-            </Alert>
-          )}
+                <AlertTitle>
+                  <strong>
+                    We found the following potential requirements in the
+                    description. Would you like to populate these values?
+                  </strong>
+                </AlertTitle>
+                <Box component="ul">
+                  {lintIssues.messages?.map((m, i) => (
+                    <Typography key={i} component="li">
+                      {m}
+                    </Typography>
+                  ))}
+                </Box>
+                <Button
+                  onClick={() => {
+                    const vals = formik.values.requirements;
+                    formik.setFieldValue('requirements', {
+                      ...vals,
+                      ...lintIssues.reqs,
+                    });
+                  }}>
+                  Autofill
+                </Button>
+              </Alert>
+            )}
+          </Grid>
           <Grid item xs={12}>
             <FormControlLabel
               control={
