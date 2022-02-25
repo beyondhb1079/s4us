@@ -180,7 +180,7 @@ export default function ScholarshipCard({
                 label="GPA"
                 text={
                   reqs?.gpa && Number.isInteger(reqs?.gpa)
-                    ? reqs.gpa.toPrecision(1)
+                    ? reqs.gpa.toFixed(1)
                     : reqs?.gpa?.toString() || 'All'
                 }
               />
