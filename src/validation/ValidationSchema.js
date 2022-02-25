@@ -47,10 +47,10 @@ const validationSchema = yup.object({
       .number()
       .test(
         'valid GPA',
-        'Please enter a valid GPA, rounded to one decimal place',
+        'Please enter a valid GPA, rounded to two decimal places',
         (gpa) =>
           gpa === undefined ||
-          (gpa > 0 && gpa <= 4 && gpa.toString().match(/^[0-4](\.\d)?$/))
+          (gpa > 0 && gpa <= 4 && gpa.toString().match(/^[0-4]\.\d\d?$/))
       ),
   }),
 });
