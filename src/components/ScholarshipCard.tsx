@@ -178,7 +178,7 @@ export default function ScholarshipCard({
               />
               <DetailCardCell
                 label="GPA"
-                text={requirements?.gpa?.toFixed(1) || 'All'}
+                text={requirements?.gpa?.toFixed(2) || 'All'}
               />
               <DetailCardCell
                 label="Grades"
