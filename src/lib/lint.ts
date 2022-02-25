@@ -149,15 +149,92 @@ export function parseEthnicities(desc: string): Ethnicity[] {
 const dateRe =
   /((Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w*\.? (\d+)(st|nd|rd|th)?(,? \d{4})?)|\d{1,2}\/\d{1,2}\/\d{2,4}/gi;
 
+export function lintReqs(scholarship: ScholarshipData): any {
+  const { description: desc, requirements } = scholarship;
+  const { ethnicities, grades, majors, schools, states } = requirements || {};
+  const messages: string[] = [];
+  const reqs: Record<string, any> = {};
+
+  const matchedGpa = parseMinGPA(desc);
+  const missingGrades = parseGradeLevels(desc).filter(
+    (g) => !grades?.includes(g)
+  );
+  const missingSchools = parseSchools(desc).filter(
+    ({ name, state }) => !schools?.includes(`${name} (${state})`)
+  );
+  const missingStates = parseStates(desc).filter(
+    ({ abbr }) => !states?.includes(abbr)
+  );
+  const missingMajors = parseMajors(desc).filter((m) => !majors?.includes(m));
+  const missingEthnicites = parseEthnicities(desc).filter(
+    (e) => !ethnicities?.includes(e)
+  );
+
+  if (matchedGpa) {
+    const parsedVal = Number.parseFloat(matchedGpa.value);
+    if (!requirements?.gpa) {
+      messages.push(
+        `No GPA requirement specified but found: "${matchedGpa.phrase}"`
+      );
+    } else if (requirements.gpa !== parsedVal) {
+      messages.push(
+        `Min GPA requirement is set to ${reqs.gpa} but seems to be ${parsedVal} per: "${matchedGpa.phrase}"`
+      );
+    }
+    reqs.gpa = parsedVal;
+  }
+
+  if (missingGrades.length) {
+    messages.push(
+      `Potentially missing grade level requirements: ${JSON.stringify(
+        missingGrades.map(GradeLevel.toString)
+      )}`
+    );
+    reqs.grades = missingGrades;
+  }
+
+  if (missingSchools.length) {
+    messages.push(
+      `Potentially missing school requirements: ${JSON.stringify(
+        missingSchools.map((s) => `${s.name} (${s.state})`)
+      )}`
+    );
+    reqs.schools = missingSchools.map(
+      ({ name, state }) => `${name} (${state})`
+    );
+  }
+
+  if (missingStates.length) {
+    messages.push(
+      `Potentially missing state requirements: ${JSON.stringify(
+        missingStates.map((s) => s.abbr)
+      )}`
+    );
+    reqs.states = missingStates.map((s) => s.abbr);
+  }
+
+  if (missingMajors.length) {
+    messages.push(
+      `Potentially missing major requirements: ${JSON.stringify(missingMajors)}`
+    );
+    reqs.majors = missingMajors;
+  }
+
+  if (missingEthnicites.length) {
+    messages.push(
+      `Potentially missing ethnicity requirements: ${JSON.stringify(
+        missingEthnicites.map(Ethnicity.toString)
+      )}`
+    );
+    reqs.ethnicities = missingEthnicites;
+  }
+
+  return { messages, reqs };
+}
+
 /** Lints the given scholarship for mismatches and returns a list of errors as strings. */
 export function lint(scholarship: ScholarshipData): String[] {
-  const {
-    amount,
-    deadline,
-    description: desc,
-    requirements: reqs,
-  } = scholarship;
-  const { ethnicities, grades, majors, schools, states } = reqs || {};
+  const { amount, deadline, description: desc } = scholarship;
   const issues = [];
 
   const outdatedSchoolPeriods = parseOutdatedSchoolPeriods(desc);
@@ -210,68 +287,7 @@ export function lint(scholarship: ScholarshipData): String[] {
       )}.`
     );
   }
-  const gpaMatch = parseMinGPA(desc);
-  if (gpaMatch) {
-    const parsedVal = Number.parseFloat(gpaMatch.value);
-    if (!reqs?.gpa) {
-      issues.push(
-        `No GPA requirement specified but found: "${gpaMatch.phrase}"`
-      );
-    } else if (reqs.gpa !== parsedVal) {
-      issues.push(
-        `Min GPA requirement is set to ${reqs.gpa} but seems to be ${parsedVal} per: "${gpaMatch.phrase}"`
-      );
-    }
-  }
-
-  // Look for potentially missing requirements
-  const missingGrades = parseGradeLevels(desc).filter(
-    (g) => !grades?.includes(g)
-  );
-  if (missingGrades.length) {
-    issues.push(
-      `Potentially missing grade level requirements: ${JSON.stringify(
-        missingGrades.map(GradeLevel.toString)
-      )}`
-    );
-  }
-  const missingMajors = parseMajors(desc).filter((m) => !majors?.includes(m));
-  if (missingMajors.length) {
-    issues.push(
-      `Potentially missing major requirements: ${JSON.stringify(missingMajors)}`
-    );
-  }
-  const missingSchools = parseSchools(desc).filter(
-    ({ name, state }) => !schools?.includes(`${name} (${state})`)
-  );
-  if (missingSchools.length) {
-    issues.push(
-      `Potentially missing school requirements: ${JSON.stringify(
-        missingSchools.map((s) => `${s.name} (${s.state})`)
-      )}`
-    );
-  }
-  const missingStates = parseStates(desc).filter(
-    ({ abbr }) => !states?.includes(abbr)
-  );
-  if (missingStates.length) {
-    issues.push(
-      `Potentially missing state requirements: ${JSON.stringify(
-        missingStates.map((s) => s.abbr)
-      )}`
-    );
-  }
-  const missingEthnicites = parseEthnicities(desc).filter(
-    (e) => !ethnicities?.includes(e)
-  );
-  if (missingEthnicites.length) {
-    issues.push(
-      `Potentially missing ethnicity requirements: ${JSON.stringify(
-        missingEthnicites.map(Ethnicity.toString)
-      )}`
-    );
-  }
 
   // TODO(#858): Detect more errors.
-  return issues;
+  return [...issues, ...lintReqs(scholarship).messages];
 }
