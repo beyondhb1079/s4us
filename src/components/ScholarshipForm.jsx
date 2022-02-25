@@ -62,7 +62,7 @@ function ScholarshipForm({ scholarship }) {
   });
 
   const lintIssues = activeStep === 1 ? lintReqs(formik.values) : {};
-  function autoFill() {
+  const autoFill = () => {
     const vals = formik.values.requirements;
     const lintVals = lintIssues.reqs;
     const updatedReqs = {};
@@ -84,7 +84,7 @@ function ScholarshipForm({ scholarship }) {
     if (ethnicities.length) updatedReqs.ethnicities = ethnicities;
 
     formik.setFieldValue('requirements', updatedReqs);
-  }
+  };
 
   // Initially requirements is null but is set to {} when the "no requirements"
   // checkbox is explicitly set.
