@@ -23,7 +23,7 @@ function FormikTextField(props) {
         id={id}
         error={Boolean(getIn(formik.errors, id))}
         helperText={getIn(formik.errors, id)}
-        value={getIn(formik.values, id)}
+        value={getIn(formik.values, id) || ''}
         onChange={formik.handleChange}
         fullWidth
         multiline={minRows > 0}
