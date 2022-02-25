@@ -38,8 +38,6 @@ function ScholarshipForm({ scholarship }) {
   const { invalidate } = useContext(ScholarshipsContext);
   const navigate = useNavigate();
 
-  const [openAlert, setOpenAlert] = useState(true);
-
   const formik = useFormik({
     initialValues: scholarship.data,
     validationSchema,
@@ -63,8 +61,30 @@ function ScholarshipForm({ scholarship }) {
     },
   });
 
-  let lintIssues = {};
-  if (activeStep === 1) lintIssues = lintReqs(formik.values);
+  const lintIssues = activeStep === 1 ? lintReqs(formik.values) : {};
+  function autoFill() {
+    const vals = formik.values.requirements;
+    const lintVals = lintIssues.reqs;
+    const updatedReqs = {};
+
+    const grades = [...(vals.grades || []), ...(lintVals.grades || [])];
+    const schools = [...(vals.schools || []), ...(lintVals.schools || [])];
+    const states = [...(vals.states || []), ...(lintVals.states || [])];
+    const majors = [...(vals.majors || []), ...(lintVals.majors || [])];
+    const ethnicities = [
+      ...(vals.ethnicities || []),
+      ...(lintVals.ethnicities || []),
+    ];
+
+    if (lintIssues.reqs.gpa) updatedReqs.gpa = lintVals.gpa;
+    if (grades.length) updatedReqs.grades = grades;
+    if (schools.length) updatedReqs.schools = schools;
+    if (states.length) updatedReqs.states = states;
+    if (majors.length) updatedReqs.majors = majors;
+    if (ethnicities.length) updatedReqs.ethnicities = ethnicities;
+
+    formik.setFieldValue('requirements', updatedReqs);
+  }
 
   // Initially requirements is null but is set to {} when the "no requirements"
   // checkbox is explicitly set.
@@ -132,13 +152,8 @@ function ScholarshipForm({ scholarship }) {
       content: (
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            {openAlert && lintIssues?.messages?.length > 0 && (
-              <Alert
-                severity="warning"
-                sx={{ mt: 2 }}
-                onClose={() => {
-                  setOpenAlert(false);
-                }}>
+            {lintIssues?.messages?.length > 0 && (
+              <Alert severity="warning" sx={{ mt: 2 }}>
                 <AlertTitle>
                   <strong>
                     We found the following potential requirements in the
@@ -152,16 +167,7 @@ function ScholarshipForm({ scholarship }) {
                     </Typography>
                   ))}
                 </Box>
-                <Button
-                  onClick={() => {
-                    const vals = formik.values.requirements;
-                    formik.setFieldValue('requirements', {
-                      ...vals,
-                      ...lintIssues.reqs,
-                    });
-                  }}>
-                  Autofill
-                </Button>
+                <Button onClick={autoFill}>Autofill</Button>
               </Alert>
             )}
           </Grid>
