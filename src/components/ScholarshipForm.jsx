@@ -67,13 +67,13 @@ function ScholarshipForm({ scholarship }) {
     const lintVals = lintIssues.reqs;
     const updatedReqs = {};
 
-    const grades = [...(vals.grades || []), ...(lintVals.grades || [])];
-    const schools = [...(vals.schools || []), ...(lintVals.schools || [])];
-    const states = [...(vals.states || []), ...(lintVals.states || [])];
-    const majors = [...(vals.majors || []), ...(lintVals.majors || [])];
+    const grades = [...(vals?.grades || []), ...(lintVals?.grades || [])];
+    const schools = [...(vals?.schools || []), ...(lintVals?.schools || [])];
+    const states = [...(vals?.states || []), ...(lintVals?.states || [])];
+    const majors = [...(vals?.majors || []), ...(lintVals?.majors || [])];
     const ethnicities = [
-      ...(vals.ethnicities || []),
-      ...(lintVals.ethnicities || []),
+      ...(vals?.ethnicities || []),
+      ...(lintVals?.ethnicities || []),
     ];
 
     if (lintIssues.reqs.gpa) updatedReqs.gpa = lintVals.gpa;
