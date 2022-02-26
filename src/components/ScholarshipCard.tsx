@@ -65,7 +65,7 @@ export default function ScholarshipCard({
     website,
     description,
     tags,
-    requirements,
+    requirements: reqs,
     author,
   } = scholarship.data;
   const detailed = style !== 'result';
@@ -174,34 +174,35 @@ export default function ScholarshipCard({
               </Typography>
               <DetailCardCell
                 label="State"
-                text={requirements?.states?.join(', ') || 'All'}
+                text={reqs?.states?.join(', ') || 'All'}
               />
               <DetailCardCell
                 label="GPA"
-                text={requirements?.gpa?.toFixed(1) || 'All'}
+                text={
+                  reqs?.gpa && Number.isInteger(reqs?.gpa)
+                    ? reqs.gpa.toFixed(1)
+                    : reqs?.gpa?.toString() || 'All'
+                }
               />
               <DetailCardCell
                 label="Grades"
                 text={
-                  requirements?.grades?.map(GradeLevel.toString).join(', ') ||
-                  'All'
+                  reqs?.grades?.map(GradeLevel.toString).join(', ') || 'All'
                 }
               />
               <DetailCardCell
                 label="Demographic"
                 text={
-                  requirements?.ethnicities
-                    ?.map(Ethnicity.toString)
-                    .join(', ') || 'All'
+                  reqs?.ethnicities?.map(Ethnicity.toString).join(', ') || 'All'
                 }
               />
               <DetailCardCell
                 label="Majors"
-                text={requirements?.majors?.join(', ') || 'All'}
+                text={reqs?.majors?.join(', ') || 'All'}
               />
               <DetailCardCell
                 label="Schools"
-                text={requirements?.schools?.join(', ') || 'All'}
+                text={reqs?.schools?.join(', ') || 'All'}
               />
             </Box>
           )}
