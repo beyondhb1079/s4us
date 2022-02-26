@@ -72,7 +72,7 @@ function Footer() {
     <Box sx={{ bgcolor: 'background.secondary' }}>
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Grid container justifyContent="space-between" spacing={3}>
-          <Grid item xs={6}>
+          <Grid item xs={12} sm={6}>
             <MuiLink
               component={Link}
               to="/"
