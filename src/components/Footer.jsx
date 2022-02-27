@@ -14,52 +14,53 @@ import {
   withDeviceInfo,
 } from '../lib/mail';
 import { SUBSCRIPTION_FORM_URL } from '../config/constants';
+import { useTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
 
 const quickLinks = {
-  'Add a scholarship': '/scholarships/new',
-  'Browse scholarship': '/scholarships',
+  'footer.addScholarship': '/scholarships/new',
+  'footer.browseScholarship': '/scholarships',
 };
 
 const companyLinks = {
-  About: '/about',
-  Contact: '/contact',
+  'footer.about': '/about',
+  'footer.contact': '/contact',
 };
 
 const helpLinks = {
-  'Report an issue': genMailToLink({
+  'footer.reportIssue': genMailToLink({
     subject: 'Bug Report',
     body: withDeviceInfo(reportIssue),
   }),
-  'Suggest an idea': genMailToLink({
+  'footer.suggestIdea': genMailToLink({
     subject: 'Feature Request',
     body: withDeviceInfo(featureRequest),
   }),
-  'Subscribe for updates': SUBSCRIPTION_FORM_URL,
-
-  'Reach out': genMailToLink({
+  'footer.subscribeForUpdates': SUBSCRIPTION_FORM_URL,
+  'footer.reachOut': genMailToLink({
     subject: 'Outreach',
     body: 'Please describe the purpose of your outreach below.\n',
   }),
 };
 
-function FooterColumn({ title, links, internal }) {
+function FooterColumn({ title, links, internal, t }) {
   return (
     <Grid item>
       <Typography
         color={(theme) => theme.palette.grey[500]}
         sx={{ fontWeight: 'bold' }}>
-        {title}
+        {t(title)}
       </Typography>
       {Object.entries(links).map(([name, link]) => (
         <Box key={name}>
           <MuiLink
-            component={internal && Link}
+            component={internal ? Link : MuiLink}
             to={internal ? link : ''}
             href={!internal ? link : ''}
             variant="subtitle2"
             color="text.secondary"
             underline="hover">
-            {name}
+            {t(name)}
           </MuiLink>
         </Box>
       ))}
@@ -67,7 +68,19 @@ function FooterColumn({ title, links, internal }) {
   );
 }
 
+FooterColumn.propTypes = {
+  title: PropTypes.string.isRequired,
+  links: PropTypes.objectOf(PropTypes.string).isRequired,
+  internal: PropTypes.bool,
+  t: PropTypes.func,
+};
+FooterColumn.defaultProps = {
+  internal: false,
+};
+
 function Footer() {
+  const { t } = useTranslation();
+
   return (
     <Box sx={{ bgcolor: 'background.secondary', zIndex: 1200 }}>
       <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -81,14 +94,26 @@ function Footer() {
               DREAMSCHOLARS
             </MuiLink>
             <Typography color="text.secondary">&copy; 2022</Typography>
-            <Typography color="text.secondary">Privacy - Terms</Typography>
+            <Typography color="text.secondary">
+              {t('footer.privacyTerms')}
+            </Typography>
           </Grid>
 
-          <FooterColumn title="Quick Links" links={quickLinks} internal />
+          <FooterColumn
+            title="footer.quickLinks"
+            links={quickLinks}
+            t={t}
+            internal
+          />
 
-          <FooterColumn title="Company" links={companyLinks} internal />
+          <FooterColumn
+            title="footer.company"
+            links={companyLinks}
+            t={t}
+            internal
+          />
 
-          <FooterColumn title="Help" links={helpLinks} />
+          <FooterColumn title="footer.help" links={helpLinks} t={t} />
         </Grid>
       </Container>
     </Box>

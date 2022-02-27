@@ -94,5 +94,20 @@
     }
   },
 
-  "alert": { "warning": "Warning" }
+  "alert": { "warning": "Warning" },
+
+  "footer": {
+    "quickLinks": "Quick Links",
+    "company": "Company",
+    "help": "Help",
+    "privacyTerms": "Privacy - Terms",
+    "addScholarship": "Add a scholarship",
+    "browseScholarship": "Browse scholarships",
+    "about": "About",
+    "contact": "Contact",
+    "reportIssue": "Report an issue",
+    "suggestIdea": "Suggest an idea",
+    "subscribeForUpdates": "Subscribe for updates",
+    "reachOut": "Reach out"
+  }
 }
