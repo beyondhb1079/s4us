@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import {
@@ -19,7 +19,7 @@ import { HeaderSkeleton } from '../components/Header';
 
 const drawerWidth = 360;
 
-function ListScholarships() {
+function ListScholarships(props, ref) {
   const { t } = useTranslation();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -41,6 +41,22 @@ function ListScholarships() {
   };
 
   const scrollTrigger = useScrollTrigger();
+  const [drawerHeight, setDrawerHeight] = useState(0);
+
+  useEffect(() => {
+    function calcHeight() {
+      setDrawerHeight(
+        window.innerHeight - ref.current?.getBoundingClientRect().top
+      );
+    }
+    window.addEventListener('scroll', calcHeight);
+    return () => {
+      window.removeEventListener('scroll', calcHeight);
+    };
+  }, [ref]);
+
+  const drawerHeightStyle =
+    isDesktop && drawerHeight > 0 ? `calc(100% - ${drawerHeight}px)` : '100%';
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -52,8 +68,10 @@ function ListScholarships() {
           flexShrink: 0,
           width: { xs: '100%', md: drawerWidth },
           '& .MuiDrawer-paper': {
+            height: drawerHeightStyle,
             width: { xs: '100%', md: drawerWidth },
             boxSizing: 'border-box',
+            transition: 'height 100ms ease',
           },
         }}
         open={drawerOpen || isDesktop}
@@ -90,4 +108,4 @@ function ListScholarships() {
   );
 }
 
-export default ListScholarships;
+export default forwardRef(ListScholarships);

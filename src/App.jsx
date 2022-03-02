@@ -1,5 +1,5 @@
 import './App.css';
-import React from 'react';
+import React, { useRef } from 'react';
 import { Helmet } from 'react-helmet';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
@@ -25,6 +25,8 @@ import { AuthProvider } from './lib/useAuth';
 import { ScholarshipsProvider } from './models/ScholarshipsContext';
 
 function App() {
+  const drawerRef = useRef(null);
+
   return (
     <div className="page-container">
       <FirebaseProvider>
@@ -62,7 +64,7 @@ function App() {
                       />
                       <Route
                         path="/scholarships"
-                        element={<ListScholarships />}
+                        element={<ListScholarships ref={drawerRef} />}
                       />
                       <Route path="/about" element={<About />} />
                       <Route path="/contact" element={<Contact />} />
@@ -70,7 +72,7 @@ function App() {
                     </Routes>
                     <LoginDialog />
                   </div>
-                  <Footer />
+                  <Footer ref={drawerRef} />
                 </Router>
               </ScholarshipsProvider>
             </AuthProvider>

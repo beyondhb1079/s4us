@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Box,
@@ -78,11 +78,11 @@ FooterColumn.defaultProps = {
   internal: false,
 };
 
-function Footer() {
+function Footer(props, ref) {
   const { t } = useTranslation();
 
   return (
-    <Box sx={{ bgcolor: 'background.secondary', zIndex: 1200 }}>
+    <Box sx={{ bgcolor: 'background.secondary' }} ref={ref}>
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Grid container justifyContent="space-between" spacing={3}>
           <Grid item xs={12} sm={6}>
@@ -119,4 +119,4 @@ function Footer() {
     </Box>
   );
 }
-export default Footer;
+export default forwardRef(Footer);
