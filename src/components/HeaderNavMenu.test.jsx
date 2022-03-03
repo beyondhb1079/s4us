@@ -23,7 +23,10 @@ describe('HeaderNavMenu', () => {
         <HeaderNavMenu links={links} />
       </Router>
     );
-    expect(document.querySelector('a').getAttribute('href')).toBe('/topology');
+    expect(screen.getByText('topology').closest('a')).toHaveAttribute(
+      'href',
+      '/topology'
+    );
     expect(screen.getByText('abstract-algebra').closest('a')).toHaveAttribute(
       'href',
       '/abstract-algebra'
