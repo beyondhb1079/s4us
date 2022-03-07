@@ -1,15 +1,13 @@
 {
   "navbar": {
     "scholarships": "Explorar",
-    "add": "Agregar",
-    "about": "Acerca de",
-    "contact": "Contacto"
+    "add": "Agregar"
   },
 
   "btn": {
     "browseScholarships": "Buscar Becas",
     "addScholarship": "Agregar una Beca",
-    "login": "Iniciar sesión",
+    "login": "Iniciar",
     "loadMore": "carga más",
     "subscribeForUpdates": "Suscribir"
   },
@@ -94,5 +92,20 @@
     }
   },
 
-  "alert": { "warning": "Advertencia" }
+  "alert": { "warning": "Advertencia" },
+
+  "footer": {
+    "quickLinks": "Enlaces Rápidos",
+    "company": "Compañía",
+    "help": "Ayuda",
+    "privacyTerms": "Términos - Privacidad",
+    "addScholarship": "Agregar beca",
+    "browseScholarship": "Buscar becas",
+    "about": "Acerca de",
+    "contact": "Contacto",
+    "reportIssue": "Reportar un problema",
+    "suggestIdea": "Sugerir una idea",
+    "subscribeForUpdates": "Suscríbete para actualizaciones",
+    "reachOut": "Contacta con nosotros"
+  }
 }

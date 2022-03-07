@@ -1,5 +1,5 @@
 import './App.css';
-import React from 'react';
+import React, { useRef } from 'react';
 import { Helmet } from 'react-helmet';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
@@ -25,48 +25,61 @@ import { AuthProvider } from './lib/useAuth';
 import { ScholarshipsProvider } from './models/ScholarshipsContext';
 
 function App() {
+  const drawerRef = useRef(null);
+
   return (
-    <FirebaseProvider>
-      <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Helmet
-            titleTemplate={`%s | ${BRAND_NAME}`}
-            defaultTitle={
-              BRAND_NAME + ' | Scholarships for Undocumented Students'
-            }
-          />
-          <AuthProvider>
-            <ScholarshipsProvider>
-              <Router>
-                <Header />
-                <HeaderSkeleton />
-                <Routes>
-                  <Route
-                    path="/scholarships/new"
-                    element={<ProtectedRoute element={<AddScholarship />} />}
-                  />
-                  <Route
-                    path="/scholarships/:id/edit"
-                    element={<ProtectedRoute element={<EditScholarship />} />}
-                  />
-                  <Route
-                    path="/scholarships/:id"
-                    element={<ViewScholarship />}
-                  />
-                  <Route path="/scholarships" element={<ListScholarships />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/contact" element={<Contact />} />
-                  <Route path="/" element={<Home />} />
-                </Routes>
-                <LoginDialog />
-                <Footer />
-              </Router>
-            </ScholarshipsProvider>
-          </AuthProvider>
-        </ThemeProvider>
-      </StyledEngineProvider>
-    </FirebaseProvider>
+    <div className="page-container">
+      <FirebaseProvider>
+        <StyledEngineProvider injectFirst>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Helmet
+              titleTemplate={`%s | ${BRAND_NAME}`}
+              defaultTitle={
+                BRAND_NAME + ' | Scholarships for Undocumented Students'
+              }
+            />
+            <AuthProvider>
+              <ScholarshipsProvider>
+                <Router>
+                  <div className="content-wrap">
+                    <Header />
+                    <HeaderSkeleton />
+                    <Routes>
+                      <Route
+                        path="/scholarships/new"
+                        element={
+                          <ProtectedRoute element={<AddScholarship />} />
+                        }
+                      />
+                      <Route
+                        path="/scholarships/:id/edit"
+                        element={
+                          <ProtectedRoute element={<EditScholarship />} />
+                        }
+                      />
+                      <Route
+                        path="/scholarships/:id"
+                        element={<ViewScholarship />}
+                      />
+                      <Route
+                        path="/scholarships"
+                        element={<ListScholarships ref={drawerRef} />}
+                      />
+                      <Route path="/about" element={<About />} />
+                      <Route path="/contact" element={<Contact />} />
+                      <Route path="/" element={<Home />} />
+                    </Routes>
+                    <LoginDialog />
+                  </div>
+                  <Footer ref={drawerRef} />
+                </Router>
+              </ScholarshipsProvider>
+            </AuthProvider>
+          </ThemeProvider>
+        </StyledEngineProvider>
+      </FirebaseProvider>
+    </div>
   );
 }
 

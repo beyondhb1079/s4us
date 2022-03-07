@@ -107,8 +107,6 @@ const AuthGrowButton = ({ t }) => {
 const links = {
   'navbar.scholarships': '/scholarships',
   'navbar.add': '/scholarships/new',
-  'navbar.about': '/about',
-  'navbar.contact': '/contact',
 };
 
 const languages = {
