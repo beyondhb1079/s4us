@@ -2207,10 +2207,14 @@ export interface School {
   name: string;
   /** State where the college is located, e.g. `'AL'`. */
   state: string;
-  /** Website of the college e.g. `'http://yccd.edu'`. */
+  /** Website of the college e.g. `'yccd.edu'`. */
   website: string;
 }
 
 export const SCHOOLS: School[] = RAW_SCHOOLS.split('\n')
   .map((s) => s.split('\t'))
-  .map(([name, website, state]) => ({ name, state, website }));
+  .map(([name, website, state]) => ({
+    name,
+    state,
+    website: website.replace('http://', ''),
+  }));
