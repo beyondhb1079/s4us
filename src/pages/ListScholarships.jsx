@@ -16,6 +16,7 @@ import ScholarshipList from '../components/ScholarshipList';
 import useQueryParams from '../lib/useQueryParams';
 import { DEADLINE_ASC, getDir, getField } from '../lib/sortOptions';
 import { HeaderSkeleton } from '../components/Header';
+import useOnScreen from '../lib/useOnScreen';
 
 const drawerWidth = 360;
 
@@ -42,6 +43,7 @@ function ListScholarships(props, ref) {
 
   const scrollTrigger = useScrollTrigger();
   const [drawerHeight, setDrawerHeight] = useState(0);
+  const footerVisible = useOnScreen(ref);
 
   useEffect(() => {
     function calcHeight() {
@@ -56,7 +58,9 @@ function ListScholarships(props, ref) {
   }, [ref]);
 
   const drawerHeightStyle =
-    isDesktop && drawerHeight > 0 ? `calc(100% - ${drawerHeight}px)` : '100%';
+    isDesktop && footerVisible && drawerHeight > 0
+      ? `calc(100% - ${drawerHeight}px)`
+      : '100%';
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -71,7 +75,8 @@ function ListScholarships(props, ref) {
             height: drawerHeightStyle,
             width: { xs: '100%', md: drawerWidth },
             boxSizing: 'border-box',
-            transition: 'height 100ms ease',
+            overflowX: 'hidden',
+            transition: 'height 100ms linear',
           },
         }}
         open={drawerOpen || isDesktop}
