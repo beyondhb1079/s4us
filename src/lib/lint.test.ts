@@ -65,11 +65,16 @@ describe('parseGradeLevels()', () => {
         GradeLevel.HsSenior,
       ],
       'graduating seniors from high school': [GradeLevel.HsSenior],
+      'seniors at Foo High School': [GradeLevel.HsSenior],
       'freshmen or sophomores': [
         GradeLevel.CollegeFreshman,
         GradeLevel.CollegeSophomore,
       ],
       'college seniors. undergraduate juniors': [
+        GradeLevel.CollegeJunior,
+        GradeLevel.CollegeSenior,
+      ],
+      'incoming junior or senior at UW': [
         GradeLevel.CollegeJunior,
         GradeLevel.CollegeSenior,
       ],
@@ -112,18 +117,42 @@ describe('parseMajors()', () => {
   test('does not mis-detect substrings as majors', () => {
     expect(parseMajors('Educational institutions')).toEqual([]);
   });
+  test('filters out false positives', () => {
+    expect(parseMajors('Biology major pursuing higher education')).toEqual([
+      'Biology',
+    ]);
+  });
+  test('reduces education and history noise', () => {
+    expect(parseMajors('Strong advocate for education')).toEqual([]);
+    expect(parseMajors('Dr. So has a long history of...')).toEqual([]);
+  });
 });
 
 describe('parseSchools()', () => {
   test('detects known schools', () => {
     expect(
       parseSchools(
-        'Student attending Florida State University or Georgia Institute of Technology may apply'
+        'Student attending Florida State University or Georgia Institute of Technology may apply',
+        'site'
       ).map((s) => s.name)
     ).toEqual(['Florida State University', 'Georgia Institute of Technology']);
   });
+  test('detects acronyms for school sites', () => {
+    expect(
+      parseSchools(
+        'UT English majors may apply',
+        'http://utulsa.edu/some/path'
+      ).map((s) => s.name)
+    ).toEqual(['University of Tulsa']);
+    expect(
+      parseSchools(
+        'UT English majors may apply',
+        'http://utoledo.edu/some/path'
+      ).map((s) => s.name)
+    ).toEqual(['University of Toledo']);
+  });
   test('does not detect unknown school', () => {
-    expect(parseSchools('Oxford University students')).toEqual([]);
+    expect(parseSchools('Oxford University students', 'site')).toEqual([]);
   });
 });
 

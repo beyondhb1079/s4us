@@ -58,6 +58,7 @@ export function parseGradeLevels(desc: string): GradeLevel[] {
       '12th grade',
       'high school[^.]* senior',
       'graduating senior[^.]* high school',
+      'seniors? (in|at|graduating)[^.]* high school',
     ],
     [GradeLevel.CollegeFreshman]: ['freshm[ae]n'],
     [GradeLevel.CollegeSophomore]: ['sophomore'],
@@ -74,6 +75,16 @@ export function parseGradeLevels(desc: string): GradeLevel[] {
       keywords[g].some((k) => lowerDesc.match(new RegExp(k)))
     )
   );
+
+  if (!lowerDesc.includes('high school')) {
+    // These most likely refer to college level
+    if (lowerDesc.match('junior')) {
+      matches.add(GradeLevel.CollegeJunior);
+    }
+    if (lowerDesc.match('senior')) {
+      matches.add(GradeLevel.CollegeSenior);
+    }
+  }
 
   // Search for keywords belong to whole groups of students, ignoring them
   // if we've already detected more specific grade levels for that group.
@@ -103,16 +114,59 @@ export function parseGradeLevels(desc: string): GradeLevel[] {
 
 /** Parses the given description for majors and returns the ones found. */
 export function parseMajors(desc: string): string[] {
-  return Array.from(MAJORS).filter((m) =>
-    desc
-      .toLowerCase()
-      .match(new RegExp('(\\W|^)' + m.toLowerCase() + '(\\W|$)'))
+  // Be better about false positives with single words
+  // major, degree, fields? of study
+  // higher education,
+  // These might dilute results with majors that are also common words.
+  const falsePositives = [
+    'higher education',
+    'work history',
+    'academic history',
+    'history of',
+  ];
+  const sanitizedDesc = falsePositives.reduce(
+    (s, fp) => s.replaceAll(fp, ''),
+    desc.toLowerCase()
   );
+
+  const majors = Array.from(MAJORS).filter((m) =>
+    sanitizedDesc.match(new RegExp('(\\W|^)' + m.toLowerCase() + '(\\W|$)'))
+  );
+
+  // Coming across these words, common words like "history" and "education"
+  // are more likely to be major requirements.
+  const intentionalKeywords = [
+    'major',
+    'degree',
+    'department',
+    'field of study',
+    'fields of study',
+  ];
+
+  // Try to get rid of false positives
+  if (
+    majors.length === 1 &&
+    ['Education', 'History'].includes(majors[0]) &&
+    !intentionalKeywords.some((s) => sanitizedDesc.includes(s))
+  ) {
+    // It's probably just noise.
+    return [];
+  }
+  return majors;
+}
+
+function acronym(name: string): string {
+  return (name.match(/([A-Z])/g) || []).join('');
 }
 
 /** Parses the given description for schools and returns matches. */
-export function parseSchools(desc: string): School[] {
-  return SCHOOLS.filter(({ name }) => desc.includes(name));
+export function parseSchools(desc: string, url?: string): School[] {
+  return SCHOOLS.filter(({ name }) => desc.includes(name)).concat(
+    SCHOOLS.filter(
+      ({ name, website }) =>
+        url?.includes('//' + website) && desc.includes(acronym(name))
+    )
+  );
 }
 
 /** Parses the given description for states and returns matches. */
@@ -150,7 +204,7 @@ const dateRe =
   /((Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w*\.? (\d+)(st|nd|rd|th)?(,? \d{4})?)|\d{1,2}\/\d{1,2}\/\d{2,4}/gi;
 
 export function lintReqs(scholarship: ScholarshipData): any {
-  const { description: desc, requirements } = scholarship;
+  const { description: desc, website, requirements } = scholarship;
   const { ethnicities, grades, majors, schools, states } = requirements || {};
   const messages: string[] = [];
   const reqs: Record<string, any> = {};
@@ -159,7 +213,7 @@ export function lintReqs(scholarship: ScholarshipData): any {
   const missingGrades = parseGradeLevels(desc).filter(
     (g) => !grades?.includes(g)
   );
-  const missingSchools = parseSchools(desc).filter(
+  const missingSchools = parseSchools(desc, website).filter(
     ({ name, state }) => !schools?.includes(`${name} (${state})`)
   );
   const missingStates = parseStates(desc).filter(
