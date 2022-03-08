@@ -43,7 +43,6 @@ function ListScholarships(props, ref) {
 
   const scrollTrigger = useScrollTrigger();
   const [drawerHeight, setDrawerHeight] = useState(0);
-  const footerVisible = useOnScreen(ref);
 
   useEffect(() => {
     function calcHeight() {
@@ -56,6 +55,7 @@ function ListScholarships(props, ref) {
       window.removeEventListener('scroll', calcHeight);
     };
   }, [ref]);
+  const footerVisible = useOnScreen(ref);
 
   const drawerHeightStyle =
     isDesktop && footerVisible && drawerHeight > 0
