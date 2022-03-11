@@ -9,7 +9,7 @@ import Scholarships from '../models/Scholarships';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import GradeLevel from '../types/GradeLevel';
 import Ethnicity from '../types/Ethnicity';
-import { State } from '../types/States';
+import State from '../types/States';
 import i18n from '../i18n/setup';
 import { I18nextProvider } from 'react-i18next';
 import { ScholarshipsProvider } from '../models/ScholarshipsContext';
