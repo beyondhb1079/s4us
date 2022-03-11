@@ -24,7 +24,8 @@ import FormikTextField from './FormikTextField';
 import ScholarshipCard from './ScholarshipCard';
 import FormikMultiSelect from './FormikMultiSelect';
 import FormikAutocomplete from './FormikAutocomplete';
-import { SCHOOLS, STATES, MAJORS } from '../types/options';
+import { SCHOOLS, MAJORS } from '../types/options';
+import { States, State } from '../types/States';
 import GradeLevel from '../types/GradeLevel';
 import Ethnicity from '../types/Ethnicity';
 import ScholarshipsContext from '../models/ScholarshipsContext';
@@ -229,7 +230,8 @@ function ScholarshipForm({ scholarship }) {
               label="State(s)"
               id="requirements.states"
               labelStyle={labelStyle}
-              options={STATES.map((s) => s.abbr)}
+              options={States.map((s) => s.abbr)}
+              getOptionLabel={(option) => State.toString(option)}
               formik={formik}
               placeholder="No state requirements"
             />
