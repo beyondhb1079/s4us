@@ -190,22 +190,26 @@ export default function ScholarshipCard({
               <DetailCardCell
                 label="Grades"
                 text={
-                  reqs?.grades?.map(GradeLevel.toString).join(', ') || 'All'
+                  reqs?.grades?.map(GradeLevel.toString).sort().join(', ') ||
+                  'All'
                 }
               />
               <DetailCardCell
                 label="Demographic"
                 text={
-                  reqs?.ethnicities?.map(Ethnicity.toString).join(', ') || 'All'
+                  reqs?.ethnicities
+                    ?.map(Ethnicity.toString)
+                    .sort()
+                    .join(', ') || 'All'
                 }
               />
               <DetailCardCell
                 label="Majors"
-                text={reqs?.majors?.join(', ') || 'All'}
+                text={reqs?.majors?.sort().join(', ') || 'All'}
               />
               <DetailCardCell
                 label="Schools"
-                text={reqs?.schools?.join(', ') || 'All'}
+                text={reqs?.schools?.sort().join(', ') || 'All'}
               />
             </Box>
           )}
