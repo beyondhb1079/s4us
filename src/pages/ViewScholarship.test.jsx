@@ -116,12 +116,12 @@ test('renders scholarship details', async () => {
   expect(screen.getByText(data.requirements.gpa + '.0')).toBeInTheDocument();
   expect(
     screen.getByText(
-      data.requirements.grades.map(GradeLevel.toString).join(', ')
+      data.requirements.grades.map(GradeLevel.toString).sort().join(', ')
     )
   ).toBeInTheDocument();
   expect(
     screen.getByText(
-      data.requirements.ethnicities.map(Ethnicity.toString).join(', ')
+      data.requirements.ethnicities.map(Ethnicity.toString).sort().join(', ')
     )
   ).toBeInTheDocument();
   expect(
