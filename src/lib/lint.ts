@@ -4,7 +4,8 @@ import AmountType from '../types/AmountType';
 import Ethnicity from '../types/Ethnicity';
 import GradeLevel from '../types/GradeLevel';
 import ScholarshipAmount from '../types/ScholarshipAmount';
-import { MAJORS, School, SCHOOLS, State, STATES } from '../types/options';
+import { MAJORS, School, SCHOOLS } from '../types/options';
+import State, { STATES } from '../types/States';
 import ScholarshipData from '../types/ScholarshipData';
 
 /** Custom match object to provide additional context outside of a value. */
