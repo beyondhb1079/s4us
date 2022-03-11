@@ -56,7 +56,13 @@ West Virginia	WV
 Wisconsin	WI
 Wyoming	WY`;
 
-export const States: State.StateType[] = RAW_STATES.split('\n')
+interface State {
+  /** Full name of the state or territory, e.g. `'Alabama'`. */
+  name: string;
+  /** State abbreviation, e.g. `'AL'`. */
+  abbr: string;
+}
+export const States: State[] = RAW_STATES.split('\n')
   .map((s) => s.split('\t'))
   .map(([name, abbr]) => ({ name, abbr }));
 
@@ -68,14 +74,10 @@ const toStringMappings: Record<string, string> = States.reduce(
   {}
 );
 
-export namespace State {
-  export interface StateType {
-    /** Full name of the state or territory, e.g. `'Alabama'`. */
-    name: string;
-    /** State abbreviation, e.g. `'AL'`. */
-    abbr: string;
-  }
+namespace State {
   export function toString(state: string): string {
     return toStringMappings[state];
   }
 }
+
+export default State;

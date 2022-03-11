@@ -25,7 +25,7 @@ import ScholarshipCard from './ScholarshipCard';
 import FormikMultiSelect from './FormikMultiSelect';
 import FormikAutocomplete from './FormikAutocomplete';
 import { SCHOOLS, MAJORS } from '../types/options';
-import { States, State } from '../types/States';
+import State, { States } from '../types/States';
 import GradeLevel from '../types/GradeLevel';
 import Ethnicity from '../types/Ethnicity';
 import ScholarshipsContext from '../models/ScholarshipsContext';

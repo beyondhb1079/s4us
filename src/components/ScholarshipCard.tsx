@@ -28,7 +28,7 @@ import { genMailToLink, withDeviceInfo } from '../lib/mail';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import Ethnicity from '../types/Ethnicity';
 import GradeLevel from '../types/GradeLevel';
-import { State } from '../types/States';
+import State from '../types/States';
 import { lint } from '../lib/lint';
 import ShareDialog from './ShareDialog';
 import useAuth from '../lib/useAuth';
@@ -175,7 +175,9 @@ export default function ScholarshipCard({
               </Typography>
               <DetailCardCell
                 label="State"
-                text={reqs?.states?.map(State.toString).join(', ') || 'All'}
+                text={
+                  reqs?.states?.map(State.toString).sort().join(', ') || 'All'
+                }
               />
               <DetailCardCell
                 label="GPA"
