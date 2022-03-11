@@ -13,7 +13,7 @@ export default function useOnScreen(
     const observer = new IntersectionObserver(([entry]) =>
       setIsOnScreen(entry.isIntersecting)
     );
-    if (ref.current) {
+    if (ref?.current) {
       observer.observe(ref.current as Element);
     }
 
