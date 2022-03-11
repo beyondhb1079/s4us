@@ -62,6 +62,7 @@ interface State {
   /** State abbreviation, e.g. `'AL'`. */
   abbr: string;
 }
+
 export const STATES: State[] = RAW_STATES.split('\n')
   .map((s) => s.split('\t'))
   .map(([name, abbr]) => ({ name, abbr }));
