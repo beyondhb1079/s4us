@@ -8,6 +8,7 @@ import SearchIcon from '@mui/icons-material/Search';
 
 function MajorFilter({ majors, onChange }) {
   const [isOpen, setIsOpen] = useState(false);
+  const limitReached = majors.length >= 10;
 
   return (
     <>
@@ -15,10 +16,10 @@ function MajorFilter({ majors, onChange }) {
         multiple
         freeSolo
         filterSelectedOptions
-        open={isOpen}
+        open={isOpen && !limitReached}
         value={majors}
         onChange={(e, val) => onChange(val)}
-        disabled={majors.length >= 10}
+        disabled={limitReached}
         onInputChange={(e, val) => setIsOpen(val.length > 0)}
         options={[...MAJORS]}
         renderTags={() => null}
@@ -28,15 +29,15 @@ function MajorFilter({ majors, onChange }) {
             inputProps={params.inputProps}
             autoFocus
             placeholder={
-              majors.length < 10
-                ? 'Enter a major to filter by...'
-                : 'Limit reached'
+              !limitReached ? 'Enter a major to filter by...' : 'Limit reached'
             }
             size="small"
             fullWidth
             startAdornment={<SearchIcon />}
             endAdornment={
-              <IconButton onClick={() => setIsOpen(!isOpen)}>
+              <IconButton
+                onClick={() => setIsOpen(!isOpen)}
+                disabled={limitReached}>
                 {isOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
               </IconButton>
             }
