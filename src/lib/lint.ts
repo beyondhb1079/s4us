@@ -5,7 +5,7 @@ import Ethnicity from '../types/Ethnicity';
 import GradeLevel from '../types/GradeLevel';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import { MAJORS, School, SCHOOLS } from '../types/options';
-import State, { States } from '../types/States';
+import State, { STATES } from '../types/States';
 import ScholarshipData from '../types/ScholarshipData';
 
 /** Custom match object to provide additional context outside of a value. */
@@ -172,7 +172,7 @@ export function parseSchools(desc: string, url?: string): School[] {
 
 /** Parses the given description for states and returns matches. */
 export function parseStates(desc: string): State[] {
-  return States.filter(
+  return STATES.filter(
     ({ name, abbr }) =>
       desc.includes(name) || desc.match(new RegExp('\\W' + abbr + '\\W'))
   );

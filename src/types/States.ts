@@ -62,11 +62,11 @@ interface State {
   /** State abbreviation, e.g. `'AL'`. */
   abbr: string;
 }
-export const States: State[] = RAW_STATES.split('\n')
+export const STATES: State[] = RAW_STATES.split('\n')
   .map((s) => s.split('\t'))
   .map(([name, abbr]) => ({ name, abbr }));
 
-const toStringMappings: Record<string, string> = States.reduce(
+const toStringMappings: Record<string, string> = STATES.reduce(
   (arr, s) => ({
     ...arr,
     [s.abbr]: `${s.name} (${s.abbr})`,
