@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useRef } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
@@ -25,7 +25,14 @@ import { AuthProvider } from './lib/useAuth';
 import { ScholarshipsProvider } from './models/ScholarshipsContext';
 
 function App() {
-  const drawerRef = useRef(null);
+  const [footerWidth, setFooterWidth] = useState('100%');
+  const onRefChange = useCallback((node) => {
+    if (node === null) {
+      setFooterWidth('100%');
+    } else {
+      setFooterWidth(`calc(100% - ${node.clientWidth}px)`);
+    }
+  }, []);
 
   return (
     <div className="page-container">
@@ -64,7 +71,7 @@ function App() {
                       />
                       <Route
                         path="/scholarships"
-                        element={<ListScholarships ref={drawerRef} />}
+                        element={<ListScholarships setRef={onRefChange} />}
                       />
                       <Route path="/about" element={<About />} />
                       <Route path="/contact" element={<Contact />} />
@@ -72,7 +79,7 @@ function App() {
                     </Routes>
                     <LoginDialog />
                   </div>
-                  <Footer ref={drawerRef} />
+                  <Footer footerWidth={footerWidth} />
                 </Router>
               </ScholarshipsProvider>
             </AuthProvider>
