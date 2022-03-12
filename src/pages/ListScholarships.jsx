@@ -19,7 +19,7 @@ import { HeaderSkeleton } from '../components/Header';
 
 const drawerWidth = 360;
 
-function ListScholarships(props) {
+function ListScholarships({ setRef }) {
   const { t } = useTranslation();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -48,7 +48,7 @@ function ListScholarships(props) {
         <title>{t('listScholarships.titleTag')}</title>
       </Helmet>
       <Drawer
-        ref={props.setRef}
+        ref={setRef}
         sx={{
           flexShrink: 0,
           width: { xs: '100%', md: drawerWidth },
