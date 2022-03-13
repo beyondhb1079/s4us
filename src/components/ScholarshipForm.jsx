@@ -24,7 +24,7 @@ import FormikTextField from './FormikTextField';
 import ScholarshipCard from './ScholarshipCard';
 import FormikMultiSelect from './FormikMultiSelect';
 import FormikAutocomplete from './FormikAutocomplete';
-import { SCHOOLS, MAJORS } from '../types/options';
+import { SCHOOLS, MAJORS, TAGS } from '../types/options';
 import State, { STATES } from '../types/States';
 import GradeLevel from '../types/GradeLevel';
 import Ethnicity from '../types/Ethnicity';
@@ -104,7 +104,6 @@ function ScholarshipForm({ scholarship }) {
               labelStyle={labelStyle}
             />
           </Grid>
-
           <Grid item sm={6} xs={12}>
             <FormikTextField
               label="Organization"
@@ -113,7 +112,6 @@ function ScholarshipForm({ scholarship }) {
               labelStyle={labelStyle}
             />
           </Grid>
-
           <Grid item sm={6} xs={12}>
             <FormikTextField
               label="Scholarship Link *"
@@ -122,7 +120,6 @@ function ScholarshipForm({ scholarship }) {
               labelStyle={labelStyle}
             />
           </Grid>
-
           <Grid item sm={6}>
             <DatePicker
               label="Deadline *"
@@ -130,11 +127,9 @@ function ScholarshipForm({ scholarship }) {
               formik={formik}
             />
           </Grid>
-
           <Grid item>
             <ScholarshipAmountField formik={formik} labelStyle={labelStyle} />
           </Grid>
-
           <Grid item xs={12}>
             <FormikTextField
               label="Description *"
@@ -142,6 +137,16 @@ function ScholarshipForm({ scholarship }) {
               labelStyle={labelStyle}
               formik={formik}
               minRows={8}
+            />
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <FormikAutocomplete
+              label="Tags"
+              id="tags"
+              labelStyle={labelStyle}
+              options={TAGS}
+              freeSolo
+              formik={formik}
             />
           </Grid>
         </Grid>

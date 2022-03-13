@@ -2149,3 +2149,16 @@ export const SCHOOLS: School[] = RAW_SCHOOLS.split('\n')
     state,
     website: website.replace('http://', ''),
   }));
+
+const RAW_TAGS = `athletics
+DACA only
+essay
+first gen
+interview
+LGBTQ
+quarterly
+resume
+STEM
+yearly`;
+
+export const TAGS = RAW_TAGS.split('\n');
