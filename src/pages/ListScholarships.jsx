@@ -52,7 +52,6 @@ function ListScholarships() {
           flexShrink: 0,
           width: { xs: '100%', md: drawerWidth },
           '& .MuiDrawer-paper': {
-            height: '100%',
             width: { xs: '100%', md: drawerWidth },
             boxSizing: 'border-box',
             overflowX: 'hidden',
