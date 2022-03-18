@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
@@ -25,15 +25,6 @@ import { AuthProvider } from './lib/useAuth';
 import { ScholarshipsProvider } from './models/ScholarshipsContext';
 
 function App() {
-  const [footerWidth, setFooterWidth] = useState('100%');
-  const onRefChange = useCallback((node) => {
-    if (node === null) {
-      setFooterWidth('100%');
-    } else {
-      setFooterWidth(`calc(100% - ${node.clientWidth}px)`);
-    }
-  }, []);
-
   return (
     <div className="page-container">
       <FirebaseProvider>
@@ -71,7 +62,7 @@ function App() {
                       />
                       <Route
                         path="/scholarships"
-                        element={<ListScholarships setRef={onRefChange} />}
+                        element={<ListScholarships />}
                       />
                       <Route path="/about" element={<About />} />
                       <Route path="/contact" element={<Contact />} />
@@ -79,7 +70,7 @@ function App() {
                     </Routes>
                     <LoginDialog />
                   </div>
-                  <Footer footerWidth={footerWidth} />
+                  <Footer />
                 </Router>
               </ScholarshipsProvider>
             </AuthProvider>

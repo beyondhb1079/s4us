@@ -78,15 +78,12 @@ FooterColumn.defaultProps = {
   internal: false,
 };
 
-function Footer({ footerWidth }) {
+function Footer() {
   const { t } = useTranslation();
-  const rightMargin = footerWidth === '100%' ? 'auto' : 0;
 
   return (
-    <Box sx={{ bgcolor: 'background.secondary' }}>
-      <Container
-        maxWidth="lg"
-        sx={{ py: 4, width: { xs: '100%', md: footerWidth }, mr: rightMargin }}>
+    <Box sx={{ bgcolor: 'background.secondary', zIndex: 1200 }}>
+      <Container maxWidth="lg" sx={{ py: 4 }}>
         <Grid container justifyContent="space-between" spacing={3}>
           <Grid item sx={{ width: 170 }}>
             <MuiLink
