@@ -24,7 +24,7 @@ import FormikTextField from './FormikTextField';
 import ScholarshipCard from './ScholarshipCard';
 import FormikMultiSelect from './FormikMultiSelect';
 import FormikAutocomplete from './FormikAutocomplete';
-import { SCHOOLS, MAJORS, TAGS } from '../types/options';
+import { SCHOOLS, MAJORS } from '../types/options';
 import State, { STATES } from '../types/States';
 import GradeLevel from '../types/GradeLevel';
 import Ethnicity from '../types/Ethnicity';
@@ -144,9 +144,9 @@ function ScholarshipForm({ scholarship }) {
               label="Tags"
               id="tags"
               labelStyle={labelStyle}
-              options={TAGS}
               freeSolo
               formik={formik}
+              placeholder="E.g. athletics, daca, essay, stem, etc."
             />
           </Grid>
         </Grid>
