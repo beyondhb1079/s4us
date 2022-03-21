@@ -129,6 +129,8 @@ export default function FilterPanel({ onClose }) {
         </Button>
       </Stack>
 
+      <Box sx={{ height: { xs: 0, md: 200 } }} />
+
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
         <DialogTitle>Unsaved Changes</DialogTitle>
         <DialogContent>

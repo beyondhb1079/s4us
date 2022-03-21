@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   Box,
@@ -45,7 +45,7 @@ const helpLinks = {
 
 function FooterColumn({ title, links, internal, t }) {
   return (
-    <Grid item>
+    <Grid item sx={{ width: 170 }}>
       <Typography
         color={(theme) => theme.palette.grey[500]}
         sx={{ fontWeight: 'bold' }}>
@@ -78,14 +78,14 @@ FooterColumn.defaultProps = {
   internal: false,
 };
 
-function Footer(props, ref) {
+function Footer() {
   const { t } = useTranslation();
 
   return (
-    <Box sx={{ bgcolor: 'background.secondary' }} ref={ref}>
+    <Box sx={{ bgcolor: 'background.secondary', zIndex: 1200 }}>
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Grid container justifyContent="space-between" spacing={3}>
-          <Grid item>
+          <Grid item sx={{ width: 170 }}>
             <MuiLink
               component={Link}
               to="/"
@@ -119,4 +119,4 @@ function Footer(props, ref) {
     </Box>
   );
 }
-export default forwardRef(Footer);
+export default Footer;
