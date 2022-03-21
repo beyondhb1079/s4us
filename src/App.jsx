@@ -23,6 +23,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import LoginDialog from './components/LoginDialog';
 import { AuthProvider } from './lib/useAuth';
 import { ScholarshipsProvider } from './models/ScholarshipsContext';
+import ScrollToTop from './ScrollToTop';
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
             <AuthProvider>
               <ScholarshipsProvider>
                 <Router>
+                  <ScrollToTop />
                   <div className="content-wrap">
                     <Header />
                     <HeaderSkeleton />
