@@ -1,4 +1,4 @@
-import React, { useState, forwardRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import {
@@ -16,11 +16,10 @@ import ScholarshipList from '../components/ScholarshipList';
 import useQueryParams from '../lib/useQueryParams';
 import { DEADLINE_ASC, getDir, getField } from '../lib/sortOptions';
 import { HeaderSkeleton } from '../components/Header';
-import useOnScreen from '../lib/useOnScreen';
 
 const drawerWidth = 360;
 
-function ListScholarships(props, ref) {
+function ListScholarships() {
   const { t } = useTranslation();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -42,25 +41,6 @@ function ListScholarships(props, ref) {
   };
 
   const scrollTrigger = useScrollTrigger();
-  const [drawerHeight, setDrawerHeight] = useState(0);
-
-  useEffect(() => {
-    function calcHeight() {
-      setDrawerHeight(
-        window.innerHeight - ref.current?.getBoundingClientRect().top
-      );
-    }
-    window.addEventListener('scroll', calcHeight);
-    return () => {
-      window.removeEventListener('scroll', calcHeight);
-    };
-  }, [ref]);
-  const footerVisible = useOnScreen(ref);
-
-  const drawerHeightStyle =
-    isDesktop && footerVisible && drawerHeight > 0
-      ? `calc(100% - ${drawerHeight}px)`
-      : '100%';
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -72,7 +52,6 @@ function ListScholarships(props, ref) {
           flexShrink: 0,
           width: { xs: '100%', md: drawerWidth },
           '& .MuiDrawer-paper': {
-            height: drawerHeightStyle,
             width: { xs: '100%', md: drawerWidth },
             boxSizing: 'border-box',
             overflowX: 'hidden',
@@ -113,4 +92,4 @@ function ListScholarships(props, ref) {
   );
 }
 
-export default forwardRef(ListScholarships);
+export default ListScholarships;
