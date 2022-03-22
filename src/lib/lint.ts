@@ -42,7 +42,7 @@ const THIS_YEAR = new Date().getFullYear();
 
 /** Returns a list of strings that seem to match outdated school periods. */
 export function parseOutdatedSchoolPeriods(desc: string): string[] {
-  return (desc.match(/\d{4}-\d{4}/g) || [])
+  return (desc.match(/(\D|^)\d{4}-\d{4}(\D|$)/g) || [])
     .concat(desc.match(/(fall|winter|spring)( of)? \d{4}/gi) || [])
     .filter((s) => !s.includes(THIS_YEAR.toString()));
 }
