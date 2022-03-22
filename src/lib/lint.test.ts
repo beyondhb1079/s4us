@@ -209,6 +209,7 @@ describe('lint()', () => {
       `${THIS_YEAR}-${THIS_YEAR + 1}`,
       `Fall ${THIS_YEAR}`,
       `spring of ${THIS_YEAR}`,
+      'mail us at Foo, ST 12345-1234',
     ].forEach((d) =>
       expect(lint({ ...testScholarship, description: d })).toEqual([])
     ));
