@@ -146,6 +146,7 @@ function ScholarshipForm({ scholarship }) {
               labelStyle={labelStyle}
               freeSolo
               formik={formik}
+              options={[]}
               placeholder="E.g. athletics, daca, essay, stem, etc."
             />
           </Grid>

@@ -5,8 +5,7 @@ import PropTypes from 'prop-types';
 
 /* eslint-disable react/jsx-props-no-spreading */
 function FormikAutocomplete(props) {
-  const { label, id, labelStyle, formik, placeholder, options, ...otherProps } =
-    props;
+  const { label, id, labelStyle, formik, placeholder, ...otherProps } = props;
   const values = getIn(formik.values, id, []);
 
   const formatTags = (vals) => {
@@ -23,7 +22,6 @@ function FormikAutocomplete(props) {
         id={id}
         multiple
         value={values}
-        options={options}
         onChange={(e, val) =>
           id === 'tags' ? formatTags(val) : formik.setFieldValue(id, val)
         }
@@ -47,12 +45,10 @@ FormikAutocomplete.propTypes = {
   labelStyle: PropTypes.object,
   formik: PropTypes.object.isRequired,
   placeholder: PropTypes.string,
-  options: PropTypes.array,
 };
 FormikAutocomplete.defaultProps = {
   label: '',
   labelStyle: {},
   placeholder: '',
-  options: [],
 };
 export default FormikAutocomplete;
