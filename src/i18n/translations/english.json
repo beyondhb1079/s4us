@@ -1,9 +1,7 @@
 {
   "navbar": {
     "scholarships": "Scholarships",
-    "add": "Add",
-    "about": "About",
-    "contact": "Contact"
+    "add": "Add"
   },
 
   "btn": {
@@ -11,11 +9,11 @@
     "addScholarship": "Add a Scholarship",
     "login": "Login",
     "loadMore": "Load More",
-    "subscribeForUpdates": "Subscribe for updates"
+    "subscribeForUpdates": "Subscribe"
   },
 
   "constructAlert": {
-    "description": "🚧 Website Actively Under-Construction! 🚧"
+    "description": "Website under construction! 🚧"
   },
 
   "contact": {
@@ -71,7 +69,6 @@
   },
 
   "general": {
-    "scholarships": "scholarships",
     "lookingForScholarships": "Looking for scholarships?"
   },
 
@@ -95,5 +92,20 @@
     }
   },
 
-  "alert": { "warning": "Warning" }
+  "alert": { "warning": "Warning" },
+
+  "footer": {
+    "quickLinks": "Quick Links",
+    "company": "Company",
+    "help": "Help",
+    "privacyTerms": "Privacy - Terms",
+    "addScholarship": "Add a scholarship",
+    "browseScholarship": "Browse scholarships",
+    "about": "About",
+    "contact": "Contact",
+    "reportIssue": "Report an issue",
+    "suggestIdea": "Suggest an idea",
+    "subscribeForUpdates": "Subscribe for updates",
+    "reachOut": "Reach out"
+  }
 }

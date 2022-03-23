@@ -16,13 +16,13 @@ import CancelIcon from '@mui/icons-material/Cancel';
 
 export default function LoginDialog() {
   const location = useLocation();
-  const { showLoginDialog } = location.state || { showLoginDialog: false };
+  const showLoginDialog = location.state?.showLoginDialog || false;
 
   const navigate = useNavigate();
   const closeDialog = () =>
-    navigate('', {
+    navigate(location.pathname, {
       replace: true,
-      state: {},
+      state: { showLoginDialog: false },
     });
 
   const uiConfig = {

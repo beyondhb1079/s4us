@@ -1,106 +1,65 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Stack,
-  Typography,
-} from '@mui/material';
+import React, { useContext, useEffect, useRef } from 'react';
+import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-
 import ScholarshipCard from './ScholarshipCard';
+import ScholarshipsContext from '../models/ScholarshipsContext';
+import useOnScreen from '../lib/useOnScreen';
 
-function ScholarshipList({ noResultsNode, listFn }) {
-  const [error, setError] = useState();
-  const [scholarships, setScholarships] = useState([]);
-  const [loadState, setLoadState] = useState({
-    loading: true,
-    canLoadMore: true,
-    loadMoreFn: listFn,
-  });
-  const { loading, canLoadMore, loadMoreFn } = loadState;
+export default function ScholarshipList({ noResultsNode, filters }) {
+  const { canLoadMore, error, loading, loadMore, scholarships, setFilters } =
+    useContext(ScholarshipsContext);
   const { t } = useTranslation();
 
-  // Reset scholarships and loading state when listFn changes
-  useEffect(() => {
-    setScholarships([]);
-    setLoadState({
-      loading: true,
-      canLoadMore: true,
-      loadMoreFn: listFn,
-    });
-  }, [listFn]);
+  // Resets result context if filters change.
+  useEffect(() => setFilters(filters), [filters, setFilters]);
+
+  // Automatically load more when the progress is visible
+  const progressRef = useRef(null);
+  const progressVisible = useOnScreen(progressRef);
 
   useEffect(() => {
-    let mounted = true;
-    if (loading && canLoadMore) {
-      loadMoreFn()
-        .then(({ results, next, hasNext }) => {
-          if (!mounted) return;
-          setError(null);
-          setScholarships((prev) => [...prev, ...results]);
-          setLoadState({
-            // Load if there were no results but there's more to load.
-            loading: !results.length && hasNext,
-            canLoadMore: hasNext,
-            loadMoreFn: next,
-          });
-        })
-        .catch((e) => mounted && setError(e));
+    if (progressVisible && canLoadMore && !loading) {
+      loadMore();
     }
-    return () => {
-      mounted = false;
-    };
-  }, [loading, canLoadMore, loadMoreFn]);
-
-  const loadMore = () => setLoadState({ ...loadState, loading: true });
+  }, [loading, canLoadMore, loadMore, progressVisible]);
 
   return (
-    <Stack spacing={3}>
+    <Stack spacing={3} paddingY={3}>
       {scholarships.map(({ id, data }) => (
         <ScholarshipCard key={id} scholarship={{ id, data }} style="result" />
       ))}
       <Box sx={{ margin: 'auto', textAlign: 'center' }}>
-        {(() => {
-          if (error) return <Typography>{error.toString()}</Typography>;
-          if (loading)
-            return (
-              <CircularProgress
-                data-testid="progress"
-                sx={{ display: 'block', margin: 'auto' }}
-              />
-            );
-          if (canLoadMore)
-            return (
-              <Button color="primary" onClick={loadMore}>
-                {t('btn.loadMore')}
-              </Button>
-            );
-          if (scholarships?.length)
-            return (
-              <Typography>{t('listScholarships.endOfResults')}</Typography>
-            );
-          return (
+        {error && <Typography>{error.toString()}</Typography>}
+        <CircularProgress
+          data-testid="progress"
+          ref={progressRef}
+          sx={{
+            display: loading || canLoadMore ? 'block' : 'none',
+            margin: 'auto',
+          }}
+        />
+
+        {!canLoadMore &&
+          (scholarships?.length ? (
+            <Typography>{t('listScholarships.endOfResults')}</Typography>
+          ) : (
             noResultsNode || (
               <Typography>
                 {t('listScholarships.noScholarshipsFound')}
               </Typography>
             )
-          );
-        })()}
+          ))}
       </Box>
     </Stack>
   );
 }
 
 ScholarshipList.propTypes = {
-  listFn: PropTypes.func,
+  filters: PropTypes.object,
   noResultsNode: PropTypes.node,
 };
 ScholarshipList.defaultProps = {
-  listFn: undefined,
+  filters: {},
   noResultsNode: undefined,
 };
-
-export default ScholarshipList;

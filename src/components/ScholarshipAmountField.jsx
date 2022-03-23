@@ -29,6 +29,7 @@ function ScholarshipAmountField({ labelStyle, formik }) {
           const val = parseInt(e.target.value, 10);
           formik.setFieldValue('amount.min', val || 0);
         }}
+        placeholder="No min"
       />
 
       <RemoveIcon sx={{ height: 1.0, textAlign: 'center' }} />
@@ -40,6 +41,7 @@ function ScholarshipAmountField({ labelStyle, formik }) {
           const val = parseInt(e.target.value, 10);
           formik.setFieldValue('amount.max', val || 0);
         }}
+        placeholder="No max"
       />
     </>
   );

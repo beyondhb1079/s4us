@@ -57,6 +57,7 @@ export default function ScholarshipsMadeSimpleSection() {
       <TabContext value={user}>
         <AppBar
           position="static"
+          variant="elevation"
           elevation={0}
           sx={{
             background: 'inherit',

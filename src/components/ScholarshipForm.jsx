@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import {
@@ -24,15 +24,19 @@ import FormikTextField from './FormikTextField';
 import ScholarshipCard from './ScholarshipCard';
 import FormikMultiSelect from './FormikMultiSelect';
 import FormikAutocomplete from './FormikAutocomplete';
-import { SCHOOLS, STATES, MAJORS } from '../types/options';
+import { SCHOOLS, MAJORS } from '../types/options';
+import State, { STATES } from '../types/States';
 import GradeLevel from '../types/GradeLevel';
 import Ethnicity from '../types/Ethnicity';
+import ScholarshipsContext from '../models/ScholarshipsContext';
+import { lintReqs } from '../lib/lint';
 
 const labelStyle = { marginBottom: 2 };
 
 function ScholarshipForm({ scholarship }) {
   const [activeStep, setActiveStep] = useState(0);
   const [submissionError, setSubmissionError] = useState(null);
+  const { invalidate } = useContext(ScholarshipsContext);
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -44,18 +48,44 @@ function ScholarshipForm({ scholarship }) {
       scholarship.data = { ...values };
       scholarship
         .save()
-        .then((s) =>
+        .then((s) => {
+          invalidate(s.id, s.data);
           navigate(`/scholarships/${s.id}`, {
             state: {
               prevPath: location.pathname,
               scholarship: { id: s.id, data: s.data },
             },
-          })
-        )
+          });
+        })
         .catch(setSubmissionError)
         .finally(() => setSubmitting(false));
     },
   });
+
+  const lintIssues = activeStep === 1 ? lintReqs(formik.values) : {};
+  const autoFill = () => {
+    const vals = formik.values.requirements;
+    const lintVals = lintIssues.reqs;
+    const updatedReqs = {};
+
+    const grades = [...(vals?.grades || []), ...(lintVals?.grades || [])];
+    const schools = [...(vals?.schools || []), ...(lintVals?.schools || [])];
+    const states = [...(vals?.states || []), ...(lintVals?.states || [])];
+    const majors = [...(vals?.majors || []), ...(lintVals?.majors || [])];
+    const ethnicities = [
+      ...(vals?.ethnicities || []),
+      ...(lintVals?.ethnicities || []),
+    ];
+
+    if (lintIssues.reqs.gpa) updatedReqs.gpa = lintVals.gpa;
+    if (grades.length) updatedReqs.grades = grades;
+    if (schools.length) updatedReqs.schools = schools;
+    if (states.length) updatedReqs.states = states;
+    if (majors.length) updatedReqs.majors = majors;
+    if (ethnicities.length) updatedReqs.ethnicities = ethnicities;
+
+    formik.setFieldValue('requirements', updatedReqs);
+  };
 
   // Initially requirements is null but is set to {} when the "no requirements"
   // checkbox is explicitly set.
@@ -123,6 +153,26 @@ function ScholarshipForm({ scholarship }) {
       content: (
         <Grid container spacing={3}>
           <Grid item xs={12}>
+            {lintIssues?.messages?.length > 0 && (
+              <Alert severity="warning" sx={{ mt: 2 }}>
+                <AlertTitle>
+                  <strong>
+                    We found the following potential requirements in the
+                    description. Would you like to populate these values?
+                  </strong>
+                </AlertTitle>
+                <Box component="ul">
+                  {lintIssues.messages?.map((m, i) => (
+                    <Typography key={i} component="li">
+                      {m}
+                    </Typography>
+                  ))}
+                </Box>
+                <Button onClick={autoFill}>Autofill</Button>
+              </Alert>
+            )}
+          </Grid>
+          <Grid item xs={12}>
             <FormControlLabel
               control={
                 <Checkbox
@@ -181,6 +231,7 @@ function ScholarshipForm({ scholarship }) {
               id="requirements.states"
               labelStyle={labelStyle}
               options={STATES.map((s) => s.abbr)}
+              getOptionLabel={(option) => State.toString(option)}
               formik={formik}
               placeholder="No state requirements"
             />

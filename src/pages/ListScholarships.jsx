@@ -1,134 +1,94 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { useLocation, useNavigate } from 'react-router-dom';
-import queryString from 'query-string';
-import { Container, Typography } from '@mui/material';
-import Scholarships from '../models/Scholarships';
-import ScholarshipList from '../components/ScholarshipList';
-import FilterBar from '../components/FilterBar';
-import qParams from '../lib/QueryParams';
-import sortOptions, {
-  DEADLINE_ASC,
-  getDir,
-  getField,
-} from '../lib/sortOptions';
-import GradeLevel from '../types/GradeLevel';
 import { useTranslation } from 'react-i18next';
+import {
+  Box,
+  Collapse,
+  Container,
+  Drawer,
+  Toolbar,
+  useMediaQuery,
+  useScrollTrigger,
+} from '@mui/material';
+import FilterBar from '../components/FilterBar';
+import FilterPanel from '../components/FilterPanel';
+import ScholarshipList from '../components/ScholarshipList';
+import useQueryParams from '../lib/useQueryParams';
+import { DEADLINE_ASC, getDir, getField } from '../lib/sortOptions';
+import { HeaderSkeleton } from '../components/Header';
 
-const queryOptions = {
-  arrayFormat: 'bracket-separator',
-  arrayFormatSeparator: ',',
-};
+const drawerWidth = 360;
 
 function ListScholarships() {
-  const navigate = useNavigate();
-  const location = useLocation();
   const { t } = useTranslation();
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const params = queryString.parse(location.search, {
-    parseNumbers: true,
-    ...queryOptions,
-  });
+  const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
-  const setQueryParam = (index, val) => {
-    navigate('', {
-      search: queryString.stringify(
-        {
-          ...params,
-          [index]: val,
-        },
-        queryOptions
-      ),
-    });
+  const [{ minAmount, maxAmount, grades, majors, sortBy }] = useQueryParams();
+
+  const sortField = getField(sortBy ?? DEADLINE_ASC);
+  const sortDir = getDir(sortBy ?? DEADLINE_ASC);
+
+  const queryFilters = {
+    sortField,
+    sortDir,
+    minAmount,
+    maxAmount,
+    grades,
+    majors,
+    hideExpired: true,
   };
 
-  const pruneQueryParam = (index) => {
-    delete params[index];
-    navigate('', {
-      replace: true,
-      search: queryString.stringify(params, queryOptions),
-    });
-  };
-
-  /**
-   * when dealing with invalid values in an array
-   * rather than pruning the entire param, we can prune out the invalid values
-   */
-  const replaceQueryParam = (key, newVal) => {
-    params[key] = newVal;
-    navigate('', {
-      replace: true,
-      search: queryString.stringify(params, queryOptions),
-    });
-  };
-
-  if (params.sortBy && !(params.sortBy in sortOptions)) {
-    pruneQueryParam('sortBy');
-  }
-
-  const sortBy = params.sortBy ?? DEADLINE_ASC;
-
-  const sortField = getField(sortBy);
-  const sortDir = getDir(sortBy);
-
-  const { minAmount, maxAmount, grades, majors } = params;
-
-  if (
-    minAmount !== undefined &&
-    !(Number.isInteger(minAmount) && minAmount > 0)
-  ) {
-    pruneQueryParam(qParams.MIN_AMOUNT);
-  }
-
-  if (
-    maxAmount !== undefined &&
-    !(Number.isInteger(maxAmount) && maxAmount > 0)
-  ) {
-    pruneQueryParam(qParams.MAX_AMOUNT);
-  }
-
-  /**
-   * prunes invalid grade values not respresented by GradeLevel enum
-   */
-  if (grades !== undefined) {
-    if (Array.isArray(grades) && grades.length > 0) {
-      const prunedInvalid = [...new Set(grades)].filter((g) =>
-        GradeLevel.keys().includes(g)
-      );
-
-      if (prunedInvalid.length !== grades.length) {
-        replaceQueryParam(qParams.GRADES, prunedInvalid);
-      }
-    } else pruneQueryParam(qParams.GRADES);
-  }
-
-  if (majors !== undefined) {
-    if (!Array.isArray(majors) || majors.length === 0 || majors[0] === '')
-      pruneQueryParam(qParams.MAJORS);
-  }
-
-  const listScholarships = () =>
-    Scholarships.list({
-      sortField,
-      sortDir,
-      minAmount,
-      maxAmount,
-      grades,
-      majors,
-      hideExpired: true,
-    });
+  const scrollTrigger = useScrollTrigger();
 
   return (
-    <Container>
+    <Box sx={{ display: 'flex' }}>
       <Helmet>
         <title>{t('listScholarships.titleTag')}</title>
       </Helmet>
-      <Typography variant="h4" component="h1" align="center" style={{ p: 1 }}>
-        {t('general.scholarships')}
-      </Typography>
-      <FilterBar queryParams={params} {...{ setQueryParam }} />
-      <ScholarshipList listFn={listScholarships} />
-    </Container>
+      <Drawer
+        sx={{
+          flexShrink: 0,
+          width: { xs: '100%', md: drawerWidth },
+          '& .MuiDrawer-paper': {
+            width: { xs: '100%', md: drawerWidth },
+            boxSizing: 'border-box',
+            overflowX: 'hidden',
+            transition: 'height 100ms linear',
+          },
+        }}
+        open={drawerOpen || isDesktop}
+        variant={isDesktop ? 'permanent' : 'temporary'}
+        anchor="left">
+        <Collapse in={!scrollTrigger} sx={{ flexShrink: 0 }}>
+          <HeaderSkeleton />
+        </Collapse>
+        <Box sx={{ overflowY: 'auto', flexGrow: 1 }}>
+          <FilterPanel onClose={() => setDrawerOpen(false)} />
+        </Box>
+      </Drawer>
+
+      <Box component="main" sx={{ width: '100%' }}>
+        <Box
+          sx={{
+            position: 'fixed',
+            top: 0,
+            width: { xs: '100%', md: `calc(100% - ${drawerWidth}px)` },
+            zIndex: 1,
+          }}>
+          <Collapse in={!scrollTrigger} sx={{ flexShrink: 0 }}>
+            <HeaderSkeleton />
+          </Collapse>
+          <FilterBar openFilter={() => setDrawerOpen(true)} />
+        </Box>
+        <Toolbar />
+
+        <Container maxWidth="md" sx={{ flexGrow: 1 }}>
+          <ScholarshipList filters={queryFilters} />
+        </Container>
+      </Box>
+    </Box>
   );
 }
 

@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import firebase from 'firebase';
+import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import {
   AppBar,
   Alert,
-  AlertTitle,
   Avatar,
   Button,
   Grow,
@@ -12,15 +10,34 @@ import {
   IconButton,
   Link as MuiLink,
   Menu,
+  Slide,
   MenuItem,
   Snackbar,
   Toolbar,
+  useScrollTrigger,
+  Box,
 } from '@mui/material';
 import LanguageIcon from '@mui/icons-material/Language';
 import ProfileMenu from './ProfileDropdown';
 import { useTranslation } from 'react-i18next';
 import { BRAND_NAME, SUBSCRIPTION_FORM_URL } from '../config/constants';
 import HeaderNavMenu from './HeaderNavMenu';
+import useAuth from '../lib/useAuth';
+import PropTypes from 'prop-types';
+
+function HideOnScroll({ children }) {
+  const trigger = useScrollTrigger();
+
+  return (
+    <Slide appear={false} direction="down" in={!trigger}>
+      {children}
+    </Slide>
+  );
+}
+
+HideOnScroll.propTypes = {
+  children: PropTypes.element.isRequired,
+};
 
 const OnRenderSnackbar = () => {
   const match = window.location.hostname.match(/s4us-pr-(\d+)\.onrender\.com/);
@@ -42,30 +59,23 @@ const UnderConstructionAlert = ({ t }) => (
   <Alert
     severity="warning"
     action={
-      <Button component={MuiLink} href={SUBSCRIPTION_FORM_URL}>
+      <Button component={MuiLink} href={SUBSCRIPTION_FORM_URL} size="small">
         {t('btn.subscribeForUpdates')}
       </Button>
     }>
-    <AlertTitle>{t('alert.warning')}</AlertTitle>
     {t('constructAlert.description')}
   </Alert>
 );
 
 const AuthGrowButton = ({ t }) => {
-  const { currentUser } = firebase.auth();
-  const [isSignedIn, setIsSignedIn] = useState(
-    !!firebase.auth().currentUser || undefined
-  );
-
-  useEffect(
-    () => firebase.auth().onAuthStateChanged((user) => setIsSignedIn(!!user)),
-    []
-  );
+  const { currentUser } = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
+  const location = useLocation();
+
   return (
     <>
-      <Grow in={isSignedIn !== undefined}>
-        {isSignedIn ? (
+      <Grow in={currentUser !== undefined}>
+        {currentUser ? (
           <IconButton
             size="medium"
             aria-label="account of current user"
@@ -82,7 +92,7 @@ const AuthGrowButton = ({ t }) => {
             variant="contained"
             component={Link}
             replace
-            to=""
+            to={location.pathname}
             state={{ showLoginDialog: true }}
             sx={{ height: '100%', width: 64 }}>
             {t('btn.login')}
@@ -97,8 +107,6 @@ const AuthGrowButton = ({ t }) => {
 const links = {
   'navbar.scholarships': '/scholarships',
   'navbar.add': '/scholarships/new',
-  'navbar.about': '/about',
-  'navbar.contact': '/contact',
 };
 
 const languages = {
@@ -111,54 +119,71 @@ function Header() {
   const [anchorEl, setAnchorEl] = useState(null);
 
   return (
-    <AppBar position="static" color="secondary">
-      <UnderConstructionAlert t={t} />
-      <OnRenderSnackbar />
-      <Toolbar>
-        <MuiLink
-          component={Link}
-          to="/"
-          variant="h5"
-          color="primary"
-          underline="none"
-          sx={{ flexGrow: 1 /** Take up remaining space */ }}>
-          {BRAND_NAME.toUpperCase()}
-        </MuiLink>
-        <Hidden smDown>
-          <HeaderNavMenu links={links} />
-        </Hidden>
-        <IconButton
-          color="primary"
-          onClick={(e) => setAnchorEl(e.currentTarget)}
-          sx={{ px: 2 }}>
-          <LanguageIcon />
-        </IconButton>
-        <AuthGrowButton t={t} />
-      </Toolbar>
-      <Hidden smUp>
-        <Toolbar variant="dense">
-          <HeaderNavMenu links={links} />
+    <HideOnScroll>
+      <AppBar
+        color="secondary"
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+        <UnderConstructionAlert t={t} />
+        <Toolbar>
+          <OnRenderSnackbar />
+          <MuiLink
+            component={Link}
+            to="/"
+            variant="h5"
+            color="primary"
+            underline="none"
+            sx={{ flexGrow: 1 /** Take up remaining space */ }}>
+            {BRAND_NAME.toUpperCase()}
+          </MuiLink>
+          <Hidden smDown>
+            <HeaderNavMenu links={links} />
+          </Hidden>
+          <IconButton
+            color="primary"
+            onClick={(e) => setAnchorEl(e.currentTarget)}
+            sx={{ px: 2 }}>
+            <LanguageIcon />
+          </IconButton>
+          <AuthGrowButton t={t} />
         </Toolbar>
+        <Hidden smUp>
+          <Toolbar variant="dense">
+            <HeaderNavMenu links={links} />
+          </Toolbar>
+        </Hidden>
+        <Menu
+          open={Boolean(anchorEl)}
+          anchorEl={anchorEl}
+          onClose={() => setAnchorEl(null)}
+          anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
+          transformOrigin={{ horizontal: 'center', vertical: 'top' }}>
+          {Object.entries(languages).map(([abbr, lang]) => (
+            <MenuItem
+              key={lang}
+              selected={abbr === i18n.language}
+              onClick={() => {
+                i18n.changeLanguage(abbr);
+                setAnchorEl(null);
+              }}>
+              {lang}
+            </MenuItem>
+          ))}
+        </Menu>
+      </AppBar>
+    </HideOnScroll>
+  );
+}
+
+export function HeaderSkeleton() {
+  const { t } = useTranslation();
+  return (
+    <Box sx={{ width: '100vw', visibility: 'hidden' }}>
+      <UnderConstructionAlert t={t} />
+      <Toolbar />
+      <Hidden smUp>
+        <Toolbar variant="dense" />
       </Hidden>
-      <Menu
-        open={Boolean(anchorEl)}
-        anchorEl={anchorEl}
-        onClose={() => setAnchorEl(null)}
-        anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
-        transformOrigin={{ horizontal: 'center', vertical: 'top' }}>
-        {Object.entries(languages).map(([abbr, lang]) => (
-          <MenuItem
-            key={lang}
-            selected={abbr === i18n.language}
-            onClick={() => {
-              i18n.changeLanguage(abbr);
-              setAnchorEl(null);
-            }}>
-            {lang}
-          </MenuItem>
-        ))}
-      </Menu>
-    </AppBar>
+    </Box>
   );
 }
 

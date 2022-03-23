@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Helmet from 'react-helmet';
 import { AddCircle as AddIcon, Inbox as InboxIcon } from '@mui/icons-material';
 import { Link, useLocation, useNavigationType } from 'react-router-dom';
-import firebase from 'firebase';
 import {
   Button,
   Container,
@@ -13,23 +12,21 @@ import {
   Alert,
   Collapse,
 } from '@mui/material';
-import Scholarships from '../models/Scholarships';
 import ScholarshipList from '../components/ScholarshipList';
 import { useTranslation } from 'react-i18next';
 import LookingForScholarshipsBanner from '../components/LookingForScholarshipsBanner';
+import useAuth from '../lib/useAuth';
 
 export default function UserHome() {
   const { t } = useTranslation();
-  const user = firebase.auth().currentUser;
+  const { currentUser: user } = useAuth();
   const location = useLocation();
-
-  const listScholarshipsFn = () => Scholarships.list({ authorId: user.uid });
 
   const navType = useNavigationType();
   const alertMessage = location?.state?.alert?.message;
   const [showAlert, setShowAlert] = useState(true);
   return (
-    <Container>
+    <Container sx={{ p: 2 }}>
       <Helmet>
         <title>{t('home.user.titleTag')}</title>
       </Helmet>
@@ -42,7 +39,7 @@ export default function UserHome() {
         </Collapse>
       )}
 
-      <Typography variant="h4" component="h1" style={{ p: 1 }} gutterBottom>
+      <Typography variant="h4" component="h1" gutterBottom>
         {t('home.user.welcome')} {user.displayName}
       </Typography>
 
@@ -70,7 +67,7 @@ export default function UserHome() {
         </Grid>
       </Grid>
       <ScholarshipList
-        listFn={listScholarshipsFn}
+        filters={{ authorId: user.uid, hideExpired: false }}
         noResultsNode={
           <Grid
             container

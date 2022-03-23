@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import firebase from 'firebase';
-import PropTypes from 'prop-types';
+import React, { ReactNode, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -16,6 +14,7 @@ import {
   CardContent,
   Alert,
   AlertTitle,
+  Stack,
 } from '@mui/material';
 import {
   Report as ReportIcon,
@@ -27,12 +26,15 @@ import {
 } from '@mui/icons-material';
 import { genMailToLink, withDeviceInfo } from '../lib/mail';
 import ScholarshipAmount from '../types/ScholarshipAmount';
-import { BRAND_NAME } from '../config/constants';
 import Ethnicity from '../types/Ethnicity';
 import GradeLevel from '../types/GradeLevel';
+import State from '../types/States';
 import { lint } from '../lib/lint';
+import ShareDialog from './ShareDialog';
+import useAuth from '../lib/useAuth';
+import ScholarshipData from '../types/ScholarshipData';
 
-const DetailCardCell = ({ label, text }) => (
+const DetailCardCell = ({ label, text }: { label: string; text: string }) => (
   <>
     <Grid container justifyContent="space-between">
       <Grid item xs={12} sm>
@@ -46,13 +48,16 @@ const DetailCardCell = ({ label, text }) => (
   </>
 );
 
-DetailCardCell.propTypes = {
-  label: PropTypes.string.isRequired,
-  text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-};
-
-export default function ScholarshipCard({ scholarship, style }) {
-  const navigate = useNavigate();
+export default function ScholarshipCard({
+  scholarship,
+  style = 'result',
+}: {
+  scholarship: {
+    id: string;
+    data: ScholarshipData;
+  };
+  style: 'result' | 'detail' | 'preview';
+}): ReactNode {
   const {
     name,
     organization,
@@ -61,64 +66,27 @@ export default function ScholarshipCard({ scholarship, style }) {
     website,
     description,
     tags,
-    requirements,
+    requirements: reqs,
     author,
   } = scholarship.data;
   const detailed = style !== 'result';
   const preview = style === 'preview';
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-  const shareFn = () => {
-    const URL = `https://${window.location.hostname}/scholarships/${scholarship.id}`;
-    const data = {
-      title: `${ScholarshipAmount.toString(amount)} - ${name} | ${BRAND_NAME}`,
-      text: `${ScholarshipAmount.toString(amount)}
-       - ${name} | ${BRAND_NAME} \n ${deadline?.toLocaleDateString()}\n`,
-      url: URL,
-    };
+  const [showShare, setShowShare] = useState(false);
 
-    if (navigator.share) {
-      navigator
-        .share(data)
-        // eslint-disable-next-line no-console
-        .then(() => console.log('Thanks for sharing!'))
-        // eslint-disable-next-line no-console
-        .catch(console.error);
-    } else {
-      navigate('', {
-        replace: true,
-        state: { showShareDialog: true, shareData: data },
-      });
-    }
-  };
+  const { claims, currentUser } = useAuth();
+  const canEdit = currentUser?.uid === author?.id || claims?.admin;
 
-  const currentUser = firebase.auth().currentUser;
-  const [canEdit, setCanEdit] = useState(
-    currentUser ? currentUser.uid === author?.id : false
-  );
-  useEffect(() => {
-    if (!preview && currentUser && currentUser.uid !== author?.id) {
-      currentUser
-        .getIdTokenResult()
-        .then((idTokenResult) => {
-          if (idTokenResult.claims.admin) {
-            setCanEdit(true);
-          }
-        })
-        // eslint-disable-next-line no-console
-        .catch(console.error);
-    }
-  }, [author, currentUser, preview]);
-
-  const CardAreaComponent = detailed ? Box : CardActionArea;
+  const CardAreaComponent: React.FC<{
+    [key: string]: any;
+  }> = detailed ? Box : CardActionArea;
   const lintIssues = canEdit || preview ? lint(scholarship.data) : [];
   return (
     <Card variant="outlined">
       <CardAreaComponent
         component={detailed ? Box : Link}
         to={'/scholarships/' + scholarship.id}
-        state={{ scholarship }}
-        sx={{ p: 3 }}>
+        state={{ scholarship }}>
         <CardContent sx={{ p: 3 }}>
           <Typography
             variant={detailed ? 'h6' : 'subtitle1'}
@@ -174,7 +142,7 @@ export default function ScholarshipCard({ scholarship, style }) {
               <Button
                 variant="outlined"
                 startIcon={<ShareIcon />}
-                onClick={shareFn}
+                onClick={() => setShowShare(true)}
                 disabled={scholarship.id === undefined}>
                 Share
               </Button>
@@ -190,10 +158,10 @@ export default function ScholarshipCard({ scholarship, style }) {
           <Typography
             paragraph
             sx={{
-              display: detailed ? '-webkit-box' : undefined,
-              WebkitLineClamp: detailed ? 5 : undefined,
-              lineClamp: detailed ? 5 : undefined,
-              WebkitBoxOrient: detailed ? 'vertical' : undefined,
+              display: !detailed ? '-webkit-box' : undefined,
+              WebkitLineClamp: !detailed ? 5 : undefined,
+              lineClamp: !detailed ? 5 : undefined,
+              WebkitBoxOrient: !detailed ? 'vertical' : undefined,
               overflow: 'hidden',
               whiteSpace: 'pre-line',
               my: 2,
@@ -207,42 +175,50 @@ export default function ScholarshipCard({ scholarship, style }) {
               </Typography>
               <DetailCardCell
                 label="State"
-                text={requirements?.states?.join(', ') || 'All'}
+                text={
+                  reqs?.states?.map(State.toString).sort().join(', ') || 'All'
+                }
               />
               <DetailCardCell
                 label="GPA"
-                text={requirements?.gpa?.toFixed(1) || 'All'}
+                text={
+                  reqs?.gpa && Number.isInteger(reqs?.gpa)
+                    ? reqs.gpa.toFixed(1)
+                    : reqs?.gpa?.toString() || 'All'
+                }
               />
               <DetailCardCell
                 label="Grades"
                 text={
-                  requirements?.grades?.map(GradeLevel.toString).join(', ') ||
+                  reqs?.grades?.map(GradeLevel.toString).sort().join(', ') ||
                   'All'
                 }
               />
               <DetailCardCell
                 label="Demographic"
                 text={
-                  requirements?.ethnicities
+                  reqs?.ethnicities
                     ?.map(Ethnicity.toString)
+                    .sort()
                     .join(', ') || 'All'
                 }
               />
               <DetailCardCell
                 label="Majors"
-                text={requirements?.majors?.join(', ') || 'All'}
+                text={reqs?.majors?.sort().join(', ') || 'All'}
               />
               <DetailCardCell
                 label="Schools"
-                text={requirements?.schools?.join(', ') || 'All'}
+                text={reqs?.schools?.sort().join(', ') || 'All'}
               />
             </Box>
           )}
 
-          <Grid container sx={{ mt: 2 }}>
-            {tags &&
-              tags.map((tag) => (
+          {tags && (
+            <Stack direction="row" sx={{ mt: 2 }}>
+              {tags.map((tag, i) => (
                 <Chip
+                  id={i.toString()}
                   label={tag}
                   variant="outlined"
                   color="primary"
@@ -250,7 +226,8 @@ export default function ScholarshipCard({ scholarship, style }) {
                   key={tag}
                 />
               ))}
-          </Grid>
+            </Stack>
+          )}
 
           {detailed && (
             <Chip
@@ -283,38 +260,13 @@ export default function ScholarshipCard({ scholarship, style }) {
           </Box>
         </Alert>
       )}
+      {detailed && (
+        <ShareDialog
+          open={showShare}
+          onClose={() => setShowShare(false)}
+          scholarship={scholarship}
+        />
+      )}
     </Card>
   );
 }
-
-ScholarshipCard.propTypes = {
-  scholarship: PropTypes.shape({
-    id: PropTypes.string,
-    data: PropTypes.shape({
-      name: PropTypes.string,
-      organization: PropTypes.string,
-      amount: PropTypes.shape({}),
-      description: PropTypes.string,
-      deadline: PropTypes.instanceOf(Date),
-      website: PropTypes.string,
-      tags: PropTypes.arrayOf(PropTypes.string),
-      author: PropTypes.shape({
-        email: PropTypes.string,
-        id: PropTypes.string,
-      }),
-      requirements: PropTypes.shape({
-        ethnicities: PropTypes.arrayOf(PropTypes.string),
-        gpa: PropTypes.number,
-        grades: PropTypes.arrayOf(PropTypes.number),
-        majors: PropTypes.arrayOf(PropTypes.string),
-        schools: PropTypes.arrayOf(PropTypes.string),
-        states: PropTypes.arrayOf(PropTypes.string),
-      }),
-    }).isRequired,
-  }).isRequired,
-  style: PropTypes.oneOf(['result', 'detail', 'preview']),
-};
-
-ScholarshipCard.defaultProps = {
-  style: 'result',
-};

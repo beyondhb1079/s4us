@@ -9,8 +9,10 @@ import Scholarships from '../models/Scholarships';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import GradeLevel from '../types/GradeLevel';
 import Ethnicity from '../types/Ethnicity';
+import State from '../types/States';
 import i18n from '../i18n/setup';
 import { I18nextProvider } from 'react-i18next';
+import { ScholarshipsProvider } from '../models/ScholarshipsContext';
 
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.
@@ -20,11 +22,13 @@ function renderAtRoute(pathname, state = {}) {
   return render(
     <I18nextProvider i18n={i18n}>
       <ThemeProvider theme={createTheme()}>
-        <MemoryRouter initialEntries={[{ pathname, state }]}>
-          <Routes>
-            <Route path="/scholarships/:id" element={<ViewScholarship />} />
-          </Routes>
-        </MemoryRouter>
+        <ScholarshipsProvider>
+          <MemoryRouter initialEntries={[{ pathname, state }]}>
+            <Routes>
+              <Route path="/scholarships/:id" element={<ViewScholarship />} />
+            </Routes>
+          </MemoryRouter>
+        </ScholarshipsProvider>
       </ThemeProvider>
     </I18nextProvider>
   );
@@ -107,17 +111,17 @@ test('renders scholarship details', async () => {
   expect(screen.getByRole('link', { name: /Apply/i }).href).toBe(data.website);
   expect(Helmet.peek().title).toBe(data.name);
   expect(
-    screen.getByText(data.requirements.states.join(', '))
+    screen.getByText(data.requirements.states.map(State.toString).join(', '))
   ).toBeInTheDocument();
   expect(screen.getByText(data.requirements.gpa + '.0')).toBeInTheDocument();
   expect(
     screen.getByText(
-      data.requirements.grades.map(GradeLevel.toString).join(', ')
+      data.requirements.grades.map(GradeLevel.toString).sort().join(', ')
     )
   ).toBeInTheDocument();
   expect(
     screen.getByText(
-      data.requirements.ethnicities.map(Ethnicity.toString).join(', ')
+      data.requirements.ethnicities.map(Ethnicity.toString).sort().join(', ')
     )
   ).toBeInTheDocument();
   expect(

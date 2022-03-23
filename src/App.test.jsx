@@ -5,6 +5,11 @@ import App from './App';
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution..
 window.MutationObserver = require('mutation-observer');
+window.scrollTo = jest.fn();
+
+afterAll(() => {
+  jest.clearAllMocks();
+});
 
 test('renders home page by default', () => {
   render(<App />);
