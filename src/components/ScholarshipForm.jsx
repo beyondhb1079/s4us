@@ -147,6 +147,12 @@ function ScholarshipForm({ scholarship }) {
               freeSolo
               formik={formik}
               options={[]}
+              onChange={(vals) => {
+                const newVals = new Set(
+                  vals.map((v) => v.toLowerCase().replace(/\s+/g, '-'))
+                );
+                formik.setFieldValue('tags', Array.from(newVals));
+              }}
               placeholder="E.g. athletics, daca, essay, stem, etc."
             />
           </Grid>
