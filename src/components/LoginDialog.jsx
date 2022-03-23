@@ -41,18 +41,15 @@ export default function LoginDialog() {
       open={showLoginDialog}
       onClose={closeDialog}
       aria-labelledby="responsive-dialog-title">
-      <DialogContent
-        sx={{
-          padding: '0',
-        }}>
+      <DialogContent sx={{ p: 0 }}>
         <Grid container spacing={2}>
           <Grid
             item
             xs={5}
             sm={5}
-            sx={{ color: 'white', background: 'rgb(33,58,154)' }}>
+            sx={{ color: 'background.paper', bgcolor: 'primary.main' }}>
             <DialogTitle
-              id="responsive-dialog-title"
+              id="responsive-dialog-brand"
               sx={{
                 padding: 3,
                 fontSize: '15px',
@@ -62,21 +59,19 @@ export default function LoginDialog() {
               DreamScholars
             </DialogTitle>
             <DialogTitle
-              id="responsive-dialog-title"
+              id="responsive-dialog-welcome"
               sx={{
                 padding: 3,
                 fontSize: '30px',
                 paddingBottom: '15px',
-                fontFamily: 'Roboto',
               }}>
               Welcome.
             </DialogTitle>
             <DialogContentText
               sx={{
-                color: 'white',
+                color: 'background.paper',
                 padding: 3,
                 fontSize: '15px',
-                fontFamily: 'Roboto',
               }}>
               DreamScholars provides scholarships for all students regardless of
               status.
