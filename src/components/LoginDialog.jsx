@@ -7,6 +7,8 @@ import {
   DialogTitle,
   Grid,
   IconButton,
+  Typography,
+  Box,
 } from '@mui/material';
 import firebase from 'firebase';
 import StyleFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
@@ -45,68 +47,63 @@ export default function LoginDialog() {
         <Grid container spacing={2}>
           <Grid
             item
-            xs={5}
-            sm={5}
+            xs={12}
+            sm={6}
             sx={{ color: 'background.paper', bgcolor: 'primary.main' }}>
-            <DialogTitle
-              id="responsive-dialog-brand"
-              sx={{
-                padding: 3,
-                fontSize: '15px',
-                paddingBottom: '21px',
-                fontFamily: 'PlayfairDisplay',
-              }}>
-              DreamScholars
+            <DialogTitle id="responsive-dialog-brand" sx={{ p: 3 }}>
+              <Typography sx={{ color: 'background.paper' }}>
+                DreamScholars
+              </Typography>
             </DialogTitle>
-            <DialogTitle
-              id="responsive-dialog-welcome"
-              sx={{
-                padding: 3,
-                fontSize: '30px',
-                paddingBottom: '15px',
-              }}>
-              Welcome.
+            <DialogTitle id="responsive-dialog-welcome" sx={{ p: 3 }}>
+              <Typography variant="h4" sx={{ color: 'background.paper' }}>
+                Welcome.
+              </Typography>
             </DialogTitle>
-            <DialogContentText
-              sx={{
-                color: 'background.paper',
-                padding: 3,
-                fontSize: '15px',
-              }}>
-              DreamScholars provides scholarships for all students regardless of
-              status.
-              <br></br>
-              <br></br>
-              Join our community &amp;
-              <br></br>
-              <br></br>Get access to scholarship submissions and other cool
-              features soon.
+            <DialogContentText sx={{ color: 'background.paper', p: 3 }}>
+              <Typography paragraph sx={{ color: 'background.paper' }}>
+                DreamScholars provides scholarships for all students regardless
+                of status.
+              </Typography>
+              <Typography paragraph sx={{ color: 'background.paper' }}>
+                Join our community &amp;
+              </Typography>
+              <Typography paragraph sx={{ color: 'background.paper' }}>
+                Get access to scholarship submissions and other cool features
+                soon.
+              </Typography>
             </DialogContentText>
           </Grid>
-          <Grid item xs={7} sm={7}>
-            <IconButton
-              size="medium"
-              aria-haspopup="true"
-              onClick={() => closeDialog()}
-              color="inherit">
-              <CancelIcon />
-            </IconButton>
 
-            <DialogTitle
-              id="responsive-dialog-title"
+          <Grid item xs={12} sm={6}>
+            <Box sx={{ textAlign: 'right' }}>
+              <IconButton
+                size="medium"
+                aria-haspopup="true"
+                onClick={() => closeDialog()}
+                color="inherit">
+                <CancelIcon />
+              </IconButton>
+            </Box>
+
+            <Box
               sx={{
-                fontWeight: 'bold',
-                fontSize: '16px',
-                paddingTop: '45px',
-                paddingBottom: '0',
-                paddingLeft: '125px',
+                flex: 1,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'column',
               }}>
-              Sign In
-            </DialogTitle>
-            <StyleFirebaseAuth
-              uiConfig={uiConfig}
-              firebaseAuth={firebase.auth()}
-            />
+              <DialogTitle
+                id="responsive-dialog-title"
+                sx={{ textAlign: 'center', pt: 5 }}>
+                <Typography sx={{ fontWeight: 'bold' }}>Sign In</Typography>
+              </DialogTitle>
+              <StyleFirebaseAuth
+                uiConfig={uiConfig}
+                firebaseAuth={firebase.auth()}
+              />
+            </Box>
           </Grid>
         </Grid>
       </DialogContent>
