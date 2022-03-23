@@ -50,16 +50,18 @@ export default function LoginDialog() {
             xs={12}
             sm={6}
             sx={{ color: 'background.paper', bgcolor: 'primary.main' }}>
-            <DialogTitle id="responsive-dialog-brand" sx={{ p: 3 }}>
+            <DialogTitle id="responsive-dialog-brand">
               <Typography sx={{ color: 'background.paper' }}>
                 DreamScholars
               </Typography>
             </DialogTitle>
-            <DialogTitle id="responsive-dialog-welcome" sx={{ p: 3 }}>
+
+            <DialogTitle id="responsive-dialog-welcome">
               <Typography variant="h4" sx={{ color: 'background.paper' }}>
                 Welcome.
               </Typography>
             </DialogTitle>
+
             <DialogContentText sx={{ color: 'background.paper', p: 3 }}>
               <Typography paragraph sx={{ color: 'background.paper' }}>
                 DreamScholars provides scholarships for all students regardless
@@ -86,24 +88,15 @@ export default function LoginDialog() {
               </IconButton>
             </Box>
 
-            <Box
-              sx={{
-                flex: 1,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'column',
-              }}>
-              <DialogTitle
-                id="responsive-dialog-title"
-                sx={{ textAlign: 'center', pt: 5 }}>
-                <Typography sx={{ fontWeight: 'bold' }}>Sign In</Typography>
-              </DialogTitle>
-              <StyleFirebaseAuth
-                uiConfig={uiConfig}
-                firebaseAuth={firebase.auth()}
-              />
-            </Box>
+            <DialogTitle
+              id="responsive-dialog-title"
+              sx={{ textAlign: 'center', m: 5 }}>
+              <Typography sx={{ fontWeight: 'bold' }}>Sign In</Typography>
+            </DialogTitle>
+            <StyleFirebaseAuth
+              uiConfig={uiConfig}
+              firebaseAuth={firebase.auth()}
+            />
           </Grid>
         </Grid>
       </DialogContent>
