@@ -90,7 +90,7 @@ export default function LoginDialog() {
 
             <DialogTitle
               id="responsive-dialog-title"
-              sx={{ textAlign: 'center', m: 5 }}>
+              sx={{ textAlign: 'center' }}>
               <Typography sx={{ fontWeight: 'bold' }}>Sign In</Typography>
             </DialogTitle>
             <StyleFirebaseAuth
