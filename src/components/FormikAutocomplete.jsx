@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { getIn } from 'formik';
 import { Autocomplete, InputLabel, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
@@ -16,6 +16,8 @@ function FormikAutocomplete(props) {
   } = props;
   const values = getIn(formik.values, id, []);
 
+  const [inputValue, setInputValue] = useState('');
+
   return (
     <>
       <InputLabel sx={labelStyle}>{label}</InputLabel>
@@ -23,9 +25,23 @@ function FormikAutocomplete(props) {
         id={id}
         multiple
         value={values}
+        inputValue={inputValue}
         onChange={(e, val) =>
           onChange ? onChange(val) : formik.setFieldValue(id, val)
         }
+        onInputChange={(event, newInputValue) => {
+          const options = newInputValue.split(',');
+
+          if (options.length > 1) {
+            const vals = values.concat(
+              options.map((x) => x.trim()).filter((x) => x)
+            );
+            setInputValue('');
+            return onChange ? onChange(vals) : formik.setFieldValue(id, vals);
+          } else {
+            setInputValue(newInputValue);
+          }
+        }}
         renderInput={(params) => (
           <TextField
             {...params}
