@@ -44,7 +44,18 @@ export default function LoginDialog() {
       onClose={closeDialog}
       aria-labelledby="responsive-dialog-title">
       <DialogContent sx={{ p: 0 }}>
-        <Grid container spacing={2}>
+        <Box sx={{ position: 'absolute', top: 0, right: 0 }}>
+          <IconButton
+            size="medium"
+            aria-haspopup="true"
+            onClick={() => closeDialog()}
+            color="inherit">
+            <CancelIcon
+              sx={{ color: { xs: 'background.paper', sm: 'inherit' } }}
+            />
+          </IconButton>
+        </Box>
+        <Grid container spacing={2} alignItems="center">
           <Grid
             item
             xs={12}
@@ -78,16 +89,6 @@ export default function LoginDialog() {
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <Box sx={{ textAlign: 'right' }}>
-              <IconButton
-                size="medium"
-                aria-haspopup="true"
-                onClick={() => closeDialog()}
-                color="inherit">
-                <CancelIcon />
-              </IconButton>
-            </Box>
-
             <DialogTitle
               id="responsive-dialog-title"
               sx={{ textAlign: 'center' }}>
