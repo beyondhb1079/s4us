@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet';
 import { Container, Typography, Box, Collapse } from '@mui/material';
 import Scholarships from '../models/Scholarships';
 import ScholarshipCard from '../components/ScholarshipCard';
+import ShowMoreScholarships from '../components/ShowMoreScholarships';
 import { Alert } from '@mui/material';
 import bannerImg from '../img/detail-page-banner.jpg';
 import { useLocation, useNavigationType, useParams } from 'react-router-dom';
@@ -83,6 +84,7 @@ export default function ViewScholarship() {
       />
 
       <ScholarshipCard scholarship={scholarship} style="detail" />
+      <ShowMoreScholarships />
     </Container>
   );
 }
