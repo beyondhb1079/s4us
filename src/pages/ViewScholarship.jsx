@@ -52,39 +52,41 @@ export default function ViewScholarship() {
 
   const { name, dateAdded, lastModified } = scholarship.data;
   return (
-    <Container maxWidth="md">
-      <Helmet>
-        <title>{name}</title>
-      </Helmet>
+    <>
+      <Container maxWidth="md">
+        <Helmet>
+          <title>{name}</title>
+        </Helmet>
 
-      {justEdited && navType === 'PUSH' && (
-        <Collapse in={showAlert}>
-          <Alert
-            color="primary"
-            variant="filled"
-            onClose={() => setShowAlert(false)}>
-            {`Scholarship successfully ${
-              Date.parse(dateAdded) === Date.parse(lastModified)
-                ? 'submitted.'
-                : 'updated.'
-            }`}
-          </Alert>
-        </Collapse>
-      )}
+        {justEdited && navType === 'PUSH' && (
+          <Collapse in={showAlert}>
+            <Alert
+              color="primary"
+              variant="filled"
+              onClose={() => setShowAlert(false)}>
+              {`Scholarship successfully ${
+                Date.parse(dateAdded) === Date.parse(lastModified)
+                  ? 'submitted.'
+                  : 'updated.'
+              }`}
+            </Alert>
+          </Collapse>
+        )}
 
-      <Box
-        component="img"
-        src={bannerImg}
-        sx={{
-          width: '100%',
-          objectFit: 'cover',
-          maxHeight: 250,
-          objectPosition: { md: '0px -50px' },
-        }}
-      />
+        <Box
+          component="img"
+          src={bannerImg}
+          sx={{
+            width: '100%',
+            objectFit: 'cover',
+            maxHeight: 250,
+            objectPosition: { md: '0px -50px' },
+          }}
+        />
 
-      <ScholarshipCard scholarship={scholarship} style="detail" />
+        <ScholarshipCard scholarship={scholarship} style="detail" />
+      </Container>
       <ShowMoreScholarships />
-    </Container>
+    </>
   );
 }
