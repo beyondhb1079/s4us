@@ -68,6 +68,6 @@ FormikAutocomplete.defaultProps = {
   label: '',
   labelStyle: {},
   placeholder: '',
-  onchange: undefined,
+  onChange: undefined,
 };
 export default FormikAutocomplete;
