@@ -1,7 +1,17 @@
 import React from 'react';
 import { getIn } from 'formik';
-import { Autocomplete, InputLabel, TextField } from '@mui/material';
+import {
+  Autocomplete,
+  createFilterOptions,
+  InputLabel,
+  TextField,
+} from '@mui/material';
 import PropTypes from 'prop-types';
+
+const filterOptions = createFilterOptions({
+  stringify: (option) =>
+    `${option.replace(/\([A-Z]+\)/, '').replaceAll(/[^A-Z]/g, '')} ${option}`,
+});
 
 /* eslint-disable react/jsx-props-no-spreading */
 function FormikAutocomplete(props) {
@@ -13,6 +23,7 @@ function FormikAutocomplete(props) {
       <Autocomplete
         id={id}
         multiple
+        filterOptions={filterOptions}
         value={values}
         onChange={(e, val) => formik.setFieldValue(id, val)}
         renderInput={(params) => (
