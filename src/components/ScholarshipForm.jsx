@@ -104,7 +104,6 @@ function ScholarshipForm({ scholarship }) {
               labelStyle={labelStyle}
             />
           </Grid>
-
           <Grid item sm={6} xs={12}>
             <FormikTextField
               label="Organization"
@@ -113,7 +112,6 @@ function ScholarshipForm({ scholarship }) {
               labelStyle={labelStyle}
             />
           </Grid>
-
           <Grid item sm={6} xs={12}>
             <FormikTextField
               label="Scholarship Link *"
@@ -122,7 +120,6 @@ function ScholarshipForm({ scholarship }) {
               labelStyle={labelStyle}
             />
           </Grid>
-
           <Grid item sm={6}>
             <DatePicker
               label="Deadline *"
@@ -130,11 +127,9 @@ function ScholarshipForm({ scholarship }) {
               formik={formik}
             />
           </Grid>
-
           <Grid item>
             <ScholarshipAmountField formik={formik} labelStyle={labelStyle} />
           </Grid>
-
           <Grid item xs={12}>
             <FormikTextField
               label="Description *"
@@ -142,6 +137,23 @@ function ScholarshipForm({ scholarship }) {
               labelStyle={labelStyle}
               formik={formik}
               minRows={8}
+            />
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <FormikAutocomplete
+              label="Tags"
+              id="tags"
+              labelStyle={labelStyle}
+              freeSolo
+              formik={formik}
+              options={[]}
+              onChange={(vals) => {
+                const newVals = new Set(
+                  vals.map((v) => v.toLowerCase().replace(/\s+/g, '-'))
+                );
+                formik.setFieldValue('tags', Array.from(newVals));
+              }}
+              placeholder="E.g. athletics, daca, essay, stem, etc."
             />
           </Grid>
         </Grid>
