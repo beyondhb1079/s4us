@@ -6,9 +6,10 @@ import PropTypes from 'prop-types';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import SearchIcon from '@mui/icons-material/Search';
 
-function MajorFilter({ majors, onChange }) {
+function MajorFilter({ majors, onChange, majorParams }) {
   const [isOpen, setIsOpen] = useState(false);
   const limitReached = majors.length >= 10;
+  console.log(majorParams);
 
   return (
     <>
@@ -48,11 +49,11 @@ function MajorFilter({ majors, onChange }) {
       {majors.map((major) => (
         <Chip
           label={major}
-          variant="outlined"
-          color="primary"
+          variant={majorParams.includes(major) ? 'contained' : 'outlined'}
+          color={majorParams.includes(major) ? 'primary' : 'default'}
           key={major}
           onDelete={() => onChange(majors.filter((m) => m !== major))}
-          sx={{ mx: 1, mt: 1, color: '#000' }}
+          sx={{ mx: 1, mt: 1 }}
         />
       ))}
     </>
@@ -63,8 +64,10 @@ export default MajorFilter;
 MajorFilter.propTypes = {
   majors: PropTypes.arrayOf(PropTypes.string),
   onChange: PropTypes.func.isRequired,
+  majorParams: PropTypes.arrayOf(PropTypes.string),
 };
 
 MajorFilter.defaultProps = {
   majors: [],
+  majorParams: [],
 };

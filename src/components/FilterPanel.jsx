@@ -35,8 +35,14 @@ export default function FilterPanel({ onClose }) {
   const [majors, setMajors] = useState(params.majors);
 
   const filters = {
-    Major: {
-      comp: <MajorFilter majors={majors} onChange={setMajors} />,
+    'What are you studying?': {
+      comp: (
+        <MajorFilter
+          majors={majors}
+          onChange={setMajors}
+          majorParams={params.majors}
+        />
+      ),
       changed:
         JSON.stringify(majors || []) !== JSON.stringify(params.majors || []),
     },
@@ -87,7 +93,7 @@ export default function FilterPanel({ onClose }) {
             expandIcon={<ExpandMoreIcon />}
             aria-controls={name + '-content'}
             id={name + '-header'}>
-            <Typography>{name}</Typography>
+            <Typography sx={{ fontWeight: 'medium' }}>{name}</Typography>
           </AccordionSummary>
 
           <AccordionDetails sx={{ m: 1 }}>{filter.comp}</AccordionDetails>
