@@ -2,7 +2,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 
-export default function ShowMoreScholarshipCard({ scholarship }) {
+export default function ShowMoreScholarshipCard(scholarship) {
   const {
     name,
     organization,
@@ -14,7 +14,7 @@ export default function ShowMoreScholarshipCard({ scholarship }) {
     reqs,
     author,
   } = scholarship.data;
-
+  console.log(scholarship.data);
   // dummy variables
   const org = organization;
   console.log(org);
