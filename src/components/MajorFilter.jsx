@@ -9,7 +9,6 @@ import SearchIcon from '@mui/icons-material/Search';
 function MajorFilter({ majors, onChange, majorParams }) {
   const [isOpen, setIsOpen] = useState(false);
   const limitReached = majors.length >= 10;
-  console.log(majorParams);
 
   return (
     <>

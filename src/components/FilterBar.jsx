@@ -18,16 +18,21 @@ export default function FilterBar({ openFilter }) {
     (maxAmount ? 1 : 0);
 
   return (
-    <Toolbar disableGutters sx={{ bgcolor: 'primary.main' }}>
+    <Toolbar
+      disableGutters
+      sx={{
+        bgcolor: { xs: 'background.paper', md: 'inherit' },
+        borderBottom: { xs: 1, md: 0 },
+        borderColor: { xs: 'grey.300', md: 'none' },
+      }}>
       <Container
         maxWidth="md"
         sx={{
           display: 'flex',
-          justifyContent: { xs: 'space-between', md: 'flex-end' },
+          justifyContent: 'flex-end',
         }}>
         <Button
           onClick={openFilter}
-          color="secondary"
           startIcon={<TuneIcon />}
           sx={{ display: { md: 'none' } }}>
           Filters {filterCount ? `(${filterCount})` : ''}
@@ -35,7 +40,6 @@ export default function FilterBar({ openFilter }) {
 
         <Button
           onClick={(e) => setAnchorEl(e.currentTarget)}
-          color="secondary"
           startIcon={<ImportExportIcon />}>
           Sort
         </Button>
