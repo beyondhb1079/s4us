@@ -13,10 +13,12 @@ import {
 import firebase from 'firebase';
 import StyleFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { useTranslation } from 'react-i18next';
 
 export default function LoginDialog() {
   const location = useLocation();
   const showLoginDialog = location.state?.showLoginDialog || false;
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
   const closeDialog = () =>
@@ -69,21 +71,19 @@ export default function LoginDialog() {
 
             <DialogTitle id="responsive-dialog-welcome">
               <Typography variant="h4" sx={{ color: 'background.paper' }}>
-                Welcome.
+                {t('loginDialog.welcome')}
               </Typography>
             </DialogTitle>
 
             <DialogContentText sx={{ color: 'background.paper', p: 3 }}>
               <Typography paragraph sx={{ color: 'background.paper' }}>
-                DreamScholars provides scholarships for all students regardless
-                of status.
+                {t('loginDialog.providesScholarships')}
               </Typography>
               <Typography paragraph sx={{ color: 'background.paper' }}>
-                Join our community &amp;
+                {t('loginDialog.joinCommunity')}
               </Typography>
               <Typography paragraph sx={{ color: 'background.paper' }}>
-                Get access to scholarship submissions and other cool features
-                soon.
+                {t('loginDialog.getAccess')}
               </Typography>
             </DialogContentText>
           </Grid>
@@ -92,7 +92,9 @@ export default function LoginDialog() {
             <DialogTitle
               id="responsive-dialog-title"
               sx={{ textAlign: 'center' }}>
-              <Typography sx={{ fontWeight: 'bold' }}>Sign In</Typography>
+              <Typography sx={{ fontWeight: 'bold' }}>
+                {t('loginDialog.signIn')}
+              </Typography>
             </DialogTitle>
             <StyleFirebaseAuth
               uiConfig={uiConfig}
