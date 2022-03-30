@@ -46,7 +46,7 @@ function ListScholarships() {
   const scrollTrigger = useScrollTrigger();
 
   function deleteOnClick(m) {
-    const updatedMajors = majorParams.filter((major) => major != m);
+    const updatedMajors = majors.filter((major) => major != m);
     setQueryParams({
       majors: updatedMajors,
     });
