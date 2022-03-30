@@ -51,6 +51,7 @@ function MajorFilter({ majors, onChange, majorParams }) {
           variant={majorParams.includes(major) ? 'contained' : 'outlined'}
           color={majorParams.includes(major) ? 'primary' : 'default'}
           key={major}
+          onClick={() => onChange(majors.filter((m) => m !== major))}
           onDelete={() => onChange(majors.filter((m) => m !== major))}
           sx={{ mx: 1, mt: 1 }}
         />

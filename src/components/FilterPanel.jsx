@@ -25,14 +25,13 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import PropTypes from 'prop-types';
 
-export default function FilterPanel({ onClose }) {
+export default function FilterPanel({ onClose, majors, setMajors }) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [params, setQueryParams] = useQueryParams();
 
   const [minAmount, setMinAmount] = useState(params.minAmount);
   const [maxAmount, setMaxAmount] = useState(params.maxAmount);
   const [grades, setGrades] = useState(params.grades);
-  const [majors, setMajors] = useState(params.majors);
 
   const filters = {
     'What are you studying?': {
@@ -157,4 +156,6 @@ export default function FilterPanel({ onClose }) {
 
 FilterPanel.propTypes = {
   onClose: PropTypes.func.isRequired,
+  majors: PropTypes.arrayOf(PropTypes.string),
+  setMajors: PropTypes.func.isRequired,
 };

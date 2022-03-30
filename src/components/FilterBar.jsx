@@ -21,9 +21,9 @@ export default function FilterBar({ openFilter }) {
     <Toolbar
       disableGutters
       sx={{
-        bgcolor: { xs: 'background.paper', md: 'inherit' },
-        borderBottom: { xs: 1, md: 0 },
-        borderColor: { xs: 'grey.300', md: 'none' },
+        bgcolor: 'background.paper',
+        borderBottom: 1,
+        borderColor: 'grey.300',
       }}>
       <Container
         maxWidth="md"
