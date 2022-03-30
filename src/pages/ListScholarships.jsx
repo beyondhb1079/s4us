@@ -17,8 +17,22 @@ import ScholarshipList from '../components/ScholarshipList';
 import useQueryParams from '../lib/useQueryParams';
 import { DEADLINE_ASC, getDir, getField } from '../lib/sortOptions';
 import { HeaderSkeleton } from '../components/Header';
+import GradeLevel from '../types/GradeLevel';
 
 const drawerWidth = 360;
+
+function FilterChip({ label, deleteFn }) {
+  return (
+    <Chip
+      key={label}
+      label={label}
+      color="primary"
+      onClick={deleteFn}
+      onDelete={() => deleteFn}
+      sx={{ mr: 2, mt: 3 }}
+    />
+  );
+}
 
 function ListScholarships() {
   const { t } = useTranslation();
@@ -107,13 +121,26 @@ function ListScholarships() {
               scrollbarWidth: 'none',
             }}>
             {majors?.map((m) => (
-              <Chip
-                key={m}
-                label={m}
-                color="primary"
-                onClick={() => deleteOnClick(m)}
-                onDelete={() => deleteOnClick(m)}
-                sx={{ mr: 2, mt: 3 }}
+              <FilterChip label={m} deleteFn={() => deleteOnClick(m)} />
+            ))}
+            {Number.isInteger(minAmount) && (
+              <FilterChip
+                label={`Min $${minAmount}`}
+                deleteFn={() => setQueryParams({ minAmount: undefined })}
+              />
+            )}
+            {Number.isInteger(maxAmount) && (
+              <FilterChip
+                label={`Max $${maxAmount}`}
+                deleteFn={() => setQueryParams({ maxAmount: undefined })}
+              />
+            )}
+            {grades?.map((e) => (
+              <FilterChip
+                label={GradeLevel.toString(e)}
+                deleteFn={() =>
+                  setQueryParams({ grades: grades?.filter((g) => g !== e) })
+                }
               />
             ))}
           </Box>
