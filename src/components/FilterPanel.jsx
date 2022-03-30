@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import {
   Accordion,
@@ -24,6 +25,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import PropTypes from 'prop-types';
+import queryString from 'query-string';
 
 export default function FilterPanel({ onClose }) {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -33,6 +35,20 @@ export default function FilterPanel({ onClose }) {
   const [maxAmount, setMaxAmount] = useState(params.maxAmount);
   const [grades, setGrades] = useState(params.grades);
   const [majors, setMajors] = useState(params.majors);
+  const location = useLocation();
+
+  useEffect(() => {
+    const query = queryString.parse(location.search, {
+      arrayFormat: 'bracket-separator',
+      arrayFormatSeparator: ',',
+      parseNumbers: true,
+    });
+
+    setMinAmount(query.minAmount);
+    setMaxAmount(query.maxAmount);
+    setGrades(query.grades);
+    setMajors(query.majors);
+  }, [location]);
 
   const filters = {
     'What are you studying?': {
