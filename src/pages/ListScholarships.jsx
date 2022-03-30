@@ -28,7 +28,7 @@ function FilterChip({ label, deleteFn }) {
       label={label}
       color="primary"
       onClick={deleteFn}
-      onDelete={() => deleteFn}
+      onDelete={deleteFn}
       sx={{ mr: 2, mt: 3 }}
     />
   );
@@ -42,7 +42,6 @@ function ListScholarships() {
 
   const [{ minAmount, maxAmount, grades, majors, sortBy }, setQueryParams] =
     useQueryParams();
-  const [majorParams, setMajorParams] = useState(majors);
 
   const sortField = getField(sortBy ?? DEADLINE_ASC);
   const sortDir = getDir(sortBy ?? DEADLINE_ASC);
@@ -50,22 +49,14 @@ function ListScholarships() {
   const queryFilters = {
     sortField,
     sortDir,
-    minAmount,
-    maxAmount,
-    grades,
-    majors,
+    minAmount: minAmount,
+    maxAmount: maxAmount,
+    grades: grades,
+    majors: majors,
     hideExpired: true,
   };
 
   const scrollTrigger = useScrollTrigger();
-
-  function deleteOnClick(m) {
-    const updatedMajors = majors.filter((major) => major != m);
-    setQueryParams({
-      majors: updatedMajors,
-    });
-    setMajorParams(updatedMajors);
-  }
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -90,11 +81,7 @@ function ListScholarships() {
           <HeaderSkeleton />
         </Collapse>
         <Box sx={{ overflowY: 'auto', flexGrow: 1 }}>
-          <FilterPanel
-            onClose={() => setDrawerOpen(false)}
-            majors={majorParams}
-            setMajors={setMajorParams}
-          />
+          <FilterPanel onClose={() => setDrawerOpen(false)} />
         </Box>
       </Drawer>
 
@@ -121,7 +108,14 @@ function ListScholarships() {
               scrollbarWidth: 'none',
             }}>
             {majors?.map((m) => (
-              <FilterChip label={m} deleteFn={() => deleteOnClick(m)} />
+              <FilterChip
+                label={m}
+                deleteFn={() =>
+                  setQueryParams({
+                    majors: majors?.filter((major) => major !== m),
+                  })
+                }
+              />
             ))}
             {Number.isInteger(minAmount) && (
               <FilterChip
@@ -139,7 +133,9 @@ function ListScholarships() {
               <FilterChip
                 label={GradeLevel.toString(e)}
                 deleteFn={() =>
-                  setQueryParams({ grades: grades?.filter((g) => g !== e) })
+                  setQueryParams({
+                    grades: grades?.filter((g) => g !== e),
+                  })
                 }
               />
             ))}
