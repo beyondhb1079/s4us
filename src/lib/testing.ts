@@ -42,8 +42,8 @@ export function initializeTestApp(
   }
 
   // Mock analytics
-  firebase.analytics = () =>
-    ({ logEvent: () => {} } as unknown as firebase.analytics.Analytics);
+  firebase.analytics = (() =>
+    ({ logEvent: () => {} } as unknown)) as typeof firebase.analytics;
 
   // Mock current user for the tests
   app.auth = () => {
