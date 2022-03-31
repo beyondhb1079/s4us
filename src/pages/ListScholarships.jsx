@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
+import firebase from 'firebase';
 import {
   Box,
   Collapse,
@@ -18,6 +19,7 @@ import useQueryParams from '../lib/useQueryParams';
 import { DEADLINE_ASC, getDir, getField } from '../lib/sortOptions';
 import { HeaderSkeleton } from '../components/Header';
 import GradeLevel from '../types/GradeLevel';
+import { useLocation } from 'react-router-dom';
 
 const drawerWidth = 360;
 
@@ -57,6 +59,11 @@ function ListScholarships() {
   };
 
   const scrollTrigger = useScrollTrigger();
+
+  const location = useLocation();
+  useEffect(() => {
+    firebase.analytics().logEvent('search', { search_term: location.search });
+  }, [location]);
 
   return (
     <Box sx={{ display: 'flex' }}>

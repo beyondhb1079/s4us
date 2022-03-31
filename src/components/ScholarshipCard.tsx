@@ -1,5 +1,6 @@
 import React, { ReactNode, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import firebase from 'firebase';
 import {
   Box,
   Button,
@@ -74,6 +75,8 @@ export default function ScholarshipCard({
 
   const [showShare, setShowShare] = useState(false);
 
+  const navigate = useNavigate();
+
   const { claims, currentUser } = useAuth();
   const canEdit = currentUser?.uid === author?.id || claims?.admin;
 
@@ -84,9 +87,20 @@ export default function ScholarshipCard({
   return (
     <Card variant="outlined">
       <CardAreaComponent
-        component={detailed ? Box : Link}
-        to={'/scholarships/' + scholarship.id}
-        state={{ scholarship }}>
+        onClick={
+          detailed
+            ? null
+            : () => {
+                firebase.analytics().logEvent('select_content', {
+                  content_type: 'scholarship',
+                  item_id: scholarship.id,
+                  items: [{ scholarship }],
+                });
+                navigate('/scholarships/' + scholarship.id, {
+                  state: { scholarship },
+                });
+              }
+        }>
         <CardContent sx={{ p: 3 }}>
           <Typography
             variant={detailed ? 'h6' : 'subtitle1'}
