@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
   Button,
   Dialog,
@@ -19,6 +19,7 @@ import {
   TwitterIcon,
   TwitterShareButton,
 } from 'react-share';
+import firebase from 'firebase';
 import { BRAND_NAME } from '../config/constants';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 
@@ -31,17 +32,21 @@ export default function ShareDialog({ scholarship, open, onClose }) {
   )} - ${name} | ${BRAND_NAME}`;
   const text = `${title}\n ${deadline?.toLocaleDateString()}\n`;
 
+  const logShare = useCallback(
+    () => (p) =>
+      firebase.analytics().logEvent('share', { platform: p, url, title, text }),
+    [url, title, text]
+  );
   useEffect(() => {
     if (open && navigator.share) {
       onClose();
       navigator
         .share({ url, title, text })
-        // eslint-disable-next-line no-console
-        .then(() => console.log('Thanks for sharing!'))
+        .then(() => logShare('navigator.share'))
         // eslint-disable-next-line no-console
         .catch(console.error);
     }
-  }, [open, onClose, text, title, url]);
+  }, [open, onClose, text, title, url, logShare]);
 
   return (
     <Dialog
@@ -56,19 +61,34 @@ export default function ShareDialog({ scholarship, open, onClose }) {
         <DialogContentText sx={{ color: 'background.paper' }}>
           Currently Sharing: {title}
         </DialogContentText>
-        <EmailShareButton url={url} style={{ m: '4px' }}>
+        <EmailShareButton
+          beforeOnClick={() => logShare('email')}
+          url={url}
+          style={{ m: '4px' }}>
           <EmailIcon round />
         </EmailShareButton>
-        <FacebookShareButton url={url} style={{ m: '4px' }}>
+        <FacebookShareButton
+          beforeOnClick={() => logShare('facebook')}
+          url={url}
+          style={{ m: '4px' }}>
           <FacebookIcon round />
         </FacebookShareButton>
-        <TwitterShareButton url={url} style={{ m: '4px' }}>
+        <TwitterShareButton
+          beforeOnClick={() => logShare('twitter')}
+          url={url}
+          style={{ m: '4px' }}>
           <TwitterIcon round />
         </TwitterShareButton>
-        <LinkedinShareButton url={url} style={{ m: '4px' }}>
+        <LinkedinShareButton
+          beforeOnClick={() => logShare('linkedin')}
+          url={url}
+          style={{ m: '4px' }}>
           <LinkedinIcon round />
         </LinkedinShareButton>
-        <RedditShareButton url={url} style={{ m: '4px' }}>
+        <RedditShareButton
+          beforeOnClick={() => logShare('reddit')}
+          url={url}
+          style={{ m: '4px' }}>
           <RedditIcon round />
         </RedditShareButton>
         <Typography
@@ -79,7 +99,10 @@ export default function ShareDialog({ scholarship, open, onClose }) {
         </Typography>
         <Button
           color="primary"
-          onClick={() => navigator.clipboard.writeText(url)}>
+          onClick={() => {
+            logShare('clipboard');
+            navigator.clipboard.writeText(url);
+          }}>
           Copy Link
         </Button>
       </DialogContent>

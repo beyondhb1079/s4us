@@ -36,7 +36,13 @@ export default function LoginDialog() {
     ],
     credentialHelper: 'none', // hacky way to disable redirect on email login
     callbacks: {
-      signInSuccessWithAuthResult: closeDialog,
+      signInSuccessWithAuthResult: (authResult) => {
+        const { isNewUser, providerId: method } = authResult.additionalUserInfo;
+        firebase.analytics().logEvent(isNewUser ? 'signup' : 'login', {
+          method,
+        });
+        closeDialog();
+      },
     },
   };
 
