@@ -52,13 +52,7 @@ export default function FilterPanel({ onClose }) {
 
   const filters = {
     'What are you studying?': {
-      comp: (
-        <MajorFilter
-          majors={majors}
-          onChange={setMajors}
-          majorParams={params.majors}
-        />
-      ),
+      comp: <MajorFilter majors={majors} onChange={setMajors} />,
       changed:
         JSON.stringify(majors || []) !== JSON.stringify(params.majors || []),
     },

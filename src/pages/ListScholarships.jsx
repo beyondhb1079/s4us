@@ -30,7 +30,6 @@ function FilterChip({ label, deleteFn }) {
       label={label}
       color="primary"
       onClick={deleteFn}
-      onDelete={deleteFn}
       sx={{ mr: 2, mt: 3 }}
     />
   );
@@ -51,10 +50,10 @@ function ListScholarships() {
   const queryFilters = {
     sortField,
     sortDir,
-    minAmount: minAmount,
-    maxAmount: maxAmount,
-    grades: grades,
-    majors: majors,
+    minAmount,
+    maxAmount,
+    grades,
+    majors,
     hideExpired: true,
   };
 
