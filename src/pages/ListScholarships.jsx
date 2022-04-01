@@ -23,18 +23,6 @@ import { useLocation } from 'react-router-dom';
 
 const drawerWidth = 360;
 
-function FilterChip({ label, deleteFn }) {
-  return (
-    <Chip
-      key={label}
-      label={label}
-      color="primary"
-      onClick={deleteFn}
-      sx={{ mr: 2, mt: 3 }}
-    />
-  );
-}
-
 function ListScholarships() {
   const { t } = useTranslation();
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -56,6 +44,30 @@ function ListScholarships() {
     majors,
     hideExpired: true,
   };
+
+  const filterChips = {};
+  if (Number.isInteger(minAmount)) {
+    filterChips[`Min $${minAmount}`] = () =>
+      setQueryParams({ minAmount: undefined });
+  }
+  if (Number.isInteger(maxAmount)) {
+    filterChips[`Max $${maxAmount}`] = () =>
+      setQueryParams({ maxAmount: undefined });
+  }
+  majors?.forEach(
+    (m) =>
+      (filterChips[m] = () =>
+        setQueryParams({
+          majors: majors?.filter((major) => major !== m),
+        }))
+  );
+  grades?.forEach(
+    (g) =>
+      (filterChips[GradeLevel.toString(g)] = () =>
+        setQueryParams({
+          grades: grades?.filter((grade) => grade !== g),
+        }))
+  );
 
   const scrollTrigger = useScrollTrigger();
 
@@ -113,36 +125,13 @@ function ListScholarships() {
               whiteSpace: 'nowrap',
               scrollbarWidth: 'none',
             }}>
-            {majors?.map((m) => (
-              <FilterChip
-                label={m}
-                deleteFn={() =>
-                  setQueryParams({
-                    majors: majors?.filter((major) => major !== m),
-                  })
-                }
-              />
-            ))}
-            {Number.isInteger(minAmount) && (
-              <FilterChip
-                label={`Min $${minAmount}`}
-                deleteFn={() => setQueryParams({ minAmount: undefined })}
-              />
-            )}
-            {Number.isInteger(maxAmount) && (
-              <FilterChip
-                label={`Max $${maxAmount}`}
-                deleteFn={() => setQueryParams({ maxAmount: undefined })}
-              />
-            )}
-            {grades?.map((e) => (
-              <FilterChip
-                label={GradeLevel.toString(e)}
-                deleteFn={() =>
-                  setQueryParams({
-                    grades: grades?.filter((g) => g !== e),
-                  })
-                }
+            {Object.entries(filterChips).map(([label, deleteFn]) => (
+              <Chip
+                key={label}
+                label={label}
+                color="primary"
+                onClick={deleteFn}
+                sx={{ mr: 2, mt: 3 }}
               />
             ))}
           </Box>
