@@ -54,20 +54,18 @@ function ListScholarships() {
     filterChips[`Max $${maxAmount}`] = () =>
       setQueryParams({ maxAmount: undefined });
   }
-  majors?.forEach(
-    (m) =>
-      (filterChips[m] = () =>
-        setQueryParams({
-          majors: majors?.filter((major) => major !== m),
-        }))
-  );
-  grades?.forEach(
-    (g) =>
-      (filterChips[GradeLevel.toString(g)] = () =>
-        setQueryParams({
-          grades: grades?.filter((grade) => grade !== g),
-        }))
-  );
+  majors?.forEach((m) => {
+    filterChips[m] = () =>
+      setQueryParams({
+        majors: majors?.filter((major) => major !== m),
+      });
+  });
+  grades?.forEach((g) => {
+    filterChips[GradeLevel.toString(g)] = () =>
+      setQueryParams({
+        grades: grades?.filter((grade) => grade !== g),
+      });
+  });
 
   const scrollTrigger = useScrollTrigger();
 
