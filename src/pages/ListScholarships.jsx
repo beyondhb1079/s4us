@@ -48,24 +48,20 @@ function ListScholarships() {
 
   const filterChips = {};
   if (Number.isInteger(minAmount)) {
-    filterChips[`Min $${minAmount}`] = () =>
-      setQueryParams({ minAmount: undefined });
+    filterChips[`Min $${minAmount}`] = { minAmount: undefined };
   }
   if (Number.isInteger(maxAmount)) {
-    filterChips[`Max $${maxAmount}`] = () =>
-      setQueryParams({ maxAmount: undefined });
+    filterChips[`Max $${maxAmount}`] = { maxAmount: undefined };
   }
   majors?.forEach((m) => {
-    filterChips[m] = () =>
-      setQueryParams({
-        majors: majors?.filter((major) => major !== m),
-      });
+    filterChips[m] = {
+      majors: majors?.filter((major) => major !== m),
+    };
   });
   grades?.forEach((g) => {
-    filterChips[GradeLevel.toString(g)] = () =>
-      setQueryParams({
-        grades: grades?.filter((grade) => grade !== g),
-      });
+    filterChips[GradeLevel.toString(g)] = {
+      grades: grades?.filter((grade) => grade !== g),
+    };
   });
 
   const scrollTrigger = useScrollTrigger();
@@ -137,12 +133,12 @@ function ListScholarships() {
               backgroundAttachment: 'local, local, scroll, scroll',
               '::-webkit-scrollbar': { display: 'none' },
             }}>
-            {Object.entries(filterChips).map(([label, deleteFn]) => (
+            {Object.entries(filterChips).map(([label, updatedQueryParams]) => (
               <Chip
                 key={label}
                 label={label}
                 color="primary"
-                onClick={deleteFn}
+                onClick={() => setQueryParams(updatedQueryParams)}
               />
             ))}
           </Stack>
