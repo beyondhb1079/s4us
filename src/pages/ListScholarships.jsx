@@ -122,6 +122,14 @@ function ListScholarships() {
               overflowX: 'scroll',
               whiteSpace: 'nowrap',
               scrollbarWidth: 'none',
+              backgroundImage:
+                'linear-gradient(to right, #F8F9FA, #F8F9FA), linear-gradient(to right, #F8F9FA, #F8F9FA), linear-gradient(to right, rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0)), linear-gradient(to left, rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0))',
+              backgroundPosition:
+                'left center, right center, left center, right center',
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: '20px 100%, 20px 100%, 10px 100%, 10px 100%',
+              backgroundAttachment: 'local, local, scroll, scroll',
+              '::-webkit-scrollbar': { display: 'none' },
             }}>
             {Object.entries(filterChips).map(([label, deleteFn]) => (
               <Chip
