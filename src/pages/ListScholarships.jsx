@@ -11,6 +11,7 @@ import {
   useMediaQuery,
   useScrollTrigger,
   Chip,
+  Stack,
 } from '@mui/material';
 import FilterBar from '../components/FilterBar';
 import FilterPanel from '../components/FilterPanel';
@@ -117,10 +118,15 @@ function ListScholarships() {
         <Toolbar />
 
         <Container maxWidth="md" sx={{ flexGrow: 1 }}>
-          <Box
+          <Stack
+            direction="row"
+            rowGap={2}
+            spacing={2}
+            justifyContent={isDesktop ? 'center' : 'flex-start'}
+            flexWrap={isDesktop ? 'wrap' : 'nowrap'}
             sx={{
+              mt: 2,
               overflowX: 'scroll',
-              whiteSpace: 'nowrap',
               scrollbarWidth: 'none',
               backgroundImage:
                 'linear-gradient(to right, #F8F9FA, #F8F9FA), linear-gradient(to right, #F8F9FA, #F8F9FA), linear-gradient(to right, rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0)), linear-gradient(to left, rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0))',
@@ -137,10 +143,9 @@ function ListScholarships() {
                 label={label}
                 color="primary"
                 onClick={deleteFn}
-                sx={{ mr: 2, mt: 3 }}
               />
             ))}
-          </Box>
+          </Stack>
           <ScholarshipList filters={queryFilters} />
         </Container>
       </Box>
