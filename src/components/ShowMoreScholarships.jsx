@@ -16,6 +16,14 @@ export default function ShowMoreScholarships() {
   console.log(t);
   let s = scholarships.map((scholarship, id) => ({ [id]: scholarship.data }));
   console.log(s);
+  let h = scholarships.map((scholarship, id) => ({
+    [id]: scholarship.data.name,
+  }));
+  console.log(h);
+  let k = scholarships.map((scholarship, id) => ({
+    [id]: scholarship.data.amount.min,
+  }));
+  console.log(k);
   // Automatically load more when the progress is visible
   const progressRef = useRef(null);
   const progressVisible = useOnScreen(progressRef);
@@ -37,8 +45,8 @@ export default function ShowMoreScholarships() {
 
   return (
     <Box>
-      <Grid>
-        {scholarships.slice(0, 5).map((scholarship, id) => {
+      <Grid container spacing={2} justify="center">
+        {scholarships.slice(0, 3).map((scholarship, id) => {
           return (
             <Grid key={id} item xs={12} sm={6} md={4}>
               <ShowMoreScholarshipCard scholarship={scholarship} />
