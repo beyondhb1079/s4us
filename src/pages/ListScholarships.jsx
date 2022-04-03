@@ -121,6 +121,7 @@ function ListScholarships() {
             justifyContent={isDesktop ? 'center' : 'flex-start'}
             flexWrap={isDesktop ? 'wrap' : 'nowrap'}
             sx={{
+              py: 1,
               mt: 2,
               overflowX: 'scroll',
               scrollbarWidth: 'none',
