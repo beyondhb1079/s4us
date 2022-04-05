@@ -93,6 +93,7 @@ test('renders scholarship details', async () => {
         Ethnicity.BlackOrAfricanAmerican,
       ],
       majors: ['Computer Science', 'Software Engineering'],
+      schools: ['Cal Tech', 'MIT', 'LSU'],
     },
   };
   const ref = Scholarships.collection.doc('load-it');
@@ -110,21 +111,20 @@ test('renders scholarship details', async () => {
   ).toBeInTheDocument();
   expect(screen.getByRole('link', { name: /Apply/i }).href).toBe(data.website);
   expect(Helmet.peek().title).toBe(data.name);
-  expect(
-    screen.getByText(data.requirements.states.map(State.toString).join(', '))
-  ).toBeInTheDocument();
+  data.requirements.states
+    .map(State.toString)
+    .forEach((s) => expect(screen.getByText(s)).toBeInTheDocument());
   expect(screen.getByText(data.requirements.gpa + '.0')).toBeInTheDocument();
-  expect(
-    screen.getByText(
-      data.requirements.grades.map(GradeLevel.toString).sort().join(', ')
-    )
-  ).toBeInTheDocument();
-  expect(
-    screen.getByText(
-      data.requirements.ethnicities.map(Ethnicity.toString).sort().join(', ')
-    )
-  ).toBeInTheDocument();
-  expect(
-    screen.getByText(data.requirements.majors.join(', '))
-  ).toBeInTheDocument();
+  data.requirements.grades
+    .map(GradeLevel.toString)
+    .forEach((g) => expect(screen.getByText(g)).toBeInTheDocument());
+  data.requirements.ethnicities
+    .map(Ethnicity.toString)
+    .forEach((e) => expect(screen.getByText(e)).toBeInTheDocument());
+  data.requirements.majors.forEach((m) =>
+    expect(screen.getByText(m)).toBeInTheDocument()
+  );
+  data.requirements.schools.forEach((s) =>
+    expect(screen.getByText(s)).toBeInTheDocument()
+  );
 });

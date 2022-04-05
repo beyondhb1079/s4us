@@ -56,7 +56,7 @@ const DetailCardCell = ({
         <Grid item sx={{ textAlign: { sm: 'right' } }} xs={12} sm>
           {values.length === 0
             ? 'Any'
-            : shownValues.map((v) => <Typography>{v}</Typography>)}
+            : shownValues.map((v) => <Typography key={v}>{v}</Typography>)}
           {values.length > shownValues.length && (
             <MuiLink
               component={Button}
