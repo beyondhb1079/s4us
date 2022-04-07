@@ -12,15 +12,11 @@ const HomeSection = ({
   pic,
 }) => {
   const picSize = main ? '95%' : '85%';
-  const textSize = main
-    ? { xs: 'h4', sm: 'h3', md: 'h2' }
-    : { xs: 'h5', sm: 'h4', md: 'h3' };
-
   return (
     <Container sx={{ padding: 4 }}>
       <Grid container spacing={3} direction={direction} alignItems={alignItems}>
         <Grid item xs={12} sm={6}>
-          <Typography component="h2" gutterBottom sx={{ typography: textSize }}>
+          <Typography variant={main ? 'h2' : 'h3'} component="h2" gutterBottom>
             {title}
           </Typography>
           <Typography variant="body1" paragraph>
