@@ -49,7 +49,7 @@ body:
   - type: dropdown
     id: browsers
     attributes:
-      label: What browsers are you seeing the problem on?
+      label: What browsers are you seeing the problem in?
       description: Select all that apply.
       multiple: true
       options:
