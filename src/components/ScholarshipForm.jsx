@@ -15,6 +15,7 @@ import {
   Stepper,
   Typography,
   FormHelperText,
+  createFilterOptions,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import validationSchema from '../validation/ValidationSchema';
@@ -243,7 +244,10 @@ function ScholarshipForm({ scholarship }) {
               id="requirements.states"
               labelStyle={labelStyle}
               options={STATES.map((s) => s.abbr)}
-              getOptionLabel={(option) => State.toString(option)}
+              getOptionLabel={(s) => State.toString(s)}
+              filterOptions={createFilterOptions({
+                stringify: (s) => State.toString(s),
+              })}
               formik={formik}
               placeholder="No state requirements"
             />
