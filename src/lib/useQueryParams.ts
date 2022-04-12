@@ -35,15 +35,13 @@ export default function useQueryParams(
         Object.keys(params).forEach((k) => {
           if (params[k] === undefined) {
             delete origParams[k];
-          } else origParams[k] = params[k];
+          } else {
+            origParams[k] = params[k];
+          }
         });
 
-        navigate(
-          {
-            search: queryString.stringify(origParams, options),
-          },
-          { replace }
-        );
+        const search = queryString.stringify(origParams, options);
+        navigate({ search }, { replace });
       },
     [location, navigate]
   );
