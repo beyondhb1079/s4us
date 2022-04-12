@@ -129,7 +129,7 @@ function ListScholarships() {
               />
             ))}
           </Stack>
-          <ScholarshipList />
+          <ScholarshipList extraFilters={{ hideExpired: true }} />
         </Container>
       </Box>
     </Box>

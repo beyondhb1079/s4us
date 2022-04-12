@@ -6,6 +6,7 @@ import ScholarshipCard from './ScholarshipCard';
 import { DEADLINE_ASC, getDir, getField } from '../lib/sortOptions';
 import ScholarshipsContext from '../models/ScholarshipsContext';
 import useOnScreen from '../lib/useOnScreen';
+import useQueryParams from '../lib/useQueryParams';
 
 export default function ScholarshipList({ noResultsNode, extraFilters }) {
   const { canLoadMore, error, loading, loadMore, scholarships, setFilters } =
