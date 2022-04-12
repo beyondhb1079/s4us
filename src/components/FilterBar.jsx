@@ -1,112 +1,72 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import {
-  Grid,
-  FormControl,
-  Select,
-  MenuItem,
-  Button,
-  Popover,
-} from '@mui/material';
-import AmountFilter from './AmountFilter';
-import GradeLevelFilter from './GradeLevelFilter';
+import { Menu, MenuItem, Toolbar, Button, Container } from '@mui/material';
 import useQueryParams from '../lib/useQueryParams';
 import sortOptions, { DEADLINE_ASC } from '../lib/sortOptions';
-import MajorFilter from './MajorFilter';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import TuneIcon from '@mui/icons-material/Tune';
+import PropTypes from 'prop-types';
+import ImportExportIcon from '@mui/icons-material/ImportExport';
 
-const FilterButton = ({ title, children, popoverWidth }) => {
+export default function FilterBar({ openFilter }) {
+  const [{ sortBy, grades, majors, minAmount, maxAmount }, setQueryParams] =
+    useQueryParams();
   const [anchorEl, setAnchorEl] = useState(null);
 
+  const filterCount =
+    (grades?.length ?? 0) +
+    (majors?.length ?? 0) +
+    (minAmount ? 1 : 0) +
+    (maxAmount ? 1 : 0);
+
   return (
-    <>
-      <Button
-        variant="outlined"
-        onClick={(e) => setAnchorEl(e.currentTarget)}
-        endIcon={<ArrowDropDownIcon color="primary" />}
-        sx={{ m: 1, height: (theme) => theme.spacing(4) }}>
-        {title}
-      </Button>
-      <Popover
+    <Toolbar
+      disableGutters
+      sx={{
+        bgcolor: 'background.paper',
+        borderBottom: 1,
+        borderColor: 'grey.300',
+      }}>
+      <Container
+        maxWidth="md"
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+        }}>
+        <Button
+          onClick={openFilter}
+          startIcon={<TuneIcon />}
+          sx={{ display: { md: 'none' } }}>
+          Filters {filterCount ? `(${filterCount})` : ''}
+        </Button>
+
+        <Button
+          onClick={(e) => setAnchorEl(e.currentTarget)}
+          startIcon={<ImportExportIcon />}>
+          Sort
+        </Button>
+      </Container>
+
+      <Menu
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
         onClose={() => setAnchorEl(null)}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-        PaperProps={{ style: popoverWidth }}>
-        {children}
-      </Popover>
-    </>
-  );
-};
-
-FilterButton.propTypes = {
-  title: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired,
-  popoverWidth: PropTypes.object,
-};
-
-FilterButton.defaultProps = {
-  popoverWidth: undefined,
-};
-
-export default function FilterBar() {
-  const [{ minAmount, maxAmount, grades, majors, sortBy }, setQueryParam] =
-    useQueryParams();
-
-  return (
-    <Grid
-      container
-      spacing={2}
-      justifyContent="space-between"
-      sx={{ flexGrow: 1 }}>
-      <Grid item>
-        <FilterButton title="Majors" popoverWidth={{ minWidth: 280 }}>
-          <MajorFilter
-            majors={majors}
-            onSelect={(m) => setQueryParam('majors', m)}
-            onDelete={(m) =>
-              setQueryParam(
-                'majors',
-                majors.filter((major) => major !== m)
-              )
-            }
-          />
-        </FilterButton>
-
-        <FilterButton title="Grades">
-          <GradeLevelFilter
-            grades={new Set(grades)}
-            changeFn={(e) => setQueryParam('grades', e)}
-          />
-        </FilterButton>
-
-        <FilterButton title="Amount">
-          <AmountFilter
-            min={minAmount ?? 0}
-            max={maxAmount ?? 0}
-            onMinChange={(e) => setQueryParam('minAmount', e.target.value)}
-            onMaxChange={(e) => setQueryParam('maxAmount', e.target.value)}
-          />
-        </FilterButton>
-      </Grid>
-
-      <Grid item sx={{ display: 'flex', alignItems: 'center' }}>
-        Sort by
-        <FormControl variant="outlined" sx={{ margin: 1, minWidth: 120 }}>
-          <Select
-            value={sortBy ?? DEADLINE_ASC}
-            onChange={(e) => setQueryParam('sortBy', e.target.value)}
-            displayEmpty
-            sx={{ height: (theme) => theme.spacing(4) }}>
-            {Object.keys(sortOptions).map((key) => (
-              <MenuItem key={key} value={key}>
-                {sortOptions[key]}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Grid>
-    </Grid>
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}>
+        {Object.keys(sortOptions).map((key) => (
+          <MenuItem
+            key={key}
+            selected={key === (sortBy ?? DEADLINE_ASC)}
+            onClick={() => {
+              setQueryParams({ sortBy: key });
+              setAnchorEl(null);
+            }}>
+            {sortOptions[key]}
+          </MenuItem>
+        ))}
+      </Menu>
+    </Toolbar>
   );
 }
+
+FilterBar.propTypes = {
+  openFilter: PropTypes.func.isRequired,
+};

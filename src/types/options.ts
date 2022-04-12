@@ -1,72 +1,3 @@
-// Source: https://www.ssa.gov/international/coc-docs/states.html
-const RAW_STATES = `Alabama	AL
-Alaska	AK
-American Samoa	AS
-Arizona	AZ
-Arkansas	AR
-California	CA
-Colorado	CO
-Connecticut	CT
-Delaware	DE
-District Of Columbia	DC
-Florida	FL
-Georgia	GA
-Guam	GU
-Hawaii	HI
-Idaho	ID
-Illinois	IL
-Indiana	IN
-Iowa	IA
-Kansas	KS
-Kentucky	KY
-Louisiana	LA
-Maine	ME
-Maryland	MD
-Massachusetts	MA
-Michigan	MI
-Minnesota	MN
-Mississippi	MS
-Missouri	MO
-Montana	MT
-Nebraska	NE
-Nevada	NV
-New Hampshire	NH
-New Jersey	NJ
-New Mexico	NM
-New York	NY
-North Carolina	NC
-North Dakota	ND
-Northern Mariana Islands	MP
-Ohio	OH
-Oklahoma	OK
-Oregon	OR
-Pennsylvania	PA
-Puerto Rico	PR
-Rhode Island	RI
-South Carolina	SC
-South Dakota	SD
-Tennessee	TN
-Texas	TX
-Utah	UT
-Vermont	VT
-Virginia	VA
-Virgin Islands	VI
-Washington	WA
-West Virginia	WV
-Wisconsin	WI
-Wyoming	WY`;
-
-export interface State {
-  /** Full name of the state or territory, e.g. `'Alabama'`. */
-  name: string;
-  /** State abbreviation, e.g. `'AL'`. */
-  abbr: string;
-}
-
-export const STATES: State[] = RAW_STATES.split('\n')
-  .map((s) => s.split('\t'))
-  .map(([name, abbr]) => ({ name, abbr }));
-
 // Source: https://matchcollege.com/top-majors
 //
 // From the console:
@@ -934,7 +865,6 @@ Illinois Valley Community College	http://ivcc.edu	IL
 Illinois Wesleyan University	http://iwu.edu	IL
 Imperial Valley College	http://imperial.edu	CA
 Indiana State University	http://indstate.edu	IN
-Indiana University	http://indiana.edu	IN
 Indiana University	http://iu.edu	IN
 Indiana University Bloomington	http://iub.edu	IN
 Indiana University East	http://iue.edu	IN
@@ -1014,7 +944,6 @@ Kishwaukee College	http://kishwaukeecollege.edu	IL
 Knox College	http://knox.edu	IL
 Kutztown University	http://kutztown.edu	PA
 LSU Health Sciences Center – New Orleans	http://lsuhsc.edu	LA
-LSU Health Sciences Center – New Orleans	http://lsuhscshreveport.edu	LA
 La Roche College	http://laroche.edu	PA
 La Salle University	http://lasalle.edu	PA
 La Sierra University	http://lasierra.edu	CA
@@ -1375,8 +1304,8 @@ Oklahoma Christian University	http://oc.edu	OK
 Oklahoma City Community College	http://occc.edu	OK
 Oklahoma City University	http://okcu.edu	OK
 Oklahoma State University	http://okstate.edu	OK
-Oklahoma State University	http://osuokc.edu	OK
-Oklahoma State University Institue of Technology	http://osuit.edu	OK
+Oklahoma State University Oklahoma City	http://osuokc.edu	OK
+Oklahoma State University Institute of Technology	http://osuit.edu	OK
 Old Dominion University	http://odu.edu	VA
 Olin College of Engineering	http://olin.edu	MA
 Olivet Nazarene University	http://olivet.edu	IL
@@ -1854,7 +1783,6 @@ University of Arkansas at Little Rock	http://ualr.edu	AR
 University of Arkansas at Pine Bluff	http://uapb.edu	AR
 University of Arkansas for Medical Sciences	http://uams.edu	AR
 University of Arkansas – Fort Smith	http://uafs.edu	AK
-University of California	http://ucop.edu	CA
 University of California	http://universityofcalifornia.edu	CA
 University of California Davis	http://ucdavis.edu	CA
 University of California Hastings College of the Law	http://uchastings.edu	CA
@@ -1912,8 +1840,8 @@ University of Maine Fort Kent	http://umfk.edu	ME
 University of Maine at Presque Isle	http://umpi.edu	ME
 University of Mary Hardin-Baylor	http://umhb.edu	TX
 University of Mary Washington	http://umw.edu	VA
-University of Maryland	http://umaryland.edu	MD
 University of Maryland	http://umd.edu	MD
+University of Maryland Baltimore	http://umaryland.edu	MD
 University of Maryland University College	http://umuc.edu	MD
 University of Massachusetts	http://umassp.edu	MA
 University of Massachusetts Amherst	http://umass.edu	MA
@@ -2045,7 +1973,6 @@ University of the District of Columbia	http://udc.edu	DC
 University of the Incarnate Word	http://uiw.edu	TX
 University of the Ozarks	http://ozarks.edu	AR
 University of the Pacific	http://pacific.edu	CA
-University of the Pacific	http://uop.edu	CA
 University of the Rockies	http://rockies.edu	CO
 University of the Sciences in Philadelphia	http://usciences.edu	PA
 University of the Southwest	http://usw.edu	NM
@@ -2207,10 +2134,14 @@ export interface School {
   name: string;
   /** State where the college is located, e.g. `'AL'`. */
   state: string;
-  /** Website of the college e.g. `'http://yccd.edu'`. */
+  /** Website of the college e.g. `'yccd.edu'`. */
   website: string;
 }
 
 export const SCHOOLS: School[] = RAW_SCHOOLS.split('\n')
   .map((s) => s.split('\t'))
-  .map(([name, website, state]) => ({ name, state, website }));
+  .map(([name, website, state]) => ({
+    name,
+    state,
+    website: website.replace('http://', ''),
+  }));

@@ -1,19 +1,28 @@
 import React, { createContext, ReactNode, useEffect, useState } from 'react';
 import FirestoreModel from './base/FirestoreModel';
 import FirestoreModelList from './base/FiretoreModelList';
+import Model from './base/Model';
 import Scholarships, { FilterOptions } from './Scholarships';
 import ScholarshipData from '../types/ScholarshipData';
 
-interface ScholarshipsContextState {
-  scholarships: FirestoreModel<ScholarshipData>[];
+interface ScholarshipsCacheState {
+  scholarships: Model<ScholarshipData>[];
   error: Error | null;
   canLoadMore: boolean;
+  /**
+   * Tries to update (or remove is `newData` is not set) the scholarship
+   * specified by `id` in the context.
+   *
+   * If the scholarship is not found or `id` is undefined,
+   * the whole context state is invalidated.
+   * */
+  invalidate: (id?: string, newData?: ScholarshipData) => void;
   loading: boolean;
   loadMore: () => void;
   setFilters: (filterOptions: FilterOptions) => void;
 }
 
-const ScholarshipsContext = createContext({} as ScholarshipsContextState);
+const ScholarshipsContext = createContext({} as ScholarshipsCacheState);
 
 interface Props {
   children: ReactNode;
@@ -22,7 +31,7 @@ interface Props {
 export function ScholarshipsProvider({ children }: Props): ReactNode {
   const [error, setError] = useState(null as Error | null);
   const [scholarships, setScholarships] = useState(
-    [] as FirestoreModel<ScholarshipData>[]
+    [] as Model<ScholarshipData>[]
   );
   const [filtersJSON, setFiltersJSON] = useState('');
   const [{ loading, loadMoreFn }, setLoadState] = useState({
@@ -66,6 +75,29 @@ export function ScholarshipsProvider({ children }: Props): ReactNode {
       value={{
         canLoadMore: Boolean(loadMoreFn),
         error,
+        invalidate: (id, data) => {
+          if (id && scholarships.map((s) => s.id).includes(id)) {
+            if (data) {
+              // Just update the data. This updated data might no longer match
+              // the original query but that's probably OK as new queries will
+              // clear the cache anyway.
+              setScholarships(
+                scholarships.map((s) =>
+                  s.id === id
+                    ? new FirestoreModel(Scholarships.collection.doc(id), data)
+                    : s
+                )
+              );
+            } else {
+              // Just remove the scholarship from the list.
+              setScholarships(scholarships.filter((s) => s.id !== id));
+            }
+          } else {
+            // We need to invalidate the whole cache.
+            setFiltersJSON('');
+            setScholarships([]);
+          }
+        },
         loading,
         loadMore: () => setLoadState({ loading: true, loadMoreFn }),
         scholarships,

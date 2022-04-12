@@ -1,21 +1,19 @@
 {
   "navbar": {
     "scholarships": "Explorar",
-    "add": "Agregar",
-    "about": "Acerca de",
-    "contact": "Contacto"
+    "add": "Agregar"
   },
 
   "btn": {
     "browseScholarships": "Buscar Becas",
     "addScholarship": "Agregar una Beca",
-    "login": "Iniciar sesión",
+    "login": "Iniciar",
     "loadMore": "carga más",
-    "subscribeForUpdates": "Suscríbete para recibir actualizaciones"
+    "subscribeForUpdates": "Suscribir"
   },
 
   "constructAlert": {
-    "description": "🚧 ¡Sitio web bajo construcción! 🚧"
+    "description": "¡Sitio bajo construcción! 🚧"
   },
 
   "contact": {
@@ -71,7 +69,6 @@
   },
 
   "general": {
-    "scholarships": "Becas",
     "lookingForScholarships": "¿Buscando becas?"
   },
 
@@ -95,5 +92,28 @@
     }
   },
 
-  "alert": { "warning": "Advertencia" }
+  "alert": { "warning": "Advertencia" },
+
+  "footer": {
+    "quickLinks": "Enlaces Rápidos",
+    "company": "Compañía",
+    "help": "Ayuda",
+    "privacyTerms": "Términos - Privacidad",
+    "addScholarship": "Agregar beca",
+    "browseScholarship": "Buscar becas",
+    "about": "Acerca de",
+    "contact": "Contacto",
+    "reportIssue": "Reportar un problema",
+    "suggestIdea": "Sugerir una idea",
+    "subscribeForUpdates": "Suscríbete para actualizaciones",
+    "reachOut": "Contacta con nosotros"
+  },
+
+  "loginDialog": {
+    "welcome": "Bienvenidos.",
+    "providesScholarships": "DreamScholars ofrece becas para todos los estudiantes, independientemente de su ciudadanía o residencia ",
+    "joinCommunity": "Únete a nuestra comunidad Y",
+    "getAccess": "Obtenga acceso a becas y otras funciones interesantes pronto.",
+    "signIn": "Iniciar Sesión"
+  }
 }

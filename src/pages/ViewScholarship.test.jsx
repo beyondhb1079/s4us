@@ -9,8 +9,10 @@ import Scholarships from '../models/Scholarships';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import GradeLevel from '../types/GradeLevel';
 import Ethnicity from '../types/Ethnicity';
+import State from '../types/States';
 import i18n from '../i18n/setup';
 import { I18nextProvider } from 'react-i18next';
+import { ScholarshipsProvider } from '../models/ScholarshipsContext';
 
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.
@@ -20,11 +22,13 @@ function renderAtRoute(pathname, state = {}) {
   return render(
     <I18nextProvider i18n={i18n}>
       <ThemeProvider theme={createTheme()}>
-        <MemoryRouter initialEntries={[{ pathname, state }]}>
-          <Routes>
-            <Route path="/scholarships/:id" element={<ViewScholarship />} />
-          </Routes>
-        </MemoryRouter>
+        <ScholarshipsProvider>
+          <MemoryRouter initialEntries={[{ pathname, state }]}>
+            <Routes>
+              <Route path="/scholarships/:id" element={<ViewScholarship />} />
+            </Routes>
+          </MemoryRouter>
+        </ScholarshipsProvider>
       </ThemeProvider>
     </I18nextProvider>
   );
@@ -89,6 +93,7 @@ test('renders scholarship details', async () => {
         Ethnicity.BlackOrAfricanAmerican,
       ],
       majors: ['Computer Science', 'Software Engineering'],
+      schools: ['Cal Tech', 'MIT', 'LSU'],
     },
   };
   const ref = Scholarships.collection.doc('load-it');
@@ -106,21 +111,20 @@ test('renders scholarship details', async () => {
   ).toBeInTheDocument();
   expect(screen.getByRole('link', { name: /Apply/i }).href).toBe(data.website);
   expect(Helmet.peek().title).toBe(data.name);
-  expect(
-    screen.getByText(data.requirements.states.join(', '))
-  ).toBeInTheDocument();
+  data.requirements.states
+    .map(State.toString)
+    .forEach((s) => expect(screen.getByText(s)).toBeInTheDocument());
   expect(screen.getByText(data.requirements.gpa + '.0')).toBeInTheDocument();
-  expect(
-    screen.getByText(
-      data.requirements.grades.map(GradeLevel.toString).join(', ')
-    )
-  ).toBeInTheDocument();
-  expect(
-    screen.getByText(
-      data.requirements.ethnicities.map(Ethnicity.toString).join(', ')
-    )
-  ).toBeInTheDocument();
-  expect(
-    screen.getByText(data.requirements.majors.join(', '))
-  ).toBeInTheDocument();
+  data.requirements.grades
+    .map(GradeLevel.toString)
+    .forEach((g) => expect(screen.getByText(g)).toBeInTheDocument());
+  data.requirements.ethnicities
+    .map(Ethnicity.toString)
+    .forEach((e) => expect(screen.getByText(e)).toBeInTheDocument());
+  data.requirements.majors.forEach((m) =>
+    expect(screen.getByText(m)).toBeInTheDocument()
+  );
+  data.requirements.schools.forEach((s) =>
+    expect(screen.getByText(s)).toBeInTheDocument()
+  );
 });
