@@ -1,5 +1,5 @@
 import queryString, { ParseOptions } from 'query-string';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import GradeLevel from '../types/GradeLevel';
 import sortOptions from './sortOptions';
@@ -44,7 +44,10 @@ export default function useQueryParams(
     );
   };
 
-  const params = JSON.parse(JSON.stringify(origParams));
+  const params = useMemo(
+    () => JSON.parse(JSON.stringify(origParams)),
+    [origParams]
+  );
 
   if (prune) {
     /** Prune bad query parameter value strings */
@@ -104,5 +107,5 @@ export default function useQueryParams(
     }
   }, [navigate, params, origParams]);
 
-  return [{ ...params }, setQueryParams];
+  return [params, setQueryParams];
 }
