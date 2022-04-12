@@ -44,10 +44,8 @@ export default function useQueryParams(
     );
   };
 
-  const params = useMemo(
-    () => JSON.parse(JSON.stringify(origParams)),
-    [origParams]
-  );
+  const paramsJson = JSON.stringify(origParams);
+  const params = useMemo(() => JSON.parse(paramsJson), [paramsJson]);
 
   if (prune) {
     /** Prune bad query parameter value strings */
