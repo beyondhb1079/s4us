@@ -17,7 +17,6 @@ import FilterBar from '../components/FilterBar';
 import FilterPanel from '../components/FilterPanel';
 import ScholarshipList from '../components/ScholarshipList';
 import useQueryParams from '../lib/useQueryParams';
-import { DEADLINE_ASC, getDir, getField } from '../lib/sortOptions';
 import { HeaderSkeleton } from '../components/Header';
 import GradeLevel from '../types/GradeLevel';
 import { useLocation } from 'react-router-dom';
@@ -30,21 +29,8 @@ function ListScholarships() {
 
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
-  const [{ minAmount, maxAmount, grades, majors, sortBy }, setQueryParams] =
+  const [{ minAmount, maxAmount, grades, majors }, setQueryParams] =
     useQueryParams();
-
-  const sortField = getField(sortBy ?? DEADLINE_ASC);
-  const sortDir = getDir(sortBy ?? DEADLINE_ASC);
-
-  const queryFilters = {
-    sortField,
-    sortDir,
-    minAmount,
-    maxAmount,
-    grades,
-    majors,
-    hideExpired: true,
-  };
 
   const filterChips = {};
   if (Number.isInteger(minAmount)) {
@@ -143,7 +129,7 @@ function ListScholarships() {
               />
             ))}
           </Stack>
-          <ScholarshipList filters={queryFilters} />
+          <ScholarshipList extraFilters={{ hideExpired: true }} />
         </Container>
       </Box>
     </Box>

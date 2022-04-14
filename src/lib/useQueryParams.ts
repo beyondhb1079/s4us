@@ -1,5 +1,5 @@
 import queryString, { ParseOptions } from 'query-string';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import GradeLevel from '../types/GradeLevel';
 import sortOptions from './sortOptions';
@@ -25,26 +25,32 @@ type SetQueryParamsFn = (params: Record<string, any>, replace: boolean) => void;
 export default function useQueryParams(
   prune = true
 ): [Record<string, any>, SetQueryParamsFn] {
-  const location = useLocation();
+  const locationSearch = useLocation().search;
   const navigate = useNavigate();
-  const origParams = queryString.parse(location.search, options);
 
-  const setQueryParams = (params: Record<string, any>, replace = false) => {
-    Object.keys(params).forEach((k) => {
-      if (params[k] === undefined) {
-        delete origParams[k];
-      } else origParams[k] = params[k];
-    });
+  const setQueryParams = useCallback(
+    () =>
+      (params: Record<string, any>, replace = false) => {
+        const origParams = queryString.parse(locationSearch, options);
+        Object.keys(params).forEach((k) => {
+          if (params[k] === undefined) {
+            delete origParams[k];
+          } else {
+            origParams[k] = params[k];
+          }
+        });
 
-    navigate(
-      {
-        search: queryString.stringify(origParams, options),
+        const search = queryString.stringify(origParams, options);
+        navigate({ search }, { replace });
       },
-      { replace }
-    );
-  };
+    [locationSearch, navigate]
+  );
 
-  const params = JSON.parse(JSON.stringify(origParams));
+  const params = useMemo(
+    () =>
+      JSON.parse(JSON.stringify(queryString.parse(locationSearch, options))),
+    [locationSearch]
+  );
 
   if (prune) {
     /** Prune bad query parameter value strings */
@@ -92,17 +98,13 @@ export default function useQueryParams(
     }
   }
 
+  // Navigate to the current page with the params cleaned up
   useEffect(() => {
-    if (JSON.stringify(params) !== JSON.stringify(origParams)) {
-      // Navigate to the current page with the params cleaned up
-      navigate(
-        {
-          search: queryString.stringify(params, options),
-        },
-        { replace: true }
-      );
+    const search = queryString.stringify(params, options);
+    if (locationSearch != search) {
+      navigate({ search }, { replace: true });
     }
-  }, [navigate, params, origParams]);
+  }, [locationSearch, navigate, params]);
 
-  return [{ ...params }, setQueryParams];
+  return [params, setQueryParams];
 }
