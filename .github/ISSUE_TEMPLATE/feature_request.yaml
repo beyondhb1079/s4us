@@ -8,9 +8,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Is your issue a bug? If so, please fill out a
-        [bug report](https://github.com/beyondhb1079/s4us/issues/new?assignees=octocat&labels=bug%2Ctriage&template=bug_report.yaml&title=%5BBug%5D%3A+)
-        instead.
+        Is your issue a bug? If so, please fill out a [bug report](https://github.com/beyondhb1079/s4us/issues/new?assignees=octocat&labels=bug%2Ctriage&template=bug_report.yaml&title=%5BBug%5D%3A+) instead.
 
         Thanks for taking the time to fill out this feature request!
   - type: checkboxes
