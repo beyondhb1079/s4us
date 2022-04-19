@@ -1,0 +1,35 @@
+name: Feature request
+about: Suggest an idea for this project
+title: '[FR]: '
+labels: ['enhancement', 'triage']
+assignees: 
+  - octocat
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Is your issue a bug? If so, please fill out a
+        [bug report](https://github.com/beyondhb1079/s4us/issues/new?assignees=octocat&labels=bug%2Ctriage&template=bug_report.yaml&title=%5BBug%5D%3A+)
+        instead.
+
+        Thanks for taking the time to fill out this feature request!
+  - type: checkboxes
+    attributes:
+      label: Is there an existing feature request for this?
+      description: Please [search](/beyondhb1079/s4us/issues?q=label%3Aenhancement) to see if this feature request already exists.
+      options:
+        - label: I have searched the existing feature requests.
+          required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What is your feature idea?
+      description: Please describe the problem and potential solution you'd like to see.
+      placeholder: Ex. I'm always frustrated when... It would be nice if...
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What alternatives have you considered?
+      placeholder: E.g. What workarounds have you tried? Other similar feature ideas that would address the problem?
