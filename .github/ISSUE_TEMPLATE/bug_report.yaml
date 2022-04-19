@@ -12,7 +12,7 @@ body:
   - type: checkboxes
     attributes:
       label: Is there an existing issue for this?
-      description: Please [search](/beyondhb1079/s4us/issues) to see if an issue already exists for the bug you encountered.
+      description: Please [search](/beyondhb1079/s4us/issues?q=label%3Abug) to see if an issue already exists for the bug you encountered.
       options:
         - label: I have searched the existing issues
           required: true
