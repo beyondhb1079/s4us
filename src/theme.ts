@@ -1,4 +1,4 @@
-import { createTheme, responsiveFontSizes } from '@mui/material';
+import { createTheme, responsiveFontSizes, ThemeOptions } from '@mui/material';
 
 const theme = responsiveFontSizes(
   createTheme({
@@ -29,7 +29,7 @@ const theme = responsiveFontSizes(
         color: 'rgb(100, 100, 100)',
       },
     },
-  })
+  } as ThemeOptions)
 );
 
 export default theme;
