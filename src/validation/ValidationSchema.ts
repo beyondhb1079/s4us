@@ -36,8 +36,7 @@ const validationSchema = yup.object({
           .test(
             'min < max test',
             'Minimum must be less than the maximum',
-            (min, { parent }) =>
-              min === 0 || parent.max === 0 || min < parent.max
+            (min, { parent }) => !min || !parent?.max || min < parent.max
           ),
       }),
     max: yup.number().min(0, 'Please enter a valid amount').notRequired(),
