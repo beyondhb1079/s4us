@@ -36,8 +36,7 @@ const validationSchema = yup.object({
           .test(
             'min < max test',
             'Minimum must be less than the maximum',
-            (min, { parent }) =>
-              min === 0 || parent.max === 0 || min < parent.max
+            (min, { parent }) => !min || !parent?.max || min < parent.max
           ),
       }),
     max: yup.number().min(0, 'Please enter a valid amount').notRequired(),
@@ -50,7 +49,9 @@ const validationSchema = yup.object({
         'Please enter a valid GPA, rounded to two decimal places',
         (gpa) =>
           gpa === undefined ||
-          (gpa > 0 && gpa <= 4 && gpa.toString().match(/^[0-4](\.\d\d?)?$/))
+          (gpa > 0 &&
+            gpa <= 4 &&
+            gpa.toString().match(/^[0-4](\.\d\d?)?$/) !== null)
       ),
   }),
 });
