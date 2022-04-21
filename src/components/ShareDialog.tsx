@@ -22,8 +22,20 @@ import {
 import firebase from 'firebase';
 import { BRAND_NAME } from '../config/constants';
 import ScholarshipAmount from '../types/ScholarshipAmount';
+import ScholarshipData from '../types/ScholarshipData';
 
-export default function ShareDialog({ scholarship, open, onClose }) {
+export default function ShareDialog({
+  scholarship,
+  open,
+  onClose,
+}: {
+  scholarship: {
+    id: string;
+    data: ScholarshipData;
+  };
+  open: boolean;
+  onClose: () => void;
+}): JSX.Element {
   const { amount, deadline, name } = scholarship.data;
 
   const url = `https://${window.location.hostname}/scholarships/${scholarship.id}`;
@@ -33,7 +45,7 @@ export default function ShareDialog({ scholarship, open, onClose }) {
   const text = `${title}\n ${deadline?.toLocaleDateString()}\n`;
 
   const logShare = useCallback(
-    () => (p) =>
+    () => (p: string) =>
       firebase.analytics().logEvent('share', { platform: p, url, title, text }),
     [url, title, text]
   );
@@ -42,7 +54,7 @@ export default function ShareDialog({ scholarship, open, onClose }) {
       onClose();
       navigator
         .share({ url, title, text })
-        .then(() => logShare('navigator.share'))
+        .then(() => logShare()('navigator.share'))
         // eslint-disable-next-line no-console
         .catch(console.error);
     }
@@ -62,33 +74,33 @@ export default function ShareDialog({ scholarship, open, onClose }) {
           Currently Sharing: {title}
         </DialogContentText>
         <EmailShareButton
-          beforeOnClick={() => logShare('email')}
+          beforeOnClick={() => logShare()('email')}
           url={url}
-          style={{ m: '4px' }}>
+          style={{ margin: '4px' }}>
           <EmailIcon round />
         </EmailShareButton>
         <FacebookShareButton
-          beforeOnClick={() => logShare('facebook')}
+          beforeOnClick={() => logShare()('facebook')}
           url={url}
-          style={{ m: '4px' }}>
+          style={{ margin: '4px' }}>
           <FacebookIcon round />
         </FacebookShareButton>
         <TwitterShareButton
-          beforeOnClick={() => logShare('twitter')}
+          beforeOnClick={() => logShare()('twitter')}
           url={url}
-          style={{ m: '4px' }}>
+          style={{ margin: '4px' }}>
           <TwitterIcon round />
         </TwitterShareButton>
         <LinkedinShareButton
-          beforeOnClick={() => logShare('linkedin')}
+          beforeOnClick={() => logShare()('linkedin')}
           url={url}
-          style={{ m: '4px' }}>
+          style={{ margin: '4px' }}>
           <LinkedinIcon round />
         </LinkedinShareButton>
         <RedditShareButton
-          beforeOnClick={() => logShare('reddit')}
+          beforeOnClick={() => logShare()('reddit')}
           url={url}
-          style={{ m: '4px' }}>
+          style={{ margin: '4px' }}>
           <RedditIcon round />
         </RedditShareButton>
         <Typography
@@ -100,7 +112,7 @@ export default function ShareDialog({ scholarship, open, onClose }) {
         <Button
           color="primary"
           onClick={() => {
-            logShare('clipboard');
+            logShare()('clipboard');
             navigator.clipboard.writeText(url);
           }}>
           Copy Link
