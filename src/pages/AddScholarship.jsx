@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Container, Typography, Grid, Paper, Box } from '@mui/material';
+import { Container, Typography, Grid, Box } from '@mui/material';
 import ScholarshipForm from '../components/ScholarshipForm';
 import Scholarships from '../models/Scholarships';
 import backgroundImg from '../img/img3.svg';
@@ -10,7 +10,7 @@ function AddScholarship() {
   const { t } = useTranslation();
 
   return (
-    <Container maxWidth="md" sx={{ p: 2 }}>
+    <Container maxWidth="lg" sx={{ p: 2 }}>
       <Helmet>
         <title>{t('addScholarship.titleTag')}</title>
       </Helmet>
@@ -38,22 +38,13 @@ function AddScholarship() {
               overflow: 'hidden',
               display: 'block',
               m: 'auto',
-              width: { xs: '60%', md: '120%' },
+              width: { xs: '60%', md: '110%' },
             }}
           />
         </Grid>
       </Grid>
 
-      <Paper
-        elevation={2}
-        sx={{
-          zIndex: 1,
-          position: 'relative',
-          p: { xs: 2, sm: 3 },
-          bottom: { md: 40 },
-        }}>
-        <ScholarshipForm scholarship={Scholarships.new()} />
-      </Paper>
+      <ScholarshipForm scholarship={Scholarships.new()} />
     </Container>
   );
 }

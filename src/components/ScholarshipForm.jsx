@@ -16,6 +16,8 @@ import {
   Typography,
   FormHelperText,
   createFilterOptions,
+  Paper,
+  useMediaQuery,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import validationSchema from '../validation/ValidationSchema';
@@ -39,6 +41,8 @@ function ScholarshipForm({ scholarship }) {
   const [submissionError, setSubmissionError] = useState(null);
   const { invalidate } = useContext(ScholarshipsContext);
   const navigate = useNavigate();
+
+  const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
   const formik = useFormik({
     initialValues: scholarship.data,
@@ -279,8 +283,12 @@ function ScholarshipForm({ scholarship }) {
       ),
     },
     Review: {
-      description: 'Please review the information below.',
-      content: (
+      description: isDesktop
+        ? 'Please review the information on the right'
+        : 'Please review the information below.',
+      content: isDesktop ? (
+        ''
+      ) : (
         <ScholarshipCard
           scholarship={{ data: formik.values }}
           style="preview"
@@ -305,57 +313,83 @@ function ScholarshipForm({ scholarship }) {
   const onLastStep = activeStep == Object.keys(stepperItems).length - 1;
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <Stepper activeStep={activeStep} orientation="vertical">
-        {Object.entries(stepperItems).map(
-          ([label, { description, content }]) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-              <StepContent>
-                <Typography>{description}</Typography>
-                <Box marginY={3}>{content}</Box>
-                <Button
-                  disabled={activeStep === 0}
-                  onClick={() => setActiveStep((prevStep) => prevStep - 1)}>
-                  BACK
-                </Button>
-                <Button
-                  key={activeStep}
-                  variant="contained"
-                  color="primary"
-                  disabled={formik.isSubmitting}
-                  type={onLastStep ? 'submit' : 'button'}
-                  onClick={() => {
-                    if (onLastStep) return;
-                    formik.validateForm().then((errors) => {
-                      const checkboxError = validationCheck();
-                      if (checkboxError)
-                        errors = { ...errors, checkbox: checkboxError };
+    <Box
+      sx={{
+        display: isDesktop ? 'flex' : 'block',
+        position: 'relative',
+        zIndex: 1,
+        bottom: { md: 40 },
+        alignItems: 'flex-start',
+      }}>
+      <Paper
+        elevation={2}
+        sx={{
+          p: { xs: 2, sm: 3 },
+          width: isDesktop ? '50%' : '100%',
+          mr: 2,
+        }}>
+        <form onSubmit={formik.handleSubmit}>
+          <Stepper activeStep={activeStep} orientation="vertical">
+            {Object.entries(stepperItems).map(
+              ([label, { description, content }]) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                  <StepContent>
+                    <Typography>{description}</Typography>
+                    <Box marginY={3}>{content}</Box>
+                    <Button
+                      disabled={activeStep === 0}
+                      onClick={() => setActiveStep((prevStep) => prevStep - 1)}>
+                      BACK
+                    </Button>
+                    <Button
+                      key={activeStep}
+                      variant="contained"
+                      color="primary"
+                      disabled={formik.isSubmitting}
+                      type={onLastStep ? 'submit' : 'button'}
+                      onClick={() => {
+                        if (onLastStep) return;
+                        formik.validateForm().then((errors) => {
+                          const checkboxError = validationCheck();
+                          if (checkboxError)
+                            errors = { ...errors, checkbox: checkboxError };
 
-                      if (Object.keys(errors).length === 0)
-                        setActiveStep((prevStep) => prevStep + 1);
+                          if (Object.keys(errors).length === 0)
+                            setActiveStep((prevStep) => prevStep + 1);
 
-                      return formik.setErrors(errors);
-                    });
-                  }}>
-                  {onLastStep ? 'Submit' : 'Next'}
-                </Button>
-                {submissionError && (
-                  <Alert
-                    severity="error"
-                    onClose={() => setSubmissionError(null)}>
-                    <AlertTitle>
-                      There was an error submitting your changes:
-                    </AlertTitle>
-                    {submissionError.toString()}
-                  </Alert>
-                )}
-              </StepContent>
-            </Step>
-          )
+                          return formik.setErrors(errors);
+                        });
+                      }}>
+                      {onLastStep ? 'Submit' : 'Next'}
+                    </Button>
+                    {submissionError && (
+                      <Alert
+                        severity="error"
+                        onClose={() => setSubmissionError(null)}>
+                        <AlertTitle>
+                          There was an error submitting your changes:
+                        </AlertTitle>
+                        {submissionError.toString()}
+                      </Alert>
+                    )}
+                  </StepContent>
+                </Step>
+              )
+            )}
+          </Stepper>
+        </form>
+      </Paper>
+
+      <Box sx={{ width: '50%' }}>
+        {isDesktop && (
+          <ScholarshipCard
+            scholarship={{ data: formik.values }}
+            style="preview"
+          />
         )}
-      </Stepper>
-    </form>
+      </Box>
+    </Box>
   );
 }
 
