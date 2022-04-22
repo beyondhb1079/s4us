@@ -109,7 +109,6 @@ export default function ScholarshipCard({
   const CardAreaComponent: React.FC<{
     [key: string]: any;
   }> = detailed ? Box : CardActionArea;
-  console.log(style);
   const lintIssues = style === 'detail' ? lint(scholarship.data) : [];
   return (
     <Card variant="outlined">
