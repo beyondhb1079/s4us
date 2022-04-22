@@ -286,9 +286,7 @@ function ScholarshipForm({ scholarship }) {
       description: isDesktop
         ? 'Please review the information on the right'
         : 'Please review the information below.',
-      content: isDesktop ? (
-        ''
-      ) : (
+      content: !isDesktop && (
         <ScholarshipCard
           scholarship={{ data: formik.values }}
           style="preview"
@@ -316,8 +314,6 @@ function ScholarshipForm({ scholarship }) {
     <Box
       sx={{
         display: isDesktop ? 'flex' : 'block',
-        position: 'relative',
-        zIndex: 1,
         alignItems: 'flex-start',
       }}>
       <Paper
