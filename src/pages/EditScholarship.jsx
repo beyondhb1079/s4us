@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   Container,
-  Paper,
   Typography,
   Button,
   Box,
@@ -79,12 +78,12 @@ function EditScholarship() {
   }
 
   return (
-    <Container maxWidth="md">
+    <Box sx={{ p: 2 }}>
       <Helmet>
         <title>Edit a scholarship</title>
       </Helmet>
 
-      <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 } }}>
+      <>
         <ScholarshipForm scholarship={scholarship} />
 
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', m: 1 }}>
@@ -103,7 +102,7 @@ function EditScholarship() {
             {delError.toString()}
           </Alert>
         )}
-      </Paper>
+      </>
 
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
         <DialogTitle>Delete scholarship?</DialogTitle>
@@ -120,7 +119,7 @@ function EditScholarship() {
           </Button>
         </DialogActions>
       </Dialog>
-    </Container>
+    </Box>
   );
 }
 

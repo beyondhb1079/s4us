@@ -318,7 +318,6 @@ function ScholarshipForm({ scholarship }) {
         display: isDesktop ? 'flex' : 'block',
         position: 'relative',
         zIndex: 1,
-        bottom: { md: 40 },
         alignItems: 'flex-start',
       }}>
       <Paper

@@ -10,42 +10,44 @@ function AddScholarship() {
   const { t } = useTranslation();
 
   return (
-    <Container maxWidth="lg" sx={{ p: 2 }}>
+    <Box sx={{ p: 2 }}>
       <Helmet>
         <title>{t('addScholarship.titleTag')}</title>
       </Helmet>
 
-      <Grid container spacing={2}>
-        <Grid
-          item
-          sm={12}
-          md={6}
-          sx={{ textAlign: { xs: 'center', md: 'left' } }}>
-          <Typography gutterBottom>
-            {t('addScholarship.submitAScholarship')}
-          </Typography>
-          <Typography variant="h4" gutterBottom>
-            {t('addScholarship.additionalInfo')}
-          </Typography>
-          <Typography>{t('addScholarship.description')}</Typography>
-        </Grid>
+      <Container maxWidth="lg" sx={{ p: 2 }}>
+        <Grid container spacing={2}>
+          <Grid
+            item
+            sm={12}
+            md={6}
+            sx={{ textAlign: { xs: 'center', md: 'left' } }}>
+            <Typography gutterBottom>
+              {t('addScholarship.submitAScholarship')}
+            </Typography>
+            <Typography variant="h4" gutterBottom>
+              {t('addScholarship.additionalInfo')}
+            </Typography>
+            <Typography>{t('addScholarship.description')}</Typography>
+          </Grid>
 
-        <Grid item sm={12} md={6} sx={{ width: '100%' }}>
-          <Box
-            component="img"
-            src={backgroundImg}
-            sx={{
-              overflow: 'hidden',
-              display: 'block',
-              m: 'auto',
-              width: { xs: '60%', md: '110%' },
-            }}
-          />
+          <Grid item sm={12} md={6} sx={{ width: '100%' }}>
+            <Box
+              component="img"
+              src={backgroundImg}
+              sx={{
+                overflow: 'hidden',
+                display: 'block',
+                m: 'auto',
+                width: { xs: '60%', md: '100%' },
+              }}
+            />
+          </Grid>
         </Grid>
-      </Grid>
+      </Container>
 
       <ScholarshipForm scholarship={Scholarships.new()} />
-    </Container>
+    </Box>
   );
 }
 export default AddScholarship;
