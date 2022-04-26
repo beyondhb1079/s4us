@@ -1,9 +1,9 @@
 import { Container, Link, Typography } from '@mui/material';
 import { genMailToLink } from '../lib/mail';
 
-export default function Privacy(): JSX.Element {
+export default function Terms(): JSX.Element {
   const contactLink = (
-    <Link href={genMailToLink({ subject: 'Privacy Notice' })}>
+    <Link href={genMailToLink({ subject: 'Terms of Use' })}>
       info@dreamscholars.org
     </Link>
   );
