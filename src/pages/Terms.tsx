@@ -82,22 +82,22 @@ export default function Privacy(): JSX.Element {
       <Typography gutterBottom>
         <Link href="#contact">20. CONTACT US</Link>
       </Typography>
-      <Typography id="" variant="h5" gutterBottom marginY={3}>
+
+      <Typography id="agreement" variant="h5" gutterBottom marginY={3}>
         1. AGREEMENT TO TERMS
       </Typography>
       <Typography paragraph>
         These Terms of Use constitute a legally binding agreement made between
         you, whether personally or on behalf of an entity (“you”) and
-        DreamScholars (&quot;<strong>Company</strong>,&quot; “
-        <strong>we</strong>,&quot; “<strong>us</strong>,&quot; or “
-        <strong>our</strong>”), concerning your access to and use of the
-        DreamScholars website as well as any other media form, media channel,
-        mobile website or mobile application related, linked, or otherwise
-        connected thereto (collectively, the “Site”). You agree that by
-        accessing the Site, you have read, understood, and agreed to be bound by
-        all of these Terms of Use. IF YOU DO NOT AGREE WITH ALL OF THESE TERMS
-        OF USE, THEN YOU ARE EXPRESSLY PROHIBITED FROM USING THE SITE AND YOU
-        MUST DISCONTINUE USE IMMEDIATELY.
+        DreamScholars ("<strong>Company</strong>," "<strong>we</strong>," "
+        <strong>us</strong>," or "<strong>our</strong>"), concerning your access
+        to and use of the DreamScholars website as well as any other media form,
+        media channel, mobile website or mobile application related, linked, or
+        otherwise connected thereto (collectively, the “Site”). You agree that
+        by accessing the Site, you have read, understood, and agreed to be bound
+        by all of these Terms of Use. IF YOU DO NOT AGREE WITH ALL OF THESE
+        TERMS OF USE, THEN YOU ARE EXPRESSLY PROHIBITED FROM USING THE SITE AND
+        YOU MUST DISCONTINUE USE IMMEDIATELY.
       </Typography>
       <Typography paragraph>
         Supplemental terms and conditions or documents that may be posted on the
@@ -123,7 +123,8 @@ export default function Privacy(): JSX.Element {
         solely responsible for compliance with local laws, if and to the extent
         local laws are applicable.
       </Typography>
-      <Typography id="" variant="h5" gutterBottom marginY={3}>
+
+      <Typography id="ip" variant="h5" gutterBottom marginY={3}>
         2.INTELLECTUAL PROPERTY RIGHTS
       </Typography>
       <Typography paragraph>
@@ -151,7 +152,8 @@ export default function Privacy(): JSX.Element {
         rights not expressly granted to you in and to the Site, the Content and
         the Marks.
       </Typography>
-      <Typography id="" variant="h5" gutterBottom marginY={3}>
+
+      <Typography id="userreps" variant="h5" gutterBottom marginY={3}>
         3. USER REPRESENTATIONS
       </Typography>
       <Typography paragraph>
@@ -169,7 +171,8 @@ export default function Privacy(): JSX.Element {
         and refuse any and all current or future use of the Site (or any portion
         thereof).
       </Typography>
-      <Typography id="" variant="h5" gutterBottom marginY={3}>
+
+      <Typography id="prohibited" variant="h5" gutterBottom marginY={3}>
         4. PROHIBITED ACTIVITIES
       </Typography>
       <Typography paragraph>
@@ -182,111 +185,114 @@ export default function Privacy(): JSX.Element {
         As a user of the Site, you agree not to:
       </Typography>
       <ul>
-        <li>
+        <Typography component="li">
           Systematically retrieve data or other content from the Site to create
           or compile, directly or indirectly, a collection, compilation,
           database, or directory without written permission from us.
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           Trick, defraud, or mislead us and other users, especially in any
           attempt to learn sensitive account information such as user passwords.
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           Circumvent, disable, or otherwise interfere with security-related
           features of the Site, including features that prevent or restrict the
           use or copying of any Content or enforce limitations on the use of the
           Site and/or the Content contained therein.
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           Disparage, tarnish, or otherwise harm, in our opinion, us and/or the
           Site.
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           Use any information obtained from the Site in order to harass, abuse,
           or harm another person.
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           Make improper use of our support services or submit false reports of
           abuse or misconduct.
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           Use the Site in a manner inconsistent with any applicable laws or
           regulations.
-        </li>
-        <li>Engage in unauthorized framing of or linking to the Site.</li>
-        <li>
+        </Typography>
+        <Typography component="li">
+          Engage in unauthorized framing of or linking to the Site.
+        </Typography>
+        <Typography component="li">
           Upload or transmit (or attempt to upload or to transmit) viruses,
           Trojan horses, or other material, including excessive use of capital
           letters and spamming (continuous posting of repetitive text), that
-          interferes with any party’s uninterrupted use and enjoyment of the
+          interferes with any party's uninterrupted use and enjoyment of the
           Site or modifies, impairs, disrupts, alters, or interferes with the
           use, features, functions, operation, or maintenance of the Site.
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           Engage in any automated use of the system, such as using scripts to
           send comments or messages, or using any data mining, robots, or
           similar data gathering and extraction tools.
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           Delete the copyright or other proprietary rights notice from any
           Content.
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           Attempt to impersonate another user or person or use the username of
           another user.
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           Upload or transmit (or attempt to upload or to transmit) any material
           that acts as a passive or active information collection or
           transmission mechanism, including without limitation, clear graphics
-          interchange formats (“gifs”), 1×1 pixels, web bugs, cookies, or other
+          interchange formats (“gifs”), 1x1 pixels, web bugs, cookies, or other
           similar devices (sometimes referred to as “spyware” or “passive
           collection mechanisms” or “pcms”).
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           Interfere with, disrupt, or create an undue burden on the Site or the
           networks or services connected to the Site.
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           Harass, annoy, intimidate, or threaten any of our employees or agents
           engaged in providing any portion of the Site to you.
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           Attempt to bypass any measures of the Site designed to prevent or
           restrict access to the Site, or any portion of the Site.
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           Copy or adapt the Site's software, including but not limited to Flash,
           PHP, HTML, JavaScript, or other code.
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           Except as permitted by applicable law, decipher, decompile,
           disassemble, or reverse engineer any of the software comprising or in
           any way making up a part of the Site.
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           Except as may be the result of standard search engine or Internet
           browser usage, use, launch, develop, or distribute any automated
           system, including without limitation, any spider, robot, cheat
           utility, scraper, or offline reader that accesses the Site, or using
           or launching any unauthorized script or other software.
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           Use a buying agent or purchasing agent to make purchases on the Site.
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           Make any unauthorized use of the Site, including collecting usernames
           and/or email addresses of users by electronic or other means for the
           purpose of sending unsolicited email, or creating user accounts by
           automated means or under false pretenses.
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           Use the Site as part of any effort to compete with us or otherwise use
           the Site and/or the Content for any revenue-generating endeavor or
           commercial enterprise.
-        </li>
+        </Typography>
       </ul>
-      <Typography id="" variant="h5" gutterBottom marginY={3}>
+
+      <Typography id="ugc" variant="h5" gutterBottom marginY={3}>
         5. USER GENERATED CONTRIBUTIONS
       </Typography>
       <Typography paragraph>
@@ -303,76 +309,79 @@ export default function Privacy(): JSX.Element {
         that:
       </Typography>
       <ul>
-        <li>
+        <Typography component="li">
           The creation, distribution, transmission, public display, or
           performance, and the accessing, downloading, or copying of your
           Contributions do not and will not infringe the proprietary rights,
           including but not limited to the copyright, patent, trademark, trade
           secret, or moral rights of any third party.
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           You are the creator and owner of or have the necessary licenses,
           rights, consents, releases, and permissions to use and to authorize
           us, the Site, and other users of the Site to use your Contributions in
           any manner contemplated by the Site and these Terms of Use.
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           You have the written consent, release, and/or permission of each and
           every identifiable individual person in your Contributions to use the
           name or likeness of each and every such identifiable individual person
           to enable inclusion and use of your Contributions in any manner
           contemplated by the Site and these Terms of Use.
-        </li>
-        <li>Your Contributions are not false, inaccurate, or misleading.</li>
-        <li>
+        </Typography>
+        <Typography component="li">
+          Your Contributions are not false, inaccurate, or misleading.
+        </Typography>
+        <Typography component="li">
           Your Contributions are not unsolicited or unauthorized advertising,
           promotional materials, pyramid schemes, chain letters, spam, mass
           mailings, or other forms of solicitation.
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           Your Contributions are not obscene, lewd, lascivious, filthy, violent,
           harassing, libelous, slanderous, or otherwise objectionable (as
           determined by us).
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           Your Contributions do not ridicule, mock, disparage, intimidate, or
           abuse anyone.
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           Your Contributions are not used to harass or threaten (in the legal
           sense of those terms) any other person and to promote violence against
           a specific person or class of people.
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           Your Contributions do not violate any applicable law, regulation, or
           rule.
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           Your Contributions do not violate the privacy or publicity rights of
           any third party.
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           Your Contributions do not violate any applicable law concerning child
           pornography, or otherwise intended to protect the health or well-being
           of minors.
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           Your Contributions do not include any offensive comments that are
           connected to race, national origin, gender, sexual preference, or
           physical handicap.
-        </li>
-        <li>
+        </Typography>
+        <Typography component="li">
           Your Contributions do not otherwise violate, or link to material that
           violates, any provision of these Terms of Use, or any applicable law
           or regulation.
-        </li>
+        </Typography>
       </ul>
       <Typography paragraph>
         Any use of the Site in violation of the foregoing violates these Terms
         of Use and may result in, among other things, termination or suspension
         of your rights to use the Site.
       </Typography>
-      <Typography id="" variant="h5" gutterBottom marginY={3}>
+
+      <Typography id="license" variant="h5" gutterBottom marginY={3}>
         6. CONTRIBUTION LICENSE
       </Typography>
       <Typography paragraph>
@@ -395,7 +404,8 @@ export default function Privacy(): JSX.Element {
         to exonerate us from any and all responsibility and to refrain from any
         legal action against us regarding your Contributions.
       </Typography>
-      <Typography id="" variant="h5" gutterBottom marginY={3}>
+
+      <Typography id="submissions" variant="h5" gutterBottom marginY={3}>
         7. SUBMISSIONS
       </Typography>
       <Typography paragraph>
@@ -412,7 +422,8 @@ export default function Privacy(): JSX.Element {
         shall be no recourse against us for any alleged or actual infringement
         or misappropriation of any proprietary right in your Submissions.
       </Typography>
-      <Typography id="" variant="h5" gutterBottom marginY={3}>
+
+      <Typography id="sitemanage" variant="h5" gutterBottom marginY={3}>
         8. SITE MANAGEMENT
       </Typography>
       <Typography paragraph>
@@ -430,7 +441,8 @@ export default function Privacy(): JSX.Element {
         Site in a manner designed to protect our rights and property and to
         facilitate the proper functioning of the Site.
       </Typography>
-      <Typography id="" variant="h5" gutterBottom marginY={3}>
+
+      <Typography id="terms" variant="h5" gutterBottom marginY={3}>
         9. TERM AND TERMINATION
       </Typography>
       <Typography paragraph>
@@ -454,7 +466,8 @@ export default function Privacy(): JSX.Element {
         action, including without limitation pursuing civil, criminal, and
         injunctive redress.
       </Typography>
-      <Typography id="" variant="h5" gutterBottom marginY={3}>
+
+      <Typography id="modifications" variant="h5" gutterBottom marginY={3}>
         10. MODIFICATIONS AND INTERRUPTIONS
       </Typography>
       <Typography paragraph>
@@ -479,8 +492,9 @@ export default function Privacy(): JSX.Element {
         maintain and support the Site or to supply any corrections, updates, or
         releases in connection therewith.
       </Typography>
-      <Typography paragraph>
-        <strong>11. GOVERNING LAW</strong>
+
+      <Typography id="law" variant="h5" gutterBottom marginY={3}>
+        11. GOVERNING LAW
       </Typography>
       <Typography paragraph>
         These Terms shall be governed by and defined following the laws of the
@@ -489,10 +503,10 @@ export default function Privacy(): JSX.Element {
         resolve any dispute which may arise in connection with these terms.
       </Typography>
 
-      <Typography id="" variant="h5" gutterBottom marginY={3}>
+      <Typography id="disputes" variant="h5" gutterBottom marginY={3}>
         12. DISPUTE RESOLUTION
       </Typography>
-      <Typography id="" variant="h5" gutterBottom marginY={3}>
+      <Typography id="" variant="h6" gutterBottom marginY={3}>
         Binding Arbitration
       </Typography>
       <Typography paragraph>
@@ -507,7 +521,7 @@ export default function Privacy(): JSX.Element {
         of the proceedings shall be English. The governing law of the contract
         shall be the substantive law of Washington state.
       </Typography>
-      <Typography id="" variant="h5" gutterBottom marginY={3}>
+      <Typography id="" variant="h6" gutterBottom marginY={3}>
         Restrictions
       </Typography>
       <Typography paragraph>
@@ -520,7 +534,7 @@ export default function Privacy(): JSX.Element {
         representative capacity on behalf of the general public or any other
         persons.
       </Typography>
-      <Typography id="" variant="h5" gutterBottom marginY={3}>
+      <Typography id="" variant="h6" gutterBottom marginY={3}>
         Exceptions to Arbitration
       </Typography>
       <Typography paragraph>
@@ -537,7 +551,8 @@ export default function Privacy(): JSX.Element {
         for jurisdiction above, and the Parties agree to submit to the personal
         jurisdiction of that court.
       </Typography>
-      <Typography id="" variant="h5" gutterBottom marginY={3}>
+
+      <Typography id="corrections" variant="h5" gutterBottom marginY={3}>
         13. CORRECTIONS
       </Typography>
       <Typography paragraph>
@@ -547,7 +562,8 @@ export default function Privacy(): JSX.Element {
         correct any errors, inaccuracies, or omissions and to change or update
         the information on the Site at any time, without prior notice.
       </Typography>
-      <Typography id="" variant="h5" gutterBottom marginY={3}>
+
+      <Typography id="disclaimer" variant="h5" gutterBottom marginY={3}>
         14. DISCLAIMER
       </Typography>
       <Typography paragraph>
@@ -579,7 +595,8 @@ export default function Privacy(): JSX.Element {
         PRODUCT OR SERVICE THROUGH ANY MEDIUM OR IN ANY ENVIRONMENT, YOU SHOULD
         USE YOUR BEST JUDGMENT AND EXERCISE CAUTION WHERE APPROPRIATE.
       </Typography>
-      <Typography id="" variant="h5" gutterBottom marginY={3}>
+
+      <Typography id="liability" variant="h5" gutterBottom marginY={3}>
         15. LIMITATIONS OF LIABILITY
       </Typography>
       <Typography paragraph>
@@ -597,7 +614,8 @@ export default function Privacy(): JSX.Element {
         SOME OR ALL OF THE ABOVE DISCLAIMERS OR LIMITATIONS MAY NOT APPLY TO
         YOU, AND YOU MAY HAVE ADDITIONAL RIGHTS.
       </Typography>
-      <Typography id="" variant="h5" gutterBottom marginY={3}>
+
+      <Typography id="indemnification" variant="h5" gutterBottom marginY={3}>
         16. INDEMNIFICATION
       </Typography>
       <Typography paragraph>
@@ -619,7 +637,7 @@ export default function Privacy(): JSX.Element {
         indemnification upon becoming aware of it.
       </Typography>
 
-      <Typography id="" variant="h5" gutterBottom marginY={3}>
+      <Typography id="userdata" variant="h5" gutterBottom marginY={3}>
         17. USER DATA
       </Typography>
       <Typography paragraph>
@@ -632,7 +650,8 @@ export default function Privacy(): JSX.Element {
         corruption of any such data, and you hereby waive any right of action
         against us arising from any such loss or corruption of such data.
       </Typography>
-      <Typography id="" variant="h5" gutterBottom marginY={3}>
+
+      <Typography id="electronic" variant="h5" gutterBottom marginY={3}>
         18. ELECTRONIC COMMUNICATIONS, TRANSACTIONS, AND SIGNATURES
       </Typography>
       <Typography paragraph>
@@ -650,7 +669,8 @@ export default function Privacy(): JSX.Element {
         retention of non-electronic records, or to payments or the granting of
         credits by any means other than electronic means.
       </Typography>
-      <Typography id="" variant="h5" gutterBottom marginY={3}>
+
+      <Typography id="misc" variant="h5" gutterBottom marginY={3}>
         19. MISCELLANEOUS
       </Typography>
       <Typography paragraph>
@@ -674,7 +694,8 @@ export default function Privacy(): JSX.Element {
         on the electronic form of these Terms of Use and the lack of signing by
         the parties hereto to execute these Terms of Use.
       </Typography>
-      <Typography id="" variant="h5" gutterBottom marginY={3}>
+
+      <Typography id="contact" variant="h5" gutterBottom marginY={3}>
         20. CONTACT US
       </Typography>
       <Typography paragraph>
@@ -683,7 +704,7 @@ export default function Privacy(): JSX.Element {
         {contactLink}
       </Typography>
       <Typography paragraph>
-        This terms of use was created using Termly&#39;s{' '}
+        This terms of use was created using Termly's{' '}
         <Link href="https://termly.io/products/terms-and-conditions-generator/">
           Terms and Conditions Generator
         </Link>

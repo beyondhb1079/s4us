@@ -119,19 +119,16 @@ export default function Privacy(): JSX.Element {
       </Typography>
       <Typography paragraph>
         <strong>How do I exercise my rights?</strong> The easiest way to
-        exercise your rights is by filling out our data subject request form
-        available{' '}
-        <Link href="https://app.termly.io/notify/979f5b3b-e23b-4a56-9836-4a22bf63c38c">
-          here
-        </Link>{' '}
-        , or by contacting us. We will consider and act upon any request in
-        accordance with applicable data protection laws.
+        exercise your rights is by contacting us at
+        {contactLink}. We will consider and act upon any request in accordance
+        with applicable data protection laws.
       </Typography>
       <Typography paragraph>
         Want to learn more about what DreamScholars does with any information we
         collect? Click <Link href="#toc">here</Link> to review the notice in
         full.
       </Typography>
+
       <Typography id="toc" variant="h5" gutterBottom marginY={3}>
         TABLE OF CONTENTS
       </Typography>
@@ -189,6 +186,7 @@ export default function Privacy(): JSX.Element {
           YOU?
         </Link>
       </Typography>
+
       <Typography id="infocollect" variant="h5" gutterBottom marginY={3}>
         1. WHAT INFORMATION DO WE COLLECT?
       </Typography>
@@ -255,9 +253,9 @@ export default function Privacy(): JSX.Element {
         option to register with us using your existing social media account
         details, like your Facebook, Twitter, or other social media account. If
         you choose to register in this way, we will collect the information
-        described in the section called &quot;
-        <Link href="#sociallogins">HOW DO WE HANDLE YOUR SOCIAL LOGINS?</Link>
-        &quot; below.
+        described in the section called "
+        <Link href="#sociallogins">HOW DO WE HANDLE YOUR SOCIAL LOGINS?</Link>"
+        below.
       </Typography>
       <Typography paragraph>
         All personal information that you provide to us must be true, complete,
@@ -304,8 +302,7 @@ export default function Privacy(): JSX.Element {
           as the date/time stamps associated with your usage, pages and files
           viewed, searches, and other actions you take such as which features
           you use), device event information (such as system activity, error
-          reports (sometimes called &quot;crash dumps&quot;), and hardware
-          settings).
+          reports (sometimes called "crash dumps"), and hardware settings).
         </Typography>
         <Typography component="li" paragraph>
           <em>Device Data.</em> We collect device data such as information about
@@ -317,6 +314,7 @@ export default function Privacy(): JSX.Element {
           system, and system configuration information.
         </Typography>
       </ul>
+
       <Typography id="infouse" variant="h5" gutterBottom marginY={3}>
         2. HOW DO WE PROCESS YOUR INFORMATION?
       </Typography>
@@ -358,9 +356,9 @@ export default function Privacy(): JSX.Element {
           We may process the personal information you send to us for our
           marketing purposes, if this is in accordance with your marketing
           preferences. You can opt out of our marketing emails at any time. For
-          more information, see &quot;
-          <Link href="#privacyrights">WHAT ARE YOUR PRIVACY RIGHTS?</Link>{' '}
-          &quot; below).
+          more information, see "
+          <Link href="#privacyrights">WHAT ARE YOUR PRIVACY RIGHTS?</Link> "
+          below).
         </Typography>
         <Typography component="li" paragraph>
           <strong>
@@ -378,6 +376,7 @@ export default function Privacy(): JSX.Element {
           used so we can improve them.
         </Typography>
       </ul>
+
       <Typography id="whoshare" variant="h5" gutterBottom marginY={3}>
         3. WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?
       </Typography>
@@ -419,13 +418,14 @@ export default function Privacy(): JSX.Element {
         situations:
       </Typography>
       <ul>
-        <li>
+        <Typography component="li">
           <strong>Business Transfers.</strong> We may share or transfer your
           information in connection with, or during negotiations of, any merger,
           sale of company assets, financing, or acquisition of all or a portion
           of our business to another company.
-        </li>
+        </Typography>
       </ul>
+
       <Typography id="cookies" variant="h5" gutterBottom marginY={3}>
         4. DO WE USE COOKIES AND OTHER TRACKING TECHNOLOGIES?
       </Typography>
@@ -444,6 +444,7 @@ export default function Privacy(): JSX.Element {
         how we use such technologies and how you can refuse certain cookies is
         set out in our Cookie Notice .
       </Typography>
+
       <Typography id="sociallogins" variant="h5" gutterBottom marginY={3}>
         5. HOW DO WE HANDLE YOUR SOCIAL LOGINS?
       </Typography>
@@ -476,6 +477,7 @@ export default function Privacy(): JSX.Element {
         personal information, and how you can set your privacy preferences on
         their sites and apps.
       </Typography>
+
       <Typography id="inforetain" variant="h5" gutterBottom marginY={3}>
         6. HOW LONG DO WE KEEP YOUR INFORMATION?
       </Typography>
@@ -505,6 +507,7 @@ export default function Privacy(): JSX.Element {
         securely store your personal information and isolate it from any further
         processing until deletion is possible.
       </Typography>
+
       <Typography id="infosafe" variant="h5" gutterBottom marginY={3}>
         7. HOW DO WE KEEP YOUR INFORMATION SAFE?
       </Typography>
@@ -531,6 +534,7 @@ export default function Privacy(): JSX.Element {
         Services is at your own risk. You should only access the Services within
         a secure environment.
       </Typography>
+
       <Typography id="privacyrights" variant="h5" gutterBottom marginY={3}>
         8. WHAT ARE YOUR PRIVACY RIGHTS?
       </Typography>
@@ -564,9 +568,9 @@ export default function Privacy(): JSX.Element {
         and/or implied consent depending on the applicable law, you have the
         right to withdraw your consent at any time. You can withdraw your
         consent at any time by contacting us by using the contact details
-        provided in the section &quot;{' '}
-        <Link href="#contact">HOW CAN YOU CONTACT US ABOUT THIS NOTICE?</Link>{' '}
-        &quot; below .
+        provided in the section "
+        <Link href="#contact">HOW CAN YOU CONTACT US ABOUT THIS NOTICE?</Link> "
+        below .
       </Typography>
       <Typography paragraph>
         However, please note that this will not affect the lawfulness of the
@@ -578,10 +582,10 @@ export default function Privacy(): JSX.Element {
         <strong>Opting out of marketing and promotional communications:</strong>{' '}
         You can unsubscribe from our marketing and promotional communications at
         any time by or by contacting us using the details provided in the
-        section &quot;{' '}
-        <Link href="#contact">HOW CAN YOU CONTACT US ABOUT THIS NOTICE?</Link>{' '}
-        &quot; below. You will then be removed from the marketing lists.
-        However, we may still communicate with you — for example, to send you
+        section "
+        <Link href="#contact">HOW CAN YOU CONTACT US ABOUT THIS NOTICE?</Link> "
+        below. You will then be removed from the marketing lists. However, we
+        may still communicate with you — for example, to send you
         service-related messages that are necessary for the administration and
         use of your account, to respond to service requests, or for other
         non-marketing purposes.
@@ -624,22 +628,23 @@ export default function Privacy(): JSX.Element {
         If you have questions or comments about your privacy rights, you may
         email us at {contactLink}.
       </Typography>
+
       <Typography id="DNT" variant="h5" gutterBottom marginY={3}>
         9. CONTROLS FOR DO-NOT-TRACK FEATURES
       </Typography>
       <Typography paragraph>
         Most web browsers and some mobile operating systems and mobile
-        applications include a Do-Not-Track (&quot;DNT&quot;) feature or setting
-        you can activate to signal your privacy preference not to have data
-        about your online browsing activities monitored and collected. At this
-        stage no uniform technology standard for recognizing and implementing
-        DNT signals has been finalized. As such, we do not currently respond to
-        DNT browser signals or any other mechanism that automatically
-        communicates your choice not to be tracked online. If a standard for
-        online tracking is adopted that we must follow in the future, we will
-        inform you about that practice in a revised version of this privacy
-        notice.
+        applications include a Do-Not-Track ("DNT") feature or setting you can
+        activate to signal your privacy preference not to have data about your
+        online browsing activities monitored and collected. At this stage no
+        uniform technology standard for recognizing and implementing DNT signals
+        has been finalized. As such, we do not currently respond to DNT browser
+        signals or any other mechanism that automatically communicates your
+        choice not to be tracked online. If a standard for online tracking is
+        adopted that we must follow in the future, we will inform you about that
+        practice in a revised version of this privacy notice.
       </Typography>
+
       <Typography id="caresidents" variant="h5" gutterBottom marginY={3}>
         10. DO CALIFORNIA RESIDENTS HAVE SPECIFIC PRIVACY RIGHTS?
       </Typography>
@@ -653,10 +658,10 @@ export default function Privacy(): JSX.Element {
         </em>
       </Typography>
       <Typography paragraph>
-        California Civil Code Section 1798.83, also known as the &quot;Shine The
-        Light&quot; law, permits our users who are California residents to
-        request and obtain from us, once a year and free of charge, information
-        about categories of personal information (if any) we disclosed to third
+        California Civil Code Section 1798.83, also known as the "Shine The
+        Light" law, permits our users who are California residents to request
+        and obtain from us, once a year and free of charge, information about
+        categories of personal information (if any) we disclosed to third
         parties for direct marketing purposes and the names and addresses of all
         third parties with which we shared personal information in the
         immediately preceding calendar year. If you are a California resident
@@ -674,6 +679,7 @@ export default function Privacy(): JSX.Element {
         that the data may not be completely or comprehensively removed from all
         our systems (e.g., backups, etc.).
       </Typography>
+
       <Typography id="policyupdates" variant="h5" gutterBottom marginY={3}>
         11. DO WE MAKE UPDATES TO THIS NOTICE?
       </Typography>
@@ -685,13 +691,14 @@ export default function Privacy(): JSX.Element {
       </Typography>
       <Typography paragraph>
         We may update this privacy notice from time to time. The updated version
-        will be indicated by an updated &quot;Revised&quot; date and the updated
-        version will be effective as soon as it is accessible. If we make
-        material changes to this privacy notice, we may notify you either by
-        prominently posting a notice of such changes or by directly sending you
-        a notification. We encourage you to review this privacy notice
-        frequently to be informed of how we are protecting your information.
+        will be indicated by an updated "Revised" date and the updated version
+        will be effective as soon as it is accessible. If we make material
+        changes to this privacy notice, we may notify you either by prominently
+        posting a notice of such changes or by directly sending you a
+        notification. We encourage you to review this privacy notice frequently
+        to be informed of how we are protecting your information.
       </Typography>
+
       <Typography id="contact" variant="h5" gutterBottom marginY={3}>
         12. HOW CAN YOU CONTACT US ABOUT THIS NOTICE?
       </Typography>
@@ -699,6 +706,7 @@ export default function Privacy(): JSX.Element {
         If you have questions or comments about this notice, you may email us at{' '}
         {contactLink}.
       </Typography>
+
       <Typography id="request" variant="h5" gutterBottom marginY={3}>
         13. HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?
       </Typography>
@@ -706,15 +714,12 @@ export default function Privacy(): JSX.Element {
         Based on the applicable laws of your country, you may have the right to
         request access to the personal information we collect from you, change
         that information, or delete it in some circumstances. To request to
-        review, update, or delete your personal information, please submit a
-        request form by clicking{' '}
-        <Link href="https://app.termly.io/notify/979f5b3b-e23b-4a56-9836-4a22bf63c38c">
-          here
-        </Link>{' '}
-        .
+        review, update, or delete your personal information, please contact us
+        at
+        {contactLink}.
       </Typography>
       <Typography paragraph>
-        This privacy policy was created using Termly&#39;s{' '}
+        This privacy policy was created using Termly's{' '}
         <Link href="https://termly.io/products/privacy-policy-generator">
           Privacy Policy Generator
         </Link>
