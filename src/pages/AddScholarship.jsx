@@ -46,7 +46,9 @@ function AddScholarship() {
         </Grid>
       </Container>
 
-      <ScholarshipForm scholarship={Scholarships.new()} />
+      <Container maxWidth="xl">
+        <ScholarshipForm scholarship={Scholarships.new()} />
+      </Container>
     </Box>
   );
 }

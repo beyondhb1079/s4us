@@ -84,7 +84,9 @@ function EditScholarship() {
       </Helmet>
 
       <>
-        <ScholarshipForm scholarship={scholarship} />
+        <Container maxWidth="xl">
+          <ScholarshipForm scholarship={scholarship} />
+        </Container>
 
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', m: 1 }}>
           <Button color="error" onClick={() => setDialogOpen(true)}>
