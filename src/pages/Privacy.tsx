@@ -119,9 +119,9 @@ export default function Privacy(): JSX.Element {
       </Typography>
       <Typography paragraph>
         <strong>How do I exercise my rights?</strong> The easiest way to
-        exercise your rights is by contacting us at
-        {contactLink}. We will consider and act upon any request in accordance
-        with applicable data protection laws.
+        exercise your rights is by contacting us at {contactLink}. We will
+        consider and act upon any request in accordance with applicable data
+        protection laws.
       </Typography>
       <Typography paragraph>
         Want to learn more about what DreamScholars does with any information we
@@ -358,7 +358,7 @@ export default function Privacy(): JSX.Element {
           preferences. You can opt out of our marketing emails at any time. For
           more information, see "
           <Link href="#privacyrights">WHAT ARE YOUR PRIVACY RIGHTS?</Link> "
-          below).
+          below.
         </Typography>
         <Typography component="li" paragraph>
           <strong>
@@ -442,7 +442,7 @@ export default function Privacy(): JSX.Element {
         We may use cookies and similar tracking technologies (like web beacons
         and pixels) to access or store information. Specific information about
         how we use such technologies and how you can refuse certain cookies is
-        set out in our Cookie Notice .
+        set out in our Cookie Notice.
       </Typography>
 
       <Typography id="sociallogins" variant="h5" gutterBottom marginY={3}>
@@ -497,7 +497,7 @@ export default function Privacy(): JSX.Element {
         longer retention period is required or permitted by law (such as tax,
         accounting, or other legal requirements). No purpose in this notice will
         require us keeping your personal information for longer than the period
-        of time in which users have an account with us .
+        of time in which users have an account with us.
       </Typography>
       <Typography paragraph>
         When we have no ongoing legitimate business need to process your
@@ -570,7 +570,7 @@ export default function Privacy(): JSX.Element {
         consent at any time by contacting us by using the contact details
         provided in the section "
         <Link href="#contact">HOW CAN YOU CONTACT US ABOUT THIS NOTICE?</Link> "
-        below .
+        below.
       </Typography>
       <Typography paragraph>
         However, please note that this will not affect the lawfulness of the
