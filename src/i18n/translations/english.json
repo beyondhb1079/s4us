@@ -96,9 +96,10 @@
 
   "footer": {
     "quickLinks": "Quick Links",
-    "company": "Company",
+    "organization": "Organization",
     "help": "Help",
-    "privacyTerms": "Privacy - Terms",
+    "privacy": "Privacy",
+    "terms": "Terms",
     "addScholarship": "Add a scholarship",
     "browseScholarship": "Browse scholarships",
     "about": "About",
