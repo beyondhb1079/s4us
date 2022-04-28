@@ -1,15 +1,15 @@
-//import React from 'react';
-//import Helmet from 'react-helmet';
+import React from 'react';
+import Helmet from 'react-helmet';
 import { render, screen } from '@testing-library/react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { clearFirestoreData, initializeTestApp } from '../lib/testing';
 import ViewScholarship from './ViewScholarship';
-//import Scholarships from '../models/Scholarships';
-//import ScholarshipAmount from '../types/ScholarshipAmount';
-//import GradeLevel from '../types/GradeLevel';
-//import Ethnicity from '../types/Ethnicity';
-//import State from '../types/States';
+import Scholarships from '../models/Scholarships';
+import ScholarshipAmount from '../types/ScholarshipAmount';
+import GradeLevel from '../types/GradeLevel';
+import Ethnicity from '../types/Ethnicity';
+import State from '../types/States';
 import i18n from '../i18n/setup';
 import { I18nextProvider } from 'react-i18next';
 import { ScholarshipsProvider } from '../models/ScholarshipsContext';
@@ -51,7 +51,7 @@ test('renders scholarship not found', () => {
   expect(screen.getByText(/loading/i)).toBeInTheDocument();
   return expect(screen.findByText(/not found/i)).resolves.toBeInTheDocument();
 });
-/*
+
 test('renders passed in scholarship details', () => {
   const data = {
     name: 'Foo scholarship',
@@ -128,4 +128,3 @@ test('renders scholarship details', async () => {
     screen.getByText(data.requirements.majors.join(', '))
   ).toBeInTheDocument();
 });
-*/

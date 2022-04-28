@@ -84,7 +84,7 @@ export default function ViewScholarship() {
       />
 
       <ScholarshipCard scholarship={scholarship} style="detail" />
-      <ShowMoreScholarships />
+      <ShowMoreScholarships currentId={scholarship.id} />
     </Container>
   );
 }
