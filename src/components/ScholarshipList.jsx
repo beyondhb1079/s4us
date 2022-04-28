@@ -3,23 +3,40 @@ import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import ScholarshipCard from './ScholarshipCard';
+import { DEADLINE_ASC, getDir, getField } from '../lib/sortOptions';
 import ScholarshipsContext from '../models/ScholarshipsContext';
 import useOnScreen from '../lib/useOnScreen';
+import useQueryParams from '../lib/useQueryParams';
 
-export default function ScholarshipList({ noResultsNode, filters }) {
+export default function ScholarshipList({ noResultsNode, extraFilters }) {
   const { canLoadMore, error, loading, loadMore, scholarships, setFilters } =
     useContext(ScholarshipsContext);
   const { t } = useTranslation();
+  const [queryParams] = useQueryParams();
 
   console.log(scholarships);
 
   // Resets result context if filters change.
-  useEffect(() => setFilters(filters), [filters, setFilters]);
+  useEffect(() => {
+    const { minAmount, maxAmount, grades, majors, sortBy } = queryParams;
+    const sortField = getField(sortBy ?? DEADLINE_ASC);
+    const sortDir = getDir(sortBy ?? DEADLINE_ASC);
+    setFilters({
+      sortField,
+      sortDir,
+      minAmount,
+      maxAmount,
+      grades,
+      majors,
+      ...extraFilters,
+    });
+  }, [queryParams, extraFilters, setFilters]);
 
   // Automatically load more when the progress is visible
   const progressRef = useRef(null);
   const progressVisible = useOnScreen(progressRef);
 
+  // Resets result context if filters change.
   useEffect(() => {
     if (progressVisible && canLoadMore && !loading) {
       loadMore();
@@ -58,10 +75,11 @@ export default function ScholarshipList({ noResultsNode, filters }) {
 }
 
 ScholarshipList.propTypes = {
-  filters: PropTypes.object,
+  /** Additional filters to set apart from ones parseable from the query string. */
+  extraFilters: PropTypes.object,
   noResultsNode: PropTypes.node,
 };
 ScholarshipList.defaultProps = {
-  filters: {},
+  extraFilters: {},
   noResultsNode: undefined,
 };

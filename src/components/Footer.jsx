@@ -22,7 +22,7 @@ const quickLinks = {
   'footer.browseScholarship': '/scholarships',
 };
 
-const companyLinks = {
+const orgLinks = {
   'footer.about': '/about',
   'footer.contact': '/contact',
 };
@@ -95,7 +95,23 @@ function Footer() {
             </MuiLink>
             <Typography color="text.secondary">&copy; 2022</Typography>
             <Typography color="text.secondary">
-              {t('footer.privacyTerms')}
+              <MuiLink
+                component={Link}
+                to="/privacy"
+                variant="subtitle2"
+                color="text.secondary"
+                underline="hover">
+                {t('footer.privacy')}
+              </MuiLink>{' '}
+              -{' '}
+              <MuiLink
+                component={Link}
+                to="/terms"
+                variant="subtitle2"
+                color="text.secondary"
+                underline="hover">
+                {t('footer.terms')}
+              </MuiLink>
             </Typography>
           </Grid>
 
@@ -107,8 +123,8 @@ function Footer() {
           />
 
           <FooterColumn
-            title="footer.company"
-            links={companyLinks}
+            title="footer.organization"
+            links={orgLinks}
             t={t}
             internal
           />

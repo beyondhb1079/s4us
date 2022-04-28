@@ -14,6 +14,8 @@ import ViewScholarship from './pages/ViewScholarship';
 import ListScholarships from './pages/ListScholarships';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
 import AddScholarship from './pages/AddScholarship';
 import EditScholarship from './pages/EditScholarship';
 import theme from './theme';
@@ -68,6 +70,8 @@ function App() {
                       />
                       <Route path="/about" element={<About />} />
                       <Route path="/contact" element={<Contact />} />
+                      <Route path="/privacy" element={<Privacy />} />
+                      <Route path="/terms" element={<Terms />} />
                       <Route path="/" element={<Home />} />
                     </Routes>
                     <LoginDialog />

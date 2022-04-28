@@ -15,9 +15,9 @@ import StyleFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useTranslation } from 'react-i18next';
 
-export default function LoginDialog() {
+export default function LoginDialog(): JSX.Element {
   const location = useLocation();
-  const showLoginDialog = location.state?.showLoginDialog || false;
+  const showLoginDialog = (location.state as any)?.showLoginDialog || false;
   const { t } = useTranslation();
 
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ export default function LoginDialog() {
       state: { showLoginDialog: false },
     });
 
-  const uiConfig = {
+  const uiConfig: firebaseui.auth.Config = {
     signInFlow: 'popup',
     signInOptions: [
       firebase.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -36,7 +36,16 @@ export default function LoginDialog() {
     ],
     credentialHelper: 'none', // hacky way to disable redirect on email login
     callbacks: {
-      signInSuccessWithAuthResult: closeDialog,
+      signInSuccessWithAuthResult: (authResult) => {
+        const { isNewUser, providerId: method } = authResult.additionalUserInfo;
+        if (isNewUser) {
+          firebase.analytics().logEvent('signup', { method });
+        } else {
+          firebase.analytics().logEvent('login', { method });
+        }
+        closeDialog();
+        return false;
+      },
     },
   };
 

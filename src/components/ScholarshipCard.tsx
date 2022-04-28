@@ -1,5 +1,6 @@
 import React, { ReactNode, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import firebase from 'firebase';
 import {
   Box,
   Button,
@@ -34,19 +35,43 @@ import ShareDialog from './ShareDialog';
 import useAuth from '../lib/useAuth';
 import ScholarshipData from '../types/ScholarshipData';
 
-const DetailCardCell = ({ label, text }: { label: string; text: string }) => (
-  <>
-    <Grid container justifyContent="space-between">
-      <Grid item xs={12} sm>
-        <Typography>{label}</Typography>
+const SHOW_MORE_THRESHOLD = 5;
+
+const DetailCardCell = ({
+  label,
+  values,
+}: {
+  label: string;
+  values: string[];
+}) => {
+  const [showAll, setShowAll] = useState(false);
+  const shownValues = showAll ? values : values.slice(0, SHOW_MORE_THRESHOLD);
+  return (
+    <>
+      <Grid container justifyContent="space-between">
+        <Grid item xs={12} sm>
+          <Typography>{label}</Typography>
+        </Grid>
+
+        <Grid item sx={{ textAlign: { sm: 'right' } }} xs={12} sm>
+          {values.length === 0
+            ? 'Any'
+            : shownValues.map((v) => <Typography key={v}>{v}</Typography>)}
+          {values.length > shownValues.length && (
+            <MuiLink
+              component={Button}
+              onClick={() => setShowAll(true)}
+              sx={{ p: 0 }}>
+              +{values.length - SHOW_MORE_THRESHOLD} more
+            </MuiLink>
+          )}
+        </Grid>
       </Grid>
-      <Grid item sx={{ textAlign: { sm: 'right' } }} xs={12} sm>
-        <Typography>{text}</Typography>
-      </Grid>
-    </Grid>
-    <Divider light sx={{ m: 1.5 }} />
-  </>
-);
+      <Divider light sx={{ m: 1.5 }} />
+    </>
+  );
+};
+DetailCardCell.defaultProps = { values: [] };
 
 export default function ScholarshipCard({
   scholarship,
@@ -66,13 +91,17 @@ export default function ScholarshipCard({
     website,
     description,
     tags,
-    requirements: reqs,
+    requirements,
     author,
   } = scholarship.data;
+  const { ethnicities, gpa, grades, majors, schools, states } =
+    requirements || {};
   const detailed = style !== 'result';
   const preview = style === 'preview';
 
   const [showShare, setShowShare] = useState(false);
+
+  const navigate = useNavigate();
 
   const { claims, currentUser } = useAuth();
   const canEdit = currentUser?.uid === author?.id || claims?.admin;
@@ -80,13 +109,24 @@ export default function ScholarshipCard({
   const CardAreaComponent: React.FC<{
     [key: string]: any;
   }> = detailed ? Box : CardActionArea;
-  const lintIssues = canEdit || preview ? lint(scholarship.data) : [];
+  const lintIssues = style === 'detail' ? lint(scholarship.data) : [];
   return (
     <Card variant="outlined">
       <CardAreaComponent
-        component={detailed ? Box : Link}
-        to={'/scholarships/' + scholarship.id}
-        state={{ scholarship }}>
+        onClick={
+          detailed
+            ? null
+            : () => {
+                firebase.analytics().logEvent('select_content', {
+                  content_type: 'scholarship',
+                  item_id: scholarship.id,
+                  items: [{ scholarship }],
+                });
+                navigate('/scholarships/' + scholarship.id, {
+                  state: { scholarship },
+                });
+              }
+        }>
         <CardContent sx={{ p: 3 }}>
           <Typography
             variant={detailed ? 'h6' : 'subtitle1'}
@@ -175,42 +215,27 @@ export default function ScholarshipCard({
               </Typography>
               <DetailCardCell
                 label="State"
-                text={
-                  reqs?.states?.map(State.toString).sort().join(', ') || 'All'
-                }
+                values={states?.map(State.toString).sort()}
               />
               <DetailCardCell
                 label="GPA"
-                text={
-                  reqs?.gpa && Number.isInteger(reqs?.gpa)
-                    ? reqs.gpa.toFixed(1)
-                    : reqs?.gpa?.toString() || 'All'
+                values={
+                  (gpa && [
+                    Number.isInteger(gpa) ? gpa.toFixed(1) : gpa?.toString(),
+                  ]) ||
+                  undefined
                 }
               />
               <DetailCardCell
                 label="Grades"
-                text={
-                  reqs?.grades?.map(GradeLevel.toString).sort().join(', ') ||
-                  'All'
-                }
+                values={grades?.sort().map(GradeLevel.toString)}
               />
               <DetailCardCell
                 label="Demographic"
-                text={
-                  reqs?.ethnicities
-                    ?.map(Ethnicity.toString)
-                    .sort()
-                    .join(', ') || 'All'
-                }
+                values={ethnicities?.map(Ethnicity.toString).sort()}
               />
-              <DetailCardCell
-                label="Majors"
-                text={reqs?.majors?.sort().join(', ') || 'All'}
-              />
-              <DetailCardCell
-                label="Schools"
-                text={reqs?.schools?.sort().join(', ') || 'All'}
-              />
+              <DetailCardCell label="Majors" values={majors?.sort()} />
+              <DetailCardCell label="Schools" values={schools?.sort()} />
             </Box>
           )}
 

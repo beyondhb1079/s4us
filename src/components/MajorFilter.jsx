@@ -5,9 +5,11 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import PropTypes from 'prop-types';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import SearchIcon from '@mui/icons-material/Search';
+import useQueryParams from '../lib/useQueryParams';
 
 function MajorFilter({ majors, onChange }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [{ majors: origMajors }] = useQueryParams();
   const limitReached = majors.length >= 10;
 
   return (
@@ -48,11 +50,11 @@ function MajorFilter({ majors, onChange }) {
       {majors.map((major) => (
         <Chip
           label={major}
-          variant="outlined"
+          variant={origMajors?.includes(major) ? 'contained' : 'outlined'}
           color="primary"
           key={major}
-          onDelete={() => onChange(majors.filter((m) => m !== major))}
-          sx={{ mx: 1, mt: 1, color: '#000' }}
+          onClick={() => onChange(majors.filter((m) => m !== major))}
+          sx={{ mx: 1, mt: 1 }}
         />
       ))}
     </>
