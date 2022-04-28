@@ -13,10 +13,12 @@ import {
   Bookmark as BookmarkIcon,
   Done as DoneIcon,
   ExitToApp as ExitToAppIcon,
+  Home as HomeIcon,
   NewReleases as NewIcon,
 } from '@mui/icons-material';
 import experiments from '../lib/experiments';
 import useAuth from '../lib/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 // hacky way to override Menu style
 const StyledMenu = (props) => (
@@ -59,6 +61,7 @@ export default function ProfileDropdown(props) {
     onClose();
     firebase.auth().signOut();
   };
+  const navigate = useNavigate();
 
   return (
     <StyledMenu
@@ -92,6 +95,11 @@ export default function ProfileDropdown(props) {
           <Divider sx={{ my: 1 }} />
         </>
       )}
+      <StyledMenuItem
+        icon={HomeIcon}
+        text="Dashboard"
+        onClick={() => navigate('/')}
+      />
       <StyledMenuItem
         icon={ExitToAppIcon}
         text="Logout"

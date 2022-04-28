@@ -17,7 +17,7 @@ interface MailToParams {
   body?: string;
 }
 
-const teamEmail = 'dreamscholars-contact@googlegroups.com';
+const teamEmail = 'info@dreamscholars.org';
 
 export function genMailToLink(params: MailToParams): string {
   return `mailto:${teamEmail}?${queryString.stringify(params)}`;

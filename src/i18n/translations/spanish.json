@@ -96,9 +96,10 @@
 
   "footer": {
     "quickLinks": "Enlaces Rápidos",
-    "company": "Compañía",
+    "organization": "Organización",
     "help": "Ayuda",
-    "privacyTerms": "Términos - Privacidad",
+    "privacy": "Privacidad",
+    "terms": "Términos",
     "addScholarship": "Agregar beca",
     "browseScholarship": "Buscar becas",
     "about": "Acerca de",

@@ -20,7 +20,7 @@ import {
 import LanguageIcon from '@mui/icons-material/Language';
 import ProfileMenu from './ProfileDropdown';
 import { useTranslation } from 'react-i18next';
-import { BRAND_NAME, SUBSCRIPTION_FORM_URL } from '../config/constants';
+import { BRAND_NAME } from '../config/constants';
 import HeaderNavMenu from './HeaderNavMenu';
 import useAuth from '../lib/useAuth';
 import PropTypes from 'prop-types';
@@ -54,18 +54,6 @@ const OnRenderSnackbar = () => {
     </Snackbar>
   );
 };
-
-const UnderConstructionAlert = ({ t }) => (
-  <Alert
-    severity="warning"
-    action={
-      <Button component={MuiLink} href={SUBSCRIPTION_FORM_URL} size="small">
-        {t('btn.subscribeForUpdates')}
-      </Button>
-    }>
-    {t('constructAlert.description')}
-  </Alert>
-);
 
 const AuthGrowButton = ({ t }) => {
   const { currentUser } = useAuth();
@@ -123,7 +111,6 @@ function Header() {
       <AppBar
         color="secondary"
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-        <UnderConstructionAlert t={t} />
         <Toolbar>
           <OnRenderSnackbar />
           <MuiLink
@@ -175,10 +162,8 @@ function Header() {
 }
 
 export function HeaderSkeleton() {
-  const { t } = useTranslation();
   return (
     <Box sx={{ width: '100vw', visibility: 'hidden' }}>
-      <UnderConstructionAlert t={t} />
       <Toolbar />
       <Hidden smUp>
         <Toolbar variant="dense" />
