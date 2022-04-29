@@ -14,8 +14,6 @@ export default function ScholarshipList({ noResultsNode, extraFilters }) {
   const { t } = useTranslation();
   const [queryParams] = useQueryParams();
 
-  console.log(scholarships);
-
   // Resets result context if filters change.
   useEffect(() => {
     const { minAmount, maxAmount, grades, majors, sortBy } = queryParams;
