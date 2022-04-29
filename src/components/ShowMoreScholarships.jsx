@@ -4,8 +4,7 @@ import Grid from '@mui/material/Grid';
 import ScholarshipCard from './ScholarshipCard';
 
 export default function ShowMoreScholarships({ currentId }) {
-  const info = useContext(ScholarshipsContext);
-  const scholarships = info.scholarships;
+  const { scholarships } = useContext(ScholarshipsContext);
 
   return (
     <Grid container spacing={2} justify="center">
