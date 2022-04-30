@@ -13,6 +13,7 @@ import State from '../types/States';
 import i18n from '../i18n/setup';
 import { I18nextProvider } from 'react-i18next';
 import { ScholarshipsProvider } from '../models/ScholarshipsContext';
+import { act } from 'react-dom/test-utils';
 
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.
@@ -97,10 +98,10 @@ test('renders scholarship details', async () => {
     },
   };
   const ref = Scholarships.collection.doc('load-it');
-  await ref.set(data);
+  await act(() => ref.set(data));
 
   renderAtRoute('/scholarships/load-it');
-  await screen.findByText(/Scholarship/i);
+  await screen.findByText(/Foo scholarship/i);
   expect(screen.getByText(data.name)).toBeInTheDocument();
   expect(
     screen.getByText(ScholarshipAmount.toString(data.amount))

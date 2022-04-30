@@ -111,7 +111,7 @@ export default function ScholarshipCard({
   }> = detailed ? Box : CardActionArea;
   const lintIssues = style === 'detail' ? lint(scholarship.data) : [];
   return (
-    <Card variant="outlined">
+    <Card variant="outlined" sx={{ minWidth: 240 }}>
       <CardAreaComponent
         onClick={
           detailed
