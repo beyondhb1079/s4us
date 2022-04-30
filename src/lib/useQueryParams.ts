@@ -1,5 +1,5 @@
 import queryString, { ParseOptions } from 'query-string';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import GradeLevel from '../types/GradeLevel';
 import sortOptions from './sortOptions';
@@ -28,23 +28,19 @@ export default function useQueryParams(
   const locationSearch = useLocation().search;
   const navigate = useNavigate();
 
-  const setQueryParams = useCallback(
-    () =>
-      (params: Record<string, any>, replace = false) => {
-        const origParams = queryString.parse(locationSearch, options);
-        Object.keys(params).forEach((k) => {
-          if (params[k] === undefined) {
-            delete origParams[k];
-          } else {
-            origParams[k] = params[k];
-          }
-        });
+  const setQueryParams = (params: Record<string, any>, replace = false) => {
+    const origParams = queryString.parse(locationSearch, options);
+    Object.keys(params).forEach((k) => {
+      if (params[k] === undefined) {
+        delete origParams[k];
+      } else {
+        origParams[k] = params[k];
+      }
+    });
 
-        const search = queryString.stringify(origParams, options);
-        navigate({ search }, { replace });
-      },
-    [locationSearch, navigate]
-  );
+    const search = queryString.stringify(origParams, options);
+    navigate({ search }, { replace });
+  };
 
   const params = useMemo(
     () =>
