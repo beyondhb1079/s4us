@@ -84,7 +84,12 @@ export default function ViewScholarship() {
       />
 
       <ScholarshipCard scholarship={scholarship} style="detail" />
-      <ShowMoreScholarships currentId={scholarship.id} />
+      <Typography gutterBottom variant="h5" marginY={2}>
+        More Scholarships
+      </Typography>
+      <Box marginY={2} sx={{ overflowX: 'auto' }}>
+        <ShowMoreScholarships currentId={scholarship.id} />
+      </Box>
     </Container>
   );
 }

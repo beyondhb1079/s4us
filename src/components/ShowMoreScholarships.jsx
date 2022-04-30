@@ -1,23 +1,41 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
+import { Stack, Button, Paper } from '@mui/material';
 import ScholarshipsContext from '../models/ScholarshipsContext';
-import Grid from '@mui/material/Grid';
 import ScholarshipCard from './ScholarshipCard';
+import { Link } from 'react-router-dom';
 
 export default function ShowMoreScholarships({ currentId }) {
-  const { scholarships } = useContext(ScholarshipsContext);
+  const { scholarships, loading, setFilters } = useContext(ScholarshipsContext);
+
+  useEffect(() => {
+    if (scholarships.length === 0 && !loading) {
+      setFilters({ hideExpired: true });
+    }
+  }, [scholarships, loading, setFilters]);
 
   return (
-    <Grid container spacing={2} justify="center">
+    <Stack direction="row" spacing={2}>
       {scholarships
         .filter((s) => s.id !== currentId)
-        .slice(0, 3)
-        .map(({ id, data }) => {
-          return (
-            <Grid key={id} item xs={12} sm={6} md={4}>
-              <ScholarshipCard scholarship={{ id, data }} />
-            </Grid>
-          );
-        })}
-    </Grid>
+        .slice(0, 4)
+        .map(({ id, data }) => (
+          <ScholarshipCard key={id} scholarship={{ id, data }} />
+        ))}
+      <Paper
+        sx={{
+          display: 'flex',
+          alignItems: 'stretch',
+          textAlign: 'center',
+          justifyContent: 'center',
+        }}>
+        <Button
+          size="large"
+          component={Link}
+          sx={{ paddingX: 5 }}
+          to="/scholarships">
+          Browse Scholarships
+        </Button>
+      </Paper>
+    </Stack>
   );
 }
