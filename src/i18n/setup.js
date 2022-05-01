@@ -1,8 +1,8 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import contactEn from './translations/contactEn.json';
-import contactEs from './translations/contactEs.json';
+import contactEn from './translations/english/contactEn.json';
+import contactEs from './translations/spanish/contactEs.json';
 
 const resources = {
   en: { contact: contactEn },
