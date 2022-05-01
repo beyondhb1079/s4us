@@ -123,6 +123,13 @@ function ScholarshipForm({ scholarship }) {
               id="website"
               formik={formik}
               labelStyle={labelStyle}
+              placeholder="https://"
+              onBlur={(e) => {
+                // Automatically prepend https:// to the URL if the protocol is missing
+                if (!/https?:\/\//.test(e.target.value)) {
+                  formik.setFieldValue('website', 'https://' + e.target.value);
+                }
+              }}
             />
           </Grid>
           <Grid item sm={6}>
