@@ -1,0 +1,14 @@
+{
+  "titleTag": "Contact",
+  "contactUs": "Contact Us",
+  "foundBug": "Found a bug?",
+  "fileBug": "You can file it <1>here</1>.",
+  "featureReq": "Feature Requests",
+  "featureSuggest": "You can suggest an idea for this project <1>here</1>.",
+  "learnAboutUs": "Learn About Us",
+  "learnMore": "You can learn more about {{brand}} and the developers <1>here</1>.",
+  "subscribe": "Subscribe",
+  "subForUpdates": "You can subscribe for updates <1>here</1>.",
+  "reachOut": "Reach Out",
+  "emailUs": "We are happy to answer any of your questions. You can email us <1>here</1> and we'll be in touch as soon as possible."
+}

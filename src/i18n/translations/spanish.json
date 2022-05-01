@@ -12,25 +12,6 @@
     "subscribeForUpdates": "Suscribir"
   },
 
-  "constructAlert": {
-    "description": "¡Sitio bajo construcción! 🚧"
-  },
-
-  "contact": {
-    "titleTag": "Contacto",
-    "contactUs": "Contactanos",
-    "foundBug": "¿Encontro un error?",
-    "fileBug": "Puede archivarlo <1>aquí</1>.",
-    "featureReq": "Peticiones de Características",
-    "featureSuggest": "Puede sugerir una idea para este proyecto <1>aquí</1>.",
-    "learnAboutUs": "Aprenda Sobre Nosotros",
-    "learnMore": "Puede obtener más información sobre {{brand}} y los desarrolladores <1>aquí</1>.",
-    "subscribe": "Suscríbase",
-    "subForUpdates": "Puede suscribirse para recibir actualizaciones <1>aquí</1>.",
-    "reachOut": "Contacta con nosotros",
-    "emailUs": "Estaremos encantados de responder a cualquiera de sus preguntas. Puede enviarnos un correo electrónico <1>aquí</1> y nos pondremos en contacto lo antes posible."
-  },
-
   "addScholarship": {
     "titleTag": "Agrege una beca",
     "submitAScholarship": "Submitir una beca",
