@@ -23,6 +23,7 @@
     "formik": "^2.2.6",
     "i18next": "^21.6.3",
     "i18next-browser-languagedetector": "^6.1.2",
+    "i18next-xhr-backend": "^3.2.2",
     "prop-types": "^15.7.2",
     "prop-types-exact": "^1.2.0",
     "query-string": "^7.0.1",
