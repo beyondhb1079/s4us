@@ -93,8 +93,8 @@ const AuthGrowButton = ({ t }) => {
 };
 
 const links = {
-  'navbar.scholarships': '/scholarships',
-  'navbar.add': '/scholarships/new',
+  scholarships: '/scholarships',
+  add: '/scholarships/new',
 };
 
 const languages = {
