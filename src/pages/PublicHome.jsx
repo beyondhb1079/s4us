@@ -8,15 +8,15 @@ import graduation from '../img/img2.svg';
 import searching from '../img/img3.svg';
 
 function PublicHome() {
-  const { t } = useTranslation();
+  const { t } = useTranslation('publicHome');
 
   return (
     <>
       <HomeSection
         direction="row"
-        title={t('home.public.landingSection.title')}
+        title={t('landingSection.title')}
         main
-        description={t('home.public.landingSection.subTitle')}
+        description={t('landingSection.subTitle')}
         buttons={[
           <Button
             component={Link}
@@ -42,7 +42,7 @@ function PublicHome() {
         <HomeSection
           alignItems="center"
           direction="row"
-          title={t('home.public.startSearch')}
+          title={t('startSearch')}
           buttons={[
             <Button
               component={Link}
