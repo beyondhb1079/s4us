@@ -11,7 +11,7 @@ import useQueryParams from '../lib/useQueryParams';
 export default function ScholarshipList({ noResultsNode, extraFilters }) {
   const { canLoadMore, error, loading, loadMore, scholarships, setFilters } =
     useContext(ScholarshipsContext);
-  const { t } = useTranslation();
+  const { t } = useTranslation('listScholarships');
   const [queryParams] = useQueryParams();
 
   // Resets result context if filters change.
@@ -59,13 +59,9 @@ export default function ScholarshipList({ noResultsNode, extraFilters }) {
 
         {!canLoadMore &&
           (scholarships?.length ? (
-            <Typography>{t('listScholarships.endOfResults')}</Typography>
+            <Typography>{t('endOfResults')}</Typography>
           ) : (
-            noResultsNode || (
-              <Typography>
-                {t('listScholarships.noScholarshipsFound')}
-              </Typography>
-            )
+            noResultsNode || <Typography>{t('noScholarshipsFound')}</Typography>
           ))}
       </Box>
     </Stack>
