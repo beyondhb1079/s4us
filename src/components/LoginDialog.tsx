@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 export default function LoginDialog(): JSX.Element {
   const location = useLocation();
   const showLoginDialog = (location.state as any)?.showLoginDialog || false;
-  const { t } = useTranslation();
+  const { t } = useTranslation('loginDialog');
 
   const navigate = useNavigate();
   const closeDialog = () =>
@@ -80,19 +80,19 @@ export default function LoginDialog(): JSX.Element {
 
             <DialogTitle id="responsive-dialog-welcome">
               <Typography variant="h4" sx={{ color: 'background.paper' }}>
-                {t('loginDialog.welcome')}
+                {t('welcome')}
               </Typography>
             </DialogTitle>
 
             <DialogContentText sx={{ color: 'background.paper', p: 3 }}>
               <Typography paragraph sx={{ color: 'background.paper' }}>
-                {t('loginDialog.providesScholarships')}
+                {t('providesScholarships')}
               </Typography>
               <Typography paragraph sx={{ color: 'background.paper' }}>
-                {t('loginDialog.joinCommunity')}
+                {t('joinCommunity')}
               </Typography>
               <Typography paragraph sx={{ color: 'background.paper' }}>
-                {t('loginDialog.getAccess')}
+                {t('getAccess')}
               </Typography>
             </DialogContentText>
           </Grid>
@@ -101,9 +101,7 @@ export default function LoginDialog(): JSX.Element {
             <DialogTitle
               id="responsive-dialog-title"
               sx={{ textAlign: 'center' }}>
-              <Typography sx={{ fontWeight: 'bold' }}>
-                {t('loginDialog.signIn')}
-              </Typography>
+              <Typography sx={{ fontWeight: 'bold' }}>{t('signIn')}</Typography>
             </DialogTitle>
             <StyleFirebaseAuth
               uiConfig={uiConfig}
