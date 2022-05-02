@@ -3,11 +3,6 @@ import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import Backend from 'i18next-xhr-backend';
 
-// const resources = {
-//   en: { contact: contactEn },
-//   es: { contact: contactEs },
-// };
-
 i18n
   .use(Backend)
   .use(initReactI18next)
