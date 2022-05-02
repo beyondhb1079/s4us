@@ -14,14 +14,14 @@ import backgroundImg from '../img/img6.svg';
 import LookingForScholarshipsBanner from '../components/LookingForScholarshipsBanner';
 
 function About() {
-  const { t } = useTranslation();
+  const { t } = useTranslation('about');
 
   const team = [
     {
       name: 'Josue Rios',
       img: 'https://avatars.githubusercontent.com/u/8023233?v=4',
       description: (
-        <Trans i18nKey="about.team.josue">
+        <Trans ns="about" i18nKey="team.josue">
           start
           <MuiLink href="http://beyondhb1079.org/">Beyond HB 1079</MuiLink> end
         </Trans>
@@ -30,41 +30,41 @@ function About() {
     {
       name: 'Edwin Lopez',
       img: 'https://avatars.githubusercontent.com/u/40483569?v=4',
-      description: t('about.team.edwin', { brand: BRAND_NAME }),
+      description: t('team.edwin', { brand: BRAND_NAME }),
     },
     {
       name: 'Gonzalo Lara',
       img: 'https://avatars.githubusercontent.com/u/64123425?v=4',
-      description: t('about.team.gonzalo'),
+      description: t('team.gonzalo'),
     },
     {
       name: 'Sergio Mejia',
       img: 'https://avatars.githubusercontent.com/u/15769145?v=4',
-      description: t('about.team.sergio'),
+      description: t('team.sergio'),
     },
     {
       name: 'Job Hernandez',
       img: 'https://avatars.githubusercontent.com/u/69167740?v=4',
-      description: t('about.team.job'),
+      description: t('team.job'),
     },
   ];
 
   return (
     <Container sx={{ p: 2 }}>
       <Helmet>
-        <title>{t('about.titleTag')}</title>
+        <title>{t('titleTag')}</title>
       </Helmet>
 
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
           <Typography component="h2" variant="button" gutterBottom>
-            {t('about.meetTheTeam')}
+            {t('meetTheTeam')}
           </Typography>
           <Typography variant="h4" gutterBottom>
-            {t('about.title')}
+            {t('title')}
           </Typography>
           <Typography paragraph>
-            {t('about.description', { brand: BRAND_NAME })}
+            {t('description', { brand: BRAND_NAME })}
           </Typography>
         </Grid>
 
