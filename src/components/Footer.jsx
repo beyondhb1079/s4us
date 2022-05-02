@@ -18,26 +18,26 @@ import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 
 const quickLinks = {
-  'footer.addScholarship': '/scholarships/new',
-  'footer.browseScholarship': '/scholarships',
+  addScholarship: '/scholarships/new',
+  browseScholarship: '/scholarships',
 };
 
 const orgLinks = {
-  'footer.about': '/about',
-  'footer.contact': '/contact',
+  about: '/about',
+  contact: '/contact',
 };
 
 const helpLinks = {
-  'footer.reportIssue': genMailToLink({
+  reportIssue: genMailToLink({
     subject: 'Bug Report',
     body: withDeviceInfo(reportIssue),
   }),
-  'footer.suggestIdea': genMailToLink({
+  suggestIdea: genMailToLink({
     subject: 'Feature Request',
     body: withDeviceInfo(featureRequest),
   }),
-  'footer.subscribeForUpdates': SUBSCRIPTION_FORM_URL,
-  'footer.reachOut': genMailToLink({
+  subscribeForUpdates: SUBSCRIPTION_FORM_URL,
+  reachOut: genMailToLink({
     subject: 'Outreach',
     body: 'Please describe the purpose of your outreach below.\n',
   }),
@@ -79,7 +79,7 @@ FooterColumn.defaultProps = {
 };
 
 function Footer() {
-  const { t } = useTranslation();
+  const { t } = useTranslation('footer');
 
   return (
     <Box sx={{ bgcolor: 'background.secondary', zIndex: 1200 }}>
@@ -101,7 +101,7 @@ function Footer() {
                 variant="subtitle2"
                 color="text.secondary"
                 underline="hover">
-                {t('footer.privacy')}
+                {t('privacy')}
               </MuiLink>{' '}
               -{' '}
               <MuiLink
@@ -110,26 +110,16 @@ function Footer() {
                 variant="subtitle2"
                 color="text.secondary"
                 underline="hover">
-                {t('footer.terms')}
+                {t('terms')}
               </MuiLink>
             </Typography>
           </Grid>
 
-          <FooterColumn
-            title="footer.quickLinks"
-            links={quickLinks}
-            t={t}
-            internal
-          />
+          <FooterColumn title="quickLinks" links={quickLinks} t={t} internal />
 
-          <FooterColumn
-            title="footer.organization"
-            links={orgLinks}
-            t={t}
-            internal
-          />
+          <FooterColumn title="organization" links={orgLinks} t={t} internal />
 
-          <FooterColumn title="footer.help" links={helpLinks} t={t} />
+          <FooterColumn title="help" links={helpLinks} t={t} />
         </Grid>
       </Container>
     </Box>
