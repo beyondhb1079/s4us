@@ -14,7 +14,7 @@ i18n
       loadPath: `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`,
       addPath: `${process.env.PUBLIC_URL}/locales/add/{{lng}}/{{ns}}`,
     },
-    ns: ['contact', 'addScholarship'],
+    ns: ['contact', 'addScholarship', 'listScholarships'],
     detection: {
       order: ['htmlTag', 'cookie', 'localStorage', 'path', 'subdomain'],
     },
