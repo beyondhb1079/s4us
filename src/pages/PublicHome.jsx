@@ -8,7 +8,7 @@ import graduation from '../img/img2.svg';
 import searching from '../img/img3.svg';
 
 function PublicHome() {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
 
   return (
     <>

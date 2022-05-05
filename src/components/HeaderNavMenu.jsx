@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 function HeaderNavMenu({ links }) {
   const location = useLocation();
   let currentTab = false;
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
 
   Object.entries(links).forEach(([title, link]) => {
     if (location.pathname.startsWith(link)) {
