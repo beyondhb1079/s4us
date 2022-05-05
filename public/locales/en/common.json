@@ -12,13 +12,6 @@
     "subscribeForUpdates": "Subscribe"
   },
 
-  "addScholarship": {
-    "titleTag": "Add a Scholarship",
-    "submitAScholarship": "Submit a Scholarship",
-    "additionalInfo": "Additional Information",
-    "description": "Help our team provide the best search results for students and community members looking for scholarships by contributing as much detail information possible."
-  },
-
   "protectedPage": "You must log in first to access this page",
 
   "home": {
@@ -51,12 +44,6 @@
 
   "general": {
     "lookingForScholarships": "Looking for scholarships?"
-  },
-
-  "listScholarships": {
-    "titleTag": "Search Scholarships",
-    "endOfResults": "End of results",
-    "noScholarshipsFound": "No scholarships found"
   },
 
   "about": {

@@ -12,13 +12,6 @@
     "subscribeForUpdates": "Suscribir"
   },
 
-  "addScholarship": {
-    "titleTag": "Agrege una beca",
-    "submitAScholarship": "Submitir una beca",
-    "additionalInfo": "Información Adicional",
-    "description": "Ayude a nuestro equipo a proporcionar los mejores resultados de búsqueda para estudiantes y miembros de la comunidad que buscan becas contribuyendo con la mayor cantidad de información detallada posible."
-  },
-
   "protectedPage": "Primero debe iniciar una sesión para acceder a esta página",
 
   "home": {
@@ -51,12 +44,6 @@
 
   "general": {
     "lookingForScholarships": "¿Buscando becas?"
-  },
-
-  "listScholarships": {
-    "titleTag": "Buscar Becas",
-    "endOfResults": "Final de Resultados",
-    "noScholarshipsFound": "No se encontraron becas"
   },
 
   "about": {
