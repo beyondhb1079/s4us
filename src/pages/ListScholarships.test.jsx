@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -6,6 +6,8 @@ import { clearFirestoreData, initializeTestApp } from '../lib/testing';
 import ListScholarships from './ListScholarships';
 import Scholarships from '../models/Scholarships';
 import ScholarshipAmount from '../types/ScholarshipAmount';
+import { I18nextProvider } from 'react-i18next';
+import i18n from '../i18n';
 import { ScholarshipsProvider } from '../models/ScholarshipsContext';
 
 // hacky workaround to allow findBy to work
@@ -14,15 +16,19 @@ window.MutationObserver = require('mutation-observer');
 
 function renderAtRoute(route) {
   return render(
-    <ThemeProvider theme={createTheme()}>
-      <ScholarshipsProvider>
-        <MemoryRouter initialEntries={[route]}>
-          <Routes>
-            <Route path="/scholarships" element={<ListScholarships />} />
-          </Routes>
-        </MemoryRouter>
-      </ScholarshipsProvider>
-    </ThemeProvider>
+    <Suspense fallback="loading">
+      <I18nextProvider i18n={i18n}>
+        <ThemeProvider theme={createTheme()}>
+          <ScholarshipsProvider>
+            <MemoryRouter initialEntries={[route]}>
+              <Routes>
+                <Route path="/scholarships" element={<ListScholarships />} />
+              </Routes>
+            </MemoryRouter>
+          </ScholarshipsProvider>
+        </ThemeProvider>
+      </I18nextProvider>
+    </Suspense>
   );
 }
 
@@ -53,7 +59,9 @@ test('renders a list of scholarships', async () => {
   };
   const ref = Scholarships.collection.doc('abc');
   await ref.set(data);
+
   renderAtRoute('/scholarships');
+
   await screen.findByText(data.name);
   expect(screen.getByText(data.description)).toBeInTheDocument();
   expect(
@@ -71,7 +79,9 @@ test('does not render expired scholarships by default', async () => {
   };
   const ref = Scholarships.collection.doc('abc-expired');
   await ref.set(data);
+
   renderAtRoute('/scholarships');
-  await screen.findByText('endOfResults');
+
+  await screen.findByText('End of results');
   expect(screen.queryByText(data.name)).not.toBeInTheDocument();
 });

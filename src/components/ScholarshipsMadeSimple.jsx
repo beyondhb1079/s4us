@@ -22,7 +22,7 @@ function OutlineButton(user, t) {
 }
 
 export default function ScholarshipsMadeSimpleSection() {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
   const tabs = [
     {
       tab: 'students',
