@@ -24,7 +24,7 @@ import { useLocation } from 'react-router-dom';
 const drawerWidth = 360;
 
 function ListScholarships() {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));

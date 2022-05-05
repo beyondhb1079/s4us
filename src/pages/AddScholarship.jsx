@@ -7,7 +7,7 @@ import backgroundImg from '../img/img3.svg';
 import { useTranslation } from 'react-i18next';
 
 function AddScholarship() {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
 
   return (
     <Box sx={{ p: 2 }}>
