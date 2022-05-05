@@ -11,7 +11,7 @@ import useQueryParams from '../lib/useQueryParams';
 export default function ScholarshipList({ noResultsNode, extraFilters }) {
   const { canLoadMore, error, loading, loadMore, scholarships, setFilters } =
     useContext(ScholarshipsContext);
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
   const [queryParams] = useQueryParams();
 
   // Resets result context if filters change.

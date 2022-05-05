@@ -5,7 +5,7 @@ import { Grid, Paper, Typography, Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 function LookingForScholarshipsBanner() {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
 
   return (
     <Grid

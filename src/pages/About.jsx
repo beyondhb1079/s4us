@@ -14,7 +14,7 @@ import backgroundImg from '../img/img6.svg';
 import LookingForScholarshipsBanner from '../components/LookingForScholarshipsBanner';
 
 function About() {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
 
   const team = [
     {

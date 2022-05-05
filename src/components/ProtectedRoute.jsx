@@ -12,7 +12,7 @@ function ProtectedRoute({ element }) {
   };
   const { currentUser } = useAuth();
 
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
 
   if (currentUser === undefined) {
     return (

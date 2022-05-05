@@ -103,7 +103,7 @@ const languages = {
 };
 
 function Header() {
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation('common');
   const [anchorEl, setAnchorEl] = useState(null);
 
   return (
