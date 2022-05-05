@@ -5,7 +5,7 @@ import { Grid, Paper, Typography, Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 function LookingForScholarshipsBanner() {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
 
   return (
     <Grid
@@ -15,7 +15,7 @@ function LookingForScholarshipsBanner() {
       sx={{ padding: { xs: 2, md: 3 } }}>
       <Grid item sm={6} xs={12}>
         <Typography variant="h5" gutterBottom>
-          {t('general.lookingForScholarships')}
+          {t('lookingForScholarships')}
         </Typography>
         <Button
           variant="contained"
