@@ -7,13 +7,13 @@ i18n
   .use(initReactI18next)
   .use(LanguageDetector)
   .use(
-    resourcesToBackend((lng, ns, clb) => {
-      import(`../public/locales/${lng}/${ns}.json`)
+    resourcesToBackend((lang, ns, callback) => {
+      import(`../public/locales/${lang}/${ns}.json`)
         .then((resources) => {
-          clb(null, resources);
+          callback(null, resources);
         })
         .catch((error) => {
-          clb(error, null);
+          callback(error, null);
         });
     })
   )
