@@ -18,7 +18,7 @@ import LookingForScholarshipsBanner from '../components/LookingForScholarshipsBa
 import useAuth from '../lib/useAuth';
 
 export default function UserHome() {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
   const { currentUser: user } = useAuth();
   const location = useLocation();
 

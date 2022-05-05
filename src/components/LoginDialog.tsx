@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 export default function LoginDialog(): JSX.Element {
   const location = useLocation();
   const showLoginDialog = (location.state as any)?.showLoginDialog || false;
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
 
   const navigate = useNavigate();
   const closeDialog = () =>

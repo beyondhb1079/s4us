@@ -12,23 +12,23 @@ import { Container, Link as MuiLink, Typography } from '@mui/material';
 import { useTranslation, Trans } from 'react-i18next';
 
 function Contact() {
-  const { t } = useTranslation();
+  const { t } = useTranslation('contact');
 
   return (
     <Container sx={{ p: 2 }}>
       <Helmet>
-        <title>{t('contact.titleTag')}</title>
+        <title>{t('titleTag')}</title>
       </Helmet>
 
       <Typography variant="h4" align="center" gutterBottom>
-        {t('contact.contactUs')}
+        {t('contactUs')}
       </Typography>
 
       <Typography variant="h5" gutterBottom>
-        {t('contact.foundBug')}
+        {t('foundBug')}
       </Typography>
       <Typography paragraph>
-        <Trans i18nKey="contact.fileBug">
+        <Trans ns="contact" i18nKey="fileBug">
           You can file it
           <MuiLink
             href={genMailToLink({
@@ -41,10 +41,10 @@ function Contact() {
       </Typography>
 
       <Typography variant="h5" gutterBottom>
-        {t('contact.featureReq')}
+        {t('featureReq')}
       </Typography>
       <Typography paragraph>
-        <Trans i18nKey="contact.featureSuggest">
+        <Trans ns="contact" i18nKey="featureSuggest">
           You can suggest an idea for this project
           <MuiLink
             href={genMailToLink({
@@ -57,10 +57,10 @@ function Contact() {
       </Typography>
 
       <Typography variant="h5" gutterBottom>
-        {t('contact.learnAboutUs')}
+        {t('learnAboutUs')}
       </Typography>
       <Typography paragraph>
-        <Trans i18nKey="contact.learnMore" values={{ brand: BRAND_NAME }}>
+        <Trans ns="contact" i18nKey="learnMore" values={{ brand: BRAND_NAME }}>
           You can learn more about DreamScholars and the developers
           <MuiLink component={Link} to="/about">
             here.
@@ -69,20 +69,20 @@ function Contact() {
       </Typography>
 
       <Typography variant="h5" gutterBottom>
-        {t('contact.subscribe')}
+        {t('subscribe')}
       </Typography>
       <Typography paragraph>
-        <Trans i18nKey="contact.subForUpdates">
+        <Trans ns="contact" i18nKey="subForUpdates">
           You can subscribe for updates
           <MuiLink href={SUBSCRIPTION_FORM_URL}>here</MuiLink>
         </Trans>
       </Typography>
 
       <Typography variant="h5" gutterBottom>
-        {t('contact.reachOut')}
+        {t('reachOut')}
       </Typography>
       <Typography paragraph>
-        <Trans i18nKey="contact.emailUs">
+        <Trans ns="contact" i18nKey="emailUs">
           We are happy to answer any of your questions. You can email us
           <MuiLink
             href={genMailToLink({

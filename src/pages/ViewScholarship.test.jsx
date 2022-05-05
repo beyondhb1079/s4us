@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import Helmet from 'react-helmet';
 import { render, screen } from '@testing-library/react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -10,7 +10,7 @@ import ScholarshipAmount from '../types/ScholarshipAmount';
 import GradeLevel from '../types/GradeLevel';
 import Ethnicity from '../types/Ethnicity';
 import State from '../types/States';
-import i18n from '../i18n/setup';
+import i18n from '../i18n';
 import { I18nextProvider } from 'react-i18next';
 import { ScholarshipsProvider } from '../models/ScholarshipsContext';
 import { act } from 'react-dom/test-utils';
@@ -21,17 +21,19 @@ window.MutationObserver = require('mutation-observer');
 
 function renderAtRoute(pathname, state = {}) {
   return render(
-    <I18nextProvider i18n={i18n}>
-      <ThemeProvider theme={createTheme()}>
-        <ScholarshipsProvider>
-          <MemoryRouter initialEntries={[{ pathname, state }]}>
-            <Routes>
-              <Route path="/scholarships/:id" element={<ViewScholarship />} />
-            </Routes>
-          </MemoryRouter>
-        </ScholarshipsProvider>
-      </ThemeProvider>
-    </I18nextProvider>
+    <Suspense fallback="loading">
+      <I18nextProvider i18n={i18n}>
+        <ThemeProvider theme={createTheme()}>
+          <ScholarshipsProvider>
+            <MemoryRouter initialEntries={[{ pathname, state }]}>
+              <Routes>
+                <Route path="/scholarships/:id" element={<ViewScholarship />} />
+              </Routes>
+            </MemoryRouter>
+          </ScholarshipsProvider>
+        </ThemeProvider>
+      </I18nextProvider>
+    </Suspense>
   );
 }
 

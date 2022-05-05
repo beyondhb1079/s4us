@@ -79,7 +79,7 @@ FooterColumn.defaultProps = {
 };
 
 function Footer() {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
 
   return (
     <Box sx={{ bgcolor: 'background.secondary', zIndex: 1200 }}>

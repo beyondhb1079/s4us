@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { initializeTestApp } from '../lib/testing';
 import Header from './Header';
 import { I18nextProvider } from 'react-i18next';
-import i18n from '../i18n/setup';
+import i18n from '../i18n';
 
 initializeTestApp({ apiKey: 'fake-api-key' });
 
@@ -17,13 +17,15 @@ function renderAtUrl(url) {
   delete window.location;
   window.location = new URL(url);
   return render(
-    <I18nextProvider i18n={i18n}>
-      <ThemeProvider theme={createTheme()}>
-        <BrowserRouter>
-          <Header />
-        </BrowserRouter>
-      </ThemeProvider>
-    </I18nextProvider>
+    <Suspense fallback="loading">
+      <I18nextProvider i18n={i18n}>
+        <ThemeProvider theme={createTheme()}>
+          <BrowserRouter>
+            <Header />
+          </BrowserRouter>
+        </ThemeProvider>
+      </I18nextProvider>
+    </Suspense>
   );
 }
 
