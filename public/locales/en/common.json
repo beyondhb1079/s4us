@@ -12,10 +12,6 @@
     "subscribeForUpdates": "Subscribe"
   },
 
-  "constructAlert": {
-    "description": "Website under construction! 🚧"
-  },
-
   "addScholarship": {
     "titleTag": "Add a Scholarship",
     "submitAScholarship": "Submit a Scholarship",

@@ -12,10 +12,6 @@
     "subscribeForUpdates": "Suscribir"
   },
 
-  "constructAlert": {
-    "description": "¡Sitio bajo construcción! 🚧"
-  },
-
   "addScholarship": {
     "titleTag": "Agrege una beca",
     "submitAScholarship": "Submitir una beca",
