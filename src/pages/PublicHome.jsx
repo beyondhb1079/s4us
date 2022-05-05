@@ -8,7 +8,7 @@ import graduation from '../img/img2.svg';
 import searching from '../img/img3.svg';
 
 function PublicHome() {
-  const { t } = useTranslation('publicHome');
+  const { t } = useTranslation(['publicHome', 'common']);
 
   return (
     <>
@@ -23,14 +23,14 @@ function PublicHome() {
             to="/scholarships"
             variant="contained"
             color="primary">
-            {t('btn.browseScholarships')}
+            {t('common:btn.browseScholarships')}
           </Button>,
           <Button
             component={Link}
             to="/scholarships/new"
             variant="outlined"
             color="primary">
-            {t('btn.addScholarship')}
+            {t('common:btn.addScholarship')}
           </Button>,
         ]}
         pic={graduation}
@@ -49,7 +49,7 @@ function PublicHome() {
               to="/scholarships"
               variant="contained"
               color="primary">
-              {t('btn.browseScholarships')}
+              {t('common:btn.browseScholarships')}
             </Button>,
           ]}
           pic={searching}

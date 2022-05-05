@@ -15,14 +15,14 @@ function OutlineButton(user, t) {
       component={Link}
       to={user === 'students' ? '/scholarships' : '/scholarships/new'}>
       {user === 'students'
-        ? t('btn.browseScholarships')
-        : t('btn.addScholarship')}
+        ? t('common:btn.browseScholarships')
+        : t('common:btn.addScholarship')}
     </Button>
   );
 }
 
 export default function ScholarshipsMadeSimpleSection() {
-  const { t } = useTranslation('publicHome');
+  const { t } = useTranslation(['publicHome', 'common']);
   const tabs = [
     {
       tab: 'students',

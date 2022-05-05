@@ -18,7 +18,7 @@ import LookingForScholarshipsBanner from '../components/LookingForScholarshipsBa
 import useAuth from '../lib/useAuth';
 
 export default function UserHome() {
-  const { t } = useTranslation('userHome');
+  const { t } = useTranslation(['userHome', 'common']);
   const { currentUser: user } = useAuth();
   const location = useLocation();
 
@@ -62,7 +62,7 @@ export default function UserHome() {
             startIcon={<AddIcon />}
             component={Link}
             to="/scholarships/new">
-            {t('btn.addScholarship')}
+            {t('common:btn.addScholarship')}
           </Button>
         </Grid>
       </Grid>
@@ -84,7 +84,7 @@ export default function UserHome() {
                 {t('noneAdded')}
               </Typography>
               <MuiLink component={Link} to="/scholarships/new">
-                {t('btn.addScholarship')}
+                {t('common:btn.addScholarship')}
               </MuiLink>
             </Grid>
           </Grid>
