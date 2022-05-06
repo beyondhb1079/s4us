@@ -59,20 +59,6 @@
     "noScholarshipsFound": "No scholarships found"
   },
 
-  "about": {
-    "titleTag": "About",
-    "meetTheTeam": "Meet the team",
-    "title": "For and by the undocu community.",
-    "description": "Meet the team behind {{brand}}. We are a group of lifelong learners who are passionate about technology and community upliftment. The project arose from our own struggles as students and the lack of resources for our community.",
-    "team": {
-      "josue": "I am a DACA recipient currently working as a software engineer. I came up with this project idea after participating in the <1>Beyond HB 1079</1> team and noticing how painful it is to find scholarships and compile a list for undocumented students. My hope is to make this the go-to resource for scholarships for undocumented students.",
-      "edwin": "I am a software engineer from the University of California Irvine. I enjoy learning and using my skills to make software that makes an impact in communites. Being a DACA recipient has led me to have an emotional connection with {{brand}}.",
-      "gonzalo": "My passion for computers has lead me to pursue a career in Software Engineering. I am currently a UWB CSS student completing my final year in the Computer Science and Software Engineering program. I am 24 years old, bilingual and currently a part of the DACA program. I intend to contribute as much as possible to building a better tomorrow.",
-      "sergio": "I’m a UX Designer that is interested in using technology as a means to solve problems. My personal experiences have inspired my focus on empathy and universal design. I find joy in the ability to explore ideas with a central aim to create solutions that will help people solve meaningful problems.",
-      "job": "I am driven to solve problems with software; software has tremendous power to advance society. So, I would like to contribute and have an impact."
-    }
-  },
-
   "alert": { "warning": "Warning" },
 
   "footer": {
