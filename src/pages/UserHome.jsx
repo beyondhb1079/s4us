@@ -28,7 +28,7 @@ export default function UserHome() {
   return (
     <Container sx={{ p: 2 }}>
       <Helmet>
-        <title>{t('commong:dashboard')}</title>
+        <title>{t('common:dashboard')}</title>
       </Helmet>
 
       {alertMessage && navType === 'PUSH' && (
