@@ -75,5 +75,9 @@
     "suggestIdea": "Suggest an idea",
     "subscribeForUpdates": "Subscribe for updates",
     "reachOut": "Reach out"
+  },
+  "welcome": "Welcome",
+  "actions": {
+    "signIn": "Sign In"
   }
 }

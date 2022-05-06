@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 export default function LoginDialog(): JSX.Element {
   const location = useLocation();
   const showLoginDialog = (location.state as any)?.showLoginDialog || false;
-  const { t } = useTranslation('loginDialog');
+  const { t } = useTranslation(['loginDialog', 'common']);
 
   const navigate = useNavigate();
   const closeDialog = () =>
@@ -80,7 +80,7 @@ export default function LoginDialog(): JSX.Element {
 
             <DialogTitle id="responsive-dialog-welcome">
               <Typography variant="h4" sx={{ color: 'background.paper' }}>
-                {t('welcome')}
+                {t('common:welcome')}
               </Typography>
             </DialogTitle>
 
@@ -101,7 +101,9 @@ export default function LoginDialog(): JSX.Element {
             <DialogTitle
               id="responsive-dialog-title"
               sx={{ textAlign: 'center' }}>
-              <Typography sx={{ fontWeight: 'bold' }}>{t('signIn')}</Typography>
+              <Typography sx={{ fontWeight: 'bold' }}>
+                {t('common:actions.signIn')}
+              </Typography>
             </DialogTitle>
             <StyleFirebaseAuth
               uiConfig={uiConfig}
