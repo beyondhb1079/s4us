@@ -24,7 +24,7 @@ import { useLocation } from 'react-router-dom';
 const drawerWidth = 360;
 
 function ListScholarships() {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation('listScholarships');
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
@@ -60,7 +60,7 @@ function ListScholarships() {
   return (
     <Box sx={{ display: 'flex' }}>
       <Helmet>
-        <title>{t('listScholarships.titleTag')}</title>
+        <title>{t('titleTag')}</title>
       </Helmet>
       <Drawer
         sx={{

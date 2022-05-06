@@ -7,12 +7,12 @@ import backgroundImg from '../img/img3.svg';
 import { useTranslation } from 'react-i18next';
 
 function AddScholarship() {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation('addScholarship');
 
   return (
     <Box sx={{ p: 2 }}>
       <Helmet>
-        <title>{t('addScholarship.titleTag')}</title>
+        <title>{t('titleTag')}</title>
       </Helmet>
 
       <Container maxWidth="lg" sx={{ p: 2 }}>
@@ -22,13 +22,11 @@ function AddScholarship() {
             sm={12}
             md={6}
             sx={{ textAlign: { xs: 'center', md: 'left' } }}>
-            <Typography gutterBottom>
-              {t('addScholarship.submitAScholarship')}
-            </Typography>
+            <Typography gutterBottom>{t('submitAScholarship')}</Typography>
             <Typography variant="h4" gutterBottom>
-              {t('addScholarship.additionalInfo')}
+              {t('additionalInfo')}
             </Typography>
-            <Typography>{t('addScholarship.description')}</Typography>
+            <Typography>{t('description')}</Typography>
           </Grid>
 
           <Grid item sm={12} md={6} sx={{ width: '100%' }}>
