@@ -18,7 +18,7 @@ import LookingForScholarshipsBanner from '../components/LookingForScholarshipsBa
 import useAuth from '../lib/useAuth';
 
 export default function UserHome() {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation(['userHome', 'common']);
   const { currentUser: user } = useAuth();
   const location = useLocation();
 
@@ -28,7 +28,7 @@ export default function UserHome() {
   return (
     <Container sx={{ p: 2 }}>
       <Helmet>
-        <title>{t('home.user.titleTag')}</title>
+        <title>{t('common:dashboard')}</title>
       </Helmet>
 
       {alertMessage && navType === 'PUSH' && (
@@ -40,7 +40,7 @@ export default function UserHome() {
       )}
 
       <Typography variant="h4" component="h1" gutterBottom>
-        {t('home.user.welcome')} {user.displayName}
+        {t('common:welcome')} {user.displayName}
       </Typography>
 
       <LookingForScholarshipsBanner />
@@ -52,7 +52,7 @@ export default function UserHome() {
         sx={{ marginY: { xs: 1, md: 2 } }}>
         <Grid item>
           <Typography variant="h5" component="h2">
-            {t('home.user.addedScholarships')}
+            {t('addedScholarships')}
           </Typography>
         </Grid>
         <Grid item>
@@ -62,7 +62,7 @@ export default function UserHome() {
             startIcon={<AddIcon />}
             component={Link}
             to="/scholarships/new">
-            {t('btn.addScholarship')}
+            {t('common:btn.addScholarship')}
           </Button>
         </Grid>
       </Grid>
@@ -81,10 +81,10 @@ export default function UserHome() {
             </Grid>
             <Grid item>
               <Typography variant="h5" gutterButtom>
-                {t('home.user.noneAdded')}
+                {t('noneAdded')}
               </Typography>
               <MuiLink component={Link} to="/scholarships/new">
-                {t('btn.addScholarship')}
+                {t('common:btn.addScholarship')}
               </MuiLink>
             </Grid>
           </Grid>

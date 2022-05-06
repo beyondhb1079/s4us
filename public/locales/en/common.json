@@ -14,34 +14,6 @@
 
   "protectedPage": "You must log in first to access this page",
 
-  "home": {
-    "public": {
-      "landingSection": {
-        "title": "Scholarships for undocumented students.",
-        "subTitle": "A resource list of scholarships by and for the community."
-      },
-      "madeSimple": "Scholarship search made simple",
-      "studentTab": {
-        "tab": "students",
-        "title": "Fewer barriers, more scholarships.",
-        "description": "Browse our databse at ease, knowing none of our schoalrships require U.S. citizenship or permanent residency."
-      },
-      "communityTab": {
-        "tab": "community",
-        "title": "Join and Support the Community",
-        "description": "Know a scholarship available for undocumented students not yet in our database? Sign up and add them, become part of our community of scholarship contributers."
-      },
-      "startSearch": "Let's start searching!"
-    },
-
-    "user": {
-      "titleTag": "Dashboard",
-      "welcome": "Welcome",
-      "addedScholarships": "Scholarships You've Added",
-      "noneAdded": "No Scholarships Added Yet"
-    }
-  },
-
   "general": {
     "lookingForScholarships": "Looking for scholarships?"
   },
@@ -72,5 +44,7 @@
   "welcome": "Welcome",
   "actions": {
     "signIn": "Sign In"
-  }
+  },
+  "dashboard": "Dashboard",
+  "welcome": "Welcome"
 }
