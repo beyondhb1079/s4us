@@ -8,29 +8,29 @@ import graduation from '../img/img2.svg';
 import searching from '../img/img3.svg';
 
 function PublicHome() {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation(['publicHome', 'common']);
 
   return (
     <>
       <HomeSection
         direction="row"
-        title={t('home.public.landingSection.title')}
+        title={t('landingSection.title')}
         main
-        description={t('home.public.landingSection.subTitle')}
+        description={t('landingSection.subTitle')}
         buttons={[
           <Button
             component={Link}
             to="/scholarships"
             variant="contained"
             color="primary">
-            {t('btn.browseScholarships')}
+            {t('common:btn.browseScholarships')}
           </Button>,
           <Button
             component={Link}
             to="/scholarships/new"
             variant="outlined"
             color="primary">
-            {t('btn.addScholarship')}
+            {t('common:btn.addScholarship')}
           </Button>,
         ]}
         pic={graduation}
@@ -42,14 +42,14 @@ function PublicHome() {
         <HomeSection
           alignItems="center"
           direction="row"
-          title={t('home.public.startSearch')}
+          title={t('startSearch')}
           buttons={[
             <Button
               component={Link}
               to="/scholarships"
               variant="contained"
               color="primary">
-              {t('btn.browseScholarships')}
+              {t('common:btn.browseScholarships')}
             </Button>,
           ]}
           pic={searching}
