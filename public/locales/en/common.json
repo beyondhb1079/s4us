@@ -13,12 +13,7 @@
   },
 
   "protectedPage": "You must log in first to access this page",
-
-  "general": {
-    "lookingForScholarships": "Looking for scholarships?"
-  },
-
-  "alert": { "warning": "Warning" },
+  "lookingForScholarships": "Looking for scholarships?",
 
   "footer": {
     "quickLinks": "Quick Links",
@@ -35,9 +30,11 @@
     "subscribeForUpdates": "Subscribe for updates",
     "reachOut": "Reach out"
   },
+
   "actions": {
     "signIn": "Sign In"
   },
+
   "dashboard": "Dashboard",
   "welcome": "Welcome"
 }
