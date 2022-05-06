@@ -18,12 +18,6 @@
     "lookingForScholarships": "¿Buscando becas?"
   },
 
-  "listScholarships": {
-    "titleTag": "Buscar Becas",
-    "endOfResults": "Final de Resultados",
-    "noScholarshipsFound": "No se encontraron becas"
-  },
-
   "alert": { "warning": "Advertencia" },
 
   "footer": {
@@ -41,7 +35,6 @@
     "subscribeForUpdates": "Suscríbete para actualizaciones",
     "reachOut": "Contacta con nosotros"
   },
-  "welcome": "Bienvenido",
   "actions": {
     "signIn": "Iniciar Sesión"
   },

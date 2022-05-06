@@ -53,6 +53,7 @@ test('renders custom no results node', async () => {
   renderWithProviders(
     <ScholarshipList noResultsNode={<Button>Oh no</Button>} />
   );
+
   const button = await screen.findByRole('button');
   expect(button).toBeInTheDocument();
   expect(button).toHaveTextContent('Oh no');

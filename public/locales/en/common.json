@@ -18,12 +18,6 @@
     "lookingForScholarships": "Looking for scholarships?"
   },
 
-  "listScholarships": {
-    "titleTag": "Search Scholarships",
-    "endOfResults": "End of results",
-    "noScholarshipsFound": "No scholarships found"
-  },
-
   "alert": { "warning": "Warning" },
 
   "footer": {
@@ -41,7 +35,6 @@
     "subscribeForUpdates": "Subscribe for updates",
     "reachOut": "Reach out"
   },
-  "welcome": "Welcome",
   "actions": {
     "signIn": "Sign In"
   },

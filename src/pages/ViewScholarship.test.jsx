@@ -44,6 +44,7 @@ afterAll(() => app.delete());
 
 test('renders loading initially', () => {
   renderAtRoute('/scholarships/abc');
+
   expect(screen.getByText(/loading/i)).toBeInTheDocument();
 });
 
