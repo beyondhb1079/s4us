@@ -15,27 +15,27 @@ function OutlineButton(user, t) {
       component={Link}
       to={user === 'students' ? '/scholarships' : '/scholarships/new'}>
       {user === 'students'
-        ? t('btn.browseScholarships')
-        : t('btn.addScholarship')}
+        ? t('common:btn.browseScholarships')
+        : t('common:btn.addScholarship')}
     </Button>
   );
 }
 
 export default function ScholarshipsMadeSimpleSection() {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation(['publicHome', 'common']);
   const tabs = [
     {
       tab: 'students',
-      title: t('home.public.studentTab.title'),
-      description: t('home.public.studentTab.description'),
+      title: t('studentTab.title'),
+      description: t('studentTab.description'),
       buttons: [OutlineButton('students', t)],
       pic: student,
       direction: 'row-reverse',
     },
     {
       tab: 'community contributor',
-      title: t('home.public.communityTab.title'),
-      description: t('home.public.communityTab.description'),
+      title: t('communityTab.title'),
+      description: t('communityTab.description'),
       buttons: [OutlineButton('community contributor', t)],
       pic: contributor,
     },
@@ -52,7 +52,7 @@ export default function ScholarshipsMadeSimpleSection() {
         component="h4"
         sx={{ textAlign: 'center', pt: 4 }}
         gutterBottom>
-        {t('home.public.madeSimple')}
+        {t('madeSimple')}
       </Typography>
       <TabContext value={user}>
         <AppBar
@@ -64,11 +64,8 @@ export default function ScholarshipsMadeSimpleSection() {
             color: (theme) => theme.palette.text.primary,
           }}>
           <TabList centered onChange={handleChange} indicatorColor="primary">
-            <Tab value={tabs[0].tab} label={t('home.public.studentTab.tab')} />
-            <Tab
-              value={tabs[1].tab}
-              label={t('home.public.communityTab.tab')}
-            />
+            <Tab value={tabs[0].tab} label={t('studentTab.tab')} />
+            <Tab value={tabs[1].tab} label={t('communityTab.tab')} />
           </TabList>
         </AppBar>
         {tabs.map(({ tab, title, description, buttons, pic, direction }) => (
