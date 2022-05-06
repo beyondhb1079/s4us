@@ -28,7 +28,7 @@ export default function UserHome() {
   return (
     <Container sx={{ p: 2 }}>
       <Helmet>
-        <title>{t('titleTag')}</title>
+        <title>{t('commong:dashboard')}</title>
       </Helmet>
 
       {alertMessage && navType === 'PUSH' && (
@@ -40,7 +40,7 @@ export default function UserHome() {
       )}
 
       <Typography variant="h4" component="h1" gutterBottom>
-        {t('welcome')} {user.displayName}
+        {t('common:welcome')} {user.displayName}
       </Typography>
 
       <LookingForScholarshipsBanner />
