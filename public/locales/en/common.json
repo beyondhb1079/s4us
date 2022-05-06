@@ -76,12 +76,8 @@
     "subscribeForUpdates": "Subscribe for updates",
     "reachOut": "Reach out"
   },
-
-  "loginDialog": {
-    "welcome": "Welcome.",
-    "providesScholarships": "DreamScholars provides scholarships for all students regardless of status.",
-    "joinCommunity": "Join our community &",
-    "getAccess": "Get access to scholarship submissions and other cool features soon.",
+  "welcome": "Welcome",
+  "actions": {
     "signIn": "Sign In"
   }
 }
