@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import firebase from 'firebase';
 import {
@@ -81,8 +81,8 @@ export default function ScholarshipCard({
     id: string;
     data: ScholarshipData;
   };
-  style: 'result' | 'detail' | 'preview';
-}): ReactNode {
+  style?: 'result' | 'detail' | 'preview';
+}): JSX.Element {
   const {
     name,
     organization,
@@ -254,7 +254,7 @@ export default function ScholarshipCard({
             </Stack>
           )}
 
-          {detailed && (
+          {detailed && !preview && (
             <Chip
               component={MuiLink}
               href={genMailToLink({
