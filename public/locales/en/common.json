@@ -35,11 +35,18 @@
     "signIn": "Sign In",
     "apply": "Apply",
     "share": "Share",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
     "copyLink": "Copy link",
     "reportIssue": "Report issue"
   },
 
   "dashboard": "Dashboard",
   "welcome": "Welcome",
-  "currentlySharing": "Currently sharing"
+  "currentlySharing": "Currently sharing",
+  "general": "General",
+  "eligibilityReqs": "Eligibility Requirements",
+  "review": "Review",
+  "none": "None"
 }

@@ -35,11 +35,18 @@
     "signIn": "Iniciar Sesión",
     "apply": "Aplicar",
     "share": "Compartir",
+    "back": "Atras",
+    "next": "Siguiente",
+    "submit": "Submitir",
     "copyLink": "Copiar enlace",
     "reportIssue": "Reportar un problem"
   },
 
   "dashboard": "Tablero de control",
   "welcome": "Bienvenido",
-  "currentlySharing": "Actualmente compartiendo"
+  "currentlySharing": "Actualmente compartiendo",
+  "general": "General",
+  "eligibilityReqs": "Requisitos de Elegibilidad",
+  "review": "Revisión",
+  "none": "Ninguno"
 }

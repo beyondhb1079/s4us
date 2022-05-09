@@ -33,6 +33,7 @@ import GradeLevel from '../types/GradeLevel';
 import Ethnicity from '../types/Ethnicity';
 import ScholarshipsContext from '../models/ScholarshipsContext';
 import { lintReqs } from '../lib/lint';
+import { useTranslation } from 'react-i18next';
 
 const labelStyle = { marginBottom: 2 };
 
@@ -43,6 +44,7 @@ function ScholarshipForm({ scholarship }) {
   const navigate = useNavigate();
 
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
+  const { t } = useTranslation(['scholarshipForm', 'common']);
 
   const formik = useFormik({
     initialValues: scholarship.data,
@@ -97,13 +99,13 @@ function ScholarshipForm({ scholarship }) {
   const noReqsChecked = JSON.stringify(formik.values.requirements) === '{}';
 
   const stepperItems = {
-    General: {
-      description: 'Please add the general information about the scholarship.',
+    'common:general': {
+      description: t('generalDescription'),
       content: (
         <Grid container spacing={3}>
           <Grid item sm={6} xs={12}>
             <FormikTextField
-              label="Scholarship Name *"
+              label={`${t('scholarshipName')} *`}
               id="name"
               formik={formik}
               labelStyle={labelStyle}
@@ -111,7 +113,7 @@ function ScholarshipForm({ scholarship }) {
           </Grid>
           <Grid item sm={6} xs={12}>
             <FormikTextField
-              label="Organization"
+              label={t('organization')}
               id="organization"
               formik={formik}
               labelStyle={labelStyle}
@@ -119,7 +121,7 @@ function ScholarshipForm({ scholarship }) {
           </Grid>
           <Grid item sm={6} xs={12}>
             <FormikTextField
-              label="Scholarship Link *"
+              label={`${t('scholarshipLink')} *`}
               id="website"
               formik={formik}
               labelStyle={labelStyle}
@@ -134,7 +136,7 @@ function ScholarshipForm({ scholarship }) {
           </Grid>
           <Grid item sm={6}>
             <DatePicker
-              label="Deadline *"
+              label={`${t('deadline')} *`}
               labelStyle={labelStyle}
               formik={formik}
             />
@@ -144,7 +146,7 @@ function ScholarshipForm({ scholarship }) {
           </Grid>
           <Grid item xs={12}>
             <FormikTextField
-              label="Description *"
+              label={`${t('description')} *`}
               id="description"
               labelStyle={labelStyle}
               formik={formik}
@@ -153,7 +155,7 @@ function ScholarshipForm({ scholarship }) {
           </Grid>
           <Grid item sm={6} xs={12}>
             <FormikAutocomplete
-              label="Tags"
+              label={t('tags')}
               id="tags"
               labelStyle={labelStyle}
               freeSolo
@@ -171,9 +173,8 @@ function ScholarshipForm({ scholarship }) {
         </Grid>
       ),
     },
-    'Eligibility Requirements': {
-      description:
-        'Include information that is required for applicants to have.',
+    'common:eligibilityReqs': {
+      description: t('requirementsDescription'),
       content: (
         <Grid container spacing={3}>
           <Grid item xs={12}>
@@ -210,19 +211,19 @@ function ScholarshipForm({ scholarship }) {
                   color="primary"
                 />
               }
-              label="NO ELIGIBILITY REQUIREMENTS"
+              label={t('noEligibilityReqs')}
             />
             <FormHelperText error>{formik.errors.checkbox}</FormHelperText>
           </Grid>
           <Grid item sm={6} xs={12}>
             <FormikMultiSelect
               disabled={noReqsChecked}
-              label="Grade(s)"
+              label={t('grades')}
               id="requirements.grades"
               labelStyle={labelStyle}
               formik={formik}
               options={GradeLevel.values()}
-              placeholder="No grade requirements"
+              placeholder={t('gradesPlaceholder')}
             />
           </Grid>
           <Grid item sm={6} xs={12}>
@@ -231,27 +232,27 @@ function ScholarshipForm({ scholarship }) {
               type="number"
               disabled={noReqsChecked}
               formik={formik}
-              label="Minimum GPA"
+              label={t('minGpa')}
               labelStyle={labelStyle}
-              placeholder="None"
+              placeholder={t('common:none')}
             />
           </Grid>
           <Grid item sm={6} xs={12}>
             <FormikAutocomplete
               disabled={noReqsChecked}
-              label="School(s)"
+              label={t('schools')}
               id="requirements.schools"
               labelStyle={labelStyle}
               options={SCHOOLS.map(({ name, state }) => `${name} (${state})`)}
               freeSolo
               formik={formik}
-              placeholder="No school requirements"
+              placeholder={t('schoolsPlaceholder')}
             />
           </Grid>
           <Grid item sm={6} xs={12}>
             <FormikAutocomplete
               disabled={noReqsChecked}
-              label="State(s)"
+              label={t('states')}
               id="requirements.states"
               labelStyle={labelStyle}
               options={STATES.map((s) => s.abbr)}
@@ -260,39 +261,37 @@ function ScholarshipForm({ scholarship }) {
                 stringify: (s) => State.toString(s),
               })}
               formik={formik}
-              placeholder="No state requirements"
+              placeholder={t('statesPlaceholder')}
             />
           </Grid>
           <Grid item sm={6} xs={12}>
             <FormikAutocomplete
               disabled={noReqsChecked}
-              label="Major(s)"
+              label={t('majors')}
               id="requirements.majors"
               labelStyle={labelStyle}
               options={[...MAJORS]}
               freeSolo
               formik={formik}
-              placeholder="No major requirements"
+              placeholder={t('majorsPlaceholder')}
             />
           </Grid>
           <Grid item sm={6} xs={12}>
             <FormikMultiSelect
               disabled={noReqsChecked}
-              label="Ethnicity(s)"
+              label={t('ethnicity')}
               id="requirements.ethnicities"
               labelStyle={labelStyle}
               formik={formik}
               options={Ethnicity.values()}
-              placeholder="No ethnicity requirements"
+              placeholder={t('ethnicityPlaceholder')}
             />
           </Grid>
         </Grid>
       ),
     },
-    Review: {
-      description: isDesktop
-        ? 'Please review the information on the right'
-        : 'Please review the information below.',
+    'common:review': {
+      description: isDesktop ? t('reviewOnRight') : t('reviewBelow'),
       content: !isDesktop && (
         <ScholarshipCard
           scholarship={{ data: formik.values }}
@@ -335,14 +334,14 @@ function ScholarshipForm({ scholarship }) {
             {Object.entries(stepperItems).map(
               ([label, { description, content }]) => (
                 <Step key={label}>
-                  <StepLabel>{label}</StepLabel>
+                  <StepLabel>{t(label)}</StepLabel>
                   <StepContent>
                     <Typography>{description}</Typography>
                     <Box marginY={3}>{content}</Box>
                     <Button
                       disabled={activeStep === 0}
                       onClick={() => setActiveStep((prevStep) => prevStep - 1)}>
-                      BACK
+                      {t('common:actions.back')}
                     </Button>
                     <Button
                       key={activeStep}
@@ -363,7 +362,9 @@ function ScholarshipForm({ scholarship }) {
                           return formik.setErrors(errors);
                         });
                       }}>
-                      {onLastStep ? 'Submit' : 'Next'}
+                      {onLastStep
+                        ? t('common:actions.submit')
+                        : t('common:actions.next')}
                     </Button>
                     {submissionError && (
                       <Alert
