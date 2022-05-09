@@ -34,6 +34,7 @@ import { lint } from '../lib/lint';
 import ShareDialog from './ShareDialog';
 import useAuth from '../lib/useAuth';
 import ScholarshipData from '../types/ScholarshipData';
+import { useTranslation } from 'react-i18next';
 
 const SHOW_MORE_THRESHOLD = 5;
 
@@ -100,6 +101,7 @@ export default function ScholarshipCard({
   const preview = style === 'preview';
 
   const [showShare, setShowShare] = useState(false);
+  const { t } = useTranslation('common');
 
   const navigate = useNavigate();
 
@@ -177,14 +179,14 @@ export default function ScholarshipCard({
                 color="primary"
                 sx={{ mr: 1 }}
                 startIcon={<SendIcon />}>
-                Apply
+                {t('actions.apply')}
               </Button>
               <Button
                 variant="outlined"
                 startIcon={<ShareIcon />}
                 onClick={() => setShowShare(true)}
                 disabled={scholarship.id === undefined}>
-                Share
+                {t('actions.share')}
               </Button>
 
               {!preview && canEdit && (
@@ -266,7 +268,7 @@ export default function ScholarshipCard({
               })}
               icon={<ReportIcon />}
               sx={{ my: 5 }}
-              label="Report Issue"
+              label={t('actions.reportIssue')}
             />
           )}
         </CardContent>

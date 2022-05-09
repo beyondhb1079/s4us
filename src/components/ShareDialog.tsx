@@ -23,6 +23,7 @@ import firebase from 'firebase';
 import { BRAND_NAME } from '../config/constants';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import ScholarshipData from '../types/ScholarshipData';
+import { useTranslation } from 'react-i18next';
 
 export default function ShareDialog({
   scholarship,
@@ -37,6 +38,7 @@ export default function ShareDialog({
   onClose: () => void;
 }): JSX.Element {
   const { amount, deadline, name } = scholarship.data;
+  const { t } = useTranslation('common');
 
   const url = `https://${window.location.hostname}/scholarships/${scholarship.id}`;
   const title = `${ScholarshipAmount.toString(
@@ -67,11 +69,11 @@ export default function ShareDialog({
       sx={{ textAlign: 'center' }}>
       <DialogTitle
         sx={{ color: 'background.paper', bgcolor: 'background.secondary' }}>
-        SHARE
+        {t('actions.share')}
       </DialogTitle>
       <DialogContent sx={{ bgcolor: 'background.secondary' }}>
         <DialogContentText sx={{ color: 'background.paper' }}>
-          Currently Sharing: {title}
+          {t('currentlySharing')}: {title}
         </DialogContentText>
         <EmailShareButton
           beforeOnClick={() => logShare()('email')}
@@ -115,7 +117,7 @@ export default function ShareDialog({
             logShare()('clipboard');
             navigator.clipboard.writeText(url);
           }}>
-          Copy Link
+          {t('actions.copyLink')}
         </Button>
       </DialogContent>
     </Dialog>

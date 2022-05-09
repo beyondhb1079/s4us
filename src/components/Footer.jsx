@@ -28,7 +28,7 @@ const orgLinks = {
 };
 
 const helpLinks = {
-  'footer.reportIssue': genMailToLink({
+  'actions.reportIssue': genMailToLink({
     subject: 'Bug Report',
     body: withDeviceInfo(reportIssue),
   }),

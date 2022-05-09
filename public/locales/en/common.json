@@ -8,6 +8,7 @@
     "browseScholarships": "Browse Scholarships",
     "addScholarship": "Add a Scholarship",
     "login": "Login",
+    "logout": "Logout",
     "loadMore": "Load More",
     "subscribeForUpdates": "Subscribe"
   },
@@ -25,16 +26,20 @@
     "browseScholarship": "Browse scholarships",
     "about": "About",
     "contact": "Contact",
-    "reportIssue": "Report an issue",
     "suggestIdea": "Suggest an idea",
     "subscribeForUpdates": "Subscribe for updates",
     "reachOut": "Reach out"
   },
 
   "actions": {
-    "signIn": "Sign In"
+    "signIn": "Sign In",
+    "apply": "Apply",
+    "share": "Share",
+    "copyLink": "Copy link",
+    "reportIssue": "Report issue"
   },
 
   "dashboard": "Dashboard",
-  "welcome": "Welcome"
+  "welcome": "Welcome",
+  "currentlySharing": "Currently sharing"
 }

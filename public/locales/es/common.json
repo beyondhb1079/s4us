@@ -8,6 +8,7 @@
     "browseScholarships": "Buscar Becas",
     "addScholarship": "Agregar una Beca",
     "login": "Iniciar",
+    "logout": "Terminar",
     "loadMore": "carga más",
     "subscribeForUpdates": "Suscribir"
   },
@@ -25,16 +26,20 @@
     "browseScholarship": "Buscar becas",
     "about": "Acerca de",
     "contact": "Contacto",
-    "reportIssue": "Reportar un problema",
     "suggestIdea": "Sugerir una idea",
     "subscribeForUpdates": "Suscríbete para actualizaciones",
     "reachOut": "Contacta con nosotros"
   },
 
   "actions": {
-    "signIn": "Iniciar Sesión"
+    "signIn": "Iniciar Sesión",
+    "apply": "Aplicar",
+    "share": "Compartir",
+    "copyLink": "Copiar enlace",
+    "reportIssue": "Reportar un problem"
   },
 
   "dashboard": "Tablero de control",
-  "welcome": "Bienvenido"
+  "welcome": "Bienvenido",
+  "currentlySharing": "Actualmente compartiendo"
 }
