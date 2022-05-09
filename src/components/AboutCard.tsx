@@ -1,8 +1,13 @@
 import React from 'react';
 import { Card, CardContent, CardMedia, Typography } from '@mui/material';
-import PropTypes from 'prop-types';
 
-const AboutCard = ({ img, name, description }) => (
+interface AboutCardProps {
+  img: string;
+  name: string;
+  description: string | JSX.Element;
+}
+
+const AboutCard = ({ img, name, description }: AboutCardProps): JSX.Element => (
   <Card sx={{ height: '100%' }}>
     <CardMedia
       image={img}
@@ -15,11 +20,5 @@ const AboutCard = ({ img, name, description }) => (
     </CardContent>
   </Card>
 );
-
-AboutCard.propTypes = {
-  img: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  description: PropTypes.node.isRequired,
-};
 
 export default AboutCard;

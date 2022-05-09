@@ -13,7 +13,7 @@ import { useTranslation, Trans } from 'react-i18next';
 import backgroundImg from '../img/img6.svg';
 import LookingForScholarshipsBanner from '../components/LookingForScholarshipsBanner';
 
-function About() {
+export default function About(): JSX.Element {
   const { t } = useTranslation('about');
 
   const team = [
@@ -92,4 +92,3 @@ function About() {
     </Container>
   );
 }
-export default About;
