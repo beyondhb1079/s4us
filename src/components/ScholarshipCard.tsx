@@ -215,7 +215,7 @@ export default function ScholarshipCard({
           {detailed && (
             <Box sx={{ my: 4 }}>
               <Typography variant="h5" component="h4" paragraph>
-                Eligibility Requirements
+                {t('eligibilityReqs')}
               </Typography>
               <DetailCardCell
                 label="scholarshipForm:states"
