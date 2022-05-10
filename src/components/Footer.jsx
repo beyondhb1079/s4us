@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 
 const quickLinks = {
-  'footer.addScholarship': '/scholarships/new',
+  'actions.addScholarship': '/scholarships/new',
   'footer.browseScholarship': '/scholarships',
 };
 
@@ -28,7 +28,7 @@ const orgLinks = {
 };
 
 const helpLinks = {
-  'footer.reportIssue': genMailToLink({
+  'actions.reportIssue': genMailToLink({
     subject: 'Bug Report',
     body: withDeviceInfo(reportIssue),
   }),

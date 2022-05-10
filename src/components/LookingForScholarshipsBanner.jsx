@@ -23,7 +23,7 @@ function LookingForScholarshipsBanner() {
           component={Link}
           to="scholarships"
           sx={{ marginY: { xs: 1, md: 2 } }}>
-          {t('btn.browseScholarships')}
+          {t('actions.browseScholarships')}
         </Button>
       </Grid>
       <Grid item sm={6} xs={12}>

@@ -4,14 +4,6 @@
     "add": "Add"
   },
 
-  "btn": {
-    "browseScholarships": "Browse Scholarships",
-    "addScholarship": "Add a Scholarship",
-    "login": "Login",
-    "loadMore": "Load More",
-    "subscribeForUpdates": "Subscribe"
-  },
-
   "protectedPage": "You must log in first to access this page",
   "lookingForScholarships": "Looking for scholarships?",
 
@@ -21,20 +13,39 @@
     "help": "Help",
     "privacy": "Privacy",
     "terms": "Terms",
-    "addScholarship": "Add a scholarship",
     "browseScholarship": "Browse scholarships",
     "about": "About",
     "contact": "Contact",
-    "reportIssue": "Report an issue",
     "suggestIdea": "Suggest an idea",
     "subscribeForUpdates": "Subscribe for updates",
     "reachOut": "Reach out"
   },
 
   "actions": {
-    "signIn": "Sign In"
+    "signIn": "Sign In",
+    "apply": "Apply",
+    "share": "Share",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "copyLink": "Copy link",
+    "reportIssue": "Report issue",
+    "browseScholarships": "Browse Scholarships",
+    "addScholarship": "Add a Scholarship",
+    "login": "Login",
+    "logout": "Logout",
+    "loadMore": "Load More",
+    "subscribe": "Subscribe"
   },
 
   "dashboard": "Dashboard",
-  "welcome": "Welcome"
+  "welcome": "Welcome",
+  "currentlySharing": "Currently sharing",
+  "general": "General",
+  "eligibilityReqs": "Eligibility Requirements",
+  "review": "Review",
+  "more": "more",
+  "any": "Any",
+  "moreScholarships": "More Scholarships",
+  "noRequirements": "No Requirements"
 }

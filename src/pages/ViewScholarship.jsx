@@ -8,6 +8,7 @@ import { Alert } from '@mui/material';
 import bannerImg from '../img/detail-page-banner.jpg';
 import { useLocation, useNavigationType, useParams } from 'react-router-dom';
 import ScholarshipsContext from '../models/ScholarshipsContext';
+import { useTranslation } from 'react-i18next';
 
 export default function ViewScholarship() {
   const location = useLocation();
@@ -25,6 +26,7 @@ export default function ViewScholarship() {
       prevPath === `/scholarships/new`);
   const navType = useNavigationType();
   const [showAlert, setShowAlert] = useState(true);
+  const { t } = useTranslation('common');
 
   // Fetch the scholarship if we need to load it
   useEffect(() => {
@@ -85,7 +87,7 @@ export default function ViewScholarship() {
 
       <ScholarshipCard scholarship={scholarship} style="detail" />
       <Typography gutterBottom variant="h5" marginY={2}>
-        More Scholarships
+        {t('moreScholarships')}
       </Typography>
       <Box marginY={2} sx={{ overflowX: 'auto' }}>
         <ShowMoreScholarships currentId={scholarship.id} />

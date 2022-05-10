@@ -1,0 +1,20 @@
+{
+  "generalDescription": "Please add the general information about the scholarship.",
+  "scholarshipName": "Scholarship Name",
+  "organization": "Organization",
+  "scholarshipLink": "Scholarship Link",
+  "deadline": "Deadline",
+  "description": "Description",
+  "tags": "Tags",
+  "awardAmount": "Award Amount",
+  "requirementsDescription": "Include information that is required for applicants to have.",
+  "noEligibilityReqs": "No eligibility requirements",
+  "grades": "Grade(s)",
+  "minGpa": "Minimum GPA",
+  "schools": "School(s)",
+  "states": "State(s)",
+  "majors": "Major(s)",
+  "ethnicity": "Ethnicity(s)",
+  "reviewOnRight": "Please review the information on the right.",
+  "reviewBelow": "Please review the information below."
+}
