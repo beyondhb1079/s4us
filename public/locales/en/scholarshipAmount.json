@@ -1,9 +1,9 @@
 {
   "awardAmount": "Award Amount",
   "fixed": "Fixed",
-  "varies": "Varies",
   "fullTuition": "Full Tuition",
-  "unset": "Unset",
+  "noMax": "No max",
   "noMin": "No min",
-  "noMax": "No max"
+  "unset": "Unset",
+  "varies": "Varies"
 }
