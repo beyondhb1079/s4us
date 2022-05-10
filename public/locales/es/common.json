@@ -13,7 +13,6 @@
     "help": "Ayuda",
     "privacy": "Privacidad",
     "terms": "Términos",
-    "addScholarship": "Agregar beca",
     "browseScholarship": "Buscar becas",
     "about": "Acerca de",
     "contact": "Contacto",
@@ -26,7 +25,7 @@
     "signIn": "Iniciar Sesión",
     "apply": "Aplicar",
     "share": "Compartir",
-    "back": "Atras",
+    "back": "Atrás",
     "next": "Siguiente",
     "submit": "Submitir",
     "copyLink": "Copiar enlace",
@@ -43,10 +42,10 @@
   "welcome": "Bienvenido",
   "currentlySharing": "Actualmente compartiendo",
   "general": "General",
-  "eligibilityReqs": "Requisitos de Elegibilidad",
+  "eligibilityReqs": "Requisitos de elegibilidad",
   "review": "Revisión",
   "none": "Ninguno",
   "more": "mas",
   "any": "Todos",
-  "moreScholarships": "Más Becas"
+  "moreScholarships": "Más becas"
 }
