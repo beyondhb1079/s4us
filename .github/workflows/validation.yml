@@ -90,5 +90,5 @@ jobs:
         uses: actions/checkout@v2
       - name: Install i18next-parser
         run: yarn global add i18next-parser@~6.0.0
-      - name: Style
-        run: $(yarn global bin)/i18next-parser --fail-on-update --fail-on-warnings && echo 'Translations are up to date!'
+      - name: Check translations
+        run: yarn i18next-parser --fail-on-update --fail-on-warnings && echo 'Translations are up to date!'
