@@ -211,7 +211,7 @@ function ScholarshipForm({ scholarship }) {
                   color="primary"
                 />
               }
-              label={t('noEligibilityReqs')}
+              label={t('noEligibilityReqs').toUpperCase()}
             />
             <FormHelperText error>{formik.errors.checkbox}</FormHelperText>
           </Grid>

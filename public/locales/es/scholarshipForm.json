@@ -8,7 +8,7 @@
   "tags": "Etiquetas",
   "awardAmount": "Monto del premio",
   "requirementsDescription": "Incluya la información que se requiere que los solicitantes tengan.",
-  "noEligibilityReqs": "SIN REQUISITOS DE ELEGIBILIDAD",
+  "noEligibilityReqs": "Sin requisitos de elegibilidad",
   "grades": "Grado(s)",
   "gradesPlaceholder": "Sin requisitos de grado",
   "minGpa": "GPA mínimo",
