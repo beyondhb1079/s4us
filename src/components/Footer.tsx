@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Box,
@@ -14,10 +14,16 @@ import {
   withDeviceInfo,
 } from '../lib/mail';
 import { SUBSCRIPTION_FORM_URL } from '../config/constants';
-import { useTranslation } from 'react-i18next';
+import { TFunction, useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 
-const FooterLink = ({ children, to }) => {
+const FooterLink = ({
+  children,
+  to,
+}: {
+  children: ReactNode;
+  to: string;
+}): JSX.Element => {
   const internal = to.includes(':');
   return (
     <MuiLink
@@ -41,17 +47,17 @@ FooterLink.defaultProps = {
   inline: false,
 };
 
-const quickLinks = (t) => ({
+const quickLinks = (t: TFunction<'common', undefined>) => ({
   [t('actions.addScholarship')]: '/scholarships/new',
   [t('footer.browseScholarship')]: '/scholarships',
 });
 
-const orgLinks = (t) => ({
+const orgLinks = (t: TFunction<'common', undefined>) => ({
   [t('footer.about')]: '/about',
   [t('footer.contact')]: '/contact',
 });
 
-const helpLinks = (t) => ({
+const helpLinks = (t: TFunction<'common', undefined>) => ({
   [t('actions.reportIssue')]: genMailToLink({
     subject: 'Bug Report',
     body: withDeviceInfo(reportIssue),
@@ -67,7 +73,7 @@ const helpLinks = (t) => ({
   }),
 });
 
-function Footer() {
+function Footer(): JSX.Element {
   const { t } = useTranslation('common');
 
   const columns = {

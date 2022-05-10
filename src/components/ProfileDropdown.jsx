@@ -112,6 +112,6 @@ export default function ProfileDropdown(props) {
 }
 
 ProfileDropdown.propTypes = {
-  anchorEl: PropTypes.element,
+  anchorEl: PropTypes.node,
   onClose: PropTypes.func.isRequired,
 };
