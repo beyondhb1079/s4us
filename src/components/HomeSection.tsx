@@ -1,16 +1,25 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Container, Grid, Typography } from '@mui/material';
 
+interface HomeSectionProps {
+  alignItems?: string;
+  direction?: 'row' | 'row-reverse';
+  title: string;
+  main?: boolean;
+  description?: string;
+  buttons?: JSX.Element[];
+  pic: string;
+}
+
 const HomeSection = ({
-  alignItems,
-  direction,
+  alignItems = 'flex-start',
+  direction = 'row',
   title,
-  main,
-  description,
-  buttons,
+  main = false,
+  description = '',
+  buttons = [],
   pic,
-}) => {
+}: HomeSectionProps): JSX.Element => {
   const picSize = main ? '95%' : '85%';
   return (
     <Container sx={{ padding: 4 }}>
@@ -23,7 +32,7 @@ const HomeSection = ({
             {description}
           </Typography>
           <Grid container spacing={2}>
-            {buttons.map((button, i) => (
+            {buttons.map((button: JSX.Element, i: number) => (
               // eslint-disable-next-line react/no-array-index-key
               <Grid item key={i}>
                 {button}
@@ -46,24 +55,6 @@ const HomeSection = ({
       </Grid>
     </Container>
   );
-};
-
-HomeSection.defaultProps = {
-  alignItems: 'flex-start',
-  main: false,
-  direction: 'row',
-  buttons: [],
-  description: '',
-};
-
-HomeSection.propTypes = {
-  alignItems: PropTypes.string,
-  direction: PropTypes.string,
-  title: PropTypes.string.isRequired,
-  main: PropTypes.bool,
-  description: PropTypes.string,
-  buttons: PropTypes.arrayOf(PropTypes.element),
-  pic: PropTypes.string.isRequired,
 };
 
 export default HomeSection;

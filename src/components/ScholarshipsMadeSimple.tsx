@@ -5,9 +5,12 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 import HomeSection from './HomeSection';
 import student from '../img/img5.svg';
 import contributor from '../img/img1.svg';
-import { useTranslation } from 'react-i18next';
+import { TFunction, useTranslation } from 'react-i18next';
 
-function OutlineButton(user, t) {
+function OutlineButton(
+  user: string,
+  t: TFunction<('publicHome' | 'common')[], undefined>
+): JSX.Element {
   return (
     <Button
       variant="contained"
@@ -21,7 +24,7 @@ function OutlineButton(user, t) {
   );
 }
 
-export default function ScholarshipsMadeSimpleSection() {
+export default function ScholarshipsMadeSimpleSection(): JSX.Element {
   const { t } = useTranslation(['publicHome', 'common']);
   const tabs = [
     {
@@ -43,7 +46,8 @@ export default function ScholarshipsMadeSimpleSection() {
 
   const [user, setUser] = React.useState(tabs[0].tab);
 
-  const handleChange = (event, newUser) => setUser(newUser);
+  const handleChange = (_: any, newUser: React.SetStateAction<string>) =>
+    setUser(newUser);
 
   return (
     <Box>
@@ -70,7 +74,10 @@ export default function ScholarshipsMadeSimpleSection() {
         </AppBar>
         {tabs.map(({ tab, title, description, buttons, pic, direction }) => (
           <TabPanel key={tab} value={tab}>
-            <HomeSection {...{ title, description, buttons, pic, direction }} />
+            <HomeSection
+              direction={direction as 'row-reverse' | undefined}
+              {...{ title, description, buttons, pic }}
+            />
           </TabPanel>
         ))}
       </TabContext>

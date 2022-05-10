@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 import LookingForScholarshipsBanner from '../components/LookingForScholarshipsBanner';
 import useAuth from '../lib/useAuth';
 
-export default function UserHome() {
+export default function UserHome(): JSX.Element {
   const { t } = useTranslation(['userHome', 'common']);
   const { currentUser: user } = useAuth();
   const location = useLocation();
@@ -67,7 +67,7 @@ export default function UserHome() {
         </Grid>
       </Grid>
       <ScholarshipList
-        extraFilters={{ authorId: user.uid, hideExpired: false }}
+        extraFilters={{ authorId: user?.uid, hideExpired: false }}
         noResultsNode={
           <Grid
             container
