@@ -19,13 +19,13 @@ import {
 } from '@mui/material';
 import LanguageIcon from '@mui/icons-material/Language';
 import ProfileMenu from './ProfileDropdown';
-import { useTranslation } from 'react-i18next';
+import { TFunction, useTranslation } from 'react-i18next';
 import { BRAND_NAME } from '../config/constants';
 import HeaderNavMenu from './HeaderNavMenu';
 import useAuth from '../lib/useAuth';
 import PropTypes from 'prop-types';
 
-function HideOnScroll({ children }) {
+function HideOnScroll({ children }: { children: JSX.Element }) {
   const trigger = useScrollTrigger();
 
   return (
@@ -55,9 +55,9 @@ const OnRenderSnackbar = () => {
   );
 };
 
-const AuthGrowButton = ({ t }) => {
+const AuthGrowButton = ({ t }: { t: TFunction<'common', undefined> }) => {
   const { currentUser } = useAuth();
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const location = useLocation();
 
   return (
@@ -72,7 +72,7 @@ const AuthGrowButton = ({ t }) => {
             onClick={(e) => setAnchorEl(e.currentTarget)}
             color="inherit"
             sx={{ height: '100%', width: 64 }}>
-            <Avatar src={currentUser.photoURL} />
+            <Avatar src={currentUser.photoURL || undefined} />
           </IconButton>
         ) : (
           <Button
@@ -92,7 +92,7 @@ const AuthGrowButton = ({ t }) => {
   );
 };
 
-const links = (t) => ({
+const links = (t: TFunction<'common', undefined>) => ({
   [t('navbar.scholarships')]: '/scholarships',
   [t('navbar.add')]: '/scholarships/new',
 });
@@ -102,9 +102,9 @@ const languages = {
   es: 'Español',
 };
 
-function Header() {
+function Header(): JSX.Element {
   const { t, i18n } = useTranslation('common');
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   return (
     <HideOnScroll>
@@ -161,7 +161,7 @@ function Header() {
   );
 }
 
-export function HeaderSkeleton() {
+export function HeaderSkeleton(): JSX.Element {
   return (
     <Box sx={{ width: '100vw', visibility: 'hidden' }}>
       <Toolbar />
