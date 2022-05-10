@@ -3,9 +3,13 @@ import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 import { Tab, Tabs } from '@mui/material';
 
-function HeaderNavMenu({ links }) {
+function HeaderNavMenu({
+  links,
+}: {
+  links: Record<string, string>;
+}): JSX.Element {
   const location = useLocation();
-  let currentTab = false;
+  let currentTab = Object.keys(links)[0];
 
   Object.entries(links).forEach(([title, link]) => {
     if (location.pathname.startsWith(link)) {

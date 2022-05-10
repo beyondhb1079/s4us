@@ -13,9 +13,9 @@ initializeTestApp({ apiKey: 'fake-api-key' });
 // TODO: Figure out a cleaner solution.
 window.MutationObserver = require('mutation-observer');
 
-function renderAtUrl(url) {
+function renderAtUrl(url: string | URL) {
   delete window.location;
-  window.location = new URL(url);
+  window.location = new URL(url) as unknown as Location;
   return render(
     <Suspense fallback="loading">
       <I18nextProvider i18n={i18n}>
