@@ -4,15 +4,6 @@
     "add": "Add"
   },
 
-  "btn": {
-    "browseScholarships": "Browse Scholarships",
-    "addScholarship": "Add a Scholarship",
-    "login": "Login",
-    "logout": "Logout",
-    "loadMore": "Load More",
-    "subscribeForUpdates": "Subscribe"
-  },
-
   "protectedPage": "You must log in first to access this page",
   "lookingForScholarships": "Looking for scholarships?",
 
@@ -39,7 +30,13 @@
     "next": "Next",
     "submit": "Submit",
     "copyLink": "Copy link",
-    "reportIssue": "Report issue"
+    "reportIssue": "Report issue",
+    "browseScholarships": "Browse Scholarships",
+    "addScholarship": "Add a Scholarship",
+    "login": "Login",
+    "logout": "Logout",
+    "loadMore": "Load More",
+    "subscribe": "Subscribe"
   },
 
   "dashboard": "Dashboard",

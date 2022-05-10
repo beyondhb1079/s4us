@@ -4,15 +4,6 @@
     "add": "Agregar"
   },
 
-  "btn": {
-    "browseScholarships": "Buscar Becas",
-    "addScholarship": "Agregar una Beca",
-    "login": "Iniciar",
-    "logout": "Terminar",
-    "loadMore": "carga más",
-    "subscribeForUpdates": "Suscribir"
-  },
-
   "protectedPage": "Primero debe iniciar una sesión para acceder a esta página",
   "lookingForScholarships": "¿Buscando becas?",
 
@@ -39,7 +30,13 @@
     "next": "Siguiente",
     "submit": "Submitir",
     "copyLink": "Copiar enlace",
-    "reportIssue": "Reportar un problem"
+    "reportIssue": "Reportar un problem",
+    "browseScholarships": "Buscar Becas",
+    "addScholarship": "Agregar una Beca",
+    "login": "Iniciar",
+    "logout": "Terminar",
+    "loadMore": "carga más",
+    "subscribe": "Suscribir"
   },
 
   "dashboard": "Tablero de control",
