@@ -1,40 +1,45 @@
 {
-  "navbar": {
-    "scholarships": "Scholarships",
-    "add": "Add"
-  },
-
-  "btn": {
-    "browseScholarships": "Browse Scholarships",
-    "addScholarship": "Add a Scholarship",
-    "login": "Login",
-    "loadMore": "Load More",
-    "subscribeForUpdates": "Subscribe"
-  },
-
-  "protectedPage": "You must log in first to access this page",
-  "lookingForScholarships": "Looking for scholarships?",
-
-  "footer": {
-    "quickLinks": "Quick Links",
-    "organization": "Organization",
-    "help": "Help",
-    "privacy": "Privacy",
-    "terms": "Terms",
-    "addScholarship": "Add a scholarship",
-    "browseScholarship": "Browse scholarships",
-    "about": "About",
-    "contact": "Contact",
-    "reportIssue": "Report an issue",
-    "suggestIdea": "Suggest an idea",
-    "subscribeForUpdates": "Subscribe for updates",
-    "reachOut": "Reach out"
-  },
-
   "actions": {
-    "signIn": "Sign In"
+    "addScholarship": "Add a Scholarship",
+    "apply": "Apply",
+    "back": "Back",
+    "browseScholarships": "Browse Scholarships",
+    "copyLink": "Copy link",
+    "login": "Login",
+    "logout": "Logout",
+    "next": "Next",
+    "reportIssue": "Report issue",
+    "share": "Share",
+    "signIn": "Sign In",
+    "submit": "Submit"
   },
-
+  "any": "Any",
+  "currentlySharing": "Currently sharing",
   "dashboard": "Dashboard",
+  "eligibilityReqs": "Eligibility Requirements",
+  "footer": {
+    "about": "About",
+    "browseScholarship": "Browse scholarships",
+    "contact": "Contact",
+    "help": "Help",
+    "organization": "Organization",
+    "privacy": "Privacy",
+    "quickLinks": "Quick Links",
+    "reachOut": "Reach out",
+    "subscribeForUpdates": "Subscribe for updates",
+    "suggestIdea": "Suggest an idea",
+    "terms": "Terms"
+  },
+  "general": "General",
+  "lookingForScholarships": "Looking for scholarships?",
+  "more": "more",
+  "moreScholarships": "More Scholarships",
+  "navbar": {
+    "add": "Add",
+    "scholarships": "Scholarships"
+  },
+  "noRequirements": "No Requirements",
+  "protectedPage": "You must log in first to access this page",
+  "review": "Review",
   "welcome": "Welcome"
 }

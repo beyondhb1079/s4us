@@ -83,7 +83,7 @@ const AuthGrowButton = ({ t }) => {
             to={location.pathname}
             state={{ showLoginDialog: true }}
             sx={{ height: '100%', width: 64 }}>
-            {t('btn.login')}
+            {t('actions.login')}
           </Button>
         )}
       </Grow>
@@ -92,10 +92,10 @@ const AuthGrowButton = ({ t }) => {
   );
 };
 
-const links = {
-  'navbar.scholarships': '/scholarships',
-  'navbar.add': '/scholarships/new',
-};
+const links = (t) => ({
+  [t('navbar.scholarships')]: '/scholarships',
+  [t('navbar.add')]: '/scholarships/new',
+});
 
 const languages = {
   en: 'English',
@@ -123,7 +123,7 @@ function Header() {
             {BRAND_NAME.toUpperCase()}
           </MuiLink>
           <Hidden smDown>
-            <HeaderNavMenu links={links} />
+            <HeaderNavMenu links={links(t)} />
           </Hidden>
           <IconButton
             color="primary"
@@ -135,7 +135,7 @@ function Header() {
         </Toolbar>
         <Hidden smUp>
           <Toolbar variant="dense">
-            <HeaderNavMenu links={links} />
+            <HeaderNavMenu links={links(t)} />
           </Toolbar>
         </Hidden>
         <Menu

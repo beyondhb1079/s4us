@@ -19,6 +19,7 @@ import {
 import experiments from '../lib/experiments';
 import useAuth from '../lib/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 // hacky way to override Menu style
 const StyledMenu = (props) => (
@@ -53,6 +54,7 @@ StyledMenuItem.propTypes = {
 export default function ProfileDropdown(props) {
   const { anchorEl, onClose } = props;
   const { currentUser: user } = useAuth();
+  const { t } = useTranslation('common');
 
   // needs to be updated once there is a working manage profile page
   const manageProfileLink = '/home';
@@ -97,12 +99,12 @@ export default function ProfileDropdown(props) {
       )}
       <StyledMenuItem
         icon={HomeIcon}
-        text="Dashboard"
+        text={t('dashboard')}
         onClick={() => navigate('/')}
       />
       <StyledMenuItem
         icon={ExitToAppIcon}
-        text="Logout"
+        text={t('actions.logout')}
         onClick={signUserOut}
       />
     </StyledMenu>

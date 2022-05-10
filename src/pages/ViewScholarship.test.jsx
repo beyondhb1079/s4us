@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import Helmet from 'react-helmet';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { clearFirestoreData, initializeTestApp } from '../lib/testing';
@@ -55,7 +55,7 @@ test('renders scholarship not found', () => {
   return expect(screen.findByText(/not found/i)).resolves.toBeInTheDocument();
 });
 
-test('renders passed in scholarship details', () => {
+test('renders passed in scholarship details', async () => {
   const data = {
     name: 'Foo scholarship',
     amount: ScholarshipAmount.fixed(1000),
@@ -68,7 +68,7 @@ test('renders passed in scholarship details', () => {
     scholarship: { id: 'passed-it', data },
   });
 
-  expect(screen.getByText(data.name)).toBeInTheDocument();
+  await waitFor(() => expect(screen.getByText(data.name)).toBeInTheDocument());
   expect(
     screen.getByText(ScholarshipAmount.toString(data.amount))
   ).toBeInTheDocument();

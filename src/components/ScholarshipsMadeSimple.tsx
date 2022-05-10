@@ -18,8 +18,8 @@ function OutlineButton(
       component={Link}
       to={user === 'students' ? '/scholarships' : '/scholarships/new'}>
       {user === 'students'
-        ? t('common:btn.browseScholarships')
-        : t('common:btn.addScholarship')}
+        ? t('common:actions.browseScholarships')
+        : t('common:actions.addScholarship')}
     </Button>
   );
 }

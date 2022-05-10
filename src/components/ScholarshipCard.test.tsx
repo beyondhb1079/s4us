@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ScholarshipCard from './ScholarshipCard';
@@ -70,12 +70,14 @@ const detailStrings = [
 
 const lintWarning = /potential issues detected/;
 
-test('result renders basic info', () => {
+test('result renders basic info', async () => {
   const { getByText, queryByText } = renderCard(
     <ScholarshipCard scholarship={scholarship} />
   );
 
-  basicStrings.forEach((s) => expect(getByText(s)).toBeInTheDocument());
+  await waitFor(() =>
+    basicStrings.forEach((s) => expect(getByText(s)).toBeInTheDocument())
+  );
   detailStrings.forEach((s) => expect(queryByText(s)).not.toBeInTheDocument());
   expect(queryByText(lintWarning)).not.toBeInTheDocument();
   const cardActionArea = screen.getByRole('button');
@@ -101,7 +103,7 @@ test('detail renders detail info and Apply button', () => {
   expect(queryByText(lintWarning)).not.toBeInTheDocument();
   expect(screen.getByRole('button').textContent).toEqual('Share');
   const links = screen.getAllByRole('link');
-  expect(links.map((l) => l.textContent)).toEqual(['Apply', 'Report Issue']);
+  expect(links.map((l) => l.textContent)).toEqual(['Apply', 'Report issue']);
   expect(links[0].href).toEqual(data.website);
   expect(links[1].href).toContain('mailto');
 });
@@ -118,7 +120,7 @@ test('detail view for editor shows lint warnings and edit button', () => {
   expect(links.map((l) => l.textContent)).toEqual([
     'Apply',
     '',
-    'Report Issue',
+    'Report issue',
   ]);
   expect(links[1].href).toEqual('http://localhost/edit');
 });

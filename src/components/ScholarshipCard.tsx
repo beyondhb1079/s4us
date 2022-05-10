@@ -34,15 +34,18 @@ import { lint } from '../lib/lint';
 import ShareDialog from './ShareDialog';
 import useAuth from '../lib/useAuth';
 import ScholarshipData from '../types/ScholarshipData';
+import { useTranslation } from 'react-i18next';
 
 const SHOW_MORE_THRESHOLD = 5;
 
 const DetailCardCell = ({
   label,
   values,
+  t,
 }: {
   label: string;
   values: string[];
+  t: (key: string) => string;
 }) => {
   const [showAll, setShowAll] = useState(false);
   const shownValues = showAll ? values : values.slice(0, SHOW_MORE_THRESHOLD);
@@ -55,14 +58,14 @@ const DetailCardCell = ({
 
         <Grid item sx={{ textAlign: { sm: 'right' } }} xs={12} sm>
           {values.length === 0
-            ? 'Any'
+            ? t('any')
             : shownValues.map((v) => <Typography key={v}>{v}</Typography>)}
           {values.length > shownValues.length && (
             <MuiLink
               component={Button}
               onClick={() => setShowAll(true)}
               sx={{ p: 0 }}>
-              +{values.length - SHOW_MORE_THRESHOLD} more
+              +{values.length - SHOW_MORE_THRESHOLD} {t('more')}
             </MuiLink>
           )}
         </Grid>
@@ -100,6 +103,7 @@ export default function ScholarshipCard({
   const preview = style === 'preview';
 
   const [showShare, setShowShare] = useState(false);
+  const { t } = useTranslation(['common', 'scholarshipForm']);
 
   const navigate = useNavigate();
 
@@ -177,14 +181,14 @@ export default function ScholarshipCard({
                 color="primary"
                 sx={{ mr: 1 }}
                 startIcon={<SendIcon />}>
-                Apply
+                {t('actions.apply')}
               </Button>
               <Button
                 variant="outlined"
                 startIcon={<ShareIcon />}
                 onClick={() => setShowShare(true)}
                 disabled={scholarship.id === undefined}>
-                Share
+                {t('actions.share')}
               </Button>
 
               {!preview && canEdit && (
@@ -211,11 +215,12 @@ export default function ScholarshipCard({
           {detailed && (
             <Box sx={{ my: 4 }}>
               <Typography variant="h5" component="h4" paragraph>
-                Eligibility Requirements
+                {t('eligibilityReqs')}
               </Typography>
               <DetailCardCell
-                label="State"
+                label={t('scholarshipForm:states')}
                 values={states?.map(State.toString).sort()}
+                t={t}
               />
               <DetailCardCell
                 label="GPA"
@@ -225,17 +230,28 @@ export default function ScholarshipCard({
                   ]) ||
                   undefined
                 }
+                t={t}
               />
               <DetailCardCell
-                label="Grades"
+                label={t('scholarshipForm:grades')}
                 values={grades?.sort().map(GradeLevel.toString)}
+                t={t}
               />
               <DetailCardCell
-                label="Demographic"
+                label={t('scholarshipForm:ethnicity')}
                 values={ethnicities?.map(Ethnicity.toString).sort()}
+                t={t}
               />
-              <DetailCardCell label="Majors" values={majors?.sort()} />
-              <DetailCardCell label="Schools" values={schools?.sort()} />
+              <DetailCardCell
+                label={t('scholarshipForm:majors')}
+                values={majors?.sort()}
+                t={t}
+              />
+              <DetailCardCell
+                label={t('scholarshipForm:schools')}
+                values={schools?.sort()}
+                t={t}
+              />
             </Box>
           )}
 
@@ -266,7 +282,7 @@ export default function ScholarshipCard({
               })}
               icon={<ReportIcon />}
               sx={{ my: 5 }}
-              label="Report Issue"
+              label={t('actions.reportIssue')}
             />
           )}
         </CardContent>

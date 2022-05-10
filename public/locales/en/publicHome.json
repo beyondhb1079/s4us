@@ -1,18 +1,18 @@
 {
+  "communityTab": {
+    "description": "Know a scholarship available for undocumented students not yet in our database? Sign up and add them, become part of our community of scholarship contributers.",
+    "tab": "community",
+    "title": "Join and Support the Community"
+  },
   "landingSection": {
-    "title": "Scholarships for undocumented students.",
-    "subTitle": "A resource list of scholarships by and for the community."
+    "subTitle": "A resource list of scholarships by and for the community.",
+    "title": "Scholarships for undocumented students."
   },
   "madeSimple": "Scholarship search made simple",
+  "startSearch": "Let's start searching!",
   "studentTab": {
+    "description": "Browse our database at ease, knowing none of our schoalrships require U.S. citizenship or permanent residency.",
     "tab": "students",
-    "title": "Fewer barriers, more scholarships.",
-    "description": "Browse our database at ease, knowing none of our schoalrships require U.S. citizenship or permanent residency."
-  },
-  "communityTab": {
-    "tab": "community",
-    "title": "Join and Support the Community",
-    "description": "Know a scholarship available for undocumented students not yet in our database? Sign up and add them, become part of our community of scholarship contributers."
-  },
-  "startSearch": "Let's start searching!"
+    "title": "Fewer barriers, more scholarships."
+  }
 }

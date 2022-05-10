@@ -85,6 +85,15 @@ See this section about [running tests](https://facebook.github.io/create-react-a
 The tests also run when you run a `git push` command.<br />
 You can skip the tests by adding the `--no-verify` flag to the command.
 
+### Updating translations
+
+```sh
+yarn i18next
+```
+
+Will run the [i18next-parser](https://github.com/i18next/i18next-parser) and
+extract any missing translations introduced.
+
 ## Learn More
 
 To learn React, check out the [React documentation](https://reactjs.org/).

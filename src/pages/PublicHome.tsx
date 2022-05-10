@@ -23,14 +23,14 @@ function PublicHome(): JSX.Element {
             to="/scholarships"
             variant="contained"
             color="primary">
-            {t('common:btn.browseScholarships')}
+            {t('common:actions.browseScholarships')}
           </Button>,
           <Button
             component={Link}
             to="/scholarships/new"
             variant="outlined"
             color="primary">
-            {t('common:btn.addScholarship')}
+            {t('common:actions.addScholarship')}
           </Button>,
         ]}
         pic={graduation}
@@ -49,7 +49,7 @@ function PublicHome(): JSX.Element {
               to="/scholarships"
               variant="contained"
               color="primary">
-              {t('common:btn.browseScholarships')}
+              {t('common:actions.browseScholarships')}
             </Button>,
           ]}
           pic={searching}
