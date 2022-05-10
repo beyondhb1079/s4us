@@ -44,8 +44,8 @@
   "general": "General",
   "eligibilityReqs": "Requisitos de elegibilidad",
   "review": "Revisión",
-  "none": "Ninguno",
   "more": "mas",
   "any": "Todos",
-  "moreScholarships": "Más becas"
+  "moreScholarships": "Más becas",
+  "noRequirements": "Sin requisitos"
 }

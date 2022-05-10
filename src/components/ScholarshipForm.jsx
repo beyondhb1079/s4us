@@ -223,7 +223,7 @@ function ScholarshipForm({ scholarship }) {
               labelStyle={labelStyle}
               formik={formik}
               options={GradeLevel.values()}
-              placeholder={t('gradesPlaceholder')}
+              placeholder={t('common:noRequirements')}
             />
           </Grid>
           <Grid item sm={6} xs={12}>
@@ -234,7 +234,7 @@ function ScholarshipForm({ scholarship }) {
               formik={formik}
               label={t('minGpa')}
               labelStyle={labelStyle}
-              placeholder={t('common:none')}
+              placeholder={t('common:noRequirements')}
             />
           </Grid>
           <Grid item sm={6} xs={12}>
@@ -246,7 +246,7 @@ function ScholarshipForm({ scholarship }) {
               options={SCHOOLS.map(({ name, state }) => `${name} (${state})`)}
               freeSolo
               formik={formik}
-              placeholder={t('schoolsPlaceholder')}
+              placeholder={t('common:noRequirements')}
             />
           </Grid>
           <Grid item sm={6} xs={12}>
@@ -261,7 +261,7 @@ function ScholarshipForm({ scholarship }) {
                 stringify: (s) => State.toString(s),
               })}
               formik={formik}
-              placeholder={t('statesPlaceholder')}
+              placeholder={t('common:noRequirements')}
             />
           </Grid>
           <Grid item sm={6} xs={12}>
@@ -273,7 +273,7 @@ function ScholarshipForm({ scholarship }) {
               options={[...MAJORS]}
               freeSolo
               formik={formik}
-              placeholder={t('majorsPlaceholder')}
+              placeholder={t('common:noRequirements')}
             />
           </Grid>
           <Grid item sm={6} xs={12}>
@@ -284,7 +284,7 @@ function ScholarshipForm({ scholarship }) {
               labelStyle={labelStyle}
               formik={formik}
               options={Ethnicity.values()}
-              placeholder={t('ethnicityPlaceholder')}
+              placeholder={t('common:noRequirements')}
             />
           </Grid>
         </Grid>

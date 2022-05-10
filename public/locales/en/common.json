@@ -44,8 +44,8 @@
   "general": "General",
   "eligibilityReqs": "Eligibility Requirements",
   "review": "Review",
-  "none": "None",
   "more": "more",
   "any": "Any",
-  "moreScholarships": "More Scholarships"
+  "moreScholarships": "More Scholarships",
+  "noRequirements": "No Requirements"
 }
