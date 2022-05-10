@@ -83,7 +83,7 @@ const AuthGrowButton = ({ t }) => {
             to={location.pathname}
             state={{ showLoginDialog: true }}
             sx={{ height: '100%', width: 64 }}>
-            {t('btn.login')}
+            {t('actions.login')}
           </Button>
         )}
       </Grow>
