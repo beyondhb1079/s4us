@@ -1,0 +1,9 @@
+{
+  "awardAmount": "Award Amount",
+  "fixed": "Fixed",
+  "varies": "Varies",
+  "fullTuition": "Full Tuition",
+  "unset": "Unset",
+  "noMin": "No min",
+  "noMax": "No max"
+}

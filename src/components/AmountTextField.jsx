@@ -20,13 +20,12 @@ AmountTextField.propTypes = {
   onChange: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
   error: PropTypes.bool,
-  placeholder: PropTypes.string,
+  placeholder: PropTypes.string.isRequired,
 };
 
 AmountTextField.defaultProps = {
   disabled: false,
   error: false,
-  placeholder: 'Unset',
 };
 
 export default AmountTextField;
