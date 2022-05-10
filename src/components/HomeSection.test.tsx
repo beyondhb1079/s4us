@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import HomeSection from './HomeSection';
 
-const renderWithTheme = (ui) =>
+const renderWithTheme = (ui: JSX.Element) =>
   render(<ThemeProvider theme={createTheme()}>{ui}</ThemeProvider>);
 
 describe('HomeSection', () => {
