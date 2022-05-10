@@ -1,0 +1,13 @@
+{
+  "name": "Por favor ingrese el nombre de la beca",
+  "deadline": "Por favor ingrese la fecha límite de la beca",
+  "validDate": "Por favor introduzca una fecha valida",
+  "description": "Por favor ingrese la descripción de la beca",
+  "validWebsite": "El sitio web debe ser una URL válida",
+  "website": "Por favor ingrese al sitio web de becas",
+  "option": "Por favor elige una opción arriba",
+  "validFixedAmount": "Ingrese una cantidad válida. Si no conoce la cantidad, seleccione 'Varía' arriba",
+  "validAmount": "Por favor ingrese una cantidad válida",
+  "minLessMax": "Mínimo debe ser menor que el máximo.",
+  "validGpa": "Ingrese un GPA válido, redondeado a dos decimales"
+}

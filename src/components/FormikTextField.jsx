@@ -2,6 +2,7 @@ import React from 'react';
 import { InputLabel, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 import { getIn } from 'formik';
+import { useTranslation } from 'react-i18next';
 
 /* eslint-disable react/jsx-props-no-spreading */
 function FormikTextField(props) {
@@ -15,6 +16,7 @@ function FormikTextField(props) {
     value,
     ...otherProps
   } = props;
+  const { t } = useTranslation('validation');
 
   return (
     <>
@@ -22,7 +24,7 @@ function FormikTextField(props) {
       <TextField
         id={id}
         error={Boolean(getIn(formik.errors, id))}
-        helperText={getIn(formik.errors, id)}
+        helperText={t(getIn(formik.errors, id))}
         value={getIn(formik.values, id) || ''}
         onChange={formik.handleChange}
         fullWidth

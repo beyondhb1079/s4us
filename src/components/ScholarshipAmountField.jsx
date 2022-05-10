@@ -11,12 +11,13 @@ import PropTypes from 'prop-types';
 import AmountType from '../types/AmountType';
 import AmountTextField from './AmountTextField';
 import { getIn } from 'formik';
+import { useTranslation } from 'react-i18next';
 
 function ScholarshipAmountField({ labelStyle, formik }) {
   const amountType = formik.values.amount.type;
   const minError = getIn(formik.errors, 'amount.min');
   const maxError = getIn(formik.errors, 'amount.max');
-
+  const { t } = useTranslation('validation');
   let helperText = minError || maxError || '';
 
   const inputFields = {};
@@ -80,7 +81,7 @@ function ScholarshipAmountField({ labelStyle, formik }) {
 
         <Grid item>{amountType && inputFields[amountType]}</Grid>
       </Grid>
-      <FormHelperText error>{helperText}</FormHelperText>
+      <FormHelperText error>{t(helperText)}</FormHelperText>
     </>
   );
 }

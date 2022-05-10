@@ -1,0 +1,13 @@
+{
+  "name": "Please enter the scholarship name",
+  "deadline": "Please enter the scholarship deadline",
+  "validDate": "Please enter a valid date",
+  "description": "Please enter the scholarship description",
+  "validWebsite": "Website must be a valid URL",
+  "website": "Please enter the scholarship website",
+  "option": "Please choose an option above",
+  "validFixedAmount": "Please enter a valid amount. If the amount is unknown, select 'Varies' from above",
+  "validAmount": "Please enter a valid amount",
+  "minLessMax": "Minimum must be less than the maximum",
+  "validGpa": "Please enter a valid GPA, rounded to two decimal places"
+}

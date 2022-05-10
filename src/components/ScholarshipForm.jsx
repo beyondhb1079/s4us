@@ -44,7 +44,7 @@ function ScholarshipForm({ scholarship }) {
   const navigate = useNavigate();
 
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
-  const { t } = useTranslation(['scholarshipForm', 'common']);
+  const { t } = useTranslation(['scholarshipForm', 'common', 'validation']);
 
   const formik = useFormik({
     initialValues: scholarship.data,
@@ -213,7 +213,9 @@ function ScholarshipForm({ scholarship }) {
               }
               label={t('noEligibilityReqs').toUpperCase()}
             />
-            <FormHelperText error>{formik.errors.checkbox}</FormHelperText>
+            <FormHelperText error>
+              {t(`validation:${formik.errors.checkbox}`)}
+            </FormHelperText>
           </Grid>
           <Grid item sm={6} xs={12}>
             <FormikMultiSelect
