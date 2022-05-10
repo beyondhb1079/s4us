@@ -2,12 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 import { Tab, Tabs } from '@mui/material';
-import { useTranslation } from 'react-i18next';
 
 function HeaderNavMenu({ links }) {
   const location = useLocation();
   let currentTab = false;
-  const { t } = useTranslation('common');
 
   Object.entries(links).forEach(([title, link]) => {
     if (location.pathname.startsWith(link)) {
@@ -33,7 +31,7 @@ function HeaderNavMenu({ links }) {
           }}
           component={Link}
           key={title}
-          label={t(title)}
+          label={title}
           value={title}
           to={link}
         />

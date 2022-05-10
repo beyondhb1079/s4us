@@ -17,69 +17,64 @@ import { SUBSCRIPTION_FORM_URL } from '../config/constants';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 
-const quickLinks = {
-  'actions.addScholarship': '/scholarships/new',
-  'footer.browseScholarship': '/scholarships',
+const FooterLink = ({ children, to }) => {
+  const internal = to.includes(':');
+  return (
+    <MuiLink
+      component={internal ? Link : MuiLink}
+      to={internal ? to : undefined}
+      href={internal ? undefined : to}
+      variant="subtitle2"
+      color="text.secondary"
+      underline="hover">
+      {children}
+    </MuiLink>
+  );
 };
 
-const orgLinks = {
-  'footer.about': '/about',
-  'footer.contact': '/contact',
+FooterLink.propTypes = {
+  children: PropTypes.string.isRequired,
+  to: PropTypes.string,
 };
 
-const helpLinks = {
-  'actions.reportIssue': genMailToLink({
+FooterLink.defaultProps = {
+  inline: false,
+};
+
+const quickLinks = (t) => ({
+  [t('actions.addScholarship')]: '/scholarships/new',
+  [t('footer.browseScholarship')]: '/scholarships',
+});
+
+const orgLinks = (t) => ({
+  [t('footer.about')]: '/about',
+  [t('footer.contact')]: '/contact',
+});
+
+const helpLinks = (t) => ({
+  [t('actions.reportIssue')]: genMailToLink({
     subject: 'Bug Report',
     body: withDeviceInfo(reportIssue),
   }),
-  'footer.suggestIdea': genMailToLink({
+  [t('footer.suggestIdea')]: genMailToLink({
     subject: 'Feature Request',
     body: withDeviceInfo(featureRequest),
   }),
-  'footer.subscribeForUpdates': SUBSCRIPTION_FORM_URL,
-  'footer.reachOut': genMailToLink({
+  [t('footer.subscribeForUpdates')]: SUBSCRIPTION_FORM_URL,
+  [t('footer.reachOut')]: genMailToLink({
     subject: 'Outreach',
     body: 'Please describe the purpose of your outreach below.\n',
   }),
-};
-
-function FooterColumn({ title, links, internal, t }) {
-  return (
-    <Grid item sx={{ width: 170 }}>
-      <Typography
-        color={(theme) => theme.palette.grey[500]}
-        sx={{ fontWeight: 'bold' }}>
-        {t(title)}
-      </Typography>
-      {Object.entries(links).map(([name, link]) => (
-        <Box key={name}>
-          <MuiLink
-            component={internal ? Link : MuiLink}
-            to={internal ? link : ''}
-            href={!internal ? link : ''}
-            variant="subtitle2"
-            color="text.secondary"
-            underline="hover">
-            {t(name)}
-          </MuiLink>
-        </Box>
-      ))}
-    </Grid>
-  );
-}
-
-FooterColumn.propTypes = {
-  title: PropTypes.string.isRequired,
-  links: PropTypes.objectOf(PropTypes.string).isRequired,
-  internal: PropTypes.bool,
-  t: PropTypes.func,
-};
-FooterColumn.defaultProps = {
-  internal: false,
-};
+});
 
 function Footer() {
   const { t } = useTranslation('common');
+
+  const columns = {
+    [t('footer.quickLinks')]: quickLinks(t),
+    [t('footer.organization')]: orgLinks(t),
+    [t('footer.help')]: helpLinks(t),
+  };
 
   return (
     <Box sx={{ bgcolor: 'background.secondary', zIndex: 1200 }}>
@@ -95,41 +90,24 @@ function Footer() {
             </MuiLink>
             <Typography color="text.secondary">&copy; 2022</Typography>
             <Typography color="text.secondary">
-              <MuiLink
-                component={Link}
-                to="/privacy"
-                variant="subtitle2"
-                color="text.secondary"
-                underline="hover">
-                {t('footer.privacy')}
-              </MuiLink>{' '}
-              -{' '}
-              <MuiLink
-                component={Link}
-                to="/terms"
-                variant="subtitle2"
-                color="text.secondary"
-                underline="hover">
-                {t('footer.terms')}
-              </MuiLink>
+              <FooterLink to="/privacy">{t('footer.privacy')}</FooterLink> -{' '}
+              <FooterLink to="/terms">{t('footer.terms')}</FooterLink>
             </Typography>
           </Grid>
-
-          <FooterColumn
-            title="footer.quickLinks"
-            links={quickLinks}
-            t={t}
-            internal
-          />
-
-          <FooterColumn
-            title="footer.organization"
-            links={orgLinks}
-            t={t}
-            internal
-          />
-
-          <FooterColumn title="footer.help" links={helpLinks} t={t} />
+          {Object.entries(columns).map(([title, links]) => (
+            <Grid item sx={{ width: 170 }} key={title}>
+              <Typography
+                color={(theme) => theme.palette.grey[500]}
+                sx={{ fontWeight: 'bold' }}>
+                {title}
+              </Typography>
+              {Object.entries(links).map(([name, to]) => (
+                <Box key={name}>
+                  <FooterLink to={to}>{name}</FooterLink>
+                </Box>
+              ))}
+            </Grid>
+          ))}
         </Grid>
       </Container>
     </Box>
