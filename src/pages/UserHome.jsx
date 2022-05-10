@@ -62,7 +62,7 @@ export default function UserHome() {
             startIcon={<AddIcon />}
             component={Link}
             to="/scholarships/new">
-            {t('common:btn.addScholarship')}
+            {t('common:actions.addScholarship')}
           </Button>
         </Grid>
       </Grid>
@@ -84,7 +84,7 @@ export default function UserHome() {
                 {t('noneAdded')}
               </Typography>
               <MuiLink component={Link} to="/scholarships/new">
-                {t('common:btn.addScholarship')}
+                {t('common:actions.addScholarship')}
               </MuiLink>
             </Grid>
           </Grid>

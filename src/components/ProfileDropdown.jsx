@@ -104,7 +104,7 @@ export default function ProfileDropdown(props) {
       />
       <StyledMenuItem
         icon={ExitToAppIcon}
-        text={t('btn.logout')}
+        text={t('actions.logout')}
         onClick={signUserOut}
       />
     </StyledMenu>
