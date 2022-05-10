@@ -17,10 +17,14 @@ import { useTranslation } from 'react-i18next';
 import LookingForScholarshipsBanner from '../components/LookingForScholarshipsBanner';
 import useAuth from '../lib/useAuth';
 
+type LocationProps = {
+  state: { alert?: { message?: string } };
+};
+
 export default function UserHome(): JSX.Element {
   const { t } = useTranslation(['userHome', 'common']);
   const { currentUser: user } = useAuth();
-  const location = useLocation();
+  const location = useLocation() as LocationProps;
 
   const navType = useNavigationType();
   const alertMessage = location?.state?.alert?.message;
@@ -40,7 +44,7 @@ export default function UserHome(): JSX.Element {
       )}
 
       <Typography variant="h4" component="h1" gutterBottom>
-        {t('common:welcome')} {user.displayName}
+        {t('common:welcome')} {user?.displayName}
       </Typography>
 
       <LookingForScholarshipsBanner />
@@ -80,7 +84,7 @@ export default function UserHome(): JSX.Element {
               <InboxIcon sx={{ fontSize: (theme) => theme.spacing(25) }} />
             </Grid>
             <Grid item>
-              <Typography variant="h5" gutterButtom>
+              <Typography variant="h5" gutterBottom>
                 {t('noneAdded')}
               </Typography>
               <MuiLink component={Link} to="/scholarships/new">
