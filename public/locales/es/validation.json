@@ -6,8 +6,9 @@
   "validWebsite": "El sitio web debe ser una URL válida",
   "website": "Por favor ingrese al sitio web de becas",
   "option": "Por favor elige una opción arriba",
-  "validFixedAmount": "Ingrese una cantidad válida. Si no conoce la cantidad, seleccione 'Varía' arriba",
+  "validFixedAmount": "Ingrese una cantidad válida. Si no conoce la cantidad, sefleccione 'Varía' arriba",
   "validAmount": "Por favor ingrese una cantidad válida",
   "minLessMax": "Mínimo debe ser menor que el máximo.",
-  "validGpa": "Ingrese un GPA válido, redondeado a dos decimales"
+  "validGpa": "Ingrese un GPA válido, redondeado a dos decimales",
+  "checkbox": "Marque esta casilla si no hay requisitos para esta beca."
 }

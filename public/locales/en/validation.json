@@ -9,5 +9,6 @@
   "validFixedAmount": "Please enter a valid amount. If the amount is unknown, select 'Varies' from above",
   "validAmount": "Please enter a valid amount",
   "minLessMax": "Minimum must be less than the maximum",
-  "validGpa": "Please enter a valid GPA, rounded to two decimal places"
+  "validGpa": "Please enter a valid GPA, rounded to two decimal places",
+  "checkbox": "Check this box if there are no requirements for this scholarship."
 }
