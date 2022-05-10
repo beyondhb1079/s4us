@@ -53,7 +53,7 @@ const DetailCardCell = ({
     <>
       <Grid container justifyContent="space-between">
         <Grid item xs={12} sm>
-          <Typography>{t(label)}</Typography>
+          <Typography>{label}</Typography>
         </Grid>
 
         <Grid item sx={{ textAlign: { sm: 'right' } }} xs={12} sm>
@@ -74,7 +74,7 @@ const DetailCardCell = ({
     </>
   );
 };
-DetailCardCell.defaultProps = { values: [], t: undefined };
+DetailCardCell.defaultProps = { values: [] };
 
 export default function ScholarshipCard({
   scholarship,
@@ -218,7 +218,7 @@ export default function ScholarshipCard({
                 {t('eligibilityReqs')}
               </Typography>
               <DetailCardCell
-                label="scholarshipForm:states"
+                label={t('scholarshipForm:states')}
                 values={states?.map(State.toString).sort()}
                 t={t}
               />
@@ -233,22 +233,22 @@ export default function ScholarshipCard({
                 t={t}
               />
               <DetailCardCell
-                label="scholarshipForm:grades"
+                label={t('scholarshipForm:grades')}
                 values={grades?.sort().map(GradeLevel.toString)}
                 t={t}
               />
               <DetailCardCell
-                label="scholarshipForm:ethnicity"
+                label={t('scholarshipForm:ethnicity')}
                 values={ethnicities?.map(Ethnicity.toString).sort()}
                 t={t}
               />
               <DetailCardCell
-                label="scholarshipForm:majors"
+                label={t('scholarshipForm:majors')}
                 values={majors?.sort()}
                 t={t}
               />
               <DetailCardCell
-                label="scholarshipForm:schools"
+                label={t('scholarshipForm:schools')}
                 values={schools?.sort()}
                 t={t}
               />

@@ -1,51 +1,45 @@
 {
-  "navbar": {
-    "scholarships": "Explorar",
-    "add": "Agregar"
-  },
-
-  "protectedPage": "Primero debe iniciar una sesión para acceder a esta página",
-  "lookingForScholarships": "¿Buscando becas?",
-
-  "footer": {
-    "quickLinks": "Enlaces Rápidos",
-    "organization": "Organización",
-    "help": "Ayuda",
-    "privacy": "Privacidad",
-    "terms": "Términos",
-    "browseScholarship": "Buscar becas",
-    "about": "Acerca de",
-    "contact": "Contacto",
-    "suggestIdea": "Sugerir una idea",
-    "subscribeForUpdates": "Suscríbete para actualizaciones",
-    "reachOut": "Contacta con nosotros"
-  },
-
   "actions": {
-    "signIn": "Iniciar Sesión",
-    "apply": "Aplicar",
-    "share": "Compartir",
-    "back": "Atrás",
-    "next": "Siguiente",
-    "submit": "Submitir",
-    "copyLink": "Copiar enlace",
-    "reportIssue": "Reportar un problem",
-    "browseScholarships": "Buscar Becas",
     "addScholarship": "Agregar una Beca",
+    "apply": "Aplicar",
+    "back": "Atrás",
+    "browseScholarships": "Buscar Becas",
+    "copyLink": "Copiar enlace",
     "login": "Iniciar",
     "logout": "Terminar",
-    "loadMore": "carga más",
-    "subscribe": "Suscribir"
+    "next": "Siguiente",
+    "reportIssue": "Reportar un problem",
+    "share": "Compartir",
+    "signIn": "Iniciar Sesión",
+    "submit": "Submitir"
   },
-
-  "dashboard": "Tablero de control",
-  "welcome": "Bienvenido",
-  "currentlySharing": "Actualmente compartiendo",
-  "general": "General",
-  "eligibilityReqs": "Requisitos de elegibilidad",
-  "review": "Revisión",
-  "more": "mas",
   "any": "Todos",
+  "currentlySharing": "Actualmente compartiendo",
+  "dashboard": "Tablero de control",
+  "eligibilityReqs": "Requisitos de elegibilidad",
+  "footer": {
+    "about": "Acerca de",
+    "browseScholarship": "Buscar becas",
+    "contact": "Contacto",
+    "help": "Ayuda",
+    "organization": "Organización",
+    "privacy": "Privacidad",
+    "quickLinks": "Enlaces Rápidos",
+    "reachOut": "Contacta con nosotros",
+    "subscribeForUpdates": "Suscríbete para actualizaciones",
+    "suggestIdea": "Sugerir una idea",
+    "terms": "Términos"
+  },
+  "general": "General",
+  "lookingForScholarships": "¿Buscando becas?",
+  "more": "mas",
   "moreScholarships": "Más becas",
-  "noRequirements": "Sin requisitos"
+  "navbar": {
+    "add": "Agregar",
+    "scholarships": "Explorar"
+  },
+  "noRequirements": "Sin requisitos",
+  "protectedPage": "Primero debe iniciar una sesión para acceder a esta página",
+  "review": "Revisión",
+  "welcome": "Bienvenido"
 }

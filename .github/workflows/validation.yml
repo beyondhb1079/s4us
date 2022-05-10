@@ -81,3 +81,14 @@ jobs:
         continue-on-error: true
       - name: Run tests
         run: yarn test
+
+  # Ensure Translations are updated
+  translations:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+      - name: Install i18next-parser
+        run: yarn global add i18next-parser@~6.0.0
+      - name: Check translations
+        run: $(yarn global bin)/i18next --fail-on-warnings
