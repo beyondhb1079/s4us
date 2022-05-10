@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import graduation from '../img/img2.svg';
 import searching from '../img/img3.svg';
 
-function PublicHome() {
+function PublicHome(): JSX.Element {
   const { t } = useTranslation(['publicHome', 'common']);
 
   return (

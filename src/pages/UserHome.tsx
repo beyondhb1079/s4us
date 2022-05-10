@@ -17,10 +17,14 @@ import { useTranslation } from 'react-i18next';
 import LookingForScholarshipsBanner from '../components/LookingForScholarshipsBanner';
 import useAuth from '../lib/useAuth';
 
-export default function UserHome() {
+type LocationProps = {
+  state: { alert?: { message?: string } };
+};
+
+export default function UserHome(): JSX.Element {
   const { t } = useTranslation(['userHome', 'common']);
   const { currentUser: user } = useAuth();
-  const location = useLocation();
+  const location = useLocation() as LocationProps;
 
   const navType = useNavigationType();
   const alertMessage = location?.state?.alert?.message;
@@ -40,7 +44,7 @@ export default function UserHome() {
       )}
 
       <Typography variant="h4" component="h1" gutterBottom>
-        {t('common:welcome')} {user.displayName}
+        {t('common:welcome')} {user?.displayName}
       </Typography>
 
       <LookingForScholarshipsBanner />
@@ -67,7 +71,7 @@ export default function UserHome() {
         </Grid>
       </Grid>
       <ScholarshipList
-        extraFilters={{ authorId: user.uid, hideExpired: false }}
+        extraFilters={{ authorId: user?.uid, hideExpired: false }}
         noResultsNode={
           <Grid
             container
@@ -80,7 +84,7 @@ export default function UserHome() {
               <InboxIcon sx={{ fontSize: (theme) => theme.spacing(25) }} />
             </Grid>
             <Grid item>
-              <Typography variant="h5" gutterButtom>
+              <Typography variant="h5" gutterBottom>
                 {t('noneAdded')}
               </Typography>
               <MuiLink component={Link} to="/scholarships/new">
