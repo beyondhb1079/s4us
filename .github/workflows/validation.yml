@@ -91,6 +91,4 @@ jobs:
       - name: Install i18next-parser
         run: yarn global add i18next-parser@~6.0.0
       - name: Check translations
-        run: $(yarn global bin)/i18next --fail-on-warnings; git diff
-      - name: Check translations
-        run: $(yarn global bin)/i18next --fail-on-update --fail-on-warnings && echo 'Translations are up to date!' || git diff && exit 1
+        run: $(yarn global bin)/i18next --fail-on-warnings
