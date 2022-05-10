@@ -99,7 +99,7 @@ function ScholarshipForm({ scholarship }) {
   const noReqsChecked = JSON.stringify(formik.values.requirements) === '{}';
 
   const stepperItems = {
-    'common:general': {
+    [t('common:general')]: {
       description: t('generalDescription'),
       content: (
         <Grid container spacing={3}>
@@ -173,7 +173,7 @@ function ScholarshipForm({ scholarship }) {
         </Grid>
       ),
     },
-    'common:eligibilityReqs': {
+    [t('common:eligibilityReqs')]: {
       description: t('requirementsDescription'),
       content: (
         <Grid container spacing={3}>
@@ -290,7 +290,7 @@ function ScholarshipForm({ scholarship }) {
         </Grid>
       ),
     },
-    'common:review': {
+    [t('common:review')]: {
       description: isDesktop ? t('reviewOnRight') : t('reviewBelow'),
       content: !isDesktop && (
         <ScholarshipCard
@@ -334,7 +334,7 @@ function ScholarshipForm({ scholarship }) {
             {Object.entries(stepperItems).map(
               ([label, { description, content }]) => (
                 <Step key={label}>
-                  <StepLabel>{t(label)}</StepLabel>
+                  <StepLabel>{label}</StepLabel>
                   <StepContent>
                     <Typography>{description}</Typography>
                     <Box marginY={3}>{content}</Box>

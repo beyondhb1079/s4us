@@ -8,4 +8,5 @@ export default {
   locales: ['en', 'es'],
   output: 'public/locales/$LOCALE/$NAMESPACE.json',
   input: 'src/**/*.{j,t}sx',
+  sort: true,
 };

@@ -1,18 +1,18 @@
 {
+  "communityTab": {
+    "description": "¿Conoce una beca disponible para estudiantes indocumentados que aún no está en nuestra base de datos? Regístrate y agrégalos, conviértete en parte de nuestra comunidad de becarios.",
+    "tab": "colaborador comunitario",
+    "title": "Únase y apoye a la comunidad"
+  },
   "landingSection": {
-    "title": "Becas para estudiantes indocumentados.",
-    "subTitle": "Una lista de recursos de becas por y para la comunidad."
+    "subTitle": "Una lista de recursos de becas por y para la comunidad.",
+    "title": "Becas para estudiantes indocumentados."
   },
   "madeSimple": "Búsqueda de becas simplificada",
+  "startSearch": "¡Empecemos a buscar!",
   "studentTab": {
+    "description": "Explore nuestra base de datos cómodamente, sabiendo que ninguna de nuestras becas requiere la ciudadanía estadounidense o la residencia permanente.",
     "tab": "estudiantes",
-    "title": "Menos barreras, más becas.",
-    "description": "Explore nuestra base de datos cómodamente, sabiendo que ninguna de nuestras becas requiere la ciudadanía estadounidense o la residencia permanente."
-  },
-  "communityTab": {
-    "tab": "colaborador comunitario",
-    "title": "Únase y apoye a la comunidad",
-    "description": "¿Conoce una beca disponible para estudiantes indocumentados que aún no está en nuestra base de datos? Regístrate y agrégalos, conviértete en parte de nuestra comunidad de becarios."
-  },
-  "startSearch": "¡Empecemos a buscar!"
+    "title": "Menos barreras, más becas."
+  }
 }
