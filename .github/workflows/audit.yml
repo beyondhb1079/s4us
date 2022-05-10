@@ -24,13 +24,13 @@ jobs:
       - name: Install dependencies for main branch
         run: yarn install --frozen-lockfile
       - name: Audit the old number of vulnerabilities
-        run: echo "old_num=$(yarn audit --summary | grep vulnerabilities | cut -d ' ' -f1)" >> $GITHUB_ENV
+        run: echo "old_num=$(yarn audit --groups dependencies --summary | grep vulnerabilities | cut -d ' ' -f1)" >> $GITHUB_ENV
       - name: Checkout PR branch
         uses: actions/checkout@v2
       - name: Install dependencies for PR branch
         run: yarn install --frozen-lockfile
       - name: Audit the new number of vulnerabilities
-        run: echo "new_num=$(yarn audit --summary | grep vulnerabilities | cut -d ' ' -f1)" >> $GITHUB_ENV
+        run: echo "new_num=$(yarn audit --groups dependencies --summary | grep vulnerabilities | cut -d ' ' -f1)" >> $GITHUB_ENV
       - name: Check whether the audit report has improved
         run: |
           ((${{ env.new_num }} < ${{ env.old_num }})) && echo "Less vulnerabilities!" || ((${{ env.new_num }} == ${{ env.old_num }}))
