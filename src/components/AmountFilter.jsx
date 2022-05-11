@@ -1,19 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { InputLabel, Grid, Slider } from '@mui/material';
-import { Remove as RemoveIcon } from '@mui/icons-material';
+import { InputLabel, Stack, Slider } from '@mui/material';
 import AmountTextField from './AmountTextField';
 
 export default function AmountFilter(props) {
-  const { min, max, onMinChange, onMaxChange } = props;
-  const error = max > 0 && max < min;
+  const { min, onMinChange } = props;
+  const error = min < 0;
 
   return (
-    <Grid
-      container
-      justifyContent="space-between"
-      sx={{ maxWidth: 300, m: 'auto' }}>
-      <Grid item>
+    <Stack alignItems="center" sx={{ maxWidth: 300, m: 'auto' }}>
+      <>
         <InputLabel>Min</InputLabel>
         <AmountTextField
           error={error}
@@ -21,37 +17,21 @@ export default function AmountFilter(props) {
           onChange={(e) => onMinChange(e.target.value)}
           placeholder="No min"
         />
-      </Grid>
-      <Grid item sx={{ mt: 2, display: 'flex', alignItems: 'center' }}>
-        <RemoveIcon />
-      </Grid>
-      <Grid item>
-        <InputLabel>Max</InputLabel>
-        <AmountTextField
-          value={max || ''}
-          onChange={(e) => onMaxChange(e.target.value)}
-          placeholder="No max"
-        />
-      </Grid>
+      </>
 
       <Slider
-        value={[min || 0, max || 50000]}
+        value={min || 0}
         min={0}
         max={50000}
         step={100}
-        onChange={(e) => {
-          onMinChange(e.target.value[0]);
-          onMaxChange(e.target.value[1]);
-        }}
+        onChange={(e) => onMinChange(e.target.value)}
         sx={{ mt: 1 }}
       />
-    </Grid>
+    </Stack>
   );
 }
 
 AmountFilter.propTypes = {
   min: PropTypes.number.isRequired,
-  max: PropTypes.number.isRequired,
   onMinChange: PropTypes.func.isRequired,
-  onMaxChange: PropTypes.func.isRequired,
 };

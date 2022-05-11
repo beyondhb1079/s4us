@@ -147,12 +147,17 @@ namespace ScholarshipAmount {
   /** Returns whether or not amount `a` is in range `r`. */
   export function amountsIntersect(
     a: ScholarshipAmount,
-    r: ScholarshipAmount
+    r: {
+      readonly type: AmountType;
+      readonly min: number;
+    }
   ): boolean {
     return (
       a.type === AmountType.Unknown ||
       r.type === AmountType.Unknown ||
-      ((!r.min || a.max === 0 || a.max >= r.min) && (!r.max || a.min <= r.max))
+      !r.min ||
+      a.max === 0 ||
+      a.max >= r.min
     );
   }
 }

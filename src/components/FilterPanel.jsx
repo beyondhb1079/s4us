@@ -32,7 +32,6 @@ export default function FilterPanel({ onClose }) {
   const [params, setQueryParams] = useQueryParams();
 
   const [minAmount, setMinAmount] = useState(params.minAmount);
-  const [maxAmount, setMaxAmount] = useState(params.maxAmount);
   const [grades, setGrades] = useState(params.grades);
   const [majors, setMajors] = useState(params.majors);
   const location = useLocation();
@@ -45,7 +44,6 @@ export default function FilterPanel({ onClose }) {
     });
 
     setMinAmount(query.minAmount);
-    setMaxAmount(query.maxAmount);
     setGrades(query.grades);
     setMajors(query.majors);
   }, [location]);
@@ -60,12 +58,10 @@ export default function FilterPanel({ onClose }) {
       comp: (
         <AmountFilter
           min={minAmount ?? 0}
-          max={maxAmount ?? 0}
           onMinChange={(val) => setMinAmount(parseInt(val) || undefined)}
-          onMaxChange={(val) => setMaxAmount(parseInt(val) || undefined)}
         />
       ),
-      changed: minAmount !== params.minAmount || maxAmount !== params.maxAmount,
+      changed: minAmount !== params.minAmount,
     },
     'Grade Level': {
       comp: <GradeLevelFilter grades={new Set(grades)} onChange={setGrades} />,
@@ -128,7 +124,7 @@ export default function FilterPanel({ onClose }) {
           variant="contained"
           disabled={!filtersChanged}
           onClick={() => {
-            setQueryParams({ minAmount, maxAmount, grades, majors });
+            setQueryParams({ minAmount, grades, majors });
             onClose();
           }}>
           Apply
@@ -137,7 +133,6 @@ export default function FilterPanel({ onClose }) {
           disabled={!filtersChanged}
           onClick={() => {
             setMinAmount(params.minAmount);
-            setMaxAmount(params.maxAmount);
             setGrades(params.grades);
             setMajors(params.majors);
           }}>

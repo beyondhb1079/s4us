@@ -50,7 +50,7 @@ export default function useQueryParams(
 
   if (prune) {
     /** Prune bad query parameter value strings */
-    const { minAmount, maxAmount, grades, majors, sortBy } = params;
+    const { minAmount, grades, majors, sortBy } = params;
 
     if (
       sortBy !== undefined &&
@@ -64,13 +64,6 @@ export default function useQueryParams(
       !(Number.isInteger(minAmount) && (minAmount as unknown as number) > 0)
     ) {
       delete params.minAmount;
-    }
-
-    if (
-      maxAmount !== undefined &&
-      !(Number.isInteger(maxAmount) && (maxAmount as unknown as number) > 0)
-    ) {
-      delete params.maxAmount;
     }
 
     if (grades !== undefined) {
