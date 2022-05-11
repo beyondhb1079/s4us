@@ -20,7 +20,7 @@ export default function MinAmountFilter(props) {
       </>
 
       <Slider
-        value={min || 0}
+        value={min}
         min={0}
         max={50000}
         step={100}
@@ -32,6 +32,10 @@ export default function MinAmountFilter(props) {
 }
 
 MinAmountFilter.propTypes = {
-  min: PropTypes.number.isRequired,
+  min: PropTypes.number,
   onMinChange: PropTypes.func.isRequired,
+};
+
+MinAmountFilter.defaultProps = {
+  min: 0,
 };

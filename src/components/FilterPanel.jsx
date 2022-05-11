@@ -55,7 +55,7 @@ export default function FilterPanel({ onClose }) {
         JSON.stringify(majors || []) !== JSON.stringify(params.majors || []),
       expanded: true,
     },
-    Amount: {
+    'Min Amount': {
       comp: (
         <MinAmountFilter
           min={minAmount ?? 0}
