@@ -1,0 +1,9 @@
+{
+  "awardAmount": "Cantidad",
+  "fixed": "Fija",
+  "fullTuition": "Matrícula completa",
+  "noMax": "Sin max",
+  "noMin": "Sin min",
+  "unset": "No establecido",
+  "varies": "Varía"
+}
