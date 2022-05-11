@@ -11,11 +11,13 @@ import PropTypes from 'prop-types';
 import AmountType from '../types/AmountType';
 import AmountTextField from './AmountTextField';
 import { getIn } from 'formik';
+import { useTranslation } from 'react-i18next';
 
 function ScholarshipAmountField({ labelStyle, formik }) {
   const amountType = formik.values.amount.type;
   const minError = getIn(formik.errors, 'amount.min');
   const maxError = getIn(formik.errors, 'amount.max');
+  const { t } = useTranslation('scholarshipAmount');
 
   let helperText = minError || maxError || '';
 
@@ -29,7 +31,7 @@ function ScholarshipAmountField({ labelStyle, formik }) {
           const val = parseInt(e.target.value, 10);
           formik.setFieldValue('amount.min', val || 0);
         }}
-        placeholder="No min"
+        placeholder={t('noMin')}
       />
 
       <RemoveIcon sx={{ height: 1.0, textAlign: 'center' }} />
@@ -41,7 +43,7 @@ function ScholarshipAmountField({ labelStyle, formik }) {
           const val = parseInt(e.target.value, 10);
           formik.setFieldValue('amount.max', val || 0);
         }}
-        placeholder="No max"
+        placeholder={t('noMax')}
       />
     </>
   );
@@ -54,12 +56,13 @@ function ScholarshipAmountField({ labelStyle, formik }) {
         formik.setFieldValue('amount.min', val || 0);
         formik.setFieldValue('amount.max', val || 0);
       }}
+      placeholder={t('unset')}
     />
   );
 
   return (
     <>
-      <InputLabel sx={labelStyle}>Award Amount *</InputLabel>
+      <InputLabel sx={labelStyle}>{t('awardAmount')} *</InputLabel>
       <Grid container spacing={3}>
         <Grid item>
           <Select
@@ -72,9 +75,11 @@ function ScholarshipAmountField({ labelStyle, formik }) {
               formik.setFieldValue('amount.max', 0);
               formik.handleChange('amount.type')(e);
             }}>
-            <MenuItem value={AmountType.Fixed}>Fixed</MenuItem>
-            <MenuItem value={AmountType.Varies}>Varies</MenuItem>
-            <MenuItem value={AmountType.FullTuition}>Full Tuition</MenuItem>
+            <MenuItem value={AmountType.Fixed}>{t('fixed')}</MenuItem>
+            <MenuItem value={AmountType.Varies}>{t('varies')}</MenuItem>
+            <MenuItem value={AmountType.FullTuition}>
+              {t('fullTuition')}
+            </MenuItem>
           </Select>
         </Grid>
 
