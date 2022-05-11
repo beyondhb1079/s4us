@@ -53,6 +53,7 @@ export default function FilterPanel({ onClose }) {
       comp: <MajorFilter majors={majors} onChange={setMajors} />,
       changed:
         JSON.stringify(majors || []) !== JSON.stringify(params.majors || []),
+      expanded: true,
     },
     Amount: {
       comp: (
@@ -94,7 +95,7 @@ export default function FilterPanel({ onClose }) {
       </Toolbar>
 
       {Object.entries(filters).map(([name, filter]) => (
-        <Accordion key={name} disableGutters>
+        <Accordion key={name} disableGutters defaultExpanded={filter.expanded}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls={name + '-content'}
