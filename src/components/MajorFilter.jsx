@@ -29,7 +29,6 @@ function MajorFilter({ majors, onChange }) {
           <OutlinedInput
             ref={params.InputProps.ref}
             inputProps={params.inputProps}
-            autoFocus
             placeholder={
               !limitReached ? 'Enter a major to filter by...' : 'Limit reached'
             }
