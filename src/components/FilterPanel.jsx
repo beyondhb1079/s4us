@@ -18,7 +18,7 @@ import {
   Stack,
 } from '@mui/material';
 import useQueryParams from '../lib/useQueryParams';
-import AmountFilter from './AmountFilter';
+import MinAmountFilter from './MinAmountFilter';
 import GradeLevelFilter from './GradeLevelFilter';
 import MajorFilter from './MajorFilter';
 import CloseIcon from '@mui/icons-material/Close';
@@ -57,7 +57,7 @@ export default function FilterPanel({ onClose }) {
     },
     Amount: {
       comp: (
-        <AmountFilter
+        <MinAmountFilter
           min={minAmount ?? 0}
           onMinChange={(val) => setMinAmount(parseInt(val) || undefined)}
         />

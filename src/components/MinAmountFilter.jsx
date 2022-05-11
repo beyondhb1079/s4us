@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { InputLabel, Stack, Slider } from '@mui/material';
 import AmountTextField from './AmountTextField';
 
-export default function AmountFilter(props) {
+export default function MinAmountFilter(props) {
   const { min, onMinChange } = props;
   const error = min < 0;
 
@@ -31,7 +31,7 @@ export default function AmountFilter(props) {
   );
 }
 
-AmountFilter.propTypes = {
+MinAmountFilter.propTypes = {
   min: PropTypes.number.isRequired,
   onMinChange: PropTypes.func.isRequired,
 };
