@@ -68,6 +68,7 @@ export interface FilterOptions {
   authorId?: string;
   hideExpired?: boolean;
   minAmount?: number;
+  maxAmount?: number;
   grades?: GradeLevel[];
   majors?: String[];
   sortDir?: 'asc' | 'desc';
@@ -148,6 +149,7 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
               ScholarshipAmount.amountsIntersect(data.amount, {
                 type: AmountType.Varies,
                 min: opts.minAmount ?? 0,
+                max: opts.maxAmount ?? 0,
               }) &&
               // grade filter
               requirementMatchesFilter(

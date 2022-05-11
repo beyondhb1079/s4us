@@ -270,6 +270,19 @@ test('scholarships.list - filters by minAmount', async () => {
   );
 });
 
+test('scholarships.list - filters by maxAmount', async () => {
+  await Promise.all(amountScholarships.map((s) => s.save()));
+
+  const got = await Scholarships.list({
+    maxAmount: 500,
+  });
+
+  const want = [rangeMin499, range250to1000, fixed500, rangeTo501, unknown];
+  expect(got.results.map(extractName).sort()).toEqual(
+    want.map(extractName).sort()
+  );
+});
+
 const middleSchool = create({ grades: [GradeLevel.MiddleSchool] });
 const highSchool = create({ grades: GradeLevel.highSchoolers });
 const college = create({ grades: GradeLevel.undergrads });

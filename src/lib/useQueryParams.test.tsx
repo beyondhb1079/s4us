@@ -22,7 +22,7 @@ test('parses using options', () => {
 });
 
 test('prunes null or empty known keys', () => {
-  ['minAmount', 'grades', 'majors', 'sortBy'].forEach((k) => {
+  ['minAmount', 'maxAmount', 'grades', 'majors', 'sortBy'].forEach((k) => {
     const { params, setQueryParams } = renderHookWithLocation(k + '=null');
 
     expect(params).toMatchObject({});
@@ -36,7 +36,7 @@ test('prunes null or empty known keys', () => {
 
 test('prunes bad types for known keys', () => {
   const { params, setQueryParams } = renderHookWithLocation(
-    'grades=bar,,&minAmount=2.3&majors=4'
+    'grades=bar,,&minAmount=2.3&maxAmount=foo&majors=4'
   );
   expect(params).toMatchObject({});
   expect(setQueryParams).toBeInstanceOf(Function);
@@ -51,7 +51,9 @@ test('prunes null or empty list values for known list keys', () => {
 });
 
 test('prunes bad types', () => {
-  const { params, setQueryParams } = renderHookWithLocation('minAmount=4.0&');
+  const { params, setQueryParams } = renderHookWithLocation(
+    'minAmount=4.0&maxAmount=-2&'
+  );
   expect(params).toMatchObject({});
   expect(setQueryParams).toBeInstanceOf(Function);
 });
@@ -66,12 +68,13 @@ test('prunes bad grade values', () => {
 
 test('does not prune if explicitly false', () => {
   const { params, setQueryParams } = renderHookWithLocation(
-    'grades[]=Senior&minAmount=x',
+    'grades[]=Senior&minAmount=x&maxAmount=5',
     /* prune = */ false
   );
   expect(params).toMatchObject({
     grades: ['Senior'],
     minAmount: 'x',
+    maxAmount: 5,
   });
   expect(setQueryParams).toBeInstanceOf(Function);
 });
