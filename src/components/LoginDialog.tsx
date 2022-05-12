@@ -73,9 +73,7 @@ export default function LoginDialog(): JSX.Element {
             sm={6}
             sx={{ color: 'background.paper', bgcolor: 'primary.main' }}>
             <DialogTitle id="responsive-dialog-brand">
-              <Typography sx={{ color: 'background.paper' }}>
-                DreamScholars
-              </Typography>
+              DreamScholars
             </DialogTitle>
 
             <DialogTitle id="responsive-dialog-welcome">

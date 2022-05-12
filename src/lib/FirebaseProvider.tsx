@@ -1,5 +1,4 @@
 import React, { createContext } from 'react';
-import firebase from 'firebase';
 
 const FirebaseContext = createContext(null);
 
@@ -25,20 +24,24 @@ export default function FirebaseProvider(props: {
 }): JSX.Element {
   const { children } = props;
 
-  if (firebase.apps.length === 0) {
-    // eslint-disable-next-line no-console
-    console.log(`Environment: ${JSON.stringify(process.env.NODE_ENV)}`);
-    if (process.env.NODE_ENV === 'production') {
-      const prod = window.location.hostname.endsWith('dreamscholars.org');
-      firebase.initializeApp(prod ? prodConfig : stagingConfig);
-      firebase.analytics();
-    } else {
-      // Initialize app with staging config but use emulator where possible.
-      firebase.initializeApp(stagingConfig);
-      firebase.firestore().useEmulator('localhost', 8080);
-      firebase.auth().useEmulator('http://localhost:9099/');
+  import('firebase').then((module) => {
+    const firebase = module.default;
+    if (firebase.apps.length === 0) {
+      // eslint-disable-next-line no-console
+      console.log(`Environment: ${JSON.stringify(process.env.NODE_ENV)}`);
+      if (process.env.NODE_ENV === 'production') {
+        const prod = window.location.hostname.endsWith('dreamscholars.org');
+        firebase.initializeApp(prod ? prodConfig : stagingConfig);
+        firebase.analytics();
+      } else {
+        // Initialize app with staging config but use emulator where possible.
+        firebase.initializeApp(stagingConfig);
+        firebase.firestore().useEmulator('localhost', 8080);
+        firebase.auth().useEmulator('http://localhost:9099/');
+      }
     }
-  }
+  });
+
   return (
     <FirebaseContext.Provider value={null}>{children}</FirebaseContext.Provider>
   );

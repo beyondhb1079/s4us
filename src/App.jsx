@@ -1,23 +1,24 @@
 import './App.css';
-import React, { lazy } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Helmet } from 'react-helmet';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
+  // Box,
   CssBaseline,
+  LinearProgress,
   StyledEngineProvider,
   ThemeProvider,
 } from '@mui/material';
 import Footer from './components/Footer';
 import Header, { HeaderSkeleton } from './components/Header';
 import theme from './theme';
-import LoginDialog from './components/LoginDialog';
 import { BRAND_NAME } from './config/constants';
 import FirebaseProvider from './lib/FirebaseProvider';
 import { AuthProvider } from './lib/useAuth';
 import { ScholarshipsProvider } from './models/ScholarshipsContext';
 import ScrollToTop from './ScrollToTop';
 
-// Lazy load components that don't necessarily need to be loaded
+// Pages should be loaded lazily on an as-needed basis
 const Home = lazy(() => import('./pages/Home'));
 const ViewScholarship = lazy(() => import('./pages/ViewScholarship'));
 const ListScholarships = lazy(() => import('./pages/ListScholarships'));
@@ -28,6 +29,9 @@ const Terms = lazy(() => import('./pages/Terms'));
 const AddScholarship = lazy(() => import('./pages/AddScholarship'));
 const EditScholarship = lazy(() => import('./pages/EditScholarship'));
 const ProtectedRoute = lazy(() => import('./components/ProtectedRoute'));
+
+// This should be suspended too because of the auth dependency
+const LoginDialog = lazy(() => import('./components/LoginDialog'));
 
 function App() {
   return (
@@ -49,34 +53,36 @@ function App() {
                   <div className="content-wrap">
                     <Header />
                     <HeaderSkeleton />
-                    <Routes>
-                      <Route
-                        path="/scholarships/new"
-                        element={
-                          <ProtectedRoute element={<AddScholarship />} />
-                        }
-                      />
-                      <Route
-                        path="/scholarships/:id/edit"
-                        element={
-                          <ProtectedRoute element={<EditScholarship />} />
-                        }
-                      />
-                      <Route
-                        path="/scholarships/:id"
-                        element={<ViewScholarship />}
-                      />
-                      <Route
-                        path="/scholarships"
-                        element={<ListScholarships />}
-                      />
-                      <Route path="/about" element={<About />} />
-                      <Route path="/contact" element={<Contact />} />
-                      <Route path="/privacy" element={<Privacy />} />
-                      <Route path="/terms" element={<Terms />} />
-                      <Route path="/" element={<Home />} />
-                    </Routes>
-                    <LoginDialog />
+                    <Suspense fallback={<LinearProgress />}>
+                      <Routes>
+                        <Route
+                          path="/scholarships/new"
+                          element={
+                            <ProtectedRoute element={<AddScholarship />} />
+                          }
+                        />
+                        <Route
+                          path="/scholarships/:id/edit"
+                          element={
+                            <ProtectedRoute element={<EditScholarship />} />
+                          }
+                        />
+                        <Route
+                          path="/scholarships/:id"
+                          element={<ViewScholarship />}
+                        />
+                        <Route
+                          path="/scholarships"
+                          element={<ListScholarships />}
+                        />
+                        <Route path="/about" element={<About />} />
+                        <Route path="/contact" element={<Contact />} />
+                        <Route path="/privacy" element={<Privacy />} />
+                        <Route path="/terms" element={<Terms />} />
+                        <Route path="/" element={<Home />} />
+                      </Routes>
+                      <LoginDialog />
+                    </Suspense>
                   </div>
                   <Footer />
                 </Router>
