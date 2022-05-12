@@ -30,7 +30,7 @@ export default function FirebaseProvider(props: {
       // eslint-disable-next-line no-console
       console.log(`Environment: ${JSON.stringify(process.env.NODE_ENV)}`);
       if (process.env.NODE_ENV === 'production') {
-        const prod = window.location.hostname.endsWith('dreamscholars.org');
+        const prod = window.location.host === 'dreamscholars.org';
         firebase.initializeApp(prod ? prodConfig : stagingConfig);
         firebase.analytics();
       } else {
