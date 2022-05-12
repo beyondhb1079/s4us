@@ -213,7 +213,7 @@ function ScholarshipForm({ scholarship }) {
               }
               label={t('noEligibilityReqs').toUpperCase()}
             />
-            <FormHelperText error>{t(formik.errors.checkbox)}</FormHelperText>
+            <FormHelperText error>{formik.errors.checkbox}</FormHelperText>
           </Grid>
           <Grid item sm={6} xs={12}>
             <FormikMultiSelect
@@ -309,7 +309,7 @@ function ScholarshipForm({ scholarship }) {
       );
     // no requirements & no checkbox fails
     if (activeStep == 1 && !noReqsChecked && noReqsGiven)
-      return 'validation:checkbox';
+      return t('validation:checkbox');
 
     return '';
   }
