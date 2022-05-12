@@ -10,6 +10,7 @@ import {
 import Footer from './components/Footer';
 import Header, { HeaderSkeleton } from './components/Header';
 import theme from './theme';
+import LoginDialog from './components/LoginDialog';
 import { BRAND_NAME } from './config/constants';
 import FirebaseProvider from './lib/FirebaseProvider';
 import { AuthProvider } from './lib/useAuth';
@@ -27,7 +28,6 @@ const Terms = lazy(() => import('./pages/Terms'));
 const AddScholarship = lazy(() => import('./pages/AddScholarship'));
 const EditScholarship = lazy(() => import('./pages/EditScholarship'));
 const ProtectedRoute = lazy(() => import('./components/ProtectedRoute'));
-const LoginDialog = lazy(() => import('./components/LoginDialog'));
 
 function App() {
   return (
