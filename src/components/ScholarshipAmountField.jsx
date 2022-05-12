@@ -17,7 +17,7 @@ function ScholarshipAmountField({ labelStyle, formik }) {
   const amountType = formik.values.amount.type;
   const minError = getIn(formik.errors, 'amount.min');
   const maxError = getIn(formik.errors, 'amount.max');
-  const { t } = useTranslation(['scholarshipAmount', 'validation']);
+  const { t } = useTranslation('scholarshipAmount');
 
   let helperText = minError || maxError || '';
 
@@ -85,7 +85,7 @@ function ScholarshipAmountField({ labelStyle, formik }) {
 
         <Grid item>{amountType && inputFields[amountType]}</Grid>
       </Grid>
-      <FormHelperText error>{t(helperText)}</FormHelperText>
+      <FormHelperText error>{helperText}</FormHelperText>
     </>
   );
 }

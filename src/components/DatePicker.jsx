@@ -5,11 +5,9 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { InputLabel, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 import exact from 'prop-types-exact';
-import { useTranslation } from 'react-i18next';
 
 function DatePicker(props) {
   const { label, labelStyle, formik } = props;
-  const { t } = useTranslation('validation');
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -25,7 +23,7 @@ function DatePicker(props) {
             id="deadline"
             variant="outlined"
             fullWidth
-            helperText={t(formik.errors.deadline)}
+            helperText={formik.errors.deadline}
             error={Boolean(formik.errors.deadline)}
           />
         )}

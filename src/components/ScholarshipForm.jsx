@@ -48,7 +48,7 @@ function ScholarshipForm({ scholarship }) {
 
   const formik = useFormik({
     initialValues: scholarship.data,
-    validationSchema,
+    validationSchema: validationSchema(t),
     validateOnChange: false,
     onSubmit: (values, { setSubmitting }) => {
       setSubmitting(true);
