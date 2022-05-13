@@ -309,7 +309,7 @@ function ScholarshipForm({ scholarship }) {
       );
     // no requirements & no checkbox fails
     if (activeStep == 1 && !noReqsChecked && noReqsGiven)
-      return t('validation:checkbox');
+      return t('validation:checkboxValid');
 
     return '';
   }

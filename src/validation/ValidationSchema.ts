@@ -3,18 +3,18 @@ import AmountType from '../types/AmountType';
 
 const validationSchema: any = (t: (key: string) => string) =>
   yup.object({
-    name: yup.string().required(t('validation:name')),
+    name: yup.string().required(t('validation:nameRequired')),
     deadline: yup
       .date()
-      .required(t('validation:deadline'))
-      .typeError(t('validation:validDate')),
-    description: yup.string().required(t('validation:description')),
+      .required(t('validation:deadlineRequired'))
+      .typeError(t('validation:dateValid')),
+    description: yup.string().required(t('validation:descriptionRequired')),
     website: yup
       .string()
-      .url(t('validation:validWebsite'))
-      .required(t('validation:website')),
+      .url(t('validation:websiteValid'))
+      .required(t('validation:websiteRequired')),
     amount: yup.object().shape({
-      type: yup.mixed().required(t('validation:option')),
+      type: yup.mixed().required(t('validation:amountOptionRequired')),
       min: yup
         .number()
         .when('type', {
@@ -22,27 +22,27 @@ const validationSchema: any = (t: (key: string) => string) =>
           then: yup
             .number()
             .required()
-            .moreThan(0, t('validation:validFixedAmount')),
+            .moreThan(0, t('validation:fixedAmountValid')),
         })
         .when('type', {
           is: AmountType.Varies,
           then: yup
             .number()
-            .min(0, t('validation:validAmount'))
+            .min(0, t('validation:amountValid'))
             .test(
               'min < max test',
               t('validation:minLessMax'),
               (min, { parent }) => !min || !parent?.max || min < parent.max
             ),
         }),
-      max: yup.number().min(0, t('validation:validAmount')).notRequired(),
+      max: yup.number().min(0, t('validation:amountValid')).notRequired(),
     }),
     requirements: yup.object().shape({
       gpa: yup
         .number()
         .test(
           'valid GPA',
-          t('validation:validGpa'),
+          t('validation:GpaValid'),
           (gpa) =>
             gpa === undefined ||
             (gpa > 0 &&
