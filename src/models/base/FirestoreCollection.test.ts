@@ -2,7 +2,6 @@
  * @jest-environment node
  */
 import { deleteApp } from 'firebase/app';
-import firebase from 'firebase/compat/app';
 import { FirestoreDataConverter } from 'firebase/firestore';
 import { clearFirestoreData, initializeTestApp } from '../../lib/testing';
 import FirestoreCollection from './FirestoreCollection';

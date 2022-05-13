@@ -2,9 +2,12 @@
  * @jest-environment node
  */
 import { deleteApp } from 'firebase/app';
-import { getAuth, User } from 'firebase/auth';
-import firebase from 'firebase/compat/app';
-import { QueryDocumentSnapshot, Timestamp } from 'firebase/firestore';
+import { User } from 'firebase/auth';
+import {
+  DocumentData,
+  QueryDocumentSnapshot,
+  Timestamp,
+} from 'firebase/firestore';
 import { clearFirestoreData, initializeTestApp } from '../lib/testing';
 import AmountType from '../types/AmountType';
 import Ethnicity from '../types/Ethnicity';
@@ -159,7 +162,7 @@ test('converter.fromFirestore', () => {
   const deadline = new Date('2019-02-20');
   const dateAdded = new Date('2019-01-20');
   const lastModified = new Date('2019-01-23');
-  const snapdata: firebase.firestore.DocumentData = {
+  const snapdata: DocumentData = {
     name: 'scholarship',
     amount: ScholarshipAmount.fixed(2500),
     description: 'description',
