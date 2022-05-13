@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
-import firebase from 'firebase';
 import {
   Box,
   Collapse,
@@ -20,6 +19,7 @@ import useQueryParams from '../lib/useQueryParams';
 import { HeaderSkeleton } from '../components/Header';
 import GradeLevel from '../types/GradeLevel';
 import { useLocation } from 'react-router-dom';
+import { getAnalytics, logEvent } from 'firebase/analytics';
 
 const drawerWidth = 360;
 
@@ -51,7 +51,7 @@ function ListScholarships() {
 
   const location = useLocation();
   useEffect(() => {
-    firebase.analytics().logEvent('search', { search_term: location.search });
+    logEvent(getAnalytics(), 'search', { search_term: location.search });
   }, [location]);
 
   return (

@@ -19,11 +19,11 @@ import {
   TwitterIcon,
   TwitterShareButton,
 } from 'react-share';
-import firebase from 'firebase';
 import { BRAND_NAME } from '../config/constants';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import ScholarshipData from '../types/ScholarshipData';
 import { useTranslation } from 'react-i18next';
+import { getAnalytics, logEvent } from 'firebase/analytics';
 
 export default function ShareDialog({
   scholarship,
@@ -48,7 +48,7 @@ export default function ShareDialog({
 
   const logShare = useCallback(
     () => (p: string) =>
-      firebase.analytics().logEvent('share', { platform: p, url, title, text }),
+      logEvent(getAnalytics(), 'share', { platform: p, url, title, text }),
     [url, title, text]
   );
   useEffect(() => {

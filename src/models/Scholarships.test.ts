@@ -1,22 +1,26 @@
 /**
  * @jest-environment node
  */
-import firebase from 'firebase/app';
+import { deleteApp } from 'firebase/app';
+import { User } from 'firebase/auth';
+import {
+  DocumentData,
+  QueryDocumentSnapshot,
+  Timestamp,
+} from 'firebase/firestore';
 import { clearFirestoreData, initializeTestApp } from '../lib/testing';
 import AmountType from '../types/AmountType';
+import Ethnicity from '../types/Ethnicity';
 import GradeLevel from '../types/GradeLevel';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import Scholarships, {
   converter,
   requirementMatchesFilter,
+  setFakeUser,
 } from './Scholarships';
 
 const user = { uid: '123', email: 'bobross37@gmail.com' };
-const app = initializeTestApp({
-  projectId: 'scholarship-test',
-  apiKey: 'something',
-  auth: user,
-});
+const app = initializeTestApp({ projectId: 'scholarship-test' });
 
 // Creates and saves a scholarship with the given data.
 function create(data: {
@@ -71,7 +75,7 @@ const [expired, today, tomorrow] = [
 ];
 
 beforeEach(() => clearFirestoreData(app.options as { projectId: string }));
-afterAll(() => app.delete());
+afterAll(() => deleteApp(app));
 
 test('converter.toFirestore stores scholarship data', () => {
   const deadline = new Date('2029-02-20');
@@ -83,7 +87,10 @@ test('converter.toFirestore stores scholarship data', () => {
     website: 'mit.com',
     requirements: {
       gpa: 4.0,
-      ethnicities: ['Latino', 'African American'],
+      ethnicities: [
+        Ethnicity.HispanicOrLatino,
+        Ethnicity.BlackOrAfricanAmerican,
+      ],
       majors: ['Computer Science', 'Software Engineering'],
       states: ['California', 'Washington'],
       schools: ['MIT'],
@@ -94,7 +101,7 @@ test('converter.toFirestore stores scholarship data', () => {
 
   expect(got).toMatchObject({
     ...data,
-    deadline: firebase.firestore.Timestamp.fromDate(deadline),
+    deadline: Timestamp.fromDate(deadline),
   });
 });
 
@@ -107,13 +114,15 @@ test('converter.toFirestore sets author, dateAdded, and lastModified for new sch
     deadline,
     website: 'mit.com',
   };
+  setFakeUser(user as User);
   const got = converter.toFirestore(data);
+  setFakeUser(null);
 
   expect(got).toMatchObject({
     ...data,
-    deadline: firebase.firestore.Timestamp.fromDate(deadline),
-    dateAdded: expect.any(firebase.firestore.Timestamp),
-    lastModified: expect.any(firebase.firestore.Timestamp),
+    deadline: Timestamp.fromDate(deadline),
+    dateAdded: expect.any(Timestamp),
+    lastModified: expect.any(Timestamp),
     author: {
       id: user.uid,
       email: user.email,
@@ -142,9 +151,9 @@ test('converter.toFirestore only updates lastModified for existing scholarship',
 
   expect(got).toMatchObject({
     ...data,
-    deadline: firebase.firestore.Timestamp.fromDate(deadline),
-    dateAdded: firebase.firestore.Timestamp.fromDate(dateAdded),
-    lastModified: expect.any(firebase.firestore.Timestamp),
+    deadline: Timestamp.fromDate(deadline),
+    dateAdded: Timestamp.fromDate(dateAdded),
+    lastModified: expect.any(Timestamp),
   });
   expect(got.dateAdded).not.toEqual(got.lastModified);
 });
@@ -153,14 +162,14 @@ test('converter.fromFirestore', () => {
   const deadline = new Date('2019-02-20');
   const dateAdded = new Date('2019-01-20');
   const lastModified = new Date('2019-01-23');
-  const snapdata: firebase.firestore.DocumentData = {
+  const snapdata: DocumentData = {
     name: 'scholarship',
     amount: ScholarshipAmount.fixed(2500),
     description: 'description',
-    deadline: firebase.firestore.Timestamp.fromDate(deadline),
+    deadline: Timestamp.fromDate(deadline),
     website: 'mit.com',
-    dateAdded: firebase.firestore.Timestamp.fromDate(dateAdded),
-    lastModified: firebase.firestore.Timestamp.fromDate(lastModified),
+    dateAdded: Timestamp.fromDate(dateAdded),
+    lastModified: Timestamp.fromDate(lastModified),
     requirements: {
       gpa: 4.0,
       ethnicities: ['Latino', 'African American'],
@@ -178,10 +187,7 @@ test('converter.fromFirestore', () => {
     data: () => snapdata,
   };
 
-  const got = converter.fromFirestore(
-    snapshot as firebase.firestore.QueryDocumentSnapshot,
-    {}
-  );
+  const got = converter.fromFirestore(snapshot as QueryDocumentSnapshot, {});
 
   expect(got).toEqual({
     ...snapdata,
@@ -408,8 +414,6 @@ test('scholarships.list - hideExpired sorting by amount', async () => {
 });
 
 test('scholarships.new - default values', async () => {
-  const spy = jest.spyOn(global, 'Date'); // spy on Date
-
   const got = Scholarships.new().data;
 
   expect(got).toMatchObject({
@@ -420,7 +424,7 @@ test('scholarships.new - default values', async () => {
       min: 0,
       max: 0,
     },
-    deadline: spy.mock.instances[0],
+    deadline: expect.anything(),
     website: '',
   });
 });

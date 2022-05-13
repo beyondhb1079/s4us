@@ -14,6 +14,7 @@ import i18n from '../i18n';
 import { I18nextProvider } from 'react-i18next';
 import { ScholarshipsProvider } from '../models/ScholarshipsContext';
 import { act } from 'react-dom/test-utils';
+import { deleteApp } from 'firebase/app';
 
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.
@@ -40,7 +41,7 @@ function renderAtRoute(pathname, state = {}) {
 const app = initializeTestApp({ projectId: 'view-scholarships-test' });
 
 beforeAll(() => clearFirestoreData(app.options));
-afterAll(() => app.delete());
+afterAll(() => deleteApp(app));
 
 test('renders loading initially', () => {
   renderAtRoute('/scholarships/abc');
@@ -99,8 +100,8 @@ test('renders scholarship details', async () => {
       schools: ['Cal Tech', 'MIT', 'LSU'],
     },
   };
-  const ref = Scholarships.collection.doc('load-it');
-  await act(() => ref.set(data));
+  const ref = Scholarships.id('load-it', data);
+  await act(() => ref.save());
 
   renderAtRoute('/scholarships/load-it');
   await screen.findByText(/Foo scholarship/i);

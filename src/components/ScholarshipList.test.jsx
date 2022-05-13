@@ -10,10 +10,11 @@ import i18n from '../i18n';
 import { clearFirestoreData, initializeTestApp } from '../lib/testing';
 import { ScholarshipsProvider } from '../models/ScholarshipsContext';
 import ScholarshipAmount from '../types/ScholarshipAmount';
+import { deleteApp } from 'firebase/app';
 
 const app = initializeTestApp({ projectId: 'scholarship-list-test' });
 beforeEach(() => clearFirestoreData(app.options));
-afterAll(() => app.delete());
+afterAll(() => deleteApp(app));
 
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.

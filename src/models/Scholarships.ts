@@ -1,4 +1,3 @@
-import firebase from 'firebase/app';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import FirestoreCollection from './base/FirestoreCollection';
 import FirestoreModelList from './base/FiretoreModelList';
@@ -6,6 +5,22 @@ import FirestoreModel from './base/FirestoreModel';
 import ScholarshipData from '../types/ScholarshipData';
 import AmountType from '../types/AmountType';
 import GradeLevel from '../types/GradeLevel';
+import { getAuth, User } from 'firebase/auth';
+import {
+  doc,
+  FirestoreDataConverter,
+  getDocs,
+  limit,
+  orderBy,
+  Query,
+  query,
+  QueryDocumentSnapshot,
+  QuerySnapshot,
+  SnapshotOptions,
+  startAfter,
+  Timestamp,
+  where,
+} from 'firebase/firestore';
 
 /**
  *
@@ -27,42 +42,53 @@ export function requirementMatchesFilter(
   );
 }
 
-export const converter: firebase.firestore.FirestoreDataConverter<ScholarshipData> =
-  {
-    toFirestore: (data: ScholarshipData) => {
-      const user = firebase.app().auth().currentUser;
-      const lastModified = new Date();
-      const dateAdded = data.dateAdded ?? lastModified;
-      const author =
-        data.author ?? (user ? { id: user?.uid, email: user?.email } : {});
-      return {
-        ...data,
-        author,
-        amount: ScholarshipAmount.toStorage(data.amount),
-        deadline: firebase.firestore.Timestamp.fromDate(data.deadline),
-        dateAdded: firebase.firestore.Timestamp.fromDate(dateAdded),
-        lastModified: firebase.firestore.Timestamp.fromDate(lastModified),
-      };
-    },
-    fromFirestore: (snapshot, options) => {
-      const data = snapshot.data(options);
-      const deadline = (data.deadline as firebase.firestore.Timestamp).toDate();
-      const dateAdded = (
-        data.dateAdded as firebase.firestore.Timestamp
-      )?.toDate();
-      const lastModified = (
-        data.lastModified as firebase.firestore.Timestamp
-      )?.toDate();
+let fakeUser: User | null = null;
 
-      return {
-        ...data,
-        deadline,
-        dateAdded,
-        lastModified,
-        amount: ScholarshipAmount.fromStorage(data.amount),
-      } as ScholarshipData;
-    },
-  };
+function getUser(): User | null {
+  return fakeUser ?? getAuth().currentUser;
+}
+
+export function setFakeUser(user: User | null): void {
+  if (process.env.NODE_ENV !== 'test') {
+    throw Error('this method is only for tests.');
+  }
+  fakeUser = user;
+}
+
+export const converter: FirestoreDataConverter<ScholarshipData> = {
+  toFirestore: (data: ScholarshipData) => {
+    const user = getUser();
+    const lastModified = new Date();
+    const dateAdded = data.dateAdded ?? lastModified;
+    const author =
+      data.author ?? (user ? { id: user?.uid, email: user?.email } : {});
+    return {
+      ...data,
+      author,
+      amount: ScholarshipAmount.toStorage(data.amount),
+      deadline: Timestamp.fromDate(data.deadline),
+      dateAdded: Timestamp.fromDate(dateAdded),
+      lastModified: Timestamp.fromDate(lastModified),
+    };
+  },
+  fromFirestore: (
+    snapshot: QueryDocumentSnapshot,
+    options: SnapshotOptions
+  ) => {
+    const data = snapshot.data(options);
+    const deadline = (data.deadline as Timestamp).toDate();
+    const dateAdded = (data.dateAdded as Timestamp)?.toDate();
+    const lastModified = (data.lastModified as Timestamp)?.toDate();
+
+    return {
+      ...data,
+      deadline,
+      dateAdded,
+      lastModified,
+      amount: ScholarshipAmount.fromStorage(data.amount),
+    } as ScholarshipData;
+  },
+};
 
 export interface FilterOptions {
   authorId?: string;
@@ -87,23 +113,23 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
    * @param opts filter and sorting options.
    */
   list(opts: FilterOptions): Promise<FirestoreModelList<ScholarshipData>> {
-    let query: firebase.firestore.Query<ScholarshipData> = this.collection;
+    let q: Query<ScholarshipData> = this.collection;
 
     // Set default sorting field and direction if they're not set
     if (!opts.sortField) opts.sortField = 'deadline';
     if (!opts.sortDir) opts.sortDir = 'asc';
 
     // Sort by requested field + direction
-    query = query.orderBy(opts.sortField, opts.sortDir);
+    q = query(q, orderBy(opts.sortField, opts.sortDir));
 
     // Sort ties by earliest deadline first
     if (opts.sortField !== 'deadline') {
-      query = query.orderBy('deadline', 'asc');
+      q = query(q, orderBy('deadline', 'asc'));
     }
 
     // Apply basic filters. Post-processing filters belong in _list().
     if (opts.authorId) {
-      query = query.where('author.id', '==', opts.authorId);
+      q = query(q, where('author.id', '==', opts.authorId));
     }
 
     // Why the sortField check? Firestore limitations. We can't apply a range filter operator (e.g. '>') unless the sorting
@@ -113,32 +139,29 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
     const today = new Date(now.toDateString());
 
     if (opts.hideExpired && opts.sortField == 'deadline') {
-      query = query.where('deadline', '>=', today);
+      q = query(q, where('deadline', '>=', today));
     }
 
-    return this._list(opts, query.limit(queryLimit));
+    return this._list(opts, query(q, limit(queryLimit)));
   }
 
   private _list(
     opts: FilterOptions,
-    query: firebase.firestore.Query<ScholarshipData>,
-    lastDoc?: firebase.firestore.QueryDocumentSnapshot<ScholarshipData>
+    q: Query<ScholarshipData>,
+    lastDoc?: QueryDocumentSnapshot<ScholarshipData>
   ): Promise<FirestoreModelList<ScholarshipData>> {
     const now = new Date();
     const today = new Date(now.toDateString());
-    if (lastDoc) query = query.startAfter(lastDoc);
-    return query
-      .get()
-      .then((qSnap: firebase.firestore.QuerySnapshot<ScholarshipData>) => ({
+    if (lastDoc) q = query(q, startAfter(lastDoc));
+    return getDocs(q)
+      .then((qSnap: QuerySnapshot<ScholarshipData>) => ({
         hasNext: qSnap.size == queryLimit,
         next:
           qSnap.size === queryLimit
-            ? () => this._list(opts, query, qSnap.docs[qSnap.docs.length - 1])
+            ? () => this._list(opts, q, qSnap.docs[qSnap.docs.length - 1])
             : () => Promise.resolve({} as FirestoreModelList<ScholarshipData>),
         results: qSnap.docs
-          .map(
-            (doc) => new FirestoreModel<ScholarshipData>(doc.ref, doc.data())
-          )
+          .map((d) => new FirestoreModel<ScholarshipData>(d.ref, d.data()))
           // Post-processing filters
           // These filters are applied *on* the query results.
           // This allows us work around Firestore query limitations and apply
@@ -186,7 +209,7 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
       website: '',
     }
   ): FirestoreModel<ScholarshipData> {
-    return new FirestoreModel<ScholarshipData>(this.collection.doc(), data);
+    return new FirestoreModel<ScholarshipData>(doc(this.collection), data);
   }
 }
 
