@@ -6,16 +6,7 @@ import {
   ReactNode,
   useContext,
 } from 'react';
-
-// Copied from 'firebase' to lazily load it.
-interface UserInfo {
-  displayName: string | null;
-  email: string | null;
-  phoneNumber: string | null;
-  photoURL: string | null;
-  providerId: string;
-  uid: string;
-}
+import { getAuth, UserInfo } from 'firebase/auth';
 
 interface Auth {
   /** Claims for the current user, if any. */
@@ -40,10 +31,9 @@ function useProvideAuth(): Auth {
 
   // Subscribe to user on mount. We need to have this called only once so only
   // AuthProvider should use it
-  useEffect(() => {
-    let cleanup = () => {};
-    import('firebase').then((firebase) => {
-      cleanup = firebase.default.auth().onAuthStateChanged((user) => {
+  useEffect(
+    () =>
+      getAuth().onAuthStateChanged((user) => {
         setCurrentUser(user);
         if (user) {
           user
@@ -53,10 +43,9 @@ function useProvideAuth(): Auth {
         } else {
           setClaims({});
         }
-      });
-    });
-    return () => cleanup();
-  }, []);
+      }),
+    []
+  );
 
   return { currentUser, claims };
 }

@@ -1,9 +1,15 @@
-import firebase from 'firebase/app';
+import {
+  deleteDoc,
+  DocumentReference,
+  DocumentSnapshot,
+  getDoc,
+  setDoc,
+} from 'firebase/firestore';
 import Model from './Model';
 
 export default class FirestoreModel<T> implements Model<T> {
   constructor(
-    private readonly ref: firebase.firestore.DocumentReference<T>,
+    private readonly ref: DocumentReference<T>,
     public readonly data: T
   ) {}
 
@@ -12,21 +18,19 @@ export default class FirestoreModel<T> implements Model<T> {
   }
 
   get(): Promise<FirestoreModel<T>> {
-    return this.ref
-      .get()
-      .then((doc: firebase.firestore.DocumentSnapshot<T>) => {
-        if (!doc.exists) {
-          throw new Error(`${this.ref.path} not found`);
-        }
-        return new FirestoreModel<T>(doc.ref, doc.data() as T);
-      });
+    return getDoc(this.ref).then((doc: DocumentSnapshot<T>) => {
+      if (!doc.exists()) {
+        throw new Error(`${this.ref.path} not found`);
+      }
+      return new FirestoreModel<T>(doc.ref, doc.data() as T);
+    });
   }
 
   save(): Promise<FirestoreModel<T>> {
-    return this.ref.set(this.data).then(() => this);
+    return setDoc(this.ref, this.data).then(() => this);
   }
 
   delete(): Promise<void> {
-    return this.ref.delete();
+    return deleteDoc(this.ref);
   }
 }

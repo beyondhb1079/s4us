@@ -3,6 +3,15 @@ import { createTheme, responsiveFontSizes, ThemeOptions } from '@mui/material';
 const theme = responsiveFontSizes(
   createTheme({
     components: {
+      MuiTab: {
+        styleOverrides: {
+          textColorPrimary: {
+            ':not(&.Mui-selected)': {
+              color: 'rgb(0,0,0, 0.6)',
+            },
+          },
+        },
+      },
       MuiPaper: {
         defaultProps: {
           variant: 'outlined',

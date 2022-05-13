@@ -1,7 +1,8 @@
 /**
  * @jest-environment node
  */
-import firebase from 'firebase/app';
+import { deleteApp } from 'firebase/app';
+import { FirestoreDataConverter } from 'firebase/firestore';
 import { clearFirestoreData, initializeTestApp } from '../../lib/testing';
 import FirestoreCollection from './FirestoreCollection';
 
@@ -12,7 +13,7 @@ interface NameData {
   last: string;
 }
 
-const converter: firebase.firestore.FirestoreDataConverter<NameData> = {
+const converter: FirestoreDataConverter<NameData> = {
   toFirestore: (name: NameData) => ({ ...name }),
   fromFirestore: (snapshot) => ({ ...snapshot.data() } as NameData),
 };
@@ -23,7 +24,7 @@ const names = new (class extends FirestoreCollection<NameData> {
 })();
 
 beforeEach(() => clearFirestoreData(app.options as { projectId: string }));
-afterAll(() => app.delete());
+afterAll(() => deleteApp(app));
 
 test('new() returns model with data and generated id', () => {
   const data = { first: 'Bob', last: 'Smith' };

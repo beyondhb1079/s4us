@@ -9,7 +9,7 @@ function HeaderNavMenu({
   links: Record<string, string>;
 }): JSX.Element {
   const location = useLocation();
-  let currentTab = Object.keys(links)[0];
+  let currentTab = false as string | boolean;
 
   Object.entries(links).forEach(([title, link]) => {
     if (location.pathname.startsWith(link)) {
@@ -19,8 +19,7 @@ function HeaderNavMenu({
 
   return (
     <Tabs
-      aria-label="tabs"
-      indicatorColor="primary"
+      aria-label="primary pages tabs"
       scrollButtons="auto"
       value={currentTab}
       variant="scrollable"
