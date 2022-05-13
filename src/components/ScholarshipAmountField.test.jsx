@@ -1,8 +1,10 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
+import React, { Suspense } from 'react';
+import { render, screen, waitFor } from '@testing-library/react';
 import UserEvent from '@testing-library/user-event';
 import ScholarshipAmountField from './ScholarshipAmountField';
 import AmountType from '../types/AmountType';
+import { I18nextProvider } from 'react-i18next';
+import i18n from '../i18n';
 
 const formik = {
   values: {
@@ -12,13 +14,19 @@ const formik = {
 
 function renderWithAmountType(type) {
   formik.values.amount.type = type;
-  return render(<ScholarshipAmountField formik={formik} />);
+  return render(
+    <Suspense fallback="loading">
+      <I18nextProvider i18n={i18n}>
+        <ScholarshipAmountField formik={formik} />
+      </I18nextProvider>
+    </Suspense>
+  );
 }
 
-test('renders select options', () => {
+test('renders select options', async () => {
   renderWithAmountType(AmountType.Fixed);
 
-  const select = screen.getByRole('button');
+  const select = await waitFor(() => screen.getByRole('button'));
   UserEvent.click(select);
 
   const options = screen.getAllByRole('option');
