@@ -1,4 +1,4 @@
-import firebase from 'firebase/app';
+import firebase from 'firebase/compat/app';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import FirestoreCollection from './base/FirestoreCollection';
 import FirestoreModelList from './base/FiretoreModelList';

@@ -10,7 +10,8 @@ import {
   Typography,
   Box,
 } from '@mui/material';
-import firebase from 'firebase';
+import firebase from 'firebase/compat';
+import 'firebase/compat/auth';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useTranslation } from 'react-i18next';
 

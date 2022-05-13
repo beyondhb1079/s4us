@@ -1,4 +1,4 @@
-import firebase from 'firebase';
+import firebase from 'firebase/compat';
 import { loadFirestoreRules } from '@firebase/rules-unit-testing';
 
 if (process.env.NODE_ENV !== 'test') {

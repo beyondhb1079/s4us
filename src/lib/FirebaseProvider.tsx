@@ -1,4 +1,5 @@
 import React, { createContext } from 'react';
+import { connectAuthEmulator, getAuth } from 'firebase/auth';
 
 const FirebaseContext = createContext(null);
 
@@ -24,7 +25,7 @@ export default function FirebaseProvider(props: {
 }): JSX.Element {
   const { children } = props;
 
-  import('firebase').then((module) => {
+  import('firebase/compat').then((module) => {
     const firebase = module.default;
     if (firebase.apps.length === 0) {
       // eslint-disable-next-line no-console
@@ -37,7 +38,7 @@ export default function FirebaseProvider(props: {
         // Initialize app with staging config but use emulator where possible.
         firebase.initializeApp(stagingConfig);
         firebase.firestore().useEmulator('localhost', 8080);
-        firebase.auth().useEmulator('http://localhost:9099/');
+        connectAuthEmulator(getAuth(), 'http://localhost:9099');
       }
     }
   });

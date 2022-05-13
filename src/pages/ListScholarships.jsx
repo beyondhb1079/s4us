@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
-import firebase from 'firebase';
+import firebase from 'firebase/compat';
 import {
   Box,
   Collapse,

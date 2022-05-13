@@ -1,4 +1,4 @@
-import firebase from 'firebase/app';
+import firebase from 'firebase/compat/app';
 import Model from './Model';
 
 export default class FirestoreModel<T> implements Model<T> {

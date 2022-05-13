@@ -19,7 +19,7 @@ import {
   TwitterIcon,
   TwitterShareButton,
 } from 'react-share';
-import firebase from 'firebase';
+import firebase from 'firebase/compat';
 import { BRAND_NAME } from '../config/constants';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import ScholarshipData from '../types/ScholarshipData';

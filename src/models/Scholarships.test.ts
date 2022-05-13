@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-import firebase from 'firebase/app';
+import firebase from 'firebase/compat/app';
 import { clearFirestoreData, initializeTestApp } from '../lib/testing';
 import AmountType from '../types/AmountType';
 import GradeLevel from '../types/GradeLevel';

@@ -7,7 +7,7 @@ import {
   useContext,
 } from 'react';
 
-// Copied from 'firebase' to lazily load it.
+// Copied from 'firebase/compat' to lazily load it.
 interface UserInfo {
   displayName: string | null;
   email: string | null;
@@ -42,7 +42,7 @@ function useProvideAuth(): Auth {
   // AuthProvider should use it
   useEffect(() => {
     let cleanup = () => {};
-    import('firebase').then((firebase) => {
+    import('firebase/compat').then((firebase) => {
       cleanup = firebase.default.auth().onAuthStateChanged((user) => {
         setCurrentUser(user);
         if (user) {
