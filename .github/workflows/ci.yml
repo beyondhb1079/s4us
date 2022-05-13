@@ -9,7 +9,8 @@ on:
       - main
       - release/*
 
-  # This workflow just consists of deploying the application
+# This workflow just consists of deploying the application
+jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
