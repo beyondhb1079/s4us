@@ -21,6 +21,6 @@ export default abstract class FirestoreCollection<T> {
   }
 
   id(id: string, data: T = {} as T): Model<T> {
-    return new FirestoreModel<T>(doc(this.collection, this.name, id), data);
+    return new FirestoreModel<T>(doc(this.collection, id), data);
   }
 }

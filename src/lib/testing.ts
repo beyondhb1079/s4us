@@ -1,19 +1,9 @@
-import firebase from 'firebase/compat';
-import { loadFirestoreRules } from '@firebase/rules-unit-testing';
+import { FirebaseApp, initializeApp } from 'firebase/app';
+import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
 
 if (process.env.NODE_ENV !== 'test') {
   throw Error('this file should only be imported in tests');
 }
-
-const openRules = `rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if true;
-    }
-  }
-}
-`;
 
 /**
   Creates and initializes a Firebase app instance for testing.
@@ -24,62 +14,16 @@ service cloud.firestore {
  *   Use the resulting app.auth() to interact with it from testing environments.
  *   E.g. you can call {@link firebase.auth.Auth.updateCurrentUser} or {@link firebase.auth.Auth.signOut}.
  */
-export function initializeTestApp(
-  options: {
-    apiKey?: string;
-    projectId?: string;
-    auth?: { uid?: string; email?: string };
-  },
-  rules: string = openRules
-): firebase.app.App {
-  const app = firebase.initializeApp(options);
+export function initializeTestApp(options: {
+  apiKey?: string;
+  projectId?: string;
+  auth?: { uid?: string; email?: string };
+}): FirebaseApp {
+  const app = initializeApp({ appId: 'foo', apiKey: 'fake', ...options });
   if (options?.projectId) {
-    app.firestore().useEmulator('localhost', 8080);
-    loadFirestoreRules({
-      projectId: options.projectId,
-      rules,
-    });
+    connectFirestoreEmulator(getFirestore(app), 'localhost', 8080);
   }
 
-  // Mock analytics
-  firebase.analytics = (() =>
-    ({ logEvent: () => {} } as unknown)) as typeof firebase.analytics;
-
-  // Mock current user for the tests
-  app.auth = () => {
-    let currentUser = options?.auth as firebase.User | null;
-
-    // Need to fake observers for auth state change since some components
-    // rely on it.
-    let observers: (null | ((a: firebase.User | null) => any))[] = [];
-    const setCurrentUser = (user: firebase.User | null) => {
-      currentUser = user;
-      observers.forEach((o) => !!o && o(user));
-    };
-
-    // These methods are faked to facilitate testing.
-    // Additional methods can be added or mocked using jest.fn().
-    return {
-      currentUser,
-      onAuthStateChanged: (observer) => {
-        const index = observers.length;
-        if (typeof observer === 'function') {
-          observers.push(observer);
-        } else {
-          observers.push(observer.next);
-        }
-        return () => {
-          observers[index] = null;
-        };
-      },
-      signOut: () => {
-        setCurrentUser(null);
-      },
-      updateCurrentUser: (user: firebase.User | null) => {
-        setCurrentUser(user);
-      },
-    } as firebase.auth.Auth;
-  };
   return app;
 }
 

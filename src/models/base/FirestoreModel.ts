@@ -19,7 +19,7 @@ export default class FirestoreModel<T> implements Model<T> {
 
   get(): Promise<FirestoreModel<T>> {
     return getDoc(this.ref).then((doc: DocumentSnapshot<T>) => {
-      if (!doc.exists) {
+      if (!doc.exists()) {
         throw new Error(`${this.ref.path} not found`);
       }
       return new FirestoreModel<T>(doc.ref, doc.data() as T);

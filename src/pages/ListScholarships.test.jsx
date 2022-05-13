@@ -9,6 +9,7 @@ import ScholarshipAmount from '../types/ScholarshipAmount';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
 import { ScholarshipsProvider } from '../models/ScholarshipsContext';
+import { deleteApp } from 'firebase/app';
 
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.
@@ -35,7 +36,7 @@ function renderAtRoute(route) {
 const app = initializeTestApp({ projectId: 'list-scholarships-test' });
 
 beforeAll(() => clearFirestoreData(app.options));
-afterAll(() => app.delete());
+afterAll(() => deleteApp(app));
 
 // https://stackoverflow.com/a/62148101
 beforeEach(() => {
@@ -57,8 +58,8 @@ test('renders a list of scholarships', async () => {
     deadline: new Date('3020-12-17'),
     website: 'foo.com',
   };
-  const ref = Scholarships.collection.doc('abc');
-  await ref.set(data);
+  const ref = Scholarships.id('abc', data);
+  await ref.save();
 
   renderAtRoute('/scholarships');
 
@@ -77,8 +78,8 @@ test('does not render expired scholarships by default', async () => {
     deadline: new Date('2020-12-17'),
     website: 'expired.com',
   };
-  const ref = Scholarships.collection.doc('abc-expired');
-  await ref.set(data);
+  const ref = Scholarships.id('abc-expired', data);
+  await ref.save();
 
   renderAtRoute('/scholarships');
 

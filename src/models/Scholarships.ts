@@ -5,7 +5,7 @@ import FirestoreModel from './base/FirestoreModel';
 import ScholarshipData from '../types/ScholarshipData';
 import AmountType from '../types/AmountType';
 import GradeLevel from '../types/GradeLevel';
-import { getAuth } from 'firebase/auth';
+import { getAuth, User } from 'firebase/auth';
 import {
   doc,
   FirestoreDataConverter,
@@ -16,6 +16,7 @@ import {
   query,
   QueryDocumentSnapshot,
   QuerySnapshot,
+  SnapshotOptions,
   startAfter,
   Timestamp,
   where,
@@ -41,9 +42,19 @@ export function requirementMatchesFilter(
   );
 }
 
+let fakeUser: User | null = null;
+
+function getUser(): User | null {
+  return fakeUser ?? getAuth().currentUser;
+}
+
+export function setFakeUser(user: User | null): void {
+  fakeUser = user;
+}
+
 export const converter: FirestoreDataConverter<ScholarshipData> = {
   toFirestore: (data: ScholarshipData) => {
-    const user = getAuth().currentUser;
+    const user = getUser();
     const lastModified = new Date();
     const dateAdded = data.dateAdded ?? lastModified;
     const author =
@@ -57,7 +68,10 @@ export const converter: FirestoreDataConverter<ScholarshipData> = {
       lastModified: Timestamp.fromDate(lastModified),
     };
   },
-  fromFirestore: (snapshot, options) => {
+  fromFirestore: (
+    snapshot: QueryDocumentSnapshot,
+    options: SnapshotOptions
+  ) => {
     const data = snapshot.data(options);
     const deadline = (data.deadline as Timestamp).toDate();
     const dateAdded = (data.dateAdded as Timestamp)?.toDate();

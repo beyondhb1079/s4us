@@ -11,10 +11,11 @@ import ScholarshipData from '../types/ScholarshipData';
 import GradeLevel from '../types/GradeLevel';
 import Ethnicity from '../types/Ethnicity';
 import State from '../types/States';
+import { deleteApp } from 'firebase/app';
 
 const app = initializeTestApp({ projectId: 'scholarship-card-test' });
 beforeAll(() => clearFirestoreData(app.options));
-afterAll(() => app.delete());
+afterAll(() => deleteApp(app));
 
 const renderCard = (card: JSX.Element) =>
   render(
