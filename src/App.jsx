@@ -3,7 +3,6 @@ import React, { lazy, Suspense } from 'react';
 import { Helmet } from 'react-helmet';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
-  // Box,
   CssBaseline,
   LinearProgress,
   StyledEngineProvider,
@@ -14,6 +13,7 @@ import Header, { HeaderSkeleton } from './components/Header';
 import theme from './theme';
 import { BRAND_NAME } from './config/constants';
 import FirebaseProvider from './lib/FirebaseProvider';
+import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './lib/useAuth';
 import { ScholarshipsProvider } from './models/ScholarshipsContext';
 import ScrollToTop from './ScrollToTop';
@@ -28,7 +28,6 @@ const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
 const AddScholarship = lazy(() => import('./pages/AddScholarship'));
 const EditScholarship = lazy(() => import('./pages/EditScholarship'));
-const ProtectedRoute = lazy(() => import('./components/ProtectedRoute'));
 
 // This should be suspended too because of the auth dependency
 const LoginDialog = lazy(() => import('./components/LoginDialog'));
@@ -53,7 +52,7 @@ function App() {
                   <div className="content-wrap">
                     <Header />
                     <HeaderSkeleton />
-                    <Suspense fallback={<LinearProgress />}>
+                    <Suspense fallback={<LinearProgress sx={{ m: 5 }} />}>
                       <Routes>
                         <Route
                           path="/scholarships/new"
@@ -81,10 +80,10 @@ function App() {
                         <Route path="/terms" element={<Terms />} />
                         <Route path="/" element={<Home />} />
                       </Routes>
+                      <Footer />
                       <LoginDialog />
                     </Suspense>
                   </div>
-                  <Footer />
                 </Router>
               </ScholarshipsProvider>
             </AuthProvider>
