@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 const AmountTextField = (props) => (
   <TextField
     sx={{ maxWidth: 120 }}
-    variant="outlined"
     InputProps={{
       inputProps: { min: 0, max: 100000, step: 100 },
       startAdornment: <InputAdornment position="start">$</InputAdornment>,
@@ -26,6 +25,7 @@ AmountTextField.propTypes = {
 AmountTextField.defaultProps = {
   disabled: false,
   error: false,
+  variant: 'outlined',
 };
 
 export default AmountTextField;

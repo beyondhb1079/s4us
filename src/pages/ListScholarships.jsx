@@ -29,16 +29,13 @@ function ListScholarships() {
 
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
-  const [{ minAmount, maxAmount, grades, majors }, setQueryParams] =
-    useQueryParams();
+  const [{ minAmount, grades, majors }, setQueryParams] = useQueryParams();
 
   const filterChips = {};
   if (Number.isInteger(minAmount)) {
     filterChips[`Min $${minAmount}`] = { minAmount: undefined };
   }
-  if (Number.isInteger(maxAmount)) {
-    filterChips[`Max $${maxAmount}`] = { maxAmount: undefined };
-  }
+
   majors?.forEach((m) => {
     filterChips[m] = {
       majors: majors?.filter((major) => major !== m),
