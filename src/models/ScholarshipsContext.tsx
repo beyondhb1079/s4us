@@ -1,5 +1,4 @@
 import React, { createContext, ReactNode, useEffect, useState } from 'react';
-import FirestoreModel from './base/FirestoreModel';
 import FirestoreModelList from './base/FiretoreModelList';
 import Model from './base/Model';
 import Scholarships, { FilterOptions } from './Scholarships';
@@ -83,9 +82,7 @@ export function ScholarshipsProvider({ children }: Props): ReactNode {
               // clear the cache anyway.
               setScholarships(
                 scholarships.map((s) =>
-                  s.id === id
-                    ? new FirestoreModel(Scholarships.collection.doc(id), data)
-                    : s
+                  s.id === id ? Scholarships.id(id, data) : s
                 )
               );
             } else {

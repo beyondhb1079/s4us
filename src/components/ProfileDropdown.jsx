@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import firebase from 'firebase/compat';
 import {
   Avatar,
   Divider,
@@ -18,6 +17,7 @@ import experiments from '../lib/experiments';
 import useAuth from '../lib/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { signOut } from 'firebase/auth';
 
 // hacky way to override Menu style
 const StyledMenu = (props) => (
@@ -59,7 +59,7 @@ export default function ProfileDropdown(props) {
 
   const signUserOut = () => {
     onClose();
-    firebase.auth().signOut();
+    signOut();
   };
   const navigate = useNavigate();
 

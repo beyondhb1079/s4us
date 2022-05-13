@@ -10,10 +10,15 @@ import {
   Typography,
   Box,
 } from '@mui/material';
-import firebase from 'firebase/compat';
-import 'firebase/compat/auth';
+import {
+  GoogleAuthProvider,
+  EmailAuthProvider,
+  FacebookAuthProvider,
+  getAuth,
+} from 'firebase/auth';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useTranslation } from 'react-i18next';
+import { getAnalytics, logEvent } from 'firebase/analytics';
 
 const StyledFirebaseAuth = lazy(
   () => import('react-firebaseui/StyledFirebaseAuth')
@@ -34,18 +39,18 @@ export default function LoginDialog(): JSX.Element {
   const uiConfig: firebaseui.auth.Config = {
     signInFlow: 'popup',
     signInOptions: [
-      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-      firebase.auth.EmailAuthProvider.PROVIDER_ID,
-      firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+      GoogleAuthProvider.PROVIDER_ID,
+      EmailAuthProvider.PROVIDER_ID,
+      FacebookAuthProvider.PROVIDER_ID,
     ],
     credentialHelper: 'none', // hacky way to disable redirect on email login
     callbacks: {
       signInSuccessWithAuthResult: (authResult) => {
         const { isNewUser, providerId: method } = authResult.additionalUserInfo;
         if (isNewUser) {
-          firebase.analytics().logEvent('signup', { method });
+          logEvent(getAnalytics(), 'signup', { method });
         } else {
-          firebase.analytics().logEvent('login', { method });
+          logEvent(getAnalytics(), 'login', { method });
         }
         closeDialog();
         return false;
@@ -107,10 +112,7 @@ export default function LoginDialog(): JSX.Element {
                 {t('common:actions.signIn')}
               </Typography>
             </DialogTitle>
-            <StyledFirebaseAuth
-              uiConfig={uiConfig}
-              firebaseAuth={firebase.auth()}
-            />
+            <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={getAuth()} />
           </Grid>
         </Grid>
       </DialogContent>

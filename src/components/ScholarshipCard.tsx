@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import firebase from 'firebase/compat';
 import {
   Box,
   Button,
@@ -35,6 +34,7 @@ import ShareDialog from './ShareDialog';
 import useAuth from '../lib/useAuth';
 import ScholarshipData from '../types/ScholarshipData';
 import { useTranslation } from 'react-i18next';
+import { getAnalytics, logEvent } from 'firebase/analytics';
 
 const SHOW_MORE_THRESHOLD = 5;
 
@@ -121,7 +121,7 @@ export default function ScholarshipCard({
           detailed
             ? null
             : () => {
-                firebase.analytics().logEvent('select_content', {
+                logEvent(getAnalytics(), 'select_content', {
                   content_type: 'scholarship',
                   item_id: scholarship.id,
                   items: [{ scholarship }],
