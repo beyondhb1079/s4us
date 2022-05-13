@@ -129,6 +129,7 @@ function Header(): JSX.Element {
             <HeaderNavMenu links={links(t)} />
           </Hidden>
           <IconButton
+            aria-label="select language"
             color="primary"
             onClick={(e) => setAnchorEl(e.currentTarget)}
             sx={{ px: 2 }}>
