@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Dialog,
@@ -11,9 +11,12 @@ import {
   Box,
 } from '@mui/material';
 import firebase from 'firebase';
-import StyleFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useTranslation } from 'react-i18next';
+
+const StyledFirebaseAuth = lazy(
+  () => import('react-firebaseui/StyledFirebaseAuth')
+);
 
 export default function LoginDialog(): JSX.Element {
   const location = useLocation();
@@ -73,9 +76,7 @@ export default function LoginDialog(): JSX.Element {
             sm={6}
             sx={{ color: 'background.paper', bgcolor: 'primary.main' }}>
             <DialogTitle id="responsive-dialog-brand">
-              <Typography sx={{ color: 'background.paper' }}>
-                DreamScholars
-              </Typography>
+              DreamScholars
             </DialogTitle>
 
             <DialogTitle id="responsive-dialog-welcome">
@@ -105,7 +106,7 @@ export default function LoginDialog(): JSX.Element {
                 {t('common:actions.signIn')}
               </Typography>
             </DialogTitle>
-            <StyleFirebaseAuth
+            <StyledFirebaseAuth
               uiConfig={uiConfig}
               firebaseAuth={firebase.auth()}
             />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   AppBar,
@@ -18,12 +18,13 @@ import {
   Box,
 } from '@mui/material';
 import LanguageIcon from '@mui/icons-material/Language';
-import ProfileMenu from './ProfileDropdown';
 import { TFunction, useTranslation } from 'react-i18next';
 import { BRAND_NAME } from '../config/constants';
 import HeaderNavMenu from './HeaderNavMenu';
 import useAuth from '../lib/useAuth';
 import PropTypes from 'prop-types';
+
+const ProfileMenu = lazy(() => import('./ProfileDropdown'));
 
 function HideOnScroll({ children }: { children: JSX.Element }) {
   const trigger = useScrollTrigger();
@@ -87,7 +88,9 @@ const AuthGrowButton = ({ t }: { t: TFunction<'common', undefined> }) => {
           </Button>
         )}
       </Grow>
-      <ProfileMenu anchorEl={anchorEl} onClose={() => setAnchorEl(null)} />
+      <Suspense fallback={null}>
+        <ProfileMenu anchorEl={anchorEl} onClose={() => setAnchorEl(null)} />
+      </Suspense>
     </>
   );
 };

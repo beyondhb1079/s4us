@@ -9,13 +9,11 @@ import {
   MenuItem,
   Typography,
 } from '@mui/material';
-import {
-  Bookmark as BookmarkIcon,
-  Done as DoneIcon,
-  ExitToApp as ExitToAppIcon,
-  Home as HomeIcon,
-  NewReleases as NewIcon,
-} from '@mui/icons-material';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import DoneIcon from '@mui/icons-material/Done';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import HomeIcon from '@mui/icons-material/Home';
+import NewIcon from '@mui/icons-material/NewReleases';
 import experiments from '../lib/experiments';
 import useAuth from '../lib/useAuth';
 import { useNavigate } from 'react-router-dom';
