@@ -82,10 +82,10 @@ function App() {
                         <Route path="/dashboard" element={<UserHome />} />
                         <Route path="/" element={<Home />} />
                       </Routes>
+                      <LoginDialog />
                     </Suspense>
                   </div>
                   <Footer />
-                  <LoginDialog />
                 </Router>
               </ScholarshipsProvider>
             </AuthProvider>
