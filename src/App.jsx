@@ -8,13 +8,14 @@ import {
   StyledEngineProvider,
   ThemeProvider,
 } from '@mui/material';
-import Footer from './components/Footer';
 import Header, { HeaderSkeleton } from './components/Header';
 import theme from './theme';
 import { BRAND_NAME } from './config/constants';
 import FirebaseProvider from './lib/FirebaseProvider';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './lib/useAuth';
+// TODO: Fix this. This slows EVERYTHING down. 1.03->1.34 DOM load + 1.9->2.24 load
+// Maybe use nested routes? Perhaps only for /scholarships path?
 import { ScholarshipsProvider } from './models/ScholarshipsContext';
 import ScrollToTop from './ScrollToTop';
 
@@ -30,8 +31,9 @@ const AddScholarship = lazy(() => import('./pages/AddScholarship'));
 const EditScholarship = lazy(() => import('./pages/EditScholarship'));
 const UserHome = lazy(() => import('./pages/UserHome'));
 
-// This should be suspended too because of the auth dependency
+// Lazy load as these are not essential on initial render
 const LoginDialog = lazy(() => import('./components/LoginDialog'));
+const Footer = lazy(() => import('./components/Footer'));
 
 function App() {
   return (
@@ -47,11 +49,11 @@ function App() {
               }
             />
             <AuthProvider>
-              <ScholarshipsProvider>
-                <Router>
-                  <ScrollToTop />
-                  <Header />
-                  <HeaderSkeleton />
+              <Router>
+                <ScrollToTop />
+                <Header />
+                <HeaderSkeleton />
+                <ScholarshipsProvider>
                   <Suspense fallback={<LinearProgress sx={{ m: 5 }} />}>
                     <div className="content-wrap">
                       <Routes>
@@ -82,12 +84,14 @@ function App() {
                         <Route path="/dashboard" element={<UserHome />} />
                         <Route path="/" element={<Home />} />
                       </Routes>
-                      <LoginDialog />
                     </div>
                     <Footer />
                   </Suspense>
-                </Router>
-              </ScholarshipsProvider>
+                </ScholarshipsProvider>
+                <Suspense fallback={null}>
+                  <LoginDialog />
+                </Suspense>
+              </Router>
             </AuthProvider>
           </ThemeProvider>
         </StyledEngineProvider>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import {
@@ -6,7 +6,6 @@ import {
   Collapse,
   Container,
   Drawer,
-  Toolbar,
   useMediaQuery,
   useScrollTrigger,
   Chip,
@@ -94,7 +93,6 @@ function ListScholarships() {
           </Collapse>
           <FilterBar openFilter={() => setDrawerOpen(true)} />
         </Box>
-        <Toolbar />
 
         <Container maxWidth="md" sx={{ flexGrow: 1 }}>
           <Stack
@@ -126,7 +124,9 @@ function ListScholarships() {
               />
             ))}
           </Stack>
-          <ScholarshipList extraFilters={{ hideExpired: true }} />
+          <Suspense fallback={null}>
+            <ScholarshipList extraFilters={{ hideExpired: true }} />
+          </Suspense>
         </Container>
       </Box>
     </Box>
