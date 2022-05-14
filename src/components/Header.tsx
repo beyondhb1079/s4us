@@ -1,24 +1,26 @@
-import React, { lazy, Suspense, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { lazy, Suspense } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import {
   AppBar,
-  IconButton,
   Link as MuiLink,
   Slide,
   Toolbar,
   useScrollTrigger,
   Box,
+  Grow,
+  Button,
 } from '@mui/material';
-import LanguageIcon from '@mui/icons-material/Language';
 import { TFunction, useTranslation } from 'react-i18next';
 import { BRAND_NAME } from '../config/constants';
 import HeaderNavMenu from './HeaderNavMenu';
 import PropTypes from 'prop-types';
+import useAuth from '../lib/useAuth';
+import TranslationMenu from './TranslationMenu';
 
-// Lazy load since immediate render not essential
-const AuthButton = lazy(() => import('./AuthButton'));
+// Lazy load components that only conditionally appear.
 const OnRenderSnackbar = lazy(() => import('./OnRenderSnackbar'));
-const TranslationMenu = lazy(() => import('./TranslationMenu'));
+const ProfileDropdown = lazy(() => import('./ProfileDropdown'));
+const LoginDialog = lazy(() => import('./LoginDialog'));
 
 function HideOnScroll({ children }: { children: JSX.Element }) {
   const trigger = useScrollTrigger();
@@ -34,6 +36,39 @@ HideOnScroll.propTypes = {
   children: PropTypes.element.isRequired,
 };
 
+const AuthGrowButton = ({ t }: { t: TFunction<'common', undefined> }) => {
+  const { currentUser } = useAuth();
+  const location = useLocation();
+
+  return (
+    <Grow in={currentUser !== undefined}>
+      <Box width={64}>
+        {currentUser ? (
+          // Conditionally load dropdown
+          <Suspense fallback={null}>
+            <ProfileDropdown />
+          </Suspense>
+        ) : (
+          // Conditionally load login button + dialog
+          <Suspense fallback={null}>
+            <Button
+              color="primary"
+              variant="contained"
+              component={Link}
+              replace
+              to={location.pathname}
+              state={{ showLoginDialog: true }}
+              sx={{ height: '100%', width: 64 }}>
+              {t('actions.login')}
+            </Button>
+            <LoginDialog />
+          </Suspense>
+        )}
+      </Box>
+    </Grow>
+  );
+};
+
 const links = (t: TFunction<'common', undefined>) => ({
   [t('navbar.scholarships')]: '/scholarships',
   [t('navbar.add')]: '/scholarships/new',
@@ -41,8 +76,6 @@ const links = (t: TFunction<'common', undefined>) => ({
 
 function Header(): JSX.Element {
   const { t } = useTranslation('common');
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
   return (
     <HideOnScroll>
       <AppBar
@@ -66,23 +99,12 @@ function Header(): JSX.Element {
           <Box sx={{ display: { sm: 'block', xs: 'none' } }}>
             <HeaderNavMenu links={links(t)} />
           </Box>
-          <IconButton
-            aria-label="select language"
-            color="primary"
-            onClick={(e) => setAnchorEl(e.currentTarget)}
-            sx={{ px: 2 }}>
-            <LanguageIcon />
-          </IconButton>
-          <Suspense fallback={<Box width={64} />}>
-            <AuthButton />
-          </Suspense>
+          <TranslationMenu />
+          <AuthGrowButton t={t} />
         </Toolbar>
         <Toolbar sx={{ display: { sm: 'none', xs: 'block' } }} variant="dense">
           <HeaderNavMenu links={links(t)} />
         </Toolbar>
-        <Suspense fallback={null}>
-          <TranslationMenu anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
-        </Suspense>
       </AppBar>
     </HideOnScroll>
   );

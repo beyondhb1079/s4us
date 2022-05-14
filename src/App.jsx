@@ -32,7 +32,7 @@ const EditScholarship = lazy(() => import('./pages/EditScholarship'));
 const UserHome = lazy(() => import('./pages/UserHome'));
 
 // Lazy load as these are not essential on initial render
-const LoginDialog = lazy(() => import('./components/LoginDialog'));
+// Maybe import this anyway
 const Footer = lazy(() => import('./components/Footer'));
 
 function App() {
@@ -91,9 +91,6 @@ function App() {
                     <Footer />
                   </Suspense>
                 </ScholarshipsProvider>
-                <Suspense fallback={null}>
-                  <LoginDialog />
-                </Suspense>
               </Router>
             </AuthProvider>
           </ThemeProvider>
