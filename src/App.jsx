@@ -81,7 +81,10 @@ function App() {
                         <Route path="/contact" element={<Contact />} />
                         <Route path="/privacy" element={<Privacy />} />
                         <Route path="/terms" element={<Terms />} />
-                        <Route path="/dashboard" element={<UserHome />} />
+                        <Route
+                          path="/dashboard"
+                          element={<ProtectedRoute element={<UserHome />} />}
+                        />
                         <Route path="/" element={<Home />} />
                       </Routes>
                     </div>
