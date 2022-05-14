@@ -4,7 +4,6 @@ import { Helmet } from 'react-helmet';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
   CssBaseline,
-  LinearProgress,
   StyledEngineProvider,
   ThemeProvider,
 } from '@mui/material';
@@ -30,6 +29,7 @@ const AddScholarship = lazy(() => import('./pages/AddScholarship'));
 const EditScholarship = lazy(() => import('./pages/EditScholarship'));
 const UserHome = lazy(() => import('./pages/UserHome'));
 
+// This should be suspended too because of the auth dependency
 const LoginDialog = lazy(() => import('./components/LoginDialog'));
 
 function App() {
@@ -81,10 +81,10 @@ function App() {
                         <Route path="/dashboard" element={<UserHome />} />
                         <Route path="/" element={<Home />} />
                       </Routes>
-                      <Footer />
-                      <LoginDialog />
                     </Suspense>
                   </div>
+                  <Footer />
+                  <LoginDialog />
                 </Router>
               </ScholarshipsProvider>
             </AuthProvider>
