@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ScholarshipCard from './ScholarshipCard';
@@ -72,7 +72,7 @@ const detailStrings = [
 const lintWarning = /potential issues detected/;
 
 test('result renders basic info', async () => {
-  const { getByText, queryByText } = renderCard(
+  const { getByRole, getByText, queryByText } = renderCard(
     <ScholarshipCard scholarship={scholarship} />
   );
 
@@ -81,7 +81,7 @@ test('result renders basic info', async () => {
   );
   detailStrings.forEach((s) => expect(queryByText(s)).not.toBeInTheDocument());
   expect(queryByText(lintWarning)).not.toBeInTheDocument();
-  const cardActionArea = screen.getByRole('button');
+  const cardActionArea = getByRole('button');
   expect(cardActionArea.textContent).toContain(data.name);
 });
 
@@ -94,7 +94,7 @@ test('result view for editor show lint warnings', () => {
 });
 
 test('detail renders detail info and Apply button', () => {
-  const { getByText, queryByText } = renderCard(
+  const { getByRole, getByText, queryByText } = renderCard(
     <ScholarshipCard style="detail" scholarship={scholarship} />
   );
 
@@ -102,54 +102,59 @@ test('detail renders detail info and Apply button', () => {
   detailStrings.forEach((s) => expect(getByText(s)).toBeInTheDocument());
   expect(queryByText(data.website)).not.toBeInTheDocument();
   expect(queryByText(lintWarning)).not.toBeInTheDocument();
-  expect(screen.getByRole('button').textContent).toEqual('Share');
-  const links = screen.getAllByRole('link');
-  expect(links.map((l) => l.textContent)).toEqual(['Apply', 'Report issue']);
-  expect(links[0].href).toEqual(data.website);
-  expect(links[1].href).toContain('mailto');
+  expect(getByRole('button', { name: 'Apply' })).toBeInTheDocument();
+  expect(getByRole('button', { name: 'Share' })).toBeInTheDocument();
+  expect(getByRole('link', { name: 'Report issue' })).toHaveAttribute(
+    'href',
+    expect.stringContaining('mailto:')
+  );
 });
 
 test('detail view for editor shows lint warnings and edit button', () => {
-  const { getByText } = renderCard(
+  const { getByRole, getByText } = renderCard(
     <ScholarshipCard style="detail" scholarship={editableScholarship} />
   );
 
   basicStrings.forEach((s) => expect(getByText(s)).toBeInTheDocument());
   detailStrings.forEach((s) => expect(getByText(s)).toBeInTheDocument());
   expect(getByText(lintWarning)).toBeInTheDocument();
-  const links = screen.getAllByRole('link');
-  expect(links.map((l) => l.textContent)).toEqual([
-    'Apply',
-    '',
-    'Report issue',
-  ]);
-  expect(links[1].href).toEqual('http://localhost/edit');
+  expect(getByRole('button', { name: 'Apply' })).toBeInTheDocument();
+  expect(getByRole('button', { name: 'Share' })).toBeInTheDocument();
+  expect(getByRole('link', { name: 'edit' })).toHaveAttribute('href', '/edit');
+  expect(getByRole('link', { name: 'Report issue' })).toHaveAttribute(
+    'href',
+    expect.stringContaining('mailto:')
+  );
 });
 
 test('preview renders detail info and URL', () => {
-  const { getByText, queryByText } = renderCard(
+  const url = data.website;
+
+  const { getByRole, getByText, queryByText, queryByRole } = renderCard(
     <ScholarshipCard style="preview" scholarship={scholarship} />
   );
 
   basicStrings.forEach((s) => expect(getByText(s)).toBeInTheDocument());
   detailStrings.forEach((s) => expect(getByText(s)).toBeInTheDocument());
-  expect(getByText(data.website)).toBeInTheDocument();
   expect(queryByText(lintWarning)).not.toBeInTheDocument();
-  expect(screen.getByRole('button').textContent).toEqual('Share');
-  const links = screen.getAllByRole('link');
-  expect(links.map((l) => l.textContent)).toEqual([data.website, 'Apply']);
-  expect(links[0].href).toEqual('http://localhost/#');
-  expect(links[1].href).toEqual(data.website);
+  expect(getByRole('button', { name: 'Apply' })).toBeInTheDocument();
+  expect(getByRole('button', { name: 'Share' })).toBeInTheDocument();
+  expect(getByRole('link', { name: url })).toHaveAttribute('href', '#');
+  expect(queryByRole('link', { name: 'Report issue' })).not.toBeInTheDocument();
 });
 
 test('preview view for editor does not show lint warnings nor edit button', () => {
-  const { getByText, queryByText } = renderCard(
+  const url = data.website;
+
+  const { getByRole, getByText, queryByText, queryByRole } = renderCard(
     <ScholarshipCard style="preview" scholarship={editableScholarship} />
   );
 
   basicStrings.forEach((s) => expect(getByText(s)).toBeInTheDocument());
   detailStrings.forEach((s) => expect(getByText(s)).toBeInTheDocument());
   expect(queryByText(lintWarning)).not.toBeInTheDocument();
-  const links = screen.getAllByRole('link');
-  expect(links.map((l) => l.textContent)).toEqual([data.website, 'Apply']);
+  expect(getByRole('button', { name: 'Apply' })).toBeInTheDocument();
+  expect(getByRole('button', { name: 'Share' })).toBeInTheDocument();
+  expect(getByRole('link', { name: url })).toHaveAttribute('href', '#');
+  expect(queryByRole('link', { name: 'Report issue' })).not.toBeInTheDocument();
 });

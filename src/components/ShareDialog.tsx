@@ -40,8 +40,8 @@ export default function ShareDialog({
   const { amount, deadline, name } = scholarship.data;
   const { t } = useTranslation('common');
 
-  const url = `https://${window.location.hostname}/scholarships/${scholarship.id}`;
-  const title = `${ScholarshipAmount.toString(
+  const url = `${window.location.origin}/scholarships/${scholarship.id}`;
+  const title = `$${ScholarshipAmount.toString(
     amount
   )} - ${name} | ${BRAND_NAME}`;
   const text = `${title}\n ${deadline?.toLocaleDateString()}\n`;
@@ -78,30 +78,35 @@ export default function ShareDialog({
         <EmailShareButton
           beforeOnClick={() => logShare()('email')}
           url={url}
+          subject={title}
           style={{ margin: '4px' }}>
           <EmailIcon round />
         </EmailShareButton>
         <FacebookShareButton
           beforeOnClick={() => logShare()('facebook')}
           url={url}
+          quote={title}
           style={{ margin: '4px' }}>
           <FacebookIcon round />
         </FacebookShareButton>
         <TwitterShareButton
           beforeOnClick={() => logShare()('twitter')}
           url={url}
+          title={title}
           style={{ margin: '4px' }}>
           <TwitterIcon round />
         </TwitterShareButton>
         <LinkedinShareButton
           beforeOnClick={() => logShare()('linkedin')}
           url={url}
+          title={title}
           style={{ margin: '4px' }}>
           <LinkedinIcon round />
         </LinkedinShareButton>
         <RedditShareButton
           beforeOnClick={() => logShare()('reddit')}
           url={url}
+          title={title}
           style={{ margin: '4px' }}>
           <RedditIcon round />
         </RedditShareButton>
