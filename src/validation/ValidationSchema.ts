@@ -1,20 +1,20 @@
 import * as yup from 'yup';
 import AmountType from '../types/AmountType';
 
-const validationSchema: any = (t: (key: string) => string) =>
+const validationSchema: any = (validationT: any) =>
   yup.object({
-    name: yup.string().required(t('validation:nameRequired')),
+    name: yup.string().required(validationT('nameRequired')),
     deadline: yup
       .date()
-      .required(t('validation:deadlineRequired'))
-      .typeError(t('validation:dateValid')),
-    description: yup.string().required(t('validation:descriptionRequired')),
+      .required(validationT('deadlineRequired'))
+      .typeError(validationT('dateValid')),
+    description: yup.string().required(validationT('descriptionRequired')),
     website: yup
       .string()
-      .url(t('validation:websiteValid'))
-      .required(t('validation:websiteRequired')),
+      .url(validationT('websiteValid'))
+      .required(validationT('websiteRequired')),
     amount: yup.object().shape({
-      type: yup.mixed().required(t('validation:amountOptionRequired')),
+      type: yup.mixed().required(validationT('amountOptionRequired')),
       min: yup
         .number()
         .when('type', {
@@ -22,27 +22,27 @@ const validationSchema: any = (t: (key: string) => string) =>
           then: yup
             .number()
             .required()
-            .moreThan(0, t('validation:fixedAmountValid')),
+            .moreThan(0, validationT('fixedAmountValid')),
         })
         .when('type', {
           is: AmountType.Varies,
           then: yup
             .number()
-            .min(0, t('validation:amountValid'))
+            .min(0, validationT('amountValid'))
             .test(
               'min < max test',
-              t('validation:minLessMax'),
+              validationT('minLessMax'),
               (min, { parent }) => !min || !parent?.max || min < parent.max
             ),
         }),
-      max: yup.number().min(0, t('validation:amountValid')).notRequired(),
+      max: yup.number().min(0, validationT('amountValid')).notRequired(),
     }),
     requirements: yup.object().shape({
       gpa: yup
         .number()
         .test(
           'valid GPA',
-          t('validation:GpaValid'),
+          validationT('GpaValid'),
           (gpa) =>
             gpa === undefined ||
             (gpa > 0 &&

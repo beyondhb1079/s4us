@@ -45,10 +45,11 @@ function ScholarshipForm({ scholarship }) {
 
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
   const { t } = useTranslation(['scholarshipForm', 'common', 'validation']);
+  const { t: validationT } = useTranslation('validation');
 
   const formik = useFormik({
     initialValues: scholarship.data,
-    validationSchema: validationSchema(t),
+    validationSchema: validationSchema(validationT),
     validateOnChange: false,
     onSubmit: (values, { setSubmitting }) => {
       setSubmitting(true);
