@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
   CssBaseline,
+  LinearProgress,
   StyledEngineProvider,
   ThemeProvider,
 } from '@mui/material';
