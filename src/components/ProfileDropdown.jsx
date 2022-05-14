@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Avatar,
   Divider,
   Grid,
+  IconButton,
   Menu,
   MenuItem,
   Typography,
@@ -17,7 +18,7 @@ import experiments from '../lib/experiments';
 import useAuth from '../lib/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { getAuth, signOut } from 'firebase/auth';
+import { signOut } from 'firebase/auth';
 
 // hacky way to override Menu style
 const StyledMenu = (props) => (
@@ -49,8 +50,10 @@ StyledMenuItem.propTypes = {
   onClick: PropTypes.func,
 };
 
-export default function ProfileDropdown(props) {
-  const { anchorEl, onClose } = props;
+export default function ProfileDropdown() {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const onClose = () => setAnchorEl(null);
+
   const { currentUser: user } = useAuth();
   const { t } = useTranslation('common');
 
@@ -59,57 +62,64 @@ export default function ProfileDropdown(props) {
 
   const signUserOut = () => {
     onClose();
-    signOut(getAuth());
+    signOut();
   };
   const navigate = useNavigate();
 
   return (
-    <StyledMenu
-      anchorEl={anchorEl}
-      keepMounted
-      open={Boolean(anchorEl)}
-      onClose={onClose}>
-      <Grid container spacing={2} sx={{ px: 2, py: 1 }}>
-        <Grid item sx={{ alignSelf: 'center' }}>
-          {/* or use alignItems? */}
-          <Avatar src={user?.photoURL} sx={{ height: 48, width: 48 }} />
+    <>
+      <IconButton
+        size="medium"
+        aria-label="account of current user"
+        aria-controls="menu-appbar"
+        aria-haspopup="true"
+        onClick={(e) => setAnchorEl(e.currentTarget)}
+        color="inherit"
+        sx={{ height: '100%', width: 64 }}>
+        <Avatar src={user?.photoURL || undefined} />
+      </IconButton>
+      <StyledMenu
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={onClose}>
+        <Grid container spacing={2} sx={{ px: 2, py: 1 }}>
+          <Grid item sx={{ alignSelf: 'center' }}>
+            {/* or use alignItems? */}
+            <Avatar src={user?.photoURL} sx={{ height: 48, width: 48 }} />
+          </Grid>
+          <Grid item>
+            <Typography variant="h6" component="h4">
+              {user?.displayName}
+            </Typography>
+            <Typography component="h6" gutterBottom>
+              {user?.email}
+            </Typography>
+            {experiments.expShowFullProfileMenu && (
+              <a href={manageProfileLink}>Manage Your Profile</a>
+            )}
+          </Grid>
         </Grid>
-        <Grid item>
-          <Typography variant="h6" component="h4">
-            {user?.displayName}
-          </Typography>
-          <Typography component="h6" gutterBottom>
-            {user?.email}
-          </Typography>
-          {experiments.expShowFullProfileMenu && (
-            <a href={manageProfileLink}>Manage Your Profile</a>
-          )}
-        </Grid>
-      </Grid>
-      <Divider sx={{ my: 1 }} />
-      {experiments.expShowFullProfileMenu && (
-        <>
-          <StyledMenuItem icon={NewIcon} text="New" />
-          <StyledMenuItem icon={BookmarkIcon} text="Saved" />
-          <StyledMenuItem icon={DoneIcon} text="Applied" />
-          <Divider sx={{ my: 1 }} />
-        </>
-      )}
-      <StyledMenuItem
-        icon={HomeIcon}
-        text={t('dashboard')}
-        onClick={() => navigate('/')}
-      />
-      <StyledMenuItem
-        icon={ExitToAppIcon}
-        text={t('actions.logout')}
-        onClick={signUserOut}
-      />
-    </StyledMenu>
+        <Divider sx={{ my: 1 }} />
+        {experiments.expShowFullProfileMenu && (
+          <>
+            <StyledMenuItem icon={NewIcon} text="New" />
+            <StyledMenuItem icon={BookmarkIcon} text="Saved" />
+            <StyledMenuItem icon={DoneIcon} text="Applied" />
+            <Divider sx={{ my: 1 }} />
+          </>
+        )}
+        <StyledMenuItem
+          icon={HomeIcon}
+          text={t('dashboard')}
+          onClick={() => navigate('/')}
+        />
+        <StyledMenuItem
+          icon={ExitToAppIcon}
+          text={t('actions.logout')}
+          onClick={signUserOut}
+        />
+      </StyledMenu>
+    </>
   );
 }
-
-ProfileDropdown.propTypes = {
-  anchorEl: PropTypes.node,
-  onClose: PropTypes.func.isRequired,
-};
