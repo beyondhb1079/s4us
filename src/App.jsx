@@ -28,8 +28,8 @@ const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
 const AddScholarship = lazy(() => import('./pages/AddScholarship'));
 const EditScholarship = lazy(() => import('./pages/EditScholarship'));
+const UserHome = lazy(() => import('./pages/UserHome'));
 
-// This should be suspended too because of the auth dependency
 const LoginDialog = lazy(() => import('./components/LoginDialog'));
 
 function App() {
@@ -78,6 +78,7 @@ function App() {
                         <Route path="/contact" element={<Contact />} />
                         <Route path="/privacy" element={<Privacy />} />
                         <Route path="/terms" element={<Terms />} />
+                        <Route path="/dashboard" element={<UserHome />} />
                         <Route path="/" element={<Home />} />
                       </Routes>
                       <Footer />

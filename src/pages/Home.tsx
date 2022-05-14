@@ -1,13 +1,9 @@
-import React, { lazy } from 'react';
+import React from 'react';
 import PublicHome from './PublicHome';
 import useAuth from '../lib/useAuth';
-
-const UserHome = lazy(() => import('./UserHome'));
+import { Navigate } from 'react-router-dom';
 
 export default function Home(): JSX.Element | string {
   const { currentUser: user } = useAuth();
-
-  if (user === undefined) return '';
-
-  return user ? <UserHome /> : <PublicHome />;
+  return user ? <Navigate to="/dashboard" replace /> : <PublicHome />;
 }
