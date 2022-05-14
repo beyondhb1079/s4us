@@ -173,13 +173,16 @@ export default function ScholarshipCard({
           {detailed && (
             <Box sx={{ my: 2, py: 1 }}>
               <Button
-                component={MuiLink}
-                href={website}
-                target="_blank"
-                rel="noreferrer"
                 variant="contained"
                 color="primary"
                 sx={{ mr: 1 }}
+                onClick={() => {
+                  logEvent(getAnalytics(), 'apply', {
+                    id: scholarship.id,
+                    website,
+                  });
+                  window.open(website, '_blank', 'noreferrer');
+                }}
                 startIcon={<SendIcon />}>
                 {t('actions.apply')}
               </Button>
