@@ -195,7 +195,7 @@ export default function ScholarshipCard({
               </Button>
 
               {!preview && canEdit && (
-                <IconButton component={Link} to="edit">
+                <IconButton component={Link} aria-label="edit" to="edit">
                   <EditIcon />
                 </IconButton>
               )}
