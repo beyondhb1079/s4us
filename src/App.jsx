@@ -50,10 +50,10 @@ function App() {
               <ScholarshipsProvider>
                 <Router>
                   <ScrollToTop />
-                  <div className="content-wrap">
-                    <Header />
-                    <HeaderSkeleton />
-                    <Suspense fallback={<LinearProgress sx={{ m: 5 }} />}>
+                  <Header />
+                  <HeaderSkeleton />
+                  <Suspense fallback={<LinearProgress sx={{ m: 5 }} />}>
+                    <div className="content-wrap">
                       <Routes>
                         <Route
                           path="/scholarships/new"
@@ -83,9 +83,9 @@ function App() {
                         <Route path="/" element={<Home />} />
                       </Routes>
                       <LoginDialog />
-                    </Suspense>
-                  </div>
-                  <Footer />
+                    </div>
+                    <Footer />
+                  </Suspense>
                 </Router>
               </ScholarshipsProvider>
             </AuthProvider>
