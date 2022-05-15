@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   AppBar,
   Alert,
-  Avatar,
   Button,
   Grow,
   Hidden,
@@ -58,23 +57,15 @@ const OnRenderSnackbar = () => {
 
 const AuthGrowButton = ({ t }: { t: TFunction<'common', undefined> }) => {
   const { currentUser } = useAuth();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const location = useLocation();
 
   return (
-    <>
-      <Grow in={currentUser !== undefined}>
+    <Grow in={currentUser !== undefined}>
+      <Box width={64}>
         {currentUser ? (
-          <IconButton
-            size="medium"
-            aria-label="account of current user"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
-            onClick={(e) => setAnchorEl(e.currentTarget)}
-            color="inherit"
-            sx={{ height: '100%', width: 64 }}>
-            <Avatar src={currentUser.photoURL || undefined} />
-          </IconButton>
+          <Suspense fallback={null}>
+            <ProfileMenu />
+          </Suspense>
         ) : (
           <Button
             color="primary"
@@ -87,11 +78,8 @@ const AuthGrowButton = ({ t }: { t: TFunction<'common', undefined> }) => {
             {t('actions.login')}
           </Button>
         )}
-      </Grow>
-      <Suspense fallback={null}>
-        <ProfileMenu anchorEl={anchorEl} onClose={() => setAnchorEl(null)} />
-      </Suspense>
-    </>
+      </Box>
+    </Grow>
   );
 };
 
