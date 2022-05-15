@@ -20,7 +20,7 @@ import useAuth from '../lib/useAuth';
 import PropTypes from 'prop-types';
 import TranslationMenu from './TranslationMenu';
 
-const ProfileMenu = lazy(() => import('./ProfileDropdown'));
+const ProfileMenu = lazy(() => import('./ProfileMenu'));
 
 function HideOnScroll({ children }: { children: JSX.Element }) {
   const trigger = useScrollTrigger();
