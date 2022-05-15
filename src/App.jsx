@@ -51,8 +51,8 @@ function App() {
                   <ScrollToTop />
                   <Header />
                   <HeaderSkeleton />
-                  <div className="content-wrap">
-                    <Suspense fallback={<LinearProgress sx={{ m: 5 }} />}>
+                  <Suspense fallback={<LinearProgress sx={{ m: 5 }} />}>
+                    <div className="content-wrap">
                       <Routes>
                         <Route
                           path="/scholarships/new"
@@ -81,9 +81,12 @@ function App() {
                         <Route path="/" element={<Home />} />
                       </Routes>
                       <LoginDialog />
-                    </Suspense>
-                  </div>
-                  <Footer />
+                    </div>
+                    {/* Footer inside <Suspense> but outside <div> so it:
+                          1. Gravitates to the bottom (see App.css) and
+                          2. Doesn't appear before main content.*/}
+                    <Footer />
+                  </Suspense>
                 </Router>
               </ScholarshipsProvider>
             </AuthProvider>
