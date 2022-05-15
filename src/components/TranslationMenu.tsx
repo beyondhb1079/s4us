@@ -9,7 +9,7 @@ const languages = {
 };
 
 export default function TranslationMenu(): JSX.Element {
-  const { i18n } = useTranslation('common');
+  const { i18n } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   return (
