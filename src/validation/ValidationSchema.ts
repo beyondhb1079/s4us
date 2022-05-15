@@ -1,59 +1,50 @@
+import { TFunction } from 'i18next';
 import * as yup from 'yup';
 import AmountType from '../types/AmountType';
 
-const validationSchema = yup.object({
-  name: yup.string().required('Please enter the scholarship name'),
-  deadline: yup
-    .date()
-    .required('Please enter the scholarship deadline')
-    .typeError('Please enter a valid date'),
-  description: yup
-    .string()
-    .required('Please enter the scholarship description'),
-  website: yup
-    .string()
-    .url('Website must be a valid URL')
-    .required('Please enter the scholarship website'),
-  amount: yup.object().shape({
-    type: yup.mixed().required('Please choose an option above'),
-    min: yup
-      .number()
-      .when('type', {
-        is: AmountType.Fixed,
-        then: yup
-          .number()
-          .required()
-          .moreThan(
-            0,
-            "Please enter a valid amount. If the amount is unknown, select 'Varies' from above"
-          ),
-      })
-      .when('type', {
-        is: AmountType.Varies,
-        then: yup
-          .number()
-          .min(0, 'Please enter a valid amount')
-          .test(
-            'min < max test',
-            'Minimum must be less than the maximum',
-            (min, { parent }) => !min || !parent?.max || min < parent.max
-          ),
-      }),
-    max: yup.number().min(0, 'Please enter a valid amount').notRequired(),
-  }),
-  requirements: yup.object().shape({
-    gpa: yup
-      .number()
-      .test(
-        'valid GPA',
-        'Please enter a valid GPA, rounded to two decimal places',
-        (gpa) =>
-          gpa === undefined ||
-          (gpa > 0 &&
-            gpa <= 4 &&
-            gpa.toString().match(/^[0-4](\.\d\d?)?$/) !== null)
-      ),
-  }),
-});
+const validationSchema: any = (t: TFunction) =>
+  yup.object({
+    name: yup.string().required(t('nameRequired')),
+    deadline: yup
+      .date()
+      .required(t('deadlineRequired'))
+      .typeError(t('dateValid')),
+    description: yup.string().required(t('descriptionRequired')),
+    website: yup.string().url(t('websiteValid')).required(t('websiteRequired')),
+    amount: yup.object().shape({
+      type: yup.mixed().required(t('amountOptionRequired')),
+      min: yup
+        .number()
+        .when('type', {
+          is: AmountType.Fixed,
+          then: yup.number().required().moreThan(0, t('fixedAmountValid')),
+        })
+        .when('type', {
+          is: AmountType.Varies,
+          then: yup
+            .number()
+            .min(0, t('amountValid'))
+            .test(
+              'min < max test',
+              t('minLessMax'),
+              (min, { parent }) => !min || !parent?.max || min < parent.max
+            ),
+        }),
+      max: yup.number().min(0, t('amountValid')).notRequired(),
+    }),
+    requirements: yup.object().shape({
+      gpa: yup
+        .number()
+        .test(
+          'valid GPA',
+          t('GpaValid'),
+          (gpa) =>
+            gpa === undefined ||
+            (gpa > 0 &&
+              gpa <= 4 &&
+              gpa.toString().match(/^[0-4](\.\d\d?)?$/) !== null)
+        ),
+    }),
+  });
 
 export default validationSchema;
