@@ -36,17 +36,15 @@ const StyledMenu = (props: any) => (
   />
 );
 
-type StyledMenuItemProps = {
-  icon: React.ElementType;
-  text: string;
-  onClick?: () => void;
-};
-
 const StyledMenuItem = ({
   icon: Icon,
   text,
   onClick,
-}: StyledMenuItemProps): JSX.Element => (
+}: {
+  icon: React.ElementType;
+  text: string;
+  onClick?: () => void;
+}): JSX.Element => (
   <MenuItem onClick={onClick} sx={{ py: 1 }}>
     <Icon sx={{ mr: 1.5 }} />
     {text}
