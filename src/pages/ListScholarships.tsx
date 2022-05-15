@@ -11,6 +11,7 @@ import {
   useScrollTrigger,
   Chip,
   Stack,
+  Theme,
 } from '@mui/material';
 import FilterBar from '../components/FilterBar';
 import FilterPanel from '../components/FilterPanel';
@@ -23,27 +24,31 @@ import { getAnalytics, logEvent } from 'firebase/analytics';
 
 const drawerWidth = 360;
 
-function ListScholarships() {
+function ListScholarships(): JSX.Element {
   const { t } = useTranslation('listScholarships');
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
   const [{ minAmount, grades, majors }, setQueryParams] = useQueryParams();
 
-  const filterChips = {};
+  const filterChips = {} as Record<
+    string,
+    { [k: string]: undefined | string[] }
+  >;
+
   if (Number.isInteger(minAmount)) {
     filterChips[`Min $${minAmount}`] = { minAmount: undefined };
   }
 
-  majors?.forEach((m) => {
-    filterChips[m] = {
-      majors: majors?.filter((major) => major !== m),
+  majors?.forEach((major: string) => {
+    filterChips[major] = {
+      majors: majors?.filter((m: string) => major !== m),
     };
   });
-  grades?.forEach((g) => {
-    filterChips[GradeLevel.toString(g)] = {
-      grades: grades?.filter((grade) => grade !== g),
+  grades?.forEach((grade: GradeLevel) => {
+    filterChips[GradeLevel.toString(grade)] = {
+      grades: grades?.filter((g: GradeLevel) => grade !== g),
     };
   });
 

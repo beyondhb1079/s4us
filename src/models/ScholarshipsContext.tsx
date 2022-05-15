@@ -27,7 +27,7 @@ interface Props {
   children: ReactNode;
 }
 
-export function ScholarshipsProvider({ children }: Props): ReactNode {
+export function ScholarshipsProvider({ children }: Props): JSX.Element {
   const [error, setError] = useState(null as Error | null);
   const [scholarships, setScholarships] = useState(
     [] as Model<ScholarshipData>[]
