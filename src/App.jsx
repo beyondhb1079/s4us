@@ -49,9 +49,9 @@ function App() {
               <ScholarshipsProvider>
                 <Router>
                   <ScrollToTop />
+                  <Header />
+                  <HeaderSkeleton />
                   <div className="content-wrap">
-                    <Header />
-                    <HeaderSkeleton />
                     <Suspense fallback={<LinearProgress sx={{ m: 5 }} />}>
                       <Routes>
                         <Route
@@ -80,10 +80,10 @@ function App() {
                         <Route path="/terms" element={<Terms />} />
                         <Route path="/" element={<Home />} />
                       </Routes>
-                      <Footer />
                       <LoginDialog />
                     </Suspense>
                   </div>
+                  <Footer />
                 </Router>
               </ScholarshipsProvider>
             </AuthProvider>

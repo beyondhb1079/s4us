@@ -38,7 +38,7 @@ function PublicHome(): JSX.Element {
 
       <ScholarshipsMadeSimple />
 
-      <Box sx={{ background: (theme) => theme.palette.background.paper }}>
+      <Box sx={{ backgroundColor: 'background.paper', flex: 1 }}>
         <HomeSection
           alignItems="center"
           direction="row"
