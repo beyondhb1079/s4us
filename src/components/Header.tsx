@@ -9,20 +9,18 @@ import {
   Hidden,
   IconButton,
   Link as MuiLink,
-  Menu,
   Slide,
-  MenuItem,
   Snackbar,
   Toolbar,
   useScrollTrigger,
   Box,
 } from '@mui/material';
-import LanguageIcon from '@mui/icons-material/Language';
 import { TFunction, useTranslation } from 'react-i18next';
 import { BRAND_NAME } from '../config/constants';
 import HeaderNavMenu from './HeaderNavMenu';
 import useAuth from '../lib/useAuth';
 import PropTypes from 'prop-types';
+import TranslationMenu from './TranslationMenu';
 
 const ProfileMenu = lazy(() => import('./ProfileDropdown'));
 
@@ -100,14 +98,8 @@ const links = (t: TFunction<'common', undefined>) => ({
   [t('navbar.add')]: '/scholarships/new',
 });
 
-const languages = {
-  en: 'English',
-  es: 'Español',
-};
-
 function Header(): JSX.Element {
-  const { t, i18n } = useTranslation('common');
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const { t } = useTranslation('common');
 
   return (
     <HideOnScroll>
@@ -128,13 +120,7 @@ function Header(): JSX.Element {
           <Hidden smDown>
             <HeaderNavMenu links={links(t)} />
           </Hidden>
-          <IconButton
-            aria-label="select language"
-            color="primary"
-            onClick={(e) => setAnchorEl(e.currentTarget)}
-            sx={{ px: 2 }}>
-            <LanguageIcon />
-          </IconButton>
+          <TranslationMenu />
           <AuthGrowButton t={t} />
         </Toolbar>
         <Hidden smUp>
@@ -142,24 +128,6 @@ function Header(): JSX.Element {
             <HeaderNavMenu links={links(t)} />
           </Toolbar>
         </Hidden>
-        <Menu
-          open={Boolean(anchorEl)}
-          anchorEl={anchorEl}
-          onClose={() => setAnchorEl(null)}
-          anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
-          transformOrigin={{ horizontal: 'center', vertical: 'top' }}>
-          {Object.entries(languages).map(([abbr, lang]) => (
-            <MenuItem
-              key={lang}
-              selected={abbr === i18n.language}
-              onClick={() => {
-                i18n.changeLanguage(abbr);
-                setAnchorEl(null);
-              }}>
-              {lang}
-            </MenuItem>
-          ))}
-        </Menu>
       </AppBar>
     </HideOnScroll>
   );
