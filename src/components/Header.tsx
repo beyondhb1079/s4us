@@ -6,7 +6,6 @@ import {
   Button,
   Grow,
   Hidden,
-  IconButton,
   Link as MuiLink,
   Slide,
   Snackbar,
