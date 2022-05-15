@@ -6,7 +6,7 @@ import Scholarships from '../models/Scholarships';
 import backgroundImg from '../img/img3.svg';
 import { useTranslation } from 'react-i18next';
 
-function AddScholarship() {
+function AddScholarship(): JSX.Element {
   const { t } = useTranslation('addScholarship');
 
   return (

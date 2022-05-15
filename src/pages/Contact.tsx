@@ -11,7 +11,7 @@ import { BRAND_NAME, SUBSCRIPTION_FORM_URL } from '../config/constants';
 import { Container, Link as MuiLink, Typography } from '@mui/material';
 import { useTranslation, Trans } from 'react-i18next';
 
-function Contact() {
+function Contact(): JSX.Element {
   const { t } = useTranslation('contact');
 
   return (

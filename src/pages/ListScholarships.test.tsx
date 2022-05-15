@@ -10,12 +10,13 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
 import { ScholarshipsProvider } from '../models/ScholarshipsContext';
 import { deleteApp } from 'firebase/app';
+import { ClearFirestoreDataOptions } from '@firebase/rules-unit-testing/dist/src/api';
 
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.
 window.MutationObserver = require('mutation-observer');
 
-function renderAtRoute(route) {
+function renderAtRoute(route: string) {
   return render(
     <Suspense fallback="loading">
       <I18nextProvider i18n={i18n}>
@@ -35,7 +36,7 @@ function renderAtRoute(route) {
 
 const app = initializeTestApp({ projectId: 'list-scholarships-test' });
 
-beforeAll(() => clearFirestoreData(app.options));
+beforeAll(() => clearFirestoreData(app.options as ClearFirestoreDataOptions));
 afterAll(() => deleteApp(app));
 
 // https://stackoverflow.com/a/62148101
