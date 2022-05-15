@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import {
   Avatar,
   Divider,
@@ -21,7 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { getAuth, signOut } from 'firebase/auth';
 
 // hacky way to override Menu style
-const StyledMenu = (props) => (
+const StyledMenu = (props: any) => (
   <Menu
     elevation={0}
     anchorOrigin={{
@@ -37,21 +36,25 @@ const StyledMenu = (props) => (
   />
 );
 
-const StyledMenuItem = ({ icon: Icon, text, onClick }) => (
+type StyledMenuItemProps = {
+  icon: React.ElementType;
+  text: string;
+  onClick?: () => void;
+};
+
+const StyledMenuItem = ({
+  icon: Icon,
+  text,
+  onClick,
+}: StyledMenuItemProps): JSX.Element => (
   <MenuItem onClick={onClick} sx={{ py: 1 }}>
     <Icon sx={{ mr: 1.5 }} />
     {text}
   </MenuItem>
 );
 
-StyledMenuItem.propTypes = {
-  icon: PropTypes.elementType.isRequired,
-  text: PropTypes.string.isRequired,
-  onClick: PropTypes.func,
-};
-
-export default function ProfileDropdown() {
-  const [anchorEl, setAnchorEl] = useState(null);
+export default function ProfileMenu(): JSX.Element {
+  const [anchorEl, setAnchorEl] = useState(null as null | HTMLElement);
   const onClose = () => setAnchorEl(null);
 
   const { currentUser: user } = useAuth();
@@ -76,7 +79,7 @@ export default function ProfileDropdown() {
         onClick={(e) => setAnchorEl(e.currentTarget)}
         color="inherit"
         sx={{ height: '100%', width: 64 }}>
-        <Avatar src={user?.photoURL} />
+        <Avatar src={user?.photoURL || undefined} />
       </IconButton>
       <StyledMenu
         anchorEl={anchorEl}
@@ -86,7 +89,10 @@ export default function ProfileDropdown() {
         <Grid container spacing={2} sx={{ px: 2, py: 1 }}>
           <Grid item sx={{ alignSelf: 'center' }}>
             {/* or use alignItems? */}
-            <Avatar src={user?.photoURL} sx={{ height: 48, width: 48 }} />
+            <Avatar
+              src={user?.photoURL || undefined}
+              sx={{ height: 48, width: 48 }}
+            />
           </Grid>
           <Grid item>
             <Typography variant="h6" component="h4">
