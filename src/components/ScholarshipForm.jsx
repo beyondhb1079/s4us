@@ -34,6 +34,7 @@ import Ethnicity from '../types/Ethnicity';
 import ScholarshipsContext from '../models/ScholarshipsContext';
 import { lintReqs } from '../lib/lint';
 import { useTranslation } from 'react-i18next';
+import i18n from 'i18next';
 
 const labelStyle = { marginBottom: 2 };
 
@@ -69,6 +70,8 @@ function ScholarshipForm({ scholarship }) {
         .finally(() => setSubmitting(false));
     },
   });
+
+  i18n.on('languageChanged', () => formik.setErrors({}));
 
   const lintIssues = activeStep === 1 ? lintReqs(formik.values) : {};
   const autoFill = () => {
