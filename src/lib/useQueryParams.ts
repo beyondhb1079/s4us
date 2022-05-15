@@ -10,7 +10,10 @@ const options: ParseOptions = {
   parseNumbers: true,
 };
 
-type SetQueryParamsFn = (params: Record<string, any>, replace: boolean) => void;
+type SetQueryParamsFn = (
+  params: Record<string, any>,
+  replace?: boolean
+) => void;
 
 /**
  * Returns the query string parsed as an object, and a function to update parameters.

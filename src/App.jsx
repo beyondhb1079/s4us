@@ -49,11 +49,11 @@ function App() {
               }
             />
             <AuthProvider>
-              <Router>
-                <ScrollToTop />
-                <Header />
-                <HeaderSkeleton />
-                <ScholarshipsProvider>
+              <ScholarshipsProvider>
+                <Router>
+                  <ScrollToTop />
+                  <Header />
+                  <HeaderSkeleton />
                   <Suspense fallback={<LinearProgress sx={{ m: 5 }} />}>
                     <div className="content-wrap">
                       <Routes>
@@ -86,12 +86,15 @@ function App() {
                           element={<ProtectedRoute element={<UserHome />} />}
                         />
                         <Route path="/" element={<Home />} />
-                      </Routes>
+                      </Routes>{' '}
                     </div>
+                    {/* Footer inside <Suspense> but outside <div> so it:
+                          1. Gravitates to the bottom (see App.css) and
+                          2. Doesn't appear before main content.*/}
                     <Footer />
                   </Suspense>
-                </ScholarshipsProvider>
-              </Router>
+                </Router>
+              </ScholarshipsProvider>
             </AuthProvider>
           </ThemeProvider>
         </StyledEngineProvider>

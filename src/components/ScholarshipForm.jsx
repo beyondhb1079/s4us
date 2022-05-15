@@ -34,6 +34,7 @@ import Ethnicity from '../types/Ethnicity';
 import ScholarshipsContext from '../models/ScholarshipsContext';
 import { lintReqs } from '../lib/lint';
 import { useTranslation } from 'react-i18next';
+import i18n from 'i18next';
 
 const labelStyle = { marginBottom: 2 };
 
@@ -44,11 +45,12 @@ function ScholarshipForm({ scholarship }) {
   const navigate = useNavigate();
 
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
-  const { t } = useTranslation(['scholarshipForm', 'common']);
+  const { t } = useTranslation(['scholarshipForm', 'common', 'validation']);
+  const { t: validationT } = useTranslation('validation');
 
   const formik = useFormik({
     initialValues: scholarship.data,
-    validationSchema,
+    validationSchema: validationSchema(validationT),
     validateOnChange: false,
     onSubmit: (values, { setSubmitting }) => {
       setSubmitting(true);
@@ -68,6 +70,8 @@ function ScholarshipForm({ scholarship }) {
         .finally(() => setSubmitting(false));
     },
   });
+
+  i18n.on('languageChanged', () => formik.setErrors({}));
 
   const lintIssues = activeStep === 1 ? lintReqs(formik.values) : {};
   const autoFill = () => {
@@ -309,7 +313,7 @@ function ScholarshipForm({ scholarship }) {
       );
     // no requirements & no checkbox fails
     if (activeStep == 1 && !noReqsChecked && noReqsGiven)
-      return 'Check this box if there are no requirements for this scholarship.';
+      return t('validation:checkboxValid');
 
     return '';
   }

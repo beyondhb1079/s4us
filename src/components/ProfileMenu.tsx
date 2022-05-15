@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import {
   Avatar,
   Divider,
@@ -18,10 +17,10 @@ import experiments from '../lib/experiments';
 import useAuth from '../lib/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { signOut } from 'firebase/auth';
+import { getAuth, signOut } from 'firebase/auth';
 
 // hacky way to override Menu style
-const StyledMenu = (props) => (
+const StyledMenu = (props: any) => (
   <Menu
     elevation={0}
     anchorOrigin={{
@@ -37,21 +36,23 @@ const StyledMenu = (props) => (
   />
 );
 
-const StyledMenuItem = ({ icon: Icon, text, onClick }) => (
+const StyledMenuItem = ({
+  icon: Icon,
+  text,
+  onClick,
+}: {
+  icon: React.ElementType;
+  text: string;
+  onClick?: () => void;
+}): JSX.Element => (
   <MenuItem onClick={onClick} sx={{ py: 1 }}>
     <Icon sx={{ mr: 1.5 }} />
     {text}
   </MenuItem>
 );
 
-StyledMenuItem.propTypes = {
-  icon: PropTypes.elementType.isRequired,
-  text: PropTypes.string.isRequired,
-  onClick: PropTypes.func,
-};
-
-export default function ProfileDropdown() {
-  const [anchorEl, setAnchorEl] = useState(null);
+export default function ProfileMenu(): JSX.Element {
+  const [anchorEl, setAnchorEl] = useState(null as null | HTMLElement);
   const onClose = () => setAnchorEl(null);
 
   const { currentUser: user } = useAuth();
@@ -62,7 +63,7 @@ export default function ProfileDropdown() {
 
   const signUserOut = () => {
     onClose();
-    signOut();
+    signOut(getAuth());
   };
   const navigate = useNavigate();
 
@@ -70,7 +71,7 @@ export default function ProfileDropdown() {
     <>
       <IconButton
         size="medium"
-        aria-label="account of current user"
+        aria-label="profile menu"
         aria-controls="menu-appbar"
         aria-haspopup="true"
         onClick={(e) => setAnchorEl(e.currentTarget)}
@@ -86,7 +87,10 @@ export default function ProfileDropdown() {
         <Grid container spacing={2} sx={{ px: 2, py: 1 }}>
           <Grid item sx={{ alignSelf: 'center' }}>
             {/* or use alignItems? */}
-            <Avatar src={user?.photoURL} sx={{ height: 48, width: 48 }} />
+            <Avatar
+              src={user?.photoURL || undefined}
+              sx={{ height: 48, width: 48 }}
+            />
           </Grid>
           <Grid item>
             <Typography variant="h6" component="h4">

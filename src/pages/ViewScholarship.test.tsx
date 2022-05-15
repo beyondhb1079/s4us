@@ -77,7 +77,7 @@ test('renders passed in scholarship details', async () => {
   expect(
     screen.getByText(data.deadline.toLocaleDateString())
   ).toBeInTheDocument();
-  expect(screen.getByRole('link', { name: /Apply/i }).href).toBe(data.website);
+  expect(screen.getByRole('button', { name: /Apply/i })).toBeInTheDocument();
   expect(Helmet.peek().title).toBe(data.name);
 });
 
@@ -113,7 +113,7 @@ test('renders scholarship details', async () => {
   expect(
     screen.getByText(data.deadline.toLocaleDateString())
   ).toBeInTheDocument();
-  expect(screen.getByRole('link', { name: /Apply/i }).href).toBe(data.website);
+  expect(screen.getByRole('button', { name: /Apply/i })).toBeInTheDocument();
   expect(Helmet.peek().title).toBe(data.name);
   data.requirements.states
     .map(State.toString)

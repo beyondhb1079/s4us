@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { IconButton, Menu, MenuItem } from '@mui/material';
-import LanguageIcon from '@mui/icons-material/Language';
+import TranslateIcon from '@mui/icons-material/Translate';
 import { useState } from 'react';
 
 const languages = {
@@ -9,7 +9,7 @@ const languages = {
 };
 
 export default function TranslationMenu(): JSX.Element {
-  const { i18n } = useTranslation('common');
+  const { i18n } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   return (
@@ -18,8 +18,8 @@ export default function TranslationMenu(): JSX.Element {
         aria-label="select language"
         color="primary"
         onClick={(e) => setAnchorEl(e.currentTarget)}
-        sx={{ px: 2 }}>
-        <LanguageIcon />
+        sx={{ mx: 1 }}>
+        <TranslateIcon />
       </IconButton>
       <Menu
         open={Boolean(anchorEl)}

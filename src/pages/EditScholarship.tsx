@@ -18,12 +18,16 @@ import Scholarships from '../models/Scholarships';
 import { Helmet } from 'react-helmet';
 import useAuth from '../lib/useAuth';
 import ScholarshipsContext from '../models/ScholarshipsContext';
+import ScholarshipData from '../types/ScholarshipData';
+import Model from '../models/base/Model';
 
-function EditScholarship() {
+function EditScholarship(): JSX.Element {
   const { id } = useParams();
-  const [scholarship, setScholarship] = useState(undefined);
-  const [error, setError] = useState();
-  const [delError, setDelError] = useState();
+  const [scholarship, setScholarship] = useState<
+    Model<ScholarshipData> | undefined
+  >(undefined);
+  const [error, setError] = useState<string>();
+  const [delError, setDelError] = useState<string>();
   const [dialogOpen, setDialogOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -31,7 +35,7 @@ function EditScholarship() {
   useEffect(() => {
     let mounted = true;
 
-    Scholarships.id(id)
+    Scholarships.id(id as string)
       .get()
       .then((s) => mounted && setScholarship(s))
       .catch((e) => mounted && setError(e));
@@ -51,14 +55,14 @@ function EditScholarship() {
 
   const { invalidate } = useContext(ScholarshipsContext);
   const handleDelete = () => {
-    Scholarships.id(id)
+    Scholarships.id(id as string)
       .delete()
       .then(() => {
         invalidate(id);
         navigate('/', {
           state: {
             alert: {
-              message: `Successfully deleted "${scholarship.data.name}"`,
+              message: `Successfully deleted "${scholarship?.data.name}"`,
             },
           },
         });
@@ -95,11 +99,7 @@ function EditScholarship() {
         </Box>
 
         {delError && (
-          <Alert
-            severity="error"
-            onClose={() => {
-              setDelError(null);
-            }}>
+          <Alert severity="error" onClose={() => setDelError(undefined)}>
             <AlertTitle>Error deleting scholarship</AlertTitle>
             {delError.toString()}
           </Alert>

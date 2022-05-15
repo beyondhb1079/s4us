@@ -2,13 +2,13 @@ import React, { lazy, Suspense } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   AppBar,
+  Button,
+  Grow,
   Link as MuiLink,
   Slide,
   Toolbar,
   useScrollTrigger,
   Box,
-  Grow,
-  Button,
 } from '@mui/material';
 import { TFunction, useTranslation } from 'react-i18next';
 import { BRAND_NAME } from '../config/constants';
@@ -19,7 +19,7 @@ import TranslationMenu from './TranslationMenu';
 
 // Lazy load components that only conditionally appear.
 const OnRenderSnackbar = lazy(() => import('./OnRenderSnackbar'));
-const ProfileDropdown = lazy(() => import('./ProfileDropdown'));
+const ProfileMenu = lazy(() => import('./ProfileMenu'));
 const LoginDialog = lazy(() => import('./LoginDialog'));
 
 function HideOnScroll({ children }: { children: JSX.Element }) {
@@ -44,12 +44,10 @@ const AuthGrowButton = ({ t }: { t: TFunction<'common', undefined> }) => {
     <Grow in={currentUser !== undefined}>
       <Box width={64}>
         {currentUser ? (
-          // Conditionally load dropdown
           <Suspense fallback={null}>
-            <ProfileDropdown />
+            <ProfileMenu />
           </Suspense>
         ) : (
-          // Conditionally load login button + dialog
           <Suspense fallback={null}>
             <Button
               color="primary"

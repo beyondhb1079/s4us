@@ -10,16 +10,17 @@ import { useLocation, useNavigationType, useParams } from 'react-router-dom';
 import ScholarshipsContext from '../models/ScholarshipsContext';
 import { useTranslation } from 'react-i18next';
 
-export default function ViewScholarship() {
+export default function ViewScholarship(): JSX.Element {
   const location = useLocation();
   const { id } = useParams();
   const { scholarships } = useContext(ScholarshipsContext);
   const [scholarship, setScholarship] = useState(
-    scholarships.find((s) => s.id === id) || location?.state?.scholarship
+    scholarships.find((s) => s.id === id) ||
+      (location?.state as any)?.scholarship
   );
-  const [error, setError] = useState();
+  const [error, setError] = useState<Error>();
   const loading = !error && (!scholarship || scholarship.id !== id);
-  const prevPath = location?.state?.prevPath;
+  const prevPath = (location?.state as any)?.prevPath;
   const justEdited =
     scholarship &&
     (prevPath === `${location.pathname}/edit` ||
@@ -32,7 +33,7 @@ export default function ViewScholarship() {
   useEffect(() => {
     let mounted = true;
     if (loading) {
-      Scholarships.id(id)
+      Scholarships.id(id as string)
         .get()
         .then((s) => mounted && setScholarship(s))
         .catch((e) => mounted && setError(e));
@@ -62,7 +63,7 @@ export default function ViewScholarship() {
       {justEdited && navType === 'PUSH' && (
         <Collapse in={showAlert}>
           <Alert
-            color="primary"
+            color={'primary' as any}
             variant="filled"
             onClose={() => setShowAlert(false)}>
             {`Scholarship successfully ${
