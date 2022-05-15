@@ -33,7 +33,7 @@ export default function ViewScholarship(): JSX.Element {
   useEffect(() => {
     let mounted = true;
     if (loading) {
-      Scholarships.id(id!)
+      Scholarships.id(id as string)
         .get()
         .then((s) => mounted && setScholarship(s))
         .catch((e) => mounted && setError(e));

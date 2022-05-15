@@ -35,7 +35,7 @@ function EditScholarship(): JSX.Element {
   useEffect(() => {
     let mounted = true;
 
-    Scholarships.id(id!)
+    Scholarships.id(id as string)
       .get()
       .then((s) => mounted && setScholarship(s))
       .catch((e) => mounted && setError(e));
@@ -55,7 +55,7 @@ function EditScholarship(): JSX.Element {
 
   const { invalidate } = useContext(ScholarshipsContext);
   const handleDelete = () => {
-    Scholarships.id(id!)
+    Scholarships.id(id as string)
       .delete()
       .then(() => {
         invalidate(id);
