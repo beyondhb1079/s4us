@@ -84,7 +84,7 @@ export default function ScholarshipCard({
     id: string;
     data: ScholarshipData;
   };
-  style?: 'result' | 'detail' | 'preview';
+  style?: 'result' | 'detail' | 'preview' | 'glance';
 }): JSX.Element {
   const {
     name,
@@ -100,8 +100,9 @@ export default function ScholarshipCard({
   } = scholarship.data;
   const { ethnicities, gpa, grades, majors, schools, states } =
     requirements || {};
-  const detailed = style !== 'result';
+  const detailed = style !== 'result' && style !== 'glance';
   const preview = style === 'preview';
+  const glance = style === 'glance';
 
   const [showShare, setShowShare] = useState(false);
   const { t } = useTranslation(['scholarships', 'common']);
@@ -114,7 +115,8 @@ export default function ScholarshipCard({
   const CardAreaComponent: React.FC<{
     [key: string]: any;
   }> = detailed ? Box : CardActionArea;
-  const lintIssues = canEdit && !preview ? lint(scholarship.data) : [];
+  const lintIssues =
+    canEdit && !preview && !glance ? lint(scholarship.data) : [];
   return (
     <Card variant="outlined" sx={{ minWidth: 240 }}>
       <CardAreaComponent
@@ -290,9 +292,14 @@ export default function ScholarshipCard({
             />
           )}
 
-          <Typography variant="subtitle2" align="right" color="text.secondary">
-            {t('lastUpdated')}: {lastModified?.toLocaleDateString()}
-          </Typography>
+          {!glance && (
+            <Typography
+              variant="subtitle2"
+              align="right"
+              color="text.secondary">
+              {t('lastUpdated')}: {lastModified?.toLocaleDateString()}
+            </Typography>
+          )}
         </CardContent>
       </CardAreaComponent>
       {lintIssues.length > 0 && (
