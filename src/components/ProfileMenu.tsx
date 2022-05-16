@@ -116,7 +116,7 @@ export default function ProfileMenu(): JSX.Element {
         <StyledMenuItem
           icon={HomeIcon}
           text={t('dashboard')}
-          onClick={() => navigate('/')}
+          onClick={() => navigate('/dashboard')}
         />
         <StyledMenuItem
           icon={ExitToAppIcon}
