@@ -5,7 +5,6 @@ import {
   Alert,
   Button,
   Grow,
-  Hidden,
   Link as MuiLink,
   Slide,
   Snackbar,
@@ -104,17 +103,15 @@ function Header(): JSX.Element {
             sx={{ flexGrow: 1 /** Take up remaining space */ }}>
             {BRAND_NAME.toUpperCase()}
           </MuiLink>
-          <Hidden smDown>
+          <Box sx={{ display: { sm: 'block', xs: 'none' } }}>
             <HeaderNavMenu links={links(t)} />
-          </Hidden>
+          </Box>
           <TranslationMenu />
           <AuthGrowButton t={t} />
         </Toolbar>
-        <Hidden smUp>
-          <Toolbar variant="dense">
-            <HeaderNavMenu links={links(t)} />
-          </Toolbar>
-        </Hidden>
+        <Toolbar variant="dense" sx={{ display: { sm: 'none', xs: 'block' } }}>
+          <HeaderNavMenu links={links(t)} />
+        </Toolbar>
       </AppBar>
     </HideOnScroll>
   );
@@ -124,9 +121,7 @@ export function HeaderSkeleton(): JSX.Element {
   return (
     <Box sx={{ width: '100vw', visibility: 'hidden' }}>
       <Toolbar />
-      <Hidden smUp>
-        <Toolbar variant="dense" />
-      </Hidden>
+      <Toolbar variant="dense" sx={{ display: { sm: 'none', xs: 'block' } }} />
     </Box>
   );
 }
