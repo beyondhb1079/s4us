@@ -61,10 +61,6 @@ export default function ProfileMenu(): JSX.Element {
   // needs to be updated once there is a working manage profile page
   const manageProfileLink = '/home';
 
-  const signUserOut = () => {
-    onClose();
-    signOut(getAuth());
-  };
   const navigate = useNavigate();
 
   return (
@@ -116,12 +112,15 @@ export default function ProfileMenu(): JSX.Element {
         <StyledMenuItem
           icon={HomeIcon}
           text={t('dashboard')}
-          onClick={() => navigate('/dashboard')}
+          onClick={() => {
+            navigate('/dashboard');
+            onClose();
+          }}
         />
         <StyledMenuItem
           icon={ExitToAppIcon}
           text={t('actions.logout')}
-          onClick={signUserOut}
+          onClick={() => signOut(getAuth()).then(onClose)}
         />
       </StyledMenu>
     </>
