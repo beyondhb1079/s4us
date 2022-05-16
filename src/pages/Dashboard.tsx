@@ -21,8 +21,8 @@ type LocationProps = {
   state: { alert?: { message?: string } };
 };
 
-export default function UserHome(): JSX.Element {
-  const { t } = useTranslation(['userHome', 'common']);
+export default function Dashboard(): JSX.Element {
+  const { t } = useTranslation(['dashboard', 'common']);
   const { currentUser: user } = useAuth();
   const location = useLocation() as LocationProps;
 

@@ -19,7 +19,8 @@ import { ScholarshipsProvider } from './models/ScholarshipsContext';
 import ScrollToTop from './ScrollToTop';
 
 // Pages should be loaded lazily on an as-needed basis
-const Home = lazy(() => import('./pages/Home'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const Home = lazy(() => import('./pages/PublicHome'));
 const ViewScholarship = lazy(() => import('./pages/ViewScholarship'));
 const ListScholarships = lazy(() => import('./pages/ListScholarships'));
 const About = lazy(() => import('./pages/About'));
@@ -78,6 +79,10 @@ function App() {
                         <Route path="/contact" element={<Contact />} />
                         <Route path="/privacy" element={<Privacy />} />
                         <Route path="/terms" element={<Terms />} />
+                        <Route
+                          path="/dashboard"
+                          element={<ProtectedRoute element={<Dashboard />} />}
+                        />
                         <Route path="/" element={<Home />} />
                       </Routes>
                       <LoginDialog />
