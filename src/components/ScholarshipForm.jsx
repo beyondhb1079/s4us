@@ -45,8 +45,8 @@ function ScholarshipForm({ scholarship }) {
   const navigate = useNavigate();
 
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
-  const { t } = useTranslation(['scholarships', 'common', 'validation']);
-  const { t: validationT } = useTranslation('validation');
+  const { t: validationT } = useTranslation('validations');
+  const { t } = useTranslation(['scholarships', 'common']);
 
   const formik = useFormik({
     initialValues: scholarship.data,
@@ -313,7 +313,7 @@ function ScholarshipForm({ scholarship }) {
       );
     // no requirements & no checkbox fails
     if (activeStep == 1 && !noReqsChecked && noReqsGiven)
-      return t('validation:checkboxValid');
+      return validationT('checkboxValid');
 
     return '';
   }

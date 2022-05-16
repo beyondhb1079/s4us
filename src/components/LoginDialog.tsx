@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Dialog,
@@ -112,7 +112,12 @@ export default function LoginDialog(): JSX.Element {
                 {t('common:actions.signIn')}
               </Typography>
             </DialogTitle>
-            <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={getAuth()} />
+            <Suspense fallback={null}>
+              <StyledFirebaseAuth
+                uiConfig={uiConfig}
+                firebaseAuth={getAuth()}
+              />
+            </Suspense>
           </Grid>
         </Grid>
       </DialogContent>
