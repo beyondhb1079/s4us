@@ -80,8 +80,8 @@ const AuthGrowButton = ({ t }: { t: TFunction<'common', undefined> }) => {
 };
 
 const links = (t: TFunction<'common', undefined>) => ({
-  [t('navbar.scholarships')]: '/scholarships',
-  [t('navbar.add')]: '/scholarships/new',
+  [t('scholarships')]: '/scholarships',
+  [t('actions.add')]: '/scholarships/new',
 });
 
 function Header(): JSX.Element {
