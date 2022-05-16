@@ -291,7 +291,7 @@ export default function ScholarshipCard({
           )}
 
           <Typography variant="subtitle2" align="right" color="text.secondary">
-            last modified: {lastModified?.toLocaleDateString()}
+            {t('lastUpdated')}: {lastModified?.toLocaleDateString()}
           </Typography>
         </CardContent>
       </CardAreaComponent>
