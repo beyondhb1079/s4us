@@ -1,14 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { Button, Box } from '@mui/material';
 import ScholarshipsMadeSimple from '../components/ScholarshipsMadeSimple';
 import HomeSection from '../components/HomeSection';
 import { useTranslation } from 'react-i18next';
 import graduation from '../img/img2.svg';
 import searching from '../img/img3.svg';
+import useAuth from '../lib/useAuth';
 
-function PublicHome(): JSX.Element {
-  const { t } = useTranslation(['publicHome', 'common']);
+export default function Home(): JSX.Element {
+  const { t } = useTranslation(['home', 'common']);
+  const { currentUser: user } = useAuth();
+  if (user) return <Navigate to="/dashboard" replace />;
 
   return (
     <>
@@ -58,5 +61,3 @@ function PublicHome(): JSX.Element {
     </>
   );
 }
-
-export default PublicHome;
