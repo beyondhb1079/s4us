@@ -13,8 +13,8 @@ import {
 import { TFunction, useTranslation } from 'react-i18next';
 import { BRAND_NAME } from '../config/constants';
 import HeaderNavMenu from './HeaderNavMenu';
-import PropTypes from 'prop-types';
 import useAuth from '../lib/useAuth';
+import PropTypes from 'prop-types';
 import TranslationMenu from './TranslationMenu';
 
 // Lazy load components that only conditionally appear.

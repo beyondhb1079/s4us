@@ -8,6 +8,7 @@ import {
   StyledEngineProvider,
   ThemeProvider,
 } from '@mui/material';
+import Footer from './components/Footer';
 import Header, { HeaderSkeleton } from './components/Header';
 import theme from './theme';
 import { BRAND_NAME } from './config/constants';
@@ -30,10 +31,6 @@ const Terms = lazy(() => import('./pages/Terms'));
 const AddScholarship = lazy(() => import('./pages/AddScholarship'));
 const EditScholarship = lazy(() => import('./pages/EditScholarship'));
 const UserHome = lazy(() => import('./pages/UserHome'));
-
-// Lazy load as these are not essential on initial render
-// Maybe import this anyway
-const Footer = lazy(() => import('./components/Footer'));
 
 function App() {
   return (
@@ -86,7 +83,7 @@ function App() {
                           element={<ProtectedRoute element={<UserHome />} />}
                         />
                         <Route path="/" element={<Home />} />
-                      </Routes>{' '}
+                      </Routes>
                     </div>
                     {/* Footer inside <Suspense> but outside <div> so it:
                           1. Gravitates to the bottom (see App.css) and
