@@ -96,6 +96,7 @@ export default function ScholarshipCard({
     tags,
     requirements,
     author,
+    lastModified,
   } = scholarship.data;
   const { ethnicities, gpa, grades, majors, schools, states } =
     requirements || {};
@@ -288,6 +289,10 @@ export default function ScholarshipCard({
               label={t('actions.reportIssue')}
             />
           )}
+
+          <Typography variant="subtitle2" align="right" color="text.secondary">
+            {t('lastUpdated')}: {lastModified?.toLocaleDateString()}
+          </Typography>
         </CardContent>
       </CardAreaComponent>
       {lintIssues.length > 0 && (
