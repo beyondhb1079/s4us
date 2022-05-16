@@ -65,7 +65,7 @@ const DetailCardCell = ({
               component={Button}
               onClick={() => setShowAll(true)}
               sx={{ p: 0 }}>
-              +{values.length - SHOW_MORE_THRESHOLD} {t('common:more')}
+              +{values.length - SHOW_MORE_THRESHOLD} {t('common:mdore')}
             </MuiLink>
           )}
         </Grid>
