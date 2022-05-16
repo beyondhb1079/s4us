@@ -9,7 +9,7 @@ import { TFunction, useTranslation } from 'react-i18next';
 
 function OutlineButton(
   user: string,
-  t: TFunction<('publicHome' | 'common')[], undefined>
+  t: TFunction<('home' | 'common')[], undefined>
 ): JSX.Element {
   return (
     <Button
@@ -25,7 +25,7 @@ function OutlineButton(
 }
 
 export default function ScholarshipsMadeSimpleSection(): JSX.Element {
-  const { t } = useTranslation(['publicHome', 'common']);
+  const { t } = useTranslation(['home', 'common']);
   const tabs = [
     {
       tab: 'students',
