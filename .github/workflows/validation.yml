@@ -90,5 +90,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Install i18next-parser
         run: yarn global add i18next-parser@~6.0.0
+      - name: Generate translations diff
+        run: $(yarn global bin)/i18next; git diff; git reset --hard
       - name: Check translations
         run: $(yarn global bin)/i18next --fail-on-warnings --fail-on-update
