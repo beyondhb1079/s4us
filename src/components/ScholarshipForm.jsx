@@ -45,7 +45,7 @@ function ScholarshipForm({ scholarship }) {
   const navigate = useNavigate();
 
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
-  const { t: validationT } = useTranslation('validations');
+  const { t: validationT } = useTranslation('validation');
   const { t } = useTranslation(['scholarships', 'common']);
 
   const formik = useFormik({
