@@ -1,49 +1,23 @@
-import React, { useState } from 'react';
-import { Autocomplete, Chip, OutlinedInput, IconButton } from '@mui/material';
+import React from 'react';
+import { Chip } from '@mui/material';
 import { MAJORS } from '../types/options';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import PropTypes from 'prop-types';
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import SearchIcon from '@mui/icons-material/Search';
 import useQueryParams from '../lib/useQueryParams';
+import AutocompleteFilter from './AutocompleteFilter';
 
 function MajorFilter({ majors, onChange }) {
-  const [isOpen, setIsOpen] = useState(false);
   const [{ majors: origMajors }] = useQueryParams();
   const limitReached = majors.length >= 10;
 
   return (
     <>
-      <Autocomplete
-        multiple
+      <AutocompleteFilter
         freeSolo
-        filterSelectedOptions
-        open={isOpen && !limitReached}
         value={majors}
         onChange={(e, val) => onChange(val)}
-        disabled={limitReached}
-        onInputChange={(e, val) => setIsOpen(val.length > 0)}
         options={[...MAJORS]}
-        renderTags={() => null}
-        renderInput={(params) => (
-          <OutlinedInput
-            ref={params.InputProps.ref}
-            inputProps={params.inputProps}
-            placeholder={
-              !limitReached ? 'Enter a major to filter by...' : 'Limit reached'
-            }
-            size="small"
-            fullWidth
-            startAdornment={<SearchIcon />}
-            endAdornment={
-              <IconButton
-                onClick={() => setIsOpen(!isOpen)}
-                disabled={limitReached}>
-                {isOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
-              </IconButton>
-            }
-          />
-        )}
+        limitReached={limitReached}
+        placeholder="Enter a major filter by..."
       />
 
       {majors.map((major) => (
