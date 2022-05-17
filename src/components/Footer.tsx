@@ -49,7 +49,7 @@ FooterLink.defaultProps = {
 
 const quickLinks = (t: TFunction<'common', undefined>) => ({
   [t('actions.addScholarship')]: '/scholarships/new',
-  [t('footer.browseScholarship')]: '/scholarships',
+  [t('actions.browseScholarships')]: '/scholarships',
 });
 
 const orgLinks = (t: TFunction<'common', undefined>) => ({

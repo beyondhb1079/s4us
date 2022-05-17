@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import Helmet from 'react-helmet';
 import { AddCircle as AddIcon, Inbox as InboxIcon } from '@mui/icons-material';
 import { Link, useLocation, useNavigationType } from 'react-router-dom';
@@ -70,30 +70,32 @@ export default function Dashboard(): JSX.Element {
           </Button>
         </Grid>
       </Grid>
-      <ScholarshipList
-        extraFilters={{ authorId: user?.uid, hideExpired: false }}
-        noResultsNode={
-          <Grid
-            container
-            component={Paper}
-            variant="outlined"
-            alignItems="center"
-            justifyContent="space-around"
-            sx={{ padding: 3, marginY: 1 }}>
-            <Grid item>
-              <InboxIcon sx={{ fontSize: (theme) => theme.spacing(25) }} />
+      <Suspense fallback={null}>
+        <ScholarshipList
+          extraFilters={{ authorId: user?.uid, hideExpired: false }}
+          noResultsNode={
+            <Grid
+              container
+              component={Paper}
+              variant="outlined"
+              alignItems="center"
+              justifyContent="space-around"
+              sx={{ padding: 3, marginY: 1 }}>
+              <Grid item>
+                <InboxIcon sx={{ fontSize: (theme) => theme.spacing(25) }} />
+              </Grid>
+              <Grid item>
+                <Typography variant="h5" gutterBottom>
+                  {t('noneAdded')}
+                </Typography>
+                <MuiLink component={Link} to="/scholarships/new">
+                  {t('common:actions.addScholarship')}
+                </MuiLink>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Typography variant="h5" gutterBottom>
-                {t('noneAdded')}
-              </Typography>
-              <MuiLink component={Link} to="/scholarships/new">
-                {t('common:actions.addScholarship')}
-              </MuiLink>
-            </Grid>
-          </Grid>
-        }
-      />
+          }
+        />
+      </Suspense>
     </Container>
   );
 }

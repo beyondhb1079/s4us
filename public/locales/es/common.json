@@ -1,5 +1,6 @@
 {
   "actions": {
+    "add": "Agregar",
     "addScholarship": "Agregar una Beca",
     "apply": "Aplicar",
     "back": "Atrás",
@@ -16,10 +17,8 @@
   "any": "Todos",
   "currentlySharing": "Actualmente compartiendo",
   "dashboard": "Tablero de control",
-  "eligibilityReqs": "Requisitos de elegibilidad",
   "footer": {
     "about": "Acerca de",
-    "browseScholarship": "Buscar becas",
     "contact": "Contacto",
     "help": "Ayuda",
     "organization": "Organización",
@@ -34,13 +33,8 @@
   "lookingForScholarships": "¿Buscando becas?",
   "more": "mas",
   "moreScholarships": "Más becas",
-  "navbar": {
-    "add": "Agregar",
-    "scholarships": "Explorar"
-  },
-  "noRequirements": "Sin requisitos",
   "protectedPage": "Primero debe iniciar una sesión para acceder a esta página",
   "review": "Revisión",
-  "welcome": "Bienvenido",
-  "lastUpdated": "Última actualización"
+  "scholarships": "Becas",
+  "welcome": "Bienvenido"
 }

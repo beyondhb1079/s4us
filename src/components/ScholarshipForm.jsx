@@ -45,8 +45,8 @@ function ScholarshipForm({ scholarship }) {
   const navigate = useNavigate();
 
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
-  const { t } = useTranslation(['scholarshipForm', 'common', 'validation']);
   const { t: validationT } = useTranslation('validation');
+  const { t } = useTranslation(['scholarships', 'common']);
 
   const formik = useFormik({
     initialValues: scholarship.data,
@@ -177,7 +177,7 @@ function ScholarshipForm({ scholarship }) {
         </Grid>
       ),
     },
-    [t('common:eligibilityReqs')]: {
+    [t('eligibilityReqs')]: {
       description: t('requirementsDescription'),
       content: (
         <Grid container spacing={3}>
@@ -227,7 +227,7 @@ function ScholarshipForm({ scholarship }) {
               labelStyle={labelStyle}
               formik={formik}
               options={GradeLevel.values()}
-              placeholder={t('common:noRequirements')}
+              placeholder={t('noRequirements')}
             />
           </Grid>
           <Grid item sm={6} xs={12}>
@@ -238,7 +238,7 @@ function ScholarshipForm({ scholarship }) {
               formik={formik}
               label={t('minGpa')}
               labelStyle={labelStyle}
-              placeholder={t('common:noRequirements')}
+              placeholder={t('noRequirements')}
             />
           </Grid>
           <Grid item sm={6} xs={12}>
@@ -250,7 +250,7 @@ function ScholarshipForm({ scholarship }) {
               options={SCHOOLS.map(({ name, state }) => `${name} (${state})`)}
               freeSolo
               formik={formik}
-              placeholder={t('common:noRequirements')}
+              placeholder={t('noRequirements')}
             />
           </Grid>
           <Grid item sm={6} xs={12}>
@@ -265,7 +265,7 @@ function ScholarshipForm({ scholarship }) {
                 stringify: (s) => State.toString(s),
               })}
               formik={formik}
-              placeholder={t('common:noRequirements')}
+              placeholder={t('noRequirements')}
             />
           </Grid>
           <Grid item sm={6} xs={12}>
@@ -277,7 +277,7 @@ function ScholarshipForm({ scholarship }) {
               options={[...MAJORS]}
               freeSolo
               formik={formik}
-              placeholder={t('common:noRequirements')}
+              placeholder={t('noRequirements')}
             />
           </Grid>
           <Grid item sm={6} xs={12}>
@@ -288,7 +288,7 @@ function ScholarshipForm({ scholarship }) {
               labelStyle={labelStyle}
               formik={formik}
               options={Ethnicity.values()}
-              placeholder={t('common:noRequirements')}
+              placeholder={t('noRequirements')}
             />
           </Grid>
         </Grid>
@@ -313,7 +313,7 @@ function ScholarshipForm({ scholarship }) {
       );
     // no requirements & no checkbox fails
     if (activeStep == 1 && !noReqsChecked && noReqsGiven)
-      return t('validation:checkboxValid');
+      return validationT('checkboxValid');
 
     return '';
   }

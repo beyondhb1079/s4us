@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import {
@@ -131,7 +131,9 @@ function ListScholarships(): JSX.Element {
               />
             ))}
           </Stack>
-          <ScholarshipList extraFilters={{ hideExpired: true }} />
+          <Suspense fallback={null}>
+            <ScholarshipList extraFilters={{ hideExpired: true }} />
+          </Suspense>
         </Container>
       </Box>
     </Box>
