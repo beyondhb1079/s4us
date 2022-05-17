@@ -4,10 +4,12 @@ import { MAJORS } from '../types/options';
 import PropTypes from 'prop-types';
 import useQueryParams from '../lib/useQueryParams';
 import AutocompleteFilter from './AutocompleteFilter';
+import { useTranslation } from 'react-i18next';
 
 function MajorFilter({ majors, onChange }) {
   const [{ majors: origMajors }] = useQueryParams();
   const limitReached = majors.length >= 10;
+  const { t } = useTranslation('filters');
 
   return (
     <>
@@ -17,7 +19,7 @@ function MajorFilter({ majors, onChange }) {
         onChange={(e, val) => onChange(val)}
         options={[...MAJORS]}
         limitReached={limitReached}
-        placeholder="Enter a major filter by..."
+        placeholder={`${t('enterMajorFilter')}...`}
       />
 
       {majors.map((major) => (
