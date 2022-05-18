@@ -26,6 +26,7 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
+import StateFilter from './StateFilter';
 
 export default function FilterPanel({ onClose }) {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -68,6 +69,10 @@ export default function FilterPanel({ onClose }) {
       comp: <GradeLevelFilter grades={new Set(grades)} onChange={setGrades} />,
       changed:
         JSON.stringify(grades || []) !== JSON.stringify(params.grades || []),
+    },
+    State: {
+      comp: <StateFilter />,
+      changed: false,
     },
   };
 
