@@ -16,7 +16,7 @@ import FirebaseProvider from './lib/FirebaseProvider';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './lib/useAuth';
 import { ScholarshipsProvider } from './models/ScholarshipsContext';
-import ScrollToTop from './ScrollToTop';
+import ScrollToTop from './components/ScrollToTop';
 
 // Pages should be loaded lazily on an as-needed basis
 const Dashboard = lazy(() => import('./pages/Dashboard'));
@@ -33,7 +33,7 @@ const EditScholarship = lazy(() => import('./pages/EditScholarship'));
 // This should be suspended too because of the auth dependency
 const LoginDialog = lazy(() => import('./components/LoginDialog'));
 
-function App() {
+function App(): JSX.Element {
   return (
     <div className="page-container">
       <FirebaseProvider>
