@@ -2,6 +2,7 @@ import queryString, { ParseOptions } from 'query-string';
 import { useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import GradeLevel from '../types/GradeLevel';
+import { STATES } from '../types/States';
 import sortOptions from './sortOptions';
 
 const options: ParseOptions = {
@@ -98,7 +99,11 @@ export default function useQueryParams(
 
     if (states !== undefined) {
       params.states = Array.isArray(states)
-        ? Array.from(new Set(states)).filter((s) => s.length > 0)
+        ? Array.from(
+            new Set(
+              states.filter((s) => STATES.map((st) => st.abbr).includes(s))
+            )
+          ).filter((s) => s.length > 0)
         : [];
       if (params.states.length === 0) {
         delete params.states;
