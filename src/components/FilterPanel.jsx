@@ -17,6 +17,7 @@ import {
   DialogActions,
   Stack,
   Chip,
+  createFilterOptions,
 } from '@mui/material';
 import useQueryParams from '../lib/useQueryParams';
 import MinAmountFilter from './MinAmountFilter';
@@ -27,6 +28,7 @@ import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import AutocompleteFilter from './AutocompleteFilter';
+import State, { STATES } from '../types/States';
 import { MAJORS } from '../types/options';
 import { useTranslation } from 'react-i18next';
 
@@ -38,6 +40,7 @@ export default function FilterPanel({ onClose }) {
   const [minAmount, setMinAmount] = useState(params.minAmount);
   const [grades, setGrades] = useState(params.grades);
   const [majors, setMajors] = useState(params.majors);
+  const [states, setStates] = useState(params.states);
   const location = useLocation();
 
   useEffect(() => {
@@ -58,7 +61,7 @@ export default function FilterPanel({ onClose }) {
         <>
           <AutocompleteFilter
             freeSolo
-            value={majors}
+            value={majors || []}
             onChange={(e, val) => setMajors(val)}
             options={[...MAJORS]}
             limitReached={majors?.length >= 10}
@@ -97,7 +100,33 @@ export default function FilterPanel({ onClose }) {
         JSON.stringify(grades || []) !== JSON.stringify(params.grades || []),
     },
     State: {
-      comp: <StateFilter />,
+      comp: (
+        <>
+          <AutocompleteFilter
+            value={states || []}
+            onChange={(e, val) => setStates(val)}
+            options={STATES.map((s) => s.abbr)}
+            getOptionLabel={(s) => State.toString(s)}
+            filterOptions={createFilterOptions({
+              stringify: (s) => State.toString(s),
+            })}
+            limitReached={states?.length >= 10}
+            placeholder="Enter a state filter by..."
+          />
+          {states?.map((state) => (
+            <Chip
+              label={state}
+              variant={
+                params.states?.includes(state) ? 'contained' : 'outlined'
+              }
+              color="primary"
+              key={state}
+              onClick={() => setStates(states.filter((s) => s !== state))}
+              sx={{ mx: 1, mt: 1 }}
+            />
+          ))}
+        </>
+      ),
       changed: false,
     },
   };
