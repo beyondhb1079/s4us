@@ -5,6 +5,6 @@
 import '@testing-library/jest-dom/extend-expect';
 
 // Ensures console.error messages become test failures.
-global.console.error = (message) => {
-  throw message;
+global.console.error = (...obj) => {
+  throw Error(`${obj.join('\n\t')}`);
 };
