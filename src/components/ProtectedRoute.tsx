@@ -5,9 +5,9 @@ import { Container, Typography, CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import useAuth from '../lib/useAuth';
 
-function ProtectedRoute({ element }) {
+function ProtectedRoute({ element }: { element: JSX.Element }): JSX.Element {
   const location = useLocation();
-  const { showLoginDialog } = location.state || {
+  const { showLoginDialog }: any = location.state || {
     showLoginDialog: undefined,
   };
   const { currentUser } = useAuth();
