@@ -2613,20 +2613,10 @@
     schema-utils "^2.6.5"
     source-map "^0.7.3"
 
-"@popperjs/core@^2.11.4":
-  version "2.11.4"
-  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.4.tgz#d8c7b8db9226d2d7664553a0741ad7d0397ee503"
-  integrity sha512-q/ytXxO5NKvyT37pmisQAItCFqA7FD/vNb8dgaJy3/630Fsc+Mz9/9f2SziBoIZ30TJooXyTwZmhi1zjXmObYg==
-
-"@popperjs/core@^2.11.5":
+"@popperjs/core@^2.11.4", "@popperjs/core@^2.11.5", "@popperjs/core@^2.6.0":
   version "2.11.5"
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.5.tgz#db5a11bf66bdab39569719555b0f76e138d7bd64"
   integrity sha512-9X2obfABZuDVLCgPK9aX0a/x4jaOEweTTWE2+9sr0Qqqevj2Uv5XorvusThmc9XGYpS9yI+fhh8RTafBtGposw==
-
-"@popperjs/core@^2.6.0":
-  version "2.10.2"
-  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.10.2.tgz#0798c03351f0dea1a5a4cabddf26a55a7cbee590"
-  integrity sha512-IXf3XA7+XyN7CP9gGh/XB0UxVMlvARGEgGXLubFICsUMGz6Q+DU+i4gGlpOxTjKvXjkJDJC8YdqdKkDj9qZHEQ==
 
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
@@ -13524,9 +13514,9 @@ react@^17.0.2:
     object-assign "^4.1.1"
 
 reactstrap@^9.0.1:
-  version "9.0.1"
-  resolved "https://registry.yarnpkg.com/reactstrap/-/reactstrap-9.0.1.tgz#a6b205861f3e83da55063bc04ba1a069e969f21d"
-  integrity sha512-89VOv7SRlAlpS7RwXhzOQkSWkuhBR8LBsPGfNHifNL3WhtNP9y1sBdTcTYyH1ee2QtI8zRdwD0T5I/blHiwemg==
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/reactstrap/-/reactstrap-9.0.2.tgz#64bb034c2a92574e6ccd41bec0b428125ff0504e"
+  integrity sha512-vvSy/dX7UL5fsfu4WMLnPYfrBS/G2YQM37nff1caeAlMVqzg6NV8G7RRd8PWu8RqtCSeEjDn5ILF0ZmE2ZrHuw==
   dependencies:
     "@babel/runtime" "^7.12.5"
     "@popperjs/core" "^2.6.0"
