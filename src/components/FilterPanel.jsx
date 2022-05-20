@@ -27,7 +27,7 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
-import AutocompleteFilter from './AutocompleteFilter';
+import CustomAutocomplete from './CustomAutocomplete';
 import State, { STATES } from '../types/States';
 import { MAJORS } from '../types/options';
 import { useTranslation } from 'react-i18next';
@@ -60,7 +60,7 @@ export default function FilterPanel({ onClose }) {
     'What are you studying?': {
       comp: (
         <>
-          <AutocompleteFilter
+          <CustomAutocomplete
             freeSolo
             value={majors || []}
             onChange={(e, val) => setMajors(val)}
@@ -103,7 +103,7 @@ export default function FilterPanel({ onClose }) {
     State: {
       comp: (
         <>
-          <AutocompleteFilter
+          <CustomAutocomplete
             value={states || []}
             onChange={(e, val) => setStates(val)}
             options={STATES.map((s) => s.abbr)}

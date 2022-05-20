@@ -6,7 +6,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
-type AutocompleteFilterProps = {
+type CustomAutocompleteProps = {
   limitReached: boolean;
   placeholder: string | undefined;
   options: string[];
@@ -14,8 +14,8 @@ type AutocompleteFilterProps = {
 };
 
 /* eslint-disable react/jsx-props-no-spreading */
-export default function AutocompleteFilter(
-  props: AutocompleteFilterProps
+export default function CustomAutocomplete(
+  props: CustomAutocompleteProps
 ): JSX.Element {
   const { limitReached, placeholder, ...otherProps } = props;
   const [isOpen, setIsOpen] = useState(false);
@@ -51,12 +51,12 @@ export default function AutocompleteFilter(
   );
 }
 
-AutocompleteFilter.propTypes = {
+CustomAutocomplete.propTypes = {
   limitReached: PropTypes.bool,
   placeholder: PropTypes.string,
 };
 
-AutocompleteFilter.defaultProps = {
+CustomAutocomplete.defaultProps = {
   limitReached: false,
   placeholder: undefined,
 };
