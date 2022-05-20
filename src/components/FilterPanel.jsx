@@ -53,6 +53,7 @@ export default function FilterPanel({ onClose }) {
     setMinAmount(query.minAmount);
     setGrades(query.grades);
     setMajors(query.majors);
+    setStates(query.states);
   }, [location]);
 
   const filters = {
@@ -115,7 +116,7 @@ export default function FilterPanel({ onClose }) {
           />
           {states?.map((state) => (
             <Chip
-              label={state}
+              label={State.toString(state)}
               variant={
                 params.states?.includes(state) ? 'contained' : 'outlined'
               }
@@ -127,7 +128,8 @@ export default function FilterPanel({ onClose }) {
           ))}
         </>
       ),
-      changed: false,
+      changed:
+        JSON.stringify(states || []) !== JSON.stringify(params.states || []),
     },
   };
 
@@ -185,7 +187,7 @@ export default function FilterPanel({ onClose }) {
           variant="contained"
           disabled={!filtersChanged}
           onClick={() => {
-            setQueryParams({ minAmount, grades, majors });
+            setQueryParams({ minAmount, grades, majors, states });
             onClose();
           }}>
           Apply
@@ -196,6 +198,7 @@ export default function FilterPanel({ onClose }) {
             setMinAmount(params.minAmount);
             setGrades(params.grades);
             setMajors(params.majors);
+            setStates(params.states);
           }}>
           Cancel
         </Button>
