@@ -2,7 +2,7 @@ import {
   initializeTestEnvironment,
   RulesTestEnvironment,
 } from '@firebase/rules-unit-testing';
-import { FirebaseApp, initializeApp } from 'firebase/app';
+import { initializeApp } from 'firebase/app';
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
 
 if (process.env.NODE_ENV !== 'test') {

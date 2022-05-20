@@ -10,8 +10,6 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
 import { ScholarshipsProvider } from '../models/ScholarshipsContext';
 
-import { ClearFirestoreDataOptions } from '@firebase/rules-unit-testing/dist/src/api';
-
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.
 window.MutationObserver = require('mutation-observer');
