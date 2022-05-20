@@ -16,18 +16,22 @@ import {
   DialogContentText,
   DialogActions,
   Stack,
+  Chip,
 } from '@mui/material';
 import useQueryParams from '../lib/useQueryParams';
 import MinAmountFilter from './MinAmountFilter';
 import GradeLevelFilter from './GradeLevelFilter';
-import MajorFilter from './MajorFilter';
 import CloseIcon from '@mui/icons-material/Close';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
+import AutocompleteFilter from './AutocompleteFilter';
+import { MAJORS } from '../types/options';
+import { useTranslation } from 'react-i18next';
 
 export default function FilterPanel({ onClose }) {
+  const { t } = useTranslation('filters');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [params, setQueryParams] = useQueryParams();
 
@@ -50,7 +54,30 @@ export default function FilterPanel({ onClose }) {
 
   const filters = {
     'What are you studying?': {
-      comp: <MajorFilter majors={majors} onChange={setMajors} />,
+      comp: (
+        <>
+          <AutocompleteFilter
+            freeSolo
+            value={majors}
+            onChange={(e, val) => setMajors(val)}
+            options={[...MAJORS]}
+            limitReached={majors?.length >= 10}
+            placeholder={`${t('enterMajorFilter')}...`}
+          />
+          {majors?.map((major) => (
+            <Chip
+              label={major}
+              variant={
+                params.majors?.includes(major) ? 'contained' : 'outlined'
+              }
+              color="primary"
+              key={major}
+              onClick={() => setMajors(majors.filter((m) => m !== major))}
+              sx={{ mx: 1, mt: 1 }}
+            />
+          ))}
+        </>
+      ),
       changed:
         JSON.stringify(majors || []) !== JSON.stringify(params.majors || []),
       expanded: true,
