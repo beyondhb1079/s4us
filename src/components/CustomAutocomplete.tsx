@@ -29,6 +29,7 @@ export default function CustomAutocomplete(
       disabled={limitReached}
       onInputChange={(e, val) => setIsOpen(val.length > 0)}
       forcePopupIcon={false}
+      onBlur={() => setIsOpen(false)}
       {...otherProps}
       renderInput={(params) => (
         <OutlinedInput

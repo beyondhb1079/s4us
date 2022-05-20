@@ -112,7 +112,7 @@ export default function FilterPanel({ onClose }) {
               stringify: (s) => State.toString(s),
             })}
             limitReached={states?.length >= 10}
-            placeholder="Enter a state filter by..."
+            placeholder={`${t('enterStateFilter')}...`}
           />
           {states?.map((state) => (
             <Chip
