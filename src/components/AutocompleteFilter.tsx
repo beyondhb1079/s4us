@@ -28,7 +28,7 @@ export default function AutocompleteFilter(
       open={isOpen && !limitReached}
       disabled={limitReached}
       onInputChange={(e, val) => setIsOpen(val.length > 0)}
-      renderTags={() => null}
+      forcePopupIcon={false}
       {...otherProps}
       renderInput={(params) => (
         <OutlinedInput
