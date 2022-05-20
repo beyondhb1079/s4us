@@ -4,18 +4,17 @@ import { MemoryRouter } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ScholarshipCard from './ScholarshipCard';
 import ScholarshipAmount from '../types/ScholarshipAmount';
-import { clearFirestoreData, initializeTestApp } from '../lib/testing';
+import { initializeTestEnv } from '../lib/testing';
 import i18n from '../i18n';
 import { I18nextProvider } from 'react-i18next';
 import ScholarshipData from '../types/ScholarshipData';
 import GradeLevel from '../types/GradeLevel';
 import Ethnicity from '../types/Ethnicity';
 import State from '../types/States';
-import { deleteApp } from 'firebase/app';
 
-const app = initializeTestApp({ projectId: 'scholarship-card-test' });
-beforeAll(() => clearFirestoreData(app.options));
-afterAll(() => deleteApp(app));
+const env = initializeTestEnv({ projectId: 'scholarship-card-test' });
+beforeAll(() => env.then((e) => e.clearFirestore()));
+afterAll(() => env.then((e) => e.cleanup()));
 
 const renderCard = (card: JSX.Element) =>
   render(

@@ -3,7 +3,7 @@ import Helmet from 'react-helmet';
 import { render, screen, waitFor } from '@testing-library/react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { clearFirestoreData, initializeTestApp } from '../lib/testing';
+import { initializeTestEnv } from '../lib/testing';
 import ViewScholarship from './ViewScholarship';
 import Scholarships from '../models/Scholarships';
 import ScholarshipAmount from '../types/ScholarshipAmount';
@@ -14,7 +14,6 @@ import i18n from '../i18n';
 import { I18nextProvider } from 'react-i18next';
 import { ScholarshipsProvider } from '../models/ScholarshipsContext';
 import { act } from 'react-dom/test-utils';
-import { deleteApp } from 'firebase/app';
 
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.
@@ -38,10 +37,10 @@ function renderAtRoute(pathname, state = {}) {
   );
 }
 
-const app = initializeTestApp({ projectId: 'view-scholarships-test' });
+const env = initializeTestEnv({ projectId: 'view-scholarships-test' });
 
-beforeAll(() => clearFirestoreData(app.options));
-afterAll(() => deleteApp(app));
+beforeAll(() => env.then((e) => e.clearFirestore()));
+afterAll(() => env.then((e) => e.cleanup()));
 
 test('renders loading initially', () => {
   renderAtRoute('/scholarships/abc');

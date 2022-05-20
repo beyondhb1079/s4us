@@ -2,14 +2,14 @@ import React, { Suspense } from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { clearFirestoreData, initializeTestApp } from '../lib/testing';
+import { initializeTestEnv } from '../lib/testing';
 import ListScholarships from './ListScholarships';
 import Scholarships from '../models/Scholarships';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
 import { ScholarshipsProvider } from '../models/ScholarshipsContext';
-import { deleteApp } from 'firebase/app';
+
 import { ClearFirestoreDataOptions } from '@firebase/rules-unit-testing/dist/src/api';
 
 // hacky workaround to allow findBy to work
@@ -34,10 +34,10 @@ function renderAtRoute(route: string) {
   );
 }
 
-const app = initializeTestApp({ projectId: 'list-scholarships-test' });
+const env = initializeTestEnv({ projectId: 'list-scholarships-test' });
 
-beforeAll(() => clearFirestoreData(app.options as ClearFirestoreDataOptions));
-afterAll(() => deleteApp(app));
+beforeAll(() => env.then((e) => e.clearFirestore()));
+afterAll(() => env.then((e) => e.cleanup()));
 
 // https://stackoverflow.com/a/62148101
 beforeEach(() => {

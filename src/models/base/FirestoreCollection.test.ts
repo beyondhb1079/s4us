@@ -1,12 +1,12 @@
 /**
  * @jest-environment node
  */
-import { deleteApp } from 'firebase/app';
+
 import { FirestoreDataConverter } from 'firebase/firestore';
-import { clearFirestoreData, initializeTestApp } from '../../lib/testing';
+import { initializeTestEnv } from '../../lib/testing';
 import FirestoreCollection from './FirestoreCollection';
 
-const app = initializeTestApp({ projectId: 'fs-collection-test' });
+const env = initializeTestEnv({ projectId: 'fs-collection-test' });
 
 interface NameData {
   first: string;
@@ -23,8 +23,8 @@ const names = new (class extends FirestoreCollection<NameData> {
   converter = converter;
 })();
 
-beforeEach(() => clearFirestoreData(app.options as { projectId: string }));
-afterAll(() => deleteApp(app));
+beforeEach(() => env.then((e) => e.clearFirestore()));
+afterAll(() => env.then((e) => e.cleanup()));
 
 test('new() returns model with data and generated id', () => {
   const data = { first: 'Bob', last: 'Smith' };

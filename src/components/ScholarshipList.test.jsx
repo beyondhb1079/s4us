@@ -7,14 +7,13 @@ import ScholarshipList from './ScholarshipList';
 import Scholarships from '../models/Scholarships';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
-import { clearFirestoreData, initializeTestApp } from '../lib/testing';
+import { initializeTestEnv } from '../lib/testing';
 import { ScholarshipsProvider } from '../models/ScholarshipsContext';
 import ScholarshipAmount from '../types/ScholarshipAmount';
-import { deleteApp } from 'firebase/app';
 
-const app = initializeTestApp({ projectId: 'scholarship-list-test' });
-beforeEach(() => clearFirestoreData(app.options));
-afterAll(() => deleteApp(app));
+const app = initializeTestEnv({ projectId: 'scholarship-list-test' });
+beforeEach(() => app.then((e) => e.clearFirestore()));
+afterAll(() => app.then((e) => e.cleanup()));
 
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.

@@ -1,14 +1,14 @@
 /**
  * @jest-environment node
  */
-import { deleteApp } from 'firebase/app';
+
 import { User } from 'firebase/auth';
 import {
   DocumentData,
   QueryDocumentSnapshot,
   Timestamp,
 } from 'firebase/firestore';
-import { clearFirestoreData, initializeTestApp } from '../lib/testing';
+import { initializeTestEnv } from '../lib/testing';
 import AmountType from '../types/AmountType';
 import Ethnicity from '../types/Ethnicity';
 import GradeLevel from '../types/GradeLevel';
@@ -20,7 +20,7 @@ import Scholarships, {
 } from './Scholarships';
 
 const user = { uid: '123', email: 'bobross37@gmail.com' };
-const app = initializeTestApp({ projectId: 'scholarship-test' });
+const env = initializeTestEnv({ projectId: 'scholarship-test' });
 
 // Creates and saves a scholarship with the given data.
 function create(data: {
@@ -74,8 +74,8 @@ const [expired, today, tomorrow] = [
   create({ deadline: tomorrowDate }),
 ];
 
-beforeEach(() => clearFirestoreData(app.options as { projectId: string }));
-afterAll(() => deleteApp(app));
+beforeEach(() => env.then((e) => e.clearFirestore()));
+afterAll(() => env.then((e) => e.cleanup()));
 
 test('converter.toFirestore stores scholarship data', () => {
   const deadline = new Date('2029-02-20');

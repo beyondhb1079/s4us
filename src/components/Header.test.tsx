@@ -2,12 +2,12 @@ import React, { Suspense } from 'react';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { initializeTestApp } from '../lib/testing';
 import Header from './Header';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
+import { initializeApp } from 'firebase/app';
 
-initializeTestApp({ apiKey: 'fake-api-key' });
+initializeApp({ appId: 'foo', apiKey: 'fake' });
 
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.

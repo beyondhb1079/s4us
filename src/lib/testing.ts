@@ -1,4 +1,7 @@
-import { loadFirestoreRules } from '@firebase/rules-unit-testing';
+import {
+  initializeTestEnvironment,
+  RulesTestEnvironment,
+} from '@firebase/rules-unit-testing';
 import { FirebaseApp, initializeApp } from 'firebase/app';
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
 
@@ -20,17 +23,16 @@ service cloud.firestore {
   Creates and initializes a Firebase app instance for testing.
  * @param options See {@link initializeApp} for details.
  */
-export function initializeTestApp(options: {
+export function initializeTestEnv(options: {
   apiKey?: string;
   projectId?: string;
-}): FirebaseApp {
+}): Promise<RulesTestEnvironment> {
   const app = initializeApp({ appId: 'foo', apiKey: 'fake', ...options });
-  if (options?.projectId) {
-    connectFirestoreEmulator(getFirestore(app), 'localhost', 8080);
-    loadFirestoreRules({ projectId: options.projectId, rules });
-  }
+  connectFirestoreEmulator(getFirestore(app), 'localhost', 8080);
+  const testEnv = initializeTestEnvironment({
+    projectId: options.projectId,
+    firestore: { rules },
+  });
 
-  return app;
+  return testEnv;
 }
-
-export { clearFirestoreData } from '@firebase/rules-unit-testing';
