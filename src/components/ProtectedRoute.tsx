@@ -7,9 +7,11 @@ import useAuth from '../lib/useAuth';
 
 function ProtectedRoute({ element }: { element: JSX.Element }): JSX.Element {
   const location = useLocation();
-  const { showLoginDialog }: any = location.state || {
-    showLoginDialog: undefined,
-  };
+  const { showLoginDialog }: any =
+    location.state ||
+    ({
+      showLoginDialog: undefined,
+    } as unknown as boolean | undefined);
   const { currentUser } = useAuth();
 
   const { t } = useTranslation('common');
