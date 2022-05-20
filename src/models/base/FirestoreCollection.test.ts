@@ -6,7 +6,7 @@ import { FirestoreDataConverter } from 'firebase/firestore';
 import { initializeTestEnv } from '../../lib/testing';
 import FirestoreCollection from './FirestoreCollection';
 
-const env = initializeTestEnv({ projectId: 'fs-collection-test' });
+const [env, cleanup] = initializeTestEnv('fs-collection-test');
 
 interface NameData {
   first: string;
@@ -24,7 +24,7 @@ const names = new (class extends FirestoreCollection<NameData> {
 })();
 
 beforeEach(() => env.then((e) => e.clearFirestore()));
-afterAll(() => env.then((e) => e.cleanup()));
+afterAll(() => cleanup());
 
 test('new() returns model with data and generated id', () => {
   const data = { first: 'Bob', last: 'Smith' };

@@ -20,7 +20,7 @@ import Scholarships, {
 } from './Scholarships';
 
 const user = { uid: '123', email: 'bobross37@gmail.com' };
-const env = initializeTestEnv({ projectId: 'scholarship-test' });
+const [env, cleanup] = initializeTestEnv('scholarship-test');
 
 // Creates and saves a scholarship with the given data.
 function create(data: {
@@ -75,7 +75,7 @@ const [expired, today, tomorrow] = [
 ];
 
 beforeEach(() => env.then((e) => e.clearFirestore()));
-afterAll(() => env.then((e) => e.cleanup()));
+afterAll(() => cleanup());
 
 test('converter.toFirestore stores scholarship data', () => {
   const deadline = new Date('2029-02-20');

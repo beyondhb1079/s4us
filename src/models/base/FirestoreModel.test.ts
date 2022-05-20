@@ -13,7 +13,7 @@ import {
 import { initializeTestEnv } from '../../lib/testing';
 import FirestoreModel from './FirestoreModel';
 
-const env = initializeTestEnv({ projectId: 'fs-model-test' });
+const [env, cleanup] = initializeTestEnv('fs-model-test');
 
 interface NameData {
   first: string;
@@ -28,7 +28,7 @@ const converter: FirestoreDataConverter<NameData> = {
 const names = collection(getFirestore(), 'names').withConverter(converter);
 
 beforeEach(() => env.then((e) => e.clearFirestore()));
-afterAll(() => env.then((e) => e.cleanup()));
+afterAll(() => cleanup());
 
 test('constructor', () => {
   const data = { first: 'Bob', last: 'Smith' };

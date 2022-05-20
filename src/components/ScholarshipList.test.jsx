@@ -11,9 +11,9 @@ import { initializeTestEnv } from '../lib/testing';
 import { ScholarshipsProvider } from '../models/ScholarshipsContext';
 import ScholarshipAmount from '../types/ScholarshipAmount';
 
-const app = initializeTestEnv({ projectId: 'scholarship-list-test' });
-beforeEach(() => app.then((e) => e.clearFirestore()));
-afterAll(() => app.then((e) => e.cleanup()));
+const [env, cleanup] = initializeTestEnv('scholarship-list-test');
+beforeEach(() => env.then((e) => e.clearFirestore()));
+afterAll(() => cleanup());
 
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.

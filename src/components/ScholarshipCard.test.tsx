@@ -12,9 +12,9 @@ import GradeLevel from '../types/GradeLevel';
 import Ethnicity from '../types/Ethnicity';
 import State from '../types/States';
 
-const env = initializeTestEnv({ projectId: 'scholarship-card-test' });
+const [env, cleanup] = initializeTestEnv('scholarship-card-test');
 beforeAll(() => env.then((e) => e.clearFirestore()));
-afterAll(() => env.then((e) => e.cleanup()));
+afterAll(() => cleanup());
 
 const renderCard = (card: JSX.Element) =>
   render(

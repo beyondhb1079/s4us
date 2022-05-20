@@ -37,10 +37,10 @@ function renderAtRoute(pathname, state = {}) {
   );
 }
 
-const env = initializeTestEnv({ projectId: 'view-scholarships-test' });
+const [env, cleanup] = initializeTestEnv('view-scholarships-test');
 
 beforeAll(() => env.then((e) => e.clearFirestore()));
-afterAll(() => env.then((e) => e.cleanup()));
+afterAll(() => cleanup());
 
 test('renders loading initially', () => {
   renderAtRoute('/scholarships/abc');

@@ -32,10 +32,10 @@ function renderAtRoute(route: string) {
   );
 }
 
-const env = initializeTestEnv({ projectId: 'list-scholarships-test' });
+const [env, cleanup] = initializeTestEnv('list-scholarships-test');
 
 beforeAll(() => env.then((e) => e.clearFirestore()));
-afterAll(() => env.then((e) => e.cleanup()));
+afterAll(() => cleanup());
 
 // https://stackoverflow.com/a/62148101
 beforeEach(() => {
