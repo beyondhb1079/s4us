@@ -3,7 +3,6 @@ import { Autocomplete, IconButton, OutlinedInput } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import SearchIcon from '@mui/icons-material/Search';
-import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
 type CustomAutocompleteProps = {
@@ -51,13 +50,3 @@ export default function CustomAutocomplete(
     />
   );
 }
-
-CustomAutocomplete.propTypes = {
-  limitReached: PropTypes.bool,
-  placeholder: PropTypes.string,
-};
-
-CustomAutocomplete.defaultProps = {
-  limitReached: false,
-  placeholder: undefined,
-};

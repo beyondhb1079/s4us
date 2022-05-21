@@ -96,7 +96,7 @@ export interface FilterOptions {
   minAmount?: number;
   maxAmount?: number;
   grades?: GradeLevel[];
-  majors?: String[];
+  majors?: string[];
   states?: string[];
   sortDir?: 'asc' | 'desc';
   sortField?: string;
