@@ -4,10 +4,15 @@
 import {
   assertFails,
   assertSucceeds,
-  clearFirestoreData,
   initializeTestApp,
 } from '@firebase/rules-unit-testing';
 import AmountType from './types/AmountType';
+
+// TODO(#1156): Upgrade @firestore/rules-unit-testing
+const doc = (col: any, id?: string) => col.doc(id);
+const deleteDoc = (d: any) => d.delete();
+const getDoc = (d: any) => d.get();
+const setDoc = (d: any, data: any) => d.set(data);
 
 const MY_PROJECT_ID = 'scholarships-rules-test';
 const scholarship = {
@@ -46,16 +51,17 @@ const adminApp = initializeTestApp({
   auth: { uid: 'admin', admin: true },
 });
 
+beforeAll(() =>
+  setDoc(doc(aliceScholarships, scholarshipId), { ...scholarship })
+);
+afterAll(() =>
+  Promise.all([unauthedApp, aliceApp, adminApp, johnApp].map((c) => c.delete()))
+);
+
 const unauthedScholarships = unauthedApp.firestore().collection('scholarships');
 const aliceScholarships = aliceApp.firestore().collection('scholarships');
 const johnScholarships = johnApp.firestore().collection('scholarships');
 const adminScholarships = adminApp.firestore().collection('scholarships');
-
-// TODO(#1156): Upgrade @firestore/rules-unit-testing
-const doc = (col: any, id?: string) => col.doc(id);
-const deleteDoc = (d: any) => d.delete();
-const getDoc = (d: any) => d.get();
-const setDoc = (d: any, data: any) => d.set(data);
 
 test('allows scholarships read when signed out', () =>
   assertSucceeds(getDoc(doc(unauthedScholarships, 'ASDK91023JUS'))));
