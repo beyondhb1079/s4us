@@ -5,6 +5,7 @@ import sortOptions, { DEADLINE_ASC } from '../lib/sortOptions';
 import TuneIcon from '@mui/icons-material/Tune';
 import PropTypes from 'prop-types';
 import ImportExportIcon from '@mui/icons-material/ImportExport';
+import { useTranslation } from 'react-i18next';
 
 export default function FilterBar({ openFilter }) {
   const [{ sortBy, grades, majors, minAmount }, setQueryParams] =
@@ -13,6 +14,7 @@ export default function FilterBar({ openFilter }) {
 
   const filterCount =
     (grades?.length ?? 0) + (majors?.length ?? 0) + (minAmount ? 1 : 0);
+  const { t } = useTranslation(['sort', 'filters']);
 
   return (
     <Toolbar
@@ -32,13 +34,13 @@ export default function FilterBar({ openFilter }) {
           onClick={openFilter}
           startIcon={<TuneIcon />}
           sx={{ display: { md: 'none' } }}>
-          Filters {filterCount ? `(${filterCount})` : ''}
+          {t('filters:filters')} {filterCount ? `(${filterCount})` : ''}
         </Button>
 
         <Button
           onClick={(e) => setAnchorEl(e.currentTarget)}
           startIcon={<ImportExportIcon />}>
-          Sort
+          {t('sort')}
         </Button>
       </Container>
 
@@ -56,7 +58,7 @@ export default function FilterBar({ openFilter }) {
               setQueryParams({ sortBy: key });
               setAnchorEl(null);
             }}>
-            {sortOptions[key]}
+            {t(sortOptions[key])}
           </MenuItem>
         ))}
       </Menu>

@@ -16,8 +16,8 @@ export const getField = (s: string): string => {
 };
 
 export default {
-  [AMOUNT_ASC]: 'Amount (Low to High)',
-  [AMOUNT_DESC]: 'Amount (High to Low)',
-  [DEADLINE_ASC]: 'Deadline (Earliest to Latest)',
-  [DEADLINE_DESC]: 'Deadline (Latest to Earliest)',
+  [AMOUNT_ASC]: 'amountLowToHigh',
+  [AMOUNT_DESC]: 'amountHighToLow',
+  [DEADLINE_ASC]: 'deadlineEarliestToLatest',
+  [DEADLINE_DESC]: 'deadlineLatestToEarliest',
 };
