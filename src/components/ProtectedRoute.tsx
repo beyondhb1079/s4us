@@ -6,12 +6,8 @@ import { useTranslation } from 'react-i18next';
 import useAuth from '../lib/useAuth';
 
 function ProtectedRoute({ element }: { element: JSX.Element }): JSX.Element {
-  const location = useLocation();
-  const { showLoginDialog }: any =
-    location.state ||
-    ({
-      showLoginDialog: undefined,
-    } as unknown as boolean | undefined);
+  const location: any = useLocation();
+  const showLoginDialog = location.state?.showLoginDialog;
   const { currentUser } = useAuth();
 
   const { t } = useTranslation('common');
