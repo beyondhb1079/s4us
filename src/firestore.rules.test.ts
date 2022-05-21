@@ -51,17 +51,17 @@ const adminApp = initializeTestApp({
   auth: { uid: 'admin', admin: true },
 });
 
+const unauthedScholarships = unauthedApp.firestore().collection('scholarships');
+const aliceScholarships = aliceApp.firestore().collection('scholarships');
+const johnScholarships = johnApp.firestore().collection('scholarships');
+const adminScholarships = adminApp.firestore().collection('scholarships');
+
 beforeAll(() =>
   setDoc(doc(aliceScholarships, scholarshipId), { ...scholarship })
 );
 afterAll(() =>
   Promise.all([unauthedApp, aliceApp, adminApp, johnApp].map((c) => c.delete()))
 );
-
-const unauthedScholarships = unauthedApp.firestore().collection('scholarships');
-const aliceScholarships = aliceApp.firestore().collection('scholarships');
-const johnScholarships = johnApp.firestore().collection('scholarships');
-const adminScholarships = adminApp.firestore().collection('scholarships');
 
 test('allows scholarships read when signed out', () =>
   assertSucceeds(getDoc(doc(unauthedScholarships, 'ASDK91023JUS'))));
