@@ -80,7 +80,7 @@ jobs:
           key: ${{ runner.os }}-firebase-emulators-${{ hashFiles('~/.cache/firebase/emulators/**') }}
         continue-on-error: true
       - name: Run tests
-        run: yarn test
+        run: yarn test --verbose --detectOpenHandles --coverage
 
   # Ensure Translations are updated
   translations:

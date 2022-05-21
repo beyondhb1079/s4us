@@ -29,8 +29,6 @@ export default function FirebaseProvider(props: {
   const { children } = props;
 
   if (getApps().length === 0) {
-    // eslint-disable-next-line no-console
-    console.log(`Environment: ${JSON.stringify(process.env.NODE_ENV)}`);
     if (process.env.NODE_ENV === 'production') {
       const prod = window.location.host === 'dreamscholars.org';
       const app = initializeApp(prod ? prodConfig : stagingConfig);
@@ -39,7 +37,9 @@ export default function FirebaseProvider(props: {
       // Initialize app with staging config but use emulator where possible.
       const app = initializeApp(stagingConfig);
       connectFirestoreEmulator(getFirestore(app), 'localhost', 8080);
-      connectAuthEmulator(getAuth(), 'http://localhost:9099');
+      connectAuthEmulator(getAuth(), 'http://localhost:9099', {
+        disableWarnings: process.env.NODE_ENV == 'test',
+      });
     }
   }
 

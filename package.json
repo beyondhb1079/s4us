@@ -48,7 +48,7 @@
   "scripts": {
     "build": "react-scripts build",
     "start": "scripts/emulators_exec.sh 'react-scripts start'",
-    "test": "scripts/emulators_exec.sh 'react-scripts test --verbose --detectOpenHandles'",
+    "test": "scripts/emulators_exec.sh 'react-scripts test'",
     "lint": "eslint --cache src/ --ext .js,.jsx,.ts,.tsx",
     "eject": "react-scripts eject",
     "prepare": "husky install"
@@ -64,6 +64,26 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "jest": {
+    "coverageThreshold": {
+      "./src/": {
+        "branches": 50,
+        "functions": 50,
+        "lines": 50,
+        "statements": 50
+      },
+      "./src/components/": {
+        "branches": 40,
+        "statements": 40
+      },
+      "./src/lib/": {
+        "statements": 90
+      },
+      "./src/models/**/*.ts": {
+        "statements": 90
+      }
+    }
   },
   "devDependencies": {
     "@testing-library/react-hooks": "^8.0.0",
