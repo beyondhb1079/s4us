@@ -31,7 +31,7 @@ import { MAJORS } from '../types/options';
 import { useTranslation } from 'react-i18next';
 
 export default function FilterPanel({ onClose }) {
-  const { t } = useTranslation('filters');
+  const { t } = useTranslation(['filters', 'common']);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [params, setQueryParams] = useQueryParams();
 
@@ -53,7 +53,7 @@ export default function FilterPanel({ onClose }) {
   }, [location]);
 
   const filters = {
-    'What are you studying?': {
+    whatAreYouStudying: {
       comp: (
         <>
           <AutocompleteFilter
@@ -82,7 +82,7 @@ export default function FilterPanel({ onClose }) {
         JSON.stringify(majors || []) !== JSON.stringify(params.majors || []),
       expanded: true,
     },
-    'Min Amount': {
+    minAmount: {
       comp: (
         <MinAmountFilter
           min={minAmount ?? 0}
@@ -91,7 +91,7 @@ export default function FilterPanel({ onClose }) {
       ),
       changed: minAmount !== params.minAmount,
     },
-    'Grade Level': {
+    gradeLevel: {
       comp: <GradeLevelFilter grades={new Set(grades)} onChange={setGrades} />,
       changed:
         JSON.stringify(grades || []) !== JSON.stringify(params.grades || []),
@@ -118,7 +118,7 @@ export default function FilterPanel({ onClose }) {
           <CloseIcon />
         </IconButton>
 
-        <Typography>Filters</Typography>
+        <Typography>{t('filters')}</Typography>
       </Toolbar>
 
       {Object.entries(filters).map(([name, filter]) => (
@@ -127,7 +127,7 @@ export default function FilterPanel({ onClose }) {
             expandIcon={<ExpandMoreIcon />}
             aria-controls={name + '-content'}
             id={name + '-header'}>
-            <Typography sx={{ fontWeight: 'medium' }}>{name}</Typography>
+            <Typography sx={{ fontWeight: 'medium' }}>{t(name)}</Typography>
           </AccordionSummary>
 
           <AccordionDetails sx={{ m: 1 }}>{filter.comp}</AccordionDetails>
@@ -142,8 +142,8 @@ export default function FilterPanel({ onClose }) {
         )}
         <Typography>
           {filtersChanged
-            ? 'Your changes are not yet applied.'
-            : 'Your filters are currently applied.'}
+            ? t('changesNotYetApplied')
+            : t('filtersCurrentlyApplied')}
         </Typography>
       </Stack>
 
@@ -155,7 +155,7 @@ export default function FilterPanel({ onClose }) {
             setQueryParams({ minAmount, grades, majors });
             onClose();
           }}>
-          Apply
+          {t('common:actions.apply')}
         </Button>
         <Button
           disabled={!filtersChanged}
@@ -164,23 +164,23 @@ export default function FilterPanel({ onClose }) {
             setGrades(params.grades);
             setMajors(params.majors);
           }}>
-          Cancel
+          {t('common:actions.cancel')}
         </Button>
       </Stack>
 
       <Box sx={{ height: { xs: 0, md: 200 } }} />
 
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
-        <DialogTitle>Unsaved Changes</DialogTitle>
+        <DialogTitle>{t('unsavedChanges')}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Are you sure you want to close? Your changes will not be saved.
-          </DialogContentText>
+          <DialogContentText>{t('closeConfirmation')}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
+          <Button onClick={() => setDialogOpen(false)}>
+            {t('common:actions.cancel')}
+          </Button>
           <Button color="error" onClick={onClose}>
-            Yes, Close
+            {t('common:actions.yesClose')}
           </Button>
         </DialogActions>
       </Dialog>

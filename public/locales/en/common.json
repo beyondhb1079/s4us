@@ -5,6 +5,7 @@
     "apply": "Apply",
     "back": "Back",
     "browseScholarships": "Browse Scholarships",
+    "cancel": "Cancel",
     "copyLink": "Copy link",
     "login": "Login",
     "logout": "Logout",
@@ -12,7 +13,8 @@
     "reportIssue": "Report issue",
     "share": "Share",
     "signIn": "Sign In",
-    "submit": "Submit"
+    "submit": "Submit",
+    "yesClose": "Yes, close"
   },
   "any": "Any",
   "currentlySharing": "Currently sharing",

@@ -5,6 +5,7 @@
     "apply": "Aplicar",
     "back": "Atrás",
     "browseScholarships": "Buscar Becas",
+    "cancel": "Cancelar",
     "copyLink": "Copiar enlace",
     "login": "Iniciar",
     "logout": "Terminar",
@@ -12,7 +13,8 @@
     "reportIssue": "Reportar un problem",
     "share": "Compartir",
     "signIn": "Iniciar Sesión",
-    "submit": "Submitir"
+    "submit": "Submitir",
+    "yesClose": "Si, cerrar"
   },
   "any": "Todos",
   "currentlySharing": "Actualmente compartiendo",

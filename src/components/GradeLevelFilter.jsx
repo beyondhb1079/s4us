@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import GradeLevel from '../types/GradeLevel';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
 function GradeGroup({ title, gradeGroup, grades, toggleSelection }) {
   return (
@@ -40,6 +41,7 @@ GradeGroup.propTypes = {
 export default function GradeLevelFilter(props) {
   const { grades, onChange } = props;
   const { highSchoolers, undergrads, grads } = GradeLevel;
+  const { t } = useTranslation('filters');
 
   function toggleSelection(grade) {
     if (grades.has(grade)) {
@@ -53,25 +55,25 @@ export default function GradeLevelFilter(props) {
   return (
     <FormControl component="fieldset">
       <GradeGroup
-        title="Middle School"
+        title={t('middleSchool')}
         gradeGroup={[GradeLevel.MiddleSchool]}
         {...{ grades, toggleSelection }}
       />
 
       <GradeGroup
-        title="High School"
+        title={t('highSchool')}
         gradeGroup={highSchoolers}
         {...{ grades, toggleSelection }}
       />
 
       <GradeGroup
-        title="College/University"
+        title={t('collegeUniversity')}
         gradeGroup={undergrads}
         {...{ grades, toggleSelection }}
       />
 
       <GradeGroup
-        title="Postgraduate"
+        title={t('postGrad')}
         gradeGroup={grads}
         {...{ grades, toggleSelection }}
       />

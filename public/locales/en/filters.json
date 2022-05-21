@@ -1,4 +1,16 @@
 {
   "enterMajorFilter": "Enter a major to filter by",
-  "limitReached": "Limit reached"
+  "limitReached": "Limit reached",
+  "whatAreYouStudying": "What are you studying?",
+  "minAmount": "Min Amount",
+  "gradeLevel": "Grade Level",
+  "filters": "Filters",
+  "unsavedChanges": "Unsaved Changes",
+  "closeConfirmation": "Are you sure you want to close? Your changes will not be saved.",
+  "changesNotYetApplied": "Your changes are not yet applied.",
+  "filtersCurrentlyApplied": "Your filters are currently applied.",
+  "middleSchool": "Middle School",
+  "highSchool": "High School",
+  "collegeUniversity": "College/University",
+  "postGrad": "Postgraduate"
 }
