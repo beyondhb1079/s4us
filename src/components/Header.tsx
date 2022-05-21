@@ -11,8 +11,6 @@ import {
   Toolbar,
   useScrollTrigger,
   Box,
-  useTheme,
-  useMediaQuery,
 } from '@mui/material';
 import { TFunction, useTranslation } from 'react-i18next';
 import { BRAND_NAME } from '../config/constants';
@@ -88,12 +86,12 @@ const links = (t: TFunction<'common', undefined>) => ({
 
 function Header(): JSX.Element {
   const { t } = useTranslation('common');
-  const theme = useTheme();
-  const smUp = useMediaQuery(theme.breakpoints.up('sm'));
 
   return (
     <HideOnScroll>
-      <AppBar color="secondary" sx={{ zIndex: theme.zIndex.drawer + 1 }}>
+      <AppBar
+        color="secondary"
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
           <OnRenderSnackbar />
           <MuiLink
@@ -105,17 +103,15 @@ function Header(): JSX.Element {
             sx={{ flexGrow: 1 /** Take up remaining space */ }}>
             {BRAND_NAME.toUpperCase()}
           </MuiLink>
-          {smUp && <HeaderNavMenu links={links(t)} />}
+          <Box sx={{ display: { sm: 'block', xs: 'none' } }}>
+            <HeaderNavMenu links={links(t)} />
+          </Box>
           <TranslationMenu />
           <AuthGrowButton t={t} />
         </Toolbar>
-        {!smUp && (
-          <Toolbar
-            variant="dense"
-            sx={{ display: { sm: 'none', xs: 'block' } }}>
-            <HeaderNavMenu links={links(t)} />
-          </Toolbar>
-        )}
+        <Toolbar variant="dense" sx={{ display: { sm: 'none', xs: 'block' } }}>
+          <HeaderNavMenu links={links(t)} />
+        </Toolbar>
       </AppBar>
     </HideOnScroll>
   );
