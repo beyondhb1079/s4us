@@ -29,6 +29,7 @@ export default function FirebaseProvider(props: {
   const { children } = props;
 
   if (getApps().length === 0) {
+    /* istanbul ignore if */
     if (process.env.NODE_ENV === 'production') {
       const prod = window.location.host === 'dreamscholars.org';
       const app = initializeApp(prod ? prodConfig : stagingConfig);

@@ -49,6 +49,7 @@ function getUser(): User | null {
 }
 
 export function setFakeUser(user: User | null): void {
+  /* istanbul ignore if */
   if (process.env.NODE_ENV !== 'test') {
     throw Error('this method is only for tests.');
   }
