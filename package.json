@@ -76,8 +76,8 @@
       },
       "./src/components/": {
         "branches": 40,
-        "functions": 30,
-        "statements": 40,
+        "functions": 25,
+        "statements": 35,
         "lines": 40
       },
       "./src/lib/": {
