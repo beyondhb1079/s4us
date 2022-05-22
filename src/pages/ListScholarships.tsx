@@ -19,6 +19,7 @@ import ScholarshipList from '../components/ScholarshipList';
 import useQueryParams from '../lib/useQueryParams';
 import { HeaderSkeleton } from '../components/Header';
 import GradeLevel from '../types/GradeLevel';
+import State from '../types/States';
 import { useLocation } from 'react-router-dom';
 import { getAnalytics, logEvent } from 'firebase/analytics';
 
@@ -30,7 +31,8 @@ function ListScholarships(): JSX.Element {
 
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
-  const [{ minAmount, grades, majors }, setQueryParams] = useQueryParams();
+  const [{ minAmount, grades, majors, states }, setQueryParams] =
+    useQueryParams();
 
   const filterChips = {} as Record<
     string,
@@ -49,6 +51,11 @@ function ListScholarships(): JSX.Element {
   grades?.forEach((grade: GradeLevel) => {
     filterChips[GradeLevel.toString(grade)] = {
       grades: grades?.filter((g: GradeLevel) => grade !== g),
+    };
+  });
+  states?.forEach((state: string) => {
+    filterChips[State.toString(state)] = {
+      states: states?.filter((s: string) => state !== s),
     };
   });
 

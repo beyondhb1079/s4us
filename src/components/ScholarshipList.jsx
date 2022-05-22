@@ -16,7 +16,7 @@ export default function ScholarshipList({ noResultsNode, extraFilters }) {
 
   // Resets result context if filters change.
   useEffect(() => {
-    const { minAmount, grades, majors, sortBy } = queryParams;
+    const { minAmount, grades, majors, states, sortBy } = queryParams;
     const sortField = getField(sortBy ?? DEADLINE_ASC);
     const sortDir = getDir(sortBy ?? DEADLINE_ASC);
     setFilters({
@@ -25,6 +25,7 @@ export default function ScholarshipList({ noResultsNode, extraFilters }) {
       minAmount,
       grades,
       majors,
+      states,
       ...extraFilters,
     });
   }, [queryParams, extraFilters, setFilters]);
