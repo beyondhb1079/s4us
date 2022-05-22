@@ -1,9 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 import { Tab, Tabs } from '@mui/material';
 
-function HeaderNavMenu({
+export default function HeaderNavMenu({
   links,
 }: {
   links: Record<string, string>;
@@ -42,9 +41,3 @@ function HeaderNavMenu({
     </Tabs>
   );
 }
-
-HeaderNavMenu.propTypes = {
-  links: PropTypes.objectOf(PropTypes.string).isRequired,
-};
-
-export default HeaderNavMenu;

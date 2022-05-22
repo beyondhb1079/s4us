@@ -16,7 +16,6 @@ import { TFunction, useTranslation } from 'react-i18next';
 import { BRAND_NAME } from '../config/constants';
 import HeaderNavMenu from './HeaderNavMenu';
 import useAuth from '../lib/useAuth';
-import PropTypes from 'prop-types';
 import TranslationMenu from './TranslationMenu';
 
 const ProfileMenu = lazy(() => import('./ProfileMenu'));
@@ -30,10 +29,6 @@ function HideOnScroll({ children }: { children: JSX.Element }) {
     </Slide>
   );
 }
-
-HideOnScroll.propTypes = {
-  children: PropTypes.element.isRequired,
-};
 
 const OnRenderSnackbar = () => {
   const match = window.location.hostname.match(/s4us-pr-(\d+)\.onrender\.com/);

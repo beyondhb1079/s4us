@@ -14,25 +14,24 @@ const filterOptions = createFilterOptions({
     `${option.replace(/\([A-Z]+\)/, '').replaceAll(/[^A-Z]/g, '')} ${option}`,
 });
 
-type FormikAutocompleteProps = {
+interface FAProps {
   label?: string;
   id: string;
   labelStyle?: SxProps<Theme>;
-  /** The result of {@link useFormik()}. */
+  /** The result of `useFormik()`. */
   formik: any;
   placeholder?: string;
   onChange?: (v: string[]) => void;
-  [x: string]: any;
-};
+}
 
 /* eslint-disable react/jsx-props-no-spreading */
-function FormikAutocomplete(props: FormikAutocompleteProps): JSX.Element {
+export default function FormikAutocomplete(props: FAProps): JSX.Element {
   const {
-    label = '',
+    label,
     id,
-    labelStyle = {},
+    labelStyle,
     formik,
-    placeholder = '',
+    placeholder,
     onChange,
     ...otherProps
   } = props;
@@ -42,7 +41,7 @@ function FormikAutocomplete(props: FormikAutocompleteProps): JSX.Element {
 
   return (
     <>
-      <InputLabel sx={labelStyle}>{label}</InputLabel>
+      <InputLabel sx={labelStyle}>{label ?? ''}</InputLabel>
       <Autocomplete
         id={id}
         multiple
@@ -79,4 +78,3 @@ function FormikAutocomplete(props: FormikAutocompleteProps): JSX.Element {
     </>
   );
 }
-export default FormikAutocomplete;

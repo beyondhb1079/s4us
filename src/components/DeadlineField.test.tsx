@@ -1,12 +1,12 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import DatePicker from './DatePicker';
+import DeadlineField from './DeadlineField';
 
 const formik = { values: {}, errors: {} };
 
 test('renders date picker field', () => {
   formik.values.deadline = new Date('12/25/2004');
-  render(<DatePicker label="Deadline *" formik={formik} />);
+  render(<DeadlineField label="Deadline *" formik={formik} />);
 
   const deadlineField = screen.getByRole('textbox');
   expect(deadlineField).toBeInTheDocument();
@@ -17,7 +17,7 @@ test('renders date picker field', () => {
 test.skip('date change', () => {
   let date = new Date('12/25/2004');
   const utils = render(
-    <DatePicker
+    <DeadlineField
       id="deadline"
       label="Deadline *"
       value={date}

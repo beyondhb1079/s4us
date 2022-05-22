@@ -1,11 +1,14 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { Container, Typography, CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import useAuth from '../lib/useAuth';
 
-function ProtectedRoute({ element }: { element: JSX.Element }): JSX.Element {
+export default function ProtectedRoute({
+  element,
+}: {
+  element: JSX.Element;
+}): JSX.Element {
   const location: any = useLocation();
   const showLoginDialog = location.state?.showLoginDialog;
   const { currentUser } = useAuth();
@@ -39,7 +42,3 @@ function ProtectedRoute({ element }: { element: JSX.Element }): JSX.Element {
     </Container>
   );
 }
-ProtectedRoute.propTypes = {
-  element: PropTypes.node.isRequired,
-};
-export default ProtectedRoute;

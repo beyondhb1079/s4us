@@ -2,11 +2,15 @@ import React from 'react';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import MuiDatePicker from '@mui/lab/DatePicker';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import { InputLabel, TextField } from '@mui/material';
-import PropTypes from 'prop-types';
-import exact from 'prop-types-exact';
+import { InputLabel, SxProps, TextField, Theme } from '@mui/material';
 
-function DatePicker(props) {
+interface DeadlineFieldProps {
+  formik: any;
+  label: string;
+  labelStyle?: SxProps<Theme>;
+}
+
+function DeadlineField(props: DeadlineFieldProps): JSX.Element {
   const { label, labelStyle, formik } = props;
 
   return (
@@ -32,14 +36,4 @@ function DatePicker(props) {
   );
 }
 
-DatePicker.propTypes = exact({
-  label: PropTypes.string.isRequired,
-  labelStyle: PropTypes.object,
-  formik: PropTypes.object.isRequired,
-});
-
-DatePicker.defaultProps = {
-  labelStyle: {},
-};
-
-export default DatePicker;
+export default DeadlineField;
