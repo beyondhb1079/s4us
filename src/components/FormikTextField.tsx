@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { getIn } from 'formik';
 
 /* eslint-disable react/jsx-props-no-spreading */
-function FormikTextField(props) {
+function FormikTextField(props): JSX.Element {
   const {
     label,
     labelStyle,

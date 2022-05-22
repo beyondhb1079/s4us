@@ -12,7 +12,7 @@ const MenuProps = {
   },
 };
 
-function FormikMultiSelect(props) {
+function FormikMultiSelect(props): JSX.Element {
   const { label, id, labelStyle, formik, options, disabled, placeholder } =
     props;
   const values = getIn(formik.values, id, []);

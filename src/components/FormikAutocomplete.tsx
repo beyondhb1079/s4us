@@ -4,23 +4,35 @@ import {
   Autocomplete,
   createFilterOptions,
   InputLabel,
+  SxProps,
   TextField,
+  Theme,
 } from '@mui/material';
-import PropTypes from 'prop-types';
 
 const filterOptions = createFilterOptions({
-  stringify: (option) =>
+  stringify: (option: string) =>
     `${option.replace(/\([A-Z]+\)/, '').replaceAll(/[^A-Z]/g, '')} ${option}`,
 });
 
+type FormikAutocompleteProps = {
+  label?: string;
+  id: string;
+  labelStyle?: SxProps<Theme>;
+  /** The result of {@link useFormik()}. */
+  formik: any;
+  placeholder?: string;
+  onChange?: (v: string[]) => void;
+  [x: string]: any;
+};
+
 /* eslint-disable react/jsx-props-no-spreading */
-function FormikAutocomplete(props) {
+function FormikAutocomplete(props: FormikAutocompleteProps): JSX.Element {
   const {
-    label,
+    label = '',
     id,
-    labelStyle,
+    labelStyle = {},
     formik,
-    placeholder,
+    placeholder = '',
     onChange,
     ...otherProps
   } = props;
@@ -35,6 +47,7 @@ function FormikAutocomplete(props) {
         id={id}
         multiple
         filterOptions={filterOptions}
+        options={values}
         value={values}
         inputValue={inputValue}
         onChange={(e, val) =>
@@ -66,19 +79,4 @@ function FormikAutocomplete(props) {
     </>
   );
 }
-
-FormikAutocomplete.propTypes = {
-  label: PropTypes.string,
-  id: PropTypes.string.isRequired,
-  labelStyle: PropTypes.object,
-  formik: PropTypes.object.isRequired,
-  placeholder: PropTypes.string,
-  onChange: PropTypes.func,
-};
-FormikAutocomplete.defaultProps = {
-  label: '',
-  labelStyle: {},
-  placeholder: '',
-  onChange: undefined,
-};
 export default FormikAutocomplete;
