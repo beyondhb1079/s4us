@@ -4,7 +4,7 @@ import { TextField, InputAdornment, TextFieldProps } from '@mui/material';
 export default function AmountTextField(props: TextFieldProps): JSX.Element {
   return (
     <TextField
-      variant="outlined"
+      variant={props.variant ?? 'outlined'}
       sx={{ maxWidth: 120 }}
       InputProps={{
         inputProps: { min: 0, max: 100000, step: 100 },

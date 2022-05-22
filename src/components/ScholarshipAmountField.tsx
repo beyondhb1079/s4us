@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 interface SAFProps {
   /** The result of `useFormik()`. */
   formik: any;
-  labelStyle: SxProps<Theme>;
+  labelStyle?: SxProps<Theme>;
 }
 
 function ScholarshipAmountField({ labelStyle, formik }: SAFProps): JSX.Element {

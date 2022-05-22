@@ -7,9 +7,10 @@ interface FTFProps {
   formik: any;
   id: string;
   label: string;
-  labelStyle: SxProps<Theme>;
-  minRows: number;
-  value: string | number;
+
+  minRows?: number;
+  labelStyle?: SxProps<Theme>;
+  value?: string | number;
 }
 
 /* eslint-disable react/jsx-props-no-spreading */

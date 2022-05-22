@@ -16,10 +16,10 @@ interface FMSProps {
   formik: any;
   id: string;
   label: string;
-  labelStyle: SxProps<Theme>;
   options: { [k: string]: string };
 
   disabled?: boolean;
+  labelStyle?: SxProps<Theme>;
   placeholder?: string;
 }
 

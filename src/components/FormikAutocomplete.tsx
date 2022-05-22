@@ -15,11 +15,12 @@ const filterOptions = createFilterOptions({
 });
 
 interface FAProps {
-  label?: string;
-  id: string;
-  labelStyle?: SxProps<Theme>;
   /** The result of `useFormik()`. */
   formik: any;
+  id: string;
+
+  label?: string;
+  labelStyle?: SxProps<Theme>;
   placeholder?: string;
   onChange?: (v: string[]) => void;
 }
