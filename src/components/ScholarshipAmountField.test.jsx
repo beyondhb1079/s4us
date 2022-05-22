@@ -27,7 +27,7 @@ test('renders select options', async () => {
   renderWithAmountType(AmountType.Fixed);
 
   const select = await waitFor(() => screen.getByRole('button'));
-  UserEvent.click(select);
+  await UserEvent.click(select);
 
   const options = screen.getAllByRole('option');
   expect(options[0]).toHaveTextContent('Fixed');
