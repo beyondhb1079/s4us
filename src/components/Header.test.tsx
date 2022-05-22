@@ -6,8 +6,10 @@ import { initializeTestApp } from '../lib/testing';
 import Header from './Header';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
+import { deleteApp } from 'firebase/app';
 
-initializeTestApp({ apiKey: 'fake-api-key' });
+const app = initializeTestApp({ apiKey: 'fake-api-key' });
+afterAll(() => deleteApp(app));
 
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.
