@@ -14,7 +14,7 @@ interface FTFProps {
 }
 
 /* eslint-disable react/jsx-props-no-spreading */
-function FormikTextField(props: FTFProps): JSX.Element {
+export default function FormikTextField(props: FTFProps): JSX.Element {
   const {
     label,
     labelStyle,
@@ -42,5 +42,3 @@ function FormikTextField(props: FTFProps): JSX.Element {
     </>
   );
 }
-
-export default FormikTextField;

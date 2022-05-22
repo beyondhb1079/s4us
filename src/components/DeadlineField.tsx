@@ -11,7 +11,7 @@ interface DeadlineFieldProps {
   labelStyle?: SxProps<Theme>;
 }
 
-function DeadlineField(props: DeadlineFieldProps): JSX.Element {
+export default function DeadlineField(props: DeadlineFieldProps): JSX.Element {
   const { label, labelStyle, formik } = props;
 
   return (
@@ -36,5 +36,3 @@ function DeadlineField(props: DeadlineFieldProps): JSX.Element {
     </LocalizationProvider>
   );
 }
-
-export default DeadlineField;
