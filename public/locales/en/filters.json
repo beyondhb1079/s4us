@@ -1,7 +1,11 @@
 {
+  "amountHighToLow": "Amount (High to Low)",
+  "amountLowToHigh": "Amount (Low to High)",
   "changesNotYetApplied": "Your changes are not yet applied.",
   "closeConfirmation": "Are you sure you want to close? Your changes will not be saved.",
   "collegeUniversity": "College/University",
+  "deadlineEarliestToLatest": "Deadline (Earliest to Latest)",
+  "deadlineLatestToEarliest": "Deadline (Latest to Earliest)",
   "enterMajorFilter": "Enter a major to filter by",
   "enterStateFilter": "Enter a state to filter by",
   "filters": "Filters",
@@ -12,12 +16,8 @@
   "middleSchool": "Middle School",
   "minAmount": "Min Amount",
   "postGrad": "Postgraduate",
+  "sort": "Sort",
   "state": "State",
   "unsavedChanges": "Unsaved Changes",
-  "whatAreYouStudying": "What are you studying?",
-  "amountHighToLow": "Amount (High to Low)",
-  "amountLowToHigh": "Amount (Low to High)",
-  "deadlineEarliestToLatest": "Deadline (Earliest to Latest)",
-  "deadlineLatestToEarliest": "Deadline (Latest to Earliest)",
-  "sort": "Sort"
+  "whatAreYouStudying": "What are you studying?"
 }

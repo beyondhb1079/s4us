@@ -1,7 +1,11 @@
 {
+  "amountHighToLow": "Cantidad (mayor a menor)",
+  "amountLowToHigh": "Cantidad (menor a mayor)",
   "changesNotYetApplied": "Sus cambios aún no se han aplicado.",
   "closeConfirmation": "¿Está seguro de que quiere cerrar? Sus cambios no se guardarán.",
   "collegeUniversity": "Colegio/Universidad",
+  "deadlineEarliestToLatest": "Fecha límite (temprano a tarde)",
+  "deadlineLatestToEarliest": "Fecha límite (tarde a temprano)",
   "enterMajorFilter": "Ingrese un filtro de carrera",
   "enterStateFilter": "Ingrese un filtro de estado",
   "filters": "Filtros",
@@ -12,12 +16,8 @@
   "middleSchool": "Secundaria",
   "minAmount": "Cantidad mínima",
   "postGrad": "Postgrado",
+  "sort": "Ordenar",
   "state": "Estado",
   "unsavedChanges": "Cambios no guardados",
-  "whatAreYouStudying": "¿Qué estudia?",
-  "amountHighToLow": "Cantidad (mayor a menor)",
-  "amountLowToHigh": "Cantidad (menor a mayor)",
-  "deadlineEarliestToLatest": "Fecha límite (temprano a tarde)",
-  "deadlineLatestToEarliest": "Fecha límite (tarde a temprano)",
-  "sort": "Ordenar"
+  "whatAreYouStudying": "¿Qué estudia?"
 }
