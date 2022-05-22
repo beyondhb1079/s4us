@@ -26,6 +26,13 @@ const names = new (class extends FirestoreCollection<NameData> {
 beforeEach(() => clearFirestoreData(app.options as { projectId: string }));
 afterAll(() => deleteApp(app));
 
+test('new() returns model with generated id', () => {
+  const got = names.new();
+
+  expect(got.id.length).toBeGreaterThan(0);
+  expect(got.data).toMatchObject({});
+});
+
 test('new() returns model with data and generated id', () => {
   const data = { first: 'Bob', last: 'Smith' };
 
