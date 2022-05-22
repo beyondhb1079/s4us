@@ -49,6 +49,7 @@
     "build": "react-scripts build",
     "start": "scripts/emulators_exec.sh 'react-scripts start'",
     "test": "scripts/emulators_exec.sh 'react-scripts test'",
+    "ci-test": "scripts/emulators_exec.sh 'react-scripts test --verbose --detectOpenHandles --coverage'",
     "lint": "eslint --cache src/ --ext .js,.jsx,.ts,.tsx",
     "eject": "react-scripts eject",
     "prepare": "husky install"
