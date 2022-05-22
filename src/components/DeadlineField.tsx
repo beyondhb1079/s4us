@@ -5,6 +5,7 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { InputLabel, SxProps, TextField, Theme } from '@mui/material';
 
 interface DeadlineFieldProps {
+  /** The result of `useFormik()`. */
   formik: any;
   label: string;
   labelStyle?: SxProps<Theme>;
