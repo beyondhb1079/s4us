@@ -12,5 +12,6 @@
   "minAmount": "Min Amount",
   "postGrad": "Postgraduate",
   "unsavedChanges": "Unsaved Changes",
-  "whatAreYouStudying": "What are you studying?"
+  "whatAreYouStudying": "What are you studying?",
+  "enterStateFilter": "Enter a state to filter by"
 }

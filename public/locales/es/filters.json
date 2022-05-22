@@ -1,16 +1,17 @@
 {
   "changesNotYetApplied": "Sus cambios aún no se han aplicado.",
-  "closeConfirmation": "¿Estás seguro de que quieres cerrar? Sus cambios no se guardarán.",
+  "closeConfirmation": "¿Está seguro de que quiere cerrar? Sus cambios no se guardarán.",
   "collegeUniversity": "Colegio/Universidad",
   "enterMajorFilter": "Ingrese un filtro de carrera",
   "filters": "Filtros",
   "filtersCurrentlyApplied": "Sus filtros están actualmente aplicados.",
   "gradeLevel": "Nivel de grado",
   "highSchool": "Preparatoria",
-  "limitReached": "Límite alcanzado",
   "middleSchool": "Secundaria",
   "minAmount": "Cantidad mínima",
   "postGrad": "Postgrado",
   "unsavedChanges": "Cambios no guardados",
-  "whatAreYouStudying": "¿Qué estás estudiando?"
+  "whatAreYouStudying": "¿Qué estudia?",
+  "enterStateFilter": "Ingrese un filtro de estado",
+  "limitReached": "Límite alcanzado"
 }
