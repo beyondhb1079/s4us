@@ -1,7 +1,3 @@
-/**
- * @jest-environment node
- */
-
 import { FirestoreDataConverter } from 'firebase/firestore';
 import { initializeTestEnv } from '../../lib/testing';
 import FirestoreCollection from './FirestoreCollection';

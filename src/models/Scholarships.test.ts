@@ -1,7 +1,3 @@
-/**
- * @jest-environment node
- */
-
 import { User } from 'firebase/auth';
 import {
   DocumentData,
