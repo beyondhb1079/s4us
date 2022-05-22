@@ -7,12 +7,12 @@
   "filtersCurrentlyApplied": "Sus filtros están actualmente aplicados.",
   "gradeLevel": "Nivel de grado",
   "highSchool": "Preparatoria",
+  "limitReached": "Límite alcanzado",
   "middleSchool": "Secundaria",
   "minAmount": "Cantidad mínima",
   "postGrad": "Postgrado",
+  "state": "Estado",
   "unsavedChanges": "Cambios no guardados",
   "whatAreYouStudying": "¿Qué estudia?",
-  "enterStateFilter": "Ingrese un filtro de estado",
-  "state": "Estado",
-  "limitReached": "Límite alcanzado"
+  "enterStateFilter": "Ingrese un filtro de estado"
 }

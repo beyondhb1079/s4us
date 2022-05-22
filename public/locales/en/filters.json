@@ -11,8 +11,8 @@
   "middleSchool": "Middle School",
   "minAmount": "Min Amount",
   "postGrad": "Postgraduate",
+  "state": "State",
   "unsavedChanges": "Unsaved Changes",
   "whatAreYouStudying": "What are you studying?",
-  "state": "State",
   "enterStateFilter": "Enter a state to filter by"
 }
