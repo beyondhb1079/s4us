@@ -14,7 +14,7 @@ export default function FilterBar({ openFilter }) {
 
   const filterCount =
     (grades?.length ?? 0) + (majors?.length ?? 0) + (minAmount ? 1 : 0);
-  const { t } = useTranslation(['sort', 'filters']);
+  const { t } = useTranslation('filters');
 
   return (
     <Toolbar
@@ -34,7 +34,7 @@ export default function FilterBar({ openFilter }) {
           onClick={openFilter}
           startIcon={<TuneIcon />}
           sx={{ display: { md: 'none' } }}>
-          {t('filters:filters')} {filterCount ? `(${filterCount})` : ''}
+          {t('filters')} {filterCount ? `(${filterCount})` : ''}
         </Button>
 
         <Button

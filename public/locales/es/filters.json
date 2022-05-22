@@ -14,5 +14,10 @@
   "postGrad": "Postgrado",
   "state": "Estado",
   "unsavedChanges": "Cambios no guardados",
-  "whatAreYouStudying": "¿Qué estudia?"
+  "whatAreYouStudying": "¿Qué estudia?",
+  "amountHighToLow": "Cantidad (mayor a menor)",
+  "amountLowToHigh": "Cantidad (menor a mayor)",
+  "deadlineEarliestToLatest": "Fecha límite (temprano a tarde)",
+  "deadlineLatestToEarliest": "Fecha límite (tarde a temprano)",
+  "sort": "Ordenar"
 }
