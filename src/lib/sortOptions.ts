@@ -1,3 +1,5 @@
+import { TFunction } from 'react-i18next';
+
 export const AMOUNT_ASC = 'amount.asc';
 export const AMOUNT_DESC = 'amount.desc';
 export const DEADLINE_ASC = 'deadline.asc';
@@ -17,7 +19,7 @@ export const getField = (s: string): string => {
 
 export const getSortOption = (
   key: string,
-  t: (k: string) => string
+  t: TFunction<'sort', undefined>
 ): string => {
   switch (key) {
     case AMOUNT_ASC:
