@@ -29,6 +29,7 @@ function create(data: {
   deadline?: Date;
   grades?: GradeLevel[];
   majors?: string[];
+  states?: string[];
 }) {
   const amount = data.amount ?? ScholarshipAmount.unknown();
   const amountString = ScholarshipAmount.toString(amount);
@@ -40,7 +41,11 @@ function create(data: {
     deadline,
     website: 'foo.com',
     description: 'something',
-    requirements: { grades: data.grades ?? [], majors: data.majors ?? [] },
+    requirements: {
+      grades: data.grades ?? [],
+      majors: data.majors ?? [],
+      states: data.states ?? [],
+    },
   });
 }
 
@@ -325,6 +330,24 @@ test('scholarships.list - filters by grades (all grades)', async () => {
   });
 
   const want = [middleSchool, highSchool, college, graduate];
+  expect(got.results.map(extractName).sort()).toEqual(
+    want.map(extractName).sort()
+  );
+});
+
+const caliAndWashington = create({ states: ['CA', 'WA'] });
+const alaska = create({ states: ['AK'] });
+const texas = create({ states: ['TX'] });
+const stateScholarships = [caliAndWashington, alaska, texas];
+
+test('scholarships.list - filters by states', async () => {
+  await Promise.all(stateScholarships.map((s) => s.save()));
+
+  const got = await Scholarships.list({
+    states: ['CA'],
+  });
+
+  const want = [caliAndWashington];
   expect(got.results.map(extractName).sort()).toEqual(
     want.map(extractName).sort()
   );
