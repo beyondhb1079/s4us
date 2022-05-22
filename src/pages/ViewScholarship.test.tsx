@@ -19,7 +19,7 @@ import { act } from 'react-dom/test-utils';
 // TODO: Figure out a cleaner solution.
 window.MutationObserver = require('mutation-observer');
 
-function renderAtRoute(pathname, state = {}) {
+function renderAtRoute(pathname: string, state = {}) {
   return render(
     <Suspense fallback="loading">
       <I18nextProvider i18n={i18n}>
@@ -100,7 +100,7 @@ test('renders scholarship details', async () => {
     },
   };
   const ref = Scholarships.id('load-it', data);
-  await act(() => ref.save());
+  await act(() => ref.save().then());
 
   renderAtRoute('/scholarships/load-it');
   await screen.findByText(/Foo scholarship/i);
