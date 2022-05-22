@@ -4,17 +4,22 @@
 import {
   assertFails,
   assertSucceeds,
-  initializeTestApp,
+  initializeTestEnvironment,
+  RulesTestEnvironment,
 } from '@firebase/rules-unit-testing';
+import {
+  collection,
+  CollectionReference,
+  deleteDoc,
+  doc,
+  DocumentData,
+  getDoc,
+  setDoc,
+  setLogLevel,
+} from 'firebase/firestore';
+import { readFileSync } from 'fs';
 import AmountType from './types/AmountType';
 
-// TODO(#1156): Upgrade @firestore/rules-unit-testing
-const doc = (col: any, id?: string) => col.doc(id);
-const deleteDoc = (d: any) => d.delete();
-const getDoc = (d: any) => d.get();
-const setDoc = (d: any, data: any) => d.set(data);
-
-const MY_PROJECT_ID = 'scholarships-rules-test';
 const scholarship = {
   name: 'test-scholarship',
   deadline: new Date(),
@@ -31,37 +36,39 @@ const scholarship = {
 };
 const scholarshipId = 'KLJASDQW';
 
-const unauthedApp = initializeTestApp({
-  projectId: MY_PROJECT_ID,
-});
-
-const aliceId = 'alice';
-const aliceApp = initializeTestApp({
-  projectId: MY_PROJECT_ID,
-  auth: { uid: aliceId },
-});
-
-const johnApp = initializeTestApp({
-  projectId: MY_PROJECT_ID,
-  auth: { uid: 'john-doe' },
-});
-
-const adminApp = initializeTestApp({
-  projectId: MY_PROJECT_ID,
-  auth: { uid: 'admin', admin: true },
-});
-
-const unauthedScholarships = unauthedApp.firestore().collection('scholarships');
-const aliceScholarships = aliceApp.firestore().collection('scholarships');
-const johnScholarships = johnApp.firestore().collection('scholarships');
-const adminScholarships = adminApp.firestore().collection('scholarships');
+let testEnv: RulesTestEnvironment;
+let unauthedScholarships: CollectionReference<DocumentData>;
+let aliceScholarships: CollectionReference<DocumentData>;
+let johnScholarships: CollectionReference<DocumentData>;
+let adminScholarships: CollectionReference<DocumentData>;
 
 beforeAll(() =>
-  setDoc(doc(aliceScholarships, scholarshipId), { ...scholarship })
+  initializeTestEnvironment({
+    projectId: 'firestore-rules-test',
+    firestore: { rules: readFileSync('firestore.rules', 'utf8') },
+  }).then((env) => {
+    setLogLevel('error'); // Hide statements about expected rejections.
+    testEnv = env;
+    unauthedScholarships = collection(
+      env.unauthenticatedContext().firestore(),
+      'scholarships'
+    );
+    aliceScholarships = collection(
+      env.authenticatedContext('alice').firestore(),
+      'scholarships'
+    );
+    johnScholarships = collection(
+      env.authenticatedContext('john-doe').firestore(),
+      'scholarships'
+    );
+    adminScholarships = collection(
+      env.authenticatedContext('admin', { admin: true }).firestore(),
+      'scholarships'
+    );
+    return setDoc(doc(aliceScholarships, scholarshipId), { ...scholarship });
+  })
 );
-afterAll(() =>
-  Promise.all([unauthedApp, aliceApp, adminApp, johnApp].map((c) => c.delete()))
-);
+afterAll(() => testEnv.cleanup());
 
 test('allows scholarships read when signed out', () =>
   assertSucceeds(getDoc(doc(unauthedScholarships, 'ASDK91023JUS'))));
