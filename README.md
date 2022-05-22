@@ -79,11 +79,14 @@ After running `yarn start` you can manage local Firebase Auth and Firestore data
 yarn test
 ```
 
-Launches the test runner in the interactive watch mode.<br />
-See this section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Launches the test runner in the interactive watch mode. You can add
+[Jest CLI options](https://jestjs.io/docs/cli) such as `--coverage` and
+`--verbose`.
 
 The tests also run when you run a `git push` command.<br />
-You can skip the tests by adding the `--no-verify` flag to the command.
+You can skip the tests by adding the `--no-verify` flag to the `push` command.
+
+See this section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### Updating translations
 
