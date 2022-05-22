@@ -57,7 +57,7 @@ export default function FilterPanel({ onClose }) {
   }, [location]);
 
   const filters = {
-    whatAreYouStudying: {
+    [t('whatAreYouStudying')]: {
       comp: (
         <>
           <CustomAutocomplete
@@ -86,7 +86,7 @@ export default function FilterPanel({ onClose }) {
         JSON.stringify(majors || []) !== JSON.stringify(params.majors || []),
       expanded: true,
     },
-    minAmount: {
+    [t('minAmount')]: {
       comp: (
         <MinAmountFilter
           min={minAmount ?? 0}
@@ -95,12 +95,12 @@ export default function FilterPanel({ onClose }) {
       ),
       changed: minAmount !== params.minAmount,
     },
-    gradeLevel: {
+    [t('gradeLevel')]: {
       comp: <GradeLevelFilter grades={new Set(grades)} onChange={setGrades} />,
       changed:
         JSON.stringify(grades || []) !== JSON.stringify(params.grades || []),
     },
-    State: {
+    [t('state')]: {
       comp: (
         <>
           <CustomAutocomplete
@@ -162,7 +162,7 @@ export default function FilterPanel({ onClose }) {
             expandIcon={<ExpandMoreIcon />}
             aria-controls={name + '-content'}
             id={name + '-header'}>
-            <Typography sx={{ fontWeight: 'medium' }}>{t(name)}</Typography>
+            <Typography sx={{ fontWeight: 'medium' }}>{name}</Typography>
           </AccordionSummary>
 
           <AccordionDetails sx={{ m: 1 }}>{filter.comp}</AccordionDetails>

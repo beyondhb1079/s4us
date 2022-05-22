@@ -13,5 +13,6 @@
   "postGrad": "Postgraduate",
   "unsavedChanges": "Unsaved Changes",
   "whatAreYouStudying": "What are you studying?",
+  "state": "State",
   "enterStateFilter": "Enter a state to filter by"
 }
