@@ -1,7 +1,6 @@
 /**
  * @jest-environment node
  */
-
 import {
   collection,
   doc,
