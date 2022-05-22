@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+/* istanbul ignore file as we aren't currently using service workers. */
 // This optional code is used to register a service worker.
 // register() is not called by default.
 
