@@ -3,6 +3,7 @@
   "closeConfirmation": "Are you sure you want to close? Your changes will not be saved.",
   "collegeUniversity": "College/University",
   "enterMajorFilter": "Enter a major to filter by",
+  "enterStateFilter": "Enter a state to filter by",
   "filters": "Filters",
   "filtersCurrentlyApplied": "Your filters are currently applied.",
   "gradeLevel": "Grade Level",
@@ -13,6 +14,5 @@
   "postGrad": "Postgraduate",
   "state": "State",
   "unsavedChanges": "Unsaved Changes",
-  "whatAreYouStudying": "What are you studying?",
-  "enterStateFilter": "Enter a state to filter by"
+  "whatAreYouStudying": "What are you studying?"
 }

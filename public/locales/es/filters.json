@@ -3,6 +3,7 @@
   "closeConfirmation": "¿Está seguro de que quiere cerrar? Sus cambios no se guardarán.",
   "collegeUniversity": "Colegio/Universidad",
   "enterMajorFilter": "Ingrese un filtro de carrera",
+  "enterStateFilter": "Ingrese un filtro de estado",
   "filters": "Filtros",
   "filtersCurrentlyApplied": "Sus filtros están actualmente aplicados.",
   "gradeLevel": "Nivel de grado",
@@ -13,6 +14,5 @@
   "postGrad": "Postgrado",
   "state": "Estado",
   "unsavedChanges": "Cambios no guardados",
-  "whatAreYouStudying": "¿Qué estudia?",
-  "enterStateFilter": "Ingrese un filtro de estado"
+  "whatAreYouStudying": "¿Qué estudia?"
 }
