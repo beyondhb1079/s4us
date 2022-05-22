@@ -3,10 +3,9 @@ import { Autocomplete, IconButton, OutlinedInput } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import SearchIcon from '@mui/icons-material/Search';
-import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
-type AutocompleteFilterProps = {
+type CustomAutocompleteProps = {
   limitReached: boolean;
   placeholder: string | undefined;
   options: string[];
@@ -14,8 +13,8 @@ type AutocompleteFilterProps = {
 };
 
 /* eslint-disable react/jsx-props-no-spreading */
-export default function AutocompleteFilter(
-  props: AutocompleteFilterProps
+export default function CustomAutocomplete(
+  props: CustomAutocompleteProps
 ): JSX.Element {
   const { limitReached, placeholder, ...otherProps } = props;
   const [isOpen, setIsOpen] = useState(false);
@@ -28,7 +27,8 @@ export default function AutocompleteFilter(
       open={isOpen && !limitReached}
       disabled={limitReached}
       onInputChange={(e, val) => setIsOpen(val.length > 0)}
-      renderTags={() => null}
+      forcePopupIcon={false}
+      onBlur={() => setIsOpen(false)}
       {...otherProps}
       renderInput={(params) => (
         <OutlinedInput
@@ -50,13 +50,3 @@ export default function AutocompleteFilter(
     />
   );
 }
-
-AutocompleteFilter.propTypes = {
-  limitReached: PropTypes.bool,
-  placeholder: PropTypes.string,
-};
-
-AutocompleteFilter.defaultProps = {
-  limitReached: false,
-  placeholder: undefined,
-};

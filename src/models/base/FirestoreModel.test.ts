@@ -27,7 +27,7 @@ const converter: FirestoreDataConverter<NameData> = {
 
 const names = collection(getFirestore(), 'names').withConverter(converter);
 
-beforeEach(() => env.then((e) => e.clearFirestore()));
+beforeAll(() => env.then((e) => e.clearFirestore()));
 afterAll(() => cleanup());
 
 test('constructor', () => {
@@ -45,10 +45,7 @@ test('get unknown doc', async () => {
     last: 'Smith',
   });
 
-  // TODO(issues/356): investigate "No matching allow statements"
-  // message that sometimes appears.
-  // await expect(name.get()).rejects.toThrowError('names/123 not found');
-  await expect(name.get()).rejects.toThrowError();
+  return expect(name.get()).rejects.toThrowError('names/unknown not found');
 });
 
 test('get existing doc', async () => {
@@ -106,5 +103,3 @@ test('delete existing doc', async () => {
   const got = await getDoc(doc(names, name.id));
   expect(got.exists()).toBeFalsy();
 });
-
-// TODO(issues/92): Add tests for subscribe().

@@ -14,7 +14,7 @@
     "@mui/styles": "^5.0.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^12.0.0",
-    "@testing-library/user-event": "^13.1.9",
+    "@testing-library/user-event": "^14.2.0",
     "@types/node": "^17.0.7",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
@@ -48,7 +48,8 @@
   "scripts": {
     "build": "react-scripts build",
     "start": "scripts/emulators_exec.sh 'react-scripts start'",
-    "test": "scripts/emulators_exec.sh 'react-scripts test --verbose --detectOpenHandles'",
+    "test": "scripts/emulators_exec.sh 'react-scripts test'",
+    "ci-test": "scripts/emulators_exec.sh 'react-scripts test --verbose --detectOpenHandles --coverage'",
     "lint": "eslint --cache src/ --ext .js,.jsx,.ts,.tsx",
     "eject": "react-scripts eject",
     "prepare": "husky install"
@@ -64,6 +65,40 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "jest": {
+    "coverageThreshold": {
+      "./src/": {
+        "statements": 60,
+        "branches": 60,
+        "functions": 50,
+        "lines": 60
+      },
+      "./src/components/": {
+        "statements": 35,
+        "branches": 40,
+        "functions": 25,
+        "lines": 40
+      },
+      "./src/lib/": {
+        "statements": 90,
+        "branches": 90,
+        "functions": 90,
+        "lines": 90
+      },
+      "./src/models/**/*.ts": {
+        "statements": 90,
+        "branches": 80,
+        "functions": 85,
+        "lines": 90
+      },
+      "./src/pages/": {
+        "statements": 40,
+        "branches": 45,
+        "functions": 20,
+        "lines": 35
+      }
+    }
   },
   "devDependencies": {
     "@testing-library/react-hooks": "^8.0.0",

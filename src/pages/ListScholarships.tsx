@@ -19,8 +19,9 @@ import ScholarshipList from '../components/ScholarshipList';
 import useQueryParams from '../lib/useQueryParams';
 import { HeaderSkeleton } from '../components/Header';
 import GradeLevel from '../types/GradeLevel';
+import State from '../types/States';
 import { useLocation } from 'react-router-dom';
-import { getAnalytics, logEvent } from 'firebase/analytics';
+import { getAnalytics, isSupported, logEvent } from 'firebase/analytics';
 
 const drawerWidth = 360;
 
@@ -30,7 +31,8 @@ function ListScholarships(): JSX.Element {
 
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
-  const [{ minAmount, grades, majors }, setQueryParams] = useQueryParams();
+  const [{ minAmount, grades, majors, states }, setQueryParams] =
+    useQueryParams();
 
   const filterChips = {} as Record<
     string,
@@ -51,12 +53,21 @@ function ListScholarships(): JSX.Element {
       grades: grades?.filter((g: GradeLevel) => grade !== g),
     };
   });
+  states?.forEach((state: string) => {
+    filterChips[State.toString(state)] = {
+      states: states?.filter((s: string) => state !== s),
+    };
+  });
 
   const scrollTrigger = useScrollTrigger();
 
   const location = useLocation();
   useEffect(() => {
-    logEvent(getAnalytics(), 'search', { search_term: location.search });
+    isSupported().then(
+      (supported) =>
+        supported &&
+        logEvent(getAnalytics(), 'search', { search_term: location.search })
+    );
   }, [location]);
 
   return (

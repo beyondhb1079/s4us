@@ -5,6 +5,7 @@ import {
 import { deleteApp, initializeApp } from 'firebase/app';
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
 
+/* istanbul ignore if */
 if (process.env.NODE_ENV !== 'test') {
   throw Error('this file should only be imported in tests');
 }
