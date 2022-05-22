@@ -15,9 +15,22 @@ export const getField = (s: string): string => {
   }
 };
 
-export default {
-  [AMOUNT_ASC]: 'amountLowToHigh',
-  [AMOUNT_DESC]: 'amountHighToLow',
-  [DEADLINE_ASC]: 'deadlineEarliestToLatest',
-  [DEADLINE_DESC]: 'deadlineLatestToEarliest',
+export const getSortOption = (
+  key: string,
+  t: (k: string) => string
+): string => {
+  switch (key) {
+    case AMOUNT_ASC:
+      return t('amountLowToHigh');
+    case AMOUNT_DESC:
+      return t('amountHighToLow');
+    case DEADLINE_ASC:
+      return t('deadlineEarliestToLatest');
+    case DEADLINE_DESC:
+      return t('deadlineLatestToEarliest');
+    default:
+      return '';
+  }
 };
+
+export default [AMOUNT_ASC, AMOUNT_DESC, DEADLINE_ASC, DEADLINE_DESC];
