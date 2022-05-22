@@ -2,13 +2,12 @@ import React, { Suspense } from 'react';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { initializeTestApp } from '../lib/testing';
 import Header from './Header';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
-import { deleteApp } from 'firebase/app';
+import { deleteApp, initializeApp } from 'firebase/app';
 
-const app = initializeTestApp({ apiKey: 'fake-api-key' });
+const app = initializeApp({ apiKey: 'fake-api-key' });
 afterAll(() => deleteApp(app));
 
 // hacky workaround to allow findBy to work
