@@ -32,22 +32,18 @@ test('sort options dropdown', async () => {
   );
 
   expect(
-    await screen.getByRole('menuitem', { name: 'Amount (Low to High)' })
+    screen.getByRole('menuitem', { name: 'Amount (Low to High)' })
   ).toBeInTheDocument();
   expect(
-    await screen.getByRole('menuitem', { name: 'Amount (High to Low)' })
+    screen.getByRole('menuitem', { name: 'Amount (High to Low)' })
   ).toBeInTheDocument();
   expect(
-    await screen.getByRole('menuitem', {
-      name: 'Deadline (Earliest to Latest)',
-    })
+    screen.getByRole('menuitem', { name: 'Deadline (Earliest to Latest)' })
   ).toBeInTheDocument();
   expect(
-    await screen.getByRole('menuitem', {
-      name: 'Deadline (Latest to Earliest)',
-    })
+    screen.getByRole('menuitem', { name: 'Deadline (Latest to Earliest)' })
   ).toBeInTheDocument();
-});
+}, 20000);
 
 test('renders filters with # of filters applied', async () => {
   renderComponent('?grades[]=8,9&minAmount=400&majors[]=test');
