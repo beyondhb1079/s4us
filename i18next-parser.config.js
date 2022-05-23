@@ -9,4 +9,5 @@ export default {
   output: 'public/locales/$LOCALE/$NAMESPACE.json',
   input: 'src/**/*.{j,t}sx',
   sort: true,
+  keepRemoved: true,
 };

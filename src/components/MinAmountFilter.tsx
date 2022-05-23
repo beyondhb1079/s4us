@@ -1,6 +1,7 @@
 import React from 'react';
 import { Stack, Slider } from '@mui/material';
 import AmountTextField from './AmountTextField';
+import { useTranslation } from 'react-i18next';
 
 interface MinAmountFilterProps {
   min: number;
@@ -12,6 +13,7 @@ export default function MinAmountFilter(
 ): JSX.Element {
   const { min, onMinChange } = props;
   const error = min < 0;
+  const { t } = useTranslation('scholarshipAmount');
 
   return (
     <Stack
@@ -33,7 +35,7 @@ export default function MinAmountFilter(
         value={min || ''}
         onChange={(e) => onMinChange(Number.parseInt(e.target.value))}
         variant="standard"
-        placeholder="No min"
+        placeholder={t('noMin')}
       />
     </Stack>
   );

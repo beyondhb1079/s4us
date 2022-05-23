@@ -58,7 +58,7 @@ export default function useQueryParams(
 
     if (
       sortBy !== undefined &&
-      (typeof sortBy !== 'string' || !(sortBy in sortOptions))
+      (typeof sortBy !== 'string' || !sortOptions.includes(sortBy))
     ) {
       delete params.sortBy;
     }

@@ -1,3 +1,5 @@
+import { TFunction } from 'react-i18next';
+
 export const AMOUNT_ASC = 'amount.asc';
 export const AMOUNT_DESC = 'amount.desc';
 export const DEADLINE_ASC = 'deadline.asc';
@@ -15,9 +17,22 @@ export const getField = (s: string): string => {
   }
 };
 
-export default {
-  [AMOUNT_ASC]: 'Amount (Low to High)',
-  [AMOUNT_DESC]: 'Amount (High to Low)',
-  [DEADLINE_ASC]: 'Deadline (Earliest to Latest)',
-  [DEADLINE_DESC]: 'Deadline (Latest to Earliest)',
+export const getSortOption = (
+  key: string,
+  t: TFunction<'sort', undefined>
+): string => {
+  switch (key) {
+    case AMOUNT_ASC:
+      return t('amountLowToHigh');
+    case AMOUNT_DESC:
+      return t('amountHighToLow');
+    case DEADLINE_ASC:
+      return t('deadlineEarliestToLatest');
+    case DEADLINE_DESC:
+      return t('deadlineLatestToEarliest');
+    default:
+      return '';
+  }
 };
+
+export default [AMOUNT_ASC, AMOUNT_DESC, DEADLINE_ASC, DEADLINE_DESC];
