@@ -6,7 +6,6 @@ import {
   Collapse,
   Container,
   Drawer,
-  Toolbar,
   useMediaQuery,
   useScrollTrigger,
   Chip,
@@ -110,7 +109,6 @@ function ListScholarships(): JSX.Element {
           </Collapse>
           <FilterBar openFilter={() => setDrawerOpen(true)} />
         </Box>
-        <Toolbar />
 
         <Container maxWidth="md" sx={{ flexGrow: 1 }}>
           <Stack

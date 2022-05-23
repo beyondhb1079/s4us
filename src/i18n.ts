@@ -18,6 +18,7 @@ i18n
     })
   )
   .init({
+    ns: ['common'],
     supportedLngs: ['en', 'es'],
     fallbackLng: 'en',
     detection: {

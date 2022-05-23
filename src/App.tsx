@@ -15,6 +15,8 @@ import { BRAND_NAME } from './config/constants';
 import FirebaseProvider from './lib/FirebaseProvider';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './lib/useAuth';
+// TODO: Fix this. This slows EVERYTHING down. 1.03->1.34 DOM load + 1.9->2.24 load
+// Maybe use nested routes? Perhaps only for /scholarships path?
 import { ScholarshipsProvider } from './models/ScholarshipsContext';
 import ScrollToTop from './components/ScrollToTop';
 
@@ -29,9 +31,6 @@ const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
 const AddScholarship = lazy(() => import('./pages/AddScholarship'));
 const EditScholarship = lazy(() => import('./pages/EditScholarship'));
-
-// This should be suspended too because of the auth dependency
-const LoginDialog = lazy(() => import('./components/LoginDialog'));
 
 function App(): JSX.Element {
   return (
@@ -85,7 +84,6 @@ function App(): JSX.Element {
                         />
                         <Route path="/" element={<Home />} />
                       </Routes>
-                      <LoginDialog />
                     </div>
                     {/* Footer inside <Suspense> but outside <div> so it:
                           1. Gravitates to the bottom (see App.css) and

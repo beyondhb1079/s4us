@@ -1,13 +1,11 @@
-import React, { lazy, Suspense, useState } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   AppBar,
-  Alert,
   Button,
   Grow,
   Link as MuiLink,
   Slide,
-  Snackbar,
   Toolbar,
   useScrollTrigger,
   Box,
@@ -19,7 +17,10 @@ import useAuth from '../lib/useAuth';
 import PropTypes from 'prop-types';
 import TranslationMenu from './TranslationMenu';
 
+// Lazy load components that only conditionally appear.
+const OnRenderSnackbar = lazy(() => import('./OnRenderSnackbar'));
 const ProfileMenu = lazy(() => import('./ProfileMenu'));
+const LoginDialog = lazy(() => import('./LoginDialog'));
 
 function HideOnScroll({ children }: { children: JSX.Element }) {
   const trigger = useScrollTrigger();
@@ -35,22 +36,6 @@ HideOnScroll.propTypes = {
   children: PropTypes.element.isRequired,
 };
 
-const OnRenderSnackbar = () => {
-  const match = window.location.hostname.match(/s4us-pr-(\d+)\.onrender\.com/);
-  const [open, setOpen] = useState(true);
-  if (!match) return null;
-
-  const num = match[1];
-  const link = `https://github.com/beyondhb1079/s4us/pull/${num}`;
-  return (
-    <Snackbar open={open}>
-      <Alert onClose={() => setOpen(false)} severity="info">
-        This is a preview of <MuiLink href={link}>Pull Request #{num}</MuiLink>
-      </Alert>
-    </Snackbar>
-  );
-};
-
 const AuthGrowButton = ({ t }: { t: TFunction<'common', undefined> }) => {
   const { currentUser } = useAuth();
   const location = useLocation();
@@ -63,16 +48,19 @@ const AuthGrowButton = ({ t }: { t: TFunction<'common', undefined> }) => {
             <ProfileMenu />
           </Suspense>
         ) : (
-          <Button
-            color="primary"
-            variant="contained"
-            component={Link}
-            replace
-            to={location.pathname}
-            state={{ showLoginDialog: true }}
-            sx={{ height: '100%', width: 64 }}>
-            {t('actions.login')}
-          </Button>
+          <Suspense fallback={null}>
+            <Button
+              color="primary"
+              variant="contained"
+              component={Link}
+              replace
+              to={location.pathname}
+              state={{ showLoginDialog: true }}
+              sx={{ height: '100%', width: 64 }}>
+              {t('actions.login')}
+            </Button>
+            <LoginDialog />
+          </Suspense>
         )}
       </Box>
     </Grow>
@@ -86,14 +74,17 @@ const links = (t: TFunction<'common', undefined>) => ({
 
 function Header(): JSX.Element {
   const { t } = useTranslation('common');
-
   return (
     <HideOnScroll>
       <AppBar
         color="secondary"
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
-          <OnRenderSnackbar />
+          <Suspense fallback={null}>
+            {window.location.host.endsWith('onrender.com') && (
+              <OnRenderSnackbar />
+            )}
+          </Suspense>
           <MuiLink
             component={Link}
             to="/"

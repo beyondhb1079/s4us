@@ -1,8 +1,9 @@
 import React, { createContext } from 'react';
 import { getAnalytics } from 'firebase/analytics';
 import { getApps, initializeApp } from 'firebase/app';
-import { connectAuthEmulator, getAuth } from 'firebase/auth';
-import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
+// Saves ~150kB and 250ms when not used in prod
+// import { connectAuthEmulator, getAuth } from 'firebase/auth';
+// import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
 
 const FirebaseContext = createContext(null);
 
@@ -30,16 +31,22 @@ export default function FirebaseProvider(props: {
 
   if (getApps().length === 0) {
     /* istanbul ignore if */
+    const prod = window.location.host === 'dreamscholars.org';
+    const app = initializeApp(prod ? prodConfig : stagingConfig);
     if (process.env.NODE_ENV === 'production') {
-      const prod = window.location.host === 'dreamscholars.org';
-      const app = initializeApp(prod ? prodConfig : stagingConfig);
       getAnalytics(app);
     } else {
-      // Initialize app with staging config but use emulator where possible.
-      const app = initializeApp(stagingConfig);
-      connectFirestoreEmulator(getFirestore(app), 'localhost', 8080);
-      connectAuthEmulator(getAuth(), 'http://localhost:9099', {
-        disableWarnings: process.env.NODE_ENV == 'test',
+      // Lazily connect to emulators in non-prod environments.
+      // TODO: Double check this works
+      import('firebase/firestore').then(
+        ({ getFirestore, connectFirestoreEmulator }) => {
+          connectFirestoreEmulator(getFirestore(app), 'localhost', 8080);
+        }
+      );
+      import('firebase/auth').then(({ getAuth, connectAuthEmulator }) => {
+        connectAuthEmulator(getAuth(app), 'http://localhost:9099', {
+          disableWarnings: process.env.NODE_ENV == 'test',
+        });
       });
     }
   }
