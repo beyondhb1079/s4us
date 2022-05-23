@@ -30,11 +30,8 @@ test('renders filters & sort button', async () => {
 });
 
 test('sort options dropdown', async () => {
-  renderComponent();
-  const sortBtn = await waitFor(() =>
-    screen.getByRole('button', { name: 'Sort' })
-  );
-  await UserEvent.click(sortBtn);
+  const { getByRole } = renderComponent();
+  await UserEvent.click(getByRole('button', { name: 'Sort' }));
 
   expect(
     screen.getByRole('menuitem', { name: 'Amount (Low to High)' })
