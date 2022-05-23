@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import FilterBar from './FilterBar';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
-// import { act } from 'react-dom/test-utils';
+import { act } from 'react-dom/test-utils';
 
 function renderComponent(filterParams = '') {
   return render(
@@ -28,7 +28,7 @@ test('renders filters & sort button', async () => {
 test('sort options dropdown', async () => {
   renderComponent();
   const sortBtn = await screen.findByRole('button', { name: 'Sort' });
-  await userEvent.click(sortBtn);
+  await act(() => userEvent.click(sortBtn));
 
   expect(
     await screen.findByRole('menuitem', { name: 'Amount (Low to High)' })
