@@ -79,8 +79,7 @@ jobs:
           path: ~/.cache/firebase/emulators
           key: ${{ runner.os }}-firebase-emulators-${{ hashFiles('~/.cache/firebase/emulators/**') }}
         continue-on-error: true
-      - name: Run tests
-        run: yarn test
+      - run: yarn ci-test
 
   # Ensure Translations are updated
   translations:
@@ -91,4 +90,4 @@ jobs:
       - name: Install i18next-parser
         run: yarn global add i18next-parser@~6.0.0
       - name: Check translations
-        run: $(yarn global bin)/i18next --fail-on-warnings
+        run: $(yarn global bin)/i18next --fail-on-warnings && git diff --exit-code

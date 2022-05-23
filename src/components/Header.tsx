@@ -68,8 +68,8 @@ const AuthGrowButton = ({ t }: { t: TFunction<'common', undefined> }) => {
 };
 
 const links = (t: TFunction<'common', undefined>) => ({
-  [t('navbar.scholarships')]: '/scholarships',
-  [t('navbar.add')]: '/scholarships/new',
+  [t('scholarships')]: '/scholarships',
+  [t('actions.add')]: '/scholarships/new',
 });
 
 function Header(): JSX.Element {
@@ -100,7 +100,7 @@ function Header(): JSX.Element {
           <TranslationMenu />
           <AuthGrowButton t={t} />
         </Toolbar>
-        <Toolbar sx={{ display: { sm: 'none', xs: 'block' } }} variant="dense">
+        <Toolbar variant="dense" sx={{ display: { sm: 'none', xs: 'block' } }}>
           <HeaderNavMenu links={links(t)} />
         </Toolbar>
       </AppBar>
@@ -112,10 +112,7 @@ export function HeaderSkeleton(): JSX.Element {
   return (
     <Box sx={{ width: '100vw', visibility: 'hidden' }}>
       <Toolbar />
-
-      <Box sx={{ display: { sm: 'none', xs: 'block' } }}>
-        <Toolbar variant="dense" />
-      </Box>
+      <Toolbar variant="dense" sx={{ display: { sm: 'none', xs: 'block' } }} />
     </Box>
   );
 }

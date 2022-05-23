@@ -3,7 +3,14 @@ import PropTypes from 'prop-types';
 import { Stack, Slider } from '@mui/material';
 import AmountTextField from './AmountTextField';
 
-export default function MinAmountFilter(props) {
+interface MinAmountFilterProps {
+  min: number;
+  onMinChange: (value: number) => void;
+}
+
+export default function MinAmountFilter(
+  props: MinAmountFilterProps
+): JSX.Element {
   const { min, onMinChange } = props;
   const error = min < 0;
 
@@ -18,7 +25,7 @@ export default function MinAmountFilter(props) {
         min={0}
         max={50000}
         step={100}
-        onChange={(e) => onMinChange(e.target.value)}
+        onChange={(e: any) => onMinChange(e.target.value)}
         sx={{ mt: 1 }}
       />
 

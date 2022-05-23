@@ -3,9 +3,11 @@ import { Stack, Button, Paper } from '@mui/material';
 import ScholarshipsContext from '../models/ScholarshipsContext';
 import ScholarshipCard from './ScholarshipCard';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function ShowMoreScholarships({ currentId }) {
   const { scholarships, loading, setFilters } = useContext(ScholarshipsContext);
+  const { t } = useTranslation('common');
 
   useEffect(() => {
     if (scholarships.length === 0 && !loading) {
@@ -19,7 +21,7 @@ export default function ShowMoreScholarships({ currentId }) {
         .filter((s) => s.id !== currentId)
         .slice(0, 4)
         .map(({ id, data }) => (
-          <ScholarshipCard key={id} scholarship={{ id, data }} />
+          <ScholarshipCard key={id} scholarship={{ id, data }} style="glance" />
         ))}
       <Paper
         sx={{
@@ -33,7 +35,7 @@ export default function ShowMoreScholarships({ currentId }) {
           component={Link}
           sx={{ paddingX: 5 }}
           to="/scholarships">
-          Browse Scholarships
+          {t('actions.browseScholarships')}
         </Button>
       </Paper>
     </Stack>

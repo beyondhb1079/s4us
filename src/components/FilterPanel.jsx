@@ -16,24 +16,31 @@ import {
   DialogContentText,
   DialogActions,
   Stack,
+  Chip,
+  createFilterOptions,
 } from '@mui/material';
 import useQueryParams from '../lib/useQueryParams';
 import MinAmountFilter from './MinAmountFilter';
 import GradeLevelFilter from './GradeLevelFilter';
-import MajorFilter from './MajorFilter';
 import CloseIcon from '@mui/icons-material/Close';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
+import CustomAutocomplete from './CustomAutocomplete';
+import State, { STATES } from '../types/States';
+import { MAJORS } from '../types/options';
+import { useTranslation } from 'react-i18next';
 
 export default function FilterPanel({ onClose }) {
+  const { t } = useTranslation('filters');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [params, setQueryParams] = useQueryParams();
 
   const [minAmount, setMinAmount] = useState(params.minAmount);
   const [grades, setGrades] = useState(params.grades);
   const [majors, setMajors] = useState(params.majors);
+  const [states, setStates] = useState(params.states);
   const location = useLocation();
 
   useEffect(() => {
@@ -46,11 +53,35 @@ export default function FilterPanel({ onClose }) {
     setMinAmount(query.minAmount);
     setGrades(query.grades);
     setMajors(query.majors);
+    setStates(query.states);
   }, [location]);
 
   const filters = {
     'What are you studying?': {
-      comp: <MajorFilter majors={majors} onChange={setMajors} />,
+      comp: (
+        <>
+          <CustomAutocomplete
+            freeSolo
+            value={majors || []}
+            onChange={(e, val) => setMajors(val)}
+            options={[...MAJORS]}
+            limitReached={majors?.length >= 10}
+            placeholder={`${t('enterMajorFilter')}...`}
+          />
+          {majors?.map((major) => (
+            <Chip
+              label={major}
+              variant={
+                params.majors?.includes(major) ? 'contained' : 'outlined'
+              }
+              color="primary"
+              key={major}
+              onClick={() => setMajors(majors.filter((m) => m !== major))}
+              sx={{ mx: 1, mt: 1 }}
+            />
+          ))}
+        </>
+      ),
       changed:
         JSON.stringify(majors || []) !== JSON.stringify(params.majors || []),
       expanded: true,
@@ -68,6 +99,37 @@ export default function FilterPanel({ onClose }) {
       comp: <GradeLevelFilter grades={new Set(grades)} onChange={setGrades} />,
       changed:
         JSON.stringify(grades || []) !== JSON.stringify(params.grades || []),
+    },
+    State: {
+      comp: (
+        <>
+          <CustomAutocomplete
+            value={states || []}
+            onChange={(e, val) => setStates(val)}
+            options={STATES.map((s) => s.abbr)}
+            getOptionLabel={(s) => State.toString(s)}
+            filterOptions={createFilterOptions({
+              stringify: (s) => State.toString(s),
+            })}
+            limitReached={states?.length >= 10}
+            placeholder={`${t('enterStateFilter')}...`}
+          />
+          {states?.map((state) => (
+            <Chip
+              label={State.toString(state)}
+              variant={
+                params.states?.includes(state) ? 'contained' : 'outlined'
+              }
+              color="primary"
+              key={state}
+              onClick={() => setStates(states.filter((s) => s !== state))}
+              sx={{ mx: 1, mt: 1 }}
+            />
+          ))}
+        </>
+      ),
+      changed:
+        JSON.stringify(states || []) !== JSON.stringify(params.states || []),
     },
   };
 
@@ -125,7 +187,7 @@ export default function FilterPanel({ onClose }) {
           variant="contained"
           disabled={!filtersChanged}
           onClick={() => {
-            setQueryParams({ minAmount, grades, majors });
+            setQueryParams({ minAmount, grades, majors, states });
             onClose();
           }}>
           Apply
@@ -136,6 +198,7 @@ export default function FilterPanel({ onClose }) {
             setMinAmount(params.minAmount);
             setGrades(params.grades);
             setMajors(params.majors);
+            setStates(params.states);
           }}>
           Cancel
         </Button>

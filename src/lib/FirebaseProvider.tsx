@@ -30,8 +30,7 @@ export default function FirebaseProvider(props: {
   const { children } = props;
 
   if (getApps().length === 0) {
-    // eslint-disable-next-line no-console
-    console.log(`Environment: ${JSON.stringify(process.env.NODE_ENV)}`);
+    /* istanbul ignore if */
     const prod = window.location.host === 'dreamscholars.org';
     const app = initializeApp(prod ? prodConfig : stagingConfig);
     if (process.env.NODE_ENV === 'production') {
@@ -45,7 +44,9 @@ export default function FirebaseProvider(props: {
         }
       );
       import('firebase/auth').then(({ getAuth, connectAuthEmulator }) => {
-        connectAuthEmulator(getAuth(app), 'http://localhost:9099');
+        connectAuthEmulator(getAuth(app), 'http://localhost:9099', {
+          disableWarnings: process.env.NODE_ENV == 'test',
+        });
       });
     }
   }

@@ -18,10 +18,11 @@ import { AuthProvider } from './lib/useAuth';
 // TODO: Fix this. This slows EVERYTHING down. 1.03->1.34 DOM load + 1.9->2.24 load
 // Maybe use nested routes? Perhaps only for /scholarships path?
 import { ScholarshipsProvider } from './models/ScholarshipsContext';
-import ScrollToTop from './ScrollToTop';
+import ScrollToTop from './components/ScrollToTop';
 
 // Pages should be loaded lazily on an as-needed basis
-const Home = lazy(() => import('./pages/Home'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const Home = lazy(() => import('./pages/PublicHome'));
 const ViewScholarship = lazy(() => import('./pages/ViewScholarship'));
 const ListScholarships = lazy(() => import('./pages/ListScholarships'));
 const About = lazy(() => import('./pages/About'));
@@ -30,9 +31,8 @@ const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
 const AddScholarship = lazy(() => import('./pages/AddScholarship'));
 const EditScholarship = lazy(() => import('./pages/EditScholarship'));
-const UserHome = lazy(() => import('./pages/UserHome'));
 
-function App() {
+function App(): JSX.Element {
   return (
     <div className="page-container">
       <FirebaseProvider>
@@ -80,7 +80,7 @@ function App() {
                         <Route path="/terms" element={<Terms />} />
                         <Route
                           path="/dashboard"
-                          element={<ProtectedRoute element={<UserHome />} />}
+                          element={<ProtectedRoute element={<Dashboard />} />}
                         />
                         <Route path="/" element={<Home />} />
                       </Routes>

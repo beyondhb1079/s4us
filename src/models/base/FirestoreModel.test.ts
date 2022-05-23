@@ -1,7 +1,3 @@
-/**
- * @jest-environment node
- */
-import { deleteApp } from 'firebase/app';
 import {
   collection,
   doc,
@@ -10,10 +6,10 @@ import {
   getFirestore,
   setDoc,
 } from 'firebase/firestore';
-import { clearFirestoreData, initializeTestApp } from '../../lib/testing';
+import { initializeTestEnv } from '../../lib/testing';
 import FirestoreModel from './FirestoreModel';
 
-const app = initializeTestApp({ projectId: 'fs-model-test' });
+const [env, cleanup] = initializeTestEnv('fs-model-test');
 
 interface NameData {
   first: string;
@@ -27,8 +23,8 @@ const converter: FirestoreDataConverter<NameData> = {
 
 const names = collection(getFirestore(), 'names').withConverter(converter);
 
-beforeEach(() => clearFirestoreData(app.options as { projectId: string }));
-afterAll(() => deleteApp(app));
+beforeAll(() => env.then((e) => e.clearFirestore()));
+afterAll(() => cleanup());
 
 test('constructor', () => {
   const data = { first: 'Bob', last: 'Smith' };
@@ -45,10 +41,7 @@ test('get unknown doc', async () => {
     last: 'Smith',
   });
 
-  // TODO(issues/356): investigate "No matching allow statements"
-  // message that sometimes appears.
-  // await expect(name.get()).rejects.toThrowError('names/123 not found');
-  await expect(name.get()).rejects.toThrowError();
+  return expect(name.get()).rejects.toThrowError('names/unknown not found');
 });
 
 test('get existing doc', async () => {
@@ -106,5 +99,3 @@ test('delete existing doc', async () => {
   const got = await getDoc(doc(names, name.id));
   expect(got.exists()).toBeFalsy();
 });
-
-// TODO(issues/92): Add tests for subscribe().

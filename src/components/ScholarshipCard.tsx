@@ -58,14 +58,14 @@ const DetailCardCell = ({
 
         <Grid item sx={{ textAlign: { sm: 'right' } }} xs={12} sm>
           {values.length === 0
-            ? t('any')
+            ? t('common:any')
             : shownValues.map((v) => <Typography key={v}>{v}</Typography>)}
           {values.length > shownValues.length && (
             <MuiLink
               component={Button}
               onClick={() => setShowAll(true)}
               sx={{ p: 0 }}>
-              +{values.length - SHOW_MORE_THRESHOLD} {t('more')}
+              +{values.length - SHOW_MORE_THRESHOLD} {t('common:more')}
             </MuiLink>
           )}
         </Grid>
@@ -84,7 +84,7 @@ export default function ScholarshipCard({
     id: string;
     data: ScholarshipData;
   };
-  style?: 'result' | 'detail' | 'preview';
+  style?: 'result' | 'detail' | 'preview' | 'glance';
 }): JSX.Element {
   const {
     name,
@@ -96,14 +96,16 @@ export default function ScholarshipCard({
     tags,
     requirements,
     author,
+    lastModified,
   } = scholarship.data;
   const { ethnicities, gpa, grades, majors, schools, states } =
     requirements || {};
-  const detailed = style !== 'result';
+  const detailed = style !== 'result' && style !== 'glance';
   const preview = style === 'preview';
+  const glance = style === 'glance';
 
   const [showShare, setShowShare] = useState(false);
-  const { t } = useTranslation(['common', 'scholarshipForm']);
+  const { t } = useTranslation(['scholarships', 'common']);
 
   const navigate = useNavigate();
 
@@ -113,7 +115,8 @@ export default function ScholarshipCard({
   const CardAreaComponent: React.FC<{
     [key: string]: any;
   }> = detailed ? Box : CardActionArea;
-  const lintIssues = canEdit && !preview ? lint(scholarship.data) : [];
+  const lintIssues =
+    canEdit && !preview && !glance ? lint(scholarship.data) : [];
   return (
     <Card variant="outlined" sx={{ minWidth: 240 }}>
       <CardAreaComponent
@@ -184,14 +187,14 @@ export default function ScholarshipCard({
                   window.open(website, '_blank', 'noreferrer');
                 }}
                 startIcon={<SendIcon />}>
-                {t('actions.apply')}
+                {t('common:actions.apply')}
               </Button>
               <Button
                 variant="outlined"
                 startIcon={<ShareIcon />}
                 onClick={() => setShowShare(true)}
                 disabled={scholarship.id === undefined}>
-                {t('actions.share')}
+                {t('common:actions.share')}
               </Button>
 
               {!preview && canEdit && (
@@ -221,7 +224,7 @@ export default function ScholarshipCard({
                 {t('eligibilityReqs')}
               </Typography>
               <DetailCardCell
-                label={t('scholarshipForm:states')}
+                label={t('states')}
                 values={states?.map(State.toString).sort()}
                 t={t}
               />
@@ -236,22 +239,22 @@ export default function ScholarshipCard({
                 t={t}
               />
               <DetailCardCell
-                label={t('scholarshipForm:grades')}
+                label={t('grades')}
                 values={grades?.sort().map(GradeLevel.toString)}
                 t={t}
               />
               <DetailCardCell
-                label={t('scholarshipForm:ethnicity')}
+                label={t('ethnicity')}
                 values={ethnicities?.map(Ethnicity.toString).sort()}
                 t={t}
               />
               <DetailCardCell
-                label={t('scholarshipForm:majors')}
+                label={t('majors')}
                 values={majors?.sort()}
                 t={t}
               />
               <DetailCardCell
-                label={t('scholarshipForm:schools')}
+                label={t('schools')}
                 values={schools?.sort()}
                 t={t}
               />
@@ -285,8 +288,17 @@ export default function ScholarshipCard({
               })}
               icon={<ReportIcon />}
               sx={{ my: 5 }}
-              label={t('actions.reportIssue')}
+              label={t('common:actions.reportIssue')}
             />
+          )}
+
+          {!glance && (
+            <Typography
+              variant="subtitle2"
+              align="right"
+              color="text.secondary">
+              {t('lastUpdated')}: {lastModified?.toLocaleDateString()}
+            </Typography>
           )}
         </CardContent>
       </CardAreaComponent>
