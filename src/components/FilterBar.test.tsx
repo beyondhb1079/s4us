@@ -27,9 +27,8 @@ test('renders filters & sort button', async () => {
 
 test('sort options dropdown', async () => {
   renderComponent();
-  await waitFor(() =>
-    UserEvent.click(screen.getByRole('button', { name: 'Sort' }))
-  );
+  const sortBtn = await screen.findByRole('button', { name: 'Sort' });
+  UserEvent.click(sortBtn);
 
   expect(
     screen.getByRole('menuitem', { name: 'Amount (Low to High)' })
@@ -43,7 +42,7 @@ test('sort options dropdown', async () => {
   expect(
     screen.getByRole('menuitem', { name: 'Deadline (Latest to Earliest)' })
   ).toBeInTheDocument();
-}, 20000);
+});
 
 test('renders filters with # of filters applied', async () => {
   renderComponent('?grades[]=8,9&minAmount=400&majors[]=test');
