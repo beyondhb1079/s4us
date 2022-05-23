@@ -34,7 +34,7 @@ test('sort options dropdown', async () => {
   const sortBtn = await waitFor(() =>
     screen.getByRole('button', { name: 'Sort' })
   );
-  UserEvent.click(sortBtn);
+  await UserEvent.click(sortBtn);
 
   expect(
     screen.getByRole('menuitem', { name: 'Amount (Low to High)' })
