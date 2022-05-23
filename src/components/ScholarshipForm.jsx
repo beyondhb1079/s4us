@@ -22,7 +22,7 @@ import {
 import PropTypes from 'prop-types';
 import validationSchema from '../validation/ValidationSchema';
 import ScholarshipAmountField from './ScholarshipAmountField';
-import DatePicker from './DatePicker';
+import DeadlineField from './DeadlineField';
 import FormikTextField from './FormikTextField';
 import ScholarshipCard from './ScholarshipCard';
 import FormikMultiSelect from './FormikMultiSelect';
@@ -139,7 +139,7 @@ function ScholarshipForm({ scholarship }) {
             />
           </Grid>
           <Grid item sm={6}>
-            <DatePicker
+            <DeadlineField
               label={`${t('deadline')} *`}
               labelStyle={labelStyle}
               formik={formik}
