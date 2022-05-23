@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { render, screen, waitFor } from '@testing-library/react';
-import UserEvent from '@testing-library/user-event';
+import userEvent from '@testing-library/user-event';
 import FilterBar from './FilterBar';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
@@ -28,19 +28,23 @@ test('renders filters & sort button', async () => {
 test('sort options dropdown', async () => {
   renderComponent();
   const sortBtn = await screen.findByRole('button', { name: 'Sort' });
-  await UserEvent.click(sortBtn);
+  await userEvent.click(sortBtn);
 
   expect(
-    screen.getByRole('menuitem', { name: 'Amount (Low to High)' })
+    await screen.findByRole('menuitem', { name: 'Amount (Low to High)' })
   ).toBeInTheDocument();
   expect(
-    screen.getByRole('menuitem', { name: 'Amount (High to Low)' })
+    await screen.findByRole('menuitem', { name: 'Amount (High to Low)' })
   ).toBeInTheDocument();
   expect(
-    screen.getByRole('menuitem', { name: 'Deadline (Earliest to Latest)' })
+    await screen.findByRole('menuitem', {
+      name: 'Deadline (Earliest to Latest)',
+    })
   ).toBeInTheDocument();
   expect(
-    screen.getByRole('menuitem', { name: 'Deadline (Latest to Earliest)' })
+    await screen.findByRole('menuitem', {
+      name: 'Deadline (Latest to Earliest)',
+    })
   ).toBeInTheDocument();
 });
 
