@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Stack, Slider } from '@mui/material';
 import AmountTextField from './AmountTextField';
 import { useTranslation } from 'react-i18next';
@@ -34,19 +33,10 @@ export default function MinAmountFilter(
       <AmountTextField
         error={error}
         value={min || ''}
-        onChange={(e) => onMinChange(e.target.value)}
+        onChange={(e) => onMinChange(Number.parseInt(e.target.value))}
         variant="standard"
         placeholder={t('noMin')}
       />
     </Stack>
   );
 }
-
-MinAmountFilter.propTypes = {
-  min: PropTypes.number,
-  onMinChange: PropTypes.func.isRequired,
-};
-
-MinAmountFilter.defaultProps = {
-  min: 0,
-};

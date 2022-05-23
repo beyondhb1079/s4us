@@ -1,7 +1,6 @@
 import React from 'react';
 import { getIn } from 'formik';
-import { InputLabel, Select, MenuItem } from '@mui/material';
-import PropTypes from 'prop-types';
+import { InputLabel, Select, MenuItem, SxProps, Theme } from '@mui/material';
 
 const MenuProps = {
   PaperProps: {
@@ -12,9 +11,28 @@ const MenuProps = {
   },
 };
 
-function FormikMultiSelect(props) {
-  const { label, id, labelStyle, formik, options, disabled, placeholder } =
-    props;
+interface FMSProps {
+  /** The result of `useFormik()`. */
+  formik: any;
+  id: string;
+  label: string;
+  options: { [k: string]: string };
+
+  disabled?: boolean;
+  labelStyle?: SxProps<Theme>;
+  placeholder?: string;
+}
+
+export default function FormikMultiSelect(props: FMSProps): JSX.Element {
+  const {
+    label,
+    id,
+    labelStyle,
+    formik,
+    options,
+    disabled = false,
+    placeholder = '',
+  } = props;
   const values = getIn(formik.values, id, []);
 
   return (
@@ -40,7 +58,8 @@ function FormikMultiSelect(props) {
         value={values}
         onChange={(e) => formik.setFieldValue(id, e.target.value)}
         renderValue={(selected) =>
-          selected.map((val) => options[val]).join(', ') || placeholder
+          selected.map((val: string | number) => options[val]).join(', ') ||
+          placeholder
         }
         MenuProps={MenuProps}>
         {Object.entries(options).map(([val, stringRep]) => (
@@ -52,20 +71,3 @@ function FormikMultiSelect(props) {
     </>
   );
 }
-
-export default FormikMultiSelect;
-
-FormikMultiSelect.propTypes = {
-  label: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
-  labelStyle: PropTypes.object.isRequired,
-  formik: PropTypes.object.isRequired,
-  options: PropTypes.objectOf(PropTypes.string).isRequired,
-  disabled: PropTypes.bool,
-  placeholder: PropTypes.string,
-};
-
-FormikMultiSelect.defaultProps = {
-  disabled: false,
-  placeholder: '',
-};

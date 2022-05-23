@@ -12,7 +12,7 @@ const formik = {
   },
 };
 
-function renderWithAmountType(type) {
+function renderWithAmountType(type: AmountType) {
   formik.values.amount.type = type;
   return render(
     <Suspense fallback="loading">

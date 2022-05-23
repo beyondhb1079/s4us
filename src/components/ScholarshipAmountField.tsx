@@ -5,15 +5,22 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  SxProps,
+  Theme,
 } from '@mui/material';
 import RemoveIcon from '@mui/icons-material/Remove';
-import PropTypes from 'prop-types';
 import AmountType from '../types/AmountType';
 import AmountTextField from './AmountTextField';
 import { getIn } from 'formik';
 import { useTranslation } from 'react-i18next';
 
-function ScholarshipAmountField({ labelStyle, formik }) {
+interface SAFProps {
+  /** The result of `useFormik()`. */
+  formik: any;
+  labelStyle?: SxProps<Theme>;
+}
+
+function ScholarshipAmountField({ labelStyle, formik }: SAFProps): JSX.Element {
   const amountType = formik.values.amount.type;
   const minError = getIn(formik.errors, 'amount.min');
   const maxError = getIn(formik.errors, 'amount.max');
@@ -21,7 +28,7 @@ function ScholarshipAmountField({ labelStyle, formik }) {
 
   let helperText = minError || maxError || '';
 
-  const inputFields = {};
+  const inputFields = {} as { [k: string]: JSX.Element };
   inputFields[AmountType.Varies] = (
     <>
       <AmountTextField
@@ -90,11 +97,4 @@ function ScholarshipAmountField({ labelStyle, formik }) {
   );
 }
 
-ScholarshipAmountField.propTypes = {
-  labelStyle: PropTypes.object,
-  formik: PropTypes.object.isRequired,
-};
-ScholarshipAmountField.defaultProps = {
-  labelStyle: {},
-};
 export default ScholarshipAmountField;
