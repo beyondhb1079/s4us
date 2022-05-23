@@ -32,16 +32,20 @@ test('sort options dropdown', async () => {
   );
 
   expect(
-    screen.getByRole('menuitem', { name: 'Amount (Low to High)' })
+    await screen.getByRole('menuitem', { name: 'Amount (Low to High)' })
   ).toBeInTheDocument();
   expect(
-    screen.getByRole('menuitem', { name: 'Amount (High to Low)' })
+    await screen.getByRole('menuitem', { name: 'Amount (High to Low)' })
   ).toBeInTheDocument();
   expect(
-    screen.getByRole('menuitem', { name: 'Deadline (Earliest to Latest)' })
+    await screen.getByRole('menuitem', {
+      name: 'Deadline (Earliest to Latest)',
+    })
   ).toBeInTheDocument();
   expect(
-    screen.getByRole('menuitem', { name: 'Deadline (Latest to Earliest)' })
+    await screen.getByRole('menuitem', {
+      name: 'Deadline (Latest to Earliest)',
+    })
   ).toBeInTheDocument();
 });
 
