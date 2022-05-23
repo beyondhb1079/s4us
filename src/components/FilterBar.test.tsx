@@ -28,7 +28,7 @@ test('renders filters & sort button', async () => {
 test('sort options dropdown', async () => {
   renderComponent();
   const sortBtn = await screen.findByRole('button', { name: 'Sort' });
-  UserEvent.click(sortBtn);
+  await UserEvent.click(sortBtn);
 
   expect(
     screen.getByRole('menuitem', { name: 'Amount (Low to High)' })
