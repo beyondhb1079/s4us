@@ -1,11 +1,9 @@
 import React, { Suspense } from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import FilterBar from './FilterBar';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
-import { act } from 'react-dom/test-utils';
 
 function renderComponent(filterParams = '') {
   return render(
@@ -28,7 +26,7 @@ test('renders filters & sort button', async () => {
 test('sort options dropdown', async () => {
   renderComponent();
   const sortBtn = await screen.findByRole('button', { name: 'Sort' });
-  await act(() => userEvent.click(sortBtn));
+  await fireEvent.click(sortBtn);
 
   expect(
     await screen.findByRole('menuitem', { name: 'Amount (Low to High)' })
