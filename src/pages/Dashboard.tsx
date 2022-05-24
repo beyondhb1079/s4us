@@ -72,7 +72,7 @@ export default function Dashboard(): JSX.Element {
       </Grid>
       <Suspense fallback={null}>
         <ScholarshipList
-          extraFilters={{ authorId: user?.uid, hideExpired: false }}
+          extraFilters={{ authorId: user?.uid, showExpired: true }}
           noResultsNode={
             <Grid
               container

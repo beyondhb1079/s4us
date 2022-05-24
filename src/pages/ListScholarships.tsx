@@ -12,6 +12,8 @@ import {
   Chip,
   Stack,
   Theme,
+  Alert,
+  Button,
 } from '@mui/material';
 import FilterBar from '../components/FilterBar';
 import FilterPanel from '../components/FilterPanel';
@@ -33,7 +35,7 @@ function ListScholarships(): JSX.Element {
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
   const [
-    { minAmount, grades, majors, states, schools, ethnicities },
+    { minAmount, grades, majors, states, schools, ethnicities, showExpired },
     setQueryParams,
   ] = useQueryParams();
 
@@ -126,37 +128,55 @@ function ListScholarships(): JSX.Element {
         <Toolbar />
 
         <Container maxWidth="md" sx={{ flexGrow: 1 }}>
-          <Stack
-            direction="row"
-            rowGap={2}
-            spacing={2}
-            justifyContent={isDesktop ? 'center' : 'flex-start'}
-            flexWrap={isDesktop ? 'wrap' : 'nowrap'}
-            sx={{
-              py: 1,
-              mt: 2,
-              overflowX: 'scroll',
-              scrollbarWidth: 'none',
-              backgroundImage:
-                'linear-gradient(to right, #F8F9FA, #F8F9FA), linear-gradient(to right, #F8F9FA, #F8F9FA), linear-gradient(to right, rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0)), linear-gradient(to left, rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0))',
-              backgroundPosition:
-                'left center, right center, left center, right center',
-              backgroundRepeat: 'no-repeat',
-              backgroundSize: '20px 100%, 20px 100%, 10px 100%, 10px 100%',
-              backgroundAttachment: 'local, local, scroll, scroll',
-              '::-webkit-scrollbar': { display: 'none' },
-            }}>
-            {Object.entries(filterChips).map(([label, updatedQueryParams]) => (
-              <Chip
-                key={label}
-                label={label}
-                color="primary"
-                onClick={() => setQueryParams(updatedQueryParams)}
-              />
+          {!showExpired && (
+            <Alert
+              severity="info"
+              sx={{ mt: 2 }}
+              action={
+                <Button onClick={() => setQueryParams({ showExpired: true })}>
+                  Show anyway
+                  {/* {t('showExpiredScholarships')} */}
+                </Button>
+              }>
+              Scholarships with historical deadlines are not shown by default.
+            </Alert>
+          )}
+          {!showExpired ||
+            (Object.keys(filterChips).length > 0 && (
+              <Stack
+                direction="row"
+                rowGap={2}
+                spacing={2}
+                justifyContent={isDesktop ? 'center' : 'flex-start'}
+                flexWrap={isDesktop ? 'wrap' : 'nowrap'}
+                sx={{
+                  py: 1,
+                  mt: 2,
+                  overflowX: 'scroll',
+                  scrollbarWidth: 'none',
+                  backgroundImage:
+                    'linear-gradient(to right, #F8F9FA, #F8F9FA), linear-gradient(to right, #F8F9FA, #F8F9FA), linear-gradient(to right, rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0)), linear-gradient(to left, rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0))',
+                  backgroundPosition:
+                    'left center, right center, left center, right center',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundSize: '20px 100%, 20px 100%, 10px 100%, 10px 100%',
+                  backgroundAttachment: 'local, local, scroll, scroll',
+                  '::-webkit-scrollbar': { display: 'none' },
+                }}>
+                {Object.entries(filterChips).map(
+                  ([label, updatedQueryParams]) => (
+                    <Chip
+                      key={label}
+                      label={label}
+                      color="primary"
+                      onClick={() => setQueryParams(updatedQueryParams)}
+                    />
+                  )
+                )}
+              </Stack>
             ))}
-          </Stack>
           <Suspense fallback={null}>
-            <ScholarshipList extraFilters={{ hideExpired: true }} />
+            <ScholarshipList />
           </Suspense>
         </Container>
       </Box>

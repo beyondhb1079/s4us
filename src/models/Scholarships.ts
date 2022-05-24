@@ -94,7 +94,7 @@ export const converter: FirestoreDataConverter<ScholarshipData> = {
 
 export interface FilterOptions {
   authorId?: string;
-  hideExpired?: boolean;
+  showExpired?: boolean;
   minAmount?: number;
   maxAmount?: number;
   grades?: GradeLevel[];
@@ -104,9 +104,13 @@ export interface FilterOptions {
   ethnicities?: Ethnicity[];
   sortDir?: 'asc' | 'desc';
   sortField?: string;
+  // The number of scholarships to load at a time. Defaults to 10.
+  limit?: number;
+  // A case-sensitive prefix to use to filter
+  namePrefix?: string;
 }
 
-const queryLimit = 10;
+const defaultLimit = 10;
 
 class Scholarships extends FirestoreCollection<ScholarshipData> {
   name = 'scholarships';
@@ -137,17 +141,29 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
       q = query(q, where('author.id', '==', opts.authorId));
     }
 
+    // Applies a filter that looks for scholarships with names starting with
+    // the given prefix.
+    // https://stackoverflow.com/a/56815787/4811506
+    if (opts.namePrefix) {
+      console.log('namePrefix', opts.namePrefix);
+      q = query(
+        q,
+        where('name', '>=', opts.namePrefix),
+        where('name', '<=', opts.namePrefix + '\uf8ff')
+      );
+    }
+
     // Why the sortField check? Firestore limitations. We can't apply a range filter operator (e.g. '>') unless the sorting
     // field is the same.
     // https://firebase.google.com/docs/firestore/query-data/order-limit-data#limitations
     const now = new Date();
     const today = new Date(now.toDateString());
 
-    if (opts.hideExpired && opts.sortField == 'deadline') {
+    if (!opts.showExpired && opts.sortField == 'deadline') {
       q = query(q, where('deadline', '>=', today));
     }
 
-    return this._list(opts, query(q, limit(queryLimit)));
+    return this._list(opts, query(q, limit(opts.limit || defaultLimit)));
   }
 
   private _list(
@@ -160,9 +176,9 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
     if (lastDoc) q = query(q, startAfter(lastDoc));
     return getDocs(q)
       .then((qSnap: QuerySnapshot<ScholarshipData>) => ({
-        hasNext: qSnap.size == queryLimit,
+        hasNext: qSnap.size == opts.limit,
         next:
-          qSnap.size === queryLimit
+          qSnap.size === opts.limit
             ? () => this._list(opts, q, qSnap.docs[qSnap.docs.length - 1])
             : () => Promise.resolve({} as FirestoreModelList<ScholarshipData>),
         results: qSnap.docs
