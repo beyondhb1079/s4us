@@ -1,10 +1,11 @@
 import React, { Suspense } from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import FilterBar from './FilterBar';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
 import { act } from 'react-dom/test-utils';
+import userEvent from '@testing-library/user-event';
 
 afterAll(() => {
   jest.clearAllMocks();
@@ -31,21 +32,21 @@ test('renders filters & sort button', async () => {
 test('sort options dropdown', async () => {
   renderComponent();
   const sortBtn = await screen.findByRole('button', { name: 'Sort' });
-  await fireEvent.click(sortBtn);
+  await userEvent.click(sortBtn);
 
   expect(
-    await screen.findByRole('menuitem', { name: 'Amount (Low to High)' })
+    screen.getByRole('menuitem', { name: 'Amount (Low to High)' })
   ).toBeInTheDocument();
   expect(
-    await screen.findByRole('menuitem', { name: 'Amount (High to Low)' })
+    screen.getByRole('menuitem', { name: 'Amount (High to Low)' })
   ).toBeInTheDocument();
   expect(
-    await screen.findByRole('menuitem', {
+    screen.getByRole('menuitem', {
       name: 'Deadline (Earliest to Latest)',
     })
   ).toBeInTheDocument();
   expect(
-    await screen.findByRole('menuitem', {
+    screen.getByRole('menuitem', {
       name: 'Deadline (Latest to Earliest)',
     })
   ).toBeInTheDocument();
@@ -69,7 +70,7 @@ test('translated filters & sort button - Spanish', async () => {
 test('translated sort options - Spanish', async () => {
   renderComponent();
   const sortBtn = await screen.findByRole('button', { name: 'Ordenar' });
-  fireEvent.click(sortBtn);
+  userEvent.click(sortBtn);
 
   expect(
     screen.getByRole('menuitem', { name: 'Cantidad (menor a mayor)' })
