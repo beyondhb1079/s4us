@@ -1,11 +1,10 @@
 import React, { Suspense } from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import FilterBar from './FilterBar';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
 import { act } from 'react-dom/test-utils';
-import userEvent from '@testing-library/user-event';
 
 afterAll(() => {
   jest.clearAllMocks();
@@ -32,7 +31,7 @@ test('renders filters & sort button', async () => {
 test('sort options dropdown', async () => {
   renderComponent();
   const sortBtn = await screen.findByRole('button', { name: 'Sort' });
-  await userEvent.click(sortBtn);
+  await fireEvent.click(sortBtn);
 
   expect(
     screen.getByRole('menuitem', { name: 'Amount (Low to High)' })
@@ -70,7 +69,7 @@ test('translated filters & sort button - Spanish', async () => {
 test('translated sort options - Spanish', async () => {
   renderComponent();
   const sortBtn = await screen.findByRole('button', { name: 'Ordenar' });
-  userEvent.click(sortBtn);
+  fireEvent.click(sortBtn);
 
   expect(
     screen.getByRole('menuitem', { name: 'Cantidad (menor a mayor)' })
