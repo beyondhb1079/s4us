@@ -24,7 +24,7 @@ function renderComponent() {
 
 test('renders component', async () => {
   renderComponent();
-  await expect(screen.findByText('Filters')).toBeInTheDocument();
+  expect(await screen.findByText('Filters')).toBeInTheDocument();
   expect(screen.getByText('What are you studying?')).toBeInTheDocument();
   expect(screen.getByText('Min Amount')).toBeInTheDocument();
   expect(screen.getByText('Grade Level')).toBeInTheDocument();
