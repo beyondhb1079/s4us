@@ -8,13 +8,3 @@ import '@testing-library/jest-dom/extend-expect';
 global.console.error = (...obj) => {
   throw Error(`${obj.join('\n\t')}`);
 };
-
-document.createRange = () => ({
-  setStart: jest.fn(),
-  setEnd: jest.fn(),
-  // @ts-ignore
-  commonAncestorContainer: {
-    nodeName: 'BODY',
-    ownerDocument: document,
-  },
-});
