@@ -66,12 +66,10 @@ test('translated filters & sort button - Spanish', async () => {
   expect(screen.getByText('Ordenar')).toBeInTheDocument();
 });
 
-/*
-
 test('translated sort options - Spanish', async () => {
   renderComponent();
-  const sortBtn = await screen.getByRole('button', { name: 'Ordenar' });
-  UserEvent.click(sortBtn);
+  const sortBtn = await screen.findByRole('button', { name: 'Ordenar' });
+  fireEvent.click(sortBtn);
 
   expect(
     screen.getByRole('menuitem', { name: 'Cantidad (menor a mayor)' })
@@ -86,4 +84,3 @@ test('translated sort options - Spanish', async () => {
     screen.getByRole('menuitem', { name: 'Fecha límite (tarde a temprano)' })
   ).toBeInTheDocument();
 });
-*/
