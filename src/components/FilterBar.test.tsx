@@ -4,6 +4,7 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import FilterBar from './FilterBar';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
+import { act } from 'react-dom/test-utils';
 
 function renderComponent(filterParams = '') {
   return render(
@@ -53,7 +54,6 @@ test('renders filters with # of filters applied', async () => {
   );
 });
 
-/*
 test('translated filters & sort button - Spanish', async () => {
   renderComponent();
   await act(() => i18n.changeLanguage('es').then());
@@ -61,6 +61,8 @@ test('translated filters & sort button - Spanish', async () => {
   expect(screen.getByText('Filtros')).toBeInTheDocument();
   expect(screen.getByText('Ordenar')).toBeInTheDocument();
 });
+
+/*
 
 test('translated sort options - Spanish', async () => {
   renderComponent();
