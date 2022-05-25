@@ -6,6 +6,10 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
 import { act } from 'react-dom/test-utils';
 
+afterAll(() => {
+  jest.clearAllMocks();
+});
+
 function renderComponent(filterParams = '') {
   return render(
     <Suspense fallback="loading">
