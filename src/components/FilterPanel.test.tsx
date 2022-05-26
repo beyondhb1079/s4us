@@ -24,11 +24,11 @@ function renderComponent() {
 
 test('renders component', async () => {
   renderComponent();
-  expect(await screen.findByText('Filters')).toBeInTheDocument();
-  expect(screen.getByText('What are you studying?')).toBeInTheDocument();
-  expect(screen.getByText('Min Amount')).toBeInTheDocument();
-  expect(screen.getByText('Grade Level')).toBeInTheDocument();
-  expect(screen.getByText('State')).toBeInTheDocument();
+  await screen.findByText('Filters');
+
+  ['What are you studying?', 'Min Amount', 'Grade Level', 'State'].forEach(
+    (s) => expect(screen.getByText(s)).toBeInTheDocument()
+  );
 
   expect(
     screen.getByText('Your filters are currently applied.')
@@ -40,7 +40,7 @@ test('renders component', async () => {
 test('message change when filter option chosen', async () => {
   renderComponent();
   // Selects Art History from the majors input area
-  const majorInput = await screen.findByRole('combobox');
+  const majorInput = screen.getByRole('combobox');
   fireEvent.click(majorInput);
   fireEvent.change(majorInput, { target: { value: 'Art' } });
   const artHistory = screen.getByRole('option', { name: 'Art History' });
