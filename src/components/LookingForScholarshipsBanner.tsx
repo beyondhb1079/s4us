@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Grid, Paper, Typography, Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-function LookingForScholarshipsBanner() {
+function LookingForScholarshipsBanner(): JSX.Element {
   const { t } = useTranslation('common');
 
   return (

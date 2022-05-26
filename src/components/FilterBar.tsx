@@ -3,14 +3,17 @@ import { Menu, MenuItem, Toolbar, Button, Container } from '@mui/material';
 import useQueryParams from '../lib/useQueryParams';
 import sortOptions, { DEADLINE_ASC, getSortOption } from '../lib/sortOptions';
 import TuneIcon from '@mui/icons-material/Tune';
-import PropTypes from 'prop-types';
 import ImportExportIcon from '@mui/icons-material/ImportExport';
 import { useTranslation } from 'react-i18next';
 
-export default function FilterBar({ openFilter }) {
+export default function FilterBar({
+  openFilter,
+}: {
+  openFilter: () => void;
+}): JSX.Element {
   const [{ sortBy, grades, majors, minAmount }, setQueryParams] =
     useQueryParams();
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null as HTMLElement | null);
 
   const filterCount =
     (grades?.length ?? 0) + (majors?.length ?? 0) + (minAmount ? 1 : 0);
@@ -65,7 +68,3 @@ export default function FilterBar({ openFilter }) {
     </Toolbar>
   );
 }
-
-FilterBar.propTypes = {
-  openFilter: PropTypes.func.isRequired,
-};
