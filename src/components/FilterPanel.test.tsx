@@ -33,6 +33,9 @@ test('renders component', async () => {
   expect(
     screen.getByText('Your filters are currently applied.')
   ).toBeInTheDocument();
+  expect(
+    screen.queryByText('Your changes are not yet applied.')
+  ).not.toBeInTheDocument();
   expect(screen.getByText('Apply')).toBeInTheDocument();
   expect(screen.getByText('Cancel')).toBeInTheDocument();
 });
@@ -47,6 +50,9 @@ test('message change when filter option chosen', async () => {
   fireEvent.click(artHistory);
 
   expect(screen.findByText('Your changes are not yet applied.'));
+  expect(
+    screen.queryByText('Your filters are currently applied.')
+  ).not.toBeInTheDocument();
 });
 
 test('translated component - Spanish', async () => {
@@ -54,10 +60,9 @@ test('translated component - Spanish', async () => {
   await act(() => i18n.changeLanguage('es').then());
 
   expect(await screen.findByText('Filtros')).toBeInTheDocument();
-  expect(screen.getByText('¿Qué estudia?')).toBeInTheDocument();
-  expect(screen.getByText('Cantidad mínima')).toBeInTheDocument();
-  expect(screen.getByText('Nivel de grado')).toBeInTheDocument();
-  expect(screen.getByText('Estado')).toBeInTheDocument();
+  ['¿Qué estudia?', 'Cantidad mínima', 'Nivel de grado', 'Estado'].forEach(
+    (s) => expect(screen.getByText(s)).toBeInTheDocument()
+  );
 
   expect(
     screen.getByText('Sus filtros están actualmente aplicados.')
