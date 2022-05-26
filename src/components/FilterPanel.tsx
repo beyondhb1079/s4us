@@ -25,14 +25,17 @@ import GradeLevelFilter from './GradeLevelFilter';
 import CloseIcon from '@mui/icons-material/Close';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
-import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import CustomAutocomplete from './CustomAutocomplete';
 import State, { STATES } from '../types/States';
 import { MAJORS } from '../types/options';
 import { useTranslation } from 'react-i18next';
 
-export default function FilterPanel({ onClose }) {
+export default function FilterPanel({
+  onClose,
+}: {
+  onClose: () => void;
+}): JSX.Element {
   const { t } = useTranslation(['filters', 'common']);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [params, setQueryParams] = useQueryParams();
@@ -63,20 +66,20 @@ export default function FilterPanel({ onClose }) {
           <CustomAutocomplete
             freeSolo
             value={majors || []}
-            onChange={(e, val) => setMajors(val)}
-            options={[...MAJORS]}
+            onChange={(e: any, val: string[]) => setMajors(val)}
+            options={Array.from(MAJORS)}
             limitReached={majors?.length >= 10}
             placeholder={`${t('enterMajorFilter')}...`}
           />
-          {majors?.map((major) => (
+          {majors?.map((major: string) => (
             <Chip
               label={major}
-              variant={
-                params.majors?.includes(major) ? 'contained' : 'outlined'
-              }
+              variant={params.majors?.includes(major) ? 'filled' : 'outlined'}
               color="primary"
               key={major}
-              onClick={() => setMajors(majors.filter((m) => m !== major))}
+              onClick={() =>
+                setMajors(majors.filter((m: string) => m !== major))
+              }
               sx={{ mx: 1, mt: 1 }}
             />
           ))}
@@ -90,7 +93,7 @@ export default function FilterPanel({ onClose }) {
       comp: (
         <MinAmountFilter
           min={minAmount ?? 0}
-          onMinChange={(val) => setMinAmount(parseInt(val) || undefined)}
+          onMinChange={(val) => setMinAmount(val || undefined)}
         />
       ),
       changed: minAmount !== params.minAmount,
@@ -105,24 +108,24 @@ export default function FilterPanel({ onClose }) {
         <>
           <CustomAutocomplete
             value={states || []}
-            onChange={(e, val) => setStates(val)}
+            onChange={(e: any, val: string[]) => setStates(val)}
             options={STATES.map((s) => s.abbr)}
-            getOptionLabel={(s) => State.toString(s)}
+            getOptionLabel={(s: string) => State.toString(s)}
             filterOptions={createFilterOptions({
-              stringify: (s) => State.toString(s),
+              stringify: (s: string) => State.toString(s),
             })}
             limitReached={states?.length >= 10}
             placeholder={`${t('enterStateFilter')}...`}
           />
-          {states?.map((state) => (
+          {states?.map((state: string) => (
             <Chip
               label={State.toString(state)}
-              variant={
-                params.states?.includes(state) ? 'contained' : 'outlined'
-              }
+              variant={params.states?.includes(state) ? 'filled' : 'outlined'}
               color="primary"
               key={state}
-              onClick={() => setStates(states.filter((s) => s !== state))}
+              onClick={() =>
+                setStates(states.filter((s: string) => s !== state))
+              }
               sx={{ mx: 1, mt: 1 }}
             />
           ))}
@@ -223,7 +226,3 @@ export default function FilterPanel({ onClose }) {
     </Box>
   );
 }
-
-FilterPanel.propTypes = {
-  onClose: PropTypes.func.isRequired,
-};
