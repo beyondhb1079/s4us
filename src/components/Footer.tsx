@@ -15,7 +15,6 @@ import {
 } from '../lib/mail';
 import { SUBSCRIPTION_FORM_URL } from '../config/constants';
 import { TFunction, useTranslation } from 'react-i18next';
-import PropTypes from 'prop-types';
 
 const FooterLink = ({
   children,
@@ -36,15 +35,6 @@ const FooterLink = ({
       {children}
     </MuiLink>
   );
-};
-
-FooterLink.propTypes = {
-  children: PropTypes.string.isRequired,
-  to: PropTypes.string,
-};
-
-FooterLink.defaultProps = {
-  inline: false,
 };
 
 const quickLinks = (t: TFunction<'common', undefined>) => ({

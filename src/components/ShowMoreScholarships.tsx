@@ -5,7 +5,11 @@ import ScholarshipCard from './ScholarshipCard';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-export default function ShowMoreScholarships({ currentId }) {
+export default function ShowMoreScholarships({
+  currentId,
+}: {
+  currentId: number;
+}): JSX.Element {
   const { scholarships, loading, setFilters } = useContext(ScholarshipsContext);
   const { t } = useTranslation('common');
 
@@ -18,7 +22,7 @@ export default function ShowMoreScholarships({ currentId }) {
   return (
     <Stack direction="row" spacing={2}>
       {scholarships
-        .filter((s) => s.id !== currentId)
+        .filter((s) => Number.parseInt(s.id) !== currentId)
         .slice(0, 4)
         .map(({ id, data }) => (
           <ScholarshipCard key={id} scholarship={{ id, data }} style="glance" />
