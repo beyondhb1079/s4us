@@ -70,15 +70,15 @@
     "coverageThreshold": {
       "./src/": {
         "statements": 60,
-        "branches": 60,
+        "branches": 65,
         "functions": 50,
         "lines": 60
       },
       "./src/components/": {
-        "statements": 35,
-        "branches": 40,
-        "functions": 25,
-        "lines": 40
+        "statements": 45,
+        "branches": 50,
+        "functions": 35,
+        "lines": 50
       },
       "./src/lib/": {
         "statements": 90,
