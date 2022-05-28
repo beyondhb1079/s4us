@@ -7,8 +7,8 @@
   "deadlineEarliestToLatest": "Deadline (Earliest to Latest)",
   "deadlineLatestToEarliest": "Deadline (Latest to Earliest)",
   "enterMajorFilter": "Enter a major to filter by",
-  "enterStateFilter": "Enter a state to filter by",
   "enterSchoolFilter": "Enter a school to filter by",
+  "enterStateFilter": "Enter a state to filter by",
   "filters": "Filters",
   "filtersCurrentlyApplied": "Your filters are currently applied.",
   "gradeLevel": "Grade Level",
@@ -17,9 +17,9 @@
   "middleSchool": "Middle School",
   "minAmount": "Min Amount",
   "postGrad": "Postgraduate",
+  "school": "School",
   "sort": "Sort",
   "state": "State",
-  "school": "School",
   "unsavedChanges": "Unsaved Changes",
   "whatAreYouStudying": "What are you studying?"
 }

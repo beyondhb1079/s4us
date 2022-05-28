@@ -7,8 +7,8 @@
   "deadlineEarliestToLatest": "Fecha límite (temprano a tarde)",
   "deadlineLatestToEarliest": "Fecha límite (tarde a temprano)",
   "enterMajorFilter": "Ingrese un filtro de carrera",
-  "enterStateFilter": "Ingrese un filtro de estado",
   "enterSchoolFilter": "Ingrese un filtro de escuela",
+  "enterStateFilter": "Ingrese un filtro de estado",
   "filters": "Filtros",
   "filtersCurrentlyApplied": "Sus filtros están actualmente aplicados.",
   "gradeLevel": "Nivel de grado",
@@ -17,9 +17,9 @@
   "middleSchool": "Secundaria",
   "minAmount": "Cantidad mínima",
   "postGrad": "Postgrado",
+  "school": "Escuela",
   "sort": "Ordenar",
   "state": "Estado",
-  "school": "Escuela",
   "unsavedChanges": "Cambios no guardados",
   "whatAreYouStudying": "¿Qué estudia?"
 }
