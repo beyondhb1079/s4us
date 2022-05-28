@@ -26,6 +26,7 @@ function create(data: {
   grades?: GradeLevel[];
   majors?: string[];
   states?: string[];
+  schools?: string[];
 }) {
   const amount = data.amount ?? ScholarshipAmount.unknown();
   const amountString = ScholarshipAmount.toString(amount);
@@ -41,6 +42,7 @@ function create(data: {
       grades: data.grades ?? [],
       majors: data.majors ?? [],
       states: data.states ?? [],
+      schools: data.schools ?? [],
     },
   });
 }
@@ -344,6 +346,24 @@ test('scholarships.list - filters by states', async () => {
   });
 
   const want = [caliAndWashington];
+  expect(got.results.map(extractName).sort()).toEqual(
+    want.map(extractName).sort()
+  );
+});
+
+const Uci = create({ schools: ['UCI'] });
+const UclaAndUci = create({ schools: ['UCLA', 'UCI'] });
+const Mit = create({ schools: ['MIT'] });
+const schoolScholarships = [Uci, UclaAndUci, Mit];
+
+test('scholarships.list - filters by schools', async () => {
+  await Promise.all(schoolScholarships.map((s) => s.save()));
+
+  const got = await Scholarships.list({
+    schools: ['UCI'],
+  });
+
+  const want = [Uci, UclaAndUci];
   expect(got.results.map(extractName).sort()).toEqual(
     want.map(extractName).sort()
   );
