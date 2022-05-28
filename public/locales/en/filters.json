@@ -8,6 +8,7 @@
   "deadlineLatestToEarliest": "Deadline (Latest to Earliest)",
   "enterMajorFilter": "Enter a major to filter by",
   "enterStateFilter": "Enter a state to filter by",
+  "enterSchoolFilter": "Enter a school to filter by",
   "filters": "Filters",
   "filtersCurrentlyApplied": "Your filters are currently applied.",
   "gradeLevel": "Grade Level",
@@ -18,6 +19,7 @@
   "postGrad": "Postgraduate",
   "sort": "Sort",
   "state": "State",
+  "school": "School",
   "unsavedChanges": "Unsaved Changes",
   "whatAreYouStudying": "What are you studying?"
 }

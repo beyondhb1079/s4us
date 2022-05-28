@@ -137,7 +137,7 @@ export default function FilterPanel({
       changed:
         JSON.stringify(states || []) !== JSON.stringify(params.states || []),
     },
-    School: {
+    [t('school')]: {
       comp: (
         <>
           <CustomAutocomplete
@@ -146,7 +146,7 @@ export default function FilterPanel({
             onChange={(e: any, val: string[]) => setSchools(val)}
             options={SCHOOLS.map(({ name, state }) => `${name} (${state})`)}
             limitReached={schools?.length >= 10}
-            placeholder="enter school to filter by"
+            placeholder={t('enterSchoolFilter')}
           />
           {schools?.map((school: string) => (
             <Chip
