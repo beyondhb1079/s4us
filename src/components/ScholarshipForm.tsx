@@ -18,6 +18,7 @@ import {
   createFilterOptions,
   Paper,
   useMediaQuery,
+  Theme,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import validationSchema from '../validation/ValidationSchema';
@@ -32,19 +33,26 @@ import State, { STATES } from '../types/States';
 import GradeLevel from '../types/GradeLevel';
 import Ethnicity from '../types/Ethnicity';
 import ScholarshipsContext from '../models/ScholarshipsContext';
-import { lintReqs } from '../lib/lint';
+import { lintReqs, LintReqsResult } from '../lib/lint';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
+import ScholarshipData from '../types/ScholarshipData';
+import Model from '../models/base/Model';
+import ScholarshipEligibility from '../types/ScholarshipEligibility';
 
 const labelStyle = { marginBottom: 2 };
 
-function ScholarshipForm({ scholarship }) {
+interface SFProps {
+  scholarship: Model<ScholarshipData>;
+}
+
+function ScholarshipForm({ scholarship }: SFProps): JSX.Element {
   const [activeStep, setActiveStep] = useState(0);
-  const [submissionError, setSubmissionError] = useState(null);
+  const [submissionError, setSubmissionError] = useState(null as null | Error);
   const { invalidate } = useContext(ScholarshipsContext);
   const navigate = useNavigate();
 
-  const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const { t: validationT } = useTranslation('validation');
   const { t } = useTranslation(['scholarships', 'common']);
 
@@ -73,11 +81,12 @@ function ScholarshipForm({ scholarship }) {
 
   i18n.on('languageChanged', () => formik.setErrors({}));
 
-  const lintIssues = activeStep === 1 ? lintReqs(formik.values) : {};
+  const lintIssues: LintReqsResult =
+    activeStep === 1 ? lintReqs(formik.values) : { messages: [], reqs: {} };
   const autoFill = () => {
     const vals = formik.values.requirements;
     const lintVals = lintIssues.reqs;
-    const updatedReqs = {};
+    const updatedReqs: ScholarshipEligibility = {};
 
     const grades = [...(vals?.grades || []), ...(lintVals?.grades || [])];
     const schools = [...(vals?.schools || []), ...(lintVals?.schools || [])];
@@ -165,7 +174,7 @@ function ScholarshipForm({ scholarship }) {
               freeSolo
               formik={formik}
               options={[]}
-              onChange={(vals) => {
+              onChange={(e, vals) => {
                 const newVals = new Set(
                   vals.map((v) => v.toLowerCase().replace(/\s+/g, '-'))
                 );
@@ -217,7 +226,7 @@ function ScholarshipForm({ scholarship }) {
               }
               label={t('noEligibilityReqs').toUpperCase()}
             />
-            <FormHelperText error>{formik.errors.checkbox}</FormHelperText>
+            <FormHelperText error>{formik.errors.requirements}</FormHelperText>
           </Grid>
           <Grid item sm={6} xs={12}>
             <FormikMultiSelect
@@ -274,7 +283,7 @@ function ScholarshipForm({ scholarship }) {
               label={t('majors')}
               id="requirements.majors"
               labelStyle={labelStyle}
-              options={[...MAJORS]}
+              options={Array.from(MAJORS)}
               freeSolo
               formik={formik}
               placeholder={t('noRequirements')}
@@ -358,7 +367,7 @@ function ScholarshipForm({ scholarship }) {
                         formik.validateForm().then((errors) => {
                           const checkboxError = validationCheck();
                           if (checkboxError)
-                            errors = { ...errors, checkbox: checkboxError };
+                            errors = { ...errors, requirements: checkboxError };
 
                           if (Object.keys(errors).length === 0)
                             setActiveStep((prevStep) => prevStep + 1);

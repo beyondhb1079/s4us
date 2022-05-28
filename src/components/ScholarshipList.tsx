@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useRef } from 'react';
 import { Box, CircularProgress, Stack, Typography } from '@mui/material';
-import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import ScholarshipCard from './ScholarshipCard';
 import { DEADLINE_ASC, getDir, getField } from '../lib/sortOptions';
@@ -8,7 +7,15 @@ import ScholarshipsContext from '../models/ScholarshipsContext';
 import useOnScreen from '../lib/useOnScreen';
 import useQueryParams from '../lib/useQueryParams';
 
-export default function ScholarshipList({ noResultsNode, extraFilters }) {
+interface SLProps {
+  noResultsNode?: JSX.Element;
+  extraFilters?: any;
+}
+
+export default function ScholarshipList({
+  noResultsNode,
+  extraFilters = {},
+}: SLProps): JSX.Element {
   const { canLoadMore, error, loading, loadMore, scholarships, setFilters } =
     useContext(ScholarshipsContext);
   const { t } = useTranslation('listScholarships');
@@ -67,13 +74,3 @@ export default function ScholarshipList({ noResultsNode, extraFilters }) {
     </Stack>
   );
 }
-
-ScholarshipList.propTypes = {
-  /** Additional filters to set apart from ones parseable from the query string. */
-  extraFilters: PropTypes.object,
-  noResultsNode: PropTypes.node,
-};
-ScholarshipList.defaultProps = {
-  extraFilters: {},
-  noResultsNode: undefined,
-};

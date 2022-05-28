@@ -81,7 +81,7 @@ export default function ScholarshipCard({
   style = 'result',
 }: {
   scholarship: {
-    id: string;
+    id?: string;
     data: ScholarshipData;
   };
   style?: 'result' | 'detail' | 'preview' | 'glance';
@@ -320,7 +320,7 @@ export default function ScholarshipCard({
         <ShareDialog
           open={showShare}
           onClose={() => setShowShare(false)}
-          scholarship={scholarship}
+          scholarship={{ id: scholarship.id!, data: scholarship.data }}
         />
       )}
     </Card>

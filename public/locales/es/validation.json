@@ -1,6 +1,7 @@
 {
   "amountOptionRequired": "Por favor elige una opción arriba",
   "amountValid": "Por favor ingrese una cantidad válida",
+  "checkboxValid": "Marque esta casilla si no hay requisitos para esta beca.",
   "dateValid": "Por favor introduzca una fecha valida",
   "deadlineRequired": "Por favor ingrese la fecha límite de la beca",
   "descriptionRequired": "Por favor ingrese la descripción de la beca",

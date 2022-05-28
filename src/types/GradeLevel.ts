@@ -38,7 +38,7 @@ namespace GradeLevel {
   export function keys(): GradeLevel[] {
     return Object.keys(toStringMappings).map((k) => parseInt(k) as GradeLevel);
   }
-  export function values(): Record<GradeLevel, String> {
+  export function values(): Record<GradeLevel, string> {
     return toStringMappings;
   }
   export function toString(level: GradeLevel): string {

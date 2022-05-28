@@ -7,10 +7,16 @@ import {
   FormLabel,
 } from '@mui/material';
 import GradeLevel from '../types/GradeLevel';
-import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
-function GradeGroup({ title, gradeGroup, grades, toggleSelection }) {
+interface GGProps {
+  title: string;
+  gradeGroup: GradeLevel[];
+  grades: Set<GradeLevel>;
+  toggleSelection: (s: GradeLevel) => void;
+}
+
+function GradeGroup({ title, gradeGroup, grades, toggleSelection }: GGProps) {
   return (
     <FormGroup sx={{ py: 1 }}>
       <FormLabel>{title}</FormLabel>
@@ -31,25 +37,25 @@ function GradeGroup({ title, gradeGroup, grades, toggleSelection }) {
   );
 }
 
-GradeGroup.propTypes = {
-  title: PropTypes.string.isRequired,
-  gradeGroup: PropTypes.arrayOf(PropTypes.number).isRequired,
-  grades: PropTypes.instanceOf(Set),
-  toggleSelection: PropTypes.func.isRequired,
-};
+interface GLFProps {
+  grades: Set<GradeLevel>;
+  onChange: (a: GradeLevel[]) => void;
+}
 
-export default function GradeLevelFilter(props) {
-  const { grades, onChange } = props;
+export default function GradeLevelFilter({
+  grades = new Set(),
+  onChange,
+}: GLFProps): JSX.Element {
   const { highSchoolers, undergrads, grads } = GradeLevel;
   const { t } = useTranslation('filters');
 
-  function toggleSelection(grade) {
+  function toggleSelection(grade: GradeLevel) {
     if (grades.has(grade)) {
       grades.delete(grade);
     } else {
       grades.add(grade);
     }
-    onChange([...grades]);
+    onChange(Array.from(grades));
   }
 
   return (
@@ -80,11 +86,3 @@ export default function GradeLevelFilter(props) {
     </FormControl>
   );
 }
-
-GradeLevelFilter.propTypes = {
-  grades: PropTypes.instanceOf(Set),
-  onChange: PropTypes.func.isRequired,
-};
-GradeLevelFilter.defaultProps = {
-  grades: new Set(),
-};

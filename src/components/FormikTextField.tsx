@@ -1,8 +1,14 @@
 import React from 'react';
-import { InputLabel, SxProps, TextField, Theme } from '@mui/material';
+import {
+  BaseTextFieldProps,
+  InputLabel,
+  SxProps,
+  TextField,
+  Theme,
+} from '@mui/material';
 import { getIn } from 'formik';
 
-interface FTFProps {
+interface FTFProps extends BaseTextFieldProps {
   /** The result of `useFormik()`. */
   formik: any;
   id: string;
@@ -10,20 +16,11 @@ interface FTFProps {
 
   minRows?: number;
   labelStyle?: SxProps<Theme>;
-  value?: string | number;
 }
 
 /* eslint-disable react/jsx-props-no-spreading */
 export default function FormikTextField(props: FTFProps): JSX.Element {
-  const {
-    label,
-    labelStyle,
-    id,
-    formik,
-    minRows = 0,
-    value,
-    ...otherProps
-  } = props;
+  const { label, labelStyle, id, formik, minRows = 0, ...otherProps } = props;
 
   return (
     <>
