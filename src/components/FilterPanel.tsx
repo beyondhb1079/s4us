@@ -28,6 +28,7 @@ import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import queryString from 'query-string';
 import CustomAutocomplete from './CustomAutocomplete';
 import State, { STATES } from '../types/States';
+import { SCHOOLS } from '../types/options';
 import { MAJORS } from '../types/options';
 import { useTranslation } from 'react-i18next';
 
@@ -44,6 +45,7 @@ export default function FilterPanel({
   const [grades, setGrades] = useState(params.grades);
   const [majors, setMajors] = useState(params.majors);
   const [states, setStates] = useState(params.states);
+  const [schools, setSchools] = useState(params.schools);
   const location = useLocation();
 
   useEffect(() => {
@@ -57,6 +59,7 @@ export default function FilterPanel({
     setGrades(query.grades);
     setMajors(query.majors);
     setStates(query.states);
+    setSchools(query.schools);
   }, [location]);
 
   const filters = {
@@ -134,6 +137,35 @@ export default function FilterPanel({
       changed:
         JSON.stringify(states || []) !== JSON.stringify(params.states || []),
     },
+    School: {
+      comp: (
+        <>
+          <CustomAutocomplete
+            freeSolo
+            value={schools || []}
+            onChange={(e: any, val: string[]) => setSchools(val)}
+            options={SCHOOLS.map(({ name, state }) => `${name} (${state})`)}
+            limitReached={schools?.length >= 10}
+            placeholder="enter school to filter by"
+          />
+          {schools?.map((school: string) => (
+            <Chip
+              label={school}
+              variant={params.schools?.includes(school) ? 'filled' : 'outlined'}
+              color="primary"
+              key={school}
+              onClick={() =>
+                setSchools(schools.filter((s: string) => s !== school))
+              }
+              sx={{ mx: 1, mt: 1 }}
+            />
+          ))}
+        </>
+      ),
+      expanded: false,
+      changed:
+        JSON.stringify(schools || []) !== JSON.stringify(params.schools || []),
+    },
   };
 
   const filtersChanged = Object.keys(filters).some((k) => filters[k].changed);
@@ -190,7 +222,7 @@ export default function FilterPanel({
           variant="contained"
           disabled={!filtersChanged}
           onClick={() => {
-            setQueryParams({ minAmount, grades, majors, states });
+            setQueryParams({ minAmount, grades, majors, states, schools });
             onClose();
           }}>
           {t('common:actions.apply')}
@@ -202,6 +234,7 @@ export default function FilterPanel({
             setGrades(params.grades);
             setMajors(params.majors);
             setStates(params.states);
+            setSchools(params.schools);
           }}>
           {t('common:actions.cancel')}
         </Button>

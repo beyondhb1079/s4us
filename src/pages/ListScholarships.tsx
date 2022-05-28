@@ -31,7 +31,7 @@ function ListScholarships(): JSX.Element {
 
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
-  const [{ minAmount, grades, majors, states }, setQueryParams] =
+  const [{ minAmount, grades, majors, states, schools }, setQueryParams] =
     useQueryParams();
 
   const filterChips = {} as Record<
@@ -56,6 +56,11 @@ function ListScholarships(): JSX.Element {
   states?.forEach((state: string) => {
     filterChips[State.toString(state)] = {
       states: states?.filter((s: string) => state !== s),
+    };
+  });
+  schools?.forEach((school: string) => {
+    filterChips[school] = {
+      schools: schools?.filter((s: string) => school !== s),
     };
   });
 
