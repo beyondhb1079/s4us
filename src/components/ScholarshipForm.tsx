@@ -20,7 +20,6 @@ import {
   useMediaQuery,
   Theme,
 } from '@mui/material';
-import PropTypes from 'prop-types';
 import validationSchema from '../validation/ValidationSchema';
 import ScholarshipAmountField from './ScholarshipAmountField';
 import DeadlineField from './DeadlineField';
@@ -46,7 +45,7 @@ interface SFProps {
   scholarship: Model<ScholarshipData>;
 }
 
-function ScholarshipForm({ scholarship }: SFProps): JSX.Element {
+export default function ScholarshipForm({ scholarship }: SFProps): JSX.Element {
   const [activeStep, setActiveStep] = useState(0);
   const [submissionError, setSubmissionError] = useState(null as null | Error);
   const { invalidate } = useContext(ScholarshipsContext);
@@ -408,9 +407,3 @@ function ScholarshipForm({ scholarship }: SFProps): JSX.Element {
     </Box>
   );
 }
-
-ScholarshipForm.propTypes = {
-  scholarship: PropTypes.object.isRequired,
-};
-
-export default ScholarshipForm;
