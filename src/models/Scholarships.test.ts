@@ -354,7 +354,8 @@ test('scholarships.list - filters by states', async () => {
 const Uci = create({ schools: ['UCI'] });
 const UclaAndUci = create({ schools: ['UCLA', 'UCI'] });
 const Mit = create({ schools: ['MIT'] });
-const schoolScholarships = [Uci, UclaAndUci, Mit];
+const allSchools = create({});
+const schoolScholarships = [Uci, UclaAndUci, Mit, allSchools];
 
 test('scholarships.list - filters by schools', async () => {
   await Promise.all(schoolScholarships.map((s) => s.save()));
@@ -363,7 +364,20 @@ test('scholarships.list - filters by schools', async () => {
     schools: ['UCI'],
   });
 
-  const want = [Uci, UclaAndUci];
+  const want = [Uci, UclaAndUci, allSchools];
+  expect(got.results.map(extractName).sort()).toEqual(
+    want.map(extractName).sort()
+  );
+});
+
+test('scholarships.list - filters by schools (All schools)', async () => {
+  await Promise.all(schoolScholarships.map((s) => s.save()));
+
+  const got = await Scholarships.list({
+    schools: ['MIT', 'UCI'],
+  });
+
+  const want = [Uci, UclaAndUci, Mit, allSchools];
   expect(got.results.map(extractName).sort()).toEqual(
     want.map(extractName).sort()
   );
