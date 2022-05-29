@@ -49,6 +49,7 @@ test('message change when filter option chosen', async () => {
   const artHistory = screen.getByRole('option', { name: 'Art History' });
   fireEvent.click(artHistory);
 
+  expect(screen.getByText('Art History')).toBeInTheDocument();
   expect(screen.findByText('Your changes are not yet applied.'));
   expect(
     screen.queryByText('Your filters are currently applied.')
@@ -57,19 +58,30 @@ test('message change when filter option chosen', async () => {
 
 test('school chip shows when an option is selected', async () => {
   renderComponent();
-  const stateAccordion = screen.getByRole('button', { name: 'School' });
+  const schoolAccordion = screen.getByRole('button', { name: 'School' });
 
-  fireEvent.click(stateAccordion);
-  const stateInput = screen.getAllByRole('combobox')[1];
-  fireEvent.change(stateInput, { target: { value: 'irvine' } });
-  const caState = screen.getByRole('option', {
+  fireEvent.click(schoolAccordion);
+  const schoolInput = screen.getAllByRole('combobox')[1];
+  fireEvent.change(schoolInput, { target: { value: 'irvine' } });
+  const school = screen.getByRole('option', {
     name: 'University of California Irvine (CA)',
   });
-  fireEvent.click(caState);
+  fireEvent.click(school);
 
   expect(
     screen.getByText('University of California Irvine (CA)')
   ).toBeInTheDocument();
+});
+
+test('Min Amount slider reflects input value', async () => {
+  renderComponent();
+  const amountAccordion = screen.getByRole('button', { name: 'Min Amount' });
+  fireEvent.click(amountAccordion);
+  const amountInput = screen.getByRole('textbox');
+  fireEvent.change(amountInput, { target: { value: 100 } });
+
+  const slider = screen.getByRole('slider');
+  expect(slider).toHaveValue('100');
 });
 
 test('translated component - Spanish', async () => {
