@@ -56,7 +56,7 @@ export default function FilterPanel({
             onChange={(e: any, val: string[]) => setMajors(val)}
             options={Array.from(MAJORS)}
             limitReached={majors?.length >= 10}
-            placeholder={`${t('enterMajorFilter')}...`}
+            placeholder={`${t('toFilterBy', { filter: t('major') })}...`}
           />
           {majors?.map((major: string) => (
             <Chip
@@ -102,7 +102,9 @@ export default function FilterPanel({
               stringify: (s: string) => State.toString(s),
             })}
             limitReached={states?.length >= 10}
-            placeholder={`${t('enterStateFilter')}...`}
+            placeholder={`${t('toFilterBy', {
+              filter: t('state').toLowerCase(),
+            })}...`}
           />
           {states?.map((state: string) => (
             <Chip
@@ -130,7 +132,9 @@ export default function FilterPanel({
             onChange={(e: any, val: string[]) => setSchools(val)}
             options={SCHOOLS.map(({ name, state }) => `${name} (${state})`)}
             limitReached={schools?.length >= 10}
-            placeholder={t('enterSchoolFilter')}
+            placeholder={`${t('toFilterBy', {
+              filter: t('school').toLowerCase(),
+            })}...`}
           />
           {schools?.map((school: string) => (
             <Chip
