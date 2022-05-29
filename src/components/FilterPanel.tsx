@@ -83,7 +83,7 @@ export default function FilterPanel({
           onMinChange={(val) => setMinAmount(val || undefined)}
         />
       ),
-      changed: minAmount !== params.minAmount,
+      changed: (minAmount || 0) !== (params.minAmount || 0),
     },
     [t('gradeLevel')]: {
       comp: <GradeLevelFilter grades={new Set(grades)} onChange={setGrades} />,
