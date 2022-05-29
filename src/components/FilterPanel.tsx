@@ -40,7 +40,7 @@ export default function FilterPanel({
   const [dialogOpen, setDialogOpen] = useState(false);
   const [params, setQueryParams] = useQueryParams();
 
-  const [minAmount, setMinAmount] = useState(params.minAmount || 0);
+  const [minAmount, setMinAmount] = useState(params.minAmount);
   const [grades, setGrades] = useState(params.grades || []);
   const [majors, setMajors] = useState(params.majors || []);
   const [states, setStates] = useState(params.states || []);
@@ -79,11 +79,11 @@ export default function FilterPanel({
     [t('minAmount')]: {
       comp: (
         <MinAmountFilter
-          min={minAmount}
+          min={minAmount ?? 0}
           onMinChange={(val) => setMinAmount(val || undefined)}
         />
       ),
-      changed: (minAmount || 0) !== (params.minAmount || 0),
+      changed: minAmount !== params.minAmount,
     },
     [t('gradeLevel')]: {
       comp: <GradeLevelFilter grades={new Set(grades)} onChange={setGrades} />,
