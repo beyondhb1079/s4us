@@ -55,6 +55,23 @@ test('message change when filter option chosen', async () => {
   ).not.toBeInTheDocument();
 });
 
+test('school chip shows when an option is selected', async () => {
+  renderComponent();
+  const stateAccordion = screen.getByRole('button', { name: 'School' });
+
+  fireEvent.click(stateAccordion);
+  const stateInput = screen.getAllByRole('combobox')[1];
+  fireEvent.change(stateInput, { target: { value: 'irvine' } });
+  const caState = screen.getByRole('option', {
+    name: 'University of California Irvine (CA)',
+  });
+  fireEvent.click(caState);
+
+  expect(
+    screen.getByText('University of California Irvine (CA)')
+  ).toBeInTheDocument();
+});
+
 test('translated component - Spanish', async () => {
   renderComponent();
   await act(() => i18n.changeLanguage('es').then());
