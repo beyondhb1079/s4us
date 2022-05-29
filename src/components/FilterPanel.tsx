@@ -162,7 +162,6 @@ export default function FilterPanel({
           ))}
         </>
       ),
-      expanded: false,
       changed:
         JSON.stringify(schools || []) !== JSON.stringify(params.schools || []),
     },

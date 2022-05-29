@@ -22,9 +22,13 @@ test('renders component', async () => {
   renderComponent();
   await screen.findByText('Filters');
 
-  ['What are you studying?', 'Min Amount', 'Grade Level', 'State'].forEach(
-    (s) => expect(screen.getByText(s)).toBeInTheDocument()
-  );
+  [
+    'What are you studying?',
+    'Min Amount',
+    'Grade Level',
+    'State',
+    'School',
+  ].forEach((s) => expect(screen.getByText(s)).toBeInTheDocument());
 
   expect(
     screen.getByText('Your filters are currently applied.')
