@@ -56,7 +56,9 @@ export default function FilterPanel({
             onChange={(e: any, val: string[]) => setMajors(val)}
             options={Array.from(MAJORS)}
             limitReached={majors?.length >= 10}
-            placeholder={`${t('toFilterBy', { filter: t('major') })}...`}
+            placeholder={`${t('toFilterBy', {
+              filter: t('major').toLowerCase(),
+            })}...`}
           />
           {majors?.map((major: string) => (
             <Chip
