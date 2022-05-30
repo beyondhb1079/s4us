@@ -99,6 +99,7 @@ export interface FilterOptions {
   grades?: GradeLevel[];
   majors?: string[];
   states?: string[];
+  schools?: string[];
   sortDir?: 'asc' | 'desc';
   sortField?: string;
 }
@@ -190,6 +191,11 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
               requirementMatchesFilter(
                 data.requirements?.states,
                 opts.states
+              ) &&
+              // school filter
+              requirementMatchesFilter(
+                data.requirements?.schools?.map((s) => s.toLowerCase()),
+                opts.schools?.map((s) => s.toLowerCase())
               ) &&
               // Deadline Filter.
               // This is needed  in case list() above couldn't apply it.
