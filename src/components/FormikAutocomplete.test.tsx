@@ -2,6 +2,7 @@ import { render } from '@testing-library/react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import FormikAutocomplete from './FormikAutocomplete';
 import userEvent from '@testing-library/user-event';
+import { sl } from 'date-fns/locale';
 
 const renderWithTheme = (ui: JSX.Element) =>
   render(<ThemeProvider theme={createTheme()}>{ui}</ThemeProvider>);
@@ -20,11 +21,11 @@ test('renders options', () => {
 
   expect(getByText('my label')).toBeInTheDocument();
   expect(getByRole('combobox')).toHaveAttribute('id', 'names');
-  expect(getAllByRole('button').map((e) => e.textContent)).toEqual([
-    'bar',
-    'foo',
-    '',
-  ]);
+  expect(
+    getAllByRole('button')
+      .map((e) => e.textContent)
+      .filter((s) => s?.length > 0)
+  ).toEqual(['bar', 'foo']);
 });
 
 test('freeSolo trimmed entry', async () => {
@@ -48,10 +49,11 @@ test('freeSolo trimmed entry', async () => {
     .click(getByRole('combobox'))
     .then(() => user.keyboard('  custom [Enter]'));
 
-  expect(getAllByRole('button').map((e) => e.textContent)).toEqual([
-    'custom',
-    '',
-  ]);
+  expect(
+    getAllByRole('button')
+      .map((e) => e.textContent)
+      .filter((s) => s?.length > 0)
+  ).toEqual(['custom']);
   expect(formik.values.names).toEqual(['custom']);
 });
 
@@ -76,10 +78,10 @@ test('freeSolo multiple entries', async () => {
     .click(getByRole('combobox'))
     .then(() => user.keyboard('custom1, custom2 [Enter]'));
 
-  expect(getAllByRole('button').map((e) => e.textContent)).toEqual([
-    'custom1',
-    'custom2',
-    '',
-  ]);
+  expect(
+    getAllByRole('button')
+      .map((e) => e.textContent)
+      .filter((s) => s?.length > 0)
+  ).toEqual(['custom1', 'custom2']);
   expect(formik.values.names).toEqual(['custom1', 'custom2']);
 });
