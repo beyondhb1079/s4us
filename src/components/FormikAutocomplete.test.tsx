@@ -36,7 +36,6 @@ test('freeSolo trimmed entry', async () => {
     <FormikAutocomplete
       id="names"
       formik={formik}
-      label="my label"
       options={['bar', 'baz', 'foo']}
       freeSolo
     />
@@ -65,7 +64,6 @@ test('freeSolo multiple entries', async () => {
     <FormikAutocomplete
       id="names"
       formik={formik}
-      label="my label"
       options={['bar', 'baz', 'foo']}
       freeSolo
     />
