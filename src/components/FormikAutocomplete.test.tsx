@@ -1,4 +1,4 @@
-import { prettyDOM, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import FormikAutocomplete from './FormikAutocomplete';
 import userEvent from '@testing-library/user-event';
