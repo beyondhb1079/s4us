@@ -22,23 +22,29 @@ test('parses using options', () => {
 });
 
 test('prunes null or empty known keys', () => {
-  ['minAmount', 'maxAmount', 'grades', 'majors', 'states', 'sortBy'].forEach(
-    (k) => {
-      const { params, setQueryParams } = renderHookWithLocation(k + '=null');
+  [
+    'minAmount',
+    'maxAmount',
+    'grades',
+    'majors',
+    'states',
+    'schools',
+    'sortBy',
+  ].forEach((k) => {
+    const { params, setQueryParams } = renderHookWithLocation(k + '=null');
 
-      expect(params).toMatchObject({});
-      expect(setQueryParams).toBeInstanceOf(Function);
+    expect(params).toMatchObject({});
+    expect(setQueryParams).toBeInstanceOf(Function);
 
-      const res2 = renderHookWithLocation(k + '=');
-      expect(res2.params).toMatchObject({});
-      expect(res2.setQueryParams).toBeInstanceOf(Function);
-    }
-  );
+    const res2 = renderHookWithLocation(k + '=');
+    expect(res2.params).toMatchObject({});
+    expect(res2.setQueryParams).toBeInstanceOf(Function);
+  });
 });
 
 test('prunes bad types for known keys', () => {
   const { params, setQueryParams } = renderHookWithLocation(
-    'grades=bar,,&minAmount=2.3&maxAmount=foo&majors=4&states=ca'
+    'grades=bar,,&minAmount=2.3&maxAmount=foo&majors=4&states=ca&schools=23'
   );
   expect(params).toMatchObject({});
   expect(setQueryParams).toBeInstanceOf(Function);
@@ -46,7 +52,7 @@ test('prunes bad types for known keys', () => {
 
 test('prunes null or empty list values for known list keys', () => {
   const { params, setQueryParams } = renderHookWithLocation(
-    'grades[]=,,&majors[]=,foo&states[]='
+    'grades[]=,,&majors[]=,foo&states[]=&schools[]='
   );
   expect(params).toMatchObject({ majors: ['foo'] });
   expect(setQueryParams).toBeInstanceOf(Function);

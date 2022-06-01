@@ -85,3 +85,12 @@ test('does not render expired scholarships by default', async () => {
   await screen.findByText('End of results');
   expect(screen.queryByText(data.name)).not.toBeInTheDocument();
 });
+
+test('renders filter chips ontop of page', async () => {
+  renderAtRoute('/scholarships?majors[]=Engineering&states[]=CA,WA');
+
+  await screen.findByText('California (CA)');
+  ['Engineering', 'California (CA)', 'Washington (WA)'].forEach((s) =>
+    expect(screen.getByText(s)).toBeInTheDocument()
+  );
+});

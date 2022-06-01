@@ -54,7 +54,8 @@ export default function useQueryParams(
 
   if (prune) {
     /** Prune bad query parameter value strings */
-    const { minAmount, maxAmount, grades, majors, states, sortBy } = params;
+    const { minAmount, maxAmount, grades, majors, states, schools, sortBy } =
+      params;
 
     if (
       sortBy !== undefined &&
@@ -107,6 +108,15 @@ export default function useQueryParams(
         : [];
       if (params.states.length === 0) {
         delete params.states;
+      }
+    }
+
+    if (schools !== undefined) {
+      params.schools = Array.isArray(schools)
+        ? Array.from(new Set(schools)).filter((s) => s.length > 0)
+        : [];
+      if (params.schools.length === 0) {
+        delete params.schools;
       }
     }
   }

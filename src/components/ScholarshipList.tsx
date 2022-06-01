@@ -23,7 +23,7 @@ export default function ScholarshipList({
 
   // Resets result context if filters change.
   useEffect(() => {
-    const { minAmount, grades, majors, states, sortBy } = queryParams;
+    const { minAmount, grades, majors, states, schools, sortBy } = queryParams;
     const sortField = getField(sortBy ?? DEADLINE_ASC);
     const sortDir = getDir(sortBy ?? DEADLINE_ASC);
     setFilters({
@@ -33,6 +33,7 @@ export default function ScholarshipList({
       grades,
       majors,
       states,
+      schools,
       ...extraFilters,
     });
   }, [queryParams, extraFilters, setFilters]);
