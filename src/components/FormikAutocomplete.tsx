@@ -15,8 +15,8 @@ const filterOptions = createFilterOptions({
     `${option.replace(/\([A-Z]+\)/, '').replaceAll(/[^A-Z]/g, '')} ${option}`,
 });
 
-interface FAProps<T, FreeSolo extends boolean | undefined>
-  extends UseAutocompleteProps<T, true, false, FreeSolo> {
+interface FAProps<FreeSolo extends boolean | undefined>
+  extends UseAutocompleteProps<string, true, false, FreeSolo> {
   /** The result of `useFormik()`. */
   formik: any;
   id: string;
@@ -30,7 +30,7 @@ interface FAProps<T, FreeSolo extends boolean | undefined>
 /* eslint-disable react/jsx-props-no-spreading */
 export default function FormikAutocomplete<
   FreeSolo extends boolean | undefined
->({ id, formik, ...props }: FAProps<string, FreeSolo>): JSX.Element {
+>({ id, formik, ...props }: FAProps<FreeSolo>): JSX.Element {
   const {
     label,
     labelStyle,

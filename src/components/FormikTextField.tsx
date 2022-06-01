@@ -14,7 +14,6 @@ interface FTFProps extends BaseTextFieldProps {
   id: string;
   label: string;
 
-  minRows?: number;
   labelStyle?: SxProps<Theme>;
 }
 
