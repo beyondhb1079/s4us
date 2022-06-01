@@ -62,7 +62,7 @@ export default function FormikAutocomplete<
             setInputValue('');
             return onChange(e, vals, 'selectOption');
           } else {
-            setInputValue(newInputValue);
+            setInputValue(newInputValue.trim());
           }
         }}
         renderInput={(params) => (
