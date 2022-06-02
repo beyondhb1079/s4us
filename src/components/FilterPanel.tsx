@@ -201,8 +201,6 @@ export default function FilterPanel({
 
   const filtersChanged = Object.keys(filters).some((k) => filters[k].changed);
 
-  console.log(Object.values(filters));
-
   return (
     <Box>
       <Toolbar
