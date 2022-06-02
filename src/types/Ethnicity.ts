@@ -21,7 +21,7 @@ namespace Ethnicity {
   export function keys(): Ethnicity[] {
     return Object.keys(toStringMappings) as Ethnicity[];
   }
-  export function values(): Record<Ethnicity, String> {
+  export function values(): Record<Ethnicity, string> {
     return toStringMappings;
   }
   export function toString(ethnicity: Ethnicity): string {

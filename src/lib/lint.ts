@@ -7,6 +7,7 @@ import ScholarshipAmount from '../types/ScholarshipAmount';
 import { MAJORS, School, SCHOOLS } from '../types/options';
 import State, { STATES } from '../types/States';
 import ScholarshipData from '../types/ScholarshipData';
+import ScholarshipEligibility from '../types/ScholarshipEligibility';
 
 /** Custom match object to provide additional context outside of a value. */
 interface MatchInfo {
@@ -204,11 +205,16 @@ export function parseEthnicities(desc: string): Ethnicity[] {
 const dateRe =
   /((Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w*\.? (\d+)(st|nd|rd|th)?(,? \d{4})?)|\d{1,2}\/\d{1,2}\/\d{2,4}/gi;
 
-export function lintReqs(scholarship: ScholarshipData): any {
+export interface LintReqsResult {
+  messages: string[];
+  reqs: ScholarshipEligibility;
+}
+
+export function lintReqs(scholarship: ScholarshipData): LintReqsResult {
   const { description: desc, website, requirements } = scholarship;
   const { ethnicities, grades, majors, schools, states } = requirements || {};
   const messages: string[] = [];
-  const reqs: Record<string, any> = {};
+  const reqs: ScholarshipEligibility = {};
 
   const matchedGpa = parseMinGPA(desc);
   const missingGrades = parseGradeLevels(desc).filter(
@@ -288,7 +294,7 @@ export function lintReqs(scholarship: ScholarshipData): any {
 }
 
 /** Lints the given scholarship for mismatches and returns a list of errors as strings. */
-export function lint(scholarship: ScholarshipData): String[] {
+export function lint(scholarship: ScholarshipData): string[] {
   const { amount, deadline, description: desc } = scholarship;
   const issues = [];
 

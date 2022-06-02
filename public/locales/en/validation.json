@@ -1,6 +1,7 @@
 {
   "amountOptionRequired": "Please choose an option above",
   "amountValid": "Please enter a valid amount",
+  "checkboxValid": "Check this box if there are no requirements for this scholarship.",
   "dateValid": "Please enter a valid date",
   "deadlineRequired": "Please enter the scholarship deadline",
   "descriptionRequired": "Please enter the scholarship description",

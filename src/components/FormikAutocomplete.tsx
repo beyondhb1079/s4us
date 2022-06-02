@@ -7,6 +7,7 @@ import {
   SxProps,
   TextField,
   Theme,
+  UseAutocompleteProps,
 } from '@mui/material';
 
 const filterOptions = createFilterOptions({
@@ -14,26 +15,27 @@ const filterOptions = createFilterOptions({
     `${option.replace(/\([A-Z]+\)/, '').replaceAll(/[^A-Z]/g, '')} ${option}`,
 });
 
-interface FAProps {
+interface FAProps<FreeSolo extends boolean | undefined>
+  extends UseAutocompleteProps<string, true, false, FreeSolo> {
   /** The result of `useFormik()`. */
   formik: any;
   id: string;
 
+  disabled?: boolean;
   label?: string;
   labelStyle?: SxProps<Theme>;
   placeholder?: string;
-  onChange?: (v: string[]) => void;
 }
 
 /* eslint-disable react/jsx-props-no-spreading */
-export default function FormikAutocomplete(props: FAProps): JSX.Element {
+export default function FormikAutocomplete<
+  FreeSolo extends boolean | undefined
+>({ id, formik, ...props }: FAProps<FreeSolo>): JSX.Element {
   const {
     label,
-    id,
     labelStyle,
-    formik,
     placeholder,
-    onChange,
+    onChange = (e, vals) => formik.setFieldValues(id, vals),
     ...otherProps
   } = props;
   const values = getIn(formik.values, id, []);
@@ -47,13 +49,10 @@ export default function FormikAutocomplete(props: FAProps): JSX.Element {
         id={id}
         multiple
         filterOptions={filterOptions}
-        options={values}
         value={values}
         inputValue={inputValue}
-        onChange={(e, val) =>
-          onChange ? onChange(val) : formik.setFieldValue(id, val)
-        }
-        onInputChange={(event, newInputValue) => {
+        onChange={onChange}
+        onInputChange={(e, newInputValue) => {
           const options = newInputValue.split(',');
 
           if (options.length > 1) {
@@ -61,9 +60,9 @@ export default function FormikAutocomplete(props: FAProps): JSX.Element {
               options.map((x) => x.trim()).filter((x) => x)
             );
             setInputValue('');
-            return onChange ? onChange(vals) : formik.setFieldValue(id, vals);
+            return onChange(e, vals, 'selectOption');
           } else {
-            setInputValue(newInputValue);
+            setInputValue(newInputValue.trim());
           }
         }}
         renderInput={(params) => (

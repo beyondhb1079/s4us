@@ -19,7 +19,7 @@ afterAll(() => cleanup());
 // TODO: Figure out a cleaner solution.
 window.MutationObserver = require('mutation-observer');
 
-const renderWithProviders = (ui) =>
+const renderWithProviders = (ui: JSX.Element) =>
   render(
     <Suspense fallback="loading">
       <I18nextProvider i18n={i18n}>
