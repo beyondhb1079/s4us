@@ -47,7 +47,7 @@ export default function FilterPanel({
   const [dialogOpen, setDialogOpen] = useState(false);
   const [params, setQueryParams] = useQueryParams();
 
-  const [minAmount, setMinAmount] = useState(params.minAmoun);
+  const [minAmount, setMinAmount] = useState(params.minAmount);
   const [grades, setGrades] = useState(params.grades || []);
   const [majors, setMajors] = useState(params.majors || []);
   const [states, setStates] = useState(params.states || []);
