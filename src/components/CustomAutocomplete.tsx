@@ -6,7 +6,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { useTranslation } from 'react-i18next';
 
 type CustomAutocompleteProps = {
-  limitReached: boolean;
+  limitReached?: boolean;
   placeholder: string | undefined;
   options: string[];
   [x: string]: any;

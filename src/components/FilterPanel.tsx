@@ -29,7 +29,14 @@ import CustomAutocomplete from './CustomAutocomplete';
 import State, { STATES } from '../types/States';
 import { SCHOOLS } from '../types/options';
 import { MAJORS } from '../types/options';
+import Ethnicity from '../types/Ethnicity';
 import { useTranslation } from 'react-i18next';
+
+interface FiltersProps {
+  comp: JSX.Element;
+  changed: boolean;
+  expanded?: boolean;
+}
 
 export default function FilterPanel({
   onClose,
@@ -40,13 +47,16 @@ export default function FilterPanel({
   const [dialogOpen, setDialogOpen] = useState(false);
   const [params, setQueryParams] = useQueryParams();
 
-  const [minAmount, setMinAmount] = useState(params.minAmount);
+  const [minAmount, setMinAmount] = useState(params.minAmoun);
   const [grades, setGrades] = useState(params.grades || []);
   const [majors, setMajors] = useState(params.majors || []);
   const [states, setStates] = useState(params.states || []);
   const [schools, setSchools] = useState(params.schools || []);
+  const [ethnicities, setEthnicities] = useState(params.ethnicities || []);
 
-  const filters = {
+  const filters: {
+    [key: string]: FiltersProps;
+  } = {
     [t('whatAreYouStudying')]: {
       comp: (
         <>
@@ -155,9 +165,43 @@ export default function FilterPanel({
       changed:
         JSON.stringify(schools || []) !== JSON.stringify(params.schools || []),
     },
+    Ethnicity: {
+      comp: (
+        <>
+          <CustomAutocomplete
+            value={ethnicities}
+            onChange={(e: any, val: string[]) => setEthnicities(val)}
+            options={Ethnicity.keys()}
+            getOptionLabel={(e: Ethnicity) => Ethnicity.toString(e)}
+            placeholder="Enter an ethnicity to filter by..."
+          />
+          {ethnicities?.map((ethnicity: Ethnicity) => (
+            <Chip
+              label={Ethnicity.toString(ethnicity)}
+              variant={
+                params.ethnicities?.includes(ethnicity) ? 'filled' : 'outlined'
+              }
+              color="primary"
+              key={ethnicity}
+              onClick={() =>
+                setEthnicities(
+                  ethnicities.filter((e: string) => e !== ethnicity)
+                )
+              }
+              sx={{ mx: 1, mt: 1 }}
+            />
+          ))}
+        </>
+      ),
+      changed:
+        JSON.stringify(ethnicities || []) !==
+        JSON.stringify(params.ethnicities || []),
+    },
   };
 
   const filtersChanged = Object.keys(filters).some((k) => filters[k].changed);
+
+  console.log(Object.values(filters));
 
   return (
     <Box>
@@ -211,7 +255,14 @@ export default function FilterPanel({
           variant="contained"
           disabled={!filtersChanged}
           onClick={() => {
-            setQueryParams({ minAmount, grades, majors, states, schools });
+            setQueryParams({
+              minAmount,
+              grades,
+              majors,
+              states,
+              schools,
+              ethnicities,
+            });
             onClose();
           }}>
           {t('common:actions.apply')}
@@ -219,11 +270,12 @@ export default function FilterPanel({
         <Button
           disabled={!filtersChanged}
           onClick={() => {
-            setMinAmount(params.minAmount);
-            setGrades(params.grades);
-            setMajors(params.majors);
-            setStates(params.states);
-            setSchools(params.schools);
+            setMinAmount(params.minAmount || 0);
+            setGrades(params.grades || []);
+            setMajors(params.majors || []);
+            setStates(params.states || []);
+            setSchools(params.schools || []);
+            setEthnicities(params.ethnicities || []);
           }}>
           {t('common:actions.cancel')}
         </Button>

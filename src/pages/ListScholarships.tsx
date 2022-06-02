@@ -22,6 +22,7 @@ import GradeLevel from '../types/GradeLevel';
 import State from '../types/States';
 import { useLocation } from 'react-router-dom';
 import { getAnalytics, isSupported, logEvent } from 'firebase/analytics';
+import Ethnicity from '../types/Ethnicity';
 
 const drawerWidth = 360;
 
@@ -31,8 +32,10 @@ function ListScholarships(): JSX.Element {
 
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
-  const [{ minAmount, grades, majors, states, schools }, setQueryParams] =
-    useQueryParams();
+  const [
+    { minAmount, grades, majors, states, schools, ethnicities },
+    setQueryParams,
+  ] = useQueryParams();
 
   const filterChips = {} as Record<
     string,
@@ -61,6 +64,11 @@ function ListScholarships(): JSX.Element {
   schools?.forEach((school: string) => {
     filterChips[school] = {
       schools: schools?.filter((s: string) => school !== s),
+    };
+  });
+  ethnicities?.forEach((ethnicity: Ethnicity) => {
+    filterChips[Ethnicity.toString(ethnicity)] = {
+      ethnicities: ethnicities?.filter((e: Ethnicity) => ethnicity !== e),
     };
   });
 
