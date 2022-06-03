@@ -165,7 +165,7 @@ export default function FilterPanel({
       changed:
         JSON.stringify(schools || []) !== JSON.stringify(params.schools || []),
     },
-    Ethnicity: {
+    [t('ethnicity')]: {
       comp: (
         <>
           <CustomAutocomplete
@@ -173,7 +173,7 @@ export default function FilterPanel({
             onChange={(e: any, val: string[]) => setEthnicities(val)}
             options={Ethnicity.keys()}
             getOptionLabel={(e: Ethnicity) => Ethnicity.toString(e)}
-            placeholder="Enter an ethnicity to filter by..."
+            placeholder={`${t('enterEthnicityFilter')}...`}
           />
           {ethnicities?.map((ethnicity: Ethnicity) => (
             <Chip

@@ -6,6 +6,8 @@
   "collegeUniversity": "Colegio/Universidad",
   "deadlineEarliestToLatest": "Fecha límite (temprano a tarde)",
   "deadlineLatestToEarliest": "Fecha límite (tarde a temprano)",
+  "enterEthnicityFilter": "Ingrese un filtro de etnicidad",
+  "ethnicity": "Etnicidad",
   "filters": "Filtros",
   "filtersCurrentlyApplied": "Sus filtros están actualmente aplicados.",
   "gradeLevel": "Nivel de grado",

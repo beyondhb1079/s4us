@@ -28,6 +28,7 @@ test('renders component', async () => {
     'Grade Level',
     'State',
     'School',
+    'Ethnicity',
   ].forEach((s) => expect(screen.getByText(s)).toBeInTheDocument());
 
   expect(
