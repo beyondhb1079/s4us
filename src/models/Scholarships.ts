@@ -201,8 +201,8 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
               ) &&
               // ethnicities filter
               requirementMatchesFilter(
-                data.requirements?.ethnicities?.map((e) => e.toLowerCase()),
-                opts.ethnicities?.map((e) => e.toLowerCase())
+                data.requirements?.ethnicities,
+                opts.ethnicities
               ) &&
               // Deadline Filter.
               // This is needed  in case list() above couldn't apply it.
