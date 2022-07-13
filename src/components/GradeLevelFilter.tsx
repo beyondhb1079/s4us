@@ -15,9 +15,16 @@ interface GGProps {
   gradeGroup: GradeLevel[];
   grades: Set<GradeLevel>;
   toggleSelection: (s: GradeLevel) => void;
+  onChange: (a: GradeLevel[]) => void;
 }
 
-function GradeGroup({ title, gradeGroup, grades, toggleSelection }: GGProps) {
+function GradeGroup({
+  title,
+  gradeGroup,
+  grades,
+  toggleSelection,
+  onChange,
+}: GGProps) {
   const [allChecked, setAllChecked] = useState(
     gradeGroup.every((grade) => grades.has(grade))
   );
@@ -37,6 +44,7 @@ function GradeGroup({ title, gradeGroup, grades, toggleSelection }: GGProps) {
                   gradeGroup.forEach((grade) => grades.delete(grade));
                 }
                 setAllChecked(!allChecked);
+                onChange(Array.from(grades));
               }}
             />
           }
@@ -88,25 +96,25 @@ export default function GradeLevelFilter({
       <GradeGroup
         title={t('middleSchool')}
         gradeGroup={[GradeLevel.MiddleSchool]}
-        {...{ grades, toggleSelection }}
+        {...{ grades, toggleSelection, onChange }}
       />
 
       <GradeGroup
         title={t('highSchool')}
         gradeGroup={highSchoolers}
-        {...{ grades, toggleSelection }}
+        {...{ grades, toggleSelection, onChange }}
       />
 
       <GradeGroup
         title={t('collegeUniversity')}
         gradeGroup={undergrads}
-        {...{ grades, toggleSelection }}
+        {...{ grades, toggleSelection, onChange }}
       />
 
       <GradeGroup
         title={t('postGrad')}
         gradeGroup={grads}
-        {...{ grades, toggleSelection }}
+        {...{ grades, toggleSelection, onChange }}
       />
     </FormControl>
   );
