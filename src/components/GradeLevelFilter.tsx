@@ -3,8 +3,9 @@ import {
   Checkbox,
   FormControl,
   FormControlLabel,
+  Box,
+  Typography,
   FormGroup,
-  FormLabel,
 } from '@mui/material';
 import GradeLevel from '../types/GradeLevel';
 import { useTranslation } from 'react-i18next';
@@ -18,22 +19,36 @@ interface GGProps {
 
 function GradeGroup({ title, gradeGroup, grades, toggleSelection }: GGProps) {
   return (
-    <FormGroup sx={{ py: 1 }}>
-      <FormLabel>{title}</FormLabel>
-      {gradeGroup.map((grade) => (
+    <Box sx={{ py: 1 }}>
+      <>
         <FormControlLabel
-          key={grade}
+          label={<Typography sx={{ fontWeight: 'bold' }}>{title}</Typography>}
           control={
             <Checkbox
-              color="primary"
-              checked={grades.has(grade)}
-              onChange={() => toggleSelection(grade)}
+              checked={false}
+              indeterminate={false}
+              onChange={() => {}}
             />
           }
-          label={GradeLevel.toString(grade).replace(/College|Graduate/gi, '')}
         />
-      ))}
-    </FormGroup>
+      </>
+
+      <FormGroup sx={{ ml: 2 }}>
+        {gradeGroup.map((grade) => (
+          <FormControlLabel
+            key={grade}
+            control={
+              <Checkbox
+                color="primary"
+                checked={grades.has(grade)}
+                onChange={() => toggleSelection(grade)}
+              />
+            }
+            label={GradeLevel.toString(grade).replace(/College|Graduate/gi, '')}
+          />
+        ))}
+      </FormGroup>
+    </Box>
   );
 }
 
