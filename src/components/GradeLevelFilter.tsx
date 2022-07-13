@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Checkbox,
   FormControl,
@@ -18,6 +18,10 @@ interface GGProps {
 }
 
 function GradeGroup({ title, gradeGroup, grades, toggleSelection }: GGProps) {
+  const [allChecked, setAllChecked] = useState(
+    gradeGroup.every((grade) => grades.has(grade))
+  );
+
   return (
     <Box sx={{ py: 1 }}>
       <>
@@ -25,9 +29,15 @@ function GradeGroup({ title, gradeGroup, grades, toggleSelection }: GGProps) {
           label={<Typography sx={{ fontWeight: 'bold' }}>{title}</Typography>}
           control={
             <Checkbox
-              checked={false}
-              indeterminate={false}
-              onChange={() => {}}
+              checked={allChecked}
+              onChange={() => {
+                if (!allChecked) {
+                  gradeGroup.forEach((grade) => grades.add(grade));
+                } else {
+                  gradeGroup.forEach((grade) => grades.delete(grade));
+                }
+                setAllChecked(!allChecked);
+              }}
             />
           }
         />
