@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Checkbox,
   FormControl,
@@ -25,9 +25,7 @@ function GradeGroup({
   toggleSelection,
   onChange,
 }: GGProps) {
-  const [allChecked, setAllChecked] = useState(
-    gradeGroup.every((grade) => grades.has(grade))
-  );
+  let allChecked = gradeGroup.every((grade) => grades.has(grade));
 
   return (
     <Box sx={{ py: 1 }}>
@@ -43,7 +41,7 @@ function GradeGroup({
                 } else {
                   gradeGroup.forEach((grade) => grades.delete(grade));
                 }
-                setAllChecked(!allChecked);
+                allChecked = !allChecked;
                 onChange(Array.from(grades));
               }}
             />
