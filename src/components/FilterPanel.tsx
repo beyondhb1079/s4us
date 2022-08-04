@@ -268,6 +268,7 @@ export default function FilterPanel({
         <Button
           disabled={!filtersChanged}
           onClick={() => {
+            // prevents site from breaking when 'Cancel' button is clicked
             setMinAmount(params.minAmount || 0);
             setGrades(params.grades || []);
             setMajors(params.majors || []);

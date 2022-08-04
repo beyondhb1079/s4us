@@ -45,7 +45,7 @@ test('prunes null or empty known keys', () => {
 
 test('prunes bad types for known keys', () => {
   const { params, setQueryParams } = renderHookWithLocation(
-    'grades=bar,,&minAmount=2.3&maxAmount=foo&majors=4&states=ca&schools=23,ethnicities=asian'
+    'grades=bar,,&minAmount=2.3&maxAmount=foo&majors=4&states=ca&schools=23&ethnicities=asian'
   );
   expect(params).toMatchObject({});
   expect(setQueryParams).toBeInstanceOf(Function);
