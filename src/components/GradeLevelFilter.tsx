@@ -36,11 +36,9 @@ function GradeGroup({
             <Checkbox
               checked={allChecked}
               onChange={() => {
-                if (!allChecked) {
-                  gradeGroup.forEach((grade) => grades.add(grade));
-                } else {
-                  gradeGroup.forEach((grade) => grades.delete(grade));
-                }
+                gradeGroup.forEach((g) =>
+                  allChecked ? grades.delete(g) : grades.add(g)
+                );
                 allChecked = !allChecked;
                 onChange(Array.from(grades));
               }}
