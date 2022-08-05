@@ -27,6 +27,7 @@ function create(data: {
   majors?: string[];
   states?: string[];
   schools?: string[];
+  ethnicities?: Ethnicity[];
 }) {
   const amount = data.amount ?? ScholarshipAmount.unknown();
   const amountString = ScholarshipAmount.toString(amount);
@@ -43,6 +44,7 @@ function create(data: {
       majors: data.majors ?? [],
       states: data.states ?? [],
       schools: data.schools ?? [],
+      ethnicities: data.ethnicities ?? [],
     },
   });
 }
@@ -408,6 +410,22 @@ test('scholarships.list - filters by majors (engineering major)', async () => {
   });
 
   const want = [engineering];
+  expect(got.results.map(extractName).sort()).toEqual(
+    want.map(extractName).sort()
+  );
+});
+
+const asian = create({ ethnicities: [Ethnicity.Asian] });
+const hispanicLatino = create({ ethnicities: [Ethnicity.HispanicOrLatino] });
+const ethnicityScholarships = [asian, hispanicLatino];
+
+test('Scholarships.list - filters by ethnicities', async () => {
+  await Promise.all(ethnicityScholarships.map((s) => s.save()));
+
+  const got = await Scholarships.list({
+    ethnicities: [Ethnicity.HispanicOrLatino],
+  });
+  const want = [hispanicLatino];
   expect(got.results.map(extractName).sort()).toEqual(
     want.map(extractName).sort()
   );

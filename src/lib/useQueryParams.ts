@@ -1,6 +1,7 @@
 import queryString, { ParseOptions } from 'query-string';
 import { useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Ethnicity from '../types/Ethnicity';
 import GradeLevel from '../types/GradeLevel';
 import { STATES } from '../types/States';
 import sortOptions from './sortOptions';
@@ -54,8 +55,16 @@ export default function useQueryParams(
 
   if (prune) {
     /** Prune bad query parameter value strings */
-    const { minAmount, maxAmount, grades, majors, states, schools, sortBy } =
-      params;
+    const {
+      minAmount,
+      maxAmount,
+      grades,
+      majors,
+      states,
+      schools,
+      ethnicities,
+      sortBy,
+    } = params;
 
     if (
       sortBy !== undefined &&
@@ -117,6 +126,17 @@ export default function useQueryParams(
         : [];
       if (params.schools.length === 0) {
         delete params.schools;
+      }
+    }
+
+    if (ethnicities !== undefined) {
+      params.ethnicities = Array.isArray(ethnicities)
+        ? Array.from(new Set(ethnicities)).filter((e) =>
+            Ethnicity.keys().includes(e)
+          )
+        : [];
+      if (params.ethnicities.length === 0) {
+        delete params.ethnicities;
       }
     }
   }
