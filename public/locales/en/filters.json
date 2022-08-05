@@ -6,6 +6,8 @@
   "collegeUniversity": "College/University",
   "deadlineEarliestToLatest": "Deadline (Earliest to Latest)",
   "deadlineLatestToEarliest": "Deadline (Latest to Earliest)",
+  "enterEthnicityFilter": "Enter an Ethnicity to filter by",
+  "ethnicity": "Ethnicity",
   "filters": "Filters",
   "filtersCurrentlyApplied": "Your filters are currently applied.",
   "gradeLevel": "Grade Level",

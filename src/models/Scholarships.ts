@@ -21,6 +21,7 @@ import {
   Timestamp,
   where,
 } from 'firebase/firestore';
+import Ethnicity from '../types/Ethnicity';
 
 /**
  *
@@ -100,6 +101,7 @@ export interface FilterOptions {
   majors?: string[];
   states?: string[];
   schools?: string[];
+  ethnicities?: Ethnicity[];
   sortDir?: 'asc' | 'desc';
   sortField?: string;
 }
@@ -196,6 +198,11 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
               requirementMatchesFilter(
                 data.requirements?.schools?.map((s) => s.toLowerCase()),
                 opts.schools?.map((s) => s.toLowerCase())
+              ) &&
+              // ethnicities filter
+              requirementMatchesFilter(
+                data.requirements?.ethnicities,
+                opts.ethnicities
               ) &&
               // Deadline Filter.
               // This is needed  in case list() above couldn't apply it.

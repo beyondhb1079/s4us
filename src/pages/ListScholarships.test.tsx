@@ -87,10 +87,18 @@ test('does not render expired scholarships by default', async () => {
 });
 
 test('renders filter chips ontop of page', async () => {
-  renderAtRoute('/scholarships?majors[]=Engineering&states[]=CA,WA');
+  renderAtRoute(
+    '/scholarships?majors[]=Engineering&minAmount=500&grades[]=9&states[]=CA,WA&schools[]=ASA College (NY)&ethnicities[]=ASIAN'
+  );
 
   await screen.findByText('California (CA)');
-  ['Engineering', 'California (CA)', 'Washington (WA)'].forEach((s) =>
-    expect(screen.getByText(s)).toBeInTheDocument()
-  );
+  [
+    'Engineering',
+    'Min $500',
+    '9th Grade',
+    'California (CA)',
+    'Washington (WA)',
+    'ASA College (NY)',
+    'Asian',
+  ].forEach((s) => expect(screen.getByText(s)).toBeInTheDocument());
 });
