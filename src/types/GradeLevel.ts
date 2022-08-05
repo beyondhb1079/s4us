@@ -21,7 +21,7 @@ const toStringMappings: Readonly<Record<GradeLevel, string>> = {
   [GradeLevel.HsFreshman]: '9th Grade',
   [GradeLevel.HsSophomore]: '10th Grade',
   [GradeLevel.HsJunior]: '11th Grade',
-  [GradeLevel.HsSenior]: '12th Grade (High School Senior)',
+  [GradeLevel.HsSenior]: '12th Grade (Senior)',
   [GradeLevel.CollegeFreshman]: 'College Freshman',
   [GradeLevel.CollegeSophomore]: 'College Sophomore',
   [GradeLevel.CollegeJunior]: 'College Junior',

@@ -3,8 +3,9 @@ import {
   Checkbox,
   FormControl,
   FormControlLabel,
+  Box,
+  Typography,
   FormGroup,
-  FormLabel,
 } from '@mui/material';
 import GradeLevel from '../types/GradeLevel';
 import { useTranslation } from 'react-i18next';
@@ -14,26 +15,54 @@ interface GGProps {
   gradeGroup: GradeLevel[];
   grades: Set<GradeLevel>;
   toggleSelection: (s: GradeLevel) => void;
+  onChange: (a: GradeLevel[]) => void;
 }
 
-function GradeGroup({ title, gradeGroup, grades, toggleSelection }: GGProps) {
+function GradeGroup({
+  title,
+  gradeGroup,
+  grades,
+  toggleSelection,
+  onChange,
+}: GGProps) {
+  let allChecked = gradeGroup.every((grade) => grades.has(grade));
+
   return (
-    <FormGroup sx={{ py: 1 }}>
-      <FormLabel>{title}</FormLabel>
-      {gradeGroup.map((grade) => (
+    <Box sx={{ py: 1 }}>
+      <>
         <FormControlLabel
-          key={grade}
+          label={<Typography sx={{ fontWeight: 'bold' }}>{title}</Typography>}
           control={
             <Checkbox
-              color="primary"
-              checked={grades.has(grade)}
-              onChange={() => toggleSelection(grade)}
+              checked={allChecked}
+              onChange={() => {
+                gradeGroup.forEach((g) =>
+                  allChecked ? grades.delete(g) : grades.add(g)
+                );
+                allChecked = !allChecked;
+                onChange(Array.from(grades));
+              }}
             />
           }
-          label={GradeLevel.toString(grade).replace(/College|Graduate/gi, '')}
         />
-      ))}
-    </FormGroup>
+      </>
+
+      <FormGroup sx={{ ml: 2 }}>
+        {gradeGroup.map((grade) => (
+          <FormControlLabel
+            key={grade}
+            control={
+              <Checkbox
+                color="primary"
+                checked={grades.has(grade)}
+                onChange={() => toggleSelection(grade)}
+              />
+            }
+            label={GradeLevel.toString(grade).replace(/College|Graduate/gi, '')}
+          />
+        ))}
+      </FormGroup>
+    </Box>
   );
 }
 
@@ -63,25 +92,25 @@ export default function GradeLevelFilter({
       <GradeGroup
         title={t('middleSchool')}
         gradeGroup={[GradeLevel.MiddleSchool]}
-        {...{ grades, toggleSelection }}
+        {...{ grades, toggleSelection, onChange }}
       />
 
       <GradeGroup
         title={t('highSchool')}
         gradeGroup={highSchoolers}
-        {...{ grades, toggleSelection }}
+        {...{ grades, toggleSelection, onChange }}
       />
 
       <GradeGroup
         title={t('collegeUniversity')}
         gradeGroup={undergrads}
-        {...{ grades, toggleSelection }}
+        {...{ grades, toggleSelection, onChange }}
       />
 
       <GradeGroup
         title={t('postGrad')}
         gradeGroup={grads}
-        {...{ grades, toggleSelection }}
+        {...{ grades, toggleSelection, onChange }}
       />
     </FormControl>
   );
