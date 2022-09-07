@@ -1,4 +1,5 @@
 import { Container, Link, Typography } from '@mui/material';
+import { Helmet } from 'react-helmet';
 import { genMailToLink } from '../lib/mail';
 
 export default function Terms(): JSX.Element {
@@ -10,6 +11,9 @@ export default function Terms(): JSX.Element {
 
   return (
     <Container maxWidth="md" sx={{ p: 2 }}>
+      <Helmet>
+        <title>Terms and Conditions</title>
+      </Helmet>
       <Typography variant="h3" gutterBottom>
         Terms of Use
       </Typography>
@@ -27,7 +31,7 @@ export default function Terms(): JSX.Element {
         <Link href="#ip">2. INTELLECTUAL PROPERTY RIGHTS</Link>
       </Typography>
       <Typography gutterBottom>
-        <Link href="#userreps">3. USER REPRESENTATIONS</Link>
+        <Link href="#user-reps">3. USER REPRESENTATIONS</Link>
       </Typography>
       <Typography gutterBottom>
         <Link href="#prohibited">4. PROHIBITED ACTIVITIES</Link>
@@ -42,7 +46,7 @@ export default function Terms(): JSX.Element {
         <Link href="#submissions">7. SUBMISSIONS</Link>
       </Typography>
       <Typography gutterBottom>
-        <Link href="#sitemanage">8. SITE MANAGEMENT</Link>
+        <Link href="#site-manage">8. SITE MANAGEMENT</Link>
       </Typography>
       <Typography gutterBottom>
         <Link href="#terms">9. TERM AND TERMINATION</Link>
@@ -69,7 +73,7 @@ export default function Terms(): JSX.Element {
         <Link href="#indemnification">16. INDEMNIFICATION</Link>
       </Typography>
       <Typography gutterBottom>
-        <Link href="#userdata">17. USER DATA</Link>
+        <Link href="#user-data">17. USER DATA</Link>
       </Typography>
       <Typography gutterBottom>
         <Link href="#electronic">
@@ -153,7 +157,7 @@ export default function Terms(): JSX.Element {
         the Marks.
       </Typography>
 
-      <Typography id="userreps" variant="h5" gutterBottom marginY={3}>
+      <Typography id="user-reps" variant="h5" gutterBottom marginY={3}>
         3. USER REPRESENTATIONS
       </Typography>
       <Typography paragraph>
@@ -423,7 +427,7 @@ export default function Terms(): JSX.Element {
         or misappropriation of any proprietary right in your Submissions.
       </Typography>
 
-      <Typography id="sitemanage" variant="h5" gutterBottom marginY={3}>
+      <Typography id="site-manage" variant="h5" gutterBottom marginY={3}>
         8. SITE MANAGEMENT
       </Typography>
       <Typography paragraph>
@@ -637,7 +641,7 @@ export default function Terms(): JSX.Element {
         indemnification upon becoming aware of it.
       </Typography>
 
-      <Typography id="userdata" variant="h5" gutterBottom marginY={3}>
+      <Typography id="user-data" variant="h5" gutterBottom marginY={3}>
         17. USER DATA
       </Typography>
       <Typography paragraph>
