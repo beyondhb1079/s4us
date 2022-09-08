@@ -2,5 +2,7 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "prettier.singleQuote": true,
-  "prettier.jsxBracketSameLine": true
+  "prettier.jsxBracketSameLine": true,
+  "cSpell.words": ["DACA", "ethnicities", "Firestore"],
+  "cSpell.language": "en,es"
 }

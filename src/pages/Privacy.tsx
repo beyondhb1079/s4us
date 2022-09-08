@@ -1,4 +1,5 @@
 import { Container, Link, Typography } from '@mui/material';
+import { Helmet } from 'react-helmet';
 import { genMailToLink } from '../lib/mail';
 
 export default function Privacy(): JSX.Element {
@@ -10,6 +11,9 @@ export default function Privacy(): JSX.Element {
 
   return (
     <Container maxWidth="md" sx={{ p: 2 }}>
+      <Helmet>
+        <title>Privacy Notice</title>
+      </Helmet>
       <Typography variant="h3" gutterBottom>
         Privacy Notice
       </Typography>
@@ -70,13 +74,13 @@ export default function Privacy(): JSX.Element {
         visit, use, or navigate our Services, we may process personal
         information depending on how you interact with DreamScholars and the
         Services, the choices you make, and the products and features you use.
-        Click <Link href="#personalinfo">here</Link> to learn more.
+        Click <Link href="#personal-info">here</Link> to learn more.
       </Typography>
       <Typography paragraph>
         <strong>Do we process any sensitive personal information?</strong> We
         may process sensitive personal information when necessary with your
         consent or as otherwise permitted by applicable law. Click{' '}
-        <Link href="#sensitiveinfo">here</Link> to learn more.
+        <Link href="#sensitive-info">here</Link> to learn more.
       </Typography>
       <Typography paragraph>
         <strong>Do you receive any information from third parties?</strong> We
@@ -88,7 +92,7 @@ export default function Privacy(): JSX.Element {
         communicate with you, for security and fraud prevention, and to comply
         with law. We may also process your information for other purposes with
         your consent. We process your information only when we have a valid
-        legal reason to do so. Click <Link href="#infouse">here</Link> to learn
+        legal reason to do so. Click <Link href="#info-use">here</Link> to learn
         more.
       </Typography>
       <Typography paragraph>
@@ -97,8 +101,8 @@ export default function Privacy(): JSX.Element {
           personal information?
         </strong>{' '}
         We may share information in specific situations and with specific
-        categories of third parties. Click <Link href="#whoshare">here</Link> to
-        learn more.
+        categories of third parties. Click <Link href="#who-share">here</Link>{' '}
+        to learn more.
       </Typography>
       <Typography paragraph>
         <strong>How do we keep your information safe?</strong> We have
@@ -108,14 +112,14 @@ export default function Privacy(): JSX.Element {
         be 100% secure, so we cannot promise or guarantee that hackers,
         cybercriminals, or other unauthorized third parties will not be able to
         defeat our security and improperly collect, access, steal, or modify
-        your information. Click <Link href="#infosafe">here</Link> to learn
+        your information. Click <Link href="#info-safe">here</Link> to learn
         more.
       </Typography>
       <Typography paragraph>
         <strong>What are your rights?</strong> Depending on where you are
         located geographically, the applicable privacy law may mean you have
         certain rights regarding your personal information. Click{' '}
-        <Link href="#privacyrights">here</Link> to learn more.
+        <Link href="#privacy-rights">here</Link> to learn more.
       </Typography>
       <Typography paragraph>
         <strong>How do I exercise my rights?</strong> The easiest way to
@@ -133,13 +137,13 @@ export default function Privacy(): JSX.Element {
         TABLE OF CONTENTS
       </Typography>
       <Typography paragraph>
-        <Link href="#infocollect">1. WHAT INFORMATION DO WE COLLECT?</Link>
+        <Link href="#info-collect">1. WHAT INFORMATION DO WE COLLECT?</Link>
       </Typography>
       <Typography paragraph>
-        <Link href="#infouse">2. HOW DO WE PROCESS YOUR INFORMATION?</Link>
+        <Link href="#info-use">2. HOW DO WE PROCESS YOUR INFORMATION?</Link>
       </Typography>
       <Typography paragraph>
-        <Link href="#whoshare">
+        <Link href="#who-share">
           3. WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?
         </Link>
       </Typography>
@@ -149,29 +153,31 @@ export default function Privacy(): JSX.Element {
         </Link>
       </Typography>
       <Typography paragraph>
-        <Link href="#sociallogins">
+        <Link href="#social-logins">
           5. HOW DO WE HANDLE YOUR SOCIAL LOGINS?
         </Link>
       </Typography>
       <Typography paragraph>
-        <Link href="#inforetain">6. HOW LONG DO WE KEEP YOUR INFORMATION?</Link>
+        <Link href="#info-retain">
+          6. HOW LONG DO WE KEEP YOUR INFORMATION?
+        </Link>
       </Typography>
       <Typography paragraph>
-        <Link href="#infosafe">7. HOW DO WE KEEP YOUR INFORMATION SAFE?</Link>
+        <Link href="#info-safe">7. HOW DO WE KEEP YOUR INFORMATION SAFE?</Link>
       </Typography>
       <Typography paragraph>
-        <Link href="#privacyrights">8. WHAT ARE YOUR PRIVACY RIGHTS?</Link>
+        <Link href="#privacy-rights">8. WHAT ARE YOUR PRIVACY RIGHTS?</Link>
       </Typography>
       <Typography paragraph>
         <Link href="#DNT">9. CONTROLS FOR DO-NOT-TRACK FEATURES</Link>
       </Typography>
       <Typography paragraph>
-        <Link href="#caresidents">
+        <Link href="#ca-residents">
           10. DO CALIFORNIA RESIDENTS HAVE SPECIFIC PRIVACY RIGHTS?
         </Link>
       </Typography>
       <Typography paragraph>
-        <Link href="#policyupdates">
+        <Link href="#policy-updates">
           11. DO WE MAKE UPDATES TO THIS NOTICE?
         </Link>
       </Typography>
@@ -187,10 +193,10 @@ export default function Privacy(): JSX.Element {
         </Link>
       </Typography>
 
-      <Typography id="infocollect" variant="h5" gutterBottom marginY={3}>
+      <Typography id="info-collect" variant="h5" gutterBottom marginY={3}>
         1. WHAT INFORMATION DO WE COLLECT?
       </Typography>
-      <Typography id="personalinfo" paragraph>
+      <Typography id="personal-info" paragraph>
         <strong>Personal information you disclose to us</strong>
       </Typography>
       <Typography paragraph>
@@ -235,7 +241,7 @@ export default function Privacy(): JSX.Element {
           academic background
         </Typography>
       </ul>
-      <Typography id="sensitiveinfo" paragraph>
+      <Typography id="sensitive-info" paragraph>
         <strong>Sensitive Information.</strong> When necessary, with your
         consent or as otherwise permitted by applicable law, we process the
         following categories of sensitive information:
@@ -254,7 +260,7 @@ export default function Privacy(): JSX.Element {
         details, like your Facebook, Twitter, or other social media account. If
         you choose to register in this way, we will collect the information
         described in the section called "
-        <Link href="#sociallogins">HOW DO WE HANDLE YOUR SOCIAL LOGINS?</Link>"
+        <Link href="#social-logins">HOW DO WE HANDLE YOUR SOCIAL LOGINS?</Link>"
         below.
       </Typography>
       <Typography paragraph>
@@ -315,7 +321,7 @@ export default function Privacy(): JSX.Element {
         </Typography>
       </ul>
 
-      <Typography id="infouse" variant="h5" gutterBottom marginY={3}>
+      <Typography id="info-use" variant="h5" gutterBottom marginY={3}>
         2. HOW DO WE PROCESS YOUR INFORMATION?
       </Typography>
       <Typography paragraph>
@@ -357,7 +363,7 @@ export default function Privacy(): JSX.Element {
           marketing purposes, if this is in accordance with your marketing
           preferences. You can opt out of our marketing emails at any time. For
           more information, see "
-          <Link href="#privacyrights">WHAT ARE YOUR PRIVACY RIGHTS?</Link> "
+          <Link href="#privacy-rights">WHAT ARE YOUR PRIVACY RIGHTS?</Link> "
           below.
         </Typography>
         <Typography component="li" paragraph>
@@ -377,7 +383,7 @@ export default function Privacy(): JSX.Element {
         </Typography>
       </ul>
 
-      <Typography id="whoshare" variant="h5" gutterBottom marginY={3}>
+      <Typography id="who-share" variant="h5" gutterBottom marginY={3}>
         3. WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?
       </Typography>
       <Typography paragraph>
@@ -445,7 +451,7 @@ export default function Privacy(): JSX.Element {
         set out in our Cookie Notice.
       </Typography>
 
-      <Typography id="sociallogins" variant="h5" gutterBottom marginY={3}>
+      <Typography id="social-logins" variant="h5" gutterBottom marginY={3}>
         5. HOW DO WE HANDLE YOUR SOCIAL LOGINS?
       </Typography>
       <Typography paragraph>
@@ -478,7 +484,7 @@ export default function Privacy(): JSX.Element {
         their sites and apps.
       </Typography>
 
-      <Typography id="inforetain" variant="h5" gutterBottom marginY={3}>
+      <Typography id="info-retain" variant="h5" gutterBottom marginY={3}>
         6. HOW LONG DO WE KEEP YOUR INFORMATION?
       </Typography>
       <Typography paragraph>
@@ -508,7 +514,7 @@ export default function Privacy(): JSX.Element {
         processing until deletion is possible.
       </Typography>
 
-      <Typography id="infosafe" variant="h5" gutterBottom marginY={3}>
+      <Typography id="info-safe" variant="h5" gutterBottom marginY={3}>
         7. HOW DO WE KEEP YOUR INFORMATION SAFE?
       </Typography>
       <Typography paragraph>
@@ -535,7 +541,7 @@ export default function Privacy(): JSX.Element {
         a secure environment.
       </Typography>
 
-      <Typography id="privacyrights" variant="h5" gutterBottom marginY={3}>
+      <Typography id="privacy-rights" variant="h5" gutterBottom marginY={3}>
         8. WHAT ARE YOUR PRIVACY RIGHTS?
       </Typography>
       <Typography paragraph>
@@ -645,7 +651,7 @@ export default function Privacy(): JSX.Element {
         practice in a revised version of this privacy notice.
       </Typography>
 
-      <Typography id="caresidents" variant="h5" gutterBottom marginY={3}>
+      <Typography id="ca-residents" variant="h5" gutterBottom marginY={3}>
         10. DO CALIFORNIA RESIDENTS HAVE SPECIFIC PRIVACY RIGHTS?
       </Typography>
       <Typography paragraph>
@@ -680,7 +686,7 @@ export default function Privacy(): JSX.Element {
         our systems (e.g., backups, etc.).
       </Typography>
 
-      <Typography id="policyupdates" variant="h5" gutterBottom marginY={3}>
+      <Typography id="policy-updates" variant="h5" gutterBottom marginY={3}>
         11. DO WE MAKE UPDATES TO THIS NOTICE?
       </Typography>
       <Typography paragraph>

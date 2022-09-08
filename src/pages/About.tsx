@@ -64,7 +64,7 @@ export default function About(): JSX.Element {
             {t('title')}
           </Typography>
           <Typography paragraph>
-            {t('description', { brand: BRAND_NAME })}
+            {t('meetTheTeam', { brand: BRAND_NAME })}
           </Typography>
         </Grid>
 
