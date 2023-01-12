@@ -15,7 +15,7 @@ export default function ShowMoreScholarships({
 
   useEffect(() => {
     if (scholarships.length === 0 && !loading) {
-      setFilters({ hideExpired: true });
+      setFilters({ showExpired: true });
     }
   }, [scholarships, loading, setFilters]);
 

@@ -31,6 +31,7 @@ test('prunes null or empty known keys', () => {
     'schools',
     'ethnicities',
     'sortBy',
+    'showExpired',
   ].forEach((k) => {
     const { params, setQueryParams } = renderHookWithLocation(k + '=null');
 
@@ -45,7 +46,7 @@ test('prunes null or empty known keys', () => {
 
 test('prunes bad types for known keys', () => {
   const { params, setQueryParams } = renderHookWithLocation(
-    'grades=bar,,&minAmount=2.3&maxAmount=foo&majors=4&states=ca&schools=23&ethnicities=asian'
+    'grades=bar,,&minAmount=2.3&maxAmount=foo&majors=4&states=ca&schools=23&ethnicities=asian&showExpired=0'
   );
   expect(params).toMatchObject({});
   expect(setQueryParams).toBeInstanceOf(Function);
