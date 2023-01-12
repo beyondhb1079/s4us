@@ -156,7 +156,7 @@ function ListScholarships(): JSX.Element {
             ))}
           </Stack>
           <Suspense fallback={null}>
-            <ScholarshipList extraFilters={{ hideExpired: true }} />
+            <ScholarshipList />
           </Suspense>
         </Container>
       </Box>

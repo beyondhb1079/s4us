@@ -431,43 +431,28 @@ test('Scholarships.list - filters by ethnicities', async () => {
   );
 });
 
-test('scholarships.list - shows expired by default', async () => {
+test('scholarships.list - hides expired by default', async () => {
   await Promise.all([expired.save(), today.save(), tomorrow.save()]);
 
   const got = await Scholarships.list({});
 
-  const want = [expired, today, tomorrow];
+  const want = [today, tomorrow];
   expect(got.results.map(extractName).sort()).toEqual(
     want.map(extractName).sort()
   );
 });
 
-test('scholarships.list - hideExpired sorting by deadline', async () => {
+test('scholarships.list - showExpired sorting by deadline', async () => {
   await Promise.all([expired.save(), today.save(), tomorrow.save()]);
 
   const got = await Scholarships.list({
-    hideExpired: true,
+    showExpired: true,
     sortField: 'deadline',
     sortDir: 'asc',
   });
 
-  const want = [today, tomorrow];
+  const want = [expired, today, tomorrow];
   expect(got.results.map(extractName)).toEqual(want.map(extractName));
-});
-
-test('scholarships.list - hideExpired sorting by amount', async () => {
-  await Promise.all([expired.save(), today.save(), tomorrow.save()]);
-
-  const got = await Scholarships.list({
-    hideExpired: true,
-    sortField: 'amount.min',
-    sortDir: 'asc',
-  });
-
-  const want = [tomorrow, today];
-  expect(got.results.map(extractName).sort()).toEqual(
-    want.map(extractName).sort()
-  );
 });
 
 test('scholarships.new - default values', async () => {

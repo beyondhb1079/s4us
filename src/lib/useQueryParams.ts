@@ -10,6 +10,7 @@ const options: ParseOptions = {
   arrayFormat: 'bracket-separator',
   arrayFormatSeparator: ',',
   parseNumbers: true,
+  parseBooleans: true,
 };
 
 type SetQueryParamsFn = (
@@ -64,7 +65,12 @@ export default function useQueryParams(
       schools,
       ethnicities,
       sortBy,
+      showExpired,
     } = params;
+
+    if (showExpired !== undefined && typeof showExpired !== 'boolean') {
+      delete params.showExpired;
+    }
 
     if (
       sortBy !== undefined &&

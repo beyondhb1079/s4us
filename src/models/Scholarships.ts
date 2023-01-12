@@ -94,7 +94,7 @@ export const converter: FirestoreDataConverter<ScholarshipData> = {
 
 export interface FilterOptions {
   authorId?: string;
-  hideExpired?: boolean;
+  showExpired?: boolean;
   minAmount?: number;
   maxAmount?: number;
   grades?: GradeLevel[];
@@ -143,7 +143,7 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
     const now = new Date();
     const today = new Date(now.toDateString());
 
-    if (opts.hideExpired && opts.sortField == 'deadline') {
+    if (!opts.showExpired && opts.sortField == 'deadline') {
       q = query(q, where('deadline', '>=', today));
     }
 
