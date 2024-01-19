@@ -1,6 +1,7 @@
 {
   "additionalInfo": "Additional Information",
-  "description": "Help our team provide the best search results for students and community members looking for scholarships by contributing as much detail information possible.",
+  "description": "Know a scholarship available for undocumented students not yet in our database? Add it to our database!",
+  "description2": "Help students and community members alike easily find your contirbution by providing as much detail as possible.",
   "submitAScholarship": "Submit a Scholarship",
-  "titleTag": "Add a Scholarship"
+  "title": "Add a Scholarship"
 }

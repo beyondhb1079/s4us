@@ -292,7 +292,7 @@ export default function ScholarshipCard({
             />
           )}
 
-          {!glance && (
+          {!glance && lastModified && (
             <Typography
               variant="subtitle2"
               align="right"

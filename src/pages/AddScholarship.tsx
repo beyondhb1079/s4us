@@ -12,7 +12,7 @@ function AddScholarship(): JSX.Element {
   return (
     <Box sx={{ p: 2 }}>
       <Helmet>
-        <title>{t('titleTag')}</title>
+        <title>{t('title')}</title>
       </Helmet>
 
       <Container maxWidth="lg" sx={{ p: 2 }}>
@@ -22,11 +22,11 @@ function AddScholarship(): JSX.Element {
             sm={12}
             md={6}
             sx={{ textAlign: { xs: 'center', md: 'left' } }}>
-            <Typography gutterBottom>{t('submitAScholarship')}</Typography>
             <Typography variant="h4" gutterBottom>
-              {t('additionalInfo')}
+              {t('title')}
             </Typography>
-            <Typography>{t('description')}</Typography>
+            <Typography paragraph>{t('description')}</Typography>
+            <Typography paragraph>{t('description2')}</Typography>
           </Grid>
 
           <Grid item sm={12} md={6} sx={{ width: '100%' }}>

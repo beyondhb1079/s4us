@@ -38,6 +38,7 @@ import i18n from 'i18next';
 import ScholarshipData from '../types/ScholarshipData';
 import Model from '../models/base/Model';
 import ScholarshipEligibility from '../types/ScholarshipEligibility';
+import ScholarshipNameSearch from './ScholarshipNameSearch';
 
 const labelStyle = { marginBottom: 2 };
 
@@ -111,6 +112,10 @@ export default function ScholarshipForm({ scholarship }: SFProps): JSX.Element {
   const noReqsChecked = JSON.stringify(formik.values.requirements) === '{}';
 
   const stepperItems = {
+    [t('checkDatabase')]: {
+      description: t('checkDatabaseDescription'),
+      content: <ScholarshipNameSearch />,
+    },
     [t('common:general')]: {
       description: t('generalDescription'),
       content: (
@@ -312,6 +317,8 @@ export default function ScholarshipForm({ scholarship }: SFProps): JSX.Element {
       ),
     },
   };
+  // TODO: Conditinonally delete the first step
+  // TODO: Change references to specific step to be indifferent to place.
 
   function validationCheck() {
     const noReqsGiven =
