@@ -13424,9 +13424,9 @@ react@^17.0.2:
     object-assign "^4.1.1"
 
 reactstrap@^9.0.1:
-  version "9.1.2"
-  resolved "https://registry.yarnpkg.com/reactstrap/-/reactstrap-9.1.2.tgz#fea88b94876d69175f17ceccfab31b37bd0b5342"
-  integrity sha512-Ha5zlbIFPLG1KKaAfreliOaKguAfltp9cydXbE5RomKyG/byhaKly1BLK/hM09EEwan18VNmn7msyKK2RU/olQ==
+  version "9.2.2"
+  resolved "https://registry.yarnpkg.com/reactstrap/-/reactstrap-9.2.2.tgz#d3a062cb1492a9cf6ed4684698044fa1996350c9"
+  integrity sha512-4KroiGOdqZLAnMGzHjpErW3G7bLB+QbKzzMLIDXydPIV0y74lpdL7WtXHkLWAGInd97WCPNx4+R0NQDPyzIfhw==
   dependencies:
     "@babel/runtime" "^7.12.5"
     "@popperjs/core" "^2.6.0"
