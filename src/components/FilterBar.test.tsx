@@ -4,7 +4,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import FilterBar from './FilterBar';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
-import { act } from 'react-dom/test-utils';
+import { act } from 'react';
 
 function renderComponent(queryString = '') {
   return render(

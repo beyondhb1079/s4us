@@ -2,7 +2,6 @@ import MutationObserver from 'mutation-observer';
 import React, { Suspense } from 'react';
 import Helmet from 'react-helmet';
 import { render, screen, waitFor } from '@testing-library/react';
-import { vi } from 'vitest';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { initializeTestEnv } from '../lib/testing';
@@ -15,7 +14,7 @@ import State from '../types/States';
 import i18n from '../i18n';
 import { I18nextProvider } from 'react-i18next';
 import { ScholarshipsProvider } from '../models/ScholarshipsContext';
-import { act } from 'react-dom/test-utils';
+import { act } from 'react';
 
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.

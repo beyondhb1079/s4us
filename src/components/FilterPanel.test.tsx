@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import FilterPanel from './FilterPanel';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
-import { act } from 'react-dom/test-utils';
+import { act } from 'react';
 
 function renderComponent() {
   return render(

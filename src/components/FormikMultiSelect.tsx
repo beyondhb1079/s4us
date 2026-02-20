@@ -1,4 +1,3 @@
-import { FormikConfig, FormikValues } from 'formik';
 import React from 'react';
 import { getIn } from 'formik';
 import { InputLabel, Select, MenuItem, SxProps, Theme } from '@mui/material';
@@ -14,6 +13,7 @@ const MenuProps = {
 
 interface FMSProps {
   /** The result of `useFormik()`. */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formik: any;
   id: string;
   label: string;

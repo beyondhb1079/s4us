@@ -1,7 +1,6 @@
 import { MemoryRouter } from 'react-router-dom';
 import useQueryParams from './useQueryParams';
 import { renderHook } from '@testing-library/react';
-import { vi } from 'vitest';
 import { ReactNode } from 'react';
 
 function renderHookWithLocation(search: string, prune?: boolean) {

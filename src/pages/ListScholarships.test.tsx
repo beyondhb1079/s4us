@@ -42,13 +42,12 @@ afterAll(() => cleanup());
 // https://stackoverflow.com/a/62148101
 beforeEach(() => {
   // IntersectionObserver isn't available in test environment
-  const mockIntersectionObserver = vi.fn();
-  mockIntersectionObserver.mockReturnValue({
-    observe: () => null,
-    unobserve: () => null,
-    disconnect: () => null,
-  });
-  window.IntersectionObserver = mockIntersectionObserver;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  window.IntersectionObserver = class {
+    observe = vi.fn();
+    unobserve = vi.fn();
+    disconnect = vi.fn();
+  } as any;
 });
 
 test('renders a list of scholarships', async () => {

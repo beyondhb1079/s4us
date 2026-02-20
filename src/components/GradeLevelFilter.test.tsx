@@ -1,6 +1,5 @@
 import React, { Suspense } from 'react';
 import { render, screen, waitFor, act } from '@testing-library/react';
-import { vi } from 'vitest';
 import GradeLevelFilter from './GradeLevelFilter';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';

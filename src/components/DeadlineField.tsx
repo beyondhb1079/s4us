@@ -1,12 +1,12 @@
-import { FormikConfig, FormikValues } from 'formik';
 import React from 'react';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { InputLabel, SxProps, TextField, Theme } from '@mui/material';
+import { InputLabel, SxProps, Theme } from '@mui/material';
 
 interface DeadlineFieldProps {
   /** The result of `useFormik()`. */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formik?: any;
   label: string;
   labelStyle?: SxProps<Theme>;
