@@ -20,7 +20,7 @@ jobs:
             const repo = context.payload.repository.name;
             const pull_number = context.payload.pull_request.number;
 
-            const approvals = await github.pulls
+            const approvals = await github.rest.pulls
               .listReviews({ owner, repo, pull_number })
               .then((response) =>
                 response.data
@@ -83,7 +83,7 @@ jobs:
             const repo = context.payload.repository.name;
             const pull_number = context.payload.pull_request.number;
 
-            const approvals = await github.pulls
+            const approvals = await github.rest.pulls
               .listReviews({ owner, repo, pull_number })
               .then((response) =>
                 response.data
@@ -178,7 +178,7 @@ jobs:
 
             console.log(message);
 
-            await github.pulls.dismissReview({
+            await github.rest.pulls.dismissReview({
               owner,
               repo,
               pull_number,

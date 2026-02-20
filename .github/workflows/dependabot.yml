@@ -24,12 +24,12 @@ jobs:
             const repo = context.payload.repository.name;
             const pull_number = context.payload.pull_request.number;
 
-            github.pulls
+            github.rest.pulls
               .listReviews({ owner, repo, pull_number })
               .then((response) =>
                 response.data
-                  .filter(r => r.state == 'APPROVED')
-                  .filter(r => r.user.login = 'github-actions[bot]')
+                  .filter((r) => r.state == 'APPROVED')
+                  .filter((r) => (r.user.login = 'github-actions[bot]')),
               )
               .then((approvals) => {
                 if (approvals.length !== 0) {
@@ -42,7 +42,7 @@ jobs:
                   'Dear human reviewer, copy and paste this to auto merge: \n' +
                   '@dependabot squash and merge';
                 const event = 'APPROVE';
-                return github.pulls.createReview({
+                return github.rest.pulls.createReview({
                   owner,
                   repo,
                   pull_number,
