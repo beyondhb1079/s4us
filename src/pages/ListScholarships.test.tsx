@@ -1,6 +1,7 @@
 import MutationObserver from 'mutation-observer';
 import React, { Suspense } from 'react';
 import { render, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { initializeTestEnv } from '../lib/testing';
@@ -41,7 +42,7 @@ afterAll(() => cleanup());
 // https://stackoverflow.com/a/62148101
 beforeEach(() => {
   // IntersectionObserver isn't available in test environment
-  const mockIntersectionObserver = jest.fn();
+  const mockIntersectionObserver = vi.fn();
   mockIntersectionObserver.mockReturnValue({
     observe: () => null,
     unobserve: () => null,

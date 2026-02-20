@@ -1,6 +1,7 @@
 import { MemoryRouter } from 'react-router-dom';
 import useQueryParams from './useQueryParams';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
+import { vi } from 'vitest';
 import { ReactNode } from 'react';
 
 function renderHookWithLocation(search: string, prune?: boolean) {
@@ -9,8 +10,8 @@ function renderHookWithLocation(search: string, prune?: boolean) {
       {props.children}
     </MemoryRouter>
   );
-  const result = renderHook(() => useQueryParams(prune), { wrapper });
-  const [params, setQueryParams] = result.result.current;
+  const { result } = renderHook(() => useQueryParams(prune), { wrapper });
+  const [params, setQueryParams] = result.current;
   return { params, setQueryParams };
 }
 

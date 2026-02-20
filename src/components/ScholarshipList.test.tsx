@@ -1,6 +1,7 @@
 import MutationObserver from 'mutation-observer';
 import React, { Suspense } from 'react';
 import { render, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import { MemoryRouter } from 'react-router-dom';
@@ -10,7 +11,9 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
 import { initializeTestEnv } from '../lib/testing';
 import { ScholarshipsProvider } from '../models/ScholarshipsContext';
-import ScholarshipAmount from '../types/ScholarshipAmount';
+import ScholarshipAmount, {
+  ScholarshipAmountInfo,
+} from '../types/ScholarshipAmount';
 
 const [env, cleanup] = initializeTestEnv('scholarship-list-test');
 beforeEach(() => env.then((e) => e.clearFirestore()));
@@ -35,7 +38,7 @@ const renderWithProviders = (ui: JSX.Element) =>
 // https://stackoverflow.com/a/62148101
 beforeEach(() => {
   // IntersectionObserver isn't available in test environment
-  const mockIntersectionObserver = jest.fn();
+  const mockIntersectionObserver = vi.fn();
   mockIntersectionObserver.mockReturnValue({
     observe: () => null,
     unobserve: () => null,
@@ -63,7 +66,7 @@ test('renders custom no results node', async () => {
 test('renders end of results', async () => {
   const data = {
     name: 'Foo scholarship',
-    amount: ScholarshipAmount.fixed(1000),
+    amount: ScholarshipAmountInfo.fixed(1000),
     description: 'Foo description',
     deadline: new Date('3020-12-17'),
     website: 'foo.com',

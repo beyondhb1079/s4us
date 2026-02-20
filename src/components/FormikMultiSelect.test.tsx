@@ -18,8 +18,8 @@ test('renders options', () => {
   );
 
   expect(getByText('my label')).toBeInTheDocument();
-  expect(getByRole('button')).toHaveAttribute('id', 'names');
-  expect(getByRole('button').innerHTML).toBe('Bar soap, Foo Fighters');
+  expect(getByRole('combobox')).toHaveAttribute('id', 'names');
+  expect(getByRole('combobox').innerHTML).toBe('Bar soap, Foo Fighters');
 });
 
 // TODO(#1167): Add test case for onChange

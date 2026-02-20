@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import MutationObserver from 'mutation-observer';
 import React, { Suspense } from 'react';
 import { render, screen } from '@testing-library/react';
@@ -8,10 +9,10 @@ import i18n from './i18n';
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution..
 window.MutationObserver = MutationObserver;
-window.scrollTo = jest.fn();
+window.scrollTo = vi.fn();
 
 afterAll(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 });
 
 test('renders home page by default', () => {

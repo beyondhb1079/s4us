@@ -1,19 +1,13 @@
 import { FormikConfig, FormikValues } from 'formik';
 import React from 'react';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import MuiDatePicker from '@mui/lab/DatePicker';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import {
-  InputLabel,
-  SxProps,
-  TextField,
-  TextFieldProps,
-  Theme,
-} from '@mui/material';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { InputLabel, SxProps, TextField, Theme } from '@mui/material';
 
 interface DeadlineFieldProps {
   /** The result of `useFormik()`. */
-  formik?: Partial<FormikConfig<FormikValues>>;
+  formik?: any;
   label: string;
   labelStyle?: SxProps<Theme>;
   id?: string;
@@ -41,20 +35,17 @@ export default function DeadlineField(props: DeadlineFieldProps): JSX.Element {
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <InputLabel sx={labelStyle}>{label}</InputLabel>
       <MuiDatePicker
-        inputFormat="MM/dd/yyyy"
         value={dateValue}
         onChange={handleChange}
-        renderInput={(params: TextFieldProps) => (
-          <TextField
-            // eslint-disable-next-line react/jsx-props-no-spreading
-            {...params}
-            id={id}
-            variant="outlined"
-            fullWidth
-            helperText={helperText}
-            error={error}
-          />
-        )}
+        slotProps={{
+          textField: {
+            id,
+            variant: 'outlined',
+            fullWidth: true,
+            helperText: helperText as string,
+            error,
+          },
+        }}
       />
     </LocalizationProvider>
   );

@@ -1,13 +1,14 @@
 import { FormikConfig, FormikValues } from 'formik';
 import React, { Suspense } from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
+import { vi } from 'vitest';
 import UserEvent from '@testing-library/user-event';
 import ScholarshipAmountField from './ScholarshipAmountField';
 import AmountType from '../types/AmountType';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
 
-const formik: Partial<FormikConfig<FormikValues>> = {
+const formik: any = {
   values: {
     amount: {
       type: AmountType.Fixed,
@@ -30,7 +31,7 @@ function renderWithAmountType(type: AmountType) {
 test('renders select options', async () => {
   renderWithAmountType(AmountType.Fixed);
 
-  const select = await waitFor(() => screen.getByRole('button'));
+  const select = await waitFor(() => screen.getByRole('combobox'));
   await UserEvent.click(select);
 
   const options = screen.getAllByRole('option');

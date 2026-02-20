@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ScholarshipCard from './ScholarshipCard';

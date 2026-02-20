@@ -14,7 +14,7 @@ const MenuProps = {
 
 interface FMSProps {
   /** The result of `useFormik()`. */
-  formik: Partial<FormikConfig<FormikValues>>;
+  formik: any;
   id: string;
   label: string;
   options: { [k: string]: string };

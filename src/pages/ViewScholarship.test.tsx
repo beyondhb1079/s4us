@@ -2,6 +2,7 @@ import MutationObserver from 'mutation-observer';
 import React, { Suspense } from 'react';
 import Helmet from 'react-helmet';
 import { render, screen, waitFor } from '@testing-library/react';
+import { vi } from 'vitest';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { initializeTestEnv } from '../lib/testing';
