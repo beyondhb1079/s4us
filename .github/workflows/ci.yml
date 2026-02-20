@@ -14,13 +14,14 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - uses: actions/setup-node@v2-beta
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version: '20'
+          cache: 'yarn'
       - run: yarn install --frozen-lockfile
-      - run: yarn build --frozen-lockfile
-      - uses: w9jds/firebase-action@master
+      - run: yarn build
+      - uses: w9jds/firebase-action@v14.0.0
         name: Deploy app and firestore rules/indices
         with:
           args: deploy --only hosting,firestore --project dreamerscholars

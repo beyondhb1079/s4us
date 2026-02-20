@@ -15,9 +15,9 @@ jobs:
     name: Autoapprove
     steps:
       - name: Checkout the repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Autoapprove
-        uses: actions/github-script@v4
+        uses: actions/github-script@v7
         with:
           script: |
             const owner = context.payload.repository.owner.login;
