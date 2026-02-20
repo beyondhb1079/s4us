@@ -17,16 +17,16 @@ const toStringMappings: Readonly<Record<Ethnicity, string>> = {
   [Ethnicity.White]: 'White',
 };
 
-namespace Ethnicity {
-  export function keys(): Ethnicity[] {
+export const EthnicityInfo = {
+  keys(): Ethnicity[] {
     return Object.keys(toStringMappings) as Ethnicity[];
-  }
-  export function values(): Record<Ethnicity, string> {
+  },
+  values(): Record<Ethnicity, string> {
     return toStringMappings;
-  }
-  export function toString(ethnicity: Ethnicity): string {
+  },
+  toString(ethnicity: Ethnicity): string {
     return toStringMappings[ethnicity];
-  }
-}
+  },
+};
 
 export default Ethnicity;

@@ -1,9 +1,9 @@
 /** Utility methods for linting scholarship information and detecting errors. */
 
 import AmountType from '../types/AmountType';
-import Ethnicity from '../types/Ethnicity';
-import GradeLevel from '../types/GradeLevel';
-import ScholarshipAmount from '../types/ScholarshipAmount';
+import Ethnicity, { EthnicityInfo } from '../types/Ethnicity';
+import GradeLevel, { GradeLevelInfo } from '../types/GradeLevel';
+import { ScholarshipAmountInfo } from '../types/ScholarshipAmount';
 import { MAJORS, School, SCHOOLS } from '../types/options';
 import State, { STATES } from '../types/States';
 import ScholarshipData from '../types/ScholarshipData';
@@ -43,8 +43,10 @@ const THIS_YEAR = new Date().getFullYear();
 
 /** Returns a list of strings that seem to match outdated school periods. */
 export function parseOutdatedSchoolPeriods(desc: string): string[] {
-  return (desc.match(/(\D|^)\d{4}-\d{4}(\D|$)/g) || [])
-    .concat(desc.match(/(fall|winter|spring)( of)? \d{4}/gi) || [])
+  return ((desc.match(/(\D|^)\d{4}-\d{4}(\D|$)/g) || []) as string[])
+    .concat(
+      (desc.match(/(fall|winter|spring)( of)? \d{4}/gi) || []) as string[],
+    )
     .filter((s) => !s.includes(THIS_YEAR.toString()));
 }
 
@@ -73,9 +75,9 @@ export function parseGradeLevels(desc: string): GradeLevel[] {
     [GradeLevel.GraduateFifthYear]: ['graduate[^.]* (5th|fifth) year'],
   };
   const matches = new Set(
-    GradeLevel.keys().filter((g) =>
-      keywords[g].some((k) => lowerDesc.match(new RegExp(k)))
-    )
+    GradeLevelInfo.keys().filter((g) =>
+      keywords[g].some((k) => lowerDesc.match(new RegExp(k))),
+    ),
   );
 
   if (!lowerDesc.includes('high school')) {
@@ -90,7 +92,7 @@ export function parseGradeLevels(desc: string): GradeLevel[] {
 
   // Search for keywords belong to whole groups of students, ignoring them
   // if we've already detected more specific grade levels for that group.
-  const { highSchoolers, undergrads, grads } = GradeLevel;
+  const { highSchoolers, undergrads, grads } = GradeLevelInfo;
   if (desc.match(/8(th)?-12(th)?/)) {
     [GradeLevel.MiddleSchool, ...highSchoolers].forEach((g) => matches.add(g));
   } else if (
@@ -128,11 +130,11 @@ export function parseMajors(desc: string): string[] {
   ];
   const sanitizedDesc = falsePositives.reduce(
     (s, fp) => s.replaceAll(fp, ''),
-    desc.toLowerCase()
+    desc.toLowerCase(),
   );
 
   const majors = Array.from(MAJORS).filter((m) =>
-    sanitizedDesc.match(new RegExp('(\\W|^)' + m.toLowerCase() + '(\\W|$)'))
+    sanitizedDesc.match(new RegExp('(\\W|^)' + m.toLowerCase() + '(\\W|$)')),
   );
 
   // Coming across these words, common words like "history" and "education"
@@ -166,8 +168,8 @@ export function parseSchools(desc: string, url?: string): School[] {
   return SCHOOLS.filter(({ name }) => desc.includes(name)).concat(
     SCHOOLS.filter(
       ({ name, website }) =>
-        url?.includes('//' + website) && desc.includes(acronym(name))
-    )
+        url?.includes('//' + website) && desc.includes(acronym(name)),
+    ),
   );
 }
 
@@ -175,7 +177,7 @@ export function parseSchools(desc: string, url?: string): School[] {
 export function parseStates(desc: string): State[] {
   return STATES.filter(
     ({ name, abbr }) =>
-      desc.includes(name) || desc.match(new RegExp('\\W' + abbr + '\\W'))
+      desc.includes(name) || desc.match(new RegExp('\\W' + abbr + '\\W')),
   );
 }
 
@@ -197,8 +199,8 @@ export function parseEthnicities(desc: string): Ethnicity[] {
     [Ethnicity.White]: ['Caucasian', 'White'],
   };
   // "White House" does not correspond to a race lol.
-  return (Object.keys(Ethnicity.values()) as Ethnicity[]).filter((e) =>
-    keywords[e].some((k) => desc.replace('White House', 'WH').includes(k))
+  return (Object.keys(EthnicityInfo.values()) as Ethnicity[]).filter((e) =>
+    keywords[e].some((k) => desc.replace('White House', 'WH').includes(k)),
   );
 }
 
@@ -218,28 +220,28 @@ export function lintReqs(scholarship: ScholarshipData): LintReqsResult {
 
   const matchedGpa = parseMinGPA(desc);
   const missingGrades = parseGradeLevels(desc).filter(
-    (g) => !grades?.includes(g)
+    (g) => !grades?.includes(g),
   );
   const missingSchools = parseSchools(desc, website).filter(
-    ({ name, state }) => !schools?.includes(`${name} (${state})`)
+    ({ name, state }) => !schools?.includes(`${name} (${state})`),
   );
   const missingStates = parseStates(desc).filter(
-    ({ abbr }) => !states?.includes(abbr)
+    ({ abbr }) => !states?.includes(abbr),
   );
   const missingMajors = parseMajors(desc).filter((m) => !majors?.includes(m));
   const missingEthnicites = parseEthnicities(desc).filter(
-    (e) => !ethnicities?.includes(e)
+    (e) => !ethnicities?.includes(e),
   );
 
   if (matchedGpa) {
     const parsedVal = Number.parseFloat(matchedGpa.value);
     if (!requirements?.gpa) {
       messages.push(
-        `No GPA requirement specified but found: "${matchedGpa.phrase}"`
+        `No GPA requirement specified but found: "${matchedGpa.phrase}"`,
       );
     } else if (requirements.gpa !== parsedVal) {
       messages.push(
-        `Min GPA requirement is set to ${reqs.gpa} but seems to be ${parsedVal} per: "${matchedGpa.phrase}"`
+        `Min GPA requirement is set to ${reqs.gpa} but seems to be ${parsedVal} per: "${matchedGpa.phrase}"`,
       );
     }
     reqs.gpa = parsedVal;
@@ -248,8 +250,8 @@ export function lintReqs(scholarship: ScholarshipData): LintReqsResult {
   if (missingGrades.length) {
     messages.push(
       `Potentially missing grade level requirements: ${JSON.stringify(
-        missingGrades.map(GradeLevel.toString)
-      )}`
+        missingGrades.map(GradeLevelInfo.toString),
+      )}`,
     );
     reqs.grades = missingGrades;
   }
@@ -257,26 +259,26 @@ export function lintReqs(scholarship: ScholarshipData): LintReqsResult {
   if (missingSchools.length) {
     messages.push(
       `Potentially missing school requirements: ${JSON.stringify(
-        missingSchools.map((s) => `${s.name} (${s.state})`)
-      )}`
+        missingSchools.map((s) => `${s.name} (${s.state})`),
+      )}`,
     );
     reqs.schools = missingSchools.map(
-      ({ name, state }) => `${name} (${state})`
+      ({ name, state }) => `${name} (${state})`,
     );
   }
 
   if (missingStates.length) {
     messages.push(
       `Potentially missing state requirements: ${JSON.stringify(
-        missingStates.map((s) => s.abbr)
-      )}`
+        missingStates.map((s) => s.abbr),
+      )}`,
     );
     reqs.states = missingStates.map((s) => s.abbr);
   }
 
   if (missingMajors.length) {
     messages.push(
-      `Potentially missing major requirements: ${JSON.stringify(missingMajors)}`
+      `Potentially missing major requirements: ${JSON.stringify(missingMajors)}`,
     );
     reqs.majors = missingMajors;
   }
@@ -284,8 +286,8 @@ export function lintReqs(scholarship: ScholarshipData): LintReqsResult {
   if (missingEthnicites.length) {
     messages.push(
       `Potentially missing ethnicity requirements: ${JSON.stringify(
-        missingEthnicites.map(Ethnicity.toString)
-      )}`
+        missingEthnicites.map(EthnicityInfo.toString),
+      )}`,
     );
     reqs.ethnicities = missingEthnicites;
   }
@@ -302,13 +304,13 @@ export function lint(scholarship: ScholarshipData): string[] {
   if (outdatedSchoolPeriods.length) {
     issues.push(
       `Description mentions outdated school periods: ${JSON.stringify(
-        outdatedSchoolPeriods
-      )}`
+        outdatedSchoolPeriods,
+      )}`,
     );
   }
   if (!desc.includes('\n') && (desc.match(/ -/g)?.length ?? 0) > 1) {
     issues.push(
-      'Decription is a single line but contains several "-" characters. Should those be separate lines?'
+      'Decription is a single line but contains several "-" characters. Should those be separate lines?',
     );
   }
   const amountMatches =
@@ -319,33 +321,36 @@ export function lint(scholarship: ScholarshipData): string[] {
     ((amount.min && !amountMatches.includes('$' + amount.min.toString())) ||
       (amount.max && !amountMatches.includes('$' + amount.max.toString())))
   ) {
-    const want = ScholarshipAmount.toString(amount);
+    const want = ScholarshipAmountInfo.toString(amount);
     issues.push(
       `Amount specified as ${want} but found other amounts in description: ${JSON.stringify(
-        amountMatches
-      )}.`
+        amountMatches,
+      )}.`,
     );
   }
   const dateMatches =
-    desc.match(dateRe)?.filter((d) => Date.parse(d) !== Number.NaN) || [];
+    desc
+      .match(dateRe)
+      ?.map((d) => d.replace(/(\d+)(st|nd|rd|th)/i, '$1'))
+      .filter((d) => !isNaN(Date.parse(d))) || [];
   if (
     dateMatches?.length > 0 &&
     !dateMatches
       .map((d) =>
         // For MM/DD matches add the year if missing.
-        d.includes('/') && !d.match(/\d+\/\d+\/\d+/) ? `${d}/${THIS_YEAR}` : d
+        d.includes('/') && !d.match(/\d+\/\d+\/\d+/) ? `${d}/${THIS_YEAR}` : d,
       )
       .map((d) =>
         // For MM DD matches add the year if missing.
-        !d.includes('/') && !d.match(/(,? \d{4})/) ? `${d}, ${THIS_YEAR}` : d
+        !d.includes('/') && !d.match(/(,? \d{4})/) ? `${d}, ${THIS_YEAR}` : d,
       )
-      .map((d) => new Date(d).toLocaleDateString())
-      .includes(deadline.toLocaleDateString())
+      .map((d) => new Date(d).toDateString())
+      .includes(deadline.toDateString())
   ) {
     issues.push(
-      `Deadline specified is ${deadline.toLocaleDateString()} but other dates were found: ${JSON.stringify(
-        dateMatches
-      )}.`
+      `Deadline specified is ${deadline.toDateString()} but other dates were found: ${JSON.stringify(
+        dateMatches,
+      )}.`,
     );
   }
 

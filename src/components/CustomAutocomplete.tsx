@@ -9,12 +9,12 @@ type CustomAutocompleteProps = {
   limitReached?: boolean;
   placeholder: string | undefined;
   options: string[];
-  [x: string]: any;
+  [x: string]: unknown;
 };
 
 /* eslint-disable react/jsx-props-no-spreading */
 export default function CustomAutocomplete(
-  props: CustomAutocompleteProps
+  props: CustomAutocompleteProps,
 ): JSX.Element {
   const { limitReached, placeholder, ...otherProps } = props;
   const [isOpen, setIsOpen] = useState(false);

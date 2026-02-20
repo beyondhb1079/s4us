@@ -18,7 +18,7 @@ interface NameData {
 
 const converter: FirestoreDataConverter<NameData> = {
   toFirestore: (name: NameData) => ({ ...name }),
-  fromFirestore: (snapshot) => ({ ...snapshot.data() } as NameData),
+  fromFirestore: (snapshot) => ({ ...snapshot.data() }) as NameData,
 };
 
 const names = collection(getFirestore(), 'names').withConverter(converter);

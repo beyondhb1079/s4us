@@ -24,12 +24,12 @@ import {
   AttachMoney as AttachMoneyIcon,
   Event as EventIcon,
 } from '@mui/icons-material';
-import { genMailToLink, withDeviceInfo } from '../lib/mail';
-import ScholarshipAmount from '../types/ScholarshipAmount';
-import Ethnicity from '../types/Ethnicity';
-import GradeLevel from '../types/GradeLevel';
+import { ScholarshipAmountInfo } from '../types/ScholarshipAmount';
 import State from '../types/States';
+import { GradeLevelInfo } from '../types/GradeLevel';
+import { EthnicityInfo } from '../types/Ethnicity';
 import { lint } from '../lib/lint';
+import { genMailToLink, withDeviceInfo } from '../lib/mail';
 import ShareDialog from './ShareDialog';
 import useAuth from '../lib/useAuth';
 import ScholarshipData from '../types/ScholarshipData';
@@ -40,11 +40,11 @@ const SHOW_MORE_THRESHOLD = 5;
 
 const DetailCardCell = ({
   label,
-  values,
+  values = [],
   t,
 }: {
   label: string;
-  values: string[];
+  values?: string[];
   t: (key: string) => string;
 }) => {
   const [showAll, setShowAll] = useState(false);
@@ -52,11 +52,11 @@ const DetailCardCell = ({
   return (
     <>
       <Grid container justifyContent="space-between">
-        <Grid item xs={12} sm>
+        <Grid size={12}>
           <Typography>{label}</Typography>
         </Grid>
 
-        <Grid item sx={{ textAlign: { sm: 'right' } }} xs={12} sm>
+        <Grid size={12} sx={{ textAlign: { sm: 'right' } }}>
           {values.length === 0
             ? t('common:any')
             : shownValues.map((v) => <Typography key={v}>{v}</Typography>)}
@@ -110,11 +110,10 @@ export default function ScholarshipCard({
   const navigate = useNavigate();
 
   const { claims, currentUser } = useAuth();
-  const canEdit = currentUser?.uid === author?.id || claims?.admin;
+  const canEdit = currentUser?.uid === author?.id || (claims?.admin as boolean);
 
-  const CardAreaComponent: React.FC<{
-    [key: string]: any;
-  }> = detailed ? Box : CardActionArea;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const CardAreaComponent: any = detailed ? Box : CardActionArea;
   const lintIssues =
     canEdit && !preview && !glance ? lint(scholarship.data) : [];
   return (
@@ -156,14 +155,16 @@ export default function ScholarshipCard({
           )}
 
           <Grid container spacing={3}>
-            <Grid item>
+            <Grid>
               <Box sx={{ display: 'flex' }}>
                 <AttachMoneyIcon color="primary" />
-                <Typography>{ScholarshipAmount.toString(amount)}</Typography>
+                <Typography>
+                  {ScholarshipAmountInfo.toString(amount)}
+                </Typography>
               </Box>
             </Grid>
 
-            <Grid item>
+            <Grid>
               <Box sx={{ display: 'flex' }}>
                 <EventIcon color="primary" sx={{ mr: 0.5 }} />
                 <Typography>
@@ -240,12 +241,12 @@ export default function ScholarshipCard({
               />
               <DetailCardCell
                 label={t('grades')}
-                values={grades?.sort().map(GradeLevel.toString)}
+                values={grades?.sort().map(GradeLevelInfo.toString)}
                 t={t}
               />
               <DetailCardCell
                 label={t('ethnicity')}
-                values={ethnicities?.map(Ethnicity.toString).sort()}
+                values={ethnicities?.map(EthnicityInfo.toString).sort()}
                 t={t}
               />
               <DetailCardCell
@@ -283,7 +284,7 @@ export default function ScholarshipCard({
                 subject: `Report Issue for ${name}`,
                 bcc: author?.email,
                 body: withDeviceInfo(
-                  `Please describe the issue for the scholarship located at ${URL}.`
+                  `Please describe the issue for the scholarship located at ${window.location.href}.`,
                 ),
               })}
               icon={<ReportIcon />}

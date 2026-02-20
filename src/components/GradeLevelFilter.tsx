@@ -7,7 +7,7 @@ import {
   Typography,
   FormGroup,
 } from '@mui/material';
-import GradeLevel from '../types/GradeLevel';
+import GradeLevel, { GradeLevelInfo } from '../types/GradeLevel';
 import { useTranslation } from 'react-i18next';
 
 interface GGProps {
@@ -37,7 +37,7 @@ function GradeGroup({
               checked={allChecked}
               onChange={() => {
                 gradeGroup.forEach((g) =>
-                  allChecked ? grades.delete(g) : grades.add(g)
+                  allChecked ? grades.delete(g) : grades.add(g),
                 );
                 allChecked = !allChecked;
                 onChange(Array.from(grades));
@@ -58,7 +58,10 @@ function GradeGroup({
                 onChange={() => toggleSelection(grade)}
               />
             }
-            label={GradeLevel.toString(grade).replace(/College|Graduate/gi, '')}
+            label={GradeLevelInfo.toString(grade).replace(
+              /College|Graduate/gi,
+              '',
+            )}
           />
         ))}
       </FormGroup>
@@ -75,7 +78,7 @@ export default function GradeLevelFilter({
   grades = new Set(),
   onChange,
 }: GLFProps): JSX.Element {
-  const { highSchoolers, undergrads, grads } = GradeLevel;
+  const { highSchoolers, undergrads, grads } = GradeLevelInfo;
   const { t } = useTranslation('filters');
 
   function toggleSelection(grade: GradeLevel) {

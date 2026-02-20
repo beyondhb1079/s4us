@@ -1,3 +1,4 @@
+import MutationObserver from 'mutation-observer';
 import React, { Suspense } from 'react';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
@@ -5,18 +6,37 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Header from './Header';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
-import { deleteApp, initializeApp } from 'firebase/app';
+import { getApps, initializeApp } from 'firebase/app';
 
-const app = initializeApp({ apiKey: 'fake-api-key' });
-afterAll(() => deleteApp(app));
+if (getApps().length === 0) {
+  initializeApp({ apiKey: 'fake-api-key' });
+}
 
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.
-window.MutationObserver = require('mutation-observer');
+window.MutationObserver = MutationObserver;
+
+let originalWindowLocation: Location;
+
+beforeEach(() => {
+  originalWindowLocation = window.location;
+});
+
+afterEach(() => {
+  // Restore the original window.location
+  Object.defineProperty(window, 'location', {
+    configurable: true,
+    value: originalWindowLocation,
+  });
+});
 
 function renderAtUrl(url: string | URL) {
-  delete window.location;
-  window.location = new URL(url) as unknown as Location;
+  // Mock window.location
+  Object.defineProperty(window, 'location', {
+    configurable: true,
+    value: new URL(url),
+  });
+
   return render(
     <Suspense fallback="loading">
       <I18nextProvider i18n={i18n}>
@@ -26,7 +46,7 @@ function renderAtUrl(url: string | URL) {
           </BrowserRouter>
         </ThemeProvider>
       </I18nextProvider>
-    </Suspense>
+    </Suspense>,
   );
 }
 
@@ -44,8 +64,10 @@ test('renders alert on PR preview URL', async () => {
 
   const alertElement = screen.getByText(/This is a preview/i);
   expect(alertElement).toBeInTheDocument();
-  const linkElement = screen.getByText(/Pull Request #49/i);
+  const linkElement = screen.getByText(
+    /Pull Request #49/i,
+  ) as HTMLAnchorElement;
   expect(linkElement.href).toEqual(
-    'https://github.com/beyondhb1079/s4us/pull/49'
+    'https://github.com/beyondhb1079/s4us/pull/49',
   );
 });

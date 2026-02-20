@@ -13,6 +13,7 @@ const MenuProps = {
 
 interface FMSProps {
   /** The result of `useFormik()`. */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formik: any;
   id: string;
   label: string;

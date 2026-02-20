@@ -10,7 +10,7 @@ import { getAuth, UserInfo } from 'firebase/auth';
 
 interface Auth {
   /** Claims for the current user, if any. */
-  claims?: Record<string, any>;
+  claims?: Record<string, unknown>;
   /** The currently logged in user. May be `undefined` initially. */
   currentUser?: UserInfo | null;
 }
@@ -25,9 +25,9 @@ export default function useAuth(): Auth {
 // Provider hook that creates auth object and handles state
 function useProvideAuth(): Auth {
   const [currentUser, setCurrentUser] = useState(
-    undefined as undefined | null | UserInfo
+    undefined as undefined | null | UserInfo,
   );
-  const [claims, setClaims] = useState({} as Record<string, any>);
+  const [claims, setClaims] = useState({} as Record<string, unknown>);
 
   // Subscribe to user on mount. We need to have this called only once so only
   // AuthProvider should use it
@@ -44,7 +44,7 @@ function useProvideAuth(): Auth {
           setClaims({});
         }
       }),
-    []
+    [],
   );
 
   return { currentUser, claims };

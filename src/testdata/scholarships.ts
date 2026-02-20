@@ -1,11 +1,11 @@
-import ScholarshipAmount from '../types/ScholarshipAmount';
+import { ScholarshipAmountInfo } from '../types/ScholarshipAmount';
 
 const scholarships = [
   {
     id: '1',
     data: {
       name: 'scholarship 1',
-      amount: ScholarshipAmount.unknown(),
+      amount: ScholarshipAmountInfo.unknown(),
       deadline: new Date('September 18, 2020'),
       website: 'website 1',
       school: 'school 1',
@@ -18,7 +18,7 @@ const scholarships = [
     id: '2',
     data: {
       name: 'scholarship 2',
-      amount: ScholarshipAmount.unknown(),
+      amount: ScholarshipAmountInfo.unknown(),
       deadline: new Date('October 5, 2020'),
       website: 'website 2',
       school: 'school 2',
@@ -31,7 +31,7 @@ const scholarships = [
     id: '3',
     data: {
       name: 'scholarship 3',
-      amount: ScholarshipAmount.unknown(),
+      amount: ScholarshipAmountInfo.unknown(),
       deadline: new Date('September 25, 2020'),
       website: 'website 3',
       school: 'school 3',
@@ -44,7 +44,7 @@ const scholarships = [
     id: '4',
     data: {
       name: 'scholarship 4',
-      amount: ScholarshipAmount.unknown(),
+      amount: ScholarshipAmountInfo.unknown(),
       deadline: new Date('November 12, 2020'),
       website: 'website 4',
       school: 'school 4',
@@ -57,7 +57,7 @@ const scholarships = [
     id: '5',
     data: {
       name: 'scholarship 5',
-      amount: ScholarshipAmount.unknown(),
+      amount: ScholarshipAmountInfo.unknown(),
       deadline: new Date('October 1, 2020'),
       website: 'website 5',
       school: 'school 5',

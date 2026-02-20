@@ -7,8 +7,10 @@ import {
 import { initializeTestEnv } from '../lib/testing';
 import AmountType from '../types/AmountType';
 import Ethnicity from '../types/Ethnicity';
-import GradeLevel from '../types/GradeLevel';
-import ScholarshipAmount from '../types/ScholarshipAmount';
+import GradeLevel, { GradeLevelInfo } from '../types/GradeLevel';
+import ScholarshipAmount, {
+  ScholarshipAmountInfo,
+} from '../types/ScholarshipAmount';
 import Scholarships, {
   converter,
   requirementMatchesFilter,
@@ -29,8 +31,8 @@ function create(data: {
   schools?: string[];
   ethnicities?: Ethnicity[];
 }) {
-  const amount = data.amount ?? ScholarshipAmount.unknown();
-  const amountString = ScholarshipAmount.toString(amount);
+  const amount = data.amount ?? ScholarshipAmountInfo.unknown();
+  const amountString = ScholarshipAmountInfo.toString(amount);
   const deadline = data.deadline ?? new Date();
   const deadlineString = deadline.toLocaleDateString();
   return Scholarships.new({
@@ -50,13 +52,19 @@ function create(data: {
 }
 
 // Collection of scholarships with varying amounts
-const fixed500 = create({ amount: ScholarshipAmount.fixed(500) });
-const fixed5000 = create({ amount: ScholarshipAmount.fixed(5000) });
-const range250to1000 = create({ amount: ScholarshipAmount.range(250, 2000) });
-const rangeTo501 = create({ amount: ScholarshipAmount.range(undefined, 501) });
-const rangeMin499 = create({ amount: ScholarshipAmount.range(499, undefined) });
-const fullTuition = create({ amount: ScholarshipAmount.fullTuition() });
-const unknown = create({ amount: ScholarshipAmount.unknown() });
+const fixed500 = create({ amount: ScholarshipAmountInfo.fixed(500) });
+const fixed5000 = create({ amount: ScholarshipAmountInfo.fixed(5000) });
+const range250to1000 = create({
+  amount: ScholarshipAmountInfo.range(250, 2000),
+});
+const rangeTo501 = create({
+  amount: ScholarshipAmountInfo.range(undefined, 501),
+});
+const rangeMin499 = create({
+  amount: ScholarshipAmountInfo.range(499, undefined),
+});
+const fullTuition = create({ amount: ScholarshipAmountInfo.fullTuition() });
+const unknown = create({ amount: ScholarshipAmountInfo.unknown() });
 
 const amountScholarships = [
   fixed500,
@@ -86,7 +94,7 @@ test('converter.toFirestore stores scholarship data', () => {
   const deadline = new Date('2029-02-20');
   const data = {
     name: 'scholarship',
-    amount: ScholarshipAmount.fixed(2500),
+    amount: ScholarshipAmountInfo.fixed(2500),
     description: 'description',
     deadline,
     website: 'mit.com',
@@ -114,7 +122,7 @@ test('converter.toFirestore sets author, dateAdded, and lastModified for new sch
   const deadline = new Date('2029-02-20');
   const data = {
     name: 'scholarship',
-    amount: ScholarshipAmount.fixed(2500),
+    amount: ScholarshipAmountInfo.fixed(2500),
     description: 'description',
     deadline,
     website: 'mit.com',
@@ -141,7 +149,7 @@ test('converter.toFirestore only updates lastModified for existing scholarship',
   const dateAdded = new Date('2019-12-21');
   const data = {
     name: 'scholarship',
-    amount: ScholarshipAmount.fixed(2500),
+    amount: ScholarshipAmountInfo.fixed(2500),
     description: 'description',
     deadline,
     website: 'mit.com',
@@ -169,7 +177,7 @@ test('converter.fromFirestore', () => {
   const lastModified = new Date('2019-01-23');
   const snapdata: DocumentData = {
     name: 'scholarship',
-    amount: ScholarshipAmount.fixed(2500),
+    amount: ScholarshipAmountInfo.fixed(2500),
     description: 'description',
     deadline: Timestamp.fromDate(deadline),
     website: 'mit.com',
@@ -277,7 +285,7 @@ test('scholarships.list - filters by minAmount', async () => {
 
   const want = [fullTuition, fixed5000, range250to1000, rangeMin499, unknown];
   expect(got.results.map(extractName).sort()).toEqual(
-    want.map(extractName).sort()
+    want.map(extractName).sort(),
   );
 });
 
@@ -290,14 +298,14 @@ test('scholarships.list - filters by maxAmount', async () => {
 
   const want = [rangeMin499, range250to1000, fixed500, rangeTo501, unknown];
   expect(got.results.map(extractName).sort()).toEqual(
-    want.map(extractName).sort()
+    want.map(extractName).sort(),
   );
 });
 
 const middleSchool = create({ grades: [GradeLevel.MiddleSchool] });
-const highSchool = create({ grades: GradeLevel.highSchoolers });
-const college = create({ grades: GradeLevel.undergrads });
-const graduate = create({ grades: GradeLevel.grads });
+const highSchool = create({ grades: GradeLevelInfo.highSchoolers });
+const college = create({ grades: GradeLevelInfo.undergrads });
+const graduate = create({ grades: GradeLevelInfo.grads });
 const gradeScholarships = [middleSchool, highSchool, college, graduate];
 
 test('scholarships.list - filters by grades (middle & high school)', async () => {
@@ -313,7 +321,7 @@ test('scholarships.list - filters by grades (middle & high school)', async () =>
 
   const want = [middleSchool, highSchool];
   expect(got.results.map(extractName).sort()).toEqual(
-    want.map(extractName).sort()
+    want.map(extractName).sort(),
   );
 });
 
@@ -331,7 +339,7 @@ test('scholarships.list - filters by grades (all grades)', async () => {
 
   const want = [middleSchool, highSchool, college, graduate];
   expect(got.results.map(extractName).sort()).toEqual(
-    want.map(extractName).sort()
+    want.map(extractName).sort(),
   );
 });
 
@@ -349,7 +357,7 @@ test('scholarships.list - filters by states', async () => {
 
   const want = [caliAndWashington];
   expect(got.results.map(extractName).sort()).toEqual(
-    want.map(extractName).sort()
+    want.map(extractName).sort(),
   );
 });
 
@@ -367,7 +375,7 @@ test('scholarships.list - filters by schools', async () => {
 
   const want = [Uci, UclaAndUci];
   expect(got.results.map(extractName).sort()).toEqual(
-    want.map(extractName).sort()
+    want.map(extractName).sort(),
   );
 });
 
@@ -398,7 +406,7 @@ test('scholarships.list - filters by majors (art & social science majors)', asyn
 
   const want = [arts, socialSciences];
   expect(got.results.map(extractName).sort()).toEqual(
-    want.map(extractName).sort()
+    want.map(extractName).sort(),
   );
 });
 
@@ -411,7 +419,7 @@ test('scholarships.list - filters by majors (engineering major)', async () => {
 
   const want = [engineering];
   expect(got.results.map(extractName).sort()).toEqual(
-    want.map(extractName).sort()
+    want.map(extractName).sort(),
   );
 });
 
@@ -427,7 +435,7 @@ test('Scholarships.list - filters by ethnicities', async () => {
   });
   const want = [hispanicLatino];
   expect(got.results.map(extractName).sort()).toEqual(
-    want.map(extractName).sort()
+    want.map(extractName).sort(),
   );
 });
 
@@ -438,7 +446,7 @@ test('scholarships.list - hides expired by default', async () => {
 
   const want = [today, tomorrow];
   expect(got.results.map(extractName).sort()).toEqual(
-    want.map(extractName).sort()
+    want.map(extractName).sort(),
   );
 });
 

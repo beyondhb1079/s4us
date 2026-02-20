@@ -1,18 +1,20 @@
+import MutationObserver from 'mutation-observer';
 import React, { Suspense } from 'react';
 import { render, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { initializeTestEnv } from '../lib/testing';
 import ListScholarships from './ListScholarships';
 import Scholarships from '../models/Scholarships';
-import ScholarshipAmount from '../types/ScholarshipAmount';
+import { ScholarshipAmountInfo } from '../types/ScholarshipAmount';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
 import { ScholarshipsProvider } from '../models/ScholarshipsContext';
 
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.
-window.MutationObserver = require('mutation-observer');
+window.MutationObserver = MutationObserver;
 
 function renderAtRoute(route: string) {
   return render(
@@ -28,7 +30,7 @@ function renderAtRoute(route: string) {
           </ScholarshipsProvider>
         </ThemeProvider>
       </I18nextProvider>
-    </Suspense>
+    </Suspense>,
   );
 }
 
@@ -40,19 +42,17 @@ afterAll(() => cleanup());
 // https://stackoverflow.com/a/62148101
 beforeEach(() => {
   // IntersectionObserver isn't available in test environment
-  const mockIntersectionObserver = jest.fn();
-  mockIntersectionObserver.mockReturnValue({
-    observe: () => null,
-    unobserve: () => null,
-    disconnect: () => null,
-  });
-  window.IntersectionObserver = mockIntersectionObserver;
+  window.IntersectionObserver = class {
+    observe = vi.fn();
+    unobserve = vi.fn();
+    disconnect = vi.fn();
+  } as unknown as typeof IntersectionObserver;
 });
 
 test('renders a list of scholarships', async () => {
   const data = {
     name: 'Foo scholarship',
-    amount: ScholarshipAmount.fixed(1000),
+    amount: ScholarshipAmountInfo.fixed(1000),
     description: 'Foo description',
     deadline: new Date('3020-12-17'),
     website: 'foo.com',
@@ -65,14 +65,14 @@ test('renders a list of scholarships', async () => {
   await screen.findByText(data.name);
   expect(screen.getByText(data.description)).toBeInTheDocument();
   expect(
-    screen.getByText(data.deadline.toLocaleDateString())
+    screen.getByText(data.deadline.toLocaleDateString()),
   ).toBeInTheDocument();
 });
 
 test('does not render expired scholarships by default', async () => {
   const data = {
     name: 'Expired scholarship',
-    amount: ScholarshipAmount.fixed(1000),
+    amount: ScholarshipAmountInfo.fixed(1000),
     description: 'Expired description',
     deadline: new Date('2020-12-17'),
     website: 'expired.com',
@@ -88,7 +88,7 @@ test('does not render expired scholarships by default', async () => {
 
 test('renders filter chips ontop of page', async () => {
   renderAtRoute(
-    '/scholarships?majors[]=Engineering&minAmount=500&grades[]=9&states[]=CA,WA&schools[]=ASA College (NY)&ethnicities[]=ASIAN'
+    '/scholarships?majors[]=Engineering&minAmount=500&grades[]=9&states[]=CA,WA&schools[]=ASA College (NY)&ethnicities[]=ASIAN',
   );
 
   await screen.findByText('California (CA)');

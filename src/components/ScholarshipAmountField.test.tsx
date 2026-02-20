@@ -6,10 +6,14 @@ import AmountType from '../types/AmountType';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
 
-const formik = {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const formik: any = {
   values: {
-    amount: {},
+    amount: {
+      type: AmountType.Fixed,
+    },
   },
+  errors: {},
 };
 
 function renderWithAmountType(type: AmountType) {
@@ -19,14 +23,14 @@ function renderWithAmountType(type: AmountType) {
       <I18nextProvider i18n={i18n}>
         <ScholarshipAmountField formik={formik} />
       </I18nextProvider>
-    </Suspense>
+    </Suspense>,
   );
 }
 
 test('renders select options', async () => {
   renderWithAmountType(AmountType.Fixed);
 
-  const select = await waitFor(() => screen.getByRole('button'));
+  const select = await waitFor(() => screen.getByRole('combobox'));
   await UserEvent.click(select);
 
   const options = screen.getAllByRole('option');

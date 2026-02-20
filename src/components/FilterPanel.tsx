@@ -29,7 +29,7 @@ import CustomAutocomplete from './CustomAutocomplete';
 import State, { STATES } from '../types/States';
 import { SCHOOLS } from '../types/options';
 import { MAJORS } from '../types/options';
-import Ethnicity from '../types/Ethnicity';
+import Ethnicity, { EthnicityInfo } from '../types/Ethnicity';
 import { useTranslation } from 'react-i18next';
 
 interface FiltersProps {
@@ -63,7 +63,9 @@ export default function FilterPanel({
           <CustomAutocomplete
             freeSolo
             value={majors}
-            onChange={(e: any, val: string[]) => setMajors(val)}
+            onChange={(e: React.SyntheticEvent, val: string[]) =>
+              setMajors(val)
+            }
             options={Array.from(MAJORS)}
             limitReached={majors?.length >= 10}
             placeholder={`${t('toFilterBy', {
@@ -107,7 +109,9 @@ export default function FilterPanel({
         <>
           <CustomAutocomplete
             value={states}
-            onChange={(e: any, val: string[]) => setStates(val)}
+            onChange={(e: React.SyntheticEvent, val: string[]) =>
+              setStates(val)
+            }
             options={STATES.map((s) => s.abbr)}
             getOptionLabel={(s: string) => State.toString(s)}
             filterOptions={createFilterOptions({
@@ -141,7 +145,9 @@ export default function FilterPanel({
           <CustomAutocomplete
             freeSolo
             value={schools}
-            onChange={(e: any, val: string[]) => setSchools(val)}
+            onChange={(e: React.SyntheticEvent, val: string[]) =>
+              setSchools(val)
+            }
             options={SCHOOLS.map(({ name, state }) => `${name} (${state})`)}
             limitReached={schools?.length >= 10}
             placeholder={`${t('toFilterBy', {
@@ -170,14 +176,16 @@ export default function FilterPanel({
         <>
           <CustomAutocomplete
             value={ethnicities}
-            onChange={(e: any, val: string[]) => setEthnicities(val)}
-            options={Ethnicity.keys()}
-            getOptionLabel={(e: Ethnicity) => Ethnicity.toString(e)}
+            onChange={(e: React.SyntheticEvent, val: string[]) =>
+              setEthnicities(val)
+            }
+            options={EthnicityInfo.keys()}
+            getOptionLabel={(e: Ethnicity) => EthnicityInfo.toString(e)}
             placeholder={`${t('enterEthnicityFilter')}...`}
           />
           {ethnicities?.map((ethnicity: Ethnicity) => (
             <Chip
-              label={Ethnicity.toString(ethnicity)}
+              label={EthnicityInfo.toString(ethnicity)}
               variant={
                 params.ethnicities?.includes(ethnicity) ? 'filled' : 'outlined'
               }
@@ -185,7 +193,7 @@ export default function FilterPanel({
               key={ethnicity}
               onClick={() =>
                 setEthnicities(
-                  ethnicities.filter((e: string) => e !== ethnicity)
+                  ethnicities.filter((e: string) => e !== ethnicity),
                 )
               }
               sx={{ mx: 1, mt: 1 }}

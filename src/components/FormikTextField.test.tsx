@@ -10,7 +10,7 @@ const formikWithError = { errors: { foo: 'my error' } };
 
 test('renders value', () => {
   const { getByText, getByRole } = renderWithTheme(
-    <FormikTextField id="foo" formik={formikWithValue} label="my label" />
+    <FormikTextField id="foo" formik={formikWithValue} label="my label" />,
   );
 
   expect(getByText('my label')).toBeInTheDocument();
@@ -20,7 +20,7 @@ test('renders value', () => {
 
 test('renders error', () => {
   const { getByText, getByRole } = renderWithTheme(
-    <FormikTextField id="foo" formik={formikWithError} label="my label" />
+    <FormikTextField id="foo" formik={formikWithError} label="my label" />,
   );
 
   expect(getByText('my label')).toBeInTheDocument();

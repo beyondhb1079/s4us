@@ -4,12 +4,13 @@ import { useTranslation } from 'react-i18next';
 import ScholarshipCard from './ScholarshipCard';
 import { DEADLINE_ASC, getDir, getField } from '../lib/sortOptions';
 import ScholarshipsContext from '../models/ScholarshipsContext';
+import { FilterOptions } from '../models/Scholarships';
 import useOnScreen from '../lib/useOnScreen';
 import useQueryParams from '../lib/useQueryParams';
 
 interface SLProps {
   noResultsNode?: JSX.Element;
-  extraFilters?: any;
+  extraFilters?: Partial<FilterOptions>;
 }
 
 export default function ScholarshipList({

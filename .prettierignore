@@ -1,2 +1,6 @@
 build
+dist
+coverage
 node_modules
+.yarn/releases
+*.lock

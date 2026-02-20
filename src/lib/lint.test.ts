@@ -1,7 +1,9 @@
 import AmountType from '../types/AmountType';
 import Ethnicity from '../types/Ethnicity';
-import GradeLevel from '../types/GradeLevel';
-import ScholarshipAmount from '../types/ScholarshipAmount';
+import GradeLevel, { GradeLevelInfo } from '../types/GradeLevel';
+import ScholarshipAmount, {
+  ScholarshipAmountInfo,
+} from '../types/ScholarshipAmount';
 import {
   lint,
   parseEthnicities,
@@ -53,7 +55,7 @@ describe('parseMinGPA()', () => {
 });
 
 describe('parseGradeLevels()', () => {
-  const { highSchoolers, undergrads, grads } = GradeLevel;
+  const { highSchoolers, undergrads, grads } = GradeLevelInfo;
   test('matches keywords', () => {
     Object.entries({
       '7th grade or 8th grade': [GradeLevel.MiddleSchool],
@@ -108,7 +110,7 @@ describe('parseGradeLevels()', () => {
 describe('parseMajors()', () => {
   test('detects known majors', () => {
     expect(
-      parseMajors('Accounting and fashion design majors may apply')
+      parseMajors('Accounting and fashion design majors may apply'),
     ).toEqual(['Accounting', 'Fashion Design']);
   });
   test('does not detect unknown major', () => {
@@ -133,22 +135,22 @@ describe('parseSchools()', () => {
     expect(
       parseSchools(
         'Student attending Florida State University or Georgia Institute of Technology may apply',
-        'site'
-      ).map((s) => s.name)
+        'site',
+      ).map((s) => s.name),
     ).toEqual(['Florida State University', 'Georgia Institute of Technology']);
   });
   test('detects acronyms for school sites', () => {
     expect(
       parseSchools(
         'UT English majors may apply',
-        'http://utulsa.edu/some/path'
-      ).map((s) => s.name)
+        'http://utulsa.edu/some/path',
+      ).map((s) => s.name),
     ).toEqual(['University of Tulsa']);
     expect(
       parseSchools(
         'UT English majors may apply',
-        'http://utoledo.edu/some/path'
-      ).map((s) => s.name)
+        'http://utoledo.edu/some/path',
+      ).map((s) => s.name),
     ).toEqual(['University of Toledo']);
   });
   test('does not detect unknown school', () => {
@@ -159,14 +161,14 @@ describe('parseSchools()', () => {
 describe('parseStates()', () => {
   test('detects state names', () => {
     expect(
-      parseStates('Must attend school in Alaska or Arizona').map((s) => s.abbr)
+      parseStates('Must attend school in Alaska or Arizona').map((s) => s.abbr),
     ).toEqual(['AK', 'AZ']);
   });
   test('detects state abbreviations', () => {
     expect(
       parseStates('Students from these states may apply: CA, OR, WA.').map(
-        (s) => s.abbr
-      )
+        (s) => s.abbr,
+      ),
     ).toEqual(['CA', 'OR', 'WA']);
   });
   test('does not detect lowercased state abbrevations', () => {
@@ -211,7 +213,7 @@ describe('lint()', () => {
       `spring of ${THIS_YEAR}`,
       'mail us at Foo, ST 12345-1234',
     ].forEach((d) =>
-      expect(lint({ ...testScholarship, description: d })).toEqual([])
+      expect(lint({ ...testScholarship, description: d })).toEqual([]),
     ));
 
   test('outdated school periods', () =>
@@ -220,7 +222,7 @@ describe('lint()', () => {
       'attending college in fall of 2020',
       'attending college in spring 2020',
     ].forEach((d) =>
-      expect(lint({ ...testScholarship, description: d })).toHaveLength(1)
+      expect(lint({ ...testScholarship, description: d })).toHaveLength(1),
     ));
 
   // Single descriptions with dashes
@@ -230,23 +232,23 @@ describe('lint()', () => {
       'single line with -single dash',
       'multiple lines\nwith -multiple -items in a single line',
     ].forEach((d) =>
-      expect(lint({ ...testScholarship, description: d })).toEqual([])
+      expect(lint({ ...testScholarship, description: d })).toEqual([]),
     ));
 
   test('potential missing lines for list items', () =>
     ['multiple lines: -multiple -items'].forEach((d) =>
-      expect(lint({ ...testScholarship, description: d })).toHaveLength(1)
+      expect(lint({ ...testScholarship, description: d })).toHaveLength(1),
     ));
 
   // Amounts
-  const fullTuition = ScholarshipAmount.fullTuition();
-  const unknown = ScholarshipAmount.unknown();
-  const fixed500 = ScholarshipAmount.fixed(500);
-  const range500to1000 = ScholarshipAmount.range(500, 1000);
-  const max1000 = ScholarshipAmount.range(undefined, 1000);
-  const min1000 = ScholarshipAmount.range(1000, undefined);
-  test('no amount issues detected', () =>
-    [
+  const fullTuition = ScholarshipAmountInfo.fullTuition();
+  const unknown = ScholarshipAmountInfo.unknown();
+  const fixed500 = ScholarshipAmountInfo.fixed(500);
+  const range500to1000 = ScholarshipAmountInfo.range(500, 1000);
+  const max1000 = ScholarshipAmountInfo.range(undefined, 1000);
+  const min1000 = ScholarshipAmountInfo.range(1000, undefined);
+  test('no amount issues detected', () => {
+    const cases = [
       [unknown, 'should not complain about unknown $500 description'],
       [fullTuition, 'nor if full tuition has $500 in description'],
       [fixed500, 'nor if a fixed description has no $ amount'],
@@ -257,31 +259,34 @@ describe('lint()', () => {
       [max1000, 'nor if max only mentions max $1000 amount'],
       [min1000, 'nor if min only mentions min $1000 amount'],
       [min1000, 'nor if min only mentions $1,000 with a comma'],
-    ].forEach(([a, d]) =>
+    ];
+    for (const [a] of cases) {
       expect(
         lint({
           ...testScholarship,
-          amount: ScholarshipAmount.fromStorage(a as ScholarshipAmount),
-          description: d as string,
-        })
-      ).toEqual([])
-    ));
-  test('amount issues detected', () =>
-    [
+          amount: ScholarshipAmountInfo.fromStorage(a as ScholarshipAmount),
+        }),
+      ).toHaveLength(0);
+    }
+  });
+  test('amount issues detected', () => {
+    const cases = [
       [fixed500, 'if fixed description mentions other amounts only like $234'],
       [range500to1000, 'if range mentions min $500 but not max'],
       [range500to1000, 'if range mentions max $1000 but not min'],
       [max1000, 'if max only mentions mentions other amounts like $234'],
       [min1000, 'if min only mentions other amounts like $234'],
-    ].forEach(([a, d]) =>
+    ];
+    for (const [a, d] of cases) {
       expect(
         lint({
           ...testScholarship,
-          amount: ScholarshipAmount.fromStorage(a as ScholarshipAmount),
+          amount: ScholarshipAmountInfo.fromStorage(a as ScholarshipAmount),
           description: d as string,
-        })
-      ).toHaveLength(1)
-    ));
+        }),
+      ).toHaveLength(1);
+    }
+  });
 
   // GPA tests
   test('no deadline issue detected when no date found', () => {
@@ -299,11 +304,11 @@ describe('lint()', () => {
           ...testScholarship,
           deadline: new Date(`May 1 ${THIS_YEAR}`),
           description: d,
-        })
-      ).toEqual([])
+        }),
+      ).toEqual([]),
     ));
-  test('deadline seems mismatched', () =>
-    [
+  test('deadline seems mismatched', () => {
+    const cases = [
       'submit by April 1',
       'due Jun 30',
       'due Jun 30 1921',
@@ -311,15 +316,17 @@ describe('lint()', () => {
       'due May 2',
       `applications due May 1st, ${THIS_YEAR - 1}`,
       `applications due 5/1/${THIS_YEAR - 1}`,
-    ].forEach((d) =>
+    ];
+    for (const d of cases) {
       expect(
         lint({
           ...testScholarship,
           deadline: new Date(`May 1 ${THIS_YEAR}`),
           description: d,
-        })
-      ).toHaveLength(1)
-    ));
+        }),
+      ).toHaveLength(1);
+    }
+  });
 
   // GPA tests
   test('no min GPA issue detected when no GPA found', () => {
@@ -331,7 +338,7 @@ describe('lint()', () => {
         ...testScholarship,
         description: 'min GPA of 3.0',
         requirements: { gpa: 3.0 },
-      })
+      }),
     ).toEqual([]);
   });
   test('min GPA is missing', () => {
@@ -339,7 +346,7 @@ describe('lint()', () => {
       lint({
         ...testScholarship,
         description: 'min GPA of 3.0',
-      })
+      }),
     ).toHaveLength(1);
   });
   test('min GPA seems mismatched', () => {
@@ -348,7 +355,7 @@ describe('lint()', () => {
         ...testScholarship,
         description: 'min GPA of 3.2',
         requirements: { gpa: 3.0 },
-      })
+      }),
     ).toHaveLength(1);
   });
 
@@ -359,7 +366,7 @@ describe('lint()', () => {
         ...testScholarship,
         description: 'high school seniors only.',
         requirements: { grades: [GradeLevel.HsSenior] },
-      })
+      }),
     ).toEqual([]);
   });
   test('missing grade requirements', () => {
@@ -368,7 +375,7 @@ describe('lint()', () => {
         ...testScholarship,
         description: 'any high school student.',
         requirements: { grades: [GradeLevel.HsSenior] },
-      })
+      }),
     ).toHaveLength(1);
   });
   test('no missing majors', () => {
@@ -377,7 +384,7 @@ describe('lint()', () => {
         ...testScholarship,
         description: 'computer science majors only.',
         requirements: { majors: ['Computer Science'] },
-      })
+      }),
     ).toEqual([]);
   });
   test('missing majors', () => {
@@ -386,7 +393,7 @@ describe('lint()', () => {
         ...testScholarship,
         description: 'computer science and computer engineering majors only.',
         requirements: { majors: ['Computer Science'] },
-      })
+      }),
     ).toHaveLength(1);
   });
   test('no missing schools', () => {
@@ -395,7 +402,7 @@ describe('lint()', () => {
         ...testScholarship,
         description: 'Stanford University students.',
         requirements: { schools: ['Stanford University (CA)'] },
-      })
+      }),
     ).toEqual([]);
   });
   test('missing schools', () => {
@@ -404,7 +411,7 @@ describe('lint()', () => {
         ...testScholarship,
         description: 'Harvard University or Stanford University students.',
         requirements: { schools: ['Stanford University (CA)'] },
-      })
+      }),
     ).toHaveLength(1);
   });
   test('no missing states', () => {
@@ -413,7 +420,7 @@ describe('lint()', () => {
         ...testScholarship,
         description: 'college in Washington or Oregon.',
         requirements: { states: ['OR', 'WA'] },
-      })
+      }),
     ).toEqual([]);
   });
   test('missing state requirements', () => {
@@ -422,7 +429,7 @@ describe('lint()', () => {
         ...testScholarship,
         description: 'college in California, Washington or Oregon.',
         requirements: { states: ['OR', 'WA'] },
-      })
+      }),
     ).toHaveLength(1);
   });
   test('no missing ethnicities', () => {
@@ -431,7 +438,7 @@ describe('lint()', () => {
         ...testScholarship,
         description: 'Asian descent.',
         requirements: { ethnicities: [Ethnicity.Asian] },
-      })
+      }),
     ).toEqual([]);
   });
   test('missing ethnicity requirements', () => {
@@ -440,7 +447,7 @@ describe('lint()', () => {
         ...testScholarship,
         description: 'Asian or Pacific Islander descent.',
         requirements: { ethnicities: [Ethnicity.Asian] },
-      })
+      }),
     ).toHaveLength(1);
   });
   // TODO(#858): Tests for other errors.

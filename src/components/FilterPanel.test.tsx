@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import FilterPanel from './FilterPanel';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
-import { act } from 'react-dom/test-utils';
+import { act } from 'react';
 
 function renderComponent() {
   return render(
@@ -14,7 +14,7 @@ function renderComponent() {
           <FilterPanel onClose={() => {}} />
         </BrowserRouter>
       </I18nextProvider>
-    </Suspense>
+    </Suspense>,
   );
 }
 
@@ -32,10 +32,10 @@ test('renders component', async () => {
   ].forEach((s) => expect(screen.getByText(s)).toBeInTheDocument());
 
   expect(
-    screen.getByText('Your filters are currently applied.')
+    screen.getByText('Your filters are currently applied.'),
   ).toBeInTheDocument();
   expect(
-    screen.queryByText('Your changes are not yet applied.')
+    screen.queryByText('Your changes are not yet applied.'),
   ).not.toBeInTheDocument();
   expect(screen.getByText('Apply')).toBeInTheDocument();
   expect(screen.getByText('Cancel')).toBeInTheDocument();
@@ -53,7 +53,7 @@ test('message change when filter option chosen', async () => {
   expect(screen.getByText('Art History')).toBeInTheDocument();
   expect(screen.findByText('Your changes are not yet applied.'));
   expect(
-    screen.queryByText('Your filters are currently applied.')
+    screen.queryByText('Your filters are currently applied.'),
   ).not.toBeInTheDocument();
 });
 
@@ -70,7 +70,7 @@ test('school chip shows when an option is selected', async () => {
   fireEvent.click(school);
 
   expect(
-    screen.getByText('University of California Irvine (CA)')
+    screen.getByText('University of California Irvine (CA)'),
   ).toBeInTheDocument();
 });
 
@@ -91,11 +91,11 @@ test('translated component - Spanish', async () => {
 
   expect(await screen.findByText('Filtros')).toBeInTheDocument();
   ['¿Qué estudia?', 'Cantidad mínima', 'Nivel de grado', 'Estado'].forEach(
-    (s) => expect(screen.getByText(s)).toBeInTheDocument()
+    (s) => expect(screen.getByText(s)).toBeInTheDocument(),
   );
 
   expect(
-    screen.getByText('Sus filtros están actualmente aplicados.')
+    screen.getByText('Sus filtros están actualmente aplicados.'),
   ).toBeInTheDocument();
   expect(screen.getByText('Aplicar')).toBeInTheDocument();
   expect(screen.getByText('Cancelar')).toBeInTheDocument();

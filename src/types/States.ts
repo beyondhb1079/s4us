@@ -72,13 +72,13 @@ const toStringMappings: Record<string, string> = STATES.reduce(
     ...arr,
     [s.abbr]: `${s.name} (${s.abbr})`,
   }),
-  {}
+  {},
 );
 
-namespace State {
-  export function toString(state: string): string {
+const State = {
+  toString(state: string): string {
     return toStringMappings[state];
-  }
-}
+  },
+};
 
 export default State;

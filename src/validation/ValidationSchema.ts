@@ -2,6 +2,7 @@ import { TFunction } from 'i18next';
 import * as yup from 'yup';
 import AmountType from '../types/AmountType';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const validationSchema: any = (t: TFunction) =>
   yup.object({
     name: yup.string().required(t('nameRequired')),
@@ -27,7 +28,7 @@ const validationSchema: any = (t: TFunction) =>
             .test(
               'min < max test',
               t('minLessMax'),
-              (min, { parent }) => !min || !parent?.max || min < parent.max
+              (min, { parent }) => !min || !parent?.max || min < parent.max,
             ),
         }),
       max: yup.number().min(0, t('amountValid')).notRequired(),
@@ -42,7 +43,7 @@ const validationSchema: any = (t: TFunction) =>
             gpa === undefined ||
             (gpa > 0 &&
               gpa <= 4 &&
-              gpa.toString().match(/^[0-4](\.\d\d?)?$/) !== null)
+              gpa.toString().match(/^[0-4](\.\d\d?)?$/) !== null),
         ),
     }),
   });

@@ -1,3 +1,4 @@
+import { FormikConfig, FormikValues } from 'formik';
 import React, { useState } from 'react';
 import { getIn } from 'formik';
 import {
@@ -15,10 +16,11 @@ const filterOptions = createFilterOptions({
     `${option.replace(/\([A-Z]+\)/, '').replaceAll(/[^A-Z]/g, '')} ${option}`,
 });
 
-interface FAProps<FreeSolo extends boolean | undefined>
-  extends UseAutocompleteProps<string, true, false, FreeSolo> {
+interface FAProps<
+  FreeSolo extends boolean | undefined,
+> extends UseAutocompleteProps<string, true, false, FreeSolo> {
   /** The result of `useFormik()`. */
-  formik: any;
+  formik: Partial<FormikConfig<FormikValues>>;
   id: string;
 
   disabled?: boolean;
@@ -29,7 +31,7 @@ interface FAProps<FreeSolo extends boolean | undefined>
 
 /* eslint-disable react/jsx-props-no-spreading */
 export default function FormikAutocomplete<
-  FreeSolo extends boolean | undefined
+  FreeSolo extends boolean | undefined,
 >({ id, formik, ...props }: FAProps<FreeSolo>): JSX.Element {
   const {
     label,
@@ -57,7 +59,7 @@ export default function FormikAutocomplete<
 
           if (options.length > 1) {
             const vals = values.concat(
-              options.map((x) => x.trim()).filter((x) => x)
+              options.map((x) => x.trim()).filter((x) => x),
             );
             setInputValue('');
             return onChange(e, vals, 'selectOption');

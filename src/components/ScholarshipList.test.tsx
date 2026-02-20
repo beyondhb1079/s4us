@@ -1,5 +1,7 @@
+import MutationObserver from 'mutation-observer';
 import React, { Suspense } from 'react';
 import { render, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import { MemoryRouter } from 'react-router-dom';
@@ -9,7 +11,7 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
 import { initializeTestEnv } from '../lib/testing';
 import { ScholarshipsProvider } from '../models/ScholarshipsContext';
-import ScholarshipAmount from '../types/ScholarshipAmount';
+import { ScholarshipAmountInfo } from '../types/ScholarshipAmount';
 
 const [env, cleanup] = initializeTestEnv('scholarship-list-test');
 beforeEach(() => env.then((e) => e.clearFirestore()));
@@ -17,7 +19,7 @@ afterAll(() => cleanup());
 
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.
-window.MutationObserver = require('mutation-observer');
+window.MutationObserver = MutationObserver;
 
 const renderWithProviders = (ui: JSX.Element) =>
   render(
@@ -28,19 +30,17 @@ const renderWithProviders = (ui: JSX.Element) =>
         </ScholarshipsProvider>
       </I18nextProvider>
     </Suspense>,
-    { wrapper: MemoryRouter }
+    { wrapper: MemoryRouter },
   );
 
 // https://stackoverflow.com/a/62148101
 beforeEach(() => {
   // IntersectionObserver isn't available in test environment
-  const mockIntersectionObserver = jest.fn();
-  mockIntersectionObserver.mockReturnValue({
-    observe: () => null,
-    unobserve: () => null,
-    disconnect: () => null,
-  });
-  window.IntersectionObserver = mockIntersectionObserver;
+  window.IntersectionObserver = class {
+    observe = vi.fn();
+    unobserve = vi.fn();
+    disconnect = vi.fn();
+  } as unknown as typeof IntersectionObserver;
 });
 
 test('renders no results', async () => {
@@ -51,7 +51,7 @@ test('renders no results', async () => {
 
 test('renders custom no results node', async () => {
   renderWithProviders(
-    <ScholarshipList noResultsNode={<Button>Oh no</Button>} />
+    <ScholarshipList noResultsNode={<Button>Oh no</Button>} />,
   );
 
   const button = await screen.findByRole('button');
@@ -62,7 +62,7 @@ test('renders custom no results node', async () => {
 test('renders end of results', async () => {
   const data = {
     name: 'Foo scholarship',
-    amount: ScholarshipAmount.fixed(1000),
+    amount: ScholarshipAmountInfo.fixed(1000),
     description: 'Foo description',
     deadline: new Date('3020-12-17'),
     website: 'foo.com',

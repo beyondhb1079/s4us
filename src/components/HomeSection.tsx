@@ -24,7 +24,7 @@ const HomeSection = ({
   return (
     <Container sx={{ padding: 4 }}>
       <Grid container spacing={3} direction={direction} alignItems={alignItems}>
-        <Grid item xs={12} sm={6}>
+        <Grid xs={12} sm={6} component="div">
           <Typography variant={main ? 'h2' : 'h3'} component="h2" gutterBottom>
             {title}
           </Typography>
@@ -33,15 +33,14 @@ const HomeSection = ({
           </Typography>
           <Grid container spacing={2}>
             {buttons.map((button: JSX.Element, i: number) => (
-              // eslint-disable-next-line react/no-array-index-key
-              <Grid item key={i}>
+              <Grid key={i} component="div">
                 {button}
               </Grid>
             ))}
           </Grid>
         </Grid>
 
-        <Grid item xs={12} sm={6} sx={{ height: 400 }}>
+        <Grid xs={12} sm={6} sx={{ height: 400 }} component="div">
           <img
             src={pic}
             alt=""

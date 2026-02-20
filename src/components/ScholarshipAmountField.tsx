@@ -1,3 +1,4 @@
+import { FormikConfig, FormikValues } from 'formik';
 import React from 'react';
 import {
   Grid,
@@ -16,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 
 interface SAFProps {
   /** The result of `useFormik()`. */
-  formik: any;
+  formik: Partial<FormikConfig<FormikValues>>;
   labelStyle?: SxProps<Theme>;
 }
 
@@ -26,7 +27,7 @@ function ScholarshipAmountField({ labelStyle, formik }: SAFProps): JSX.Element {
   const maxError = getIn(formik.errors, 'amount.max');
   const { t } = useTranslation('scholarshipAmount');
 
-  let helperText = minError || maxError || '';
+  const helperText = minError || maxError || '';
 
   const inputFields = {} as { [k: string]: JSX.Element };
   inputFields[AmountType.Varies] = (

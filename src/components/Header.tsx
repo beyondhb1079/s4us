@@ -12,7 +12,8 @@ import {
   useScrollTrigger,
   Box,
 } from '@mui/material';
-import { TFunction, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
+import { TFunction } from 'i18next';
 import { BRAND_NAME } from '../config/constants';
 import HeaderNavMenu from './HeaderNavMenu';
 import useAuth from '../lib/useAuth';

@@ -29,8 +29,8 @@ import FormikMultiSelect from './FormikMultiSelect';
 import FormikAutocomplete from './FormikAutocomplete';
 import { SCHOOLS, MAJORS } from '../types/options';
 import State, { STATES } from '../types/States';
-import GradeLevel from '../types/GradeLevel';
-import Ethnicity from '../types/Ethnicity';
+import { GradeLevelInfo } from '../types/GradeLevel';
+import { EthnicityInfo } from '../types/Ethnicity';
 import ScholarshipsContext from '../models/ScholarshipsContext';
 import { lintReqs, LintReqsResult } from '../lib/lint';
 import { useTranslation } from 'react-i18next';
@@ -175,7 +175,7 @@ export default function ScholarshipForm({ scholarship }: SFProps): JSX.Element {
               options={[]}
               onChange={(e, vals) => {
                 const newVals = new Set(
-                  vals.map((v) => v.toLowerCase().replace(/\s+/g, '-'))
+                  vals.map((v) => v.toLowerCase().replace(/\s+/g, '-')),
                 );
                 formik.setFieldValue('tags', Array.from(newVals));
               }}
@@ -217,7 +217,7 @@ export default function ScholarshipForm({ scholarship }: SFProps): JSX.Element {
                   onChange={() =>
                     formik.setFieldValue(
                       'requirements',
-                      noReqsChecked ? undefined : {}
+                      noReqsChecked ? undefined : {},
                     )
                   }
                   color="primary"
@@ -234,7 +234,7 @@ export default function ScholarshipForm({ scholarship }: SFProps): JSX.Element {
               id="requirements.grades"
               labelStyle={labelStyle}
               formik={formik}
-              options={GradeLevel.values()}
+              options={GradeLevelInfo.values()}
               placeholder={t('noRequirements')}
             />
           </Grid>
@@ -295,7 +295,7 @@ export default function ScholarshipForm({ scholarship }: SFProps): JSX.Element {
               id="requirements.ethnicities"
               labelStyle={labelStyle}
               formik={formik}
-              options={Ethnicity.values()}
+              options={EthnicityInfo.values()}
               placeholder={t('noRequirements')}
             />
           </Grid>
@@ -317,7 +317,7 @@ export default function ScholarshipForm({ scholarship }: SFProps): JSX.Element {
     const noReqsGiven =
       !formik.values.requirements ||
       Object.values(formik.values.requirements).every(
-        (val) => val == [] || val == ''
+        (val) => (Array.isArray(val) && val.length === 0) || val === '',
       );
     // no requirements & no checkbox fails
     if (activeStep == 1 && !noReqsChecked && noReqsGiven)
@@ -390,7 +390,7 @@ export default function ScholarshipForm({ scholarship }: SFProps): JSX.Element {
                     )}
                   </StepContent>
                 </Step>
-              )
+              ),
             )}
           </Stepper>
         </form>

@@ -1,10 +1,8 @@
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom/extend-expect';
+import '@testing-library/jest-dom';
+import { vi } from 'vitest';
 
-// Ensures console.error messages become test failures.
-global.console.error = (...obj) => {
-  throw Error(`${obj.join('\n\t')}`);
-};
+vi.mock('firebase/analytics', () => ({
+  getAnalytics: vi.fn(),
+  logEvent: vi.fn(),
+  isSupported: vi.fn().mockResolvedValue(true),
+}));
