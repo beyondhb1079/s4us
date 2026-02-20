@@ -11,9 +11,6 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
 import { initializeTestEnv } from '../lib/testing';
 import { ScholarshipsProvider } from '../models/ScholarshipsContext';
-import ScholarshipAmount, {
-  ScholarshipAmountInfo,
-} from '../types/ScholarshipAmount';
 
 const [env, cleanup] = initializeTestEnv('scholarship-list-test');
 beforeEach(() => env.then((e) => e.clearFirestore()));
@@ -38,12 +35,11 @@ const renderWithProviders = (ui: JSX.Element) =>
 // https://stackoverflow.com/a/62148101
 beforeEach(() => {
   // IntersectionObserver isn't available in test environment
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   window.IntersectionObserver = class {
     observe = vi.fn();
     unobserve = vi.fn();
     disconnect = vi.fn();
-  } as any;
+  } as unknown as typeof IntersectionObserver;
 });
 
 test('renders no results', async () => {

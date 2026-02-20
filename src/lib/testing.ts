@@ -2,7 +2,7 @@ import {
   initializeTestEnvironment,
   RulesTestEnvironment,
 } from '@firebase/rules-unit-testing';
-import { deleteApp, initializeApp, getApp, getApps } from 'firebase/app';
+import { initializeApp, getApps } from 'firebase/app';
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
 
 /* istanbul ignore if */
@@ -28,12 +28,9 @@ const rules = `
 export function initializeTestEnv(
   projectId?: string,
 ): [Promise<RulesTestEnvironment>, () => Promise<void>] {
-  let app;
   if (getApps().length === 0) {
-    app = initializeApp({ appId: 'foo', apiKey: 'fake', projectId });
+    const app = initializeApp({ appId: 'foo', apiKey: 'fake', projectId });
     connectFirestoreEmulator(getFirestore(app), 'localhost', 8080);
-  } else {
-    app = getApp();
   }
   const env = initializeTestEnvironment({
     projectId,

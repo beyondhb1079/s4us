@@ -6,13 +6,10 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Header from './Header';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
-import { getApp, getApps, initializeApp } from 'firebase/app';
+import { getApps, initializeApp } from 'firebase/app';
 
-let app;
 if (getApps().length === 0) {
-  app = initializeApp({ apiKey: 'fake-api-key' });
-} else {
-  app = getApp();
+  initializeApp({ apiKey: 'fake-api-key' });
 }
 
 // hacky workaround to allow findBy to work

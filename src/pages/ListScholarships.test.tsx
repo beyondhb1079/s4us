@@ -42,12 +42,11 @@ afterAll(() => cleanup());
 // https://stackoverflow.com/a/62148101
 beforeEach(() => {
   // IntersectionObserver isn't available in test environment
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   window.IntersectionObserver = class {
     observe = vi.fn();
     unobserve = vi.fn();
     disconnect = vi.fn();
-  } as any;
+  } as unknown as typeof IntersectionObserver;
 });
 
 test('renders a list of scholarships', async () => {
