@@ -1,15 +1,15 @@
 import React, { Suspense } from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ScholarshipCard from './ScholarshipCard';
-import ScholarshipAmount from '../types/ScholarshipAmount';
+import { ScholarshipAmountInfo } from '../types/ScholarshipAmount';
 import { initializeTestEnv } from '../lib/testing';
 import i18n from '../i18n';
 import { I18nextProvider } from 'react-i18next';
 import ScholarshipData from '../types/ScholarshipData';
-import GradeLevel from '../types/GradeLevel';
-import Ethnicity from '../types/Ethnicity';
+import GradeLevel, { GradeLevelInfo } from '../types/GradeLevel';
+import Ethnicity, { EthnicityInfo } from '../types/Ethnicity';
 import State from '../types/States';
 
 const [env, cleanup] = initializeTestEnv('scholarship-card-test');
@@ -24,7 +24,7 @@ const renderCard = (card: JSX.Element) =>
           <ThemeProvider theme={createTheme()}>{card}</ThemeProvider>
         </I18nextProvider>
       </Suspense>
-    </MemoryRouter>
+    </MemoryRouter>,
   );
 
 const data = {
@@ -32,7 +32,7 @@ const data = {
   name: 'test scholarship',
   description: 'bad description: 2017-2018',
   organization: 'City of Seattle',
-  amount: ScholarshipAmount.unknown(),
+  amount: ScholarshipAmountInfo.unknown(),
   website: 'http://foo.com/',
   requirements: {
     states: ['CA', 'WA'],
@@ -50,7 +50,7 @@ const scholarship = { id: '123', data: data };
 const editableScholarship = { id: '234', data: { ...data, author: undefined } };
 
 const basicStrings = [
-  ScholarshipAmount.toString(data.amount),
+  ScholarshipAmountInfo.toString(data.amount),
   data.deadline.toLocaleDateString(),
   data.description,
   data.name,
@@ -60,9 +60,9 @@ const basicStrings = [
 
 const detailStrings = [
   'Eligibility Requirements',
-  data.requirements?.ethnicities?.map(Ethnicity.toString),
+  data.requirements?.ethnicities?.map(EthnicityInfo.toString),
   data.requirements?.gpa + '.0',
-  data.requirements?.grades?.map(GradeLevel.toString),
+  data.requirements?.grades?.map(GradeLevelInfo.toString),
   data.requirements?.majors,
   data.requirements?.schools,
   data.requirements?.states?.map(State.toString),
@@ -72,11 +72,11 @@ const lintWarning = /potential issues detected/;
 
 test('result renders basic info', async () => {
   const { getByRole, getByText, queryByText } = renderCard(
-    <ScholarshipCard scholarship={scholarship} />
+    <ScholarshipCard scholarship={scholarship} />,
   );
 
   await waitFor(() =>
-    basicStrings.forEach((s) => expect(getByText(s)).toBeInTheDocument())
+    basicStrings.forEach((s) => expect(getByText(s)).toBeInTheDocument()),
   );
   detailStrings.forEach((s) => expect(queryByText(s)).not.toBeInTheDocument());
   expect(queryByText(lintWarning)).not.toBeInTheDocument();
@@ -86,7 +86,7 @@ test('result renders basic info', async () => {
 
 test('result view for editor show lint warnings', () => {
   const { getByText } = renderCard(
-    <ScholarshipCard style="result" scholarship={editableScholarship} />
+    <ScholarshipCard style="result" scholarship={editableScholarship} />,
   );
 
   expect(getByText(lintWarning)).toBeInTheDocument();
@@ -94,7 +94,7 @@ test('result view for editor show lint warnings', () => {
 
 test('detail renders detail info and Apply button', () => {
   const { getByRole, getByText, queryByText } = renderCard(
-    <ScholarshipCard style="detail" scholarship={scholarship} />
+    <ScholarshipCard style="detail" scholarship={scholarship} />,
   );
 
   basicStrings.forEach((s) => expect(getByText(s)).toBeInTheDocument());
@@ -105,13 +105,13 @@ test('detail renders detail info and Apply button', () => {
   expect(getByRole('button', { name: 'Share' })).toBeInTheDocument();
   expect(getByRole('link', { name: 'Report issue' })).toHaveAttribute(
     'href',
-    expect.stringContaining('mailto:')
+    expect.stringContaining('mailto:'),
   );
 });
 
 test('detail view for editor shows lint warnings and edit button', () => {
   const { getByRole, getByText } = renderCard(
-    <ScholarshipCard style="detail" scholarship={editableScholarship} />
+    <ScholarshipCard style="detail" scholarship={editableScholarship} />,
   );
 
   basicStrings.forEach((s) => expect(getByText(s)).toBeInTheDocument());
@@ -122,7 +122,7 @@ test('detail view for editor shows lint warnings and edit button', () => {
   expect(getByRole('link', { name: 'edit' })).toHaveAttribute('href', '/edit');
   expect(getByRole('link', { name: 'Report issue' })).toHaveAttribute(
     'href',
-    expect.stringContaining('mailto:')
+    expect.stringContaining('mailto:'),
   );
 });
 
@@ -130,7 +130,7 @@ test('preview renders detail info and URL', () => {
   const url = data.website;
 
   const { getByRole, getByText, queryByText, queryByRole } = renderCard(
-    <ScholarshipCard style="preview" scholarship={scholarship} />
+    <ScholarshipCard style="preview" scholarship={scholarship} />,
   );
 
   basicStrings.forEach((s) => expect(getByText(s)).toBeInTheDocument());
@@ -146,7 +146,7 @@ test('preview view for editor does not show lint warnings nor edit button', () =
   const url = data.website;
 
   const { getByRole, getByText, queryByText, queryByRole } = renderCard(
-    <ScholarshipCard style="preview" scholarship={editableScholarship} />
+    <ScholarshipCard style="preview" scholarship={editableScholarship} />,
   );
 
   basicStrings.forEach((s) => expect(getByText(s)).toBeInTheDocument());

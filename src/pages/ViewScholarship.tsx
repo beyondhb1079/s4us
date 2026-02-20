@@ -9,6 +9,13 @@ import bannerImg from '../img/detail-page-banner.jpg';
 import { useLocation, useNavigationType, useParams } from 'react-router-dom';
 import ScholarshipsContext from '../models/ScholarshipsContext';
 import { useTranslation } from 'react-i18next';
+import Model from '../models/base/Model';
+import ScholarshipData from '../types/ScholarshipData';
+
+interface LocationState {
+  scholarship?: Model<ScholarshipData>;
+  prevPath?: string;
+}
 
 export default function ViewScholarship(): JSX.Element {
   const location = useLocation();
@@ -16,11 +23,11 @@ export default function ViewScholarship(): JSX.Element {
   const { scholarships } = useContext(ScholarshipsContext);
   const [scholarship, setScholarship] = useState(
     scholarships.find((s) => s.id === id) ||
-      (location?.state as any)?.scholarship
+      (location?.state as LocationState)?.scholarship,
   );
   const [error, setError] = useState<Error>();
   const loading = !error && (!scholarship || scholarship.id !== id);
-  const prevPath = (location?.state as any)?.prevPath;
+  const prevPath = (location?.state as LocationState)?.prevPath;
   const justEdited =
     scholarship &&
     (prevPath === `${location.pathname}/edit` ||
@@ -63,7 +70,7 @@ export default function ViewScholarship(): JSX.Element {
       {justEdited && navType === 'PUSH' && (
         <Collapse in={showAlert}>
           <Alert
-            color={'primary' as any}
+            color="primary"
             variant="filled"
             onClose={() => setShowAlert(false)}>
             {`Scholarship successfully ${

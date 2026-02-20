@@ -1,3 +1,4 @@
+import MutationObserver from 'mutation-observer';
 import React, { Suspense } from 'react';
 import { render, screen } from '@testing-library/react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -17,7 +18,7 @@ afterAll(() => cleanup());
 
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.
-window.MutationObserver = require('mutation-observer');
+window.MutationObserver = MutationObserver;
 
 const renderWithProviders = (ui: JSX.Element) =>
   render(
@@ -28,7 +29,7 @@ const renderWithProviders = (ui: JSX.Element) =>
         </ScholarshipsProvider>
       </I18nextProvider>
     </Suspense>,
-    { wrapper: MemoryRouter }
+    { wrapper: MemoryRouter },
   );
 
 // https://stackoverflow.com/a/62148101
@@ -51,7 +52,7 @@ test('renders no results', async () => {
 
 test('renders custom no results node', async () => {
   renderWithProviders(
-    <ScholarshipList noResultsNode={<Button>Oh no</Button>} />
+    <ScholarshipList noResultsNode={<Button>Oh no</Button>} />,
   );
 
   const button = await screen.findByRole('button');

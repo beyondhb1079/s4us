@@ -48,22 +48,22 @@ beforeAll(() =>
     testEnv = env;
     unauthedScholarships = collection(
       env.unauthenticatedContext().firestore(),
-      'scholarships'
+      'scholarships',
     );
     aliceScholarships = collection(
       env.authenticatedContext('alice').firestore(),
-      'scholarships'
+      'scholarships',
     );
     johnScholarships = collection(
       env.authenticatedContext('john-doe').firestore(),
-      'scholarships'
+      'scholarships',
     );
     adminScholarships = collection(
       env.authenticatedContext('admin', { admin: true }).firestore(),
-      'scholarships'
+      'scholarships',
     );
     return setDoc(doc(aliceScholarships, scholarshipId), { ...scholarship });
-  })
+  }),
 );
 afterAll(() => testEnv.cleanup());
 
@@ -81,7 +81,7 @@ test('allows scholarships create when signed in', () =>
 
 test('denies scholarships update when user is not author', () =>
   assertFails(
-    setDoc(doc(johnScholarships, scholarshipId), { name: 'updated name' })
+    setDoc(doc(johnScholarships, scholarshipId), { name: 'updated name' }),
   ));
 
 test('allows scholarships update when user is author', () =>
@@ -89,7 +89,7 @@ test('allows scholarships update when user is author', () =>
     setDoc(doc(aliceScholarships, scholarshipId), {
       ...scholarship,
       name: 'updated name',
-    })
+    }),
   ));
 
 test('allows scholarships update when user is admin', () =>
@@ -97,7 +97,7 @@ test('allows scholarships update when user is admin', () =>
     setDoc(doc(adminScholarships, scholarshipId), {
       ...scholarship,
       name: 'updated name',
-    })
+    }),
   ));
 
 test('denies scholarship delete when user is not author', () =>
@@ -105,20 +105,20 @@ test('denies scholarship delete when user is not author', () =>
 
 test('allows scholarship delete when user is author', () =>
   assertSucceeds(
-    setDoc(doc(aliceScholarships, 'author-delete'), { ...scholarship })
+    setDoc(doc(aliceScholarships, 'author-delete'), { ...scholarship }),
   ).then(() =>
-    assertSucceeds(deleteDoc(doc(aliceScholarships, 'author-delete')))
+    assertSucceeds(deleteDoc(doc(aliceScholarships, 'author-delete'))),
   ));
 
 test('allows scholarship delete when user is admin', () =>
   assertSucceeds(
-    setDoc(doc(aliceScholarships, 'admin-delete'), { ...scholarship })
+    setDoc(doc(aliceScholarships, 'admin-delete'), { ...scholarship }),
   ).then(() =>
-    assertSucceeds(deleteDoc(doc(adminScholarships, 'admin-delete')))
+    assertSucceeds(deleteDoc(doc(adminScholarships, 'admin-delete'))),
   ));
 
 describe('validation rules reject scholarship when', () => {
-  const createDoc = (data: any) =>
+  const createDoc = (data: { [key: string]: unknown }) =>
     setDoc(doc(aliceScholarships), { ...scholarship, ...data });
 
   test('invalid on create', () => assertFails(createDoc({ name: 34 })));
@@ -128,7 +128,7 @@ describe('validation rules reject scholarship when', () => {
       setDoc(doc(aliceScholarships, scholarshipId), {
         ...scholarship,
         name: 34,
-      })
+      }),
     ));
 
   test('name is not a string', () => assertFails(createDoc({ name: 34 })));
@@ -138,7 +138,7 @@ describe('validation rules reject scholarship when', () => {
 
   test('amount min/max is not an integer', () =>
     assertFails(
-      createDoc({ amount: { type: AmountType.Varies, min: false, max: '0' } })
+      createDoc({ amount: { type: AmountType.Varies, min: false, max: '0' } }),
     ));
 
   test('description is not a string', () =>
@@ -168,14 +168,14 @@ describe('validation rules reject scholarship when', () => {
     assertFails(
       createDoc({
         author: { id: 2, email: 'test@gmail.com' },
-      })
+      }),
     ));
 
   test('author email is not a string', () =>
     assertFails(
       createDoc({
         author: { email: 2, id: scholarship.author.id },
-      })
+      }),
     ));
 
   describe('requirements...', () => {

@@ -1,8 +1,8 @@
 import queryString, { ParseOptions } from 'query-string';
 import { useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Ethnicity from '../types/Ethnicity';
-import GradeLevel from '../types/GradeLevel';
+import Ethnicity, { EthnicityInfo } from '../types/Ethnicity';
+import GradeLevel, { GradeLevelInfo } from '../types/GradeLevel';
 import { STATES } from '../types/States';
 import sortOptions from './sortOptions';
 
@@ -13,10 +13,16 @@ const options: ParseOptions = {
   parseBooleans: true,
 };
 
-type SetQueryParamsFn = (
-  params: Record<string, any>,
-  replace?: boolean
-) => void;
+type QueryParamValue =
+  | string
+  | number
+  | boolean
+  | (string | number | boolean)[]
+  | undefined
+  | null;
+type QueryParams = Record<string, QueryParamValue>;
+
+type SetQueryParamsFn = (params: QueryParams, replace?: boolean) => void;
 
 /**
  * Returns the query string parsed as an object, and a function to update parameters.
@@ -29,13 +35,16 @@ type SetQueryParamsFn = (
  *
  */
 export default function useQueryParams(
-  prune = true
-): [Record<string, any>, SetQueryParamsFn] {
+  prune = true,
+): [QueryParams, SetQueryParamsFn] {
   const locationSearch = useLocation().search;
   const navigate = useNavigate();
 
-  const setQueryParams = (params: Record<string, any>, replace = false) => {
-    const origParams = queryString.parse(locationSearch, options);
+  const setQueryParams = (params: QueryParams, replace = false) => {
+    const origParams = queryString.parse(
+      locationSearch,
+      options,
+    ) as unknown as QueryParams;
     Object.keys(params).forEach((k) => {
       if (params[k] === undefined) {
         delete origParams[k];
@@ -48,10 +57,10 @@ export default function useQueryParams(
     navigate({ search }, { replace });
   };
 
-  const params = useMemo(
+  const params: QueryParams = useMemo(
     () =>
       JSON.parse(JSON.stringify(queryString.parse(locationSearch, options))),
-    [locationSearch]
+    [locationSearch],
   );
 
   if (prune) {
@@ -97,16 +106,25 @@ export default function useQueryParams(
       // Prune invalid grade values not respresented by GradeLevel enum
       params.grades = Array.isArray(grades)
         ? Array.from(
-            new Set(grades.filter((g) => GradeLevel.keys().includes(g)))
+            new Set(grades.filter((g) => GradeLevelInfo.keys().includes(g))),
           )
         : [];
+      params.grades = Array.from(
+        new Set(
+          (params.grades as (string | number | boolean)[]).filter((g) =>
+            GradeLevelInfo.keys().includes(g as unknown as GradeLevel),
+          ),
+        ),
+      );
       if (params.grades.length === 0) delete params.grades;
     }
 
     if (majors !== undefined) {
       // Prune empty strings
       params.majors = Array.isArray(majors)
-        ? Array.from(new Set(majors)).filter((s) => s.length > 0)
+        ? Array.from(new Set(majors)).filter(
+            (s): s is string => typeof s === 'string' && s.length > 0,
+          )
         : [];
       if (params.majors.length === 0) {
         delete params.majors;
@@ -117,9 +135,11 @@ export default function useQueryParams(
       params.states = Array.isArray(states)
         ? Array.from(
             new Set(
-              states.filter((s) => STATES.map((st) => st.abbr).includes(s))
-            )
-          ).filter((s) => s.length > 0)
+              states.filter((s) =>
+                STATES.map((st) => st.abbr).includes(s as string),
+              ),
+            ),
+          ).filter((s): s is string => typeof s === 'string' && s.length > 0)
         : [];
       if (params.states.length === 0) {
         delete params.states;
@@ -128,7 +148,9 @@ export default function useQueryParams(
 
     if (schools !== undefined) {
       params.schools = Array.isArray(schools)
-        ? Array.from(new Set(schools)).filter((s) => s.length > 0)
+        ? Array.from(new Set(schools)).filter(
+            (s): s is string => typeof s === 'string' && s.length > 0,
+          )
         : [];
       if (params.schools.length === 0) {
         delete params.schools;
@@ -138,7 +160,7 @@ export default function useQueryParams(
     if (ethnicities !== undefined) {
       params.ethnicities = Array.isArray(ethnicities)
         ? Array.from(new Set(ethnicities)).filter((e) =>
-            Ethnicity.keys().includes(e)
+            EthnicityInfo.keys().includes(e as unknown as Ethnicity),
           )
         : [];
       if (params.ethnicities.length === 0) {

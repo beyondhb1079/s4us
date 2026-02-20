@@ -9,7 +9,7 @@ import { TFunction, useTranslation } from 'react-i18next';
 
 function OutlineButton(
   user: string,
-  t: TFunction<('home' | 'common')[], undefined>
+  t: TFunction<('home' | 'common')[], undefined>,
 ): JSX.Element {
   return (
     <Button
@@ -46,8 +46,10 @@ export default function ScholarshipsMadeSimpleSection(): JSX.Element {
 
   const [user, setUser] = React.useState(tabs[0].tab);
 
-  const handleChange = (_: any, newUser: React.SetStateAction<string>) =>
-    setUser(newUser);
+  const handleChange = (
+    _: React.SyntheticEvent,
+    newUser: React.SetStateAction<string>,
+  ) => setUser(newUser);
 
   return (
     <Box>

@@ -1,3 +1,4 @@
+import { FormikConfig, FormikValues } from 'formik';
 import React from 'react';
 import { getIn } from 'formik';
 import { InputLabel, Select, MenuItem, SxProps, Theme } from '@mui/material';
@@ -13,7 +14,7 @@ const MenuProps = {
 
 interface FMSProps {
   /** The result of `useFormik()`. */
-  formik: any;
+  formik: Partial<FormikConfig<FormikValues>>;
   id: string;
   label: string;
   options: { [k: string]: string };

@@ -9,7 +9,7 @@ interface MinAmountFilterProps {
 }
 
 export default function MinAmountFilter(
-  props: MinAmountFilterProps
+  props: MinAmountFilterProps,
 ): JSX.Element {
   const { min, onMinChange } = props;
   const error = min < 0;
@@ -26,7 +26,9 @@ export default function MinAmountFilter(
         min={0}
         max={50000}
         step={100}
-        onChange={(e: any) => onMinChange(e.target.value)}
+        onChange={(e: Event, value: number | number[]) =>
+          onMinChange(value as number)
+        }
         sx={{ mt: 1 }}
       />
 

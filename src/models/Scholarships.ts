@@ -1,4 +1,4 @@
-import ScholarshipAmount from '../types/ScholarshipAmount';
+import { ScholarshipAmountInfo } from '../types/ScholarshipAmount';
 import FirestoreCollection from './base/FirestoreCollection';
 import FirestoreModelList from './base/FiretoreModelList';
 import FirestoreModel from './base/FirestoreModel';
@@ -33,8 +33,8 @@ import Ethnicity from '../types/Ethnicity';
  * - the requirement list intersects with the filter list
  */
 export function requirementMatchesFilter(
-  reqs?: any[],
-  paramFilters?: any[]
+  reqs?: (string | number)[],
+  paramFilters?: (string | number)[],
 ): boolean {
   return (
     !paramFilters?.length ||
@@ -67,7 +67,7 @@ export const converter: FirestoreDataConverter<ScholarshipData> = {
     return {
       ...data,
       author,
-      amount: ScholarshipAmount.toStorage(data.amount),
+      amount: ScholarshipAmountInfo.toStorage(data.amount),
       deadline: Timestamp.fromDate(data.deadline),
       dateAdded: Timestamp.fromDate(dateAdded),
       lastModified: Timestamp.fromDate(lastModified),
@@ -75,7 +75,7 @@ export const converter: FirestoreDataConverter<ScholarshipData> = {
   },
   fromFirestore: (
     snapshot: QueryDocumentSnapshot,
-    options: SnapshotOptions
+    options: SnapshotOptions,
   ) => {
     const data = snapshot.data(options);
     const deadline = (data.deadline as Timestamp).toDate();
@@ -87,7 +87,7 @@ export const converter: FirestoreDataConverter<ScholarshipData> = {
       deadline,
       dateAdded,
       lastModified,
-      amount: ScholarshipAmount.fromStorage(data.amount),
+      amount: ScholarshipAmountInfo.fromStorage(data.amount),
     } as ScholarshipData;
   },
 };
@@ -153,7 +153,7 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
   private _list(
     opts: FilterOptions,
     q: Query<ScholarshipData>,
-    lastDoc?: QueryDocumentSnapshot<ScholarshipData>
+    lastDoc?: QueryDocumentSnapshot<ScholarshipData>,
   ): Promise<FirestoreModelList<ScholarshipData>> {
     const now = new Date();
     const today = new Date(now.toDateString());
@@ -174,7 +174,7 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
           .filter(
             ({ data }) =>
               // Amount Filter.
-              ScholarshipAmount.amountsIntersect(data.amount, {
+              ScholarshipAmountInfo.amountsIntersect(data.amount, {
                 type: AmountType.Varies,
                 min: opts.minAmount ?? 0,
                 max: opts.maxAmount ?? 0,
@@ -182,32 +182,32 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
               // grade filter
               requirementMatchesFilter(
                 data.requirements?.grades,
-                opts.grades
+                opts.grades,
               ) &&
               // major filter
               requirementMatchesFilter(
                 data.requirements?.majors?.map((s) => s.toLowerCase()),
-                opts.majors?.map((s) => s.toLowerCase())
+                opts.majors?.map((s) => s.toLowerCase()),
               ) &&
               // state filter
               requirementMatchesFilter(
                 data.requirements?.states,
-                opts.states
+                opts.states,
               ) &&
               // school filter
               requirementMatchesFilter(
                 data.requirements?.schools?.map((s) => s.toLowerCase()),
-                opts.schools?.map((s) => s.toLowerCase())
+                opts.schools?.map((s) => s.toLowerCase()),
               ) &&
               // ethnicities filter
               requirementMatchesFilter(
                 data.requirements?.ethnicities,
-                opts.ethnicities
+                opts.ethnicities,
               ) &&
               // Deadline Filter.
               // This is needed  in case list() above couldn't apply it.
               // TODO(#692): Add a daily updated `status` field so we don't need to do this.
-              (opts.sortField == 'deadline' || data.deadline >= today)
+              (opts.sortField == 'deadline' || data.deadline >= today),
           ),
       }))
       .then(({ results, next, hasNext }) => {
@@ -227,7 +227,7 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
       },
       deadline: new Date(),
       website: '',
-    }
+    },
   ): FirestoreModel<ScholarshipData> {
     return new FirestoreModel<ScholarshipData>(doc(this.collection), data);
   }

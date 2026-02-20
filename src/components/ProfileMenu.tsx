@@ -6,6 +6,7 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  MenuProps,
   Typography,
 } from '@mui/material';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
@@ -20,7 +21,7 @@ import { useTranslation } from 'react-i18next';
 import { getAuth, signOut } from 'firebase/auth';
 
 // hacky way to override Menu style
-const StyledMenu = (props: any) => (
+const StyledMenu = (props: MenuProps) => (
   <Menu
     elevation={0}
     anchorOrigin={{

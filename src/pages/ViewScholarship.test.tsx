@@ -1,3 +1,4 @@
+import MutationObserver from 'mutation-observer';
 import React, { Suspense } from 'react';
 import Helmet from 'react-helmet';
 import { render, screen, waitFor } from '@testing-library/react';
@@ -6,9 +7,9 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { initializeTestEnv } from '../lib/testing';
 import ViewScholarship from './ViewScholarship';
 import Scholarships from '../models/Scholarships';
-import ScholarshipAmount from '../types/ScholarshipAmount';
-import GradeLevel from '../types/GradeLevel';
-import Ethnicity from '../types/Ethnicity';
+import { ScholarshipAmountInfo } from '../types/ScholarshipAmount';
+import GradeLevel, { GradeLevelInfo } from '../types/GradeLevel';
+import Ethnicity, { EthnicityInfo } from '../types/Ethnicity';
 import State from '../types/States';
 import i18n from '../i18n';
 import { I18nextProvider } from 'react-i18next';
@@ -17,7 +18,7 @@ import { act } from 'react-dom/test-utils';
 
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.
-window.MutationObserver = require('mutation-observer');
+window.MutationObserver = MutationObserver;
 
 function renderAtRoute(pathname: string, state = {}) {
   return render(
@@ -33,7 +34,7 @@ function renderAtRoute(pathname: string, state = {}) {
           </ScholarshipsProvider>
         </ThemeProvider>
       </I18nextProvider>
-    </Suspense>
+    </Suspense>,
   );
 }
 
@@ -58,10 +59,9 @@ test('renders scholarship not found', () => {
 test('renders passed in scholarship details', async () => {
   const data = {
     name: 'Foo scholarship',
-    amount: ScholarshipAmount.fixed(1000),
-    description: 'description',
-    deadline: new Date('2020-12-17'),
-    website: 'http://foo.com/',
+    amount: ScholarshipAmountInfo.fixed(1000),
+    description: 'Foo description',
+    deadline: new Date(),
   };
 
   renderAtRoute('/scholarships/passed-it', {
@@ -70,11 +70,11 @@ test('renders passed in scholarship details', async () => {
 
   await waitFor(() => expect(screen.getByText(data.name)).toBeInTheDocument());
   expect(
-    screen.getByText(ScholarshipAmount.toString(data.amount))
+    screen.getByText(ScholarshipAmountInfo.toString(data.amount)),
   ).toBeInTheDocument();
   expect(screen.getByText(data.description)).toBeInTheDocument();
   expect(
-    screen.getByText(data.deadline.toLocaleDateString())
+    screen.getByText(data.deadline.toLocaleDateString()),
   ).toBeInTheDocument();
   expect(screen.getByRole('button', { name: /Apply/i })).toBeInTheDocument();
   expect(Helmet.peek().title).toBe(data.name);
@@ -83,7 +83,7 @@ test('renders passed in scholarship details', async () => {
 test('renders scholarship details', async () => {
   const data = {
     name: 'Foo scholarship',
-    amount: ScholarshipAmount.fixed(1000),
+    amount: ScholarshipAmountInfo.fixed(1000),
     description: 'description',
     deadline: new Date('2020-12-17'),
     website: 'http://foo.com/',
@@ -106,11 +106,11 @@ test('renders scholarship details', async () => {
   await screen.findByText(/Foo scholarship/i);
   expect(screen.getByText(data.name)).toBeInTheDocument();
   expect(
-    screen.getByText(ScholarshipAmount.toString(data.amount))
+    screen.getByText(ScholarshipAmountInfo.toString(data.amount)),
   ).toBeInTheDocument();
   expect(screen.getByText(data.description)).toBeInTheDocument();
   expect(
-    screen.getByText(data.deadline.toLocaleDateString())
+    screen.getByText(data.deadline.toLocaleDateString()),
   ).toBeInTheDocument();
   expect(screen.getByRole('button', { name: /Apply/i })).toBeInTheDocument();
   expect(Helmet.peek().title).toBe(data.name);
@@ -119,15 +119,15 @@ test('renders scholarship details', async () => {
     .forEach((s) => expect(screen.getByText(s)).toBeInTheDocument());
   expect(screen.getByText(data.requirements.gpa + '.0')).toBeInTheDocument();
   data.requirements.grades
-    .map(GradeLevel.toString)
+    .map(GradeLevelInfo.toString)
     .forEach((g) => expect(screen.getByText(g)).toBeInTheDocument());
   data.requirements.ethnicities
-    .map(Ethnicity.toString)
+    .map(EthnicityInfo.toString)
     .forEach((e) => expect(screen.getByText(e)).toBeInTheDocument());
   data.requirements.majors.forEach((m) =>
-    expect(screen.getByText(m)).toBeInTheDocument()
+    expect(screen.getByText(m)).toBeInTheDocument(),
   );
   data.requirements.schools.forEach((s) =>
-    expect(screen.getByText(s)).toBeInTheDocument()
+    expect(screen.getByText(s)).toBeInTheDocument(),
   );
 });

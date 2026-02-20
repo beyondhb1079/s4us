@@ -1,7 +1,8 @@
 import AmountType from './AmountType';
-import ScholarshipAmount, {
+import {
   FULL_TUITION,
   RANGE_MAX,
+  ScholarshipAmountInfo,
   UNKNOWN_MAX,
   UNKNOWN_MIN,
 } from './ScholarshipAmount';
@@ -15,7 +16,7 @@ const {
   toString,
   toStorage,
   fromStorage,
-} = ScholarshipAmount;
+} = ScholarshipAmountInfo;
 
 test('fixed()', () => {
   const amount = fixed(20);

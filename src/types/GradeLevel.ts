@@ -34,38 +34,38 @@ const toStringMappings: Readonly<Record<GradeLevel, string>> = {
   [GradeLevel.GraduateFifthYear]: 'Graduate 5th Year',
 };
 
-namespace GradeLevel {
-  export function keys(): GradeLevel[] {
+export const GradeLevelInfo = {
+  keys(): GradeLevel[] {
     return Object.keys(toStringMappings).map((k) => parseInt(k) as GradeLevel);
-  }
-  export function values(): Record<GradeLevel, string> {
+  },
+  values(): Record<GradeLevel, string> {
     return toStringMappings;
-  }
-  export function toString(level: GradeLevel): string {
+  },
+  toString(level: GradeLevel): string {
     return toStringMappings[level];
-  }
+  },
 
-  export const highSchoolers = [
+  highSchoolers: [
     GradeLevel.HsFreshman,
     GradeLevel.HsSophomore,
     GradeLevel.HsJunior,
     GradeLevel.HsSenior,
-  ];
+  ],
 
-  export const undergrads = [
+  undergrads: [
     GradeLevel.CollegeFreshman,
     GradeLevel.CollegeSophomore,
     GradeLevel.CollegeJunior,
     GradeLevel.CollegeSenior,
-  ];
+  ],
 
-  export const grads = [
+  grads: [
     GradeLevel.GraduateFirstYear,
     GradeLevel.GraduateSecondYear,
     GradeLevel.GraduateThirdYear,
     GradeLevel.GraduateFourthYear,
     GradeLevel.GraduateFifthYear,
-  ];
-}
+  ],
+};
 
 export default GradeLevel;

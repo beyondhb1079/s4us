@@ -14,7 +14,8 @@ import {
   withDeviceInfo,
 } from '../lib/mail';
 import { SUBSCRIPTION_FORM_URL } from '../config/constants';
-import { TFunction, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
+import { TFunction } from 'i18next';
 
 const FooterLink = ({
   children,

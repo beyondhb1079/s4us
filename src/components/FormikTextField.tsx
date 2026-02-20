@@ -1,3 +1,4 @@
+import { FormikConfig, FormikValues } from 'formik';
 import React from 'react';
 import {
   BaseTextFieldProps,
@@ -10,7 +11,7 @@ import { getIn } from 'formik';
 
 interface FTFProps extends BaseTextFieldProps {
   /** The result of `useFormik()`. */
-  formik: any;
+  formik: Partial<FormikConfig<FormikValues>>;
   id: string;
   label: string;
 
@@ -31,7 +32,7 @@ export default function FormikTextField(props: FTFProps): JSX.Element {
         value={getIn(formik.values, id) || ''}
         onChange={formik.handleChange}
         fullWidth
-        multiline={minRows > 0}
+        multiline={Number(minRows) > 0}
         minRows={minRows}
         {...otherProps}
       />

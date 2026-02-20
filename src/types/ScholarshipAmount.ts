@@ -20,16 +20,16 @@ interface ScholarshipAmount {
   readonly max: number;
 }
 
-namespace ScholarshipAmount {
-  export const fixed = (val: number): ScholarshipAmount => ({
+export const ScholarshipAmountInfo = {
+  fixed: (val: number): ScholarshipAmount => ({
     min: val,
     max: val,
     type: AmountType.Fixed,
-  });
+  }),
 
-  export const range = (
+  range: (
     min: number | undefined,
-    max: number | undefined
+    max: number | undefined,
   ): ScholarshipAmount =>
     min || max
       ? {
@@ -41,18 +41,19 @@ namespace ScholarshipAmount {
           min: UNKNOWN_MIN,
           max: UNKNOWN_MAX,
           type: AmountType.Unknown,
-        };
+        },
 
-  export const fullTuition = (): ScholarshipAmount => ({
+  fullTuition: (): ScholarshipAmount => ({
     min: FULL_TUITION,
     max: FULL_TUITION,
     type: AmountType.FullTuition,
-  });
+  }),
 
-  export const unknown = (): ScholarshipAmount => range(undefined, undefined);
+  unknown: (): ScholarshipAmount =>
+    ScholarshipAmountInfo.range(undefined, undefined),
 
   /** Validates that `amount` meets per-type constraints. */
-  export function validate(amount: ScholarshipAmount): void {
+  validate: (amount: ScholarshipAmount): void => {
     const { min, max, type } = amount;
 
     const errors: string[] = [];
@@ -81,11 +82,11 @@ namespace ScholarshipAmount {
     if (errors.length !== 0) {
       throw new Error(errors.join('\n\n'));
     }
-  }
+  },
 
   /** Translates `amount` to the format it should be stored as. */
-  export function toStorage(amount: ScholarshipAmount): ScholarshipAmount {
-    validate(amount);
+  toStorage: (amount: ScholarshipAmount): ScholarshipAmount => {
+    ScholarshipAmountInfo.validate(amount);
     let { min, max, type } = amount;
     if (type === AmountType.Varies && !min && !max) {
       type = AmountType.Unknown;
@@ -106,10 +107,10 @@ namespace ScholarshipAmount {
         max = UNKNOWN_MAX;
     }
     return { min, max, type };
-  }
+  },
 
   /** Translates 'amount' to the format it should be displayed as */
-  export function fromStorage(amount: ScholarshipAmount): ScholarshipAmount {
+  fromStorage: (amount: ScholarshipAmount): ScholarshipAmount => {
     let { type, min, max } = amount;
     switch (type) {
       case AmountType.Unknown:
@@ -124,10 +125,10 @@ namespace ScholarshipAmount {
         break;
     }
     return { type, min, max };
-  }
+  },
 
   /** Returns a string representation of the given `amount`. */
-  export function toString(amount?: ScholarshipAmount): string {
+  toString: (amount?: ScholarshipAmount): string => {
     switch (amount?.type) {
       case AmountType.FullTuition:
         return 'Full Tuition';
@@ -142,19 +143,16 @@ namespace ScholarshipAmount {
       default:
         return 'Varies';
     }
-  }
+  },
 
   /** Returns whether or not amount `a` is in range `r`. */
-  export function amountsIntersect(
-    a: ScholarshipAmount,
-    r: ScholarshipAmount
-  ): boolean {
+  amountsIntersect: (a: ScholarshipAmount, r: ScholarshipAmount): boolean => {
     return (
       a.type === AmountType.Unknown ||
       r.type === AmountType.Unknown ||
       ((!r.min || a.max === 0 || a.max >= r.min) && (!r.max || a.min <= r.max))
     );
-  }
-}
+  },
+};
 
 export default ScholarshipAmount;

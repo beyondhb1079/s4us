@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* istanbul ignore file as we aren't currently using service workers. */
 // This optional code is used to register a service worker.
 // register() is not called by default.
@@ -14,12 +13,12 @@
 
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||
-    // [::1] is the IPv6 localhost address.
-    window.location.hostname === '[::1]' ||
-    // 127.0.0.0/8 are considered localhost for IPv4.
-    window.location.hostname.match(
-      /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
-    )
+  // [::1] is the IPv6 localhost address.
+  window.location.hostname === '[::1]' ||
+  // 127.0.0.0/8 are considered localhost for IPv4.
+  window.location.hostname.match(
+    /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/,
+  ),
 );
 
 interface SWConfig {
@@ -31,7 +30,6 @@ function registerValidSW(swUrl: string | URL, config: SWConfig) {
   navigator.serviceWorker
     .register(swUrl)
     .then((registration) => {
-      // eslint-disable-next-line no-param-reassign
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
         if (installingWorker == null) {
@@ -45,7 +43,7 @@ function registerValidSW(swUrl: string | URL, config: SWConfig) {
               // content until all client tabs are closed.
               console.log(
                 'New content is available and will be used when all ' +
-                  'tabs for this page are closed. See https://bit.ly/CRA-PWA.'
+                  'tabs for this page are closed. See https://bit.ly/CRA-PWA.',
               );
 
               // Execute callback
@@ -97,7 +95,7 @@ function checkValidServiceWorker(swUrl: string, config: SWConfig) {
     })
     .catch(() => {
       console.log(
-        'No internet connection found. App is running in offline mode.'
+        'No internet connection found. App is running in offline mode.',
       );
     });
 }
@@ -126,7 +124,7 @@ export function register(config: SWConfig): void {
         navigator.serviceWorker.ready.then(() => {
           console.log(
             'This web app is being served cache-first by a service ' +
-              'worker. To learn more, visit https://bit.ly/CRA-PWA'
+              'worker. To learn more, visit https://bit.ly/CRA-PWA',
           );
         });
       } else {

@@ -24,10 +24,7 @@ import {
   AttachMoney as AttachMoneyIcon,
   Event as EventIcon,
 } from '@mui/icons-material';
-import { genMailToLink, withDeviceInfo } from '../lib/mail';
-import ScholarshipAmount from '../types/ScholarshipAmount';
-import Ethnicity from '../types/Ethnicity';
-import GradeLevel from '../types/GradeLevel';
+import { ScholarshipAmountInfo } from '../types/ScholarshipAmount';
 import State from '../types/States';
 import { lint } from '../lib/lint';
 import ShareDialog from './ShareDialog';
@@ -110,10 +107,10 @@ export default function ScholarshipCard({
   const navigate = useNavigate();
 
   const { claims, currentUser } = useAuth();
-  const canEdit = currentUser?.uid === author?.id || claims?.admin;
+  const canEdit = currentUser?.uid === author?.id || (claims?.admin as boolean);
 
   const CardAreaComponent: React.FC<{
-    [key: string]: any;
+    onClick: (() => void) | null;
   }> = detailed ? Box : CardActionArea;
   const lintIssues =
     canEdit && !preview && !glance ? lint(scholarship.data) : [];
@@ -159,7 +156,9 @@ export default function ScholarshipCard({
             <Grid item>
               <Box sx={{ display: 'flex' }}>
                 <AttachMoneyIcon color="primary" />
-                <Typography>{ScholarshipAmount.toString(amount)}</Typography>
+                <Typography>
+                  {ScholarshipAmountInfo.toString(amount)}
+                </Typography>
               </Box>
             </Grid>
 
@@ -240,12 +239,12 @@ export default function ScholarshipCard({
               />
               <DetailCardCell
                 label={t('grades')}
-                values={grades?.sort().map(GradeLevel.toString)}
+                values={grades?.sort().map(GradeLevelInfo.toString)}
                 t={t}
               />
               <DetailCardCell
                 label={t('ethnicity')}
-                values={ethnicities?.map(Ethnicity.toString).sort()}
+                values={ethnicities?.map(EthnicityInfo.toString).sort()}
                 t={t}
               />
               <DetailCardCell
@@ -283,7 +282,7 @@ export default function ScholarshipCard({
                 subject: `Report Issue for ${name}`,
                 bcc: author?.email,
                 body: withDeviceInfo(
-                  `Please describe the issue for the scholarship located at ${URL}.`
+                  `Please describe the issue for the scholarship located at ${URL}.`,
                 ),
               })}
               icon={<ReportIcon />}

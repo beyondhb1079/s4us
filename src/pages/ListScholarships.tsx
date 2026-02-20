@@ -18,11 +18,11 @@ import FilterPanel from '../components/FilterPanel';
 import ScholarshipList from '../components/ScholarshipList';
 import useQueryParams from '../lib/useQueryParams';
 import { HeaderSkeleton } from '../components/Header';
-import GradeLevel from '../types/GradeLevel';
+import GradeLevel, { GradeLevelInfo } from '../types/GradeLevel';
 import State from '../types/States';
 import { useLocation } from 'react-router-dom';
 import { getAnalytics, isSupported, logEvent } from 'firebase/analytics';
-import Ethnicity from '../types/Ethnicity';
+import Ethnicity, { EthnicityInfo } from '../types/Ethnicity';
 
 const drawerWidth = 360;
 
@@ -52,7 +52,7 @@ function ListScholarships(): JSX.Element {
     };
   });
   grades?.forEach((grade: GradeLevel) => {
-    filterChips[GradeLevel.toString(grade)] = {
+    filterChips[GradeLevelInfo.toString(grade)] = {
       grades: grades?.filter((g: GradeLevel) => grade !== g),
     };
   });
@@ -67,7 +67,7 @@ function ListScholarships(): JSX.Element {
     };
   });
   ethnicities?.forEach((ethnicity: Ethnicity) => {
-    filterChips[Ethnicity.toString(ethnicity)] = {
+    filterChips[EthnicityInfo.toString(ethnicity)] = {
       ethnicities: ethnicities?.filter((e: Ethnicity) => ethnicity !== e),
     };
   });
@@ -79,7 +79,7 @@ function ListScholarships(): JSX.Element {
     isSupported().then(
       (supported) =>
         supported &&
-        logEvent(getAnalytics(), 'search', { search_term: location.search })
+        logEvent(getAnalytics(), 'search', { search_term: location.search }),
     );
   }, [location]);
 

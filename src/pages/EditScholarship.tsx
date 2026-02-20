@@ -48,7 +48,11 @@ function EditScholarship(): JSX.Element {
   const { claims, currentUser } = useAuth();
   useEffect(() => {
     const authorId = scholarship?.data?.author?.id;
-    if (authorId && authorId !== currentUser?.uid && !claims?.admin) {
+    if (
+      authorId &&
+      authorId !== currentUser?.uid &&
+      !(claims?.admin as boolean)
+    ) {
       setError("You don't have permission to edit this scholarship.");
     }
   }, [scholarship, currentUser, claims]);

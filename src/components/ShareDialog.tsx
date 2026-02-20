@@ -20,7 +20,7 @@ import {
   TwitterShareButton,
 } from 'react-share';
 import { BRAND_NAME } from '../config/constants';
-import ScholarshipAmount from '../types/ScholarshipAmount';
+import { ScholarshipAmountInfo } from '../types/ScholarshipAmount';
 import ScholarshipData from '../types/ScholarshipData';
 import { useTranslation } from 'react-i18next';
 import { getAnalytics, logEvent } from 'firebase/analytics';
@@ -41,15 +41,15 @@ export default function ShareDialog({
   const { t } = useTranslation('common');
 
   const url = `${window.location.origin}/scholarships/${scholarship.id}`;
-  const title = `$${ScholarshipAmount.toString(
-    amount
+  const title = `$${ScholarshipAmountInfo.toString(
+    amount,
   )} - ${name} | ${BRAND_NAME}`;
   const text = `${title}\n ${deadline?.toLocaleDateString()}\n`;
 
   const logShare = useCallback(
     () => (p: string) =>
       logEvent(getAnalytics(), 'share', { platform: p, url, title, text }),
-    [url, title, text]
+    [url, title, text],
   );
   useEffect(() => {
     if (open && navigator.share) {
@@ -57,7 +57,6 @@ export default function ShareDialog({
       navigator
         .share({ url, title, text })
         .then(() => logShare()('navigator.share'))
-        // eslint-disable-next-line no-console
         .catch(console.error);
     }
   }, [open, onClose, text, title, url, logShare]);
@@ -85,7 +84,6 @@ export default function ShareDialog({
         <FacebookShareButton
           beforeOnClick={() => logShare()('facebook')}
           url={url}
-          quote={title}
           style={{ margin: '4px' }}>
           <FacebookIcon round />
         </FacebookShareButton>

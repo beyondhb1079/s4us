@@ -21,12 +21,13 @@ import { useTranslation } from 'react-i18next';
 import { getAnalytics, logEvent } from 'firebase/analytics';
 
 const StyledFirebaseAuth = lazy(
-  () => import('react-firebaseui/StyledFirebaseAuth')
+  () => import('react-firebaseui/StyledFirebaseAuth'),
 );
 
 export default function LoginDialog(): JSX.Element {
   const location = useLocation();
-  const showLoginDialog = (location.state as any)?.showLoginDialog || false;
+  const showLoginDialog =
+    (location.state as { showLoginDialog?: boolean })?.showLoginDialog || false;
   const { t } = useTranslation(['loginDialog', 'common']);
 
   const navigate = useNavigate();
