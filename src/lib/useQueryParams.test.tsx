@@ -46,7 +46,7 @@ test('prunes null or empty known keys', () => {
 
 test('prunes bad types for known keys', () => {
   const { params, setQueryParams } = renderHookWithLocation(
-    'grades=bar,,&minAmount=2.3&maxAmount=foo&majors=4&states=ca&schools=23&ethnicities=asian&showExpired=0'
+    'grades=bar,,&minAmount=2.3&maxAmount=foo&majors=4&states=ca&schools=23&ethnicities=asian&showExpired=0',
   );
   expect(params).toMatchObject({});
   expect(setQueryParams).toBeInstanceOf(Function);
@@ -54,7 +54,7 @@ test('prunes bad types for known keys', () => {
 
 test('prunes null or empty list values for known list keys', () => {
   const { params, setQueryParams } = renderHookWithLocation(
-    'grades[]=,,&majors[]=,foo&states[]=&schools[]=&ethnicities[]='
+    'grades[]=,,&majors[]=,foo&states[]=&schools[]=&ethnicities[]=',
   );
   expect(params).toMatchObject({ majors: ['foo'] });
   expect(setQueryParams).toBeInstanceOf(Function);
@@ -62,7 +62,7 @@ test('prunes null or empty list values for known list keys', () => {
 
 test('prunes bad types', () => {
   const { params, setQueryParams } = renderHookWithLocation(
-    'minAmount=4.0&maxAmount=-2&'
+    'minAmount=4.0&maxAmount=-2&',
   );
   expect(params).toMatchObject({});
   expect(setQueryParams).toBeInstanceOf(Function);
@@ -70,7 +70,7 @@ test('prunes bad types', () => {
 
 test('prunes bad grade values', () => {
   const { params, setQueryParams } = renderHookWithLocation(
-    'grades[]=Senior,8,90,1'
+    'grades[]=Senior,8,90,1',
   );
   expect(params).toMatchObject({ grades: [8] });
   expect(setQueryParams).toBeInstanceOf(Function);
@@ -79,7 +79,7 @@ test('prunes bad grade values', () => {
 test('does not prune if explicitly false', () => {
   const { params, setQueryParams } = renderHookWithLocation(
     'grades[]=Senior&minAmount=x&maxAmount=5',
-    /* prune = */ false
+    /* prune = */ false,
   );
   expect(params).toMatchObject({
     grades: ['Senior'],
@@ -91,7 +91,7 @@ test('does not prune if explicitly false', () => {
 
 test('prunes bad state values', () => {
   const { params, setQueryParams } = renderHookWithLocation(
-    'states[]=tx,23,CA,ER'
+    'states[]=tx,23,CA,ER',
   );
   expect(params).toMatchObject({ states: ['CA'] });
   expect(setQueryParams).toBeInstanceOf(Function);
@@ -99,7 +99,7 @@ test('prunes bad state values', () => {
 
 test('prunes bad ethnicity values', () => {
   const { params, setQueryParams } = renderHookWithLocation(
-    'ethnicities[]=23,test,ASIAN'
+    'ethnicities[]=23,test,ASIAN',
   );
   expect(params).toMatchObject({ ethnicities: ['ASIAN'] });
   expect(setQueryParams).toBeInstanceOf(Function);

@@ -10,7 +10,7 @@ import Model from './Model';
 export default class FirestoreModel<T> implements Model<T> {
   constructor(
     private readonly ref: DocumentReference<T>,
-    public readonly data: T
+    public readonly data: T,
   ) {}
 
   public get id(): string {

@@ -16,16 +16,16 @@ jobs:
     runs-on: ubuntu-latest
     name: No new vulnerabilities
     steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
       - name: Setup node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           check-latest: true
           cache: 'yarn'
-      - name: Checkout main branch
-        uses: actions/checkout@v4
-        with:
-          ref: main
       - name: Install dependencies for main branch
         run: yarn install --frozen-lockfile
       - name: Audit the old number of vulnerabilities

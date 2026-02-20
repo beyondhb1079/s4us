@@ -14,7 +14,7 @@ test('renders options', () => {
       formik={formikWithValue}
       label="my label"
       options={{ bar: 'Bar soap', foo: 'Foo Fighters' }}
-    />
+    />,
   );
 
   expect(getByText('my label')).toBeInTheDocument();

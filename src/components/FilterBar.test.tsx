@@ -14,7 +14,7 @@ function renderComponent(queryString = '') {
           <FilterBar openFilter={() => {}} />
         </MemoryRouter>
       </I18nextProvider>
-    </Suspense>
+    </Suspense>,
   );
 }
 

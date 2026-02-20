@@ -26,7 +26,7 @@ const rules = `
  * @param projectId the ID of the project to use.
  */
 export function initializeTestEnv(
-  projectId?: string
+  projectId?: string,
 ): [Promise<RulesTestEnvironment>, () => Promise<void>] {
   const app = initializeApp({ appId: 'foo', apiKey: 'fake', projectId });
   connectFirestoreEmulator(getFirestore(app), 'localhost', 8080);

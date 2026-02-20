@@ -38,7 +38,7 @@ const theme = responsiveFontSizes(
         color: 'rgb(100, 100, 100)',
       },
     },
-  } as ThemeOptions)
+  } as ThemeOptions),
 );
 
 export default theme;

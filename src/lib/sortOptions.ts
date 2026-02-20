@@ -19,7 +19,7 @@ export const getField = (s: string): string => {
 
 export const getSortOption = (
   key: string,
-  t: TFunction<'sort', undefined>
+  t: TFunction<'sort', undefined>,
 ): string => {
   switch (key) {
     case AMOUNT_ASC:

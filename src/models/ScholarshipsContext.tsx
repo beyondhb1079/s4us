@@ -30,7 +30,7 @@ interface Props {
 export function ScholarshipsProvider({ children }: Props): JSX.Element {
   const [error, setError] = useState(null as Error | null);
   const [scholarships, setScholarships] = useState(
-    [] as Model<ScholarshipData>[]
+    [] as Model<ScholarshipData>[],
   );
   const [filtersJSON, setFiltersJSON] = useState('');
   const [{ loading, loadMoreFn }, setLoadState] = useState({
@@ -82,8 +82,8 @@ export function ScholarshipsProvider({ children }: Props): JSX.Element {
               // clear the cache anyway.
               setScholarships(
                 scholarships.map((s) =>
-                  s.id === id ? Scholarships.id(id, data) : s
-                )
+                  s.id === id ? Scholarships.id(id, data) : s,
+                ),
               );
             } else {
               // Just remove the scholarship from the list.

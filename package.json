@@ -45,8 +45,8 @@
     "dev": "vite",
     "build": "vite build",
     "start": "scripts/emulators_exec.sh 'vite'",
-    "test": "scripts/emulators_exec.sh 'vite test'",
-    "ci-test": "scripts/emulators_exec.sh 'vite test --coverage'",
+    "test": "scripts/emulators_exec.sh 'vitest'",
+    "ci-test": "scripts/emulators_exec.sh 'vitest --coverage'",
     "serve": "vite preview",
     "lint": "eslint --cache src/ --ext .js,.jsx,.ts,.tsx",
     "prepare": "husky install"

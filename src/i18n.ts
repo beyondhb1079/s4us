@@ -15,7 +15,7 @@ i18n
         .catch((error) => {
           callback(error, null);
         });
-    })
+    }),
   )
   .init({
     supportedLngs: ['en', 'es'],
