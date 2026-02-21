@@ -19,7 +19,7 @@
     "@types/react": "^18.2.74",
     "@types/react-dom": "^19.2.3",
     "date-fns": "^3.6.0",
-    "eslint-plugin-jest": "29.13.0",
+    "eslint-plugin-jest": "29.15.0",
     "firebase": "^12.9.0",
     "formik": "^2.4.5",
     "i18next": "^25.8.4",
