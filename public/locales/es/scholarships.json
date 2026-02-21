@@ -1,16 +1,22 @@
 {
+  "checkDatabase": "Consultar base de datos",
+  "checkDatabaseDescription": "Antes de continuar, verifique que la beca no esté ya presente en nuestra base de datos ingresando su nombre o un prefijo de su nombre a continuación. Los resultados distinguen entre mayúsculas y minúsculas.",
   "deadline": "Fecha límite",
   "description": "Descripción",
   "eligibilityReqs": "Requisitos de elegibilidad",
+  "enterScholarshipName": "Ingrese el nombre de la beca",
   "ethnicity": "Etnicidad(es)",
   "generalDescription": "Por favor agregue la información general sobre la beca.",
   "grades": "Grado(s)",
   "lastUpdated": "Última actualización",
   "majors": "Carrera(s)",
   "minGpa": "GPA mínimo",
+  "multipleMatches": "Hay múltiples coincidencias. Intenta acotar tu búsqueda.",
   "noEligibilityReqs": "Sin requisitos de elegibilidad",
   "noRequirements": "Sin requisitos",
+  "noResultsToDisplay": "No hay resultados para mostrar.",
   "organization": "Organización",
+  "pressEnter": "Presione ENTER para buscar.",
   "requirementsDescription": "Incluya la información que se requiere que los solicitantes tengan.",
   "reviewBelow": "Por favor revise la siguiente información.",
   "reviewOnRight": "Por favor revise la información a la derecha.",
@@ -18,5 +24,6 @@
   "scholarshipName": "Nombre de beca",
   "schools": "Escuela(s)",
   "states": "Estado(s)",
-  "tags": "Etiquetas"
+  "tags": "Etiquetas",
+  "tryVariations": "Prueba variaciones del nombre de la beca."
 }

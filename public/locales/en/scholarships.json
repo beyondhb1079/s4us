@@ -1,16 +1,22 @@
 {
+  "checkDatabase": "Check Database",
+  "checkDatabaseDescription": "Before proceeding, please double check that the scholarship is not already present in our database by entering its name or a prefix of its name below. Results are case-sensitive.",
   "deadline": "Deadline",
   "description": "Description",
   "eligibilityReqs": "Eligibility Requirements",
+  "enterScholarshipName": "Enter scholarship name",
   "ethnicity": "Ethnicity(s)",
   "generalDescription": "Please add the general information about the scholarship.",
   "grades": "Grade(s)",
   "lastUpdated": "Last updated",
   "majors": "Major(s)",
   "minGpa": "Minimum GPA",
+  "multipleMatches": "There are multiple matches. Try narrowing your search.",
   "noEligibilityReqs": "No eligibility requirements",
   "noRequirements": "No Requirements",
+  "noResultsToDisplay": "No results to display.",
   "organization": "Organization",
+  "pressEnter": "Press ENTER to search.",
   "requirementsDescription": "Include information that is required for applicants to have.",
   "reviewBelow": "Please review the information below.",
   "reviewOnRight": "Please review the information on the right.",
@@ -18,5 +24,6 @@
   "scholarshipName": "Scholarship Name",
   "schools": "School(s)",
   "states": "State(s)",
-  "tags": "Tags"
+  "tags": "Tags",
+  "tryVariations": "Try variations of the scholarship name."
 }
