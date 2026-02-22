@@ -5,7 +5,6 @@ import {
   Button,
   Card,
   Chip,
-  Divider,
   Grid,
   Link as MuiLink,
   Typography,
@@ -35,46 +34,7 @@ import useAuth from '../lib/useAuth';
 import ScholarshipData from '../types/ScholarshipData';
 import { useTranslation } from 'react-i18next';
 import { getAnalytics, logEvent } from 'firebase/analytics';
-
-const SHOW_MORE_THRESHOLD = 5;
-
-const DetailCardCell = ({
-  label,
-  values = [],
-  t,
-}: {
-  label: string;
-  values?: string[];
-  t: (key: string) => string;
-}) => {
-  const [showAll, setShowAll] = useState(false);
-  const shownValues = showAll ? values : values.slice(0, SHOW_MORE_THRESHOLD);
-  return (
-    <>
-      <Grid container justifyContent="space-between">
-        <Grid size={12}>
-          <Typography>{label}</Typography>
-        </Grid>
-
-        <Grid size={12} sx={{ textAlign: { sm: 'right' } }}>
-          {values.length === 0
-            ? t('common:any')
-            : shownValues.map((v) => <Typography key={v}>{v}</Typography>)}
-          {values.length > shownValues.length && (
-            <MuiLink
-              component={Button}
-              onClick={() => setShowAll(true)}
-              sx={{ p: 0 }}>
-              +{values.length - SHOW_MORE_THRESHOLD} {t('common:more')}
-            </MuiLink>
-          )}
-        </Grid>
-      </Grid>
-      <Divider light sx={{ m: 1.5 }} />
-    </>
-  );
-};
-DetailCardCell.defaultProps = { values: [] };
+import DetailCardCell from './scholarship-card/DetailCardCell';
 
 export default function ScholarshipCard({
   scholarship,
