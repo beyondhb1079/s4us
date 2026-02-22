@@ -37,7 +37,9 @@ const AddScholarship = lazy(() => import('./pages/AddScholarship'));
 const EditScholarship = lazy(() => import('./pages/EditScholarship'));
 
 // This should be suspended too because of the auth dependency
-const LoginDialog = lazy(() => import('./components/LoginDialog'));
+const LoginDialogWrapper = lazy(
+  () => import('./components/LoginDialogWrapper'),
+);
 
 function App(): JSX.Element {
   return (
@@ -91,9 +93,7 @@ function App(): JSX.Element {
                         />
                         <Route path="/" element={<Home />} />
                       </Routes>
-                      <Suspense fallback={null}>
-                        <LoginDialog />
-                      </Suspense>
+                      <LoginDialogWrapper />
                     </div>
                     {/* Footer inside <Suspense> but outside <div> so it:
                           1. Gravitates to the bottom (see App.css) and

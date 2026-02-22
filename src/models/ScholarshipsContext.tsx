@@ -1,4 +1,11 @@
-import React, { createContext, ReactNode, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import FirestoreModelList from './base/FiretoreModelList';
 import Model from './base/Model';
 import Scholarships, { FilterOptions } from './Scholarships';
@@ -69,38 +76,64 @@ export function ScholarshipsProvider({ children }: Props): JSX.Element {
     }
   }, [loading, loadMoreFn]);
 
-  return (
-    <ScholarshipsContext.Provider
-      value={{
-        canLoadMore: Boolean(loadMoreFn),
-        error,
-        invalidate: (id, data) => {
-          if (id && scholarships.map((s) => s.id).includes(id)) {
-            if (data) {
-              // Just update the data. This updated data might no longer match
-              // the original query but that's probably OK as new queries will
-              // clear the cache anyway.
-              setScholarships(
-                scholarships.map((s) =>
-                  s.id === id ? Scholarships.id(id, data) : s,
-                ),
-              );
-            } else {
-              // Just remove the scholarship from the list.
-              setScholarships(scholarships.filter((s) => s.id !== id));
-            }
+  const invalidate = useCallback(
+    (id?: string, data?: ScholarshipData) =>
+      setScholarships((scholarships) => {
+        if (id && scholarships.some((s) => s.id === id)) {
+          if (data) {
+            // Just update the data. This updated data might no longer match
+            // the original query but that's probably OK as new queries will
+            // clear the cache anyway.
+            return scholarships.map((s) =>
+              s.id === id ? Scholarships.id(id, data) : s,
+            );
           } else {
-            // We need to invalidate the whole cache.
-            setFiltersJSON('');
-            setScholarships([]);
+            // Just remove the scholarship from the list.
+            return scholarships.filter((s) => s.id !== id);
           }
-        },
-        loading,
-        loadMore: () => setLoadState({ loading: true, loadMoreFn }),
-        scholarships,
-        setFilters: (filterOptions) =>
-          setFiltersJSON(JSON.stringify(filterOptions)),
-      }}>
+        } else {
+          // We need to invalidate the whole cache.
+          setFiltersJSON('');
+          return [];
+        }
+      }),
+    [],
+  );
+
+  const loadMore = useCallback(
+    () => setLoadState((prev) => ({ ...prev, loading: true })),
+    [],
+  );
+
+  const setFilters = useCallback(
+    (filterOptions: FilterOptions) =>
+      setFiltersJSON(JSON.stringify(filterOptions)),
+    [],
+  );
+
+  const contextValue = useMemo(
+    () => ({
+      canLoadMore: Boolean(loadMoreFn),
+      error,
+      invalidate,
+      loading,
+      loadMore,
+      scholarships,
+      setFilters,
+    }),
+    [
+      loadMoreFn,
+      error,
+      invalidate,
+      loading,
+      loadMore,
+      scholarships,
+      setFilters,
+    ],
+  );
+
+  return (
+    <ScholarshipsContext.Provider value={contextValue}>
       {children}
     </ScholarshipsContext.Provider>
   );
