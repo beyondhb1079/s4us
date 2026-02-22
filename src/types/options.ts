@@ -1,8 +1,3 @@
-import majorsData from '../data/majors.json';
-import schoolsData from '../data/schools.json';
-
-export const MAJORS = new Set(majorsData);
-
 export interface School {
   /** Name of the college, e.g. `'American University'`. */
   name: string;
@@ -11,5 +6,3 @@ export interface School {
   /** Website of the college e.g. `'yccd.edu'`. */
   website: string;
 }
-
-export const SCHOOLS: School[] = schoolsData;

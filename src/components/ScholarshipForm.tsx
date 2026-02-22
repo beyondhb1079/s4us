@@ -27,7 +27,7 @@ import FormikTextField from './FormikTextField';
 import ScholarshipCard from './ScholarshipCard';
 import FormikMultiSelect from './FormikMultiSelect';
 import FormikAutocomplete from './FormikAutocomplete';
-import { SCHOOLS, MAJORS } from '../types/options';
+import useOptionsData from '../lib/useOptionsData';
 import State, { STATES } from '../types/States';
 import { GradeLevelInfo } from '../types/GradeLevel';
 import { EthnicityInfo } from '../types/Ethnicity';
@@ -50,6 +50,7 @@ export default function ScholarshipForm({ scholarship }: SFProps): JSX.Element {
   const [submissionError, setSubmissionError] = useState(null as null | Error);
   const { invalidate } = useContext(ScholarshipsContext);
   const navigate = useNavigate();
+  const { majors: allMajors, schools: allSchools } = useOptionsData();
 
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const { t: validationT } = useTranslation('validation');
@@ -81,7 +82,9 @@ export default function ScholarshipForm({ scholarship }: SFProps): JSX.Element {
   i18n.on('languageChanged', () => formik.setErrors({}));
 
   const lintIssues: LintReqsResult =
-    activeStep === 1 ? lintReqs(formik.values) : { messages: [], reqs: {} };
+    activeStep === 1
+      ? lintReqs(formik.values, allMajors, allSchools)
+      : { messages: [], reqs: {} };
   const autoFill = () => {
     const vals = formik.values.requirements;
     const lintVals = lintIssues.reqs;
@@ -255,7 +258,9 @@ export default function ScholarshipForm({ scholarship }: SFProps): JSX.Element {
               label={t('schools')}
               id="requirements.schools"
               labelStyle={labelStyle}
-              options={SCHOOLS.map(({ name, state }) => `${name} (${state})`)}
+              options={allSchools.map(
+                ({ name, state }) => `${name} (${state})`,
+              )}
               freeSolo
               formik={formik}
               placeholder={t('noRequirements')}
@@ -282,7 +287,7 @@ export default function ScholarshipForm({ scholarship }: SFProps): JSX.Element {
               label={t('majors')}
               id="requirements.majors"
               labelStyle={labelStyle}
-              options={Array.from(MAJORS)}
+              options={allMajors}
               freeSolo
               formik={formik}
               placeholder={t('noRequirements')}

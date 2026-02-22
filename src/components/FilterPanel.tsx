@@ -27,8 +27,7 @@ import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 
 import CustomAutocomplete from './CustomAutocomplete';
 import State, { STATES } from '../types/States';
-import { SCHOOLS } from '../types/options';
-import { MAJORS } from '../types/options';
+import useOptionsData from '../lib/useOptionsData';
 import Ethnicity, { EthnicityInfo } from '../types/Ethnicity';
 import { useTranslation } from 'react-i18next';
 
@@ -44,6 +43,7 @@ export default function FilterPanel({
   onClose: () => void;
 }): JSX.Element {
   const { t } = useTranslation(['filters', 'common']);
+  const { majors: allMajors, schools: allSchools } = useOptionsData();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [params, setQueryParams] = useQueryParams();
 
@@ -66,7 +66,7 @@ export default function FilterPanel({
             onChange={(e: React.SyntheticEvent, val: string[]) =>
               setMajors(val)
             }
-            options={Array.from(MAJORS)}
+            options={allMajors}
             limitReached={majors?.length >= 10}
             placeholder={`${t('toFilterBy', {
               filter: t('major').toLowerCase(),
@@ -148,7 +148,7 @@ export default function FilterPanel({
             onChange={(e: React.SyntheticEvent, val: string[]) =>
               setSchools(val)
             }
-            options={SCHOOLS.map(({ name, state }) => `${name} (${state})`)}
+            options={allSchools.map(({ name, state }) => `${name} (${state})`)}
             limitReached={schools?.length >= 10}
             placeholder={`${t('toFilterBy', {
               filter: t('school').toLowerCase(),
