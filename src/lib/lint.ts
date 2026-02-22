@@ -4,7 +4,7 @@ import AmountType from '../types/AmountType';
 import Ethnicity, { EthnicityInfo } from '../types/Ethnicity';
 import GradeLevel, { GradeLevelInfo } from '../types/GradeLevel';
 import { ScholarshipAmountInfo } from '../types/ScholarshipAmount';
-import { MAJORS, School, SCHOOLS } from '../types/options';
+import { School } from '../types/options';
 import State, { STATES } from '../types/States';
 import ScholarshipData from '../types/ScholarshipData';
 import ScholarshipEligibility from '../types/ScholarshipEligibility';
@@ -117,7 +117,7 @@ export function parseGradeLevels(desc: string): GradeLevel[] {
 }
 
 /** Parses the given description for majors and returns the ones found. */
-export function parseMajors(desc: string): string[] {
+export function parseMajors(desc: string, allMajors: string[]): string[] {
   // Be better about false positives with single words
   // major, degree, fields? of study
   // higher education,
@@ -133,7 +133,7 @@ export function parseMajors(desc: string): string[] {
     desc.toLowerCase(),
   );
 
-  const majors = Array.from(MAJORS).filter((m) =>
+  const majors = allMajors.filter((m) =>
     sanitizedDesc.match(new RegExp('(\\W|^)' + m.toLowerCase() + '(\\W|$)')),
   );
 
@@ -164,13 +164,19 @@ function acronym(name: string): string {
 }
 
 /** Parses the given description for schools and returns matches. */
-export function parseSchools(desc: string, url?: string): School[] {
-  return SCHOOLS.filter(({ name }) => desc.includes(name)).concat(
-    SCHOOLS.filter(
-      ({ name, website }) =>
-        url?.includes('//' + website) && desc.includes(acronym(name)),
-    ),
-  );
+export function parseSchools(
+  desc: string,
+  allSchools: School[],
+  url?: string,
+): School[] {
+  return allSchools
+    .filter(({ name }) => desc.includes(name))
+    .concat(
+      allSchools.filter(
+        ({ name, website }) =>
+          url?.includes('//' + website) && desc.includes(acronym(name)),
+      ),
+    );
 }
 
 /** Parses the given description for states and returns matches. */
@@ -212,7 +218,11 @@ export interface LintReqsResult {
   reqs: ScholarshipEligibility;
 }
 
-export function lintReqs(scholarship: ScholarshipData): LintReqsResult {
+export function lintReqs(
+  scholarship: ScholarshipData,
+  allMajors: string[] = [],
+  allSchools: School[] = [],
+): LintReqsResult {
   const { description: desc, website, requirements } = scholarship;
   const { ethnicities, grades, majors, schools, states } = requirements || {};
   const messages: string[] = [];
@@ -222,13 +232,15 @@ export function lintReqs(scholarship: ScholarshipData): LintReqsResult {
   const missingGrades = parseGradeLevels(desc).filter(
     (g) => !grades?.includes(g),
   );
-  const missingSchools = parseSchools(desc, website).filter(
+  const missingSchools = parseSchools(desc, allSchools, website).filter(
     ({ name, state }) => !schools?.includes(`${name} (${state})`),
   );
   const missingStates = parseStates(desc).filter(
     ({ abbr }) => !states?.includes(abbr),
   );
-  const missingMajors = parseMajors(desc).filter((m) => !majors?.includes(m));
+  const missingMajors = parseMajors(desc, allMajors).filter(
+    (m) => !majors?.includes(m),
+  );
   const missingEthnicites = parseEthnicities(desc).filter(
     (e) => !ethnicities?.includes(e),
   );
@@ -296,7 +308,11 @@ export function lintReqs(scholarship: ScholarshipData): LintReqsResult {
 }
 
 /** Lints the given scholarship for mismatches and returns a list of errors as strings. */
-export function lint(scholarship: ScholarshipData): string[] {
+export function lint(
+  scholarship: ScholarshipData,
+  allMajors: string[] = [],
+  allSchools: School[] = [],
+): string[] {
   const { amount, deadline, description: desc } = scholarship;
   const issues = [];
 
@@ -355,5 +371,5 @@ export function lint(scholarship: ScholarshipData): string[] {
   }
 
   // TODO(#858): Detect more errors.
-  return [...issues, ...lintReqs(scholarship).messages];
+  return [...issues, ...lintReqs(scholarship, allMajors, allSchools).messages];
 }

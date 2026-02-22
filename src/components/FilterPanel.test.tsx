@@ -5,6 +5,23 @@ import FilterPanel from './FilterPanel';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
 import { act } from 'react';
+import { beforeEach, vi } from 'vitest';
+import useOptionsData from '../lib/useOptionsData';
+
+vi.mock('../lib/useOptionsData', () => ({
+  default: vi.fn(),
+}));
+
+beforeEach(() => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (useOptionsData as any).mockReturnValue({
+    majors: ['Computer Science', 'Biology', 'Art', 'Art History'],
+    schools: [
+      { name: 'Tech University', state: 'CA' },
+      { name: 'University of California Irvine', state: 'CA' },
+    ],
+  });
+});
 
 function renderComponent() {
   return render(

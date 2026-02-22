@@ -1,0 +1,51 @@
+import { useState, useEffect } from 'react';
+import { School } from '../types/options';
+
+interface OptionsData {
+  majors: string[];
+  schools: School[];
+  loading: boolean;
+}
+
+/**
+ * Hook that lazily fetches majors and schools data from static JSON files.
+ * Data is cached after the first load so subsequent calls are instant.
+ */
+let cachedMajors: string[] | null = null;
+let cachedSchools: School[] | null = null;
+
+export default function useOptionsData(): OptionsData {
+  const [majors, setMajors] = useState<string[]>(cachedMajors || []);
+  const [schools, setSchools] = useState<School[]>(cachedSchools || []);
+  const [loading, setLoading] = useState(
+    cachedMajors === null || cachedSchools === null,
+  );
+
+  useEffect(() => {
+    if (cachedMajors && cachedSchools) return;
+
+    let cancelled = false;
+
+    Promise.all([
+      cachedMajors
+        ? Promise.resolve(cachedMajors)
+        : fetch('/data/majors.json').then((r) => r.json()),
+      cachedSchools
+        ? Promise.resolve(cachedSchools)
+        : fetch('/data/schools.json').then((r) => r.json()),
+    ]).then(([m, s]) => {
+      if (cancelled) return;
+      cachedMajors = m;
+      cachedSchools = s;
+      setMajors(m);
+      setSchools(s);
+      setLoading(false);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  return { majors, schools, loading };
+}
