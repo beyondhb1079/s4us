@@ -13,6 +13,7 @@ vi.mock('../lib/useOptionsData', () => ({
 }));
 
 beforeEach(() => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (useOptionsData as any).mockReturnValue({
     majors: ['Computer Science', 'Biology', 'Art', 'Art History'],
     schools: [
