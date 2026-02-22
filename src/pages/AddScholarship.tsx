@@ -1,5 +1,5 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
+import useDocumentTitle from '../lib/useDocumentTitle';
 import { Container, Typography, Grid, Box } from '@mui/material';
 import ScholarshipForm from '../components/ScholarshipForm';
 import Scholarships from '../models/Scholarships';
@@ -7,13 +7,10 @@ import { useTranslation } from 'react-i18next';
 
 function AddScholarship(): JSX.Element {
   const { t } = useTranslation('addScholarship');
+  useDocumentTitle(t('titleTag'));
 
   return (
     <Box sx={{ p: 2 }}>
-      <Helmet>
-        <title>{t('titleTag')}</title>
-      </Helmet>
-
       <Container maxWidth="lg" sx={{ p: 2 }}>
         <Grid container spacing={2}>
           <Grid

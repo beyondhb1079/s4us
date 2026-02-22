@@ -1,8 +1,9 @@
 import { Container, Link, Typography } from '@mui/material';
-import { Helmet } from 'react-helmet';
+import useDocumentTitle from '../lib/useDocumentTitle';
 import { genMailToLink } from '../lib/mail';
 
 export default function Terms(): JSX.Element {
+  useDocumentTitle('Terms and Conditions');
   const contactLink = (
     <Link href={genMailToLink({ subject: 'Terms of Use' })}>
       info@dreamscholars.org
@@ -11,9 +12,6 @@ export default function Terms(): JSX.Element {
 
   return (
     <Container maxWidth="md" sx={{ p: 2 }}>
-      <Helmet>
-        <title>Terms and Conditions</title>
-      </Helmet>
       <Typography variant="h3" gutterBottom>
         Terms of Use
       </Typography>

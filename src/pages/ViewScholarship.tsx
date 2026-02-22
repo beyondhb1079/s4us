@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet';
+import useDocumentTitle from '../lib/useDocumentTitle';
 import { Container, Typography, Box, Collapse } from '@mui/material';
 import Scholarships from '../models/Scholarships';
 import ScholarshipCard from '../components/ScholarshipCard';
@@ -25,6 +25,7 @@ export default function ViewScholarship(): JSX.Element {
     scholarships.find((s) => s.id === id) ||
       (location?.state as LocationState)?.scholarship,
   );
+  useDocumentTitle(scholarship?.data?.name);
   const [error, setError] = useState<Error>();
   const loading = !error && (!scholarship || scholarship.id !== id);
   const prevPath = (location?.state as LocationState)?.prevPath;
@@ -60,13 +61,9 @@ export default function ViewScholarship(): JSX.Element {
     );
   }
 
-  const { name, dateAdded, lastModified } = scholarship.data;
+  const { dateAdded, lastModified } = scholarship.data;
   return (
     <Container maxWidth="md">
-      <Helmet>
-        <title>{name}</title>
-      </Helmet>
-
       {justEdited && navType === 'PUSH' && (
         <Collapse in={showAlert}>
           <Alert

@@ -1,5 +1,5 @@
 import React, { Suspense, useState } from 'react';
-import Helmet from 'react-helmet';
+import useDocumentTitle from '../lib/useDocumentTitle';
 import { AddCircle as AddIcon, Inbox as InboxIcon } from '@mui/icons-material';
 import { Link, useLocation, useNavigationType } from 'react-router-dom';
 import {
@@ -23,6 +23,7 @@ type LocationProps = {
 
 export default function Dashboard(): JSX.Element {
   const { t } = useTranslation(['dashboard', 'common']);
+  useDocumentTitle(t('common:dashboard'));
   const { currentUser: user } = useAuth();
   const location = useLocation() as LocationProps;
 
@@ -31,10 +32,6 @@ export default function Dashboard(): JSX.Element {
   const [showAlert, setShowAlert] = useState(true);
   return (
     <Container sx={{ p: 2 }}>
-      <Helmet>
-        <title>{t('common:dashboard')}</title>
-      </Helmet>
-
       {alertMessage && navType === 'PUSH' && (
         <Collapse in={showAlert}>
           <Alert severity="success" onClose={() => setShowAlert(false)}>

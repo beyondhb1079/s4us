@@ -1,6 +1,5 @@
 import './App.css';
 import React, { lazy, Suspense } from 'react';
-import { Helmet } from 'react-helmet';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
   CssBaseline,
@@ -12,7 +11,6 @@ import Footer from './components/Footer';
 import Home from './pages/PublicHome';
 import Header, { HeaderSkeleton } from './components/Header';
 import theme from './theme';
-import { BRAND_NAME } from './config/constants';
 import FirebaseProvider from './lib/FirebaseProvider';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './lib/useAuth';
@@ -48,12 +46,6 @@ function App(): JSX.Element {
         <StyledEngineProvider injectFirst>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Helmet
-              titleTemplate={`%s | ${BRAND_NAME}`}
-              defaultTitle={
-                BRAND_NAME + ' | Scholarships for Undocumented Students'
-              }
-            />
             <AuthProvider>
               <ScholarshipsProvider>
                 <Router>

@@ -1,6 +1,5 @@
 import MutationObserver from 'mutation-observer';
 import React, { Suspense } from 'react';
-import Helmet from 'react-helmet';
 import { render, screen, waitFor } from '@testing-library/react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
@@ -77,7 +76,7 @@ test('renders passed in scholarship details', async () => {
     screen.getByText(data.deadline.toLocaleDateString()),
   ).toBeInTheDocument();
   expect(screen.getByRole('button', { name: /Apply/i })).toBeInTheDocument();
-  expect(Helmet.peek().title).toBe(data.name);
+  expect(document.title).toBe(data.name + ' | DreamScholars');
 });
 
 test('renders scholarship details', async () => {
@@ -113,7 +112,7 @@ test('renders scholarship details', async () => {
     screen.getByText(data.deadline.toLocaleDateString()),
   ).toBeInTheDocument();
   expect(screen.getByRole('button', { name: /Apply/i })).toBeInTheDocument();
-  expect(Helmet.peek().title).toBe(data.name);
+  expect(document.title).toBe(data.name + ' | DreamScholars');
   data.requirements.states
     .map(State.toString)
     .forEach((s) => expect(screen.getByText(s)).toBeInTheDocument());

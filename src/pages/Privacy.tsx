@@ -1,8 +1,9 @@
 import { Container, Link, Typography } from '@mui/material';
-import { Helmet } from 'react-helmet';
+import useDocumentTitle from '../lib/useDocumentTitle';
 import { genMailToLink } from '../lib/mail';
 
 export default function Privacy(): JSX.Element {
+  useDocumentTitle('Privacy Notice');
   const contactLink = (
     <Link href={genMailToLink({ subject: 'Privacy Notice' })}>
       info@dreamscholars.org
@@ -11,9 +12,6 @@ export default function Privacy(): JSX.Element {
 
   return (
     <Container maxWidth="md" sx={{ p: 2 }}>
-      <Helmet>
-        <title>Privacy Notice</title>
-      </Helmet>
       <Typography variant="h3" gutterBottom>
         Privacy Notice
       </Typography>
