@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet';
 import { Container, Typography, Grid, Box } from '@mui/material';
 import ScholarshipForm from '../components/ScholarshipForm';
 import Scholarships from '../models/Scholarships';
-import backgroundImg from '../img/img3.svg';
 import { useTranslation } from 'react-i18next';
 
 function AddScholarship(): JSX.Element {
@@ -32,7 +31,7 @@ function AddScholarship(): JSX.Element {
           <Grid item sm={12} md={6} sx={{ width: '100%' }}>
             <Box
               component="img"
-              src={backgroundImg}
+              src="/searching.svg"
               sx={{
                 overflow: 'hidden',
                 display: 'block',
