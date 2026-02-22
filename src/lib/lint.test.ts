@@ -395,38 +395,52 @@ describe('lint()', () => {
   });
   test('no missing majors', () => {
     expect(
-      lint({
-        ...testScholarship,
-        description: 'computer science majors only.',
-        requirements: { majors: ['Computer Science'] },
-      }),
+      lint(
+        {
+          ...testScholarship,
+          description: 'computer science majors only.',
+          requirements: { majors: ['Computer Science'] },
+        },
+        testMajors,
+      ),
     ).toEqual([]);
   });
   test('missing majors', () => {
     expect(
-      lint({
-        ...testScholarship,
-        description: 'computer science and computer engineering majors only.',
-        requirements: { majors: ['Computer Science'] },
-      }),
+      lint(
+        {
+          ...testScholarship,
+          description: 'computer science and computer engineering majors only.',
+          requirements: { majors: ['Computer Science'] },
+        },
+        testMajors,
+      ),
     ).toHaveLength(1);
   });
   test('no missing schools', () => {
     expect(
-      lint({
-        ...testScholarship,
-        description: 'Stanford University students.',
-        requirements: { schools: ['Stanford University (CA)'] },
-      }),
+      lint(
+        {
+          ...testScholarship,
+          description: 'Stanford University students.',
+          requirements: { schools: ['Stanford University (CA)'] },
+        },
+        testMajors,
+        testSchools,
+      ),
     ).toEqual([]);
   });
   test('missing schools', () => {
     expect(
-      lint({
-        ...testScholarship,
-        description: 'Harvard University or Stanford University students.',
-        requirements: { schools: ['Stanford University (CA)'] },
-      }),
+      lint(
+        {
+          ...testScholarship,
+          description: 'Harvard University or Stanford University students.',
+          requirements: { schools: ['Stanford University (CA)'] },
+        },
+        testMajors,
+        testSchools,
+      ),
     ).toHaveLength(1);
   });
   test('no missing states', () => {

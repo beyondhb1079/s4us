@@ -1,8 +1,9 @@
-import { SCHOOLS } from './options';
+import schoolsData from '../../public/data/schools.json';
+
 test('no duplicate schools', () => {
-  SCHOOLS.forEach((s) =>
+  schoolsData.forEach((s) =>
     expect(
-      SCHOOLS.filter((t) => t.name === s.name && t.state === s.state),
+      schoolsData.filter((t) => t.name === s.name && t.state === s.state),
     ).toHaveLength(1),
   );
 });
