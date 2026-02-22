@@ -6,21 +6,12 @@ import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
 
 const FirebaseContext = createContext(null);
 
-// TODO: Extract config into environment variables.
-const prodConfig = {
-  apiKey: 'AIzaSyAXDqsWK4quNVaf9-YV2e28NsxkfA9rzJA',
-  appId: '1:273882249502:web:7bf1956f56369efc97b10f',
-  authDomain: 'auth.dreamscholars.org',
-  measurementId: 'G-PW4RT7KGDF',
-  projectId: 'dreamerscholars',
-};
-
-const stagingConfig = {
-  apiKey: 'AIzaSyA7VN9KOGqUZFE4Z0tVYBjvc1fDF_t__VU',
-  appId: '1:814425212762:web:b35075077f619348f75563',
-  authDomain: 'dreamerscholars-staging.firebaseapp.com',
-  measurementId: 'G-SNHQYMD3D4',
-  projectId: 'dreamerscholars-staging',
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
 };
 
 export default function FirebaseProvider(props: {
@@ -29,17 +20,15 @@ export default function FirebaseProvider(props: {
   const { children } = props;
 
   if (getApps().length === 0) {
+    const app = initializeApp(firebaseConfig);
     /* istanbul ignore if */
-    if (process.env.NODE_ENV === 'production') {
-      const prod = window.location.host === 'dreamscholars.org';
-      const app = initializeApp(prod ? prodConfig : stagingConfig);
+    if (import.meta.env.PROD) {
       getAnalytics(app);
     } else {
-      // Initialize app with staging config but use emulator where possible.
-      const app = initializeApp(stagingConfig);
+      // Use emulators in development / test
       connectFirestoreEmulator(getFirestore(app), 'localhost', 8080);
       connectAuthEmulator(getAuth(), 'http://localhost:9099', {
-        disableWarnings: process.env.NODE_ENV == 'test',
+        disableWarnings: import.meta.env.MODE === 'test',
       });
     }
   }
