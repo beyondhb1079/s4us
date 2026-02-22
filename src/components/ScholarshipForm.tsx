@@ -1,36 +1,23 @@
 import React, { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useFormik } from 'formik';
 import {
   Alert,
   AlertTitle,
   Box,
   Button,
-  Checkbox,
-  FormControlLabel,
-  Grid,
+  Paper,
   Step,
   StepContent,
   StepLabel,
   Stepper,
   Typography,
-  FormHelperText,
-  createFilterOptions,
-  Paper,
   useMediaQuery,
   Theme,
 } from '@mui/material';
 import validationSchema from '../validation/ValidationSchema';
-import ScholarshipAmountField from './ScholarshipAmountField';
-import DeadlineField from './DeadlineField';
-import FormikTextField from './FormikTextField';
 import ScholarshipCard from './ScholarshipCard';
-import FormikMultiSelect from './FormikMultiSelect';
-import FormikAutocomplete from './FormikAutocomplete';
 import useOptionsData from '../lib/useOptionsData';
-import State, { STATES } from '../types/States';
-import { GradeLevelInfo } from '../types/GradeLevel';
-import { EthnicityInfo } from '../types/Ethnicity';
 import ScholarshipsContext from '../models/ScholarshipsContext';
 import { lintReqs, LintReqsResult } from '../lib/lint';
 import { useTranslation } from 'react-i18next';
@@ -38,8 +25,8 @@ import i18n from 'i18next';
 import ScholarshipData from '../types/ScholarshipData';
 import Model from '../models/base/Model';
 import ScholarshipEligibility from '../types/ScholarshipEligibility';
-
-const labelStyle = { marginBottom: 2 };
+import GeneralInfoStep from './scholarship-form/GeneralInfoStep';
+import EligibilityStep from './scholarship-form/EligibilityStep';
 
 interface SFProps {
   scholarship: Model<ScholarshipData>;
@@ -50,6 +37,7 @@ export default function ScholarshipForm({ scholarship }: SFProps): JSX.Element {
   const [submissionError, setSubmissionError] = useState(null as null | Error);
   const { invalidate } = useContext(ScholarshipsContext);
   const navigate = useNavigate();
+  const location = useLocation();
   const { majors: allMajors, schools: allSchools } = useOptionsData();
 
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
@@ -116,195 +104,18 @@ export default function ScholarshipForm({ scholarship }: SFProps): JSX.Element {
   const stepperItems = {
     [t('common:general')]: {
       description: t('generalDescription'),
-      content: (
-        <Grid container spacing={3}>
-          <Grid item sm={6} xs={12}>
-            <FormikTextField
-              label={`${t('scholarshipName')} *`}
-              id="name"
-              formik={formik}
-              labelStyle={labelStyle}
-            />
-          </Grid>
-          <Grid item sm={6} xs={12}>
-            <FormikTextField
-              label={t('organization')}
-              id="organization"
-              formik={formik}
-              labelStyle={labelStyle}
-            />
-          </Grid>
-          <Grid item sm={6} xs={12}>
-            <FormikTextField
-              label={`${t('scholarshipLink')} *`}
-              id="website"
-              formik={formik}
-              labelStyle={labelStyle}
-              placeholder="https://"
-              onBlur={(e) => {
-                // Automatically prepend https:// to the URL if the protocol is missing
-                if (!/https?:\/\//.test(e.target.value)) {
-                  formik.setFieldValue('website', 'https://' + e.target.value);
-                }
-              }}
-            />
-          </Grid>
-          <Grid item sm={6}>
-            <DeadlineField
-              label={`${t('deadline')} *`}
-              labelStyle={labelStyle}
-              formik={formik}
-            />
-          </Grid>
-          <Grid item>
-            <ScholarshipAmountField formik={formik} labelStyle={labelStyle} />
-          </Grid>
-          <Grid item xs={12}>
-            <FormikTextField
-              label={`${t('description')} *`}
-              id="description"
-              labelStyle={labelStyle}
-              formik={formik}
-              minRows={8}
-            />
-          </Grid>
-          <Grid item sm={6} xs={12}>
-            <FormikAutocomplete
-              label={t('tags')}
-              id="tags"
-              labelStyle={labelStyle}
-              freeSolo
-              formik={formik}
-              options={[]}
-              onChange={(e, vals) => {
-                const newVals = new Set(
-                  vals.map((v) => v.toLowerCase().replace(/\s+/g, '-')),
-                );
-                formik.setFieldValue('tags', Array.from(newVals));
-              }}
-              placeholder="E.g. athletics, daca, essay, stem, etc."
-            />
-          </Grid>
-        </Grid>
-      ),
+      content: <GeneralInfoStep formik={formik} />,
     },
     [t('eligibilityReqs')]: {
       description: t('requirementsDescription'),
       content: (
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            {lintIssues?.messages?.length > 0 && (
-              <Alert severity="warning" sx={{ mt: 2 }}>
-                <AlertTitle>
-                  <strong>
-                    We found the following potential requirements in the
-                    description. Would you like to populate these values?
-                  </strong>
-                </AlertTitle>
-                <Box component="ul">
-                  {lintIssues.messages?.map((m, i) => (
-                    <Typography key={i} component="li">
-                      {m}
-                    </Typography>
-                  ))}
-                </Box>
-                <Button onClick={autoFill}>Autofill</Button>
-              </Alert>
-            )}
-          </Grid>
-          <Grid item xs={12}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={noReqsChecked}
-                  onChange={() =>
-                    formik.setFieldValue(
-                      'requirements',
-                      noReqsChecked ? undefined : {},
-                    )
-                  }
-                  color="primary"
-                />
-              }
-              label={t('noEligibilityReqs').toUpperCase()}
-            />
-            <FormHelperText error>{formik.errors.requirements}</FormHelperText>
-          </Grid>
-          <Grid item sm={6} xs={12}>
-            <FormikMultiSelect
-              disabled={noReqsChecked}
-              label={t('grades')}
-              id="requirements.grades"
-              labelStyle={labelStyle}
-              formik={formik}
-              options={GradeLevelInfo.values()}
-              placeholder={t('noRequirements')}
-            />
-          </Grid>
-          <Grid item sm={6} xs={12}>
-            <FormikTextField
-              id="requirements.gpa"
-              type="number"
-              disabled={noReqsChecked}
-              formik={formik}
-              label={t('minGpa')}
-              labelStyle={labelStyle}
-              placeholder={t('noRequirements')}
-            />
-          </Grid>
-          <Grid item sm={6} xs={12}>
-            <FormikAutocomplete
-              disabled={noReqsChecked}
-              label={t('schools')}
-              id="requirements.schools"
-              labelStyle={labelStyle}
-              options={allSchools.map(
-                ({ name, state }) => `${name} (${state})`,
-              )}
-              freeSolo
-              formik={formik}
-              placeholder={t('noRequirements')}
-            />
-          </Grid>
-          <Grid item sm={6} xs={12}>
-            <FormikAutocomplete
-              disabled={noReqsChecked}
-              label={t('states')}
-              id="requirements.states"
-              labelStyle={labelStyle}
-              options={STATES.map((s) => s.abbr)}
-              getOptionLabel={(s) => State.toString(s)}
-              filterOptions={createFilterOptions({
-                stringify: (s) => State.toString(s),
-              })}
-              formik={formik}
-              placeholder={t('noRequirements')}
-            />
-          </Grid>
-          <Grid item sm={6} xs={12}>
-            <FormikAutocomplete
-              disabled={noReqsChecked}
-              label={t('majors')}
-              id="requirements.majors"
-              labelStyle={labelStyle}
-              options={allMajors}
-              freeSolo
-              formik={formik}
-              placeholder={t('noRequirements')}
-            />
-          </Grid>
-          <Grid item sm={6} xs={12}>
-            <FormikMultiSelect
-              disabled={noReqsChecked}
-              label={t('ethnicity')}
-              id="requirements.ethnicities"
-              labelStyle={labelStyle}
-              formik={formik}
-              options={EthnicityInfo.values()}
-              placeholder={t('noRequirements')}
-            />
-          </Grid>
-        </Grid>
+        <EligibilityStep
+          formik={formik}
+          lintIssues={lintIssues}
+          allMajors={allMajors}
+          allSchools={allSchools}
+          autoFill={autoFill}
+        />
       ),
     },
     [t('common:review')]: {
