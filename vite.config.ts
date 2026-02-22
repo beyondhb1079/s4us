@@ -1,11 +1,41 @@
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    visualizer({
+      open: true,
+      gzipSize: true,
+      brotliSize: true,
+    }),
+  ],
   build: {
     modulePreload: false,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            // Group all MUI packages together
+            if (id.includes('@mui')) return 'vendor-mui';
+            // Group all Firebase packages together
+            if (id.includes('firebase')) return 'vendor-firebase';
+            // Group React core together
+            if (
+              id.includes('react') ||
+              id.includes('react-dom') ||
+              id.includes('react-router')
+            ) {
+              return 'vendor-react';
+            }
+            // Everything else goes into a generic vendor chunk
+            return 'vendor';
+          }
+        },
+      },
+    },
   },
   test: {
     globals: true,
