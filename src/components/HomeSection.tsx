@@ -42,6 +42,7 @@ const HomeSection = ({
 
         <Grid xs={12} sm={6} sx={{ height: 400 }} component="div">
           <img
+            fetchPriority="high"
             src={pic}
             alt=""
             style={{
