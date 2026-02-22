@@ -308,7 +308,11 @@ export function lintReqs(
 }
 
 /** Lints the given scholarship for mismatches and returns a list of errors as strings. */
-export function lint(scholarship: ScholarshipData): string[] {
+export function lint(
+  scholarship: ScholarshipData,
+  allMajors: string[] = [],
+  allSchools: School[] = [],
+): string[] {
   const { amount, deadline, description: desc } = scholarship;
   const issues = [];
 
@@ -367,5 +371,5 @@ export function lint(scholarship: ScholarshipData): string[] {
   }
 
   // TODO(#858): Detect more errors.
-  return [...issues, ...lintReqs(scholarship).messages];
+  return [...issues, ...lintReqs(scholarship, allMajors, allSchools).messages];
 }

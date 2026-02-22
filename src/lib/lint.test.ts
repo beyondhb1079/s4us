@@ -13,6 +13,12 @@ import {
   parseSchools,
   parseStates,
 } from './lint';
+import majorsData from '../../public/data/majors.json';
+import schoolsData from '../../public/data/schools.json';
+import { School } from '../types/options';
+
+const testMajors: string[] = majorsData;
+const testSchools: School[] = schoolsData;
 
 describe('parseMinGPA()', () => {
   test('returns null on no match', () =>
@@ -110,23 +116,27 @@ describe('parseGradeLevels()', () => {
 describe('parseMajors()', () => {
   test('detects known majors', () => {
     expect(
-      parseMajors('Accounting and fashion design majors may apply'),
+      parseMajors('Accounting and fashion design majors may apply', testMajors),
     ).toEqual(['Accounting', 'Fashion Design']);
   });
   test('does not detect unknown major', () => {
-    expect(parseMajors('Welsh majors may apply')).toEqual([]);
+    expect(parseMajors('Welsh majors may apply', testMajors)).toEqual([]);
   });
   test('does not mis-detect substrings as majors', () => {
-    expect(parseMajors('Educational institutions')).toEqual([]);
+    expect(parseMajors('Educational institutions', testMajors)).toEqual([]);
   });
   test('filters out false positives', () => {
-    expect(parseMajors('Biology major pursuing higher education')).toEqual([
-      'Biology',
-    ]);
+    expect(
+      parseMajors('Biology major pursuing higher education', testMajors),
+    ).toEqual(['Biology']);
   });
   test('reduces education and history noise', () => {
-    expect(parseMajors('Strong advocate for education')).toEqual([]);
-    expect(parseMajors('Dr. So has a long history of...')).toEqual([]);
+    expect(parseMajors('Strong advocate for education', testMajors)).toEqual(
+      [],
+    );
+    expect(parseMajors('Dr. So has a long history of...', testMajors)).toEqual(
+      [],
+    );
   });
 });
 
@@ -135,6 +145,7 @@ describe('parseSchools()', () => {
     expect(
       parseSchools(
         'Student attending Florida State University or Georgia Institute of Technology may apply',
+        testSchools,
         'site',
       ).map((s) => s.name),
     ).toEqual(['Florida State University', 'Georgia Institute of Technology']);
@@ -143,18 +154,22 @@ describe('parseSchools()', () => {
     expect(
       parseSchools(
         'UT English majors may apply',
+        testSchools,
         'http://utulsa.edu/some/path',
       ).map((s) => s.name),
     ).toEqual(['University of Tulsa']);
     expect(
       parseSchools(
         'UT English majors may apply',
+        testSchools,
         'http://utoledo.edu/some/path',
       ).map((s) => s.name),
     ).toEqual(['University of Toledo']);
   });
   test('does not detect unknown school', () => {
-    expect(parseSchools('Oxford University students', 'site')).toEqual([]);
+    expect(
+      parseSchools('Oxford University students', testSchools, 'site'),
+    ).toEqual([]);
   });
 });
 
