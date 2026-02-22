@@ -106,7 +106,7 @@ export interface FilterOptions {
   sortField?: string;
 }
 
-const queryLimit = 10;
+const queryLimit = 50;
 
 class Scholarships extends FirestoreCollection<ScholarshipData> {
   name = 'scholarships';
