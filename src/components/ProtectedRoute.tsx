@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { Container, Typography, CircularProgress } from '@mui/material';
+import { Container, Typography, CircularProgress, Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import useAuth from '../lib/useAuth';
 
@@ -14,19 +14,23 @@ function ProtectedRoute({ element }: { element: JSX.Element }): JSX.Element {
 
   if (currentUser === undefined) {
     return (
-      <CircularProgress
+      <Box
         sx={{
           display: 'flex',
-          flexGrow: 1,
+          minHeight: '50vh',
           alignItems: 'center',
           justifyContent: 'center',
-        }}
-      />
+        }}>
+        <CircularProgress />
+      </Box>
     );
   }
-  return currentUser ? (
-    element
-  ) : (
+
+  if (currentUser) {
+    return element;
+  }
+
+  return (
     <Container sx={{ p: 2 }}>
       <Typography variant="h5">{t('protectedPage')}</Typography>
       {showLoginDialog === undefined && (

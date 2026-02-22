@@ -5,6 +5,7 @@ import {
   createContext,
   ReactNode,
   useContext,
+  useMemo,
 } from 'react';
 import { getAuth, UserInfo } from 'firebase/auth';
 
@@ -24,30 +25,34 @@ export default function useAuth(): Auth {
 
 // Provider hook that creates auth object and handles state
 function useProvideAuth(): Auth {
-  const [currentUser, setCurrentUser] = useState(
-    undefined as undefined | null | UserInfo,
-  );
-  const [claims, setClaims] = useState({} as Record<string, unknown>);
+  // Group state to prevent double-rendering!
+  const [authState, setAuthState] = useState<Auth>({
+    currentUser: undefined,
+    claims: {},
+  });
 
-  // Subscribe to user on mount. We need to have this called only once so only
-  // AuthProvider should use it
-  useEffect(
-    () =>
-      getAuth().onAuthStateChanged((user) => {
-        setCurrentUser(user);
-        if (user) {
-          user
-            .getIdTokenResult()
-            .then((idTokenResult) => setClaims(idTokenResult.claims))
-            .catch(() => setClaims({}));
-        } else {
-          setClaims({});
+  useEffect(() => {
+    // Actually capture the unsubscribe function
+    const unsubscribe = getAuth().onAuthStateChanged(async (user) => {
+      if (user) {
+        try {
+          const idTokenResult = await user.getIdTokenResult();
+          // Update both at the exact same time
+          setAuthState({ currentUser: user, claims: idTokenResult.claims });
+        } catch {
+          setAuthState({ currentUser: user, claims: {} });
         }
-      }),
-    [],
-  );
+      } else {
+        setAuthState({ currentUser: null, claims: {} });
+      }
+    });
 
-  return { currentUser, claims };
+    // Clean up the listener so you don't leak memory
+    return () => unsubscribe();
+  }, []);
+
+  // Memoize the value so we don't nuke the app with unnecessary re-renders
+  return useMemo(() => authState, [authState]);
 }
 
 /** Provider component for the app so that useAuth() can be used in any child component. */

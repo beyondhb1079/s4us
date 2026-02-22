@@ -9,6 +9,7 @@ import {
   ThemeProvider,
 } from '@mui/material';
 import Footer from './components/Footer';
+import Home from './pages/PublicHome';
 import Header, { HeaderSkeleton } from './components/Header';
 import theme from './theme';
 import { BRAND_NAME } from './config/constants';
@@ -18,9 +19,14 @@ import { AuthProvider } from './lib/useAuth';
 import { ScholarshipsProvider } from './models/ScholarshipsContext';
 import ScrollToTop from './components/ScrollToTop';
 
+// Import Roboto font to bundle it with the initial bundle.
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+
 // Pages should be loaded lazily on an as-needed basis
 const Dashboard = lazy(() => import('./pages/Dashboard'));
-const Home = lazy(() => import('./pages/PublicHome'));
 const ViewScholarship = lazy(() => import('./pages/ViewScholarship'));
 const ListScholarships = lazy(() => import('./pages/ListScholarships'));
 const About = lazy(() => import('./pages/About'));
@@ -85,7 +91,9 @@ function App(): JSX.Element {
                         />
                         <Route path="/" element={<Home />} />
                       </Routes>
-                      <LoginDialog />
+                      <Suspense fallback={null}>
+                        <LoginDialog />
+                      </Suspense>
                     </div>
                     {/* Footer inside <Suspense> but outside <div> so it:
                           1. Gravitates to the bottom (see App.css) and
