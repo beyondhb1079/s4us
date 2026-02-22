@@ -143,7 +143,7 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
     const now = new Date();
     const today = new Date(now.toDateString());
 
-    if (!opts.showExpired && opts.sortField == 'deadline') {
+    if (!opts.showExpired && opts.sortField === 'deadline') {
       q = query(q, where('deadline', '>=', today));
     }
 
@@ -160,7 +160,7 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
     if (lastDoc) q = query(q, startAfter(lastDoc));
     return getDocs(q)
       .then((qSnap: QuerySnapshot<ScholarshipData>) => ({
-        hasNext: qSnap.size == queryLimit,
+        hasNext: qSnap.size === queryLimit,
         next:
           qSnap.size === queryLimit
             ? () => this._list(opts, q, qSnap.docs[qSnap.docs.length - 1])
@@ -207,7 +207,7 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
               // Deadline Filter.
               // This is needed  in case list() above couldn't apply it.
               // TODO(#692): Add a daily updated `status` field so we don't need to do this.
-              (opts.sortField == 'deadline' || data.deadline >= today),
+              (opts.sortField === 'deadline' || data.deadline >= today),
           ),
       }))
       .then(({ results, next, hasNext }) => {
