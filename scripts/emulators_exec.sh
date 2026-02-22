@@ -7,7 +7,8 @@ warn() {
   echo "${BOLD}${YELLOW}WARNING:${NORMAL} $1"
 }
 
-export JAVA_HOME="/opt/homebrew/opt/openjdk@21"
+# Only set JAVA_HOME if not already set (CI provides it via setup-java)
+export JAVA_HOME="${JAVA_HOME:-/opt/homebrew/opt/openjdk@21}"
 if lsof -i tcp:8080; then
   PID=$(lsof -t -i tcp:8080)
   warn "Firestore emulator may already be running (PID: $PID)!"
