@@ -136,13 +136,13 @@ export default function ScholarshipForm({ scholarship }: SFProps): JSX.Element {
         (val) => (Array.isArray(val) && val.length === 0) || val === '',
       );
     // no requirements & no checkbox fails
-    if (activeStep == 1 && !noReqsChecked && noReqsGiven)
+    if (activeStep === 1 && !noReqsChecked && noReqsGiven)
       return validationT('checkboxValid');
 
     return '';
   }
 
-  const onLastStep = activeStep == Object.keys(stepperItems).length - 1;
+  const onLastStep = activeStep === Object.keys(stepperItems).length - 1;
 
   return (
     <Box
