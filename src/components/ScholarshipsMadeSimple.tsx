@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import { AppBar, Button, Tab, Typography, Box } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import HomeSection from './HomeSection';
-import student from '../img/img5.svg';
-import contributor from '../img/img1.svg';
 import { TFunction, useTranslation } from 'react-i18next';
 
 function OutlineButton(
@@ -32,7 +30,7 @@ export default function ScholarshipsMadeSimpleSection(): JSX.Element {
       title: t('studentTab.title'),
       description: t('studentTab.description'),
       buttons: [OutlineButton('students', t)],
-      pic: student,
+      pic: '/student.svg',
       direction: 'row-reverse',
     },
     {
@@ -40,7 +38,7 @@ export default function ScholarshipsMadeSimpleSection(): JSX.Element {
       title: t('communityTab.title'),
       description: t('communityTab.description'),
       buttons: [OutlineButton('community contributor', t)],
-      pic: contributor,
+      pic: '/contributor.svg',
     },
   ];
 

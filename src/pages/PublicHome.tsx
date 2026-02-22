@@ -4,8 +4,6 @@ import { Button, Box } from '@mui/material';
 import ScholarshipsMadeSimple from '../components/ScholarshipsMadeSimple';
 import HomeSection from '../components/HomeSection';
 import { useTranslation } from 'react-i18next';
-import graduation from '../img/img2.svg';
-import searching from '../img/img3.svg';
 import useAuth from '../lib/useAuth';
 
 export default function Home(): JSX.Element {
@@ -36,7 +34,7 @@ export default function Home(): JSX.Element {
             {t('common:actions.addScholarship')}
           </Button>,
         ]}
-        pic={graduation}
+        pic="/graduation.svg"
       />
 
       <ScholarshipsMadeSimple />
@@ -55,7 +53,7 @@ export default function Home(): JSX.Element {
               {t('common:actions.browseScholarships')}
             </Button>,
           ]}
-          pic={searching}
+          pic="/searching.svg"
         />
       </Box>
     </>
