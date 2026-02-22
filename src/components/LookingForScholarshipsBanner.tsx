@@ -1,5 +1,4 @@
 import React from 'react';
-import img5 from '../img/img5.svg';
 import { Link } from 'react-router-dom';
 import { Grid, Paper, Typography, Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
@@ -27,7 +26,7 @@ function LookingForScholarshipsBanner(): JSX.Element {
         </Button>
       </Grid>
       <Grid item sm={6} xs={12}>
-        <img src={img5} style={{ maxHeight: '200px' }} />
+        <img src="/searching.svg" style={{ maxHeight: '200px' }} />
       </Grid>
     </Grid>
   );
