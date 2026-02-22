@@ -402,6 +402,7 @@ describe('lint()', () => {
           requirements: { majors: ['Computer Science'] },
         },
         testMajors,
+        testSchools,
       ),
     ).toEqual([]);
   });
@@ -414,6 +415,7 @@ describe('lint()', () => {
           requirements: { majors: ['Computer Science'] },
         },
         testMajors,
+        testSchools,
       ),
     ).toHaveLength(1);
   });
