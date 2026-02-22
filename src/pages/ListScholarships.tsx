@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet';
+import useDocumentTitle from '../lib/useDocumentTitle';
 import { useTranslation } from 'react-i18next';
 import {
   Box,
@@ -28,6 +28,7 @@ const drawerWidth = 360;
 
 function ListScholarships(): JSX.Element {
   const { t } = useTranslation('listScholarships');
+  useDocumentTitle(t('titleTag'));
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
@@ -85,9 +86,6 @@ function ListScholarships(): JSX.Element {
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <Helmet>
-        <title>{t('titleTag')}</title>
-      </Helmet>
       <Drawer
         sx={{
           flexShrink: 0,

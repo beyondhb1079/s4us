@@ -1,5 +1,5 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
+import useDocumentTitle from '../lib/useDocumentTitle';
 import {
   Container,
   Grid,
@@ -15,6 +15,7 @@ import LookingForScholarshipsBanner from '../components/LookingForScholarshipsBa
 
 export default function About(): JSX.Element {
   const { t } = useTranslation('about');
+  useDocumentTitle(t('titleTag'));
 
   const team = [
     {
@@ -51,10 +52,6 @@ export default function About(): JSX.Element {
 
   return (
     <Container sx={{ p: 2 }}>
-      <Helmet>
-        <title>{t('titleTag')}</title>
-      </Helmet>
-
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
           <Typography component="h2" variant="button" gutterBottom>

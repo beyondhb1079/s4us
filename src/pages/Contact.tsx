@@ -1,5 +1,5 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
+import useDocumentTitle from '../lib/useDocumentTitle';
 import { Link } from 'react-router-dom';
 import {
   featureRequest,
@@ -13,13 +13,10 @@ import { useTranslation, Trans } from 'react-i18next';
 
 function Contact(): JSX.Element {
   const { t } = useTranslation('contact');
+  useDocumentTitle(t('titleTag'));
 
   return (
     <Container sx={{ p: 2 }}>
-      <Helmet>
-        <title>{t('titleTag')}</title>
-      </Helmet>
-
       <Typography variant="h4" align="center" gutterBottom>
         {t('contactUs')}
       </Typography>

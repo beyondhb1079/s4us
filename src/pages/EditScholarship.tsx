@@ -15,13 +15,14 @@ import {
 } from '@mui/material';
 import ScholarshipForm from '../components/ScholarshipForm';
 import Scholarships from '../models/Scholarships';
-import { Helmet } from 'react-helmet';
+import useDocumentTitle from '../lib/useDocumentTitle';
 import useAuth from '../lib/useAuth';
 import ScholarshipsContext from '../models/ScholarshipsContext';
 import ScholarshipData from '../types/ScholarshipData';
 import Model from '../models/base/Model';
 
 function EditScholarship(): JSX.Element {
+  useDocumentTitle('Edit a scholarship');
   const { id } = useParams();
   const [scholarship, setScholarship] = useState<
     Model<ScholarshipData> | undefined
@@ -87,10 +88,6 @@ function EditScholarship(): JSX.Element {
 
   return (
     <Box sx={{ p: 2 }}>
-      <Helmet>
-        <title>Edit a scholarship</title>
-      </Helmet>
-
       <>
         <Container maxWidth="xl">
           <ScholarshipForm scholarship={scholarship} />
