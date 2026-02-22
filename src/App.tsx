@@ -17,12 +17,6 @@ import { AuthProvider } from './lib/useAuth';
 import { ScholarshipsProvider } from './models/ScholarshipsContext';
 import ScrollToTop from './components/ScrollToTop';
 
-// Import Roboto font to bundle it with the initial bundle.
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
-
 // Pages should be loaded lazily on an as-needed basis
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const ViewScholarship = lazy(() => import('./pages/ViewScholarship'));

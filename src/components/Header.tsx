@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   AppBar,
@@ -32,16 +32,27 @@ function HideOnScroll({ children }: { children: JSX.Element }) {
 }
 
 const OnRenderSnackbar = () => {
-  const match = window.location.hostname.match(/s4us-pr-(\d+)\.onrender\.com/);
+  const [prNum, setPrNum] = useState<string | null>(null);
   const [open, setOpen] = useState(true);
-  if (!match) return null;
 
-  const num = match[1];
-  const link = `https://github.com/beyondhb1079/s4us/pull/${num}`;
+  // Run the regex exactly once when the component mounts
+  useEffect(() => {
+    const match = window.location.hostname.match(
+      /s4us-pr-(\d+)\.onrender\.com/,
+    );
+    if (match) {
+      setPrNum(match[1]);
+    }
+  }, []);
+
+  if (!prNum) return null;
+
+  const link = `https://github.com/beyondhb1079/s4us/pull/${prNum}`;
   return (
     <Snackbar open={open}>
       <Alert onClose={() => setOpen(false)} severity="info">
-        This is a preview of <MuiLink href={link}>Pull Request #{num}</MuiLink>
+        This is a preview of{' '}
+        <MuiLink href={link}>Pull Request #{prNum}</MuiLink>
       </Alert>
     </Snackbar>
   );
@@ -75,13 +86,16 @@ const AuthGrowButton = ({ t }: { t: TFunction<'common', undefined> }) => {
   );
 };
 
-const links = (t: TFunction<'common', undefined>) => ({
-  [t('scholarships')]: '/scholarships',
-  [t('actions.add')]: '/scholarships/new',
-});
-
 function Header(): JSX.Element {
   const { t } = useTranslation('common');
+
+  const navLinks = useMemo(
+    () => ({
+      [t('scholarships')]: '/scholarships',
+      [t('actions.add')]: '/scholarships/new',
+    }),
+    [t],
+  );
 
   return (
     <HideOnScroll>
@@ -100,13 +114,13 @@ function Header(): JSX.Element {
             {BRAND_NAME.toUpperCase()}
           </MuiLink>
           <Box sx={{ display: { sm: 'block', xs: 'none' } }}>
-            <HeaderNavMenu links={links(t)} />
+            <HeaderNavMenu links={navLinks} />
           </Box>
           <TranslationMenu />
           <AuthGrowButton t={t} />
         </Toolbar>
         <Toolbar variant="dense" sx={{ display: { sm: 'none', xs: 'block' } }}>
-          <HeaderNavMenu links={links(t)} />
+          <HeaderNavMenu links={navLinks} />
         </Toolbar>
       </AppBar>
     </HideOnScroll>
