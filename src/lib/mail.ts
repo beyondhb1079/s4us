@@ -20,7 +20,7 @@ export const getDeviceInfo = async () => {
   // 1. Try the modern Client Hints API first
   if ('userAgentData' in navigator) {
     try {
-      // @ts-ignore - low-entropy data is available immediately
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const uaData = (navigator as any).userAgentData;
       // High-entropy data (like OS version) must be explicitly requested and is async
       const highEntropyData = await uaData.getHighEntropyValues([
@@ -32,8 +32,8 @@ export const getDeviceInfo = async () => {
 OS Version: ${highEntropyData.platformVersion}
 Device Model: ${highEntropyData.model || 'Unknown'}
 Mobile: ${uaData.mobile ? 'Yes' : 'No'}`;
-    } catch (e) {
-      // Fallback if the request is denied
+    } catch (error) {
+      console.error('Failed to get device info:', error);
     }
   }
 
