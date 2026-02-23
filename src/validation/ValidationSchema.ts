@@ -18,18 +18,19 @@ const validationSchema: any = (t: TFunction) =>
         .number()
         .when('type', {
           is: AmountType.Fixed,
-          then: yup.number().required().moreThan(0, t('fixedAmountValid')),
+          then: (schema) =>
+            schema.required().moreThan(0, t('fixedAmountValid')),
         })
         .when('type', {
           is: AmountType.Varies,
-          then: yup
-            .number()
-            .min(0, t('amountValid'))
-            .test(
-              'min < max test',
-              t('minLessMax'),
-              (min, { parent }) => !min || !parent?.max || min < parent.max,
-            ),
+          then: (schema) =>
+            schema
+              .min(0, t('amountValid'))
+              .test(
+                'min < max test',
+                t('minLessMax'),
+                (min, { parent }) => !min || !parent?.max || min < parent.max,
+              ),
         }),
       max: yup.number().min(0, t('amountValid')).notRequired(),
     }),
