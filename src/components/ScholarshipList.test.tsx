@@ -10,8 +10,16 @@ import Scholarships from '../models/Scholarships';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
 import { initializeTestEnv } from '../lib/testing';
-import { ScholarshipsProvider } from '../models/ScholarshipsContext';
 import { ScholarshipAmountInfo } from '../types/ScholarshipAmount';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+    },
+  },
+});
 
 const [env, cleanup] = initializeTestEnv('scholarship-list-test');
 beforeEach(() => env.then((e) => e.clearFirestore()));
@@ -25,9 +33,9 @@ const renderWithProviders = (ui: JSX.Element) =>
   render(
     <Suspense fallback="loading">
       <I18nextProvider i18n={i18n}>
-        <ScholarshipsProvider>
+        <QueryClientProvider client={queryClient}>
           <ThemeProvider theme={createTheme()}>{ui}</ThemeProvider>
-        </ScholarshipsProvider>
+        </QueryClientProvider>
       </I18nextProvider>
     </Suspense>,
     { wrapper: MemoryRouter },

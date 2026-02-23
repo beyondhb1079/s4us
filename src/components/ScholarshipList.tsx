@@ -1,65 +1,57 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import ScholarshipCard from './ScholarshipCard';
 import { DEADLINE_ASC, getDir, getField } from '../lib/sortOptions';
-import ScholarshipsContext from '../models/ScholarshipsContext';
 import { FilterOptions } from '../models/Scholarships';
 import useOnScreen from '../lib/useOnScreen';
 import useQueryParams from '../lib/useQueryParams';
+import { useScholarshipsQuery } from '../hooks/useScholarshipsQuery';
 
 interface SLProps {
-  noResultsNode?: JSX.Element;
+  noResultsNode?: React.JSX.Element;
   extraFilters?: Partial<FilterOptions>;
 }
 
 export default function ScholarshipList({
   noResultsNode,
   extraFilters = {},
-}: SLProps): JSX.Element {
-  const { canLoadMore, error, loading, loadMore, scholarships, setFilters } =
-    useContext(ScholarshipsContext);
+}: SLProps): React.JSX.Element {
   const { t } = useTranslation('listScholarships');
   const [queryParams] = useQueryParams();
 
-  // Resets result context if filters change.
-  useEffect(() => {
-    const {
-      minAmount,
-      grades,
-      majors,
-      states,
-      schools,
-      ethnicities,
-      showExpired,
-      sortBy,
-    } = queryParams;
-    const sortField = getField(sortBy ?? DEADLINE_ASC);
-    const sortDir = getDir(sortBy ?? DEADLINE_ASC);
-    setFilters({
-      sortField,
-      sortDir,
-      minAmount,
-      grades,
-      majors,
-      states,
-      schools,
-      ethnicities,
-      showExpired,
-      ...extraFilters,
-    });
-  }, [queryParams, extraFilters, setFilters]);
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+  } = useScholarshipsQuery({
+    sortField: getField((queryParams.sortBy as string) ?? DEADLINE_ASC),
+    sortDir: getDir((queryParams.sortBy as string) ?? DEADLINE_ASC) as
+      | 'asc'
+      | 'desc',
+    ...(queryParams as unknown as FilterOptions),
+    ...extraFilters,
+  });
+
+  const scholarships = data?.pages.flatMap((page) => page.results) ?? [];
+  const loading = isFetching || isFetchingNextPage;
+  const canLoadMore = !!hasNextPage;
 
   // Automatically load more when the progress is visible
-  const progressRef = useRef(null);
-  const progressVisible = useOnScreen(progressRef);
+  const progressRef = useRef<HTMLElement>(null);
+  const progressVisible = useOnScreen(
+    progressRef as React.RefObject<HTMLElement>,
+  );
 
-  // Resets result context if filters change.
+  // Load next page
   useEffect(() => {
     if (progressVisible && canLoadMore && !loading) {
-      loadMore();
+      fetchNextPage();
     }
-  }, [loading, canLoadMore, loadMore, progressVisible]);
+  }, [loading, canLoadMore, fetchNextPage, progressVisible]);
 
   return (
     <Stack spacing={3} paddingY={3}>

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useFormik } from 'formik';
 import {
@@ -18,9 +18,9 @@ import {
 import validationSchema from '../validation/ValidationSchema';
 import ScholarshipCard from './ScholarshipCard';
 import useOptionsData from '../lib/useOptionsData';
-import ScholarshipsContext from '../models/ScholarshipsContext';
 import { lintReqs, LintReqsResult } from '../lib/lint';
 import { useTranslation } from 'react-i18next';
+import { useQueryClient } from '@tanstack/react-query';
 import i18n from 'i18next';
 import ScholarshipData from '../types/ScholarshipData';
 import Model from '../models/base/Model';
@@ -32,10 +32,12 @@ interface SFProps {
   scholarship: Model<ScholarshipData>;
 }
 
-export default function ScholarshipForm({ scholarship }: SFProps): JSX.Element {
+export default function ScholarshipForm({
+  scholarship,
+}: SFProps): React.JSX.Element {
   const [activeStep, setActiveStep] = useState(0);
   const [submissionError, setSubmissionError] = useState(null as null | Error);
-  const { invalidate } = useContext(ScholarshipsContext);
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const location = useLocation();
   const { majors: allMajors, schools: allSchools } = useOptionsData();
@@ -54,7 +56,7 @@ export default function ScholarshipForm({ scholarship }: SFProps): JSX.Element {
       scholarship
         .save()
         .then((s) => {
-          invalidate(s.id, s.data);
+          queryClient.invalidateQueries({ queryKey: ['scholarships'] });
           navigate(`/scholarships/${s.id}`, {
             state: {
               prevPath: location.pathname,

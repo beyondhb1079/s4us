@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useDocumentTitle from '../lib/useDocumentTitle';
 import { Container, Typography, Box, Collapse } from '@mui/material';
 import Scholarships from '../models/Scholarships';
@@ -7,22 +7,29 @@ import ShowMoreScholarships from '../components/ShowMoreScholarships';
 import { Alert } from '@mui/material';
 import bannerImg from '../img/detail-page-banner.jpg';
 import { useLocation, useNavigationType, useParams } from 'react-router-dom';
-import ScholarshipsContext from '../models/ScholarshipsContext';
 import { useTranslation } from 'react-i18next';
 import Model from '../models/base/Model';
 import ScholarshipData from '../types/ScholarshipData';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface LocationState {
   scholarship?: Model<ScholarshipData>;
   prevPath?: string;
 }
 
-export default function ViewScholarship(): JSX.Element {
+export default function ViewScholarship(): React.JSX.Element {
   const location = useLocation();
   const { id } = useParams();
-  const { scholarships } = useContext(ScholarshipsContext);
+  const queryClient = useQueryClient();
+  const cachedScholarships = queryClient
+    .getQueriesData({ queryKey: ['scholarships'] })
+    .flatMap(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ([, data]: any) => data?.pages?.flatMap((p: any) => p.results) || [],
+    );
+
   const [scholarship, setScholarship] = useState(
-    scholarships.find((s) => s.id === id) ||
+    cachedScholarships.find((s: Model<ScholarshipData>) => s.id === id) ||
       (location?.state as LocationState)?.scholarship,
   );
   useDocumentTitle(scholarship?.data?.name);
@@ -67,7 +74,7 @@ export default function ViewScholarship(): JSX.Element {
       {justEdited && navType === 'PUSH' && (
         <Collapse in={showAlert}>
           <Alert
-            color="primary"
+            severity="info"
             variant="filled"
             onClose={() => setShowAlert(false)}>
             {`Scholarship successfully ${
