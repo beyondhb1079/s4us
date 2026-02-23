@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   Container,
@@ -17,11 +17,11 @@ import ScholarshipForm from '../components/scholarship/ScholarshipForm';
 import Scholarships from '../models/Scholarships';
 import useDocumentTitle from '../lib/useDocumentTitle';
 import useAuth from '../lib/useAuth';
-import ScholarshipsContext from '../models/ScholarshipsContext';
+import { useQueryClient } from '@tanstack/react-query';
 import ScholarshipData from '../types/ScholarshipData';
 import Model from '../models/base/Model';
 
-function EditScholarship(): JSX.Element {
+function EditScholarship(): React.JSX.Element {
   useDocumentTitle('Edit a scholarship');
   const { id } = useParams();
   const [scholarship, setScholarship] = useState<
@@ -58,12 +58,12 @@ function EditScholarship(): JSX.Element {
     }
   }, [scholarship, currentUser, claims]);
 
-  const { invalidate } = useContext(ScholarshipsContext);
+  const queryClient = useQueryClient();
   const handleDelete = () => {
     Scholarships.id(id as string)
       .delete()
       .then(() => {
-        invalidate(id);
+        queryClient.invalidateQueries({ queryKey: ['scholarships'] });
         navigate('/', {
           state: {
             alert: {

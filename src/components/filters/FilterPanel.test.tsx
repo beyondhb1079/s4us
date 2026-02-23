@@ -8,7 +8,7 @@ import { act } from 'react';
 import { beforeEach, vi } from 'vitest';
 import useOptionsData from '../../lib/useOptionsData';
 
-vi.mock('../lib/useOptionsData', () => ({
+vi.mock('../../lib/useOptionsData', () => ({
   default: vi.fn(),
 }));
 

@@ -1,23 +1,17 @@
-import { useContext, useEffect } from 'react';
 import { Stack, Button, Paper } from '@mui/material';
-import ScholarshipsContext from '../../models/ScholarshipsContext';
 import ScholarshipCard from './ScholarshipCard';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useScholarshipsQuery } from '../../hooks/useScholarshipsQuery';
 
 export default function ShowMoreScholarships({
   currentId,
 }: {
   currentId: number;
-}): JSX.Element {
-  const { scholarships, loading, setFilters } = useContext(ScholarshipsContext);
+}): React.JSX.Element {
   const { t } = useTranslation('common');
-
-  useEffect(() => {
-    if (scholarships.length === 0 && !loading) {
-      setFilters({ showExpired: true });
-    }
-  }, [scholarships, loading, setFilters]);
+  const { data } = useScholarshipsQuery({ showExpired: true });
+  const scholarships = data?.pages.flatMap((page) => page.results) ?? [];
 
   return (
     <Stack direction="row" spacing={2}>
