@@ -10,7 +10,7 @@ import {
   Theme,
 } from '@mui/material';
 import RemoveIcon from '@mui/icons-material/Remove';
-import AmountType from '../types/AmountType';
+import AmountType from '../../types/AmountType';
 import AmountTextField from './AmountTextField';
 import { getIn } from 'formik';
 import { useTranslation } from 'react-i18next';

@@ -1,10 +1,10 @@
 // Extracted from ScholarshipForm.tsx — General Info (step 1)
 import React from 'react';
 import { Grid } from '@mui/material';
-import FormikTextField from '../FormikTextField';
-import FormikAutocomplete from '../FormikAutocomplete';
-import DeadlineField from '../DeadlineField';
-import ScholarshipAmountField from '../ScholarshipAmountField';
+import FormikTextField from '../../form/FormikTextField';
+import FormikAutocomplete from '../../form/FormikAutocomplete';
+import DeadlineField from '../../form/DeadlineField';
+import ScholarshipAmountField from '../../form/ScholarshipAmountField';
 import { useTranslation } from 'react-i18next';
 
 const labelStyle = { marginBottom: 2 };

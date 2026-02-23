@@ -2,9 +2,9 @@ import React, { Suspense } from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import UserEvent from '@testing-library/user-event';
 import ScholarshipAmountField from './ScholarshipAmountField';
-import AmountType from '../types/AmountType';
+import AmountType from '../../types/AmountType';
 import { I18nextProvider } from 'react-i18next';
-import i18n from '../i18n';
+import i18n from '../../i18n';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const formik: any = {

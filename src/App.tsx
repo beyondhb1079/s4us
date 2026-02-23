@@ -7,15 +7,15 @@ import {
   StyledEngineProvider,
   ThemeProvider,
 } from '@mui/material';
-import Footer from './components/Footer';
+import Footer from './components/layout/Footer';
 import Home from './pages/PublicHome';
-import Header, { HeaderSkeleton } from './components/Header';
+import Header, { HeaderSkeleton } from './components/layout/Header';
 import theme from './theme';
 import FirebaseProvider from './lib/FirebaseProvider';
-import ProtectedRoute from './components/ProtectedRoute';
+import ProtectedRoute from './components/layout/ProtectedRoute';
 import { AuthProvider } from './lib/useAuth';
 import { ScholarshipsProvider } from './models/ScholarshipsContext';
-import ScrollToTop from './components/ScrollToTop';
+import ScrollToTop from './components/layout/ScrollToTop';
 
 // Pages should be loaded lazily on an as-needed basis
 const Dashboard = lazy(() => import('./pages/Dashboard'));
@@ -30,7 +30,7 @@ const EditScholarship = lazy(() => import('./pages/EditScholarship'));
 
 // This should be suspended too because of the auth dependency
 const LoginDialogWrapper = lazy(
-  () => import('./components/LoginDialogWrapper'),
+  () => import('./components/layout/LoginDialogWrapper'),
 );
 
 function App(): JSX.Element {

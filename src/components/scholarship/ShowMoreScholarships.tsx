@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
 import { Stack, Button, Paper } from '@mui/material';
-import ScholarshipsContext from '../models/ScholarshipsContext';
+import ScholarshipsContext from '../../models/ScholarshipsContext';
 import ScholarshipCard from './ScholarshipCard';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';

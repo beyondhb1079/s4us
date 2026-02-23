@@ -21,17 +21,17 @@ import ShareIcon from '@mui/icons-material/Share';
 import EditIcon from '@mui/icons-material/Edit';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import EventIcon from '@mui/icons-material/Event';
-import { ScholarshipAmountInfo } from '../types/ScholarshipAmount';
-import State from '../types/States';
-import { GradeLevelInfo } from '../types/GradeLevel';
-import { EthnicityInfo } from '../types/Ethnicity';
-import { lint } from '../lib/lint';
-import { genMailToLink, withDeviceInfo } from '../lib/mail';
+import { ScholarshipAmountInfo } from '../../types/ScholarshipAmount';
+import State from '../../types/States';
+import { GradeLevelInfo } from '../../types/GradeLevel';
+import { EthnicityInfo } from '../../types/Ethnicity';
+import { lint } from '../../lib/lint';
+import { genMailToLink, withDeviceInfo } from '../../lib/mail';
 import ShareDialog from './ShareDialog';
-import useAuth from '../lib/useAuth';
-import ScholarshipData from '../types/ScholarshipData';
+import useAuth from '../../lib/useAuth';
+import ScholarshipData from '../../types/ScholarshipData';
 import { useTranslation } from 'react-i18next';
-import { logEventAsync } from '../lib/analytics';
+import { logEventAsync } from '../../lib/analytics';
 import DetailCardCell from './scholarship-card/DetailCardCell';
 
 export default function ScholarshipCard({

@@ -15,16 +15,16 @@ import {
   useMediaQuery,
   Theme,
 } from '@mui/material';
-import validationSchema from '../validation/ValidationSchema';
+import validationSchema from '../../validation/ValidationSchema';
 import ScholarshipCard from './ScholarshipCard';
-import useOptionsData from '../lib/useOptionsData';
-import ScholarshipsContext from '../models/ScholarshipsContext';
-import { lintReqs, LintReqsResult } from '../lib/lint';
+import useOptionsData from '../../lib/useOptionsData';
+import ScholarshipsContext from '../../models/ScholarshipsContext';
+import { lintReqs, LintReqsResult } from '../../lib/lint';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
-import ScholarshipData from '../types/ScholarshipData';
-import Model from '../models/base/Model';
-import ScholarshipEligibility from '../types/ScholarshipEligibility';
+import ScholarshipData from '../../types/ScholarshipData';
+import Model from '../../models/base/Model';
+import ScholarshipEligibility from '../../types/ScholarshipEligibility';
 import GeneralInfoStep from './scholarship-form/GeneralInfoStep';
 import EligibilityStep from './scholarship-form/EligibilityStep';
 

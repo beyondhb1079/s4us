@@ -19,11 +19,11 @@ import {
   TwitterIcon,
   TwitterShareButton,
 } from 'react-share';
-import { BRAND_NAME } from '../config/constants';
-import { ScholarshipAmountInfo } from '../types/ScholarshipAmount';
-import ScholarshipData from '../types/ScholarshipData';
+import { BRAND_NAME } from '../../config/constants';
+import { ScholarshipAmountInfo } from '../../types/ScholarshipAmount';
+import ScholarshipData from '../../types/ScholarshipData';
 import { useTranslation } from 'react-i18next';
-import { logEventAsync } from '../lib/analytics';
+import { logEventAsync } from '../../lib/analytics';
 
 export default function ShareDialog({
   scholarship,

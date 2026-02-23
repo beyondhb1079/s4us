@@ -18,17 +18,17 @@ import {
   Chip,
   createFilterOptions,
 } from '@mui/material';
-import useQueryParams from '../lib/useQueryParams';
+import useQueryParams from '../../lib/useQueryParams';
 import MinAmountFilter from './MinAmountFilter';
 import GradeLevelFilter from './GradeLevelFilter';
 import CloseIcon from '@mui/icons-material/Close';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 
-import CustomAutocomplete from './CustomAutocomplete';
-import State, { STATES } from '../types/States';
-import useOptionsData from '../lib/useOptionsData';
-import Ethnicity, { EthnicityInfo } from '../types/Ethnicity';
+import CustomAutocomplete from '../form/CustomAutocomplete';
+import State, { STATES } from '../../types/States';
+import useOptionsData from '../../lib/useOptionsData';
+import Ethnicity, { EthnicityInfo } from '../../types/Ethnicity';
 import { useTranslation } from 'react-i18next';
 
 interface FiltersProps {

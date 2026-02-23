@@ -3,10 +3,10 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import FilterPanel from './FilterPanel';
 import { I18nextProvider } from 'react-i18next';
-import i18n from '../i18n';
+import i18n from '../../i18n';
 import { act } from 'react';
 import { beforeEach, vi } from 'vitest';
-import useOptionsData from '../lib/useOptionsData';
+import useOptionsData from '../../lib/useOptionsData';
 
 vi.mock('../lib/useOptionsData', () => ({
   default: vi.fn(),

@@ -6,12 +6,12 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import { MemoryRouter } from 'react-router-dom';
 import ScholarshipList from './ScholarshipList';
-import Scholarships from '../models/Scholarships';
+import Scholarships from '../../models/Scholarships';
 import { I18nextProvider } from 'react-i18next';
-import i18n from '../i18n';
-import { initializeTestEnv } from '../lib/testing';
-import { ScholarshipsProvider } from '../models/ScholarshipsContext';
-import { ScholarshipAmountInfo } from '../types/ScholarshipAmount';
+import i18n from '../../i18n';
+import { initializeTestEnv } from '../../lib/testing';
+import { ScholarshipsProvider } from '../../models/ScholarshipsContext';
+import { ScholarshipAmountInfo } from '../../types/ScholarshipAmount';
 
 const [env, cleanup] = initializeTestEnv('scholarship-list-test');
 beforeEach(() => env.then((e) => e.clearFirestore()));
