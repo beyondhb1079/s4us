@@ -35,13 +35,24 @@ function useProvideAuth(): Auth {
     // Actually capture the unsubscribe function
     const unsubscribe = getAuth().onAuthStateChanged(async (user) => {
       if (user) {
-        try {
-          const idTokenResult = await user.getIdTokenResult();
-          // Update both at the exact same time
-          setAuthState({ currentUser: user, claims: idTokenResult.claims });
-        } catch {
-          setAuthState({ currentUser: user, claims: {} });
-        }
+        // Instantly unblock the UI! The Header can immediately paint the Avatar.
+        setAuthState({ currentUser: user, claims: {} });
+
+        // Fetch the custom claims in the background
+        user
+          .getIdTokenResult()
+          .then((idTokenResult) => {
+            // Use functional state update so we don't accidentally overwrite
+            // any other state changes that happened while waiting
+            setAuthState((prevState) => ({
+              ...prevState,
+              claims: idTokenResult.claims,
+            }));
+          })
+          .catch(() => {
+            // Silently fail if the token fetch fails (offline, etc)
+            // State is already set with the base user!
+          });
       } else {
         setAuthState({ currentUser: null, claims: {} });
       }
