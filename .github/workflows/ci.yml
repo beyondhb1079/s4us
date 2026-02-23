@@ -25,9 +25,15 @@ jobs:
           cache: 'yarn'
       - run: yarn install --frozen-lockfile
       - run: yarn build
-      - uses: w9jds/firebase-action@v14.0.0
-        name: Deploy app and firestore rules/indices
-        with:
-          args: deploy --only hosting,firestore --project dreamerscholars
+      - name: Deploy app and firestore rules/indices
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        run: |
+          # 1. Write the secret key to a temporary JSON file
+          echo "$GCP_SA_KEY" > gcp-sa.json
+
+          # 2. Tell the Firebase CLI where to find the credentials
+          export GOOGLE_APPLICATION_CREDENTIALS="$(pwd)/gcp-sa.json"
+
+          # 3. Deploy using the local CLI you already downloaded via Yarn!
+          npx firebase deploy --only hosting,firestore --project dreamerscholars
