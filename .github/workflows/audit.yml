@@ -11,10 +11,17 @@ on:
       - main
       - release/*
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
-  audit:
+  # Find the audit baseline (ONLY applicable for Pull Requests)
+  audit-baseline:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
-    name: No new vulnerabilities
+    outputs:
+      old_num: ${{ steps.audit.outputs.old_num }}
     steps:
       - name: Checkout main branch
         uses: actions/checkout@v4
@@ -24,18 +31,43 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          check-latest: true
           cache: 'yarn'
-      - name: Install dependencies for main branch
+      - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Audit the old number of vulnerabilities
-        run: echo "old_num=$(yarn audit --groups dependencies --summary | tee /dev/fd/2 | grep vulnerabilities | cut -d ' ' -f1)" >> $GITHUB_ENV
+        id: audit
+        run: echo "old_num=$(yarn audit --groups dependencies --summary | tee /dev/fd/2 | grep vulnerabilities | cut -d ' ' -f1)" >> $GITHUB_OUTPUT
+
+  # Find the current audit
+  audit-current:
+    runs-on: ubuntu-latest
+    outputs:
+      new_num: ${{ steps.audit.outputs.new_num }}
+    steps:
       - name: Checkout PR branch
         uses: actions/checkout@v4
-      - name: Install dependencies for PR branch
+      - name: Setup node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'yarn'
+      - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Audit the new number of vulnerabilities
-        run: echo "new_num=$(yarn audit --groups dependencies --summary | tee /dev/fd/2 | grep vulnerabilities | cut -d ' ' -f1)" >> $GITHUB_ENV
+        id: audit
+        run: echo "new_num=$(yarn audit --groups dependencies --summary | tee /dev/fd/2 | grep vulnerabilities | cut -d ' ' -f1)" >> $GITHUB_OUTPUT
+
+  # Compare the baseline and current audits
+  compare:
+    needs: [audit-baseline, audit-current]
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
       - name: Check whether the audit report has improved
         run: |
-          ((${{ env.new_num }} < ${{ env.old_num }})) && echo "Less vulnerabilities!" || ((${{ env.new_num }} == ${{ env.old_num }}))
+          if (( ${{ needs.audit-current.outputs.new_num }} <= ${{ needs.audit-baseline.outputs.old_num }} )); then
+            echo "✅ Vulnerabilities did not increase! (${{ needs.audit-current.outputs.new_num }} vs ${{ needs.audit-baseline.outputs.old_num }})"
+          else
+            echo "❌ Vulnerabilities increased! (${{ needs.audit-current.outputs.new_num }} vs ${{ needs.audit-baseline.outputs.old_num }})"
+            exit 1
+          fi

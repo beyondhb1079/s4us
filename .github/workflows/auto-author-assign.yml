@@ -3,6 +3,10 @@ name: 'Auto Author Assign'
 on:
   pull_request_target:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 permissions:
   pull-requests: write
 
