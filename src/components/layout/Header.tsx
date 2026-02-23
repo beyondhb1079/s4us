@@ -14,9 +14,9 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { TFunction } from 'i18next';
-import { BRAND_NAME } from '../config/constants';
+import { BRAND_NAME } from '../../config/constants';
 import HeaderNavMenu from './HeaderNavMenu';
-import useAuth from '../lib/useAuth';
+import useAuth from '../../lib/useAuth';
 import TranslationMenu from './TranslationMenu';
 
 const ProfileMenu = lazy(() => import('./ProfileMenu'));

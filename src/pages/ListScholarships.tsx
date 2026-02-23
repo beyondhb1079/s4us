@@ -13,11 +13,11 @@ import {
   Stack,
   Theme,
 } from '@mui/material';
-import FilterBar from '../components/FilterBar';
-import FilterPanel from '../components/FilterPanel';
-import ScholarshipList from '../components/ScholarshipList';
+import FilterBar from '../components/filters/FilterBar';
+import FilterPanel from '../components/filters/FilterPanel';
+import ScholarshipList from '../components/scholarship/ScholarshipList';
 import useQueryParams from '../lib/useQueryParams';
-import { HeaderSkeleton } from '../components/Header';
+import { HeaderSkeleton } from '../components/layout/Header';
 import GradeLevel, { GradeLevelInfo } from '../types/GradeLevel';
 import State from '../types/States';
 import { useLocation } from 'react-router-dom';

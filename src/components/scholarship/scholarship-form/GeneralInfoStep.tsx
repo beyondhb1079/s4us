@@ -1,21 +1,24 @@
 // Extracted from ScholarshipForm.tsx — General Info (step 1)
 import React from 'react';
 import { Grid } from '@mui/material';
-import FormikTextField from '../FormikTextField';
-import FormikAutocomplete from '../FormikAutocomplete';
-import DeadlineField from '../DeadlineField';
-import ScholarshipAmountField from '../ScholarshipAmountField';
+import FormikTextField from '../../form/FormikTextField';
+import FormikAutocomplete from '../../form/FormikAutocomplete';
+import DeadlineField from '../../form/DeadlineField';
+import ScholarshipAmountField from '../../form/ScholarshipAmountField';
 import { useTranslation } from 'react-i18next';
+
+import { FormikProps } from 'formik';
+import ScholarshipData from '../../types/ScholarshipData';
 
 const labelStyle = { marginBottom: 2 };
 
 interface GeneralInfoStepProps {
-  formik: ReturnType<typeof import('formik').useFormik>;
+  formik: FormikProps<ScholarshipData>;
 }
 
 export default function GeneralInfoStep({
   formik,
-}: GeneralInfoStepProps): JSX.Element {
+}: GeneralInfoStepProps): React.JSX.Element {
   const { t } = useTranslation(['scholarships', 'common']);
 
   return (

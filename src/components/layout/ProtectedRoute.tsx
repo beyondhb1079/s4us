@@ -2,7 +2,7 @@ import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { Container, Typography, CircularProgress, Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import useAuth from '../lib/useAuth';
+import useAuth from '../../lib/useAuth';
 
 function ProtectedRoute({ element }: { element: JSX.Element }): JSX.Element {
   const location = useLocation();

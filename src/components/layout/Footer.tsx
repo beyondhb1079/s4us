@@ -12,8 +12,8 @@ import {
   reportIssue,
   featureRequest,
   withDeviceInfo,
-} from '../lib/mail';
-import { SUBSCRIPTION_FORM_URL } from '../config/constants';
+} from '../../lib/mail';
+import { SUBSCRIPTION_FORM_URL } from '../../config/constants';
 import { useTranslation } from 'react-i18next';
 import { TFunction } from 'i18next';
 

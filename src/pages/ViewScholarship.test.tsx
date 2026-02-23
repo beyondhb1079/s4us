@@ -12,8 +12,16 @@ import Ethnicity, { EthnicityInfo } from '../types/Ethnicity';
 import State from '../types/States';
 import i18n from '../i18n';
 import { I18nextProvider } from 'react-i18next';
-import { ScholarshipsProvider } from '../models/ScholarshipsContext';
 import { act } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+    },
+  },
+});
 
 // hacky workaround to allow findBy to work
 // TODO: Figure out a cleaner solution.
@@ -24,13 +32,13 @@ function renderAtRoute(pathname: string, state = {}) {
     <Suspense fallback="loading">
       <I18nextProvider i18n={i18n}>
         <ThemeProvider theme={createTheme()}>
-          <ScholarshipsProvider>
+          <QueryClientProvider client={queryClient}>
             <MemoryRouter initialEntries={[{ pathname, state }]}>
               <Routes>
                 <Route path="/scholarships/:id" element={<ViewScholarship />} />
               </Routes>
             </MemoryRouter>
-          </ScholarshipsProvider>
+          </QueryClientProvider>
         </ThemeProvider>
       </I18nextProvider>
     </Suspense>,

@@ -7,11 +7,11 @@ import {
   Typography,
   Box,
 } from '@mui/material';
-import AboutCard from '../components/AboutCard';
+import AboutCard from '../components/home/AboutCard';
 import { BRAND_NAME } from '../config/constants';
 import { useTranslation, Trans } from 'react-i18next';
 import backgroundImg from '../img/img6.svg';
-import LookingForScholarshipsBanner from '../components/LookingForScholarshipsBanner';
+import LookingForScholarshipsBanner from '../components/home/LookingForScholarshipsBanner';
 
 export default function About(): JSX.Element {
   const { t } = useTranslation('about');
