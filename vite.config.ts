@@ -30,8 +30,6 @@ export default defineConfig({
             ) {
               return 'vendor-react';
             }
-            // Everything else goes into a generic vendor chunk
-            return 'vendor';
           }
         },
       },
