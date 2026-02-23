@@ -5,7 +5,7 @@ import {
   getDoc,
   getFirestore,
   setDoc,
-} from 'firebase/firestore';
+} from 'firebase/firestore/lite';
 import { initializeTestEnv } from '../../lib/testing';
 import FirestoreModel from './FirestoreModel';
 

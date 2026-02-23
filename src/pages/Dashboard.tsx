@@ -1,6 +1,7 @@
 import React, { Suspense, useState } from 'react';
 import useDocumentTitle from '../lib/useDocumentTitle';
-import { AddCircle as AddIcon, Inbox as InboxIcon } from '@mui/icons-material';
+import AddIcon from '@mui/icons-material/AddCircle';
+import InboxIcon from '@mui/icons-material/Inbox';
 import { Link, useLocation, useNavigationType } from 'react-router-dom';
 import {
   Button,

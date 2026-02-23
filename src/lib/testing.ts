@@ -3,7 +3,10 @@ import {
   RulesTestEnvironment,
 } from '@firebase/rules-unit-testing';
 import { initializeApp, getApps } from 'firebase/app';
-import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
+import {
+  connectFirestoreEmulator,
+  getFirestore,
+} from 'firebase/firestore/lite';
 
 /* istanbul ignore if */
 if (process.env.NODE_ENV !== 'test') {

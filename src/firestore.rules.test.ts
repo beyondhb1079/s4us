@@ -13,7 +13,7 @@ import {
   getDoc,
   setDoc,
   setLogLevel,
-} from 'firebase/firestore';
+} from 'firebase/firestore/lite';
 import { readFileSync } from 'fs';
 import AmountType from './types/AmountType';
 

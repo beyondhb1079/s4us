@@ -15,14 +15,12 @@ import {
   AlertTitle,
   Stack,
 } from '@mui/material';
-import {
-  Report as ReportIcon,
-  Send as SendIcon,
-  Share as ShareIcon,
-  Edit as EditIcon,
-  AttachMoney as AttachMoneyIcon,
-  Event as EventIcon,
-} from '@mui/icons-material';
+import ReportIcon from '@mui/icons-material/Report';
+import SendIcon from '@mui/icons-material/Send';
+import ShareIcon from '@mui/icons-material/Share';
+import EditIcon from '@mui/icons-material/Edit';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import EventIcon from '@mui/icons-material/Event';
 import { ScholarshipAmountInfo } from '../types/ScholarshipAmount';
 import State from '../types/States';
 import { GradeLevelInfo } from '../types/GradeLevel';

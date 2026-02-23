@@ -4,7 +4,7 @@ import {
   DocumentSnapshot,
   getDoc,
   setDoc,
-} from 'firebase/firestore';
+} from 'firebase/firestore/lite';
 import Model from './Model';
 
 export default class FirestoreModel<T> implements Model<T> {

@@ -3,7 +3,7 @@ import {
   DocumentData,
   QueryDocumentSnapshot,
   Timestamp,
-} from 'firebase/firestore';
+} from 'firebase/firestore/lite';
 import { initializeTestEnv } from '../lib/testing';
 import AmountType from '../types/AmountType';
 import Ethnicity from '../types/Ethnicity';
