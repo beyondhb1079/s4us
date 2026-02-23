@@ -47,7 +47,7 @@ function App(): JSX.Element {
                   <Header />
                   <HeaderSkeleton />
                   <Suspense fallback={<LinearProgress sx={{ m: 5 }} />}>
-                    <div className="content-wrap">
+                    <main className="content-wrap">
                       <Routes>
                         <Route
                           path="/scholarships/new"
@@ -79,8 +79,8 @@ function App(): JSX.Element {
                         />
                         <Route path="/" element={<Home />} />
                       </Routes>
-                      <LoginDialogWrapper />
-                    </div>
+                    </main>
+                    <LoginDialogWrapper />
                     {/* Footer inside <Suspense> but outside <div> so it:
                           1. Gravitates to the bottom (see App.css) and
                           2. Doesn't appear before main content.*/}

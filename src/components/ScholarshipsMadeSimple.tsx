@@ -53,7 +53,7 @@ export default function ScholarshipsMadeSimpleSection(): JSX.Element {
     <Box>
       <Typography
         variant="h4"
-        component="h4"
+        component="h2"
         sx={{ textAlign: 'center', pt: 4 }}
         gutterBottom>
         {t('madeSimple')}
