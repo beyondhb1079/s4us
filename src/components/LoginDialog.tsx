@@ -23,7 +23,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import GoogleIcon from '@mui/icons-material/Google';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import { useTranslation } from 'react-i18next';
-import { getAnalytics, logEvent } from 'firebase/analytics';
+import { logEventAsync } from '../lib/analytics';
 
 export default function LoginDialog(): JSX.Element {
   const location = useLocation();
@@ -48,11 +48,8 @@ export default function LoginDialog(): JSX.Element {
 
       const method = result.providerId;
 
-      if (additionalInfo?.isNewUser) {
-        logEvent(getAnalytics(), 'signup', { method });
-      } else {
-        logEvent(getAnalytics(), 'login', { method });
-      }
+      logEventAsync(additionalInfo?.isNewUser ? 'signup' : 'login', { method });
+
       closeDialog();
     } catch (error) {
       console.error('Authentication error:', error);

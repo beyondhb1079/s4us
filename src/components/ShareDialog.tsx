@@ -23,7 +23,7 @@ import { BRAND_NAME } from '../config/constants';
 import { ScholarshipAmountInfo } from '../types/ScholarshipAmount';
 import ScholarshipData from '../types/ScholarshipData';
 import { useTranslation } from 'react-i18next';
-import { getAnalytics, logEvent } from 'firebase/analytics';
+import { logEventAsync } from '../lib/analytics';
 
 export default function ShareDialog({
   scholarship,
@@ -48,7 +48,7 @@ export default function ShareDialog({
 
   const logShare = useCallback(
     () => (p: string) =>
-      logEvent(getAnalytics(), 'share', { platform: p, url, title, text }),
+      logEventAsync('share', { platform: p, url, title, text }),
     [url, title, text],
   );
   useEffect(() => {

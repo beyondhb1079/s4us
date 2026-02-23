@@ -31,7 +31,7 @@ import ShareDialog from './ShareDialog';
 import useAuth from '../lib/useAuth';
 import ScholarshipData from '../types/ScholarshipData';
 import { useTranslation } from 'react-i18next';
-import { getAnalytics, logEvent } from 'firebase/analytics';
+import { logEventAsync } from '../lib/analytics';
 import DetailCardCell from './scholarship-card/DetailCardCell';
 
 export default function ScholarshipCard({
@@ -81,7 +81,7 @@ export default function ScholarshipCard({
           detailed
             ? null
             : () => {
-                logEvent(getAnalytics(), 'select_content', {
+                logEventAsync('select_content', {
                   content_type: 'scholarship',
                   item_id: scholarship.id,
                   items: [{ scholarship }],
@@ -139,7 +139,7 @@ export default function ScholarshipCard({
                 color="primary"
                 sx={{ mr: 1 }}
                 onClick={() => {
-                  logEvent(getAnalytics(), 'apply', {
+                  logEventAsync('apply', {
                     id: scholarship.id,
                     website,
                   });

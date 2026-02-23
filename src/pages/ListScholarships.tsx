@@ -21,7 +21,7 @@ import { HeaderSkeleton } from '../components/Header';
 import GradeLevel, { GradeLevelInfo } from '../types/GradeLevel';
 import State from '../types/States';
 import { useLocation } from 'react-router-dom';
-import { getAnalytics, isSupported, logEvent } from 'firebase/analytics';
+import { logEventAsync } from '../lib/analytics';
 import Ethnicity, { EthnicityInfo } from '../types/Ethnicity';
 
 const drawerWidth = 360;
@@ -77,11 +77,9 @@ function ListScholarships(): JSX.Element {
 
   const location = useLocation();
   useEffect(() => {
-    isSupported().then(
-      (supported) =>
-        supported &&
-        logEvent(getAnalytics(), 'search', { search_term: location.search }),
-    );
+    logEventAsync('search', {
+      search_term: location.search,
+    });
   }, [location]);
 
   return (
