@@ -22,10 +22,13 @@ import { LintReqsResult } from '../../lib/lint';
 import { useTranslation } from 'react-i18next';
 import { School } from '../../types/options';
 
+import { FormikProps } from 'formik';
+import ScholarshipData from '../../types/ScholarshipData';
+
 const labelStyle = { marginBottom: 2 };
 
 interface EligibilityStepProps {
-  formik: ReturnType<typeof import('formik').useFormik>;
+  formik: FormikProps<ScholarshipData>;
   lintIssues: LintReqsResult;
   allMajors: string[];
   allSchools: School[];
@@ -38,7 +41,7 @@ export default function EligibilityStep({
   allMajors,
   allSchools,
   autoFill,
-}: EligibilityStepProps): JSX.Element {
+}: EligibilityStepProps): React.JSX.Element {
   const { t } = useTranslation(['scholarships', 'common']);
 
   // Initially requirements is null but is set to {} when the "no requirements"

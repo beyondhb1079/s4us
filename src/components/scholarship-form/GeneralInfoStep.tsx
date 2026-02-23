@@ -7,15 +7,18 @@ import DeadlineField from '../DeadlineField';
 import ScholarshipAmountField from '../ScholarshipAmountField';
 import { useTranslation } from 'react-i18next';
 
+import { FormikProps } from 'formik';
+import ScholarshipData from '../../types/ScholarshipData';
+
 const labelStyle = { marginBottom: 2 };
 
 interface GeneralInfoStepProps {
-  formik: ReturnType<typeof import('formik').useFormik>;
+  formik: FormikProps<ScholarshipData>;
 }
 
 export default function GeneralInfoStep({
   formik,
-}: GeneralInfoStepProps): JSX.Element {
+}: GeneralInfoStepProps): React.JSX.Element {
   const { t } = useTranslation(['scholarships', 'common']);
 
   return (

@@ -14,8 +14,10 @@ import theme from './theme';
 import FirebaseProvider from './lib/FirebaseProvider';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './lib/useAuth';
-import { ScholarshipsProvider } from './models/ScholarshipsContext';
 import ScrollToTop from './components/ScrollToTop';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 // Pages should be loaded lazily on an as-needed basis
 const Dashboard = lazy(() => import('./pages/Dashboard'));
@@ -41,7 +43,7 @@ function App(): JSX.Element {
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <AuthProvider>
-              <ScholarshipsProvider>
+              <QueryClientProvider client={queryClient}>
                 <Router>
                   <ScrollToTop />
                   <Header />
@@ -87,7 +89,7 @@ function App(): JSX.Element {
                     <Footer />
                   </Suspense>
                 </Router>
-              </ScholarshipsProvider>
+              </QueryClientProvider>
             </AuthProvider>
           </ThemeProvider>
         </StyledEngineProvider>
