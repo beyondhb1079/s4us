@@ -15,14 +15,12 @@ import {
   AlertTitle,
   Stack,
 } from '@mui/material';
-import {
-  Report as ReportIcon,
-  Send as SendIcon,
-  Share as ShareIcon,
-  Edit as EditIcon,
-  AttachMoney as AttachMoneyIcon,
-  Event as EventIcon,
-} from '@mui/icons-material';
+import ReportIcon from '@mui/icons-material/Report';
+import SendIcon from '@mui/icons-material/Send';
+import ShareIcon from '@mui/icons-material/Share';
+import EditIcon from '@mui/icons-material/Edit';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import EventIcon from '@mui/icons-material/Event';
 import { ScholarshipAmountInfo } from '../types/ScholarshipAmount';
 import State from '../types/States';
 import { GradeLevelInfo } from '../types/GradeLevel';
@@ -33,7 +31,7 @@ import ShareDialog from './ShareDialog';
 import useAuth from '../lib/useAuth';
 import ScholarshipData from '../types/ScholarshipData';
 import { useTranslation } from 'react-i18next';
-import { getAnalytics, logEvent } from 'firebase/analytics';
+import { logEventAsync } from '../lib/analytics';
 import DetailCardCell from './scholarship-card/DetailCardCell';
 
 export default function ScholarshipCard({
@@ -83,7 +81,7 @@ export default function ScholarshipCard({
           detailed
             ? null
             : () => {
-                logEvent(getAnalytics(), 'select_content', {
+                logEventAsync('select_content', {
                   content_type: 'scholarship',
                   item_id: scholarship.id,
                   items: [{ scholarship }],
@@ -141,7 +139,7 @@ export default function ScholarshipCard({
                 color="primary"
                 sx={{ mr: 1 }}
                 onClick={() => {
-                  logEvent(getAnalytics(), 'apply', {
+                  logEventAsync('apply', {
                     id: scholarship.id,
                     website,
                   });

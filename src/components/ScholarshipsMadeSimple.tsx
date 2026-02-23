@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { AppBar, Button, Tab, Typography, Box } from '@mui/material';
-import { TabContext, TabList, TabPanel } from '@mui/lab';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
 import HomeSection from './HomeSection';
 import { TFunction, useTranslation } from 'react-i18next';
 

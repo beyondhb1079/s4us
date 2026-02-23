@@ -20,7 +20,7 @@ import {
   startAfter,
   Timestamp,
   where,
-} from 'firebase/firestore';
+} from 'firebase/firestore/lite';
 import Ethnicity from '../types/Ethnicity';
 
 /**

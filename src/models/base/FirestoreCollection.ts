@@ -4,7 +4,7 @@ import {
   doc,
   FirestoreDataConverter,
   getFirestore,
-} from 'firebase/firestore';
+} from 'firebase/firestore/lite';
 import FirestoreModel from './FirestoreModel';
 import Model from './Model';
 

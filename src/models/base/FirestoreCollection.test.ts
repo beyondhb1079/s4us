@@ -1,4 +1,4 @@
-import { FirestoreDataConverter } from 'firebase/firestore';
+import { FirestoreDataConverter } from 'firebase/firestore/lite';
 import { initializeTestEnv } from '../../lib/testing';
 import FirestoreCollection from './FirestoreCollection';
 

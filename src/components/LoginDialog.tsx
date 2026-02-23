@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Dialog,
@@ -9,20 +9,21 @@ import {
   IconButton,
   Typography,
   Box,
+  Stack,
+  Button,
 } from '@mui/material';
 import {
   GoogleAuthProvider,
-  EmailAuthProvider,
   FacebookAuthProvider,
   getAuth,
+  signInWithPopup,
+  getAdditionalUserInfo,
 } from 'firebase/auth';
 import CancelIcon from '@mui/icons-material/Cancel';
+import GoogleIcon from '@mui/icons-material/Google';
+import FacebookIcon from '@mui/icons-material/Facebook';
 import { useTranslation } from 'react-i18next';
-import { getAnalytics, logEvent } from 'firebase/analytics';
-
-const StyledFirebaseAuth = lazy(
-  () => import('react-firebaseui/StyledFirebaseAuth'),
-);
+import { logEventAsync } from '../lib/analytics';
 
 export default function LoginDialog(): JSX.Element {
   const location = useLocation();
@@ -37,26 +38,23 @@ export default function LoginDialog(): JSX.Element {
       state: { showLoginDialog: false },
     });
 
-  const uiConfig: firebaseui.auth.Config = {
-    signInFlow: 'popup',
-    signInOptions: [
-      GoogleAuthProvider.PROVIDER_ID,
-      EmailAuthProvider.PROVIDER_ID,
-      FacebookAuthProvider.PROVIDER_ID,
-    ],
-    credentialHelper: 'none', // hacky way to disable redirect on email login
-    callbacks: {
-      signInSuccessWithAuthResult: (authResult) => {
-        const { isNewUser, providerId: method } = authResult.additionalUserInfo;
-        if (isNewUser) {
-          logEvent(getAnalytics(), 'signup', { method });
-        } else {
-          logEvent(getAnalytics(), 'login', { method });
-        }
-        closeDialog();
-        return false;
-      },
-    },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleSocialLogin = async (Provider: any) => {
+    try {
+      const auth = getAuth();
+      const provider = new Provider();
+      const result = await signInWithPopup(auth, provider);
+      const additionalInfo = getAdditionalUserInfo(result);
+
+      const method = result.providerId;
+
+      logEventAsync(additionalInfo?.isNewUser ? 'signup' : 'login', { method });
+
+      closeDialog();
+    } catch (error) {
+      console.error('Authentication error:', error);
+      // Optional: Add a toast/snackbar here if the user closes the popup early
+    }
   };
 
   return (
@@ -105,7 +103,7 @@ export default function LoginDialog(): JSX.Element {
             </DialogContentText>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6} sx={{ pb: 4 }}>
             <DialogTitle
               id="responsive-dialog-title"
               sx={{ textAlign: 'center' }}>
@@ -113,12 +111,36 @@ export default function LoginDialog(): JSX.Element {
                 {t('common:actions.signIn')}
               </Typography>
             </DialogTitle>
-            <Suspense fallback={null}>
-              <StyledFirebaseAuth
-                uiConfig={uiConfig}
-                firebaseAuth={getAuth()}
-              />
-            </Suspense>
+
+            {/* Our custom, highly-optimized auth buttons */}
+            <Stack spacing={2} sx={{ px: 4, mt: 1 }}>
+              <Button
+                variant="outlined"
+                startIcon={<GoogleIcon />}
+                onClick={() => handleSocialLogin(GoogleAuthProvider)}
+                size="large"
+                fullWidth
+                sx={{
+                  textTransform: 'none',
+                  color: 'text.primary',
+                  borderColor: 'grey.400',
+                }}>
+                Sign in with Google
+              </Button>
+              <Button
+                variant="outlined"
+                startIcon={<FacebookIcon />}
+                onClick={() => handleSocialLogin(FacebookAuthProvider)}
+                size="large"
+                fullWidth
+                sx={{
+                  textTransform: 'none',
+                  color: '#1976d2',
+                  borderColor: '#1976d2',
+                }}>
+                Sign in with Facebook
+              </Button>
+            </Stack>
           </Grid>
         </Grid>
       </DialogContent>
