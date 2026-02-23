@@ -1,6 +1,6 @@
 import React from 'react';
 import { Stack, Slider } from '@mui/material';
-import AmountTextField from './AmountTextField';
+import AmountTextField from '../form/AmountTextField';
 import { useTranslation } from 'react-i18next';
 
 interface MinAmountFilterProps {

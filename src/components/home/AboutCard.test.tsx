@@ -1,9 +1,9 @@
 import { screen, render } from '@testing-library/react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AboutCard from './AboutCard';
-import testPic from '../logo.svg';
+import testPic from '../../logo.svg';
 
-const renderWithTheme = (ui: JSX.Element) =>
+const renderWithTheme = (ui: React.JSX.Element) =>
   render(<ThemeProvider theme={createTheme()}>{ui}</ThemeProvider>);
 
 const name = 'Job Hernandez';

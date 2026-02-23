@@ -13,7 +13,7 @@ import {
   Alert,
   AlertTitle,
 } from '@mui/material';
-import ScholarshipForm from '../components/ScholarshipForm';
+import ScholarshipForm from '../components/scholarship/ScholarshipForm';
 import Scholarships from '../models/Scholarships';
 import useDocumentTitle from '../lib/useDocumentTitle';
 import useAuth from '../lib/useAuth';

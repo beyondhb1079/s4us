@@ -2,11 +2,11 @@ import React, { useEffect, useRef } from 'react';
 import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import ScholarshipCard from './ScholarshipCard';
-import { DEADLINE_ASC, getDir, getField } from '../lib/sortOptions';
-import { FilterOptions } from '../models/Scholarships';
-import useOnScreen from '../lib/useOnScreen';
-import useQueryParams from '../lib/useQueryParams';
-import { useScholarshipsQuery } from '../hooks/useScholarshipsQuery';
+import { DEADLINE_ASC, getDir, getField } from '../../lib/sortOptions';
+import { FilterOptions } from '../../models/Scholarships';
+import useOnScreen from '../../lib/useOnScreen';
+import useQueryParams from '../../lib/useQueryParams';
+import { useScholarshipsQuery } from '../../hooks/useScholarshipsQuery';
 
 interface SLProps {
   noResultsNode?: React.JSX.Element;

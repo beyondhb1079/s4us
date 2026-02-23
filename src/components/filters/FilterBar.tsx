@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { Menu, MenuItem, Toolbar, Button, Container } from '@mui/material';
-import useQueryParams from '../lib/useQueryParams';
-import sortOptions, { DEADLINE_ASC, getSortOption } from '../lib/sortOptions';
+import useQueryParams from '../../lib/useQueryParams';
+import sortOptions, {
+  DEADLINE_ASC,
+  getSortOption,
+} from '../../lib/sortOptions';
 import TuneIcon from '@mui/icons-material/Tune';
 import ImportExportIcon from '@mui/icons-material/ImportExport';
 import { useTranslation } from 'react-i18next';

@@ -6,11 +6,11 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import { MemoryRouter } from 'react-router-dom';
 import ScholarshipList from './ScholarshipList';
-import Scholarships from '../models/Scholarships';
+import Scholarships from '../../models/Scholarships';
 import { I18nextProvider } from 'react-i18next';
-import i18n from '../i18n';
-import { initializeTestEnv } from '../lib/testing';
-import { ScholarshipAmountInfo } from '../types/ScholarshipAmount';
+import i18n from '../../i18n';
+import { initializeTestEnv } from '../../lib/testing';
+import { ScholarshipAmountInfo } from '../../types/ScholarshipAmount';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const queryClient = new QueryClient({
@@ -29,7 +29,7 @@ afterAll(() => cleanup());
 // TODO: Figure out a cleaner solution.
 window.MutationObserver = MutationObserver;
 
-const renderWithProviders = (ui: JSX.Element) =>
+const renderWithProviders = (ui: React.JSX.Element) =>
   render(
     <Suspense fallback="loading">
       <I18nextProvider i18n={i18n}>

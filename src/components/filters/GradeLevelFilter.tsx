@@ -7,7 +7,7 @@ import {
   Typography,
   FormGroup,
 } from '@mui/material';
-import GradeLevel, { GradeLevelInfo } from '../types/GradeLevel';
+import GradeLevel, { GradeLevelInfo } from '../../types/GradeLevel';
 import { useTranslation } from 'react-i18next';
 
 interface GGProps {

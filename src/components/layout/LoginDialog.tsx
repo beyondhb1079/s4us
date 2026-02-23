@@ -23,7 +23,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import GoogleIcon from '@mui/icons-material/Google';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import { useTranslation } from 'react-i18next';
-import { logEventAsync } from '../lib/analytics';
+import { logEventAsync } from '../../lib/analytics';
 
 export default function LoginDialog(): JSX.Element {
   const location = useLocation();

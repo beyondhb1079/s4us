@@ -13,9 +13,9 @@ import {
   Alert,
   Collapse,
 } from '@mui/material';
-import ScholarshipList from '../components/ScholarshipList';
+import ScholarshipList from '../components/scholarship/ScholarshipList';
 import { useTranslation } from 'react-i18next';
-import LookingForScholarshipsBanner from '../components/LookingForScholarshipsBanner';
+import LookingForScholarshipsBanner from '../components/home/LookingForScholarshipsBanner';
 import useAuth from '../lib/useAuth';
 
 type LocationProps = {

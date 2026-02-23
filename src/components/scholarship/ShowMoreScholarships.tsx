@@ -2,7 +2,7 @@ import { Stack, Button, Paper } from '@mui/material';
 import ScholarshipCard from './ScholarshipCard';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useScholarshipsQuery } from '../hooks/useScholarshipsQuery';
+import { useScholarshipsQuery } from '../../hooks/useScholarshipsQuery';
 
 export default function ShowMoreScholarships({
   currentId,

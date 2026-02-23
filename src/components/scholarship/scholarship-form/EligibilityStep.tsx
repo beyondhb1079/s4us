@@ -12,15 +12,15 @@ import {
   FormHelperText,
   createFilterOptions,
 } from '@mui/material';
-import FormikTextField from '../FormikTextField';
-import FormikMultiSelect from '../FormikMultiSelect';
-import FormikAutocomplete from '../FormikAutocomplete';
-import State, { STATES } from '../../types/States';
-import { GradeLevelInfo } from '../../types/GradeLevel';
-import { EthnicityInfo } from '../../types/Ethnicity';
-import { LintReqsResult } from '../../lib/lint';
+import FormikTextField from '../../form/FormikTextField';
+import FormikMultiSelect from '../../form/FormikMultiSelect';
+import FormikAutocomplete from '../../form/FormikAutocomplete';
+import State, { STATES } from '../../../types/States';
+import { GradeLevelInfo } from '../../../types/GradeLevel';
+import { EthnicityInfo } from '../../../types/Ethnicity';
+import { LintReqsResult } from '../../../lib/lint';
 import { useTranslation } from 'react-i18next';
-import { School } from '../../types/options';
+import { School } from '../../../types/options';
 
 import { FormikProps } from 'formik';
 import ScholarshipData from '../../types/ScholarshipData';
