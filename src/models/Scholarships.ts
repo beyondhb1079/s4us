@@ -104,6 +104,7 @@ export interface FilterOptions {
   ethnicities?: Ethnicity[];
   sortDir?: 'asc' | 'desc';
   sortField?: string;
+  searchQuery?: string;
 }
 
 const queryLimit = 50;
@@ -112,12 +113,86 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
   name = 'scholarships';
   converter = converter;
 
+  private cachedAllScholarships: FirestoreModel<ScholarshipData>[] | null =
+    null;
+  private fuseInstance:
+    | import('fuse.js').default<FirestoreModel<ScholarshipData>>
+    | null = null;
+
+  private async loadAllScholarshipsForSearch(): Promise<void> {
+    if (this.cachedAllScholarships && this.fuseInstance) return;
+    const qSnap = await getDocs(this.collection);
+    this.cachedAllScholarships = qSnap.docs.map(
+      (d) => new FirestoreModel<ScholarshipData>(d.ref, d.data()),
+    );
+
+    const FuseLib = (await import('fuse.js')).default;
+    this.fuseInstance = new FuseLib(this.cachedAllScholarships, {
+      keys: ['data.tags', 'data.name', 'data.description', 'data.organization'],
+      threshold: 0.3,
+      ignoreLocation: true,
+    });
+  }
+
   /**
    * Lists all items in this collection.
    *
    * @param opts filter and sorting options.
    */
-  list(opts: FilterOptions): Promise<FirestoreModelList<ScholarshipData>> {
+  async list(
+    opts: FilterOptions,
+  ): Promise<FirestoreModelList<ScholarshipData>> {
+    if (opts.searchQuery) {
+      await this.loadAllScholarshipsForSearch();
+
+      const searchResults = this.fuseInstance!.search(opts.searchQuery).map(
+        (res) => res.item,
+      );
+      const now = new Date();
+      const today = new Date(now.toDateString());
+
+      const filtered = searchResults.filter(
+        ({ data }) =>
+          ScholarshipAmountInfo.amountsIntersect(data.amount, {
+            type: AmountType.Varies,
+            min: opts.minAmount ?? 0,
+            max: opts.maxAmount ?? 0,
+          }) &&
+          requirementMatchesFilter(data.requirements?.grades, opts.grades) &&
+          requirementMatchesFilter(
+            data.requirements?.majors?.map((s) => s.toLowerCase()),
+            opts.majors?.map((s) => s.toLowerCase()),
+          ) &&
+          requirementMatchesFilter(data.requirements?.states, opts.states) &&
+          requirementMatchesFilter(
+            data.requirements?.schools?.map((s) => s.toLowerCase()),
+            opts.schools?.map((s) => s.toLowerCase()),
+          ) &&
+          requirementMatchesFilter(
+            data.requirements?.ethnicities,
+            opts.ethnicities,
+          ) &&
+          (opts.sortField === 'deadline' ? data.deadline >= today : true),
+      );
+
+      return {
+        results: filtered.slice(0, 50),
+        hasNext: false,
+        next: async () =>
+          ({
+            results: [],
+            hasNext: false,
+            next: async () =>
+              ({
+                results: [],
+                hasNext: false,
+                next: async () =>
+                  ({}) as unknown as FirestoreModelList<ScholarshipData>,
+              }) as unknown as FirestoreModelList<ScholarshipData>,
+          }) as unknown as FirestoreModelList<ScholarshipData>,
+      } as FirestoreModelList<ScholarshipData>;
+    }
+
     let q: Query<ScholarshipData> = this.collection;
 
     // Set default sorting field and direction if they're not set
