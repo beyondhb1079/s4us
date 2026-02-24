@@ -2,27 +2,24 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.syncCollegeScorecard = void 0;
 const scheduler_1 = require("firebase-functions/v2/scheduler");
-const params_1 = require("firebase-functions/params");
 const logger = require("firebase-functions/logger");
 const admin = require("firebase-admin");
 admin.initializeApp();
-const scorecardApiKey = (0, params_1.defineSecret)('SCORECARD_API_KEY');
 exports.syncCollegeScorecard = (0, scheduler_1.onSchedule)({
-    schedule: '0 0 1 * *',
+    schedule: 'every 1 months',
     timeoutSeconds: 540,
     memory: '512MiB',
-    secrets: [scorecardApiKey],
 }, async (event) => {
     logger.info('Syncing College Scorecard data...');
-    // Access the secret at runtime. Fallback to DEMO_KEY for initial testing.
-    const API_KEY = scorecardApiKey.value() || 'DEMO_KEY';
+    // Data.gov APIs accept an 'api_key' param. We default to DEMO_KEY if the user hasn't set up SCORECARD_API_KEY
+    const API_KEY = process.env.SCORECARD_API_KEY || 'DEMO_KEY';
     const BASE_URL = 'https://api.data.gov/ed/collegescorecard/v1/schools.json';
     let page = 0;
     let hasMore = true;
     const allSchools = [];
     try {
         while (hasMore) {
-            const url = `${BASE_URL}?api_key=${API_KEY}&school.degrees_awarded.predominant=2,3,4&fields=school.name,school.state,school.school_url,school.degrees_awarded.predominant&per_page=100&page=${page}`;
+            const url = `${BASE_URL}?api_key=${API_KEY}&fields=school.name,school.state,school.school_url,school.main_campus&per_page=100&page=${page}`;
             logger.info(`Fetching page ${page}...`);
             const response = await fetch(url);
             if (!response.ok) {
@@ -38,10 +35,13 @@ exports.syncCollegeScorecard = (0, scheduler_1.onSchedule)({
                 hasMore = false;
                 break;
             }
-            const mapped = results.map((s) => ({
-                n: s['school.name'],
-                s: s['school.state'],
-                u: s['school.school_url']
+            // Filter out satellite campuses to prevent deduplication noise
+            const mapped = results
+                .filter((s) => s['school.main_campus'] === 1)
+                .map((s) => ({
+                name: s['school.name'],
+                state: s['school.state'],
+                url: s['school.school_url']
                     ? s['school.school_url'].startsWith('http')
                         ? s['school.school_url']
                         : `https://${s['school.school_url']}`
@@ -56,12 +56,11 @@ exports.syncCollegeScorecard = (0, scheduler_1.onSchedule)({
                 page++;
             }
         }
-        // Sort array alphabetically by name (key 'n') for the UI dropdown
-        allSchools.sort((a, b) => a.n.localeCompare(b.n));
+        // Sort array alphabetically by name for the UI dropdown
+        allSchools.sort((a, b) => a.name.localeCompare(b.name));
         // Write directly to the default Firebase Storage bucket
         const bucket = admin.storage().bucket();
         const file = bucket.file('data/schools.json');
-        // Save without indentation to minimize size
         await file.save(JSON.stringify(allSchools), {
             metadata: {
                 contentType: 'application/json',
@@ -69,9 +68,7 @@ exports.syncCollegeScorecard = (0, scheduler_1.onSchedule)({
                 cacheControl: 'public, max-age=31536000, immutable',
             },
         });
-        // Make the file public so it's accessible via the direct storage link
-        await file.makePublic();
-        logger.info(`Successfully synced ${allSchools.length} degree-granting schools to Storage.`);
+        logger.info(`Successfully synced ${allSchools.length} main-campus schools to Storage.`);
     }
     catch (error) {
         logger.error('Error syncing schools', error);
