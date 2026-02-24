@@ -1,3 +1,10 @@
+/**
+ * Setup Instructions:
+ * 1. Ensure you have the OPENAI_API_KEY environment variable set.
+ *    export OPENAI_API_KEY=your_key_here
+ * 2. Run the script using tsx:
+ *    npx tsx scripts/scrapeWeb.ts <URL>
+ */
 import { generateObject } from 'ai';
 import { openai } from '@ai-sdk/openai';
 import * as cheerio from 'cheerio';
