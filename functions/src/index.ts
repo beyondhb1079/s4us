@@ -1,4 +1,5 @@
 import { onSchedule } from 'firebase-functions/v2/scheduler';
+import { defineSecret } from 'firebase-functions/params';
 import * as logger from 'firebase-functions/logger';
 import * as admin from 'firebase-admin';
 
@@ -11,17 +12,20 @@ interface ScorecardSchool {
   'school.main_campus': 1 | 0;
 }
 
+const scorecardApiKey = defineSecret('SCORECARD_API_KEY');
+
 export const syncCollegeScorecard = onSchedule(
   {
-    schedule: 'every 1 months',
+    schedule: '0 0 1 * *',
     timeoutSeconds: 540,
     memory: '512MiB',
+    secrets: [scorecardApiKey],
   },
   async (event) => {
     logger.info('Syncing College Scorecard data...');
 
-    // Data.gov APIs accept an 'api_key' param. We default to DEMO_KEY if the user hasn't set up SCORECARD_API_KEY
-    const API_KEY = process.env.SCORECARD_API_KEY || 'DEMO_KEY';
+    // Access the secret at runtime. Fallback to DEMO_KEY for initial testing.
+    const API_KEY = scorecardApiKey.value() || 'DEMO_KEY';
     const BASE_URL = 'https://api.data.gov/ed/collegescorecard/v1/schools.json';
 
     let page = 0;
