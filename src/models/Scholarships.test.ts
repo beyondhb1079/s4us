@@ -443,7 +443,7 @@ test('Scholarships.list - filters by searchQuery', async () => {
   await Promise.all([arts.save(), engineering.save(), socialSciences.save()]);
 
   // trigger cache build
-  let got = await Scholarships.list({
+  await Scholarships.list({
     searchQuery: 'engineering',
   });
 
