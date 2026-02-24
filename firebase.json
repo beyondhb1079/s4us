@@ -48,5 +48,8 @@
   "functions": {
     "source": "functions",
     "runtime": "nodejs24"
+  },
+  "storage": {
+    "rules": "storage.rules"
   }
 }
