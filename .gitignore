@@ -48,3 +48,6 @@ yarn-error.log*
 # Emacs
 *~
 *#
+
+# Scraped Data
+/csvs
