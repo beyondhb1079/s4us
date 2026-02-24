@@ -1,5 +1,14 @@
-import React, { useState } from 'react';
-import { Menu, MenuItem, Toolbar, Button, Container } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import {
+  Menu,
+  MenuItem,
+  Toolbar,
+  Button,
+  Container,
+  TextField,
+  InputAdornment,
+  Box,
+} from '@mui/material';
 import useQueryParams from '../../lib/useQueryParams';
 import sortOptions, {
   DEADLINE_ASC,
@@ -7,6 +16,7 @@ import sortOptions, {
 } from '../../lib/sortOptions';
 import TuneIcon from '@mui/icons-material/Tune';
 import ImportExportIcon from '@mui/icons-material/ImportExport';
+import SearchIcon from '@mui/icons-material/Search';
 import { useTranslation } from 'react-i18next';
 
 export default function FilterBar({
@@ -14,12 +24,25 @@ export default function FilterBar({
 }: {
   openFilter: () => void;
 }): JSX.Element {
-  const [{ sortBy, grades, majors, minAmount }, setQueryParams] =
+  const [{ sortBy, grades, majors, minAmount, searchQuery }, setQueryParams] =
     useQueryParams();
   const [anchorEl, setAnchorEl] = useState(null as HTMLElement | null);
+  const [localSearch, setLocalSearch] = useState((searchQuery as string) || '');
+
+  // Debounce the search input to avoid spamming the URL bounds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (localSearch !== (searchQuery || '')) {
+        setQueryParams({ searchQuery: localSearch || undefined });
+      }
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [localSearch, searchQuery, setQueryParams]);
 
   const filterCount =
-    (grades?.length ?? 0) + (majors?.length ?? 0) + (minAmount ? 1 : 0);
+    ((grades as unknown[])?.length ?? 0) +
+    ((majors as unknown[])?.length ?? 0) +
+    (minAmount ? 1 : 0);
   const { t } = useTranslation('filters');
 
   return (
@@ -34,20 +57,39 @@ export default function FilterBar({
         maxWidth="md"
         sx={{
           display: 'flex',
-          justifyContent: 'flex-end',
+          justifyContent: 'space-between',
+          alignItems: 'center',
         }}>
-        <Button
-          onClick={openFilter}
-          startIcon={<TuneIcon />}
-          sx={{ display: { md: 'none' } }}>
-          {t('filters')} {filterCount ? `(${filterCount})` : ''}
-        </Button>
+        <TextField
+          variant="outlined"
+          placeholder={t('search') || 'Search...'}
+          size="small"
+          value={localSearch}
+          onChange={(e) => setLocalSearch(e.target.value)}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon fontSize="small" />
+              </InputAdornment>
+            ),
+          }}
+          sx={{ flexGrow: 1, maxWidth: { xs: '100%', md: '50%' }, mr: 2 }}
+        />
 
-        <Button
-          onClick={(e) => setAnchorEl(e.currentTarget)}
-          startIcon={<ImportExportIcon />}>
-          {t('sort')}
-        </Button>
+        <Box sx={{ display: 'flex' }}>
+          <Button
+            onClick={openFilter}
+            startIcon={<TuneIcon />}
+            sx={{ display: { md: 'none' } }}>
+            {t('filters')} {filterCount ? `(${filterCount})` : ''}
+          </Button>
+
+          <Button
+            onClick={(e) => setAnchorEl(e.currentTarget)}
+            startIcon={<ImportExportIcon />}>
+            {t('sort')}
+          </Button>
+        </Box>
       </Container>
 
       <Menu
