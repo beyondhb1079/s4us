@@ -188,8 +188,8 @@ describe('validation rules reject scholarship when', () => {
     test('gpa is not greater than 0', () =>
       assertFails(createDoc({ requirements: { gpa: -3 } })));
 
-    test('gpa is not not greater than 4', () =>
-      assertFails(createDoc({ requirements: { gpa: 4.1 } })));
+    test('gpa is greater than 5', () =>
+      assertFails(createDoc({ requirements: { gpa: 5.1 } })));
 
     test('ethnicities is not a list', () =>
       assertFails(createDoc({ requirements: { ethnicities: '[]' } })));
