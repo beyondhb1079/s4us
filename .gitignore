@@ -8,6 +8,7 @@
 *-debug.log
 .firebase-emulator.lock
 firebase-export-*/
+serviceAccountKey.json
 
 # because we use yarn
 package-lock.json
@@ -44,3 +45,6 @@ yarn-error.log*
 # Emacs
 *~
 *#
+
+# Scraped Data
+/csvs
