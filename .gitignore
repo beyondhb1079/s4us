@@ -17,7 +17,9 @@ serviceAccountKey.json
 package-lock.json
 
 # dependencies
-/node_modules
+node_modules/
+functions/node_modules/
+functions/lib/
 /.pnp
 .pnp.js
 
