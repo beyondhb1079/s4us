@@ -18,6 +18,7 @@
   "minAmount": "Min Amount",
   "postGrad": "Postgraduate",
   "school": "School",
+  "search": "Search",
   "sort": "Sort",
   "state": "State",
   "toFilterBy": "Enter a {{filter}} to filter by",
