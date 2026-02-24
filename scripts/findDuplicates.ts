@@ -1,3 +1,12 @@
+/**
+ * Duplicate Detection Script
+ *
+ * Usage:
+ * npx tsx scripts/findDuplicates.ts
+ *
+ * This script bypasses security rules to read all scholarships and
+ * generates a detailed JSON report of name/website duplicates.
+ */
 import { initializeApp, cert } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 import { readFileSync, writeFileSync } from 'fs';
