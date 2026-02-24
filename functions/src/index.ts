@@ -97,6 +97,9 @@ export const syncCollegeScorecard = onSchedule(
         },
       });
 
+      // Make the file public so it's accessible via the direct storage link
+      await file.makePublic();
+
       logger.info(
         `Successfully synced ${allSchools.length} main-campus schools to Storage.`,
       );
