@@ -17,7 +17,17 @@ yarn test
 yarn build
 ```
 
-## Step 2: Push
+## Step 2: Check for Merge Conflicts
+
+Avoid creating PRs with merge conflicts by pulling the latest changes from the base branch before you push.
+
+```bash
+git fetch origin main
+git rebase origin/main
+# If conflicts occur, resolve them, `git add .`, and execute `git rebase --continue`
+```
+
+## Step 3: Push
 
 Push the branch to origin, setting the upstream link.
 
@@ -25,7 +35,7 @@ Push the branch to origin, setting the upstream link.
 git push -u origin HEAD
 ```
 
-## Step 3: Create the PR
+## Step 4: Create the PR
 
 Use the GitHub CLI (`gh`) to open the pull request automatically.
 
@@ -37,6 +47,6 @@ Use the GitHub CLI (`gh`) to open the pull request automatically.
 gh pr create --title "🤖 [Auto] Brief Feature Title" --body "### Summary of changes..." --base main
 ```
 
-## Step 4: CI/CD Checks
+## Step 5: CI/CD Checks
 
 If CI pipelines (like GitHub Actions) are configured, run `gh pr checks` and wait for the results. If a check fails, use `gh run view` to inspect the logs, implement a fix, and push an update automatically.
