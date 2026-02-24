@@ -1,7 +1,7 @@
 import React from 'react';
 import useDocumentTitle from '../lib/useDocumentTitle';
 import { Container, Typography, Grid, Box } from '@mui/material';
-import ScholarshipForm from '../components/ScholarshipForm';
+import ScholarshipForm from '../components/scholarship/ScholarshipForm';
 import Scholarships from '../models/Scholarships';
 import { useTranslation } from 'react-i18next';
 

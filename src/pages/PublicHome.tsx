@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { Button, Box } from '@mui/material';
-import ScholarshipsMadeSimple from '../components/ScholarshipsMadeSimple';
-import HomeSection from '../components/HomeSection';
+import ScholarshipsMadeSimple from '../components/home/ScholarshipsMadeSimple';
+import HomeSection from '../components/home/HomeSection';
 import { useTranslation } from 'react-i18next';
 import useAuth from '../lib/useAuth';
 

@@ -10,6 +10,9 @@
 firebase-export-*/
 serviceAccountKey.json
 
+# Raw Scholarship Imports
+/csvs/
+
 # because we use yarn
 package-lock.json
 

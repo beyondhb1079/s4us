@@ -7,14 +7,14 @@ import {
   StyledEngineProvider,
   ThemeProvider,
 } from '@mui/material';
-import Footer from './components/Footer';
+import Footer from './components/layout/Footer';
 import Home from './pages/PublicHome';
-import Header, { HeaderSkeleton } from './components/Header';
+import Header, { HeaderSkeleton } from './components/layout/Header';
 import theme from './theme';
 import FirebaseProvider from './lib/FirebaseProvider';
-import ProtectedRoute from './components/ProtectedRoute';
+import ProtectedRoute from './components/layout/ProtectedRoute';
 import { AuthProvider } from './lib/useAuth';
-import ScrollToTop from './components/ScrollToTop';
+import ScrollToTop from './components/layout/ScrollToTop';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const queryClient = new QueryClient();
@@ -32,10 +32,10 @@ const EditScholarship = lazy(() => import('./pages/EditScholarship'));
 
 // This should be suspended too because of the auth dependency
 const LoginDialogWrapper = lazy(
-  () => import('./components/LoginDialogWrapper'),
+  () => import('./components/layout/LoginDialogWrapper'),
 );
 
-function App(): JSX.Element {
+function App(): React.JSX.Element {
   return (
     <div className="page-container">
       <FirebaseProvider>
