@@ -25,3 +25,7 @@ If your new task (Change B) depends on unmerged code from your active work (Chan
 1. Check out the parent branch: `git checkout ag/change-A`
 2. Branch off of it: `git checkout -b ag/change-B`
 3. When creating the PR for Change B, set the base to Change A `gh pr create --base ag/change-A`.
+
+## 3. Keep PRs Small
+
+Break down complex features (e.g., changes over 200 lines of complex logic) into smaller, reviewable stacked branches/PRs whenever possible. This makes review faster and safer.
