@@ -31,7 +31,7 @@ Make the requested code adjustments. When committing, you **must** use the Git I
 
 ```bash
 git add .
-git commit -m "fix: address review feedback" --author="Antigravity Bot <bot@antigravity.dev>"
+git commit -m "fix: address review feedback" --author="s4us-bot <bot@dreamscholars.org>"
 ```
 
 ## Step 4: Push and Notify

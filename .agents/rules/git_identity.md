@@ -13,7 +13,7 @@ Every single commit you make must be flagged with your bot identity using the `-
 **Format:**
 
 ```bash
-git commit -m "feat/fix: descriptive message" --author="Antigravity Bot <bot@antigravity.dev>"
+git commit -m "feat/fix: descriptive message" --author="s4us-bot <bot@dreamscholars.org>"
 ```
 
 ## 2. Commit amending
@@ -21,5 +21,5 @@ git commit -m "feat/fix: descriptive message" --author="Antigravity Bot <bot@ant
 If you are amending a commit, you must also preserve this authorship:
 
 ```bash
-git commit --amend --no-edit --author="Antigravity Bot <bot@antigravity.dev>"
+git commit --amend --no-edit --author="s4us-bot <bot@dreamscholars.org>"
 ```
