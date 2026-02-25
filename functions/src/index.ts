@@ -34,7 +34,7 @@ export const syncCollegeScorecard = onSchedule(
 
     try {
       while (hasMore) {
-        const url = `${BASE_URL}?api_key=${API_KEY}&fields=school.name,school.state,school.school_url,school.degrees_awarded.predominant&per_page=100&page=${page}`;
+        const url = `${BASE_URL}?api_key=${API_KEY}&school.degrees_awarded.predominant=2,3,4&fields=school.name,school.state,school.school_url,school.degrees_awarded.predominant&per_page=100&page=${page}`;
         logger.info(`Fetching page ${page}...`);
 
         const response = await fetch(url);
@@ -58,18 +58,15 @@ export const syncCollegeScorecard = onSchedule(
           break;
         }
 
-        // Filter out certificate-only schools (predominant < 2)
-        const mapped = results
-          .filter((s) => s['school.degrees_awarded.predominant'] >= 2)
-          .map((s) => ({
-            n: s['school.name'],
-            s: s['school.state'],
-            u: s['school.school_url']
-              ? s['school.school_url'].startsWith('http')
-                ? s['school.school_url']
-                : `https://${s['school.school_url']}`
-              : null,
-          }));
+        const mapped = results.map((s) => ({
+          n: s['school.name'],
+          s: s['school.state'],
+          u: s['school.school_url']
+            ? s['school.school_url'].startsWith('http')
+              ? s['school.school_url']
+              : `https://${s['school.school_url']}`
+            : null,
+        }));
 
         allSchools.push(...mapped);
 
