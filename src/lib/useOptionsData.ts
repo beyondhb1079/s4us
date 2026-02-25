@@ -51,11 +51,18 @@ export default function useOptionsData(): OptionsData {
                 .then((r) => r.json())
                 .then((data) =>
                   // Local fallback file still uses full keys 'name', 'state', 'website'
-                  data.map((s: any) => ({
-                    name: s.name,
-                    state: s.state,
-                    url: s.url || s.website,
-                  })),
+                  data.map(
+                    (s: {
+                      name: string;
+                      state: string;
+                      url?: string;
+                      website?: string;
+                    }) => ({
+                      name: s.name,
+                      state: s.state,
+                      url: s.url || s.website,
+                    }),
+                  ),
                 ),
             ),
     ]).then(([m, s]) => {
