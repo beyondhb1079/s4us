@@ -1,23 +1,33 @@
 ---
-description: Mandatory pre-push verification steps to ensure no regressions are introduced.
+description: Mandatory pre-push verification steps to ensure no CI regressions are introduced.
 ---
 
 # Code Verification Workflow
 
-Before executing `git push` or submitting an autonomous Pull Request, you must verify that your changes have not broken the application build or tests.
+Before executing `git push` or submitting an autonomous Pull Request, you must verify that your changes have not broken the application build, tests, or strict CI formatting checks.
 
-## Step 1: Linting
+## Step 1: Formatting and Translations (CRITICAL)
 
-Ensure no new syntax errors, formatting issues, or unused variables were introduced.
+GitHub Actions will immediately fail if code is not formatted or if translations are missing. Run these first to guarantee CI compliance:
+
+```bash
+// turbo
+npx prettier --write .
+npx i18next-parser
+```
+
+## Step 2: Linting
+
+Ensure no new syntax errors or unused variables were introduced.
 
 ```bash
 // turbo
 yarn lint
 ```
 
-## Step 2: Type Checking & Building
+## Step 3: Type Checking & Building
 
-Verify that the TypeScript compiler can successfully transpile the code without throwing strict type errors. This is crucial as TypeScript errors will block the Vercel production deployment.
+Verify that the TypeScript compiler can successfully transpile. This blocks the production deployment, so do not skip it.
 
 ```bash
 // turbo
@@ -26,11 +36,11 @@ yarn build
 
 ## Step 3: Unit Testing
 
-Run the Vitest suite to ensure you haven't broken any existing business logic or custom hooks.
+Run the Vitest suite (without hanging in watch mode) to ensure you haven't broken any existing logic.
 
 ```bash
 // turbo
-yarn test
+yarn test:run
 ```
 
-If any of these three steps fail, you **must** parse the standard output, fix the errors in the code, and rerun the checks before attempting to push your code.
+If any step fails, parse the standard output, fix the errors, and rerun all checks from Step 1 before pushing.

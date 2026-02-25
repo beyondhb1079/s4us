@@ -1,10 +1,15 @@
 ---
+trigger: always_on
 description: Branching strategy, isolated work, and Epic feature branch rules.
 ---
 
-# Branch Isolation & Epic Branch Rule
+---
 
-You are strictly **forbidden** from pushing changes directly to the `main` branch. All work must happen on isolated feature branches and be merged via Pull Requests. Always use `git rebase` to update feature branches from `main` to avoid noisy merge commits.
+## description: Branching strategy, isolated work, and Stacked PR rules to prevent idle time.
+
+# Branch Isolation & Stacked Branch Rule
+
+You are strictly **forbidden** from pushing changes directly to the `main` branch. All work must happen on isolated feature branches and be merged via Pull Requests.
 
 ## 1. Independent Changes
 
@@ -12,22 +17,27 @@ For new, independent features or bug fixes, always branch off the latest `main`:
 
 ```bash
 git checkout main
-git pull
+git pull origin main
 git checkout -b ag/feature-name
 ```
 
 _Note: Prefix branches created by the agent with `ag/`._
 
-## 2. Epic Branches (Related Changes Spanning Multiple PRs)
+## 2. Epic Branches & Stacked PRs (Never Sit Idle)
 
-Instead of using overly complex "Stacked PRs" that depend on each other, use an **Epic Branch** for related work (e.g. `ag/phase-1-onboarding`).
+When working on an Epic that spans multiple PRs, **do not wait** for the user to review and merge your current PR before moving on. Keep the momentum going using Stacked Branches.
 
-1. Work on one logical piece of the epic at a time on the epic branch.
-2. Open a PR for that piece and set the base to `main`.
-3. **Wait** for the user to review and merge that PR. Do not continue to the next piece until the current PR is merged to ensure the changes are good.
-4. Once merged, `git fetch origin main` and `git rebase origin/main` to keep the epic branch clean and up-to-date.
-5. Continue working on the next piece of the epic on the same branch, and open a new PR when ready.
+1. Work on the first logical piece of the epic on `ag/epic-phase-1` (branched from `main`).
+2. Open a PR for `ag/epic-phase-1` targeting `main`.
+3. Immediately branch off your _unmerged_ branch for the next phase:
+
+   `git checkout ag/epic-phase-1`
+
+   `git checkout -b ag/epic-phase-2`
+
+4. Open a PR for `ag/epic-phase-2` targeting `ag/epic-phase-1` as the base.
+5. As PRs get merged into `main`, rebase your subsequent branches on `main` and update their base in GitHub using `gh pr edit --base main`.
 
 ## 3. Keep PRs Small
 
-Break down complex features (e.g., changes over 200 lines of complex logic) into smaller, reviewable chunks. Submit one chunk at a time via the Epic Branch workflow outlined above.
+Break down complex features (e.g., changes over 200 lines of complex logic) into smaller, reviewable chunks. Submit one chunk at a time via the Stacked Branch workflow outlined above.

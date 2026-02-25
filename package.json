@@ -34,8 +34,10 @@
     "test:run": "scripts/emulators_exec.sh 'vitest run'",
     "ci-test": "scripts/emulators_exec.sh 'vitest --coverage'",
     "serve": "vite preview",
-    "lint": "eslint --cache src/ --ext .js,.jsx,.ts,.tsx",
-    "prepare": "husky install"
+    "lint": "eslint --cache src/",
+    "prepare": "husky install",
+    "emulators:daemon:start": "bash scripts/start_emulators_daemon.sh",
+    "emulators:daemon:stop": "bash scripts/stop_emulators_daemon.sh"
   },
   "browserslist": {
     "production": [

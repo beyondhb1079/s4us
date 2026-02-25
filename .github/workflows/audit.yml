@@ -36,7 +36,12 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Audit the old number of vulnerabilities
         id: audit
-        run: echo "old_num=$(yarn audit --groups dependencies --summary | tee /dev/fd/2 | grep vulnerabilities | cut -d ' ' -f1)" >> $GITHUB_OUTPUT
+        # Using || true so it doesn't crash on vulnerabilities
+        # Using grep -oE to extract just the number safely
+        run: |
+          AUDIT_OUT=$(yarn audit --groups dependencies --summary || true)
+          NUM=$(echo "$AUDIT_OUT" | grep "vulnerabilities" | awk '{print $1}' || echo "0")
+          echo "old_num=$NUM" >> $GITHUB_OUTPUT
 
   # Find the current audit
   audit-current:

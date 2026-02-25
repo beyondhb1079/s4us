@@ -13,7 +13,7 @@ Before pushing, ensure the code is stable. Do not push broken builds.
 ```bash
 // turbo
 yarn lint
-yarn test
+yarn test:run
 yarn build
 ```
 
@@ -56,4 +56,15 @@ If CI pipelines (like GitHub Actions) are configured, monitor them using:
 gh pr checks --watch --interval 30
 ```
 
-Wait for the results. If `gh pr checks --watch` fails, use `gh run view --log-failed` to identify the specific error. Analyze the log, fix the issue, run `git add . && git commit --amend --no-edit && git push --force-with-lease`, and re-run the watch command until the PR is green.
+Wait for the results. If `gh pr checks --watch` fails, use `gh run view --log-failed` to identify the specific error. Analyze the log and fix the issue.
+
+Before force-pushing your fix, you must pull and rebase in case the user pushed manual corrections to your branch:
+
+```
+git add .
+git commit --amend --no-edit
+git pull --rebase origin <your-branch-name>
+git push --force-with-lease
+```
+
+Re-run the watch command until the PR is green.
