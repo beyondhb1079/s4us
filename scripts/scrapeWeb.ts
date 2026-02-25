@@ -1,12 +1,12 @@
 /**
  * Setup Instructions:
- * 1. Ensure you have the OPENAI_API_KEY environment variable set.
- *    export OPENAI_API_KEY=your_key_here
+ * 1. Ensure you have the GEMINI_API_KEY environment variable set.
+ *    export GEMINI_API_KEY=your_key_here
  * 2. Run the script using tsx:
  *    npx tsx scripts/scrapeWeb.ts <URL>
  */
 import { generateObject } from 'ai';
-import { openai } from '@ai-sdk/openai';
+import { google } from '@ai-sdk/google';
 import * as cheerio from 'cheerio';
 import { z } from 'zod';
 import { writeFileSync } from 'fs';
@@ -102,12 +102,12 @@ async function scrape() {
     const textContent = $('body').text().replace(/\s+/g, ' ').trim();
 
     console.log(
-      `Extracting scholarship data using OpenAI (Text Length: ${textContent.length})...`,
+      `Extracting scholarship data using Gemini (Text Length: ${textContent.length})...`,
     );
 
-    // Assumes process.env.OPENAI_API_KEY is set in the shell
+    // Assumes process.env.GEMINI_API_KEY is set in the shell
     const { object } = await generateObject({
-      model: openai('gpt-4o'),
+      model: google('gemini-2.5-flash'),
       schema: ScholarshipSchema,
       prompt: `Extract the scholarship details from the following web page content:\n\n${textContent.slice(0, 40000)}`,
     });
