@@ -41,7 +41,7 @@ Use the GitHub CLI (`gh`) to open the pull request automatically.
 
 - Provide a concise title identifying it as an automated PR.
 - Provide a summary body.
-- If this is an independent branch, use `--base main`. If this is a stacked PR dependent on another feature branch, set `--base` to the parent branch name.
+- Target `main` as the base branch (`--base main`).
 
 ```bash
 gh pr create --title "🤖 [Auto] Brief Feature Title" --body "### Summary of changes..." --base main
