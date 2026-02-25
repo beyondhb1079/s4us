@@ -6,7 +6,7 @@
  *    npx tsx scripts/scrapeWeb.ts <URL>
  */
 import { generateObject } from 'ai';
-import { google } from '@ai-sdk/google';
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import * as cheerio from 'cheerio';
 import { z } from 'zod';
 import { writeFileSync } from 'fs';
@@ -17,6 +17,11 @@ if (!url) {
   console.error('Usage: npx tsx scripts/scrapeWeb.ts <URL>');
   process.exit(1);
 }
+
+const google = createGoogleGenerativeAI({
+  apiKey:
+    process.env.GEMINI_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY,
+});
 
 const AmountSchema = z.object({
   type: z.enum(['FIXED', 'VARIES']),
