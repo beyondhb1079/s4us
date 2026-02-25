@@ -20,29 +20,32 @@ if (!url) {
 
 const AmountSchema = z.object({
   type: z.enum(['FIXED', 'VARIES']),
-  min: z.number().default(0),
-  max: z.number().default(0),
+  min: z.number().describe('Minimum amount in dollars. Use 0 if unknown.'),
+  max: z.number().describe('Maximum amount in dollars. Use 0 if unknown.'),
 });
 
 const EligibilitySchema = z.object({
-  gpa: z.number().optional().describe('Minimum GPA required on a 4.0 scale'),
+  gpa: z
+    .number()
+    .nullable()
+    .describe('Minimum GPA required on a 4.0 scale. Null if not specified.'),
   majors: z
     .array(z.string())
-    .optional()
-    .describe('List of eligible college majors or fields of study'),
+    .describe(
+      'List of eligible college majors or fields of study. Empty if any.',
+    ),
   states: z
     .array(z.string())
-    .optional()
-    .describe('List of eligible 2-letter US state abbreviations (e.g. CA, NY)'),
+    .describe(
+      'List of eligible 2-letter US state abbreviations (e.g. CA, NY). Empty if National.',
+    ),
   schools: z
     .array(z.string())
-    .optional()
-    .describe('List of specific eligible colleges/universities'),
+    .describe('List of specific eligible colleges/universities. Empty if any.'),
   grades: z
     .array(z.number())
-    .optional()
     .describe(
-      'Eligible grade levels: 8-12 for High school, 13-16 for Undergrad, 17+ for Graduate',
+      'Eligible grade levels: 8-12 for High school, 13-16 for Undergrad, 17+ for Graduate. Empty if any.',
     ),
   ethnicities: z
     .array(
@@ -55,7 +58,7 @@ const EligibilitySchema = z.object({
         'WHITE',
       ]),
     )
-    .optional(),
+    .describe('Eligible ethnicities. Empty if any ethnicity is allowed.'),
 });
 
 const ScholarshipSchema = z.object({
@@ -74,17 +77,16 @@ const ScholarshipSchema = z.object({
     ),
   organization: z
     .string()
-    .optional()
+    .nullable()
     .describe(
       'The organization, foundation, or company offering the scholarship',
     ),
   tags: z
     .array(z.string())
-    .optional()
     .describe(
-      'Relevant categorical keywords like LGBTQ+, STEM, First Generation, Low Income, etc.',
+      'Relevant categorical keywords like LGBTQ+, STEM, First Generation, Low Income, etc. Empty if no tags.',
     ),
-  requirements: EligibilitySchema.optional(),
+  requirements: EligibilitySchema.nullable(),
 });
 
 async function scrape() {
