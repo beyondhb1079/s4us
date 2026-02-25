@@ -1,6 +1,7 @@
 import { ScholarshipAmountInfo } from '../types/ScholarshipAmount';
 import FirestoreCollection from './base/FirestoreCollection';
 import FirestoreModelList from './base/FiretoreModelList';
+import Fuse from 'fuse.js';
 import FirestoreModel from './base/FirestoreModel';
 import ScholarshipData from '../types/ScholarshipData';
 import AmountType from '../types/AmountType';
@@ -104,6 +105,7 @@ export interface FilterOptions {
   ethnicities?: Ethnicity[];
   sortDir?: 'asc' | 'desc';
   sortField?: string;
+  q?: string;
   searchQuery?: string;
 }
 
@@ -286,6 +288,22 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
           ),
       }))
       .then(({ results, next, hasNext }) => {
+        if (opts.q && results.length > 0) {
+          const fuse = new Fuse(results, {
+            keys: [
+              { name: 'data.name', weight: 2 },
+              { name: 'data.tags', weight: 1.5 },
+              { name: 'data.organization', weight: 1 },
+              { name: 'data.description', weight: 0.5 },
+            ],
+            threshold: 0.3,
+            ignoreLocation: true,
+          });
+          results = fuse.search(opts.q).map((res) => res.item);
+        }
+
+        // If the current batch yielded no matching results after all filters,
+        // automatically fetch the next batch to fulfill the infinite scroll page limit.
         if (results.length === 0 && hasNext) return next();
         return { results, next, hasNext };
       });

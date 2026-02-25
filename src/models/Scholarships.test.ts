@@ -444,12 +444,12 @@ test('Scholarships.list - filters by searchQuery', async () => {
 
   // trigger cache build
   await Scholarships.list({
-    searchQuery: 'engineering',
+    q: 'engineering',
   });
 
   // trigger cache hit and complex filter conditions
-  got = await Scholarships.list({
-    searchQuery: 'engineering',
+  const got = await Scholarships.list({
+    q: 'engineering',
     minAmount: 0,
     maxAmount: 1000000,
     grades: [],

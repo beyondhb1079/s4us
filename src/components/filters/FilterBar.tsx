@@ -1,14 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Menu,
-  MenuItem,
-  Toolbar,
-  Button,
-  Container,
-  TextField,
-  InputAdornment,
-  Box,
-} from '@mui/material';
+import React, { useState } from 'react';
+import { Menu, MenuItem, Toolbar, Button, Container, Box } from '@mui/material';
 import useQueryParams from '../../lib/useQueryParams';
 import sortOptions, {
   DEADLINE_ASC,
@@ -16,28 +7,17 @@ import sortOptions, {
 } from '../../lib/sortOptions';
 import TuneIcon from '@mui/icons-material/Tune';
 import ImportExportIcon from '@mui/icons-material/ImportExport';
-import SearchIcon from '@mui/icons-material/Search';
 import { useTranslation } from 'react-i18next';
+import SearchBar from './SearchBar';
 
 export default function FilterBar({
   openFilter,
 }: {
   openFilter: () => void;
 }): JSX.Element {
-  const [{ sortBy, grades, majors, minAmount, searchQuery }, setQueryParams] =
+  const [{ sortBy, grades, majors, minAmount }, setQueryParams] =
     useQueryParams();
   const [anchorEl, setAnchorEl] = useState(null as HTMLElement | null);
-  const [localSearch, setLocalSearch] = useState((searchQuery as string) || '');
-
-  // Debounce the search input to avoid spamming the URL bounds
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (localSearch !== (searchQuery || '')) {
-        setQueryParams({ searchQuery: localSearch || undefined });
-      }
-    }, 400);
-    return () => clearTimeout(timer);
-  }, [localSearch, searchQuery, setQueryParams]);
 
   const filterCount =
     ((grades as unknown[])?.length ?? 0) +
@@ -58,25 +38,14 @@ export default function FilterBar({
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
-          alignItems: 'center',
+          flexDirection: { xs: 'column', md: 'row' },
+          alignItems: { xs: 'stretch', md: 'center' },
+          gap: { xs: 1, md: 0 },
+          py: 0.5,
         }}>
-        <TextField
-          variant="outlined"
-          placeholder={t('search') || 'Search...'}
-          size="small"
-          value={localSearch}
-          onChange={(e) => setLocalSearch(e.target.value)}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon fontSize="small" />
-              </InputAdornment>
-            ),
-          }}
-          sx={{ flexGrow: 1, maxWidth: { xs: '100%', md: '50%' }, mr: 2 }}
-        />
+        <SearchBar />
 
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Button
             onClick={openFilter}
             startIcon={<TuneIcon />}
