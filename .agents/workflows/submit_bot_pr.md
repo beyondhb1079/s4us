@@ -49,4 +49,11 @@ gh pr create --title "🤖 [Auto] Brief Feature Title" --body "### Summary of ch
 
 ## Step 5: CI/CD Checks
 
-If CI pipelines (like GitHub Actions) are configured, run `gh pr checks` and wait for the results. If a check fails, use `gh run view` to inspect the logs, implement a fix, and push an update automatically.
+If CI pipelines (like GitHub Actions) are configured, monitor them using:
+
+```bash
+// turbo
+gh pr checks --watch --interval 30
+```
+
+Wait for the results. If `gh pr checks --watch` fails, use `gh run view --log-failed` to identify the specific error. Analyze the log, fix the issue, run `git add . && git commit --amend --no-edit && git push --force-with-lease`, and re-run the watch command until the PR is green.
