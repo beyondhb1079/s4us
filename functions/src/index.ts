@@ -9,7 +9,6 @@ interface ScorecardSchool {
   'school.name': string;
   'school.state': string;
   'school.school_url': string;
-  'school.degrees_awarded.predominant': number;
 }
 
 const scorecardApiKey = defineSecret('SCORECARD_API_KEY');
