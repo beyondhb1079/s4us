@@ -9,7 +9,7 @@ interface ScorecardSchool {
   'school.name': string;
   'school.state': string;
   'school.school_url': string;
-  'school.main_campus': 1 | 0;
+  'school.degrees_awarded.predominant': number;
 }
 
 const scorecardApiKey = defineSecret('SCORECARD_API_KEY');
@@ -30,12 +30,11 @@ export const syncCollegeScorecard = onSchedule(
 
     let page = 0;
     let hasMore = true;
-    const allSchools: { name: string; state: string; url: string | null }[] =
-      [];
+    const allSchools: { n: string; s: string; u: string | null }[] = [];
 
     try {
       while (hasMore) {
-        const url = `${BASE_URL}?api_key=${API_KEY}&fields=school.name,school.state,school.school_url,school.main_campus&per_page=100&page=${page}`;
+        const url = `${BASE_URL}?api_key=${API_KEY}&fields=school.name,school.state,school.school_url,school.degrees_awarded.predominant&per_page=100&page=${page}`;
         logger.info(`Fetching page ${page}...`);
 
         const response = await fetch(url);
@@ -59,13 +58,13 @@ export const syncCollegeScorecard = onSchedule(
           break;
         }
 
-        // Filter out satellite campuses to prevent deduplication noise
+        // Filter out certificate-only schools (predominant < 2)
         const mapped = results
-          .filter((s) => s['school.main_campus'] === 1)
+          .filter((s) => s['school.degrees_awarded.predominant'] >= 2)
           .map((s) => ({
-            name: s['school.name'],
-            state: s['school.state'],
-            url: s['school.school_url']
+            n: s['school.name'],
+            s: s['school.state'],
+            u: s['school.school_url']
               ? s['school.school_url'].startsWith('http')
                 ? s['school.school_url']
                 : `https://${s['school.school_url']}`
@@ -82,13 +81,14 @@ export const syncCollegeScorecard = onSchedule(
         }
       }
 
-      // Sort array alphabetically by name for the UI dropdown
-      allSchools.sort((a, b) => a.name.localeCompare(b.name));
+      // Sort array alphabetically by name (key 'n') for the UI dropdown
+      allSchools.sort((a, b) => a.n.localeCompare(b.n));
 
       // Write directly to the default Firebase Storage bucket
       const bucket = admin.storage().bucket();
       const file = bucket.file('data/schools.json');
 
+      // Save without indentation to minimize size
       await file.save(JSON.stringify(allSchools), {
         metadata: {
           contentType: 'application/json',
@@ -101,7 +101,7 @@ export const syncCollegeScorecard = onSchedule(
       await file.makePublic();
 
       logger.info(
-        `Successfully synced ${allSchools.length} main-campus schools to Storage.`,
+        `Successfully synced ${allSchools.length} degree-granting schools to Storage.`,
       );
     } catch (error) {
       logger.error('Error syncing schools', error);
