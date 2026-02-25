@@ -35,7 +35,9 @@ Before declaring a task finished, run `gh pr view`. If there are open comments o
 1. **Sync the Manifest**: Immediately update the `.TODO.md` file at the root. Every piece of feedback from Step 2 must become a task in the manifest.
 2. **Modify Code**: Fix the issues.
 3. **Commit**: Use the Git Identity rule.
-4. **Reply**: Use `gh pr comment` stating "Fixed in [short-commit-hash]" for each addressed thread.
+4. **Reply**: Respond to the user's feedback via the CLI.
+   - **For code changes:** Reply with `"Fixed in [short-commit-hash]"`.
+   - **For questions or discussions:** Provide a direct, thoughtful response explaining your reasoning or answering the user's query. Do not use the "Fixed in" template if no code was changed.
 
 ## Step 4: The Final Sweep (Mandatory)
 
