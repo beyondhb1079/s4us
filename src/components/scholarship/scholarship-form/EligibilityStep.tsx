@@ -20,10 +20,10 @@ import { GradeLevelInfo } from '../../../types/GradeLevel';
 import { EthnicityInfo } from '../../../types/Ethnicity';
 import { LintReqsResult } from '../../../lib/lint';
 import { useTranslation } from 'react-i18next';
-import { School } from '../../../types/options';
+import { School } from '../../../types/School';
 
 import { FormikProps } from 'formik';
-import ScholarshipData from '../../types/ScholarshipData';
+import ScholarshipData from '../../../types/ScholarshipData';
 
 const labelStyle = { marginBottom: 2 };
 
@@ -50,7 +50,7 @@ export default function EligibilityStep({
 
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12}>
+      <Grid size={{ xs: 12 }}>
         {lintIssues?.messages?.length > 0 && (
           <Alert severity="warning" sx={{ mt: 2 }}>
             <AlertTitle>
@@ -70,7 +70,7 @@ export default function EligibilityStep({
           </Alert>
         )}
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={{ xs: 12 }}>
         <FormControlLabel
           control={
             <Checkbox
@@ -88,7 +88,7 @@ export default function EligibilityStep({
         />
         <FormHelperText error>{formik.errors.requirements}</FormHelperText>
       </Grid>
-      <Grid item sm={6} xs={12}>
+      <Grid size={{ sm: 6, xs: 12 }}>
         <FormikMultiSelect
           disabled={noReqsChecked}
           label={t('grades')}
@@ -99,7 +99,7 @@ export default function EligibilityStep({
           placeholder={t('noRequirements')}
         />
       </Grid>
-      <Grid item sm={6} xs={12}>
+      <Grid size={{ sm: 6, xs: 12 }}>
         <FormikTextField
           id="requirements.gpa"
           type="number"
@@ -110,7 +110,7 @@ export default function EligibilityStep({
           placeholder={t('noRequirements')}
         />
       </Grid>
-      <Grid item sm={6} xs={12}>
+      <Grid size={{ sm: 6, xs: 12 }}>
         <FormikAutocomplete
           disabled={noReqsChecked}
           label={t('schools')}
@@ -122,7 +122,7 @@ export default function EligibilityStep({
           placeholder={t('noRequirements')}
         />
       </Grid>
-      <Grid item sm={6} xs={12}>
+      <Grid size={{ sm: 6, xs: 12 }}>
         <FormikAutocomplete
           disabled={noReqsChecked}
           label={t('states')}
@@ -137,7 +137,7 @@ export default function EligibilityStep({
           placeholder={t('noRequirements')}
         />
       </Grid>
-      <Grid item sm={6} xs={12}>
+      <Grid size={{ sm: 6, xs: 12 }}>
         <FormikAutocomplete
           disabled={noReqsChecked}
           label={t('majors')}
@@ -149,7 +149,7 @@ export default function EligibilityStep({
           placeholder={t('noRequirements')}
         />
       </Grid>
-      <Grid item sm={6} xs={12}>
+      <Grid size={{ sm: 6, xs: 12 }}>
         <FormikMultiSelect
           disabled={noReqsChecked}
           label={t('ethnicity')}

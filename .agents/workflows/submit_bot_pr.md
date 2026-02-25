@@ -13,7 +13,7 @@ Before pushing, ensure the code is stable. Do not push broken builds.
 ```bash
 // turbo
 yarn lint
-yarn test
+yarn test:run
 yarn build
 ```
 
@@ -41,7 +41,7 @@ Use the GitHub CLI (`gh`) to open the pull request automatically.
 
 - Provide a concise title identifying it as an automated PR.
 - Provide a summary body.
-- If this is an independent branch, use `--base main`. If this is a stacked PR dependent on another feature branch, set `--base` to the parent branch name.
+- Target `main` as the base branch (`--base main`).
 
 ```bash
 gh pr create --title "🤖 [Auto] Brief Feature Title" --body "### Summary of changes..." --base main
@@ -49,4 +49,22 @@ gh pr create --title "🤖 [Auto] Brief Feature Title" --body "### Summary of ch
 
 ## Step 5: CI/CD Checks
 
-If CI pipelines (like GitHub Actions) are configured, run `gh pr checks` and wait for the results. If a check fails, use `gh run view` to inspect the logs, implement a fix, and push an update automatically.
+If CI pipelines (like GitHub Actions) are configured, monitor them using:
+
+```bash
+// turbo
+gh pr checks --watch --interval 30
+```
+
+Wait for the results. If `gh pr checks --watch` fails, use `gh run view --log-failed` to identify the specific error. Analyze the log and fix the issue.
+
+Before force-pushing your fix, you must pull and rebase in case the user pushed manual corrections to your branch:
+
+```
+git add .
+git commit --amend --no-edit
+git pull --rebase origin <your-branch-name>
+git push --force-with-lease
+```
+
+Re-run the watch command until the PR is green.

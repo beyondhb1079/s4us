@@ -28,6 +28,7 @@ jobs:
 
   # Ensure builds succeed
   build:
+    needs: static-analysis
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repo
@@ -44,6 +45,7 @@ jobs:
 
   # Ensure tests pass
   test:
+    needs: static-analysis
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repo

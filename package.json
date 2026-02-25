@@ -34,8 +34,10 @@
     "test:run": "scripts/emulators_exec.sh 'vitest run'",
     "ci-test": "scripts/emulators_exec.sh 'vitest --coverage'",
     "serve": "vite preview",
-    "lint": "eslint --cache src/ --ext .js,.jsx,.ts,.tsx",
-    "prepare": "husky install"
+    "lint": "eslint --cache src/",
+    "prepare": "husky install",
+    "emulators:daemon:start": "bash scripts/start_emulators_daemon.sh",
+    "emulators:daemon:stop": "bash scripts/stop_emulators_daemon.sh"
   },
   "browserslist": {
     "production": [
@@ -73,6 +75,7 @@
     "eslint-plugin-jsx-a11y": "6",
     "eslint-plugin-react": "7",
     "eslint-plugin-react-hooks": "7.0.1",
+    "firebase-admin": "^13.6.1",
     "firebase-tools": "^15.5.1",
     "globals": "^17.0.0",
     "history": "^5.3.0",

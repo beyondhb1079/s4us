@@ -4,7 +4,7 @@ import AmountType from '../types/AmountType';
 import Ethnicity, { EthnicityInfo } from '../types/Ethnicity';
 import GradeLevel, { GradeLevelInfo } from '../types/GradeLevel';
 import { ScholarshipAmountInfo } from '../types/ScholarshipAmount';
-import { School } from '../types/options';
+import { School } from '../types/School';
 import State, { STATES } from '../types/States';
 import ScholarshipData from '../types/ScholarshipData';
 import ScholarshipEligibility from '../types/ScholarshipEligibility';
@@ -173,7 +173,7 @@ export function parseSchools(
     .filter(({ name }) => desc.includes(name))
     .concat(
       allSchools.filter(
-        ({ name, website }) =>
+        ({ name, url: website }) =>
           url?.includes('//' + website) && desc.includes(acronym(name)),
       ),
     );
