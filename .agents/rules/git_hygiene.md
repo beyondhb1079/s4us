@@ -7,11 +7,14 @@ description: Mandatory rules for Git staging and file management to prevent acci
 You are responsible for keeping the repository clean. Accidental commits of build artifacts, dependencies, or sensitive files are unacceptable.
 
 ## 1. Forbidden Commands
+
 You are strictly **prohibited** from using the following commands unless specifically instructed by the user:
+
 - `git add .` (Adds everything in the current directory, including untracked junk)
 - `git add -A` (Adds everything in the entire working tree)
 
 ## 2. Mandatory Staging Protocol
+
 When preparing a commit, you must follow these steps:
 
 1. **Check Status First:** Run `git status` to see exactly what is untracked and modified.
@@ -25,6 +28,7 @@ When preparing a commit, you must follow these steps:
 ## 3. Protect Sensitive Files
 
 Never add files with the following extensions or patterns unless they are core project configuration:
+
 - `.log`, `.tmp`, `.env`, `.local`
 - `node_modules/`, `dist/`, `build/`
 - OS-specific junk like `.DS_Store` or `Thumbs.db`

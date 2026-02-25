@@ -4,5 +4,8 @@
   "prettier.singleQuote": true,
   "prettier.jsxBracketSameLine": true,
   "cSpell.words": ["DACA", "ethnicities", "Firestore"],
-  "cSpell.language": "en,es"
+  "cSpell.language": "en,es",
+  "terminal.integrated.env.osx": {
+    
+  }
 }
