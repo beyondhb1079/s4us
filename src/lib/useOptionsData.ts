@@ -49,16 +49,7 @@ export default function useOptionsData(): OptionsData {
             .catch(() =>
               fetch('/data/schools.json')
                 .then((r) => r.json())
-                .then((data) =>
-                  // Local fallback file still uses full keys 'name', 'state', 'website'
-                  data.map(
-                    (s: { name: string; state: string; url?: string }) => ({
-                      name: s.name,
-                      state: s.state,
-                      url: s.url,
-                    }),
-                  ),
-                ),
+                .then((data: School[]) => data),
             ),
     ]).then(([m, s]) => {
       if (cancelled) return;
