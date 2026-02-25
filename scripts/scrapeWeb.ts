@@ -10,6 +10,7 @@ import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import * as cheerio from 'cheerio';
 import { z } from 'zod';
 import { writeFileSync } from 'fs';
+import fs from 'fs';
 
 const url = process.argv[2];
 
@@ -94,6 +95,10 @@ const ScholarshipSchema = z.object({
   requirements: EligibilitySchema.nullable(),
 });
 
+const ResponseSchema = z.object({
+  scholarships: z.array(ScholarshipSchema),
+});
+
 async function scrape() {
   console.log(`Fetching HTML from ${url}...`);
   try {
@@ -113,15 +118,72 @@ async function scrape() {
     // Assumes process.env.GEMINI_API_KEY is set in the shell
     const { object } = await generateObject({
       model: google('gemini-2.5-flash'),
-      schema: ScholarshipSchema,
-      prompt: `Extract the scholarship details from the following web page content:\n\n${textContent.slice(0, 40000)}`,
+      schema: ResponseSchema,
+      prompt: `Extract all scholarship details from the following web page content. If there are multiple scholarships listed, extract each one of them:\n\n${textContent}`,
     });
 
-    console.log('\n✅ Extraction Complete!');
-    console.log(JSON.stringify(object, null, 2));
+    console.log(
+      `\n✅ Extraction Complete! Found ${object.scholarships.length} scholarships.`,
+    );
 
-    writeFileSync('scraped-offer.json', JSON.stringify(object, null, 2));
-    console.log('Saved result to scraped-offer.json');
+    // Convert to CSV for importCsv.ts
+    const headers = [
+      'name',
+      'description',
+      'amount.min',
+      'amount.max',
+      'amount.type',
+      'deadline',
+      'website',
+      'organization',
+      'tags',
+      'requirements.gpa',
+      'requirements.majors',
+      'requirements.states',
+      'requirements.schools',
+      'requirements.grades',
+      'requirements.ethnicities',
+    ];
+
+    const rows = object.scholarships.map((s) => {
+      const requirements = s.requirements;
+      return [
+        `"${s.name.replace(/"/g, '""')}"`,
+        `"${s.description.replace(/"/g, '""')}"`,
+        s.amount.min,
+        s.amount.max,
+        s.amount.type,
+        s.deadline,
+        s.website,
+        `"${(s.organization || '').replace(/"/g, '""')}"`,
+        `"${(s.tags || []).join(', ')}"`,
+        requirements?.gpa || '',
+        `"${(requirements?.majors || []).join(', ')}"`,
+        `"${(requirements?.states || []).join(', ')}"`,
+        `"${(requirements?.schools || []).join(', ')}"`,
+        `"${(requirements?.grades || []).join(', ')}"`,
+        `"${(requirements?.ethnicities || []).join(', ')}"`,
+      ].join(',');
+    });
+
+    const csvContent = [headers.join(','), ...rows].join('\n');
+
+    const outputDir = './tmp';
+    if (!fs.existsSync(outputDir)) {
+      fs.mkdirSync(outputDir, { recursive: true });
+    }
+
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const outputPath = `${outputDir}/scraped-${timestamp}.csv`;
+
+    writeFileSync(outputPath, csvContent);
+    console.log(`Saved result to ${outputPath}`);
+
+    // Also save raw JSON for debugging
+    writeFileSync(
+      `${outputDir}/scraped-${timestamp}.json`,
+      JSON.stringify(object, null, 2),
+    );
   } catch (err: unknown) {
     console.error('Error scraping:', (err as Error).message);
   }
