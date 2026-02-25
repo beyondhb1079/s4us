@@ -3,7 +3,7 @@
  * 1. Ensure you have the GEMINI_API_KEY environment variable set.
  *    export GEMINI_API_KEY=your_key_here
  * 2. Run the script using tsx:
- *    npx tsx scripts/scrapeWeb.ts <URL>
+ *    npx tsx scripts/scrapeWeb.ts <URL1> [URL2] ...
  */
 import { generateObject } from 'ai';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
@@ -12,10 +12,10 @@ import { z } from 'zod';
 import { writeFileSync } from 'fs';
 import fs from 'fs';
 
-const url = process.argv[2];
+const urls = process.argv.slice(2);
 
-if (!url) {
-  console.error('Usage: npx tsx scripts/scrapeWeb.ts <URL>');
+if (urls.length === 0) {
+  console.error('Usage: npx tsx scripts/scrapeWeb.ts <URL1> [URL2] ...');
   process.exit(1);
 }
 
@@ -100,93 +100,117 @@ const ResponseSchema = z.object({
 });
 
 async function scrape() {
-  console.log(`Fetching HTML from ${url}...`);
-  try {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const html = await response.text();
+  const allScholarships = [];
 
-    console.log('Parsing text content...');
-    const $ = cheerio.load(html);
-    $('script, style, noscript, iframe, img, svg').remove();
-    const textContent = $('body').text().replace(/\s+/g, ' ').trim();
+  for (let i = 0; i < urls.length; i++) {
+    const url = urls[i];
+    console.log(`\n[${i + 1}/${urls.length}] Fetching HTML from ${url}...`);
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const html = await response.text();
 
-    console.log(
-      `Extracting scholarship data using Gemini (Text Length: ${textContent.length})...`,
-    );
+      console.log('Parsing text content...');
+      const $ = cheerio.load(html);
+      $('script, style, noscript, iframe, img, svg').remove();
+      const textContent = $('body').text().replace(/\s+/g, ' ').trim();
 
-    // Assumes process.env.GEMINI_API_KEY is set in the shell
-    const { object } = await generateObject({
-      model: google('gemini-2.5-flash'),
-      schema: ResponseSchema,
-      prompt: `Extract all scholarship details from the following web page content. If there are multiple scholarships listed, extract each one of them:\n\n${textContent}`,
-    });
+      console.log(
+        `Extracting scholarship data using Gemini (Text Length: ${textContent.length})...`,
+      );
 
-    console.log(
-      `\n✅ Extraction Complete! Found ${object.scholarships.length} scholarships.`,
-    );
+      // Assumes process.env.GEMINI_API_KEY is set in the shell
+      const { object } = await generateObject({
+        model: google('gemini-3.0-flash'),
+        schema: ResponseSchema,
+        prompt: `Extract all scholarship details from the following web page content. If there are multiple scholarships listed, extract each one of them:\n\n${textContent}`,
+      });
 
-    // Convert to CSV for importCsv.ts
-    const headers = [
-      'name',
-      'description',
-      'amount.min',
-      'amount.max',
-      'amount.type',
-      'deadline',
-      'website',
-      'organization',
-      'tags',
-      'requirements.gpa',
-      'requirements.majors',
-      'requirements.states',
-      'requirements.schools',
-      'requirements.grades',
-      'requirements.ethnicities',
-    ];
+      console.log(
+        `✅ Extracted ${object.scholarships.length} scholarships from ${url}.`,
+      );
 
-    const rows = object.scholarships.map((s) => {
-      const requirements = s.requirements;
-      return [
-        `"${s.name.replace(/"/g, '""')}"`,
-        `"${s.description.replace(/"/g, '""')}"`,
-        s.amount.min,
-        s.amount.max,
-        s.amount.type,
-        s.deadline,
-        s.website,
-        `"${(s.organization || '').replace(/"/g, '""')}"`,
-        `"${(s.tags || []).join(', ')}"`,
-        requirements?.gpa || '',
-        `"${(requirements?.majors || []).join(', ')}"`,
-        `"${(requirements?.states || []).join(', ')}"`,
-        `"${(requirements?.schools || []).join(', ')}"`,
-        `"${(requirements?.grades || []).join(', ')}"`,
-        `"${(requirements?.ethnicities || []).join(', ')}"`,
-      ].join(',');
-    });
+      allScholarships.push(...object.scholarships);
 
-    const csvContent = [headers.join(','), ...rows].join('\n');
-
-    const outputDir = './tmp';
-    if (!fs.existsSync(outputDir)) {
-      fs.mkdirSync(outputDir, { recursive: true });
+      // Enforce a 15-second delay to respect 5 RPM limits, except after the last URL
+      if (i < urls.length - 1) {
+        console.log(
+          'Waiting 15 seconds before the next request to respect rate limits...',
+        );
+        await new Promise((resolve) => setTimeout(resolve, 15000));
+      }
+    } catch (err: unknown) {
+      console.error(`Error scraping ${url}:`, (err as Error).message);
     }
-
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const outputPath = `${outputDir}/scraped-${timestamp}.csv`;
-
-    writeFileSync(outputPath, csvContent);
-    console.log(`Saved result to ${outputPath}`);
-
-    // Also save raw JSON for debugging
-    writeFileSync(
-      `${outputDir}/scraped-${timestamp}.json`,
-      JSON.stringify(object, null, 2),
-    );
-  } catch (err: unknown) {
-    console.error('Error scraping:', (err as Error).message);
   }
+
+  if (allScholarships.length === 0) {
+    console.log('\nNo scholarships were extracted across any of the URLs.');
+    return;
+  }
+
+  console.log(
+    `\n🎉 Extraction Complete! Found a total of ${allScholarships.length} scholarships.`,
+  );
+
+  // Convert to CSV for importCsv.ts
+  const headers = [
+    'name',
+    'description',
+    'amount.min',
+    'amount.max',
+    'amount.type',
+    'deadline',
+    'website',
+    'organization',
+    'tags',
+    'requirements.gpa',
+    'requirements.majors',
+    'requirements.states',
+    'requirements.schools',
+    'requirements.grades',
+    'requirements.ethnicities',
+  ];
+
+  const rows = allScholarships.map((s) => {
+    const requirements = s.requirements;
+    return [
+      `"${s.name.replace(/"/g, '""')}"`,
+      `"${s.description.replace(/"/g, '""')}"`,
+      s.amount.min,
+      s.amount.max,
+      s.amount.type,
+      s.deadline,
+      s.website,
+      `"${(s.organization || '').replace(/"/g, '""')}"`,
+      `"${(s.tags || []).join(', ')}"`,
+      requirements?.gpa || '',
+      `"${(requirements?.majors || []).join(', ')}"`,
+      `"${(requirements?.states || []).join(', ')}"`,
+      `"${(requirements?.schools || []).join(', ')}"`,
+      `"${(requirements?.grades || []).join(', ')}"`,
+      `"${(requirements?.ethnicities || []).join(', ')}"`,
+    ].join(',');
+  });
+
+  const csvContent = [headers.join(','), ...rows].join('\n');
+
+  const outputDir = './tmp';
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
+
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const outputPath = `${outputDir}/scraped-${timestamp}.csv`;
+
+  writeFileSync(outputPath, csvContent);
+  console.log(`Saved result to ${outputPath}`);
+
+  // Also save raw JSON for debugging
+  writeFileSync(
+    `${outputDir}/scraped-${timestamp}.json`,
+    JSON.stringify({ scholarships: allScholarships }, null, 2),
+  );
 }
 
 scrape();
