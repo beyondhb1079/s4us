@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { School } from '../types/options';
+import { School, SchoolJSON } from '../types/School';
 
 interface OptionsData {
   majors: string[];
@@ -39,7 +39,25 @@ export default function useOptionsData(): OptionsData {
               if (!r.ok) throw new Error('CDN fetch failed');
               return r.json();
             })
-            .catch(() => fetch('/data/schools.json').then((r) => r.json())),
+            .then((data: SchoolJSON[]) =>
+              data.map((s) => ({
+                name: s.n,
+                state: s.s,
+                url: s.u,
+              })),
+            )
+            .catch(() =>
+              fetch('/data/schools.json')
+                .then((r) => r.json())
+                .then((data) =>
+                  // Local fallback file still uses full keys 'name', 'state', 'website'
+                  data.map((s: any) => ({
+                    name: s.name,
+                    state: s.state,
+                    url: s.url || s.website,
+                  })),
+                ),
+            ),
     ]).then(([m, s]) => {
       if (cancelled) return;
       cachedMajors = m;

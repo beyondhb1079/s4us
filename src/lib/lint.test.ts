@@ -15,7 +15,7 @@ import {
 } from './lint';
 import majorsData from '../../public/data/majors.json';
 import schoolsData from '../../public/data/schools.json';
-import { School } from '../types/options';
+import { School } from '../types/School';
 
 const testMajors: string[] = majorsData;
 const testSchools: School[] = schoolsData;
