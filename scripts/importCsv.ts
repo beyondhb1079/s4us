@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import fs from 'fs';
 import { parseArgs } from 'util';
 import { initializeApp, cert } from 'firebase-admin/app';
@@ -37,8 +38,8 @@ const options: ParseArgsConfig['options'] = {
 let args;
 try {
   args = parseArgs({ options, allowPositionals: true });
-} catch (e: any) {
-  console.error('Error parsing arguments:', e.message);
+} catch (e: unknown) {
+  console.error('Error parsing arguments:', (e as Error).message);
   process.exit(1);
 }
 
@@ -232,8 +233,8 @@ async function run() {
   let fileContent;
   try {
     fileContent = fs.readFileSync(values.file as string, 'utf-8');
-  } catch (e: any) {
-    console.error(`Error reading file: ${e.message}`);
+  } catch (e: unknown) {
+    console.error(`Error reading file: ${(e as Error).message}`);
     process.exit(1);
   }
 

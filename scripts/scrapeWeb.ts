@@ -115,8 +115,8 @@ async function scrape() {
 
     writeFileSync('scraped-offer.json', JSON.stringify(object, null, 2));
     console.log('Saved result to scraped-offer.json');
-  } catch (err: any) {
-    console.error('Error scraping:', err.message);
+  } catch (err: unknown) {
+    console.error('Error scraping:', (err as Error).message);
   }
 }
 

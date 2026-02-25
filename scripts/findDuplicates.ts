@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Duplicate Detection Script
  *
@@ -18,7 +19,7 @@ try {
   serviceAccount = JSON.parse(
     readFileSync(resolve('serviceAccountKey.json'), 'utf8'),
   );
-} catch (e) {
+} catch {
   console.error(
     "Missing or invalid serviceAccountKey.json. Please ensure it's in the root directory.",
   );
@@ -99,7 +100,7 @@ async function findDuplicates() {
 
   try {
     mkdirSync('tmp', { recursive: true });
-  } catch (e) {
+  } catch {
     // Ignore error if it already exists
   }
 
