@@ -18,6 +18,7 @@ import {
 import validationSchema from '../../validation/ValidationSchema';
 import ScholarshipCard from './ScholarshipCard';
 import useOptionsData from '../../lib/useOptionsData';
+import { School } from '../../types/School';
 import { lintReqs, LintReqsResult } from '../../lib/lint';
 import { useTranslation } from 'react-i18next';
 import { useQueryClient } from '@tanstack/react-query';
