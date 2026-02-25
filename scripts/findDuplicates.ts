@@ -9,7 +9,7 @@
  */
 import { initializeApp, cert } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync, writeFileSync, mkdirSync } from 'fs';
 import { resolve } from 'path';
 
 // Load service account securely
@@ -96,8 +96,15 @@ async function findDuplicates() {
   console.log(`================================\n`);
 
   const report = { exactDuplicates, nameOnlyDuplicates };
-  writeFileSync('duplicates-report.json', JSON.stringify(report, null, 2));
-  console.log('Saved detailed report to duplicates-report.json');
+
+  try {
+    mkdirSync('tmp', { recursive: true });
+  } catch (e) {
+    // Ignore error if it already exists
+  }
+
+  writeFileSync('tmp/duplicates-report.json', JSON.stringify(report, null, 2));
+  console.log('Saved detailed report to tmp/duplicates-report.json');
 }
 
 findDuplicates().catch(console.error);
