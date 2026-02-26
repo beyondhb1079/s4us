@@ -43,6 +43,7 @@ To protect the database from bloat and respect strictly 5 RPM Gemini limits:
    - Validates schema and enqueues the URL as a **Cloud Task**.
 2. **The Cloud Task (Ingestion Worker):**
    - Configured with `maxConcurrentDispatches: 1` and `maxDispatchesPerSecond: 0.08` to strictly guarantee <5 RPM.
+   - **Daily Limit Enforcement:** The Cloud Task queue will be paused or requests dropped if the 20 RPD limit is reached to strictly avoid billing.
    - **Deduplication:** Checks if the URL has been scraped recently. If so, skips scraping.
    - **Prioritization:** The Submission Function calculates and assigns the `priority` score (e.g., `+10` for `.edu`, `+5` for "list"). The backend processes higher priority documents first.
    - Executes `scrapeWeb.ts` logic using Gemini 3.0 Flash.
@@ -52,14 +53,14 @@ To protect the database from bloat and respect strictly 5 RPM Gemini limits:
 
 **Tiered Cost Analysis:**
 
-- _Gemini 3.0 Flash limits:_ 5 RPM and 20 RPD on the free tier. The Cloud Task queue guarantees we stay under 5 RPM. **Cost: $0/mo.**
+- _Gemini 3.0 Flash limits:_ 5 RPM and 20 RPD on the free tier. The Cloud Task queue guarantees we stay under 5 RPM, and strict daily quota tracking ensures we never process more than 20 URLs per day. **Cost: $0/mo.**
 - _Firestore:_ Minimal impact due to deduplication and strict payload rules. **Cost: $0/mo.**
 
 ### C. Frontend (React/Vite)
 
 1. **Suggest a Link Page (`/suggest`)**
    - **AppCheck/reCAPTCHA:** Must be lazy-loaded (e.g., on `onFocus`) to preserve LCP/TTI.
-   - **UX State Lifecycle:** Interactive wait state with a loading skeleton tracking document `status`. The skeleton waits until the status transitions to a terminal state (`SUCCESS`, `FAILED_UPSTREAM`, or `BLOCKED`) before showing the final result. Graceful degradation on failure states.
+   - **UX State Lifecycle:** Given the 20 RPD limit, a submitted URL might not be processed for days. Therefore, the UI must be a "fire-and-forget" experience. Upon successful submission to the queue, immediately show a success animation thanking them for their contribution, rather than a loading skeleton.
    - **A11y:** Animations must respect `prefers-reduced-motion`. Use `aria-live` regions for status reading.
    - **i18n & Tone:** Wrap text in `t()`, handle Spanish text expansion gracefully, and use a "Parent Co-Pilot" tone (clear/supportive, keeping proper nouns in English).
 2. **Admin Dashboard Revamp (`/admin`)**
