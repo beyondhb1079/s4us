@@ -29,6 +29,7 @@ const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
 const AddScholarship = lazy(() => import('./pages/AddScholarship'));
 const EditScholarship = lazy(() => import('./pages/EditScholarship'));
+const Suggest = lazy(() => import('./pages/Suggest'));
 
 // This should be suspended too because of the auth dependency
 const LoginDialogWrapper = lazy(
@@ -75,6 +76,7 @@ function App(): React.JSX.Element {
                         <Route path="/contact" element={<Contact />} />
                         <Route path="/privacy" element={<Privacy />} />
                         <Route path="/terms" element={<Terms />} />
+                        <Route path="/suggest" element={<Suggest />} />
                         <Route
                           path="/dashboard"
                           element={<ProtectedRoute element={<Dashboard />} />}
