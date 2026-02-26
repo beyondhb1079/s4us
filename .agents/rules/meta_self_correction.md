@@ -21,4 +21,4 @@ When you receive a workflow correction, you must immediately halt your current t
    git commit -m "chore(meta): update instructions to prevent [mistake]"
    gh pr create --title "🤖 [Meta] Rule Update: [Brief Description]" --body "### The Friction\n[Describe what went wrong]\n\n### The Fix\n[Describe the rule updated]" --base main
    ```
-5. **Halt and Await Merge:** Do not proceed with your original task. Tag the user, present the PR link, and explicitly state: "I have updated my instructions to prevent this in the future. Please review and merge this PR. Once merged, I will pull main and resume the task."
+4. **Halt and Await Merge:** Do not proceed with your original task. Tag the user, present the PR link, and explicitly state: "I have updated my instructions to prevent this in the future. Please review and merge this PR. Once merged, I will pull main and resume the task."
