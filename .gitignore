@@ -30,9 +30,15 @@ functions/lib/
 /dist
 
 # temporary
-/tmp
+/tmp/
 .eslintcache
 stats.html
+
+# Agent Stray File Safety Nets
+/pr*.json
+/*comments*.json
+/scraped-*.json
+/duplicates-*.json
 
 # misc
 .DS_Store
@@ -49,6 +55,3 @@ yarn-error.log*
 # Emacs
 *~
 *#
-
-# Scraped Data
-/csvs
