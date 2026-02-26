@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
 import { useFormik } from 'formik';
 import {
   Alert,
@@ -20,26 +19,31 @@ import ScholarshipCard from './ScholarshipCard';
 import useOptionsData from '../../lib/useOptionsData';
 import { lintReqs, LintReqsResult } from '../../lib/lint';
 import { useTranslation } from 'react-i18next';
-import { useQueryClient } from '@tanstack/react-query';
 import i18n from 'i18next';
 import ScholarshipData from '../../types/ScholarshipData';
-import Model from '../../models/base/Model';
 import ScholarshipEligibility from '../../types/ScholarshipEligibility';
 import GeneralInfoStep from './scholarship-form/GeneralInfoStep';
 import EligibilityStep from './scholarship-form/EligibilityStep';
 
-interface SFProps {
-  scholarship: Model<ScholarshipData>;
+interface PSFProps {
+  initialValues: ScholarshipData;
+  onSubmit: (
+    values: ScholarshipData,
+    setSubmitting: (isSubmitting: boolean) => void,
+  ) => void;
+  submissionError: Error | null;
+  submitLabel?: string;
+  isRejecting?: boolean;
 }
 
-export default function ScholarshipForm({
-  scholarship,
-}: SFProps): React.JSX.Element {
+export default function PureScholarshipForm({
+  initialValues,
+  onSubmit,
+  submissionError,
+  submitLabel,
+  isRejecting,
+}: PSFProps): React.JSX.Element {
   const [activeStep, setActiveStep] = useState(0);
-  const [submissionError, setSubmissionError] = useState(null as null | Error);
-  const queryClient = useQueryClient();
-  const navigate = useNavigate();
-  const location = useLocation();
   const { majors: allMajors, schools: allSchools } = useOptionsData();
 
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
@@ -47,25 +51,11 @@ export default function ScholarshipForm({
   const { t } = useTranslation(['scholarships', 'common']);
 
   const formik = useFormik({
-    initialValues: scholarship.data,
+    initialValues,
     validationSchema: validationSchema(validationT),
     validateOnChange: false,
     onSubmit: (values, { setSubmitting }) => {
-      setSubmitting(true);
-      scholarship.data = { ...values };
-      scholarship
-        .save()
-        .then((s) => {
-          queryClient.invalidateQueries({ queryKey: ['scholarships'] });
-          navigate(`/scholarships/${s.id}`, {
-            state: {
-              prevPath: location.pathname,
-              scholarship: { id: s.id, data: s.data },
-            },
-          });
-        })
-        .catch(setSubmissionError)
-        .finally(() => setSubmitting(false));
+      onSubmit(values, setSubmitting);
     },
   });
 
@@ -99,8 +89,6 @@ export default function ScholarshipForm({
     formik.setFieldValue('requirements', updatedReqs);
   };
 
-  // Initially requirements is null but is set to {} when the "no requirements"
-  // checkbox is explicitly set.
   const noReqsChecked = JSON.stringify(formik.values.requirements) === '{}';
 
   const stepperItems = {
@@ -169,7 +157,7 @@ export default function ScholarshipForm({
                     <Typography>{description}</Typography>
                     <Box marginY={3}>{content}</Box>
                     <Button
-                      disabled={activeStep === 0}
+                      disabled={activeStep === 0 || isRejecting}
                       onClick={() => setActiveStep((prevStep) => prevStep - 1)}>
                       {t('common:actions.back')}
                     </Button>
@@ -177,7 +165,7 @@ export default function ScholarshipForm({
                       key={activeStep}
                       variant="contained"
                       color="primary"
-                      disabled={formik.isSubmitting}
+                      disabled={formik.isSubmitting || isRejecting}
                       type={onLastStep ? 'submit' : 'button'}
                       onClick={() => {
                         if (onLastStep) return;
@@ -193,13 +181,19 @@ export default function ScholarshipForm({
                         });
                       }}>
                       {onLastStep
-                        ? t('common:actions.submit')
+                        ? submitLabel || t('common:actions.submit')
                         : t('common:actions.next')}
                     </Button>
                     {submissionError && (
                       <Alert
                         severity="error"
-                        onClose={() => setSubmissionError(null)}>
+                        onClose={
+                          () =>
+                            onSubmit(
+                              formik.values,
+                              () => {},
+                            ) /* Do nothing, handled externally optionally */
+                        }>
                         <AlertTitle>
                           There was an error submitting your changes:
                         </AlertTitle>
