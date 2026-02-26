@@ -31,9 +31,10 @@ When working on an Epic that spans multiple PRs, **do not wait** for the user to
 2. Open a PR for `ag/epic-phase-1` targeting `main`.
 3. Immediately branch off your _unmerged_ branch for the next phase:
 
-   `git checkout ag/epic-phase-1`
-
-   `git checkout -b ag/epic-phase-2`
+   ```bash
+   git checkout ag/epic-phase-1
+   git checkout -b ag/epic-phase-2
+   ```
 
 4. Open a PR for `ag/epic-phase-2` targeting `ag/epic-phase-1` as the base.
 5. As PRs get merged into `main`, rebase your subsequent branches on `main` and update their base in GitHub using `gh pr edit --base main`.

@@ -56,9 +56,9 @@ If CI pipelines (like GitHub Actions) are configured, monitor them using:
 gh pr checks --watch --interval 30
 ```
 
-Wait for the results. If `gh pr checks --watch` fails, use `gh run view --log-failed` to identify the specific error. Analyze the log and fix the issue.
+Wait for the results. If `gh pr checks --watch` fails, use `gh run view --log-failed` to identify the specific error. Analyze the log and fix the issue locally.
 
-Before force-pushing your fix, you must pull and rebase in case the user pushed manual corrections to your branch:
+**CRITICAL**: Before force-pushing your fix, you must pull and rebase in case the user pushed manual corrections to your branch:
 
 ```
 git add .
@@ -68,3 +68,5 @@ git push --force-with-lease
 ```
 
 Re-run the watch command until the PR is green.
+
+**Circuit Breaker**: If you attempt to fix the CI pipeline 3 times and it still fails, you must halt the loop, tag the user with a summary of the failing logs, and wait for guidance. Do not get stuck in an infinite fix loop.
