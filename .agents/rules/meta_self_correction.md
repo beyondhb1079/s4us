@@ -24,7 +24,7 @@ When you receive a workflow correction, execute the **Async Self-Correction Loop
 
 # The Skill Harvesting Protocol
 
-If the user says **"Trigger Harvest Protocol"** or asks you to **"save this workflow,"** it means we have just successfully completed a complex sequence that needs to be reusable for all agents. 
+If the user says **"Trigger Harvest Protocol"** or asks you to **"save this workflow,"** it means we have just successfully completed a complex sequence that needs to be reusable for all agents.
 
 You must immediately extract the successful steps and turn them into a permanent asset using the Async PR flow:
 
@@ -34,6 +34,6 @@ You must immediately extract the successful steps and turn them into a permanent
    - For global processes: `.agents/workflows/[workflow_name].md`.
    - For folder-specific execution: `.agents/skills/[domain_folder]/[skill_name].md`.
    - **CRITICAL**: every skill file MUST include a YAML frontmatter block with a `glob` pattern (e.g., `glob: "src/components/**/*.tsx"`) defining exactly which files this skill applies to, ensuring we do not bloat the context window for unrelated tasks.
-4. **Format:** The new file must have a clear `description` header, prerequisites, and copy-pasteable bash/code blocks.
-5. **Commit & PR:** Commit the new file and open a PR targeting `main` with the prefix `chore(meta): harvest [skill]`.
-6. **Resume:** Switch back to your previous branch and await further instructions.
+3. **Format:** The new file must have a clear `description` header, prerequisites, and copy-pasteable bash/code blocks.
+4. **Commit & PR:** Commit the new file and open a PR targeting `main` with the prefix `chore(meta): harvest [skill]`.
+5. **Resume:** Switch back to your previous branch and await further instructions.
