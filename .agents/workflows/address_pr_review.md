@@ -16,36 +16,41 @@ Use the GitHub CLI to checkout the exact PR branch:
 gh pr checkout <PR-number>
 ```
 
-## Step 2: Review Comments
+## Step 2: Fetch ALL Feedback Types (No Exceptions)
 
-If you do not have the context of the user's feedback, you can fetch the comments and reviews comprehensively using this command:
+You must fetch feedback from three distinct areas: Reviews, General Comments, and Line-level Review Threads.
 
 ```bash
 // turbo
-gh pr view --json reviews,comments -q '.reviews[].body, .comments[].body'
+gh pr view --json reviews,comments,reviewThreads -q '
+  (.reviews[].body // ""),
+  (.comments[].body // ""),
+  (.reviewThreads[].comments[].body // "")'
 ```
 
-## Step 3: Implement, Commit, and Reply
+## Step 3: Implementation & Tracking
 
 Before declaring a task finished, run `gh pr view`. If there are open comments or a "Changes Requested" status, you **must** address every single comment by:
 
-1. Modifying the code.
-2. Updating the `.TODO.md` Progress Manifest to check off the item.
-3. Committing the changes (use the Git Identity rule).
-4. Replying to the comment thread using `gh pr comment` stating `"Fixed in [commit-hash]"`.
+1. **Sync the Manifest**: Immediately update the `.TODO.md` file at the root. Every piece of feedback from Step 2 must become a task in the manifest.
+2. **Modify Code**: Fix the issues.
+3. **Commit**: Use the Git Identity rule.
+4. **Reply**: Respond to the user's feedback via the CLI.
+   - **For code changes:** Reply with `"Fixed in [short-commit-hash]"`.
+   - **For questions or discussions:** Provide a direct, thoughtful response explaining your reasoning or answering the user's query. Do not use the "Fixed in" template if no code was changed.
 
-```bash
-git add .
-git commit -m "fix: address review feedback" --author="s4us-bot <bot@dreamscholars.org>"
-```
+## Step 4: The Final Sweep (Mandatory)
 
-## Step 4: Push and Notify
+Before notifying the user that you are finished, you **must** re-run the command from Step 2.
 
-Push the changes to the same branch so the PR updates automatically.
+- Compare the output against your `.TODO.md`.
+- If a comment appears in the CLI output that is not checked off in your manifest, **you are not finished.**
+
+## Step 5: Push and Notify
 
 ```bash
 // turbo
 git push
 ```
 
-Then, notify the user that the revisions are complete and ready for re-review.
+Once pushed, notify the user: "All feedback from the latest review threads and comments has been addressed."

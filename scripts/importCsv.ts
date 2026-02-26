@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import fs from 'fs';
 import { parseArgs } from 'util';
 import { initializeApp, cert } from 'firebase-admin/app';
@@ -21,24 +22,27 @@ const __dirname = path.dirname(__filename);
 import { ParseArgsConfig } from 'util';
 const options: ParseArgsConfig['options'] = {
   file: { type: 'string', short: 'f' },
-  'name-col': { type: 'string', default: 'Name' },
-  'desc-col': { type: 'string', default: 'Description' },
-  'amount-min-col': { type: 'string', default: 'Amount' },
-  'amount-max-col': { type: 'string', default: 'Amount Max' },
-  'deadline-col': { type: 'string', default: 'Deadline' },
-  'website-col': { type: 'string', default: 'Website' },
-  'gpa-col': { type: 'string', default: 'Minimum GPA' },
-  'states-col': { type: 'string', default: 'State' },
-  'grades-col': { type: 'string', default: 'EDUCATION STATUS' },
-  'majors-col': { type: 'string', default: 'FIELD OF STUDY' },
-  'ethnicities-col': { type: 'string', default: 'RACE, GENDER, & MORE' },
+  'name-col': { type: 'string', default: 'name' },
+  'desc-col': { type: 'string', default: 'description' },
+  'amount-min-col': { type: 'string', default: 'amount.min' },
+  'amount-max-col': { type: 'string', default: 'amount.max' },
+  'amount-type-col': { type: 'string', default: 'amount.type' },
+  'deadline-col': { type: 'string', default: 'deadline' },
+  'website-col': { type: 'string', default: 'website' },
+  'org-col': { type: 'string', default: 'organization' },
+  'tags-col': { type: 'string', default: 'tags' },
+  'gpa-col': { type: 'string', default: 'requirements.gpa' },
+  'states-col': { type: 'string', default: 'requirements.states' },
+  'grades-col': { type: 'string', default: 'requirements.grades' },
+  'majors-col': { type: 'string', default: 'requirements.majors' },
+  'ethnicities-col': { type: 'string', default: 'requirements.ethnicities' },
 };
 
 let args;
 try {
   args = parseArgs({ options, allowPositionals: true });
-} catch (e: any) {
-  console.error('Error parsing arguments:', e.message);
+} catch (e: unknown) {
+  console.error('Error parsing arguments:', (e as Error).message);
   process.exit(1);
 }
 
@@ -144,7 +148,9 @@ function parseRecordData(record: any, values: any, name: string) {
   const UNKNOWN_MIN = FULL_TUITION + 1;
   const UNKNOWN_MAX = -1;
 
-  if (!min && !max) {
+  if (record[values['amount-type-col'] as string]) {
+    type = record[values['amount-type-col'] as string];
+  } else if (!min && !max) {
     type = 'UNKNOWN';
     min = UNKNOWN_MIN;
     max = UNKNOWN_MAX;
@@ -188,6 +194,16 @@ function parseRecordData(record: any, values: any, name: string) {
   const majorsRaw = record[values['majors-col'] as string];
   const majors = parseMajors(majorsRaw as string);
 
+  const tagsRaw = record[values['tags-col'] as string];
+  const tags = (tagsRaw as string)
+    ? tagsRaw
+        .split(',')
+        .map((t: string) => t.trim())
+        .filter((t: string) => t.length > 0)
+    : [];
+
+  const organization = record[values['org-col'] as string] || null;
+
   // Lint Description Fallback: If any of these fields are missing, try to parse the description for context using the same logic from /src/lib/lint.ts
   if (!gpa) {
     const gpaMatch = parseMinGPA(description);
@@ -214,6 +230,8 @@ function parseRecordData(record: any, values: any, name: string) {
     amount,
     deadline: deadline && !isNaN(deadline.valueOf()) ? deadline : null,
     website,
+    organization,
+    tags,
     requirements: {
       gpa: gpa && !isNaN(gpa) ? gpa : null,
       states,
@@ -232,8 +250,8 @@ async function run() {
   let fileContent;
   try {
     fileContent = fs.readFileSync(values.file as string, 'utf-8');
-  } catch (e: any) {
-    console.error(`Error reading file: ${e.message}`);
+  } catch (e: unknown) {
+    console.error(`Error reading file: ${(e as Error).message}`);
     process.exit(1);
   }
 
