@@ -23,9 +23,9 @@ We will pivot to a "Hybrid AI Queue". Users simply submit a URL. A background jo
 We need two new top-level collections to act as queues, keeping raw data isolated from the production `scholarships` collection.
 
 1. **`suggestions_queue`**
-   - **Fields:** `url` (string), `submittedAt` (timestamp), `status` (enum: 'PENDING', 'PROCESSING', 'FAILED_UPSTREAM', 'BLOCKED', 'SUCCESS')
+   - **Fields:** `url` (string), `submittedAt` (timestamp), `status` (enum: 'PENDING', 'PROCESSING', 'FAILED_UPSTREAM', 'BLOCKED', 'SUCCESS'), `priority` (number, default: 0)
    - **Rules:**
-     - **Strict Schema Validation:** `url` must be a string < 500 chars and a valid URL format.
+     - **Strict Schema Validation:** `url` must be a string < 500 chars and a valid URL format. `priority` supports dynamic ordering.
      - **State Enforcement:** `status` must be hardcoded to `'PENDING'` upon creation.
      - **Timestamp Validation:** `submittedAt` must equal `request.time`.
 
@@ -44,7 +44,7 @@ To protect the database from bloat and respect strictly 5 RPM Gemini limits:
 2. **The Cloud Task (Ingestion Worker):**
    - Configured with `maxConcurrentDispatches: 1` and `maxDispatchesPerSecond: 0.08` to strictly guarantee <5 RPM.
    - **Deduplication:** Checks if the URL has been scraped recently. If so, skips scraping.
-   - **Prioritization:** Give higher priority to `.edu` domains or URLs containing "list".
+   - **Prioritization:** The Submission Function calculates and assigns the `priority` score (e.g., `+10` for `.edu`, `+5` for "list"). The backend processes higher priority documents first.
    - Executes `scrapeWeb.ts` logic using Gemini 3.0 Flash.
 3. **Failure Modes:**
    - **403 Forbidden:** Catch, permanently flag as `BLOCKED`.
@@ -59,7 +59,7 @@ To protect the database from bloat and respect strictly 5 RPM Gemini limits:
 
 1. **Suggest a Link Page (`/suggest`)**
    - **AppCheck/reCAPTCHA:** Must be lazy-loaded (e.g., on `onFocus`) to preserve LCP/TTI.
-   - **UX State Lifecycle:** Interactive wait state with a loading skeleton tracking document `status` (not fire-and-forget). Graceful degradation on failure states.
+   - **UX State Lifecycle:** Interactive wait state with a loading skeleton tracking document `status`. The skeleton waits until the status transitions to a terminal state (`SUCCESS`, `FAILED_UPSTREAM`, or `BLOCKED`) before showing the final result. Graceful degradation on failure states.
    - **A11y:** Animations must respect `prefers-reduced-motion`. Use `aria-live` regions for status reading.
    - **i18n & Tone:** Wrap text in `t()`, handle Spanish text expansion gracefully, and use a "Parent Co-Pilot" tone (clear/supportive, keeping proper nouns in English).
 2. **Admin Dashboard Revamp (`/admin`)**
