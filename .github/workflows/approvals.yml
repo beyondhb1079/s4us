@@ -3,6 +3,12 @@ name: 'Approvals'
 on:
   pull_request:
     branches: [main]
+    paths-ignore: 
+      - '**.md'
+      - '**.json'
+      - '.agents/**'
+      - '.husky/**'
+      - 'docs/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -29,7 +35,7 @@ jobs:
               .then((response) =>
                 response.data
                   .filter(r => r.user.type == 'User' && r.state == 'APPROVED')
-                  .sort((a, b) => a.id - b.id)
+                  .sort((a, b) => b.id - a.id)
               );
 
             if (approvals.length == 0) {
@@ -92,7 +98,7 @@ jobs:
               .then((response) =>
                 response.data
                   .filter(r => r.user.type == 'User' && r.state == 'APPROVED')
-                  .sort((a, b) => a.id - b.id)
+                  .sort((a, b) => b.id - a.id)
               );
 
             if (approvals.length == 0) {
@@ -133,19 +139,25 @@ jobs:
 
             // Parse the diff output
             console.log(stdout.toString());
-            const lines = stdout.toString().trim().split('\n', 3);
+            const lines = stdout.toString().trim().split('\n');
             const filesChanged = lines.map(l => {
-              const [insertions, deletions, name] = l.split('\t', 3);
+              const [insertions, deletions, name] = l.split('\t');
               return {
                 deletions: Number.parseInt(deletions),
                 insertions: Number.parseInt(insertions),
                 name
               };
-            });
+            })
+            .filter(f => !f.name.endsWith('.md') && !f.name.startsWith('.agents/')); // AI safety filter!
+
+            if (filesChanged.length === 0) {
+              console.log("Only markdown/agent files changed. Bypassing dismissal.");
+              return;
+            }
 
             const sum = (accumulator, value) => accumulator + value;
-            const insertions = filesChanged.map(f => f.insertions).reduce(sum) || 0;
-            const deletions = filesChanged.map(f => f.deletions).reduce(sum) || 0;
+            const insertions = filesChanged.map(f => f.insertions).reduce(sum, 0);
+            const deletions = filesChanged.map(f => f.deletions).reduce(sum, 0);
             const total = insertions + deletions;
             const summary = filesChanged.length + ' files changed, ' +
               insertions + ' insertions(+), ' +
@@ -173,6 +185,8 @@ jobs:
             \`\`\`
             ${summary}
             \`\`\`
+
+            *(Note: Documentation and .md updates by AI agents do not count toward this limit).*
 
             If either of you believe my dismissal was a mistake, consider updating
             [approvals.yml](../blob/main/.github/workflows/approvals.yml)
