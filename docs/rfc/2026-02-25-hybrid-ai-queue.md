@@ -39,26 +39,26 @@ To protect the database from bloat and respect strictly 5 RPM Gemini limits:
 
 1. **Submission Callable Function:**
    - Instead of direct client writes, the client calls a lightweight Cloud Function to submit URLs.
-   - Performs IP-based and session-based rate limiting (max 50 links/day per session).
-   - Validates schema and enqueues the URL as a **Cloud Task**.
-2. **The Cloud Task (Ingestion Worker):**
-   - Configured with `maxConcurrentDispatches: 1` and `maxDispatchesPerSecond: 0.08` to strictly guarantee <5 RPM.
-   - **Daily Limit Enforcement:** The Cloud Task queue will be paused or requests dropped if the 20 RPD limit is reached to strictly avoid billing.
+   - **No Submit Limit:** Users can submit an unlimited number of URLs.
+   - Validates schema and saves it to the `suggestions_queue` with a `priority` score (e.g., `+10` for `.edu`, `+5` for "list").
+2. **The Ingestion Worker (Scheduled Cron Job):**
+   - Configured to run exactly once every 6 hours (4 times a day).
+   - Queries the `suggestions_queue` for the top 5 highest-priority `PENDING` documents.
    - **Deduplication:** Checks if the URL has been scraped recently. If so, skips scraping.
-   - **Prioritization:** The Submission Function calculates and assigns the `priority` score (e.g., `+10` for `.edu`, `+5` for "list"). The backend processes higher priority documents first.
-   - Executes `scrapeWeb.ts` logic using Gemini 3.0 Flash.
+   - Executes `scrapeWeb.ts` logic using Gemini 3.0 Flash. This guarantees exactly 20 Requests Per Day without complex queue management.
 3. **Failure Modes:**
    - **403 Forbidden:** Catch, permanently flag as `BLOCKED`.
    - **500 Error:** Exponential backoff up to 3 retries, then flag as `FAILED_UPSTREAM`.
 
 **Tiered Cost Analysis:**
 
-- _Gemini 3.0 Flash limits:_ 5 RPM and 20 RPD on the free tier. The Cloud Task queue guarantees we stay under 5 RPM, and strict daily quota tracking ensures we never process more than 20 URLs per day. **Cost: $0/mo.**
+- _Gemini 3.0 Flash limits:_ 5 RPM and 20 RPD on the free tier. The 6-hour Cron Job processing exactly 5 URLs per run naturally caps our usage at exactly 20 URLs per day. **Cost: $0/mo.**
 - _Firestore:_ Minimal impact due to deduplication and strict payload rules. **Cost: $0/mo.**
 
 ### C. Frontend (React/Vite)
 
 1. **Suggest a Link Page (`/suggest`)**
+   - **Client-Side Deduplication:** Before calling the Submission Function, the frontend must check the URL against the local cache of active scholarships. If found, immediately reject with "We already have this scholarship!" to save backend invocations.
    - **AppCheck/reCAPTCHA:** Must be lazy-loaded (e.g., on `onFocus`) to preserve LCP/TTI.
    - **UX State Lifecycle:** Given the 20 RPD limit, a submitted URL might not be processed for days. Therefore, the UI must be a "fire-and-forget" experience. Upon successful submission to the queue, immediately show a success animation thanking them for their contribution, rather than a loading skeleton.
    - **A11y:** Animations must respect `prefers-reduced-motion`. Use `aria-live` regions for status reading.
@@ -72,10 +72,10 @@ To protect the database from bloat and respect strictly 5 RPM Gemini limits:
 
 1. **Data Specialist:**
    - Implement Firestore Schema with strict validation rules.
-   - Build Callable Function (50 links/day rate limit).
-   - Build Cloud Task worker with 5 RPM throttling, deduplication, URL heuristics, and failure mode handling.
+   - Build Submission Callable Function (no submission limit, generates priority score).
+   - Build 6-hour Scheduled Cloud Function (Cron Job) to process top 5 priority links, including URL deduplication and failure mode handling.
 2. **Frontend Specialist:**
-   - Build `/suggest` with lazy-loaded AppCheck, i18n Co-Pilot tone, A11y standards, and real-time state listeners.
+   - Build `/suggest` with client-side cache deduplication, lazy-loaded AppCheck, i18n Co-Pilot tone, A11y standards, and fire-and-forget submission flow.
 3. **Frontend Specialist:**
    - Refactor Scholarship form to pure component.
    - Build `/admin` pending queue with URL dismissal functionality and full keyboard navigation.
