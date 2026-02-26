@@ -1,7 +1,7 @@
 # RFC: Hybrid AI-Assisted Scholarship Queue (Epic 1)
 
 **Date**: 2026-02-25
-**Status**: Draft
+**Status**: Final (Updated post Cross-Agent Review)
 
 ## 1. Problem
 
@@ -14,59 +14,74 @@ Currently, adding a scholarship to S4US requires either:
 
 We will pivot to a "Hybrid AI Queue". Users simply submit a URL. A background job scrapes it using Gemini, and drops the parsed data into a `pending_approval` queue. An admin reviews the data on the Dashboard, edits if necessary, and clicks "Publish".
 
+**Executive Overrides:** The queue will integrate deduplication, URL prioritization heuristics, and allow admins to deprioritize/dismiss URLs. Valid user sessions will be rate-limited to 50 links per day.
+
 ## 3. Architecture & Schema Changes
 
 ### A. Firestore Collections
 
-We need two new top-level collections (or sub-collections, depending on current rules) to act as queues, keeping raw data isolated from the production `scholarships` collection.
+We need two new top-level collections to act as queues, keeping raw data isolated from the production `scholarships` collection.
 
 1. **`suggestions_queue`**
-   - **Fields:** `url` (string), `submittedAt` (timestamp), `status` (enum: 'PENDING', 'PROCESSING', 'FAILED')
-   - **Rules:** Anyone can create (with basic rate limiting/AppCheck). No one can read except Admins/Service Accounts.
+   - **Fields:** `url` (string), `submittedAt` (timestamp), `status` (enum: 'PENDING', 'PROCESSING', 'FAILED_UPSTREAM', 'BLOCKED', 'SUCCESS')
+   - **Rules:**
+     - **Strict Schema Validation:** `url` must be a string < 500 chars and a valid URL format.
+     - **State Enforcement:** `status` must be hardcoded to `'PENDING'` upon creation.
+     - **Timestamp Validation:** `submittedAt` must equal `request.time`.
 
 2. **`pending_approval`**
-   - **Fields:** Matches the `ScholarshipSchema` from the web scraper, plus `sourceUrl` (string), `scrapedAt` (timestamp).
+   - **Fields:** Matches `ScholarshipSchema` from the web scraper, plus `sourceUrl`, `scrapedAt`.
    - **Rules:** Only Admins can read/write/delete.
 
 ### B. Cloud Functions (Backend)
 
-We will create a scheduled Cloud Function (or a Pub/Sub trigger on `suggestions_queue` creation, combined with a Cloud Task queue for rate-limiting).
+To protect the database from bloat and respect strictly 5 RPM Gemini limits:
 
-**The Scraper Worker:**
-
-1. Pulls the oldest 'PENDING' document from `suggestions_queue` where `submittedAt` is > 15 seconds ago (to prevent rapid Gemini API hammering).
-2. Marks it 'PROCESSING'.
-3. Executes the existing `scrapeWeb.ts` logic using `@ai-sdk/google`.
-4. Saves the successful output to the `pending_approval` collection.
-5. Deletes the document from `suggestions_queue`.
+1. **Submission Callable Function:**
+   - Instead of direct client writes, the client calls a lightweight Cloud Function to submit URLs.
+   - Performs IP-based and session-based rate limiting (max 50 links/day per session).
+   - Validates schema and enqueues the URL as a **Cloud Task**.
+2. **The Cloud Task (Ingestion Worker):**
+   - Configured with `maxConcurrentDispatches: 1` and `maxDispatchesPerSecond: 0.08` to strictly guarantee <5 RPM.
+   - **Deduplication:** Checks if the URL has been scraped recently. If so, skips scraping.
+   - **Prioritization:** Give higher priority to `.edu` domains or URLs containing "list".
+   - Executes `scrapeWeb.ts` logic using Gemini 3.0 Flash.
+3. **Failure Modes:**
+   - **403 Forbidden:** Catch, permanently flag as `BLOCKED`.
+   - **500 Error:** Exponential backoff up to 3 retries, then flag as `FAILED_UPSTREAM`.
 
 **Tiered Cost Analysis:**
 
-- _Gemini 3.0 Flash limits:_ 15 RPM on the free tier. The queue processing _must_ stagger HTTP requests using `setTimeout` or strict Cloud Task dispatch configurations to guarantee we never exceed 15 RPM. **Cost: $0/mo.**
-- _Firestore:_ Minimal impact. Writes are tiny. **Cost: $0/mo.**
+- _Gemini 3.0 Flash limits:_ 5 RPM and 20 RPD on the free tier. The Cloud Task queue guarantees we stay under 5 RPM. **Cost: $0/mo.**
+- _Firestore:_ Minimal impact due to deduplication and strict payload rules. **Cost: $0/mo.**
 
 ### C. Frontend (React/Vite)
 
 1. **Suggest a Link Page (`/suggest`)**
-   - A single, highly polished input field taking a URL.
-   - reCAPTCHA or simple AppCheck integration to prevent spam bots.
-   - Success state animation thanking the user.
-
+   - **AppCheck/reCAPTCHA:** Must be lazy-loaded (e.g., on `onFocus`) to preserve LCP/TTI.
+   - **UX State Lifecycle:** Interactive wait state with a loading skeleton tracking document `status` (not fire-and-forget). Graceful degradation on failure states.
+   - **A11y:** Animations must respect `prefers-reduced-motion`. Use `aria-live` regions for status reading.
+   - **i18n & Tone:** Wrap text in `t()`, handle Spanish text expansion gracefully, and use a "Parent Co-Pilot" tone (clear/supportive, keeping proper nouns in English).
 2. **Admin Dashboard Revamp (`/admin`)**
-   - Add a new tab: "Pending AI Approvals".
-   - Shows a list of documents from `pending_approval`.
-   - Clicking one opens a pre-filled form (reusing the existing Scholarship form components).
-   - "Publish" button: Moves the document to the production `scholarships` collection and deletes it from `pending_approval`.
-   - "Reject" button: Deletes from `pending_approval`.
+   - **Queue Management:** Admins can view suggestion URLs to deprioritize or dismiss them.
+   - **Component Reuse:** Extract the existing Scholarship Form into a strict, pure ("dumb") component that accepts `initialValues` and an `onSubmit` callback. No direct data-fetching.
+   - **A11y:** Full keyboard navigation and clear focus states for Publish/Reject actions.
 
-## 4. Work Breakdown (For Orchestrator)
+## 4. Work Breakdown (Acceptance Criteria)
 
-If approved, this will generate 3 separate GitHub Issues/PRs:
-
-1. **Data Specialist:** Implement the Firestore Schema and Cloud Function Worker.
-2. **Frontend Specialist:** Build the `/suggest` URL submission route.
-3. **Frontend Specialist:** Revamp the `/admin` dashboard to read from the `pending` queue and handle the Publish/Reject actions.
+1. **Data Specialist:**
+   - Implement Firestore Schema with strict validation rules.
+   - Build Callable Function (50 links/day rate limit).
+   - Build Cloud Task worker with 5 RPM throttling, deduplication, URL heuristics, and failure mode handling.
+2. **Frontend Specialist:**
+   - Build `/suggest` with lazy-loaded AppCheck, i18n Co-Pilot tone, A11y standards, and real-time state listeners.
+3. **Frontend Specialist:**
+   - Refactor Scholarship form to pure component.
+   - Build `/admin` pending queue with URL dismissal functionality and full keyboard navigation.
+4. **QA Explorer:**
+   - E2E testing for submission, state updates, and schema validation.
+   - Mocking strategy using `vi.useFakeTimers()` to test debounce and configuring delays via env vars.
 
 ## 5. Next Steps
 
-Review this RFC. Once approved, I will translate this into GitHub issues and we can bring in the execution agents!
+Review this finalized RFC. I will translate this into GitHub issues for execution!
