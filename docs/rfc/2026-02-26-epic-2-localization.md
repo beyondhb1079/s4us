@@ -1,42 +1,46 @@
 # RFC: Comprehensive Localization (Spanish) for Undocumented Students (Epic 2)
 
 **Date**: 2026-02-26
-**Status**: Draft
+**Status**: Final (Corrected)
 
 ## 1. Problem
 
-A large portion of the undocumented community in the US are native Spanish speakers, as are their parents who often assist in the scholarship search. The platform is currently only in English, limiting its reach and accessibility to key demographics.
+Currently, S4US has a robust localization foundation configured in `package.json` (using `react-i18next` and `i18next-browser-languagedetector`), and many core pages in `/public/locales/` are already translated into Spanish. However, the App Shell and newer features (like the Admin Dashboard) are only partially localized, creating a fragmented bilingual experience.
 
 ## 2. Proposed Solution
 
-Implement comprehensive localization, focusing on English and Spanish as the primary tier. This spans two layers: the static App Shell (UI) and the dynamic content (Scholarship data).
+Audit the existing codebase to identify untranslated strings in the App Shell and complete the English-to-Spanish localization pass without touching the dynamic scholarship data.
 
-## 3. Architecture & Implementation
+## 3. Architecture & Implementation Requirements
 
-### A. App Shell Localization (Frontend)
+### A. Strict Translation Scope (The "App Shell Only" Rule)
 
-- Leverage `react-i18next` and `i18next-browser-languagedetector` to automatically detect user preferences.
-- Create JSON translation files for English (`en`) and Spanish (`es`).
-- Key areas to localize:
-  - Global Navigation & Footer
-  - Onboarding Wizard (`/onboarding`)
-  - Admin Dashboard (`/admin`)
-- Add a visible language toggle (EN/ES) in the User Navigation bar for manual overrides.
+Our localization strategy strictly dictates **what we translate** and **what we do not**:
 
-### B. Dynamic Content Translation (Backend/Data Ops)
+- **We DO Translate:**
+  - Static App Shell UI (Navigation, Footers, Buttons, Modals, Forms).
+  - Admin Dashboard UI (`/admin`).
+  - Pre-defined Database Enums (e.g., specific `requirements` categories or dropdown values).
+- **We DO NOT Translate:**
+  - Dynamic user-generated or AI-scraped data, specifically the `name` and `description` of the scholarships.
+  - Proper nouns or organizational names.
 
-- Integrate translation into the newly built AI Data Ingestion Pipeline (Epic 1).
-- Update the Gemini (`scrapeWeb.ts` logic) task worker: when parsing unstructured scholarship data, use the LLM to simultaneously translate `description`, `name`, and `requirements` fields into Spanish.
-- Store the translated strings directly in the Firestore document alongside the English versions (e.g., `description_es`).
+### B. Implementation Steps
 
-**Cost Analysis:**
+1. **Audit & Extract:** Identify any remaining hardcoded English strings in the React components (especially newer components like `/admin` and global navigation components).
+2. **Translation File Updates:** Add the missing keys to the existing JSON files in `public/locales/en/` and provide accurate Spanish translations in `public/locales/es/`.
+3. **UI Integration:** Ensure the `t()` function from `react-i18next` wraps all newly identified hardcoded strings.
+4. **Language Toggle:** Build a visible Language Toggle (EN/ES) in the User Navigation bar so users can manually override automatic browser detection.
 
-- Gemini 3.0 Flash translation happens during the ingest hook. Existing AI step stays within free tier limits (20 RPD from Cron Job). Cost: **$0/mo**.
-- Firestore storage expands by ~500 bytes per document. Even at 5,000 scholarships (+2.5MB), well within 1GiB free tier. Cost: **$0/mo**.
+## 4. Work Breakdown (Acceptance Criteria)
 
-## 4. Work Breakdown
-
-1. **Frontend Specialist:** Configure `react-i18next`, extract hardcoded strings to translation files, and build the navigation language toggle.
-2. **Data Specialist / AI Engineer:** Update the Ingestion Cron Job to fetch and map Spanish translations for `description`, `name`, and `requirements` using Gemini.
-3. **Inclusion Officer:** Review translated copy (particularly Onboarding flows) for culturally appropriate, supportive tone ("Parent Co-Pilot" persona).
-4. **QA Explorer:** Test language persistence, layout shifts (Spanish text expansion), and verify Gemini translation quality in E2E sandbox.
+1. **Frontend Specialist:**
+   - Audit the application for missing string extractions (specifically `/admin` and global navigation).
+   - Update `public/locales/en/` and `public/locales/es/` with the missing UI translations.
+   - Enforce the "App Shell Only" rule; ensure dynamic scholarship `name` and `description` fields remain untranslated.
+   - Build/verify the EN/ES toggle in the top navigation bar.
+2. **Inclusion Officer:**
+   - Review the newly added Spanish UI copy to ensure it aligns with the culturally supportive "Parent Co-Pilot" persona.
+3. **QA Explorer:**
+   - Test the Language Toggle for immediate UI updates without a hard refresh.
+   - Verify layout stability, as Spanish text often expands by 20-30% compared to English, ensuring the new UI elements do not break.
