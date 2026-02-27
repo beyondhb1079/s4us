@@ -12,6 +12,23 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Were there any *code* changes?
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      code_changed: ${{ steps.filter.outputs.code }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            code:
+              - '**'
+              - '!**.md'
+              - '!.agents/**'
+              - '!docs/**'
+
   # Ensure static analysis checks (lint, prettier, i18next-parser) pass
   static-analysis:
     runs-on: ubuntu-latest
@@ -28,7 +45,8 @@ jobs:
 
   # Ensure builds succeed
   build:
-    needs: static-analysis
+    needs: detect-changes
+    if: ${{ needs.detect-changes.outputs.code_changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repo
@@ -45,7 +63,8 @@ jobs:
 
   # Ensure tests pass
   test:
-    needs: static-analysis
+    needs: detect-changes
+    if: ${{ needs.detect-changes.outputs.code_changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repo
