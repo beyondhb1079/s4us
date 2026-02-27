@@ -20,7 +20,7 @@ Revamp the core User Experience to build trust and streamline the discovery feed
   - **Mobile:** Transitions to a full-screen modal to maximize legibility and accommodate text expansion.
 - **Trust Signals & Scannability:**
   - **Badge:** Use **"Information Verified"** (Datos Verificados) instead of AI branding. Place in a predictable, non-cluttering location with a distinct status color.
-  - **Labels:** Prioritize clearly legible labels in the detail view: **"Monto de la beca"** (Amount) and **"Fecha límite"** (Deadline).
+  - **Self-Explanatory Data:** In the compact Master cards, maintain the current icon-only representation for Amount and Deadline to preserve scan speed. Only add explicit text labels in the Detail view if the layout requires them for clarity (e.g., within a vertical list of requirements).
 - **Z-Index & Layers:** Audit the drawer's z-index to ensure it overlays the global Header and persistent actions without visual artifacts.
 
 ### B. Technical Debt & Bug Squash
