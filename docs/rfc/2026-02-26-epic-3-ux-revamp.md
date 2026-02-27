@@ -15,26 +15,28 @@ Revamp the core User Experience to build trust and streamline the discovery feed
 
 ### A. Master-Detail Feed Revamp
 
-- Shift from full inline rendering on the main feed to a clean Master-Detail layout.
-- **The Feed (Master):** Show compact, easily scannable scholarship cards highlighting only the name, amount, and deadline.
-- **The Detail View:** Clicking a card opens a focused view (either a secondary slide-over pane or a focused modal) containing the full scholarship `description` and `requirements`.
-- **Trust Signals:** Add "Verified by AI" or "Last Updated" metadata badges to the cards to foster user trust and signal active platform maintenance.
+- **Responsive Drawer (MUI):**
+  - **Desktop:** A slide-over pane that keeps the scholarship list partially visible to maintain user context.
+  - **Mobile:** Transitions to a full-screen modal to maximize legibility and accommodate text expansion.
+- **Trust Signals & Scannability:**
+  - **Badge:** Use **"Information Verified"** (Datos Verificados) instead of AI branding. Place in a predictable, non-cluttering location with a distinct status color.
+  - **Labels:** Prioritize clearly legible labels in the detail view: **"Monto de la beca"** (Amount) and **"Fecha límite"** (Deadline).
+- **Z-Index & Layers:** Audit the drawer's z-index to ensure it overlays the global Header and persistent actions without visual artifacts.
 
 ### B. Technical Debt & Bug Squash
 
-- Resolve long-standing UI/UX backlog items identified in the project audit:
-  - Fix non-clickable links on scholarship cards (#1266)
-  - Resolve array sorting bugs on the feed (#1268)
-  - Address general layout/overflow issues on mobile viewports.
+- **Non-clickable links (#1266):** Implement `e.stopPropagation()` on internal interactive elements (like the website link) to prevent the card-click handler from firing.
+- **Array Sorting (#1268):** Perform non-destructive sorting in the `ScholarshipList` component using `[...list].sort()` to prevent state mutation bugs.
+- **Scroll Preservation:** Ensure opening/closing the Detail view does not reset the scroll position of the Master Feed.
 
 ## 4. Work Breakdown (Acceptance Criteria)
 
 1. **Frontend Specialist / UX Engineer:**
-   - Implement the Master-Detail container component.
-   - Redesign the scholarship cards to be compact and include trust badges.
-   - Resolve the active UI bug tickets (#1266, #1268).
+   - Implement the Master-Detail container using **Responsive Drawer (MUI)**.
+   - Redesign cards with compact "Information Verified" badges.
+   - Resolve bugs #1266 and #1268 using the defined non-destructive strategies.
 2. **QA Explorer:**
-   - Audit the new feed for layout shifts across desktop and mobile.
-   - Test the new detail modal/pane for proper focus trapping and screen reader accessibility (A11y).
+   - **A11y Audit:** Verify focus trapping within the drawer, `Esc` key support, and `aria-modal="true"`.
+   - **Stability Test:** Verify feed scroll position preservation and mobile-to-desktop viewport transitions.
 3. **Inclusion Officer:**
-   - Verify the trust badges and UX copy maintain a supportive tone and do not inadvertently alienate users.
+   - Audit UX copy for "Parent Co-Pilot" persona, ensuring "Information Verified" builds trust without technical anxiety.
