@@ -27,11 +27,11 @@ jobs:
           node-version: '22'
           cache: 'yarn'
 
-      - run: yarn install --frozen-lockfile && yarn build
+      - run: yarn install --frozen-lockfile && yarn build --mode staging
 
       # Generates the Preview URL for the QA Explorer
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DREAMERSCHOLARS }}
-          projectId: dreamerscholars
+          projectId: dreamerscholars-staging
