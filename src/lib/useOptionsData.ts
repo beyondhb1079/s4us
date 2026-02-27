@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import { School, SchoolJSON } from '../types/School';
 
 interface OptionsData {
@@ -26,31 +27,33 @@ export default function useOptionsData(): OptionsData {
 
     let cancelled = false;
 
+    const fetchSchools = async () => {
+      try {
+        const storage = getStorage();
+        const schoolsRef = ref(storage, 'data/schools.json');
+        const url = await getDownloadURL(schoolsRef);
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('CDN fetch failed');
+        const data: SchoolJSON[] = await response.json();
+        return data.map((s) => ({
+          name: s.n,
+          state: s.s,
+          url: s.u,
+        }));
+      } catch (error) {
+        console.error('Error fetching schools from storage:', error);
+        // Fallback to local
+        const response = await fetch('/data/schools.json');
+        const data: School[] = await response.json();
+        return data;
+      }
+    };
+
     Promise.all([
       cachedMajors
         ? Promise.resolve(cachedMajors)
         : fetch('/data/majors.json').then((r) => r.json()),
-      cachedSchools
-        ? Promise.resolve(cachedSchools)
-        : fetch(
-            'https://firebasestorage.googleapis.com/v0/b/dreamerscholars.appspot.com/o/data%2Fschools.json?alt=media',
-          )
-            .then((r) => {
-              if (!r.ok) throw new Error('CDN fetch failed');
-              return r.json();
-            })
-            .then((data: SchoolJSON[]) =>
-              data.map((s) => ({
-                name: s.n,
-                state: s.s,
-                url: s.u,
-              })),
-            )
-            .catch(() =>
-              fetch('/data/schools.json')
-                .then((r) => r.json())
-                .then((data: School[]) => data),
-            ),
+      cachedSchools ? Promise.resolve(cachedSchools) : fetchSchools(),
     ]).then(([m, s]) => {
       if (cancelled) return;
       cachedMajors = m;
