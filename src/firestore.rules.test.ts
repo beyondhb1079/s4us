@@ -42,7 +42,11 @@ let adminScholarships: CollectionReference<DocumentData>;
 beforeAll(() =>
   initializeTestEnvironment({
     projectId: 'firestore-rules-test',
-    firestore: { rules: readFileSync('firestore.rules', 'utf8') },
+    firestore: {
+      host: '127.0.0.1',
+      port: 8080,
+      rules: readFileSync('firestore.rules', 'utf8'),
+    },
   }).then((env) => {
     setLogLevel('error'); // Hide statements about expected rejections.
     testEnv = env;
@@ -209,4 +213,129 @@ describe('validation rules reject scholarship when', () => {
     test('genders is not a list', () =>
       assertFails(createDoc({ requirements: { genders: 'MALE' } })));
   });
+});
+
+describe('suggestions_queue rules', () => {
+  test('denies read from unauthenticated users', () =>
+    assertFails(
+      getDoc(
+        doc(
+          collection(
+            testEnv.unauthenticatedContext().firestore(),
+            'suggestions_queue',
+          ),
+          '123',
+        ),
+      ),
+    ));
+
+  test('denies read from authenticated users', () =>
+    assertFails(
+      getDoc(
+        doc(
+          collection(
+            testEnv.authenticatedContext('alice').firestore(),
+            'suggestions_queue',
+          ),
+          '123',
+        ),
+      ),
+    ));
+
+  test('denies write from unauthenticated users', () =>
+    assertFails(
+      setDoc(
+        doc(
+          collection(
+            testEnv.unauthenticatedContext().firestore(),
+            'suggestions_queue',
+          ),
+          '123',
+        ),
+        { url: 'test.com' },
+      ),
+    ));
+
+  test('denies write from authenticated users', () =>
+    assertFails(
+      setDoc(
+        doc(
+          collection(
+            testEnv.authenticatedContext('alice').firestore(),
+            'suggestions_queue',
+          ),
+          '123',
+        ),
+        { url: 'test.com' },
+      ),
+    ));
+});
+
+describe('pending_approval rules', () => {
+  test('denies read from unauthenticated users', () =>
+    assertFails(
+      getDoc(
+        doc(
+          collection(
+            testEnv.unauthenticatedContext().firestore(),
+            'pending_approval',
+          ),
+          '123',
+        ),
+      ),
+    ));
+
+  test('denies read from authenticated users', () =>
+    assertFails(
+      getDoc(
+        doc(
+          collection(
+            testEnv.authenticatedContext('alice').firestore(),
+            'pending_approval',
+          ),
+          '123',
+        ),
+      ),
+    ));
+
+  test('allows read from admin users', () =>
+    assertSucceeds(
+      getDoc(
+        doc(
+          collection(
+            testEnv.authenticatedContext('admin', { admin: true }).firestore(),
+            'pending_approval',
+          ),
+          '123',
+        ),
+      ),
+    ));
+
+  test('denies write from authenticated users', () =>
+    assertFails(
+      setDoc(
+        doc(
+          collection(
+            testEnv.authenticatedContext('alice').firestore(),
+            'pending_approval',
+          ),
+          '123',
+        ),
+        { url: 'test.com' },
+      ),
+    ));
+
+  test('allows write from admin users', () =>
+    assertSucceeds(
+      setDoc(
+        doc(
+          collection(
+            testEnv.authenticatedContext('admin', { admin: true }).firestore(),
+            'pending_approval',
+          ),
+          '123',
+        ),
+        { url: 'test.com' },
+      ),
+    ));
 });
