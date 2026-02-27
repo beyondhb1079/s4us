@@ -33,7 +33,7 @@ jobs:
               .then((response) =>
                 response.data
                   .filter((r) => r.state == 'APPROVED')
-                  .filter((r) => (r.user.login = 'github-actions[bot]')),
+                  .filter((r) => (r.user.login === 'github-actions[bot]')),
               )
               .then((approvals) => {
                 if (approvals.length !== 0) {
