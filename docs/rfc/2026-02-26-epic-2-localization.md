@@ -27,20 +27,23 @@ Our localization strategy strictly dictates **what we translate** and **what we 
 
 ### B. Implementation Steps
 
-1. **Audit & Extract:** Identify any remaining hardcoded English strings in the React components (especially newer components like `/admin` and global navigation components).
-2. **Translation File Updates:** Add the missing keys to the existing JSON files in `public/locales/en/` and provide accurate Spanish translations in `public/locales/es/`.
-3. **UI Integration:** Ensure the `t()` function from `react-i18next` wraps all newly identified hardcoded strings.
-4. **Language Toggle:** Build a visible Language Toggle (EN/ES) in the User Navigation bar so users can manually override automatic browser detection.
+1. **Audit & Extract:** Use static code analysis (regex) to identify hardcoded English strings in JSX (focusing on `/admin` and global navigation).
+2. **Translation File Updates:**
+   - Update `public/locales/en/` and `public/locales/es/`.
+   - **Persona-Driven Correction:** Purge anglicisms. Specifically, correct `"submit": "Submitir"` in `common.json` to **"Enviar"** or **"Compartir"**. Use inviting labels like "Compartir enlace de beca".
+3. **UI Integration:** Wrap strings in `t()`. Leverage TypeScript strict typing for `t` to programmatically prevent dynamic data (scholarship names/descriptions) from being passed to the translation engine.
+4. **Language Toggle:** Use `i18n.changeLanguage()`. Combined with existing `Suspense` in `App.tsx`, this ensures immediate UI updates without a refresh.
 
 ## 4. Work Breakdown (Acceptance Criteria)
 
 1. **Frontend Specialist:**
-   - Audit the application for missing string extractions (specifically `/admin` and global navigation).
-   - Update `public/locales/en/` and `public/locales/es/` with the missing UI translations.
-   - Enforce the "App Shell Only" rule; ensure dynamic scholarship `name` and `description` fields remain untranslated.
-   - Build/verify the EN/ES toggle in the top navigation bar.
+   - Audit application for missing string extractions via regex.
+   - Implement EN/ES toggle in the global `Header` with session persistence in `localStorage`.
+   - Enforce "App Shell Only" via TypeScript strict resource types for `i18next`.
 2. **Inclusion Officer:**
-   - Review the newly added Spanish UI copy to ensure it aligns with the culturally supportive "Parent Co-Pilot" persona.
+   - Review Spanish copy for "Parent Co-Pilot" persona (supportive vs instructional tone).
+   - Ensure proper nouns (e.g., "QuestBridge") remain in English for searchability.
 3. **QA Explorer:**
-   - Test the Language Toggle for immediate UI updates without a hard refresh.
-   - Verify layout stability, as Spanish text often expands by 20-30% compared to English, ensuring the new UI elements do not break.
+   - **Visual Regression:** Perform "mobile squint tests" (320px-375px) for text expansion overflow in Navigation and Filter Chips.
+   - **Stress Test:** Pseudo-localization testing with 30% longer strings.
+   - **Persistence:** Verify deep linking with optional `?lng=es` query parameter support.
