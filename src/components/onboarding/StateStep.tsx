@@ -1,9 +1,11 @@
 import React from 'react';
 import { Box, Typography, Autocomplete, TextField } from '@mui/material';
 import { useFormikContext } from 'formik';
+import { useTranslation } from 'react-i18next';
 import { STATES } from '../../types/States';
 
 export default function StateStep() {
+  const { t } = useTranslation('onboarding');
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { values, setFieldValue } = useFormikContext<any>();
   const currentStates: string[] = values.states || [];
@@ -11,11 +13,10 @@ export default function StateStep() {
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
-        Where do you live or plan to go to school?
+        {t('stateStep.title')}
       </Typography>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-        Many scholarships are restricted to residents or students of specific
-        states.
+        {t('stateStep.description')}
       </Typography>
 
       <Autocomplete
@@ -35,8 +36,8 @@ export default function StateStep() {
             // eslint-disable-next-line react/jsx-props-no-spreading
             {...params}
             variant="outlined"
-            label="Select States"
-            placeholder="States"
+            label={t('stateStep.labels.selectStates')}
+            placeholder={t('stateStep.labels.placeholder')}
           />
         )}
       />

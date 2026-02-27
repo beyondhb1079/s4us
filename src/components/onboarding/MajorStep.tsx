@@ -7,9 +7,11 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { useFormikContext } from 'formik';
+import { useTranslation } from 'react-i18next';
 import useOptionsData from '../../lib/useOptionsData';
 
 export default function MajorStep() {
+  const { t } = useTranslation('onboarding');
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { values, setFieldValue } = useFormikContext<any>();
   const { majors, loading } = useOptionsData();
@@ -22,11 +24,10 @@ export default function MajorStep() {
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
-        What is your intended field of study?
+        {t('majorStep.title')}
       </Typography>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-        Search for your intended major or career path. You can select multiple
-        fields.
+        {t('majorStep.description')}
       </Typography>
 
       <Autocomplete
@@ -42,8 +43,8 @@ export default function MajorStep() {
             // eslint-disable-next-line react/jsx-props-no-spreading
             {...params}
             variant="outlined"
-            label="Select Majors/Fields"
-            placeholder="Computer Science, Nursing, etc."
+            label={t('majorStep.labels.selectMajors')}
+            placeholder={t('majorStep.labels.placeholder')}
           />
         )}
       />
