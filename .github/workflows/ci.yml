@@ -36,4 +36,4 @@ jobs:
           export GOOGLE_APPLICATION_CREDENTIALS="$(pwd)/gcp-sa.json"
 
           # 3. Deploy using the local CLI you already downloaded via Yarn!
-          npx firebase deploy --only hosting,firestore --project dreamerscholars
+          npx firebase deploy --only hosting:dreamerscholars,firestore --project dreamerscholars
