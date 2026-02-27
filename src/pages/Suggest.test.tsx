@@ -3,9 +3,9 @@ import { render, screen } from '@testing-library/react';
 import Suggest from './Suggest';
 
 // Mock the translations
-jest.mock('react-i18next', () => ({
+vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string, defaultText: string) => defaultText,
+    t: (key: string, defaultText: string) => defaultText || key,
   }),
 }));
 
