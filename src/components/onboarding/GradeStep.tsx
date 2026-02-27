@@ -1,21 +1,24 @@
 import React from 'react';
 import { Box, Typography, Chip } from '@mui/material';
 import { useFormikContext } from 'formik';
-
-const GRADE_LEVELS = [
-  { value: 8, label: '8th Grade' },
-  { value: 9, label: 'Freshman (HS)' },
-  { value: 10, label: 'Sophomore (HS)' },
-  { value: 11, label: 'Junior (HS)' },
-  { value: 12, label: 'Senior (HS)' },
-  { value: 13, label: 'College Freshman' },
-  { value: 14, label: 'College Sophomore' },
-  { value: 15, label: 'College Junior' },
-  { value: 16, label: 'College Senior' },
-  { value: 17, label: 'Graduate Student' },
-];
+import { useTranslation } from 'react-i18next';
 
 export default function GradeStep() {
+  const { t } = useTranslation('onboarding');
+
+  const GRADE_OPTIONS = [
+    { value: 8, label: t('gradeStep.levels.grade8') },
+    { value: 9, label: t('gradeStep.levels.freshmanHS') },
+    { value: 10, label: t('gradeStep.levels.sophomoreHS') },
+    { value: 11, label: t('gradeStep.levels.juniorHS') },
+    { value: 12, label: t('gradeStep.levels.seniorHS') },
+    { value: 13, label: t('gradeStep.levels.collegeFreshman') },
+    { value: 14, label: t('gradeStep.levels.collegeSophomore') },
+    { value: 15, label: t('gradeStep.levels.collegeJunior') },
+    { value: 16, label: t('gradeStep.levels.collegeSenior') },
+    { value: 18, label: t('gradeStep.levels.graduateStudent') },
+  ];
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { values, setFieldValue } = useFormikContext<any>();
   const currentGrades: number[] = values.grades || [];
@@ -37,15 +40,14 @@ export default function GradeStep() {
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
-        What is your current education level?
+        {t('gradeStep.title')}
       </Typography>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-        Select your upcoming or current grade level to see scholarships you are
-        eligible for. You can select multiple.
+        {t('gradeStep.description')}
       </Typography>
 
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-        {GRADE_LEVELS.map((grade) => (
+        {GRADE_OPTIONS.map((grade) => (
           <Chip
             key={grade.value}
             label={grade.label}

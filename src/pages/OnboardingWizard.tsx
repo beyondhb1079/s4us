@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import useAuth from '../lib/useAuth';
 import {
   Box,
@@ -19,8 +20,6 @@ import GradeStep from '../components/onboarding/GradeStep';
 import StateStep from '../components/onboarding/StateStep';
 import MajorStep from '../components/onboarding/MajorStep';
 import EthnicityStep from '../components/onboarding/EthnicityStep';
-
-const steps = ['Education Level', 'Location', 'Field of Study', 'Demographics'];
 
 interface OnboardingValues {
   grades: number[];
@@ -44,7 +43,15 @@ const validationSchema = yup.object({
 });
 
 export default function OnboardingWizard() {
+  const { t } = useTranslation('onboarding');
   const [activeStep, setActiveStep] = useState(0);
+
+  const steps = [
+    t('wizard.steps.education'),
+    t('wizard.steps.location'),
+    t('wizard.steps.fieldOfStudy'),
+    t('wizard.steps.demographics'),
+  ];
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
@@ -110,14 +117,14 @@ export default function OnboardingWizard() {
         variant="outlined"
         sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
         <Typography component="h1" variant="h4" align="center" gutterBottom>
-          Build Your Profile
+          {t('wizard.title')}
         </Typography>
         <Typography
           variant="body1"
           align="center"
           color="text.secondary"
           sx={{ mb: 4 }}>
-          Tell us about yourself to unlock a personalized scholarship feed!
+          {t('wizard.description')}
         </Typography>
 
         <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
@@ -139,7 +146,7 @@ export default function OnboardingWizard() {
               <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
                 {activeStep !== 0 && (
                   <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
-                    Back
+                    {t('wizard.buttons.back')}
                   </Button>
                 )}
                 <Button
@@ -150,9 +157,9 @@ export default function OnboardingWizard() {
                   {isSubmitting ? (
                     <CircularProgress size={24} />
                   ) : isLastStep ? (
-                    'Finish'
+                    t('wizard.buttons.finish')
                   ) : (
-                    'Next'
+                    t('wizard.buttons.next')
                   )}
                 </Button>
               </Box>

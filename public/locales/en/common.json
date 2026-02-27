@@ -19,6 +19,7 @@
   "any": "Any",
   "currentlySharing": "Currently sharing",
   "dashboard": "Dashboard",
+  "errors": {},
   "footer": {
     "about": "About",
     "contact": "Contact",
@@ -32,6 +33,7 @@
     "terms": "Terms"
   },
   "general": "General",
+  "labels": {},
   "lookingForScholarships": "Looking for scholarships?",
   "more": "more",
   "moreScholarships": "More Scholarships",
