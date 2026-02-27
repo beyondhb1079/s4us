@@ -19,6 +19,15 @@ jobs:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: ubuntu-latest
     steps:
+      - name: Identity Check
+        run: |
+          # If the secret is a JSON key, we can parse the client_email directly
+          echo "Checking Service Account Email..."
+          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' | jq -r '.client_email' || echo "Secret is not a standard JSON key."
+          
+          # Check which project ID is actually being targeted
+          echo "Target Project ID:"
+          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' | jq -r '.project_id'
       - uses: actions/checkout@v4
 
       # Added Node 22 and Yarn caching so agents get their URLs faster
