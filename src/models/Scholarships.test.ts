@@ -466,6 +466,19 @@ test('Scholarships.list - filters by searchQuery', async () => {
   );
 });
 
+test('Scholarships.list - filters by searchQuery (load all)', async () => {
+  await Promise.all([arts.save(), engineering.save(), socialSciences.save()]);
+
+  const got = await Scholarships.list({
+    searchQuery: 'engineering',
+  });
+
+  const want = [engineering];
+  expect(got.results.map(extractName).sort()).toEqual(
+    want.map(extractName).sort(),
+  );
+});
+
 test('scholarships.list - hides expired by default', async () => {
   await Promise.all([expired.save(), today.save(), tomorrow.save()]);
 
