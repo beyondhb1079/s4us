@@ -19,7 +19,6 @@ Our localization strategy strictly dictates **what we translate** and **what we 
 
 - **We DO Translate:**
   - Static App Shell UI (Navigation, Footers, Buttons, Modals, Forms).
-  - Admin Dashboard UI (`/admin`).
   - Pre-defined Database Enums (e.g., specific `requirements` categories or dropdown values).
 - **We DO NOT Translate:**
   - Dynamic user-generated or AI-scraped data, specifically the `name` and `description` of the scholarships.
@@ -27,18 +26,18 @@ Our localization strategy strictly dictates **what we translate** and **what we 
 
 ### B. Implementation Steps
 
-1. **Audit & Extract:** Use static code analysis (regex) to identify hardcoded English strings in JSX (focusing on `/admin` and global navigation).
+1. **Audit & Extract:** Use static code analysis (regex) to identify hardcoded English strings in JSX (focusing on global navigation and core landing pages).
 2. **Translation File Updates:**
    - Update `public/locales/en/` and `public/locales/es/`.
    - **Persona-Driven Correction:** Purge anglicisms. Specifically, correct `"submit": "Submitir"` in `common.json` to **"Enviar"** or **"Compartir"**. Use inviting labels like "Compartir enlace de beca".
 3. **UI Integration:** Wrap strings in `t()`. Leverage TypeScript strict typing for `t` to programmatically prevent dynamic data (scholarship names/descriptions) from being passed to the translation engine.
-4. **Language Toggle:** Use `i18n.changeLanguage()`. Combined with existing `Suspense` in `App.tsx`, this ensures immediate UI updates without a refresh.
+4. **Language Toggle (Audit):** Verify the existing `TranslationMenu.tsx` handles session persistence via `localStorage` (via `i18next-browser-languagedetector`). Ensure it is correctly placed in all layouts.
 
 ## 4. Work Breakdown (Acceptance Criteria)
 
 1. **Frontend Specialist:**
    - Audit application for missing string extractions via regex.
-   - Implement EN/ES toggle in the global `Header` with session persistence in `localStorage`.
+   - Refine existing `TranslationMenu` if session persistence is missing.
    - Enforce "App Shell Only" via TypeScript strict resource types for `i18next`.
 2. **Inclusion Officer:**
    - Review Spanish copy for "Parent Co-Pilot" persona (supportive vs instructional tone).
