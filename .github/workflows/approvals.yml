@@ -3,7 +3,7 @@ name: 'Approvals'
 on:
   pull_request:
     branches: [main]
-    paths-ignore: 
+    paths-ignore:
       - '**.md'
       - '**.json'
       - '.agents/**'
