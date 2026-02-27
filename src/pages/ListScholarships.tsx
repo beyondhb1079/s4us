@@ -73,33 +73,46 @@ function ListScholarships(): React.ReactElement {
     filterChips[`Min $${minAmount}`] = { minAmount: undefined };
   }
 
-  (majors as string[] | undefined)?.forEach((major: string) => {
-    filterChips[major] = {
-      majors: (majors as string[])?.filter((m: string) => major !== m),
-    };
-  });
-  (grades as GradeLevel[] | undefined)?.forEach((grade: GradeLevel) => {
-    filterChips[GradeLevelInfo.toString(grade)] = {
-      grades: (grades as GradeLevel[])?.filter((g: GradeLevel) => grade !== g),
-    };
-  });
-  (states as string[] | undefined)?.forEach((state: string) => {
-    filterChips[State.toString(state)] = {
-      states: (states as string[])?.filter((s: string) => state !== s),
-    };
-  });
-  (schools as string[] | undefined)?.forEach((school: string) => {
-    filterChips[school] = {
-      schools: (schools as string[])?.filter((s: string) => school !== s),
-    };
-  });
-  (ethnicities as Ethnicity[] | undefined)?.forEach((ethnicity: Ethnicity) => {
-    filterChips[EthnicityInfo.toString(ethnicity)] = {
-      ethnicities: (ethnicities as Ethnicity[])?.filter(
-        (e: Ethnicity) => ethnicity !== e,
-      ),
-    };
-  });
+  if (Array.isArray(majors)) {
+    const majorsArr = majors as string[];
+    majorsArr.forEach((major) => {
+      filterChips[major] = {
+        majors: majorsArr.filter((m) => major !== m),
+      };
+    });
+  }
+  if (Array.isArray(grades)) {
+    const gradesArr = grades as GradeLevel[];
+    gradesArr.forEach((grade) => {
+      filterChips[GradeLevelInfo.toString(grade)] = {
+        grades: gradesArr.filter((g) => grade !== g),
+      };
+    });
+  }
+  if (Array.isArray(states)) {
+    const statesArr = states as string[];
+    statesArr.forEach((state) => {
+      filterChips[State.toString(state)] = {
+        states: statesArr.filter((s) => state !== s),
+      };
+    });
+  }
+  if (Array.isArray(schools)) {
+    const schoolsArr = schools as string[];
+    schoolsArr.forEach((school) => {
+      filterChips[school] = {
+        schools: schoolsArr.filter((s) => school !== s),
+      };
+    });
+  }
+  if (Array.isArray(ethnicities)) {
+    const ethnicitiesArr = ethnicities as Ethnicity[];
+    ethnicitiesArr.forEach((ethnicity) => {
+      filterChips[EthnicityInfo.toString(ethnicity)] = {
+        ethnicities: ethnicitiesArr.filter((e) => ethnicity !== e),
+      };
+    });
+  }
 
   const scrollTrigger = useScrollTrigger();
 

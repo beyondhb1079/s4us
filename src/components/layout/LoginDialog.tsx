@@ -80,13 +80,10 @@ export default function LoginDialog(): React.JSX.Element {
         </Box>
         <Grid container spacing={2} alignItems="center">
           <Grid
-            container
-            xs={12}
-            sm={6}
+            size={{ xs: 12, sm: 6 }}
             sx={{
               color: 'background.paper',
               bgcolor: 'primary.main',
-              display: 'block',
             }}>
             <DialogTitle id="responsive-dialog-brand">
               DreamScholars
@@ -111,7 +108,7 @@ export default function LoginDialog(): React.JSX.Element {
             </DialogContentText>
           </Grid>
 
-          <Grid container xs={12} sm={6} sx={{ pb: 4, display: 'block' }}>
+          <Grid size={{ xs: 12, sm: 6 }} sx={{ pb: 4 }}>
             <DialogTitle
               id="responsive-dialog-title"
               sx={{ textAlign: 'center' }}>
