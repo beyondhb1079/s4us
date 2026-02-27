@@ -73,46 +73,26 @@ function ListScholarships(): React.ReactElement {
     filterChips[`Min $${minAmount}`] = { minAmount: undefined };
   }
 
-  if (Array.isArray(majors)) {
-    const majorsArr = majors as string[];
-    majorsArr.forEach((major) => {
-      filterChips[major] = {
-        majors: majorsArr.filter((m) => major !== m),
+  const addFilterChips = <T,>(
+    items: unknown,
+    categoryKey: string,
+    formatter: (item: T) => string = String,
+  ) => {
+    if (!Array.isArray(items)) return;
+
+    const arr = items as T[];
+    arr.forEach((item) => {
+      filterChips[formatter(item)] = {
+        [categoryKey]: arr.filter((i) => i !== item) as string[] | number[],
       };
     });
-  }
-  if (Array.isArray(grades)) {
-    const gradesArr = grades as GradeLevel[];
-    gradesArr.forEach((grade) => {
-      filterChips[GradeLevelInfo.toString(grade)] = {
-        grades: gradesArr.filter((g) => grade !== g),
-      };
-    });
-  }
-  if (Array.isArray(states)) {
-    const statesArr = states as string[];
-    statesArr.forEach((state) => {
-      filterChips[State.toString(state)] = {
-        states: statesArr.filter((s) => state !== s),
-      };
-    });
-  }
-  if (Array.isArray(schools)) {
-    const schoolsArr = schools as string[];
-    schoolsArr.forEach((school) => {
-      filterChips[school] = {
-        schools: schoolsArr.filter((s) => school !== s),
-      };
-    });
-  }
-  if (Array.isArray(ethnicities)) {
-    const ethnicitiesArr = ethnicities as Ethnicity[];
-    ethnicitiesArr.forEach((ethnicity) => {
-      filterChips[EthnicityInfo.toString(ethnicity)] = {
-        ethnicities: ethnicitiesArr.filter((e) => ethnicity !== e),
-      };
-    });
-  }
+  };
+
+  addFilterChips<string>(majors, 'majors');
+  addFilterChips<GradeLevel>(grades, 'grades', GradeLevelInfo.toString);
+  addFilterChips<string>(states, 'states', State.toString);
+  addFilterChips<string>(schools, 'schools');
+  addFilterChips<Ethnicity>(ethnicities, 'ethnicities', EthnicityInfo.toString);
 
   const scrollTrigger = useScrollTrigger();
 
