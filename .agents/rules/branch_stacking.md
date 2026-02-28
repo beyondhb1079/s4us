@@ -1,19 +1,14 @@
 ---
 trigger: always_on
-description: Branching strategy, isolated work, and Epic feature branch rules.
+description: Mandatory rules for Branch Isolation and Shared Epic Workflows.
 ---
 
----
+# Branch Isolation & Epic Workflow
 
-## description: Branching strategy, isolated work, and Stacked PR rules to prevent idle time.
+You are strictly **forbidden** from pushing changes directly to the `main` branch, and you are **forbidden** from creating "Stacked" PRs (branching off an unmerged feature branch). All branches must originate from `main`.
 
-# Branch Isolation & Stacked Branch Rule
-
-You are strictly **forbidden** from pushing changes directly to the `main` branch. All work must happen on isolated feature branches and be merged via Pull Requests.
-
-## 1. Independent Changes
-
-For new, independent features or bug fixes, always branch off the latest `main`:
+## 1. Independent Features (Standalone Tasks)
+For isolated bug fixes or minor features, branch directly from the latest `main`:
 
 ```bash
 git checkout main
@@ -21,24 +16,19 @@ git pull origin main
 git checkout -b ag/feature-name
 ```
 
-_Note: Prefix branches created by the agent with `ag/`._
+_Note: Prefix standalone branches with `ag/`._
 
-## 2. Epic Branches & Stacked PRs (Never Sit Idle)
+## 2. Epic Execution (Shared Branches)
 
-When working on an Epic that spans multiple PRs, **do not wait** for the user to review and merge your current PR before moving on. Keep the momentum going using Stacked Branches.
+When executing tasks that belong to a larger Epic, **do not** create individual branches for each phase. You must use the shared Epic branch defined by the Orchestrator.
 
-1. Work on the first logical piece of the epic on `ag/epic-phase-1` (branched from `main`).
-2. Open a PR for `ag/epic-phase-1` targeting `main`.
-3. Immediately branch off your _unmerged_ branch for the next phase:
+1. Fetch and checkout the shared Epic branch (e.g., `git checkout epic-1-hybrid-queue`).
+2. Sync the branch with remote (`git pull origin epic-1-hybrid-queue`).
+3. Commit your specific task directly to this branch.
+4. Push your changes.
+5. Do not open a PR until the ENTIRE Epic is completed by all assigned agents.
 
-   ```bash
-   git checkout ag/epic-phase-1
-   git checkout -b ag/epic-phase-2
-   ```
+## 3. The "No Stacking" Rule
 
-4. Open a PR for `ag/epic-phase-2` targeting `ag/epic-phase-1` as the base.
-5. As PRs get merged into `main`, rebase your subsequent branches on `main` and update their base in GitHub using `gh pr edit --base main`.
+Do not try to anticipate the next phase by branching off your current, unmerged work. If you are blocked waiting for a PR to merge into `main`, or waiting for another agent to finish their part of an Epic, you must **HALT**, notify the user, and wait. Do not attempt complex Git rebasing.
 
-## 3. Keep PRs Small
-
-Break down complex features (e.g., changes over 200 lines of complex logic) into smaller, reviewable chunks. Submit one chunk at a time via the Stacked Branch workflow outlined above.
