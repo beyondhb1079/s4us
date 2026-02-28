@@ -210,3 +210,56 @@ describe('validation rules reject scholarship when', () => {
       assertFails(createDoc({ requirements: { genders: 'MALE' } })));
   });
 });
+
+describe('users collection', () => {
+  test('allows read when reading own doc', () =>
+    assertSucceeds(
+      getDoc(
+        doc(
+          testEnv.authenticatedContext('alice').firestore(),
+          'users',
+          'alice',
+        ),
+      ),
+    ));
+
+  test('denies read when reading other user doc', () =>
+    assertFails(
+      getDoc(
+        doc(testEnv.authenticatedContext('john').firestore(), 'users', 'alice'),
+      ),
+    ));
+
+  test('allows write with valid preferences', () =>
+    assertSucceeds(
+      setDoc(
+        doc(
+          testEnv.authenticatedContext('alice').firestore(),
+          'users',
+          'alice',
+        ),
+        {
+          preferences: {
+            grades: [9],
+            states: ['CA'],
+            majors: [],
+            ethnicities: [],
+          },
+        },
+      ),
+    ));
+
+  test('denies write with invalid preferences', () =>
+    assertFails(
+      setDoc(
+        doc(
+          testEnv.authenticatedContext('alice').firestore(),
+          'users',
+          'alice',
+        ),
+        {
+          preferences: { grades: [1] },
+        },
+      ),
+    ));
+});
