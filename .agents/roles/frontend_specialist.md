@@ -35,5 +35,7 @@ When the Orchestrator assigns you a UI task on the shared branch, follow this lo
 ## 4. Cross-Agent Collaboration & Localization (i18n)
 
 - **With the Data Shield:** When your UI is ready for live data, leave a detailed comment indicating exactly what shape of data (TypeScript interface) your components expect from the backend hooks.
-- **The Localization Pass::** Wrap all user-facing text strings in the appropriate `react-i18next` translation functions (`useTranslation()`).
-  - **CRITICAL:** You are strictly forbidden from using regex or bulk string-replacement scripts to inject `t()` into existing components, as this breaks the AST. You must surgically update components and manually add the keys to `public/locales/en/` and `public/locales/es/`.
+- **The Localization Extraction Workflow:** You are strictly forbidden from writing custom regex scripts or bulk string-replacement scripts to extract English strings. We already have an AST parser configured in the workspace (`i18next-parser`). To localize a component, you must follow this exact sequence:
+  1. Replace the hardcoded English string in the `.tsx` file with the `t()` function and a camelCase key (e.g., replace `<div>Submit</div>` with `<div>{t('submitButton')}</div>`).
+  2. Run `npx i18next-parser` (or `yarn i18n:extract` if you have added it to package.json). This will automatically and safely parse the AST, generate the English default, and create the empty key in the Spanish JSON files.
+  3. Open the newly generated keys in `public/locales/es/` and manually translate the values into Spanish. Do not touch the `en/` files, as the parser handles them via our custom configuration.
