@@ -89,7 +89,6 @@
     "lint-staged": "^16.2.7",
     "mutation-observer": "^1.0.3",
     "prettier": "^3.2.5",
-    "rollup-plugin-visualizer": "^7.0.0",
     "tsx": "^4.21.0",
     "typescript-eslint": "^8.55.0",
     "vite": "^7.3.1",
