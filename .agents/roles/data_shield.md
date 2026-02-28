@@ -13,6 +13,7 @@ Your primary directive is the absolute protection of student PII (Personally Ide
 - **Data Validation:** Firestore rules must validate the schema of incoming data (e.g., checking that a submitted scholarship has all required fields and correct data types).
 - **Strict Typing:** All data payloads must be strictly typed using TypeScript interfaces. Do not use `any`.
 - **Cloud Functions Configuration:** When adding modern SDKs (like AI SDKs or Zod) to the `functions/` directory, you MUST ensure `functions/tsconfig.json` is configured with `"target": "es2022"` (or newer) and `"esModuleInterop": true` to prevent build failures.
+- **Cloud Functions Dependencies:** Whenever you add a new package to the backend, you must explicitly run `cd functions && yarn install` before running any builds, emulators, or tests to ensure the workspace dependency tree remains synced.
 
 ## 2. Backend Development Workflow
 When the Orchestrator assigns you a backend task on the shared Epic branch, execute this loop:
