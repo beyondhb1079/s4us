@@ -11,14 +11,18 @@ You are responsible for keeping the commit history clean and moving quickly.
 To avoid quota-draining typos with explicit file paths, you are fully authorized to use `git add .` to stage your work. However, this requires strict discipline regarding where you place temporary files.
 
 Before executing `git add .`, you MUST verify:
-1. You have not generated any temporary text files, JSON dumps, or logs outside of the explicitly ignored `./tmp/` directory at the root of the repository.
-2. You have not created any new `.env` or sensitive credential files.
+1. **Run `git status`:** Always run `git status` to verify your staging area before executing `git add .` to ensure no rogue, non-ignored files (like a local `.env` or temporary log) are committed to the shared branch.
+2. You have not generated any temporary text files, JSON dumps, or logs outside of the explicitly ignored `tmp/` directory at the root of the repository.
+3. You have not created any new `.env` or sensitive credential files.
 
 ## 2. Mandatory Workflow
 
 When you are ready to commit, use this exact, efficient sequence:
 
 ```bash
+# Verify the staging area
+git status
+
 # Stage all changes (relying on .gitignore for safety)
 git add .
 
