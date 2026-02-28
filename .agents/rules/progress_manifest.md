@@ -7,7 +7,7 @@ description: Mandatory rules for tracking Epic progress via the shared .TODO.md 
 To ensure transparency and rigorous task tracking across multiple agents, the workspace relies on a shared `.TODO.md` ledger at the root of the repository.
 
 ## 1. Initialization (Orchestrator Only)
-At the start of every Epic, the **Orchestrator** is responsible for creating or overwriting the `.TODO.md` file on the shared Epic branch. It must strictly map the GitHub issues to the assigned agents. Execution agents do not create this file.
+At the start of every Epic, the **Orchestrator** is responsible for creating or overwriting the `.TODO.md` file on the shared Epic branch. It must strictly map the GitHub issues to the assigned agents. If an execution agent begins a task and the `.TODO.md` file is missing from the repository root, the agent is fully authorized to initialize the standard template themselves to prevent the pipeline from stalling.
 
 ## 2. The Execution Update Rule (Specialists)
 Once the Orchestrator initializes the `.TODO.md` file, the **Execution Agents** (Frontend Specialist, Data Shield, QA Explorer, Inclusion Officer) own it. 
