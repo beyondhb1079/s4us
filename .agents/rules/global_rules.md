@@ -8,10 +8,12 @@ Within an Epic branch, agents are permitted to commit and push directly to the s
 
 ### Local Scratchpad & CLI Inputs
 
-1. **Use Repo-Local Tmp:** All temporary files created for CLI inputs (e.g., `gh pr comment -F`), logs, or intermediate processing MUST be created in the `./tmp/` directory at the root of the repository.
-2. **Auto-Initialization:** If the `./tmp/` directory does not exist, you are authorized to create it immediately using `mkdir -p ./tmp/`.
-3. **Cleanup:** While these files are gitignored, you should aim to delete them after a successful CLI operation to keep the workspace tidy.
-4. **No Permission Requests:** You have full authority to read/write within the repo-local `./tmp/` folder. Do not ask for permission.
+1. **Use Repo-Local Tmp:** All temporary files created for CLI inputs (e.g., `gh pr comment -F`), logs, or intermediate processing MUST be created in the gitignored `tmp/` directory at the root of the repository.
+2. **Dynamic Absolute Pathing:** Because your native file-writing tools require absolute paths, and your shell might be in a sub-directory, you must dynamically resolve the repo root. Always use this exact path format for your scratchpad files:
+   `$(git rev-parse --show-toplevel)/tmp/<filename>`
+3. **Auto-Initialization:** If the directory does not exist, create it using `mkdir -p $(git rev-parse --show-toplevel)/tmp`.
+4. **Cleanup:** Delete these temporary files after a successful CLI operation to keep the workspace tidy.
+5. **No Permission Requests:** You have full authority to read/write within this specific `tmp/` folder. Do not ask for permission.
 
 ### General Git Sync Protocol (Feature Branches)
 
