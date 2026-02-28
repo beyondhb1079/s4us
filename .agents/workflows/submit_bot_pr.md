@@ -19,12 +19,12 @@ yarn build
 
 ## Step 2: Check for Merge Conflicts
 
-Avoid creating PRs with merge conflicts by pulling the latest changes from the base branch before you push.
+Avoid creating PRs with merge conflicts by syncing the latest changes from the base branch before you push. **You are strictly forbidden from using `git rebase`.** Always use a standard merge.
 
 ```bash
 git fetch origin main
-git rebase origin/main
-# If conflicts occur, resolve them, `git add .`, and execute `git rebase --continue`
+git merge origin/main
+# If conflicts occur, resolve the files manually, run `git add .`, and execute `git commit -m "chore: resolve merge conflicts with main"`
 ```
 
 ## Step 3: Push
@@ -58,13 +58,14 @@ gh pr checks --watch --interval 30
 
 Wait for the results. If `gh pr checks --watch` fails, use `gh run view --log-failed` to identify the specific error. Analyze the log and fix the issue locally.
 
-**CRITICAL**: Before force-pushing your fix, you must pull and rebase in case the user pushed manual corrections to your branch:
+**CRITICAL**: If you need to push a fix for a failing CI pipeline, do not amend previous commits or rebase. Create a new commit and merge any upstream changes safely:
 
-```
+```bash
 git add .
-git commit --amend --no-edit
-git pull --rebase origin <your-branch-name>
-git push --force-with-lease
+git commit -m "fix: address CI pipeline failures"
+git fetch origin <your-branch-name>
+git merge origin/<your-branch-name>
+git push origin HEAD
 ```
 
 Re-run the watch command until the PR is green.

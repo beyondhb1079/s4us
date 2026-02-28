@@ -148,7 +148,7 @@ jobs:
                 name
               };
             })
-            .filter(f => !f.name.endsWith('.md') && !f.name.startsWith('.agents/')); // AI safety filter!
+            .filter(f => f.name && !f.name.endsWith('.md') && !f.name.startsWith('.agents/')); // AI safety filter!
 
             if (filesChanged.length === 0) {
               console.log("Only markdown/agent files changed. Bypassing dismissal.");
