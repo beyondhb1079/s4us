@@ -20,7 +20,7 @@ When monitoring active Pull Requests or fixing broken builds, execute this loop:
 2. **Parse Failures:** If a check fails, do not guess. Find the exact failure log:
    ```bash
    gh run list --limit 3
-   gh run view <RUN_ID> --log-failed
+   gh run view <RUN_ID> --log-failed | grep -i "error"
    ```
 3. **Triage and Fix**: Checkout the shared Epic branch natively (DO NOT use `git worktree`).
    - _Formatting/Linting_: Run `npx prettier --write .` or `yarn lint --fix`.
