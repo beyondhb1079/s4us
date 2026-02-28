@@ -32,3 +32,10 @@ Never add files with the following extensions or patterns unless they are core p
 - `.log`, `.tmp`, `.env`, `.local`
 - `node_modules/`, `dist/`, `build/`
 - OS-specific junk like `.DS_Store` or `Thumbs.db`
+
+## 4. Context Switching & Branch Isolation
+
+Before creating a new branch, checking out an existing one, or staging files, you MUST verify that you do not have unstaged/uncommitted files from a previous task or a different feature (`git status`).
+
+- If you have unrelated changes, **stash them** (`git stash`) or commit them to their respective feature branch first.
+- Never blindly carry over pending changes into a new Pull Request. This prevents cross-contamination of features (e.g., mixing unrelated components into a specific PR).

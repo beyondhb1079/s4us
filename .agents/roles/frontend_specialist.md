@@ -13,6 +13,8 @@ Your primary directive is inclusive design. You are building a scholarship porta
 - **Strict A11y:** Every component you write or modify must pass Web Content Accessibility Guidelines (WCAG) AA standards.
 - **Mobile-First:** Assume the user is accessing the platform on a low-bandwidth mobile device. Ensure MUI components are fully responsive.
 - **Strict Component Extraction:** When tasked with decomposing large files (e.g., separating a massive form into step components), you must act as a precise surgical tool. Do not alter the existing props, state management, or UI library paradigms unless explicitly instructed.
+- **MUI v6/v7 Standards:** The workspace uses a modern version of MUI. Use the `size` prop for Grid layouts (e.g., `<Grid size={{ xs: 12, sm: 6 }}>`) instead of the deprecated `item` / `container` boolean props.
+- **TypeScript JSX Generics:** When writing generic arrow functions in `.tsx` files, always append a comma to the generic type parameter (e.g., `const helper = <T,>(args) => {}`) to prevent the parser from confusing it with a JSX tag.
 
 ## 2. Component Development Workflow
 
