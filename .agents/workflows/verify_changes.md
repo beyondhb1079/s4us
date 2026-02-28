@@ -6,17 +6,7 @@ description: Mandatory pre-push verification steps to ensure no CI regressions a
 
 Before executing `git push` or submitting an autonomous Pull Request, you must verify that your changes have not broken the application build, tests, or strict CI formatting checks.
 
-## Step 1: Formatting and Translations (CRITICAL)
-
-GitHub Actions will immediately fail if code is not formatted or if translations are missing. Run these first to guarantee CI compliance:
-
-```bash
-// turbo
-npx prettier --write .
-npx i18next-parser
-```
-
-## Step 2: Linting
+## Step 1: Linting
 
 Ensure no new syntax errors or unused variables were introduced.
 
@@ -25,7 +15,7 @@ Ensure no new syntax errors or unused variables were introduced.
 yarn lint
 ```
 
-## Step 3: Type Checking & Building
+## Step 2: Type Checking & Building
 
 Verify that the TypeScript compiler can successfully transpile. This blocks the production deployment, so do not skip it.
 

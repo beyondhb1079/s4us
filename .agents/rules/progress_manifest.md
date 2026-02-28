@@ -1,33 +1,26 @@
 ---
-description: Mandatory rule for tracking progress via a .TODO.md manifest file on all active branches.
+description: Mandatory rules for tracking Epic progress via the shared .TODO.md ledger.
 ---
 
-# The Progress Manifest
+# The Progress Manifest (.TODO.md)
 
-To ensure transparency and rigorous task tracking, you must maintain a `.TODO.md` file at the root of the project for the duration of any feature branch.
+To ensure transparency and rigorous task tracking across multiple agents, the workspace relies on a shared `.TODO.md` ledger at the root of the repository.
 
-## 1. Initialization
+## 1. Initialization (Orchestrator Only)
+At the start of every Epic, the **Orchestrator** is responsible for creating or overwriting the `.TODO.md` file on the shared Epic branch. It must strictly map the GitHub issues to the assigned agents. If an execution agent begins a task and the `.TODO.md` file is missing from the repository root, the agent is fully authorized to initialize the standard template themselves to prevent the pipeline from stalling.
 
-At the start of every branch, create a `.TODO.md` file listing the requirements, requested changes, and CI status.
-Commit this file as your **first action** on the branch:
+## 2. The Execution Update Rule (Specialists)
+Once the Orchestrator initializes the `.TODO.md` file, the **Execution Agents** (Frontend Specialist, Data Shield, QA Explorer, Inclusion Officer) own it. 
+
+When you (an execution agent) finish a task, address a PR comment, or resolve a CI failure, you MUST check off your specific box in the `.TODO.md` file, save it, and include it in your code commit before pushing your work to the shared branch.
 
 ```bash
 git add .TODO.md
-git commit -m "chore: initial progress manifest" --author="s4us-bot <bot@dreamscholars.org>"
+git commit -m "chore: update progress manifest for [Task Name]"
 ```
 
-## 2. Tracking
+## 3. No Premature Cleanup
 
-As you finish tasks, address PR comments, or resolve CI failures, update the `.TODO.md` file and commit the "check-off."
-This provides a clear history of what was addressed and when.
+Because multiple agents share this ledger to coordinate their work, **Execution Agents are strictly forbidden from deleting the `.TODO.md` file.** It must remain in the root directory for the entire duration of the Epic.
 
-## 3. Cleanup
-
-Once the PR is approved, all tasks are complete, and all CI checks are green, your **final commit** before merging must delete the `.TODO.md` file so it doesn't pollute the `main` branch history.
-
-You **must** commit this deletion with the exact message:
-
-```bash
-git rm .TODO.md
-git commit -m "chore: cleanup progress manifest [skip ci]" --author="s4us-bot <bot@dreamscholars.org>"
-```
+The Orchestrator or the User will handle the cleanup or archiving of the manifest when the entire Epic is squash-merged into `main`.
