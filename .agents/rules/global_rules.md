@@ -5,7 +5,8 @@ Within an Epic branch, agents are permitted to commit and push directly to the s
 1. **Pull Before Push:** Immediately before executing a `git push`, you MUST run `git pull origin <branch-name> --no-edit` to fetch any changes pushed by other specialists (like updates to the `.TODO.md` ledger).
 2. **No Force Pushing:** You are strictly **FORBIDDEN** from using `git push --force` or `git push -f`. 
 3. **Handling Rejections:** If your push is rejected (`non-fast-forward`), it means another agent beat you to the remote. Do not panic. Simply run `git pull origin <branch-name>`, resolve any standard merge conflicts in the code or `.TODO.md` file, commit the resolution, and run a standard `git push`.
-4. **The Conflict HALT Protocol**: If you pull from `origin` and encounter a massive or complex merge conflict (e.g., overlapping logic in a `.tsx` file), DO NOT attempt to guess the resolution. You must abort the merge (`git merge --abort`), halt your execution, and tag the User for architectural guidance.
+4. **Dependency Conflicts:** If a merge conflict occurs specifically in `yarn.lock` or `package-lock.json`, DO NOT attempt a manual text resolution. Run `git checkout --ours yarn.lock`, run `yarn install` to regenerate it cleanly, and commit.
+5. **The Conflict HALT Protocol:** If you pull from `origin` and encounter a massive or complex merge conflict (e.g., overlapping logic in a `.tsx` file), DO NOT attempt to guess the resolution. You must abort the merge (`git merge --abort`), halt your execution, and tag the User for architectural guidance.
 
 ### Local Scratchpad & CLI Inputs
 
