@@ -11,11 +11,13 @@ import { useScholarshipsQuery } from '../../hooks/useScholarshipsQuery';
 interface SLProps {
   noResultsNode?: React.JSX.Element;
   extraFilters?: Partial<FilterOptions>;
+  userPreferences?: Partial<FilterOptions> | null;
 }
 
 export default function ScholarshipList({
   noResultsNode,
   extraFilters = {},
+  userPreferences = null,
 }: SLProps): React.JSX.Element {
   const { t } = useTranslation('listScholarships');
   const [queryParams] = useQueryParams();
@@ -33,6 +35,7 @@ export default function ScholarshipList({
       | 'asc'
       | 'desc',
     ...(queryParams as unknown as FilterOptions),
+    ...(userPreferences || {}),
     ...extraFilters,
   });
 

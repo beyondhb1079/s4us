@@ -1,0 +1,61 @@
+{
+  "ethnicityStep": {
+    "description": "Muchas organizaciones patrocinan específicamente a minorías subrepresentadas. Opcionalmente puedes seleccionar todas las que apliquen.",
+    "ethnicities": {
+      "AMERICAN_INDIAN_OR_ALASKA_NATIVE": "Indio americano o nativo de Alaska",
+      "ASIAN": "Asiático",
+      "BLACK_OR_AFRICAN_AMERICAN": "Negro o afroamericano",
+      "HISPANIC_OR_LATINO": "Hispano o latino",
+      "NATIVE_HAWAIIAN_OR_OTHER_PACIFIC_ISLANDER": "Nativo de Hawái o de otras islas del Pacífico",
+      "WHITE": "Blanco / Caucásico"
+    },
+    "title": "¿Cómo te identificas?"
+  },
+  "gradeStep": {
+    "description": "Selecciona tu nivel de grado actual o próximo para ver las becas para las que eres elegible. Puedes seleccionar varios.",
+    "levels": {
+      "collegeFreshman": "Primer año de universidad",
+      "collegeJunior": "Tercer año de universidad",
+      "collegeSenior": "Cuarto año de universidad",
+      "collegeSophomore": "Segundo año de universidad",
+      "freshmanHS": "Primer año (Bachillerato)",
+      "grade8": "8vo grado",
+      "graduateStudent": "Estudiante de postgrado",
+      "juniorHS": "Tercer año (Bachillerato)",
+      "seniorHS": "Cuarto año (Bachillerato)",
+      "sophomoreHS": "Segundo año (Bachillerato)"
+    },
+    "title": "¿Cuál es tu nivel de educación actual?"
+  },
+  "majorStep": {
+    "description": "Busca tu especialidad o trayectoria profesional prevista. Puedes seleccionar varios campos.",
+    "labels": {
+      "placeholder": "Cinencias de la Computación, Enfermería, etc.",
+      "selectMajors": "Seleccionar especialidades/campos"
+    },
+    "title": "¿Cuál es tu campo de estudio previsto?"
+  },
+  "stateStep": {
+    "description": "Muchas becas están restringidas a residentes o estudiantes de estados específicos.",
+    "labels": {
+      "placeholder": "Estados",
+      "selectStates": "Seleccionar estados"
+    },
+    "title": "¿Dónde vives o planeas ir a la escuela?"
+  },
+  "wizard": {
+    "buttons": {
+      "back": "Atrás",
+      "finish": "Finalizar",
+      "next": "Siguiente"
+    },
+    "description": "¡Cuéntanos sobre ti para desbloquear un feed de becas personalizado!",
+    "steps": {
+      "demographics": "Demografía",
+      "education": "Nivel educativo",
+      "fieldOfStudy": "Campo de estudio",
+      "location": "Ubicación"
+    },
+    "title": "Crea tu perfil"
+  }
+}

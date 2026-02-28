@@ -30,6 +30,7 @@ const Terms = lazy(() => import('./pages/Terms'));
 const AddScholarship = lazy(() => import('./pages/AddScholarship'));
 const EditScholarship = lazy(() => import('./pages/EditScholarship'));
 const Suggest = lazy(() => import('./pages/Suggest'));
+const OnboardingWizard = lazy(() => import('./pages/OnboardingWizard'));
 
 // This should be suspended too because of the auth dependency
 const LoginDialogWrapper = lazy(
@@ -80,6 +81,12 @@ function App(): React.JSX.Element {
                         <Route
                           path="/dashboard"
                           element={<ProtectedRoute element={<Dashboard />} />}
+                        />
+                        <Route
+                          path="/onboarding"
+                          element={
+                            <ProtectedRoute element={<OnboardingWizard />} />
+                          }
                         />
                         <Route path="/" element={<Home />} />
                       </Routes>

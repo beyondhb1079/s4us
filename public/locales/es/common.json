@@ -19,6 +19,7 @@
   "any": "Todos",
   "currentlySharing": "Actualmente compartiendo",
   "dashboard": "Tablero de control",
+  "errors": {},
   "footer": {
     "about": "Acerca de",
     "contact": "Contacto",
@@ -32,6 +33,7 @@
     "terms": "Términos"
   },
   "general": "General",
+  "labels": {},
   "lookingForScholarships": "¿Buscando becas?",
   "more": "mas",
   "moreScholarships": "Más becas",
