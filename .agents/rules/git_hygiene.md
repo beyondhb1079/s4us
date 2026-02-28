@@ -22,7 +22,6 @@ When you are ready to commit, use this exact, efficient sequence:
 # Stage all changes (relying on .gitignore for safety)
 git add .
 
-# Commit using the Git Identity rule
 git commit -m "type: brief description of changes"
 ```
 
