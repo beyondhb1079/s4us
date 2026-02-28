@@ -1,34 +1,36 @@
 ---
-description: Mandatory rules for Git staging and file management to prevent accidental commits of temporary or sensitive files.
+description: Mandatory rules for Git staging and file management.
 ---
 
 # Git Hygiene & Staging Rules
 
-You are responsible for keeping the repository clean. Accidental commits of build artifacts, dependencies, or sensitive files are unacceptable.
+You are responsible for keeping the commit history clean and moving quickly. 
 
-## 1. Forbidden Commands
+## 1. The "Trust but Verify" Staging Protocol
 
-You are strictly **prohibited** from using the following commands unless specifically instructed by the user:
+To avoid quota-draining typos with explicit file paths, you are fully authorized to use `git add .` to stage your work. However, this requires strict discipline regarding where you place temporary files.
 
-- `git add .` (Adds everything in the current directory, including untracked junk)
-- `git add -A` (Adds everything in the entire working tree)
+Before executing `git add .`, you MUST verify:
+1. You have not generated any temporary text files, JSON dumps, or logs outside of the explicitly ignored `./tmp/` directory at the root of the repository.
+2. You have not created any new `.env` or sensitive credential files.
 
-## 2. Mandatory Staging Protocol
+## 2. Mandatory Workflow
 
-When preparing a commit, you must follow these steps:
+When you are ready to commit, use this exact, efficient sequence:
 
-1. **Check Status First:** Run `git status` to see exactly what is untracked and modified.
-2. **Use Targeted Adding:** Stage files individually or by specific directory (e.g., `git add src/components/MyComponent.tsx`).
-3. **The Tracked-Only Shortcut:** If you only want to stage modifications to files that are already tracked by Git, use:
-   ```bash
-   git add -u
-   ```
-4. **Verify Before Committing:** If you are unsure if a file is ignored, run `git check-ignore -v <path/to/file>`.
+```bash
+# Stage all changes (relying on .gitignore for safety)
+git add .
 
-## 3. Protect Sensitive Files
+# Commit using the Git Identity rule
+git commit -m "type: brief description of changes"
+```
 
-Never add files with the following extensions or patterns unless they are core project configuration:
+## The Tracked-Only Shortcut
 
-- `.log`, `.tmp`, `.env`, `.local`
-- `node_modules/`, `dist/`, `build/`
-- OS-specific junk like `.DS_Store` or `Thumbs.db`
+If you are 100% certain you only modified existing files and did not create any new ones, you should default to the tracked-only shortcut to be extra safe:
+
+```bash
+git add -u
+git commit -m "type: brief description"
+```
