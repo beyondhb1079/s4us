@@ -3,6 +3,19 @@ updates:
   - package-ecosystem: npm
     directory: '/'
     schedule:
-      interval: monthly
+      interval: weekly
+      day: "monday"
     open-pull-requests-limit: 10
     versioning-strategy: increase-if-necessary
+
+    groups:
+      npm-dependencies:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+    commit-message:
+      prefix: "chore"
+      include: "scope"
