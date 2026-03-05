@@ -29,14 +29,6 @@
     "@ai-sdk/provider" "3.0.8"
     "@ai-sdk/provider-utils" "4.0.15"
 
-"@ai-sdk/openai@^3.0.31":
-  version "3.0.31"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/openai/-/openai-3.0.31.tgz#22c7fa3d49de20005c75eaab328649844ca48808"
-  integrity sha512-61DmKNdwi2S83YZO80tCUibcOq0nNKa+vF9m+3VlD0b6bZ8FSe7GrO0bCCZaBeucu79OxWPx7Q1u0v3hxb91mQ==
-  dependencies:
-    "@ai-sdk/provider" "3.0.8"
-    "@ai-sdk/provider-utils" "4.0.15"
-
 "@ai-sdk/provider-utils@4.0.15":
   version "4.0.15"
   resolved "https://registry.yarnpkg.com/@ai-sdk/provider-utils/-/provider-utils-4.0.15.tgz#d585c7c89cfdf13697a40be5768ecd907a251585"
