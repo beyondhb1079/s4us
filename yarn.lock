@@ -22,26 +22,17 @@
     "@vercel/oidc" "3.1.0"
 
 "@ai-sdk/google@^3.0.31":
-  version "3.0.41"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/google/-/google-3.0.41.tgz#b710b6383da9084227e37e677841fdc0500df29c"
-  integrity sha512-8mfYBAG7bix1rN7VZki53oRYXm2ApNtnwH62gQcU9mErQHVP/O4eu7U6Rsy4iHtpve7WegZBZOUSYWsXNtrs4Q==
+  version "3.0.31"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/google/-/google-3.0.31.tgz#6e2c66ed3160f61b5ab163d94b7f6947540b129e"
+  integrity sha512-RVNz8WFSIRbXbYDBE6JvlE2escWPJimBCs22LzKEYH7DNfl/X7cHNa1LFho4PsY6Ib0JmbzB8s2+i0wHs/wNCg==
   dependencies:
     "@ai-sdk/provider" "3.0.8"
-    "@ai-sdk/provider-utils" "4.0.18"
+    "@ai-sdk/provider-utils" "4.0.15"
 
 "@ai-sdk/provider-utils@4.0.15":
   version "4.0.15"
   resolved "https://registry.yarnpkg.com/@ai-sdk/provider-utils/-/provider-utils-4.0.15.tgz#d585c7c89cfdf13697a40be5768ecd907a251585"
   integrity sha512-8XiKWbemmCbvNN0CLR9u3PQiet4gtEVIrX4zzLxnCj06AwsEDJwJVBbKrEI4t6qE8XRSIvU2irka0dcpziKW6w==
-  dependencies:
-    "@ai-sdk/provider" "3.0.8"
-    "@standard-schema/spec" "^1.1.0"
-    eventsource-parser "^3.0.6"
-
-"@ai-sdk/provider-utils@4.0.18":
-  version "4.0.18"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/provider-utils/-/provider-utils-4.0.18.tgz#53d6033b4245aee255a0ecc65d5a16bcf2784e0c"
-  integrity sha512-dJ55zAzimyDTr1tHgalxg0VqNKGyJV04svu26xv5G1NDFTgFeG/Yr5CS9l62N923cQTv94OOtNWZ7XxwKIYhqw==
   dependencies:
     "@ai-sdk/provider" "3.0.8"
     "@standard-schema/spec" "^1.1.0"
@@ -5111,9 +5102,9 @@ firebase-admin@^13.6.1:
     "@google-cloud/storage" "^7.14.0"
 
 firebase-tools@^15.5.1:
-  version "15.7.0"
-  resolved "https://registry.npmjs.org/firebase-tools/-/firebase-tools-15.7.0.tgz"
-  integrity sha512-XNy/8Tk8g3RSLjUDFn2v7ULiuH/VPfs4Gh+Jo/PS7Cgatue0LwDqzRXWUYh+RajsB3ogFH/hdfekaY1PQA/LQA==
+  version "15.8.0"
+  resolved "https://registry.yarnpkg.com/firebase-tools/-/firebase-tools-15.8.0.tgz#b054dbeb98786d0827bd94135cca1e6bc5d0754a"
+  integrity sha512-X989aD39b/K3nEunUaCYlhJ6CUrEKVcOJPIYfEvp3aJ8plCfe839ImZHZsRB7zAluAxUlJzzvWtsml15BGhimQ==
   dependencies:
     "@apphosting/build" "^0.1.6"
     "@apphosting/common" "^0.0.8"
@@ -5848,9 +5839,9 @@ hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.1:
     react-is "^16.7.0"
 
 hono@^4.11.4:
-  version "4.12.5"
-  resolved "https://registry.yarnpkg.com/hono/-/hono-4.12.5.tgz#8c16209b35040025d3f110d18f3b821de6cab00f"
-  integrity sha512-3qq+FUBtlTHhtYxbxheZgY8NIFnkkC/MR8u5TTsr7YZ3wixryQ3cCwn3iZbg8p8B88iDBBAYSfZDS75t8MN7Vg==
+  version "4.12.2"
+  resolved "https://registry.yarnpkg.com/hono/-/hono-4.12.2.tgz#05c311c271b06685a0f229c484e3a2637d7d5f2a"
+  integrity sha512-gJnaDHXKDayjt8ue0n8Gs0A007yKXj4Xzb8+cNjZeYsSzzwKc0Lr+OZgYwVfB0pHfUs17EPoLvrOsEaJ9mj+Tg==
 
 hosted-git-info@^7.0.0:
   version "7.0.2"
