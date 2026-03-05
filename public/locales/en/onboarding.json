@@ -1,0 +1,61 @@
+{
+  "ethnicityStep": {
+    "description": "Many organizations specifically sponsor underrepresented minorities. You can optionally select all that apply.",
+    "ethnicities": {
+      "AMERICAN_INDIAN_OR_ALASKA_NATIVE": "American Indian or Alaska Native",
+      "ASIAN": "Asian",
+      "BLACK_OR_AFRICAN_AMERICAN": "Black or African American",
+      "HISPANIC_OR_LATINO": "Hispanic or Latino",
+      "NATIVE_HAWAIIAN_OR_OTHER_PACIFIC_ISLANDER": "Native Hawaiian or Other Pacific Islander",
+      "WHITE": "White / Caucasian"
+    },
+    "title": "How do you identify?"
+  },
+  "gradeStep": {
+    "description": "Select your upcoming or current grade level to see scholarships you are eligible for. You can select multiple.",
+    "levels": {
+      "collegeFreshman": "College Freshman",
+      "collegeJunior": "College Junior",
+      "collegeSenior": "College Senior",
+      "collegeSophomore": "College Sophomore",
+      "freshmanHS": "Freshman (HS)",
+      "grade8": "8th Grade",
+      "graduateStudent": "Graduate Student",
+      "juniorHS": "Junior (HS)",
+      "seniorHS": "Senior (HS)",
+      "sophomoreHS": "Sophomore (HS)"
+    },
+    "title": "What is your current education level?"
+  },
+  "majorStep": {
+    "description": "Search for your intended major or career path. You can select multiple fields.",
+    "labels": {
+      "placeholder": "Computer Science, Nursing, etc.",
+      "selectMajors": "Select Majors/Fields"
+    },
+    "title": "What is your intended field of study?"
+  },
+  "stateStep": {
+    "description": "Many scholarships are restricted to residents or students of specific states.",
+    "labels": {
+      "placeholder": "States",
+      "selectStates": "Select States"
+    },
+    "title": "Where do you live or plan to go to school?"
+  },
+  "wizard": {
+    "buttons": {
+      "back": "Back",
+      "finish": "Finish",
+      "next": "Next"
+    },
+    "description": "Tell us about yourself to unlock a personalized scholarship feed!",
+    "steps": {
+      "demographics": "Demographics",
+      "education": "Education Level",
+      "fieldOfStudy": "Field of Study",
+      "location": "Location"
+    },
+    "title": "Build Your Profile"
+  }
+}
