@@ -22,17 +22,26 @@
     "@vercel/oidc" "3.1.0"
 
 "@ai-sdk/google@^3.0.31":
-  version "3.0.31"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/google/-/google-3.0.31.tgz#6e2c66ed3160f61b5ab163d94b7f6947540b129e"
-  integrity sha512-RVNz8WFSIRbXbYDBE6JvlE2escWPJimBCs22LzKEYH7DNfl/X7cHNa1LFho4PsY6Ib0JmbzB8s2+i0wHs/wNCg==
+  version "3.0.41"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/google/-/google-3.0.41.tgz#b710b6383da9084227e37e677841fdc0500df29c"
+  integrity sha512-8mfYBAG7bix1rN7VZki53oRYXm2ApNtnwH62gQcU9mErQHVP/O4eu7U6Rsy4iHtpve7WegZBZOUSYWsXNtrs4Q==
   dependencies:
     "@ai-sdk/provider" "3.0.8"
-    "@ai-sdk/provider-utils" "4.0.15"
+    "@ai-sdk/provider-utils" "4.0.18"
 
 "@ai-sdk/provider-utils@4.0.15":
   version "4.0.15"
   resolved "https://registry.yarnpkg.com/@ai-sdk/provider-utils/-/provider-utils-4.0.15.tgz#d585c7c89cfdf13697a40be5768ecd907a251585"
   integrity sha512-8XiKWbemmCbvNN0CLR9u3PQiet4gtEVIrX4zzLxnCj06AwsEDJwJVBbKrEI4t6qE8XRSIvU2irka0dcpziKW6w==
+  dependencies:
+    "@ai-sdk/provider" "3.0.8"
+    "@standard-schema/spec" "^1.1.0"
+    eventsource-parser "^3.0.6"
+
+"@ai-sdk/provider-utils@4.0.18":
+  version "4.0.18"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/provider-utils/-/provider-utils-4.0.18.tgz#53d6033b4245aee255a0ecc65d5a16bcf2784e0c"
+  integrity sha512-dJ55zAzimyDTr1tHgalxg0VqNKGyJV04svu26xv5G1NDFTgFeG/Yr5CS9l62N923cQTv94OOtNWZ7XxwKIYhqw==
   dependencies:
     "@ai-sdk/provider" "3.0.8"
     "@standard-schema/spec" "^1.1.0"
