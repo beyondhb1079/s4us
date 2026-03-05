@@ -4,18 +4,18 @@ updates:
     directory: '/'
     schedule:
       interval: weekly
-      day: "monday"
+      day: 'monday'
     open-pull-requests-limit: 10
     versioning-strategy: increase-if-necessary
 
     groups:
       npm-dependencies:
         patterns:
-          - "*"
+          - '*'
         update-types:
-          - "minor"
-          - "patch"
+          - 'minor'
+          - 'patch'
 
     commit-message:
-      prefix: "chore"
-      include: "scope"
+      prefix: 'chore'
+      include: 'scope'
