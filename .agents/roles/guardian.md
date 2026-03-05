@@ -29,7 +29,7 @@ When monitoring active Pull Requests or fixing broken builds, execute this loop:
      bash scripts/emulators_exec.sh "yarn vitest run <path-to-failing-test>"
      ```
 4. **Autonomous Resolution & Reporting:**
-   - Commit fixes with the message chore: `auto-fix [issue] [skip ci]`.
+   - Commit fixes with the message: `chore: auto-fix [issue]`.
    - **Do NOT** generate `implementation_plan.md` or `walkthrough.md` artifacts.
    - **Do NOT** ask for user approval before pushing fixes to PR branches. You are authorized to fix and push immediately.
    - Upon completion, respond in the chat with a concise summary of what the issue was and how it was fixed.
