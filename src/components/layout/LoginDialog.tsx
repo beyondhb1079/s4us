@@ -25,7 +25,7 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import { useTranslation } from 'react-i18next';
 import { logEventAsync } from '../../lib/analytics';
 
-export default function LoginDialog(): JSX.Element {
+export default function LoginDialog(): React.JSX.Element {
   const location = useLocation();
   const showLoginDialog =
     (location.state as { showLoginDialog?: boolean })?.showLoginDialog || false;
@@ -50,7 +50,11 @@ export default function LoginDialog(): JSX.Element {
 
       logEventAsync(additionalInfo?.isNewUser ? 'signup' : 'login', { method });
 
-      closeDialog();
+      if (additionalInfo?.isNewUser) {
+        navigate('/onboarding');
+      } else {
+        closeDialog();
+      }
     } catch (error) {
       console.error('Authentication error:', error);
       // Optional: Add a toast/snackbar here if the user closes the popup early
@@ -76,10 +80,11 @@ export default function LoginDialog(): JSX.Element {
         </Box>
         <Grid container spacing={2} alignItems="center">
           <Grid
-            item
-            xs={12}
-            sm={6}
-            sx={{ color: 'background.paper', bgcolor: 'primary.main' }}>
+            size={{ xs: 12, sm: 6 }}
+            sx={{
+              color: 'background.paper',
+              bgcolor: 'primary.main',
+            }}>
             <DialogTitle id="responsive-dialog-brand">
               DreamScholars
             </DialogTitle>
@@ -103,7 +108,7 @@ export default function LoginDialog(): JSX.Element {
             </DialogContentText>
           </Grid>
 
-          <Grid item xs={12} sm={6} sx={{ pb: 4 }}>
+          <Grid size={{ xs: 12, sm: 6 }} sx={{ pb: 4 }}>
             <DialogTitle
               id="responsive-dialog-title"
               sx={{ textAlign: 'center' }}>

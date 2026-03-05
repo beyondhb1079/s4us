@@ -12,6 +12,8 @@ import {
   Chip,
   Stack,
   Theme,
+  Tabs,
+  Tab,
 } from '@mui/material';
 import FilterBar from '../components/filters/FilterBar';
 import FilterPanel from '../components/filters/FilterPanel';
@@ -23,13 +25,37 @@ import State from '../types/States';
 import { useLocation } from 'react-router-dom';
 import { logEventAsync } from '../lib/analytics';
 import Ethnicity, { EthnicityInfo } from '../types/Ethnicity';
+import useAuth from '../lib/useAuth';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import { FilterOptions } from '../models/Scholarships';
 
 const drawerWidth = 360;
 
-function ListScholarships(): JSX.Element {
+function ListScholarships(): React.ReactElement {
   const { t } = useTranslation('listScholarships');
   useDocumentTitle(t('titleTag'));
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState(0);
+  const [userPreferences, setUserPreferences] =
+    useState<Partial<FilterOptions> | null>(null);
+
+  const { currentUser } = useAuth();
+
+  useEffect(() => {
+    if (currentUser) {
+      const db = getFirestore();
+      getDoc(doc(db, 'users', currentUser.uid))
+        .then((docSnap) => {
+          if (docSnap.exists() && docSnap.data().preferences) {
+            setUserPreferences(docSnap.data().preferences);
+          }
+        })
+        .catch(console.error);
+    } else {
+      setUserPreferences(null);
+      setActiveTab(0);
+    }
+  }, [currentUser]);
 
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
@@ -40,38 +66,33 @@ function ListScholarships(): JSX.Element {
 
   const filterChips = {} as Record<
     string,
-    { [k: string]: undefined | string[] }
+    { [k: string]: undefined | string[] | number[] }
   >;
 
   if (Number.isInteger(minAmount)) {
     filterChips[`Min $${minAmount}`] = { minAmount: undefined };
   }
 
-  majors?.forEach((major: string) => {
-    filterChips[major] = {
-      majors: majors?.filter((m: string) => major !== m),
-    };
-  });
-  grades?.forEach((grade: GradeLevel) => {
-    filterChips[GradeLevelInfo.toString(grade)] = {
-      grades: grades?.filter((g: GradeLevel) => grade !== g),
-    };
-  });
-  states?.forEach((state: string) => {
-    filterChips[State.toString(state)] = {
-      states: states?.filter((s: string) => state !== s),
-    };
-  });
-  schools?.forEach((school: string) => {
-    filterChips[school] = {
-      schools: schools?.filter((s: string) => school !== s),
-    };
-  });
-  ethnicities?.forEach((ethnicity: Ethnicity) => {
-    filterChips[EthnicityInfo.toString(ethnicity)] = {
-      ethnicities: ethnicities?.filter((e: Ethnicity) => ethnicity !== e),
-    };
-  });
+  const addFilterChips = <T,>(
+    items: unknown,
+    categoryKey: string,
+    formatter: (item: T) => string = String,
+  ) => {
+    if (!Array.isArray(items)) return;
+
+    const arr = items as T[];
+    arr.forEach((item) => {
+      filterChips[formatter(item)] = {
+        [categoryKey]: arr.filter((i) => i !== item) as string[] | number[],
+      };
+    });
+  };
+
+  addFilterChips<string>(majors, 'majors');
+  addFilterChips<GradeLevel>(grades, 'grades', GradeLevelInfo.toString);
+  addFilterChips<string>(states, 'states', State.toString);
+  addFilterChips<string>(schools, 'schools');
+  addFilterChips<Ethnicity>(ethnicities, 'ethnicities', EthnicityInfo.toString);
 
   const scrollTrigger = useScrollTrigger();
 
@@ -151,8 +172,21 @@ function ListScholarships(): JSX.Element {
               />
             ))}
           </Stack>
+
+          <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
+            <Tabs
+              value={activeTab}
+              onChange={(e, v) => setActiveTab(v)}
+              aria-label="scholarship-feed-tabs">
+              <Tab label="Search All" />
+              <Tab label="For You" disabled={!currentUser} />
+            </Tabs>
+          </Box>
+
           <Suspense fallback={null}>
-            <ScholarshipList />
+            <ScholarshipList
+              userPreferences={activeTab === 1 ? userPreferences : null}
+            />
           </Suspense>
         </Container>
       </Box>
