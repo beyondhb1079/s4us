@@ -16,16 +16,15 @@ Use the GitHub CLI to checkout the exact PR branch:
 gh pr checkout <PR-number>
 ```
 
-## Step 2: Fetch ALL Feedback Types (No Exceptions)
+## Step 2: Fetch ALL Feedback Types
 
-You must fetch feedback from three distinct areas: Reviews, General Comments, and Line-level Review Threads.
+You must fetch feedback from the top-level PR discussions: Reviews and General Comments.
 
 ```bash
 // turbo
-gh pr view --json reviews,comments,reviewThreads -q '
+gh pr view --json reviews,comments -q '
   (.reviews[].body // ""),
-  (.comments[].body // ""),
-  (.reviewThreads[].comments[].body // "")'
+  (.comments[].body // "")'
 ```
 
 ## Step 3: Implementation & Tracking

@@ -4,3 +4,12 @@ coverage
 node_modules
 .yarn/releases
 *.lock
+
+# AI Agent directories & files
+.agents/**
+tmp/**
+.TODO.md
+docs/rfc/**
+
+# Firebase Cloud Functions compiled output
+functions/lib/**
