@@ -53,7 +53,11 @@ export default function About(): JSX.Element {
   return (
     <Container sx={{ p: 2 }}>
       <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
+        <Grid
+          size={{
+            xs: 12,
+            md: 6,
+          }}>
           <Typography component="h2" variant="button" gutterBottom>
             {t('meetTheTeam')}
           </Typography>
@@ -65,13 +69,16 @@ export default function About(): JSX.Element {
           </Typography>
         </Grid>
 
-        <Grid item xs={12} md={6}>
+        <Grid
+          size={{
+            xs: 12,
+            md: 6,
+          }}>
           <Box sx={{ width: { xs: '60%', md: '90%' }, m: 'auto' }}>
             <img src={backgroundImg} alt="grad picture" />
           </Box>
         </Grid>
       </Grid>
-
       <Grid
         container
         justifyContent="flex-start"
@@ -79,12 +86,17 @@ export default function About(): JSX.Element {
         spacing={3}
         sx={{ mb: 3 }}>
         {team.map(({ name, img, description }) => (
-          <Grid item key={name} xs={12} sm={6} md={4}>
+          <Grid
+            key={name}
+            size={{
+              xs: 12,
+              sm: 6,
+              md: 4,
+            }}>
             <AboutCard {...{ name, img, description }} />
           </Grid>
         ))}
       </Grid>
-
       <LookingForScholarshipsBanner />
     </Container>
   );
