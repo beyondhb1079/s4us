@@ -12,13 +12,13 @@
   resolved "https://registry.npmjs.org/@adobe/css-tools/-/css-tools-4.4.4.tgz"
   integrity sha512-Elp+iwUx5rN5+Y8xLt5/GRoG20WGoDCQ/1Fb+1LiGtvwbDavuSk0jhD/eZdckHAuzcDzccnkv+rEjyWfRx18gg==
 
-"@ai-sdk/gateway@3.0.65":
-  version "3.0.65"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/gateway/-/gateway-3.0.65.tgz#ab282bc4f4b65de158828adbe72309763c4dad09"
-  integrity sha512-oGqhn+zjJZy2wHkh3YzGOVId0xPzV0oe69AbrzB4cjIqOuE5jQJMpq2P8iJlf42ixQz0K1bFmXLrLj0NUIzNWQ==
+"@ai-sdk/gateway@3.0.53":
+  version "3.0.53"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/gateway/-/gateway-3.0.53.tgz#656a60e4af69911a314a2b556001d50983ed6c00"
+  integrity sha512-QT3FEoNARMRlk8JJVR7L98exiK9C8AGfrEJVbRxBT1yIXKs/N19o/+PsjTRVsARgDJNcy9JbJp1FspKucEat0Q==
   dependencies:
     "@ai-sdk/provider" "3.0.8"
-    "@ai-sdk/provider-utils" "4.0.18"
+    "@ai-sdk/provider-utils" "4.0.15"
     "@vercel/oidc" "3.1.0"
 
 "@ai-sdk/google@^3.0.31":
@@ -33,15 +33,6 @@
   version "4.0.15"
   resolved "https://registry.yarnpkg.com/@ai-sdk/provider-utils/-/provider-utils-4.0.15.tgz#d585c7c89cfdf13697a40be5768ecd907a251585"
   integrity sha512-8XiKWbemmCbvNN0CLR9u3PQiet4gtEVIrX4zzLxnCj06AwsEDJwJVBbKrEI4t6qE8XRSIvU2irka0dcpziKW6w==
-  dependencies:
-    "@ai-sdk/provider" "3.0.8"
-    "@standard-schema/spec" "^1.1.0"
-    eventsource-parser "^3.0.6"
-
-"@ai-sdk/provider-utils@4.0.18":
-  version "4.0.18"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/provider-utils/-/provider-utils-4.0.18.tgz#53d6033b4245aee255a0ecc65d5a16bcf2784e0c"
-  integrity sha512-dJ55zAzimyDTr1tHgalxg0VqNKGyJV04svu26xv5G1NDFTgFeG/Yr5CS9l62N923cQTv94OOtNWZ7XxwKIYhqw==
   dependencies:
     "@ai-sdk/provider" "3.0.8"
     "@standard-schema/spec" "^1.1.0"
@@ -2691,13 +2682,13 @@ agent-base@^7.1.0, agent-base@^7.1.2:
   integrity sha512-MnA+YT8fwfJPgBx3m60MNqakm30XOkyIoH1y6huTQvC0PwZG7ki8NacLBcrPbNoo8vEZy7Jpuk7+jMO+CUovTQ==
 
 ai@^6.0.97:
-  version "6.0.115"
-  resolved "https://registry.yarnpkg.com/ai/-/ai-6.0.115.tgz#9c2419e63825eec811294bdcab045e4f31a5d588"
-  integrity sha512-UVHtXuvxu0v1z5Lhq4PN33PBXV1J4H7haX6+RY9ZB7OfpOlC6ousazInKgutW0IqBtM8KpQ6bid9nQfk1zhX5g==
+  version "6.0.97"
+  resolved "https://registry.yarnpkg.com/ai/-/ai-6.0.97.tgz#e546a569bf085c1438d4b6e44e412785f6751710"
+  integrity sha512-eZIAcBymwGhBwncRH/v9pillZNMeRCDkc4BwcvwXerXd7sxjVxRis3ZNCNCpP02pVH4NLs81ljm4cElC4vbNcQ==
   dependencies:
-    "@ai-sdk/gateway" "3.0.65"
+    "@ai-sdk/gateway" "3.0.53"
     "@ai-sdk/provider" "3.0.8"
-    "@ai-sdk/provider-utils" "4.0.18"
+    "@ai-sdk/provider-utils" "4.0.15"
     "@opentelemetry/api" "1.9.0"
 
 ajv-formats@3.0.1, ajv-formats@^3.0.1:
@@ -8322,16 +8313,16 @@ react-refresh@^0.18.0:
   integrity sha512-QgT5//D3jfjJb6Gsjxv0Slpj23ip+HtOpnNgnb2S5zU3CB26G/IDPGoy4RJB42wzFE46DRsstbW6tKHoKbhAxw==
 
 react-router-dom@^7.13.0:
-  version "7.13.0"
-  resolved "https://registry.npmjs.org/react-router-dom/-/react-router-dom-7.13.0.tgz"
-  integrity sha512-5CO/l5Yahi2SKC6rGZ+HDEjpjkGaG/ncEP7eWFTvFxbHP8yeeI0PxTDjimtpXYlR3b3i9/WIL4VJttPrESIf2g==
+  version "7.13.1"
+  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-7.13.1.tgz#74c045acc333ca94612b889cd1b1e1ee9534dead"
+  integrity sha512-UJnV3Rxc5TgUPJt2KJpo1Jpy0OKQr0AjgbZzBFjaPJcFOb2Y8jA5H3LT8HUJAiRLlWrEXWHbF1Z4SCZaQjWDHw==
   dependencies:
-    react-router "7.13.0"
+    react-router "7.13.1"
 
-react-router@7.13.0:
-  version "7.13.0"
-  resolved "https://registry.npmjs.org/react-router/-/react-router-7.13.0.tgz"
-  integrity sha512-PZgus8ETambRT17BUm/LL8lX3Of+oiLaPuVTRH3l1eLvSPpKO3AvhAEb5N7ihAFZQrYDqkvvWfFh9p0z9VsjLw==
+react-router@7.13.1:
+  version "7.13.1"
+  resolved "https://registry.yarnpkg.com/react-router/-/react-router-7.13.1.tgz#5e2b3ebafd6c78d9775e135474bf5060645077f7"
+  integrity sha512-td+xP4X2/6BJvZoX6xw++A2DdEi++YypA69bJUV5oVvqf6/9/9nNlD70YO1e9d3MyamJEBQFEzk6mbfDYbqrSA==
   dependencies:
     cookie "^1.0.1"
     set-cookie-parser "^2.6.0"
