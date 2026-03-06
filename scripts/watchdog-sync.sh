@@ -58,4 +58,32 @@ while true; do
             git push origin "$BRANCH"
             ALL_GREEN=false # We just pushed, so we must wait for new checks
         done
-        echo "⏳ Sync complete. Waiting 30 seconds for CI
+        echo "⏳ Sync complete. Waiting 30 seconds for CI to trigger..."
+        sleep 30
+        continue
+    fi
+
+    # Poll the PR checks
+    for PR in "${PRS[@]}"; do
+        STATUS=$(gh pr checks "$PR" --json state -q '.[0].state' 2>/dev/null || echo "PENDING")
+        
+        if [ "$STATUS" == "FAILURE" ]; then
+            echo "❌ CRITICAL: PR #$PR has failed its checks!"
+            echo "🛑 Watchdog halting. Guardian intervention required."
+            exit 1
+        elif [ "$STATUS" == "PENDING" ] || [ "$STATUS" == "IN_PROGRESS" ]; then
+            echo "⏳ PR #$PR is still running checks..."
+            ALL_GREEN=false
+        elif [ "$STATUS" == "SUCCESS" ]; then
+            echo "✅ PR #$PR is GREEN."
+        fi
+    done
+
+    if [ "$ALL_GREEN" = true ]; then
+        echo "🎉 All PRs are completely Green and synced with main!"
+        exit 0
+    fi
+
+    echo "💤 Sleeping for 60 seconds before next poll..."
+    sleep 60
+done
