@@ -40,24 +40,21 @@ export default function Dashboard(): JSX.Element {
           </Alert>
         </Collapse>
       )}
-
       <Typography variant="h4" component="h1" gutterBottom>
         {t('common:welcome')} {user?.displayName}
       </Typography>
-
       <LookingForScholarshipsBanner />
-
       <Grid
         container
         spacing={2}
         justifyContent="space-between"
         sx={{ marginY: { xs: 1, md: 2 } }}>
-        <Grid item>
+        <Grid>
           <Typography variant="h5" component="h2">
             {t('addedScholarships')}
           </Typography>
         </Grid>
-        <Grid item>
+        <Grid>
           <Button
             variant="contained"
             color="primary"
@@ -79,10 +76,10 @@ export default function Dashboard(): JSX.Element {
               alignItems="center"
               justifyContent="space-around"
               sx={{ padding: 3, marginY: 1 }}>
-              <Grid item>
+              <Grid>
                 <InboxIcon sx={{ fontSize: (theme) => theme.spacing(25) }} />
               </Grid>
-              <Grid item>
+              <Grid>
                 <Typography variant="h5" gutterBottom>
                   {t('noneAdded')}
                 </Typography>
