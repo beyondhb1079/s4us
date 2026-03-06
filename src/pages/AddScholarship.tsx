@@ -14,10 +14,11 @@ function AddScholarship(): JSX.Element {
       <Container maxWidth="lg" sx={{ p: 2 }}>
         <Grid container spacing={2}>
           <Grid
-            item
-            sm={12}
-            md={6}
-            sx={{ textAlign: { xs: 'center', md: 'left' } }}>
+            sx={{ textAlign: { xs: 'center', md: 'left' } }}
+            size={{
+              sm: 12,
+              md: 6,
+            }}>
             <Typography gutterBottom>{t('submitAScholarship')}</Typography>
             <Typography variant="h4" gutterBottom>
               {t('additionalInfo')}
@@ -25,7 +26,12 @@ function AddScholarship(): JSX.Element {
             <Typography>{t('description')}</Typography>
           </Grid>
 
-          <Grid item sm={12} md={6} sx={{ width: '100%' }}>
+          <Grid
+            sx={{ width: '100%' }}
+            size={{
+              sm: 12,
+              md: 6,
+            }}>
             <Box
               component="img"
               src="/searching.svg"
@@ -39,7 +45,6 @@ function AddScholarship(): JSX.Element {
           </Grid>
         </Grid>
       </Container>
-
       <Container maxWidth="xl">
         <ScholarshipForm scholarship={Scholarships.new()} />
       </Container>

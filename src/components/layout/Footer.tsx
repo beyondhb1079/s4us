@@ -77,7 +77,7 @@ function Footer(): JSX.Element {
     <Box sx={{ bgcolor: 'background.secondary', zIndex: 1200 }}>
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Grid container justifyContent="space-between" spacing={3}>
-          <Grid item sx={{ width: 170 }}>
+          <Grid sx={{ width: 170 }}>
             <MuiLink
               component={Link}
               to="/"
@@ -92,7 +92,7 @@ function Footer(): JSX.Element {
             </Typography>
           </Grid>
           {Object.entries(columns).map(([title, links]) => (
-            <Grid item sx={{ width: 170 }} key={title}>
+            <Grid sx={{ width: 170 }} key={title}>
               <Typography
                 color={(theme) => theme.palette.grey[500]}
                 sx={{ fontWeight: 'bold' }}>
