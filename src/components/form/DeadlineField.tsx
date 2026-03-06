@@ -2,7 +2,7 @@ import React from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { InputLabel, SxProps, Theme } from '@mui/material';
+import { SxProps, Theme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import dayjs, { Dayjs } from 'dayjs';
 
@@ -19,7 +19,9 @@ interface DeadlineFieldProps {
   onChange?: (date: Date | null) => void;
 }
 
-export default function DeadlineField(props: DeadlineFieldProps): JSX.Element {
+export default function DeadlineField(
+  props: DeadlineFieldProps,
+): React.JSX.Element {
   const { label, labelStyle, formik, value, onChange, id } = props;
   const { i18n } = useTranslation();
 
@@ -45,8 +47,8 @@ export default function DeadlineField(props: DeadlineFieldProps): JSX.Element {
     <LocalizationProvider
       dateAdapter={AdapterDayjs}
       adapterLocale={currentLocale}>
-      <InputLabel sx={labelStyle}>{label}</InputLabel>
       <MuiDatePicker
+        label={label}
         value={dateValue}
         onChange={handleChange}
         slotProps={{
@@ -56,6 +58,7 @@ export default function DeadlineField(props: DeadlineFieldProps): JSX.Element {
             fullWidth: true,
             helperText: helperText as string,
             error,
+            sx: labelStyle,
           },
         }}
       />
