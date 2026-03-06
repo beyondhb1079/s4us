@@ -80,8 +80,7 @@ while true; do
     done
 
     if [ "$ALL_GREEN" = true ]; then
-        echo "🎉 All PRs are completely Green and synced with main!"
-        exit 0
+        echo "🎉 All PRs are currently Green. Guardian watchdog continuing to monitor..."
     fi
 
     echo "💤 Sleeping for 60 seconds before next poll..."
