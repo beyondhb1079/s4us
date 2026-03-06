@@ -18,6 +18,7 @@
   "minAmount": "Cantidad mínima",
   "postGrad": "Postgrado",
   "school": "Escuela",
+  "search": "Buscar",
   "sort": "Ordenar",
   "state": "Estado",
   "toFilterBy": "Ingrese un filtro de {{filter}}",

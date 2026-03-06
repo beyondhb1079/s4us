@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import Scholarships, { FilterOptions } from '../models/Scholarships';
-import FirestoreModelList from '../models/base/FiretoreModelList';
+import FirestoreModelList from '../models/base/FirestoreModelList';
 import ScholarshipData from '../types/ScholarshipData';
 
 export function useScholarshipsQuery(filters: FilterOptions) {

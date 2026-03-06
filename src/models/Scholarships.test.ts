@@ -200,7 +200,7 @@ test('converter.fromFirestore', () => {
     data: () => snapdata,
   };
 
-  const got = converter.fromFirestore(snapshot as QueryDocumentSnapshot, {});
+  const got = converter.fromFirestore(snapshot as QueryDocumentSnapshot);
 
   expect(got).toEqual({
     ...snapdata,
@@ -434,6 +434,46 @@ test('Scholarships.list - filters by ethnicities', async () => {
     ethnicities: [Ethnicity.HispanicOrLatino],
   });
   const want = [hispanicLatino];
+  expect(got.results.map(extractName).sort()).toEqual(
+    want.map(extractName).sort(),
+  );
+});
+
+test('Scholarships.list - filters by searchQuery', async () => {
+  await Promise.all([arts.save(), engineering.save(), socialSciences.save()]);
+
+  // trigger cache build
+  await Scholarships.list({
+    q: 'engineering',
+  });
+
+  // trigger cache hit and complex filter conditions
+  const got = await Scholarships.list({
+    q: 'engineering',
+    minAmount: 0,
+    maxAmount: 1000000,
+    grades: [],
+    majors: ['Civil Engineering'],
+    states: [],
+    schools: [],
+    ethnicities: [],
+    sortField: 'deadline',
+  });
+
+  const want = [engineering];
+  expect(got.results.map(extractName).sort()).toEqual(
+    want.map(extractName).sort(),
+  );
+});
+
+test('Scholarships.list - filters by searchQuery (load all)', async () => {
+  await Promise.all([arts.save(), engineering.save(), socialSciences.save()]);
+
+  const got = await Scholarships.list({
+    searchQuery: 'engineering',
+  });
+
+  const want = [engineering];
   expect(got.results.map(extractName).sort()).toEqual(
     want.map(extractName).sort(),
   );

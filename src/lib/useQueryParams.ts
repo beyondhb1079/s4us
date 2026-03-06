@@ -75,10 +75,15 @@ export default function useQueryParams(
       ethnicities,
       sortBy,
       showExpired,
+      searchQuery,
     } = params;
 
     if (showExpired !== undefined && typeof showExpired !== 'boolean') {
       delete params.showExpired;
+    }
+
+    if (searchQuery !== undefined && typeof searchQuery !== 'string') {
+      delete params.searchQuery;
     }
 
     if (

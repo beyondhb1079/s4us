@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, MenuItem, Toolbar, Button, Container } from '@mui/material';
+import { Menu, MenuItem, Toolbar, Button, Container, Box } from '@mui/material';
 import useQueryParams from '../../lib/useQueryParams';
 import sortOptions, {
   DEADLINE_ASC,
@@ -8,6 +8,7 @@ import sortOptions, {
 import TuneIcon from '@mui/icons-material/Tune';
 import ImportExportIcon from '@mui/icons-material/ImportExport';
 import { useTranslation } from 'react-i18next';
+import SearchBar from './SearchBar';
 
 export default function FilterBar({
   openFilter,
@@ -19,7 +20,9 @@ export default function FilterBar({
   const [anchorEl, setAnchorEl] = useState(null as HTMLElement | null);
 
   const filterCount =
-    (grades?.length ?? 0) + (majors?.length ?? 0) + (minAmount ? 1 : 0);
+    ((grades as unknown[])?.length ?? 0) +
+    ((majors as unknown[])?.length ?? 0) +
+    (minAmount ? 1 : 0);
   const { t } = useTranslation('filters');
 
   return (
@@ -34,20 +37,28 @@ export default function FilterBar({
         maxWidth="md"
         sx={{
           display: 'flex',
-          justifyContent: 'flex-end',
+          justifyContent: 'space-between',
+          flexDirection: { xs: 'column', md: 'row' },
+          alignItems: { xs: 'stretch', md: 'center' },
+          gap: { xs: 1, md: 0 },
+          py: 0.5,
         }}>
-        <Button
-          onClick={openFilter}
-          startIcon={<TuneIcon />}
-          sx={{ display: { md: 'none' } }}>
-          {t('filters')} {filterCount ? `(${filterCount})` : ''}
-        </Button>
+        <SearchBar />
 
-        <Button
-          onClick={(e) => setAnchorEl(e.currentTarget)}
-          startIcon={<ImportExportIcon />}>
-          {t('sort')}
-        </Button>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button
+            onClick={openFilter}
+            startIcon={<TuneIcon />}
+            sx={{ display: { md: 'none' } }}>
+            {t('filters')} {filterCount ? `(${filterCount})` : ''}
+          </Button>
+
+          <Button
+            onClick={(e) => setAnchorEl(e.currentTarget)}
+            startIcon={<ImportExportIcon />}>
+            {t('sort')}
+          </Button>
+        </Box>
       </Container>
 
       <Menu

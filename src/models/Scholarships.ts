@@ -1,6 +1,7 @@
 import { ScholarshipAmountInfo } from '../types/ScholarshipAmount';
 import FirestoreCollection from './base/FirestoreCollection';
-import FirestoreModelList from './base/FiretoreModelList';
+import FirestoreModelList from './base/FirestoreModelList';
+import Fuse from 'fuse.js';
 import FirestoreModel from './base/FirestoreModel';
 import ScholarshipData from '../types/ScholarshipData';
 import AmountType from '../types/AmountType';
@@ -16,7 +17,6 @@ import {
   query,
   QueryDocumentSnapshot,
   QuerySnapshot,
-  SnapshotOptions,
   startAfter,
   Timestamp,
   where,
@@ -73,11 +73,8 @@ export const converter: FirestoreDataConverter<ScholarshipData> = {
       lastModified: Timestamp.fromDate(lastModified),
     };
   },
-  fromFirestore: (
-    snapshot: QueryDocumentSnapshot,
-    options: SnapshotOptions,
-  ) => {
-    const data = snapshot.data(options);
+  fromFirestore: (snapshot: QueryDocumentSnapshot) => {
+    const data = snapshot.data();
     const deadline = (data.deadline as Timestamp).toDate();
     const dateAdded = (data.dateAdded as Timestamp)?.toDate();
     const lastModified = (data.lastModified as Timestamp)?.toDate();
@@ -104,6 +101,8 @@ export interface FilterOptions {
   ethnicities?: Ethnicity[];
   sortDir?: 'asc' | 'desc';
   sortField?: string;
+  q?: string;
+  searchQuery?: string;
 }
 
 const queryLimit = 50;
@@ -112,12 +111,86 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
   name = 'scholarships';
   converter = converter;
 
+  private cachedAllScholarships: FirestoreModel<ScholarshipData>[] | null =
+    null;
+  private fuseInstance:
+    | import('fuse.js').default<FirestoreModel<ScholarshipData>>
+    | null = null;
+
+  private async loadAllScholarshipsForSearch(): Promise<void> {
+    if (this.cachedAllScholarships && this.fuseInstance) return;
+    const qSnap = await getDocs(this.collection);
+    this.cachedAllScholarships = qSnap.docs.map(
+      (d) => new FirestoreModel<ScholarshipData>(d.ref, d.data()),
+    );
+
+    const FuseLib = (await import('fuse.js')).default;
+    this.fuseInstance = new FuseLib(this.cachedAllScholarships, {
+      keys: ['data.tags', 'data.name', 'data.description', 'data.organization'],
+      threshold: 0.3,
+      ignoreLocation: true,
+    });
+  }
+
   /**
    * Lists all items in this collection.
    *
    * @param opts filter and sorting options.
    */
-  list(opts: FilterOptions): Promise<FirestoreModelList<ScholarshipData>> {
+  async list(
+    opts: FilterOptions,
+  ): Promise<FirestoreModelList<ScholarshipData>> {
+    if (opts.searchQuery) {
+      await this.loadAllScholarshipsForSearch();
+
+      const searchResults = this.fuseInstance!.search(opts.searchQuery).map(
+        (res) => res.item,
+      );
+      const now = new Date();
+      const today = new Date(now.toDateString());
+
+      const filtered = searchResults.filter(
+        ({ data }) =>
+          ScholarshipAmountInfo.amountsIntersect(data.amount, {
+            type: AmountType.Varies,
+            min: opts.minAmount ?? 0,
+            max: opts.maxAmount ?? 0,
+          }) &&
+          requirementMatchesFilter(data.requirements?.grades, opts.grades) &&
+          requirementMatchesFilter(
+            data.requirements?.majors?.map((s) => s.toLowerCase()),
+            opts.majors?.map((s) => s.toLowerCase()),
+          ) &&
+          requirementMatchesFilter(data.requirements?.states, opts.states) &&
+          requirementMatchesFilter(
+            data.requirements?.schools?.map((s) => s.toLowerCase()),
+            opts.schools?.map((s) => s.toLowerCase()),
+          ) &&
+          requirementMatchesFilter(
+            data.requirements?.ethnicities,
+            opts.ethnicities,
+          ) &&
+          (opts.showExpired || data.deadline >= today),
+      );
+
+      return {
+        results: filtered.slice(0, 50),
+        hasNext: false,
+        next: async () =>
+          ({
+            results: [],
+            hasNext: false,
+            next: async () =>
+              ({
+                results: [],
+                hasNext: false,
+                next: async () =>
+                  ({}) as unknown as FirestoreModelList<ScholarshipData>,
+              }) as unknown as FirestoreModelList<ScholarshipData>,
+          }) as unknown as FirestoreModelList<ScholarshipData>,
+      } as FirestoreModelList<ScholarshipData>;
+    }
+
     let q: Query<ScholarshipData> = this.collection;
 
     // Set default sorting field and direction if they're not set
@@ -205,12 +278,30 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
                 opts.ethnicities,
               ) &&
               // Deadline Filter.
-              // This is needed  in case list() above couldn't apply it.
+              // This is needed in case list() above couldn't apply it.
               // TODO(#692): Add a daily updated `status` field so we don't need to do this.
-              (opts.sortField === 'deadline' || data.deadline >= today),
+              (opts.showExpired ||
+                opts.sortField === 'deadline' ||
+                data.deadline >= today),
           ),
       }))
       .then(({ results, next, hasNext }) => {
+        if (opts.q && results.length > 0) {
+          const fuse = new Fuse(results, {
+            keys: [
+              { name: 'data.name', weight: 2 },
+              { name: 'data.tags', weight: 1.5 },
+              { name: 'data.organization', weight: 1 },
+              { name: 'data.description', weight: 0.5 },
+            ],
+            threshold: 0.3,
+            ignoreLocation: true,
+          });
+          results = fuse.search(opts.q).map((res) => res.item);
+        }
+
+        // If the current batch yielded no matching results after all filters,
+        // automatically fetch the next batch to fulfill the infinite scroll page limit.
         if (results.length === 0 && hasNext) return next();
         return { results, next, hasNext };
       });

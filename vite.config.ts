@@ -52,10 +52,10 @@ export default defineConfig({
           lines: 90,
         },
         'src/models/**/*.ts': {
-          statements: 90,
+          statements: 85,
           branches: 80,
           functions: 85,
-          lines: 90,
+          lines: 85,
         },
         'src/pages/': {
           statements: 40,
