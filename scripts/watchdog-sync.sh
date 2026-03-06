@@ -14,8 +14,8 @@ echo "🐕 Starting Guardian Watchdog for PRs: ${PRS[*]}"
 CONSECUTIVE_GREEN_COUNT=0
 
 while true; do
+    ACTIVE_PRS=()
     ALL_GREEN=true
-    ALL_MERGED=true
     
     # Ensure our local main is fresh
     git fetch origin main -q
@@ -25,12 +25,12 @@ while true; do
         # 1. Check if PR is still active
         PR_STATE=$(gh pr view "$PR" --json state -q .state 2>/dev/null || echo "UNKNOWN")
         if [ "$PR_STATE" == "MERGED" ] || [ "$PR_STATE" == "CLOSED" ]; then
-            echo "✅ PR #$PR is $PR_STATE. Ignoring."
+            echo "✅ PR #$PR is $PR_STATE. Removing from watch list."
             continue
         fi
         
-        # At least one PR is still active
-        ALL_MERGED=false
+        # PR is active, keep it in the list for next iteration
+        ACTIVE_PRS+=("$PR")
         BRANCH=$(gh pr view "$PR" --json headRefName -q .headRefName)
 
         # 2. Check sync status: is origin/main an ancestor of the branch?
@@ -62,15 +62,14 @@ while true; do
         fi
 
         # 3. Check CI Status
-        # We check the first check run's state. 'SUCCESS' is what we want.
         STATUS=$(gh pr checks "$PR" --json state -q '.[0].state' 2>/dev/null || echo "PENDING")
         
         if [ "$STATUS" == "FAILURE" ]; then
             echo "❌ CRITICAL: PR #$PR has failed its checks!"
             echo "🛑 Watchdog halting. Guardian intervention required."
             exit 1
-        elif [ "$STATUS" == "PENDING" ] || [ "$STATUS" == "IN_PROGRESS" ]; then
-            echo "⏳ PR #$PR is still running checks..."
+        elif [ "$STATUS" == "PENDING" ] || [ "$STATUS" == "IN_PROGRESS" ] || [ "$STATUS" == "QUEUED" ]; then
+            echo "⏳ PR #$PR is still running checks ($STATUS)..."
             ALL_GREEN=false
         elif [ "$STATUS" == "SUCCESS" ]; then
             echo "✅ PR #$PR is GREEN and synced."
@@ -79,16 +78,19 @@ while true; do
             ALL_GREEN=false
         fi
     done
+    
+    # Update the watch list
+    PRS=("${ACTIVE_PRS[@]}")
 
     # 4. Exit conditions
-    if [ "$ALL_MERGED" = true ]; then
+    if [ ${#PRS[@]} -eq 0 ]; then
         echo "🎉 All monitored PRs have been merged! Guardian watchdog exiting gracefully."
         exit 0
     fi
 
     if [ "$ALL_GREEN" = true ]; then
         CONSECUTIVE_GREEN_COUNT=$((CONSECUTIVE_GREEN_COUNT + 1))
-        echo "🎉 All PRs are Green and synced. (Consecutive count: $CONSECUTIVE_GREEN_COUNT/5)"
+        echo "🎉 All PRs are currently Green. (Consecutive count: $CONSECUTIVE_GREEN_COUNT/5)"
         
         if [ "$CONSECUTIVE_GREEN_COUNT" -ge 5 ]; then
             echo "🛑 Reached 5 consecutive GREEN hits. Exiting watchdog."
