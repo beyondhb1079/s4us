@@ -72,7 +72,7 @@ function ScholarshipAmountField({ labelStyle, formik }: SAFProps): JSX.Element {
     <>
       <InputLabel sx={labelStyle}>{t('awardAmount')} *</InputLabel>
       <Grid container spacing={3}>
-        <Grid item>
+        <Grid>
           <Select
             name="amount.type"
             sx={{ minWidth: 150 }}
@@ -91,7 +91,7 @@ function ScholarshipAmountField({ labelStyle, formik }: SAFProps): JSX.Element {
           </Select>
         </Grid>
 
-        <Grid item>{amountType && inputFields[amountType]}</Grid>
+        <Grid>{amountType && inputFields[amountType]}</Grid>
       </Grid>
       <FormHelperText error>{helperText}</FormHelperText>
     </>
