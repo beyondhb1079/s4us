@@ -23,7 +23,11 @@ export default function GeneralInfoStep({
 
   return (
     <Grid container spacing={3}>
-      <Grid item sm={6} xs={12}>
+      <Grid
+        size={{
+          sm: 6,
+          xs: 12,
+        }}>
         <FormikTextField
           label={`${t('scholarshipName')} *`}
           id="name"
@@ -31,7 +35,11 @@ export default function GeneralInfoStep({
           labelStyle={labelStyle}
         />
       </Grid>
-      <Grid item sm={6} xs={12}>
+      <Grid
+        size={{
+          sm: 6,
+          xs: 12,
+        }}>
         <FormikTextField
           label={t('organization')}
           id="organization"
@@ -39,7 +47,11 @@ export default function GeneralInfoStep({
           labelStyle={labelStyle}
         />
       </Grid>
-      <Grid item sm={6} xs={12}>
+      <Grid
+        size={{
+          sm: 6,
+          xs: 12,
+        }}>
         <FormikTextField
           label={`${t('scholarshipLink')} *`}
           id="website"
@@ -54,17 +66,20 @@ export default function GeneralInfoStep({
           }}
         />
       </Grid>
-      <Grid item sm={6}>
+      <Grid
+        size={{
+          sm: 6,
+        }}>
         <DeadlineField
           label={`${t('deadline')} *`}
           labelStyle={labelStyle}
           formik={formik}
         />
       </Grid>
-      <Grid item>
+      <Grid>
         <ScholarshipAmountField formik={formik} labelStyle={labelStyle} />
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FormikTextField
           label={`${t('description')} *`}
           id="description"
@@ -73,7 +88,11 @@ export default function GeneralInfoStep({
           minRows={8}
         />
       </Grid>
-      <Grid item sm={6} xs={12}>
+      <Grid
+        size={{
+          sm: 6,
+          xs: 12,
+        }}>
         <FormikAutocomplete
           label={t('tags')}
           id="tags"
