@@ -24,7 +24,12 @@ const HomeSection = ({
   return (
     <Container sx={{ padding: 4 }}>
       <Grid container spacing={3} direction={direction} alignItems={alignItems}>
-        <Grid xs={12} sm={6} component="div">
+        <Grid
+          component="div"
+          size={{
+            xs: 12,
+            sm: 6,
+          }}>
           <Typography variant={main ? 'h2' : 'h3'} component="h2" gutterBottom>
             {title}
           </Typography>
@@ -40,7 +45,13 @@ const HomeSection = ({
           </Grid>
         </Grid>
 
-        <Grid xs={12} sm={6} sx={{ height: 400 }} component="div">
+        <Grid
+          sx={{ height: 400 }}
+          component="div"
+          size={{
+            xs: 12,
+            sm: 6,
+          }}>
           <img
             fetchPriority="high"
             src={pic}
