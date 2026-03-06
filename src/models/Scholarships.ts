@@ -1,6 +1,6 @@
 import { ScholarshipAmountInfo } from '../types/ScholarshipAmount';
 import FirestoreCollection from './base/FirestoreCollection';
-import FirestoreModelList from './base/FiretoreModelList';
+import FirestoreModelList from './base/FirestoreModelList';
 import Fuse from 'fuse.js';
 import FirestoreModel from './base/FirestoreModel';
 import ScholarshipData from '../types/ScholarshipData';
@@ -17,7 +17,6 @@ import {
   query,
   QueryDocumentSnapshot,
   QuerySnapshot,
-  SnapshotOptions,
   startAfter,
   Timestamp,
   where,
@@ -74,11 +73,8 @@ export const converter: FirestoreDataConverter<ScholarshipData> = {
       lastModified: Timestamp.fromDate(lastModified),
     };
   },
-  fromFirestore: (
-    snapshot: QueryDocumentSnapshot,
-    options: SnapshotOptions,
-  ) => {
-    const data = snapshot.data(options);
+  fromFirestore: (snapshot: QueryDocumentSnapshot) => {
+    const data = snapshot.data();
     const deadline = (data.deadline as Timestamp).toDate();
     const dateAdded = (data.dateAdded as Timestamp)?.toDate();
     const lastModified = (data.lastModified as Timestamp)?.toDate();
@@ -174,7 +170,7 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
             data.requirements?.ethnicities,
             opts.ethnicities,
           ) &&
-          (opts.sortField === 'deadline' ? data.deadline >= today : true),
+          (opts.showExpired || data.deadline >= today),
       );
 
       return {
@@ -282,9 +278,11 @@ class Scholarships extends FirestoreCollection<ScholarshipData> {
                 opts.ethnicities,
               ) &&
               // Deadline Filter.
-              // This is needed  in case list() above couldn't apply it.
+              // This is needed in case list() above couldn't apply it.
               // TODO(#692): Add a daily updated `status` field so we don't need to do this.
-              (opts.sortField === 'deadline' || data.deadline >= today),
+              (opts.showExpired ||
+                opts.sortField === 'deadline' ||
+                data.deadline >= today),
           ),
       }))
       .then(({ results, next, hasNext }) => {
