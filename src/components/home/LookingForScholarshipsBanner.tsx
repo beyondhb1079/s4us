@@ -12,7 +12,11 @@ function LookingForScholarshipsBanner(): JSX.Element {
       component={Paper}
       variant="outlined"
       sx={{ padding: { xs: 2, md: 3 } }}>
-      <Grid item sm={6} xs={12}>
+      <Grid
+        size={{
+          sm: 6,
+          xs: 12,
+        }}>
         <Typography variant="h5" gutterBottom>
           {t('lookingForScholarships')}
         </Typography>
@@ -25,7 +29,11 @@ function LookingForScholarshipsBanner(): JSX.Element {
           {t('actions.browseScholarships')}
         </Button>
       </Grid>
-      <Grid item sm={6} xs={12}>
+      <Grid
+        size={{
+          sm: 6,
+          xs: 12,
+        }}>
         <img src="/searching.svg" style={{ maxHeight: '200px' }} />
       </Grid>
     </Grid>
