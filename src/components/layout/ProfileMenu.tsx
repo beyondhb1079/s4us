@@ -82,14 +82,14 @@ export default function ProfileMenu(): JSX.Element {
         open={Boolean(anchorEl)}
         onClose={onClose}>
         <Grid container spacing={2} sx={{ px: 2, py: 1 }}>
-          <Grid item sx={{ alignSelf: 'center' }}>
+          <Grid sx={{ alignSelf: 'center' }}>
             {/* or use alignItems? */}
             <Avatar
               src={user?.photoURL || undefined}
               sx={{ height: 48, width: 48 }}
             />
           </Grid>
-          <Grid item>
+          <Grid>
             <Typography variant="h6" component="h4">
               {user?.displayName}
             </Typography>

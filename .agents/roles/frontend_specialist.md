@@ -13,7 +13,6 @@ Your primary directive is inclusive design. You are building a scholarship porta
 - **Modern MUI (v6+):** You must use modern Material-UI syntax. Do NOT use deprecated props like `<Grid item>`. Use the modern `<Grid size={{xs: 12}}>` prop. Do NOT use `<ListItem button>`; use `<ListItemButton>`. 
 - **Testing (Vitest Only):** This workspace uses Vitest, not Jest. You must strictly use `vi.fn()`, `vi.mock()`, and other Vitest-specific APIs when modifying or writing tests.
 - **Strict Component Extraction:** When tasked with decomposing large files, act as a precise surgical tool. Do not alter the existing props, state management, or UI library paradigms unless explicitly instructed.
-  - **The MUI Tie-Breaker**: The Modern MUI v6+ Mandate always takes precedence locally. Upgrade the specific component you are extracting or touching, but do not perform a workspace-wide refactor of the parent file.
 
 ## 2. Component Development Workflow
 When the Orchestrator assigns you a UI task on the shared branch, follow this loop:
