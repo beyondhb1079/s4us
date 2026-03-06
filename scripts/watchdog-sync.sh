@@ -11,79 +11,58 @@ fi
 
 echo "🐕 Starting Guardian Watchdog for PRs: ${PRS[*]}"
 
-# Get the initial commit hash of main
-git fetch origin main -q
-CURRENT_MAIN=$(git rev-parse origin/main)
-
 CONSECUTIVE_GREEN_COUNT=0
 
 while true; do
     ALL_GREEN=true
     ALL_MERGED=true
     
-    # Check if main has moved
+    # Ensure our local main is fresh
     git fetch origin main -q
-    NEW_MAIN=$(git rev-parse origin/main)
+    MAIN_REF=$(git rev-parse origin/main)
     
-    if [ "$CURRENT_MAIN" != "$NEW_MAIN" ]; then
-        echo "⚠️  Alert: origin/main has moved! Re-syncing all active PRs..."
-        CURRENT_MAIN=$NEW_MAIN
-        CONSECUTIVE_GREEN_COUNT=0
-        
-        for PR in "${PRS[@]}"; do
-            PR_STATE=$(gh pr view "$PR" --json state -q .state 2>/dev/null || echo "UNKNOWN")
-            if [ "$PR_STATE" == "MERGED" ] || [ "$PR_STATE" == "CLOSED" ]; then
-                echo "⏭️  Skipping PR #$PR since it is already $PR_STATE."
-                continue
-            fi
-            
-            BRANCH=$(gh pr view "$PR" --json headRefName -q .headRefName)
-            echo "🔄 Syncing $BRANCH with new main..."
-            git checkout "$BRANCH" -q
-            
-            # Attempt the merge and catch conflicts
-            if ! git merge origin/main --no-edit; then
-                echo "⚠️ CONFLICT DETECTED in PR #$PR ($BRANCH)!"
-                
-                # Check which files are conflicting
-                CONFLICTED_FILES=$(git diff --name-only --diff-filter=U)
-                
-                # If yarn.lock is the ONLY conflicting file, auto-resolve it
-                if [ "$CONFLICTED_FILES" == "yarn.lock" ]; then
-                    echo "🔧 Conflict is strictly in yarn.lock. Auto-resolving..."
-                    git checkout --ours yarn.lock
-                    yarn install --ignore-engines
-                    git add yarn.lock
-                    git commit --no-edit
-                    echo "✅ yarn.lock conflict cleanly resolved and merged."
-                else
-                    echo "🛑 Complex conflicts detected in: $CONFLICTED_FILES"
-                    echo "🛑 Aborting merge to prevent repository corruption..."
-                    git merge --abort
-                    echo "❌ Watchdog halting. Guardian intervention required to resolve code conflicts."
-                    exit 1
-                fi
-            fi
-            
-            git push origin "$BRANCH"
-            ALL_GREEN=false # We just pushed, so we must wait for new checks
-        done
-        echo "⏳ Sync complete. Waiting 30 seconds for CI to trigger..."
-        sleep 30
-        continue
-    fi
-
-    # Poll the PR checks
     for PR in "${PRS[@]}"; do
+        # 1. Check if PR is still active
         PR_STATE=$(gh pr view "$PR" --json state -q .state 2>/dev/null || echo "UNKNOWN")
         if [ "$PR_STATE" == "MERGED" ] || [ "$PR_STATE" == "CLOSED" ]; then
-            echo "✅ PR #$PR is $PR_STATE. Ignoring checks."
+            echo "✅ PR #$PR is $PR_STATE. Ignoring."
             continue
         fi
         
-        # If we reach here, at least one PR is still active
+        # At least one PR is still active
         ALL_MERGED=false
-        
+        BRANCH=$(gh pr view "$PR" --json headRefName -q .headRefName)
+
+        # 2. Check sync status: is origin/main an ancestor of the branch?
+        if ! git merge-base --is-ancestor "$MAIN_REF" "origin/$BRANCH" 2>/dev/null; then
+            echo "🔄 PR #$PR ($BRANCH) is BEHIND main. Syncing..."
+            git checkout "$BRANCH" -q
+            git pull origin "$BRANCH" --no-edit -q || true
+            
+            if ! git merge origin/main --no-edit; then
+                echo "⚠️ CONFLICT DETECTED in PR #$PR ($BRANCH)!"
+                CONFLICTED_FILES=$(git diff --name-only --diff-filter=U)
+                if [ "$CONFLICTED_FILES" == "yarn.lock" ]; then
+                    echo "🔧 Auto-resolving yarn.lock..."
+                    git checkout --ours yarn.lock
+                    yarn install --ignore-engines
+                    git add yarn.lock
+                    git commit -m "chore: resolve yarn.lock conflict [skip ci]"
+                else
+                    echo "🛑 Complex conflicts in: $CONFLICTED_FILES. Aborting."
+                    git merge --abort
+                    exit 1
+                fi
+            fi
+            git push origin "$BRANCH"
+            ALL_GREEN=false
+            CONSECUTIVE_GREEN_COUNT=0
+            # Since we pushed, we should wait for CI to pick up the new commit
+            continue 
+        fi
+
+        # 3. Check CI Status
+        # We check the first check run's state. 'SUCCESS' is what we want.
         STATUS=$(gh pr checks "$PR" --json state -q '.[0].state' 2>/dev/null || echo "PENDING")
         
         if [ "$STATUS" == "FAILURE" ]; then
@@ -94,10 +73,14 @@ while true; do
             echo "⏳ PR #$PR is still running checks..."
             ALL_GREEN=false
         elif [ "$STATUS" == "SUCCESS" ]; then
-            echo "✅ PR #$PR is GREEN."
+            echo "✅ PR #$PR is GREEN and synced."
+        else
+            echo "❓ PR #$PR status is $STATUS."
+            ALL_GREEN=false
         fi
     done
 
+    # 4. Exit conditions
     if [ "$ALL_MERGED" = true ]; then
         echo "🎉 All monitored PRs have been merged! Guardian watchdog exiting gracefully."
         exit 0
@@ -105,10 +88,10 @@ while true; do
 
     if [ "$ALL_GREEN" = true ]; then
         CONSECUTIVE_GREEN_COUNT=$((CONSECUTIVE_GREEN_COUNT + 1))
-        echo "🎉 All PRs are currently Green. (Consecutive count: $CONSECUTIVE_GREEN_COUNT/5)"
+        echo "🎉 All PRs are Green and synced. (Consecutive count: $CONSECUTIVE_GREEN_COUNT/5)"
         
         if [ "$CONSECUTIVE_GREEN_COUNT" -ge 5 ]; then
-            echo "🛑 Reached 5 consecutive GREEN hits. Exiting watchdog to prevent indefinite polling."
+            echo "🛑 Reached 5 consecutive GREEN hits. Exiting watchdog."
             exit 0
         fi
     else
