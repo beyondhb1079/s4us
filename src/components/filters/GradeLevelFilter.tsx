@@ -46,7 +46,6 @@ function GradeGroup({
           }
         />
       </>
-
       <FormGroup sx={{ ml: 2 }}>
         {gradeGroup.map((grade) => (
           <FormControlLabel
