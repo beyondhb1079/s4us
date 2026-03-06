@@ -15,8 +15,11 @@ echo "🐕 Starting Guardian Watchdog for PRs: ${PRS[*]}"
 git fetch origin main -q
 CURRENT_MAIN=$(git rev-parse origin/main)
 
+CONSECUTIVE_GREEN_COUNT=0
+
 while true; do
     ALL_GREEN=true
+    ALL_MERGED=true
     
     # Check if main has moved
     git fetch origin main -q
@@ -25,8 +28,15 @@ while true; do
     if [ "$CURRENT_MAIN" != "$NEW_MAIN" ]; then
         echo "⚠️  Alert: origin/main has moved! Re-syncing all active PRs..."
         CURRENT_MAIN=$NEW_MAIN
+        CONSECUTIVE_GREEN_COUNT=0
         
         for PR in "${PRS[@]}"; do
+            PR_STATE=$(gh pr view "$PR" --json state -q .state 2>/dev/null || echo "UNKNOWN")
+            if [ "$PR_STATE" == "MERGED" ] || [ "$PR_STATE" == "CLOSED" ]; then
+                echo "⏭️  Skipping PR #$PR since it is already $PR_STATE."
+                continue
+            fi
+            
             BRANCH=$(gh pr view "$PR" --json headRefName -q .headRefName)
             echo "🔄 Syncing $BRANCH with new main..."
             git checkout "$BRANCH" -q
@@ -42,7 +52,7 @@ while true; do
                 if [ "$CONFLICTED_FILES" == "yarn.lock" ]; then
                     echo "🔧 Conflict is strictly in yarn.lock. Auto-resolving..."
                     git checkout --ours yarn.lock
-                    yarn install
+                    yarn install --ignore-engines
                     git add yarn.lock
                     git commit --no-edit
                     echo "✅ yarn.lock conflict cleanly resolved and merged."
@@ -65,6 +75,15 @@ while true; do
 
     # Poll the PR checks
     for PR in "${PRS[@]}"; do
+        PR_STATE=$(gh pr view "$PR" --json state -q .state 2>/dev/null || echo "UNKNOWN")
+        if [ "$PR_STATE" == "MERGED" ] || [ "$PR_STATE" == "CLOSED" ]; then
+            echo "✅ PR #$PR is $PR_STATE. Ignoring checks."
+            continue
+        fi
+        
+        # If we reach here, at least one PR is still active
+        ALL_MERGED=false
+        
         STATUS=$(gh pr checks "$PR" --json state -q '.[0].state' 2>/dev/null || echo "PENDING")
         
         if [ "$STATUS" == "FAILURE" ]; then
@@ -79,9 +98,21 @@ while true; do
         fi
     done
 
-    if [ "$ALL_GREEN" = true ]; then
-        echo "🎉 All PRs are completely Green and synced with main!"
+    if [ "$ALL_MERGED" = true ]; then
+        echo "🎉 All monitored PRs have been merged! Guardian watchdog exiting gracefully."
         exit 0
+    fi
+
+    if [ "$ALL_GREEN" = true ]; then
+        CONSECUTIVE_GREEN_COUNT=$((CONSECUTIVE_GREEN_COUNT + 1))
+        echo "🎉 All PRs are currently Green. (Consecutive count: $CONSECUTIVE_GREEN_COUNT/5)"
+        
+        if [ "$CONSECUTIVE_GREEN_COUNT" -ge 5 ]; then
+            echo "🛑 Reached 5 consecutive GREEN hits. Exiting watchdog to prevent indefinite polling."
+            exit 0
+        fi
+    else
+        CONSECUTIVE_GREEN_COUNT=0
     fi
 
     echo "💤 Sleeping for 60 seconds before next poll..."
