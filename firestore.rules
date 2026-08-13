@@ -52,5 +52,17 @@ service cloud.firestore {
       allow update: if (request.auth.uid == resource.data.author.id || request.auth.token.admin) && validData(request.resource.data);
       allow delete: if request.auth.uid == resource.data.author.id || request.auth.token.admin;
     }
+
+    // Hybrid AI Queue Collections
+    match /suggestions_queue/{id} {
+      // Direct client access is denied. All submissions must route through Cloud Functions
+      // to enforce strict concurrency, rate-limiting, and schema validation.
+      allow read, write: if false;
+    }
+
+    match /pending_approval/{id} {
+      // Only admins can see and process the AI-scraped results
+      allow read, write: if request.auth != null && request.auth.token.admin == true;
+    }
   }
 }

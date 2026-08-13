@@ -1,7 +1,9 @@
 import { onSchedule } from 'firebase-functions/v2/scheduler';
+import { onCall, HttpsError } from 'firebase-functions/v2/https';
 import { defineSecret } from 'firebase-functions/params';
 import * as logger from 'firebase-functions/logger';
 import * as admin from 'firebase-admin';
+import { extractScholarshipsFromHtml } from './services/aiScraper';
 
 admin.initializeApp();
 
@@ -12,6 +14,7 @@ interface ScorecardSchool {
 }
 
 const scorecardApiKey = defineSecret('SCORECARD_API_KEY');
+const geminiApiKey = defineSecret('GEMINI_API_KEY');
 
 export const syncCollegeScorecard = onSchedule(
   {
@@ -100,6 +103,118 @@ export const syncCollegeScorecard = onSchedule(
       );
     } catch (error) {
       logger.error('Error syncing schools', error);
+    }
+  },
+);
+
+export const submitSuggestion = onCall(async (request) => {
+  const url = request.data?.url;
+
+  if (!url || typeof url !== 'string' || url.length > 500) {
+    throw new HttpsError('invalid-argument', 'Invalid URL provided.');
+  }
+
+  try {
+    new URL(url); // validate URL format
+  } catch {
+    throw new HttpsError('invalid-argument', 'Malformed URL.');
+  }
+
+  // Calculate a basic priority score
+  let priorityScore = 0;
+  if (url.includes('.edu')) priorityScore += 10;
+  if (url.includes('.gov')) priorityScore += 10;
+  if (url.includes('.org')) priorityScore += 5;
+
+  const db = admin.firestore();
+
+  const newItem = {
+    url,
+    submittedAt: admin.firestore.FieldValue.serverTimestamp(),
+    status: 'PENDING',
+    priorityScore,
+  };
+
+  await db.collection('suggestions_queue').add(newItem);
+  return { success: true };
+});
+
+export const processSuggestions = onSchedule(
+  {
+    schedule: 'every 6 hours',
+    timeoutSeconds: 540,
+    memory: '512MiB',
+    secrets: [geminiApiKey],
+  },
+  async (event) => {
+    logger.info('Starting to process suggestions queue...');
+    const db = admin.firestore();
+
+    // Query top 5 suggestions, order by priorityDesc so high priority gets processed first
+    const snapshot = await db
+      .collection('suggestions_queue')
+      .where('status', '==', 'PENDING')
+      .orderBy('priorityScore', 'desc')
+      .orderBy('submittedAt', 'asc')
+      .limit(5)
+      .get();
+
+    if (snapshot.empty) {
+      logger.info('No PENDING suggestions found.');
+      return;
+    }
+
+    const API_KEY = geminiApiKey.value() || process.env.GEMINI_API_KEY;
+    if (!API_KEY) {
+      logger.error('Missing GEMINI_API_KEY secret.');
+      return;
+    }
+
+    for (const doc of snapshot.docs) {
+      const { url } = doc.data();
+
+      // Transactionally mark as PROCESSING to avoid race conditions with cold starts or overlap
+      const marked = await db.runTransaction(async (t) => {
+        const freshDoc = await t.get(doc.ref);
+        if (freshDoc.data()?.status !== 'PENDING') return false;
+        t.update(doc.ref, { status: 'PROCESSING' });
+        return true;
+      });
+
+      if (!marked) {
+        logger.info(`URL ${url} is no longer PENDING, skipping...`);
+        continue;
+      }
+
+      try {
+        logger.info(`Extracting from URL: ${url}`);
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const html = await response.text();
+
+        const scholarships = await extractScholarshipsFromHtml(html, API_KEY);
+
+        logger.info(
+          `Successfully extracted ${scholarships.length} scholarships from ${url}`,
+        );
+
+        const batch = db.batch();
+        for (const s of scholarships) {
+          const newRef = db.collection('pending_approval').doc();
+          batch.set(newRef, {
+            ...s,
+            sourceUrl: url,
+            scrapedAt: admin.firestore.FieldValue.serverTimestamp(),
+          });
+        }
+
+        // Delete successful suggestions to clear the queue
+        batch.delete(doc.ref);
+        await batch.commit();
+      } catch (err: any) {
+        logger.error(`Failed to process ${url}`, err);
+        await doc.ref.update({ status: 'FAILED', error: err.message });
+      }
     }
   },
 );
