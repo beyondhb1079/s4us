@@ -4,6 +4,8 @@ DreamScholars aims to provide scholarship information for undocumented students
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+Join us on [Slack](https://join.slack.com/t/newworkspace-f5y1425/shared_invite/zt-18g0dhpxt-rIEmslxdvJHAaZkLpwCC~w) and discuss and ask questions!
+
 ## Development Prerequisites
 
 The following are required:
